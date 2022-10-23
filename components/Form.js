@@ -3,7 +3,7 @@ import { StyleSheet, View, TextInput, Button } from 'react-native';
 import ReCaptchaV3 from '@haskkor/react-native-recaptchav3'
 
 class Form extends Component {
-    state = {
+    states = {
         login: '',
         password: '',
         token: ''

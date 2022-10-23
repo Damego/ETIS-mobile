@@ -1,20 +1,24 @@
-import React, {useState, Component} from 'react';
-import { StyleSheet, SafeAreaView, View, Text, TouchableOpacity } from 'react-native';
+"use strict"
+import React, {Component} from 'react';
+import { StyleSheet, SafeAreaView } from 'react-native';
 
 import Header from './components/Header';
 import Form from './components/Form';
 import HTTPClient from './http/client';
 
 class App extends Component {
-  state = {
-    recaptchaToken: '',
+  constructor() {
+    super();
+
+    this.httpClient = new HTTPClient();
   }
 
   defaultAuth = (login, password, token) => {
-    HTTPClient.login(login, password, token);
+    this.httpClient.login(login, password, token);
   };
 
   render() {
+    // 
     return (
     <SafeAreaView>
       <Header/>
