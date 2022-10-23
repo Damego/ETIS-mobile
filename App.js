@@ -13,8 +13,9 @@ class App extends Component {
     this.httpClient = new HTTPClient();
   }
 
-  defaultAuth = (login, password, token) => {
-    this.httpClient.login(login, password, token);
+  defaultAuth = async (login, password, token) => {
+    await this.httpClient.login(login, password, token);
+    await this.httpClient.getTimeTable();
   };
 
   render() {
