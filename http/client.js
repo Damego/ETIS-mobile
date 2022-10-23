@@ -23,6 +23,7 @@ export default class HTTPClient {
     let response = await axios.post(`${this.defaultURL}.login`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
+
     var cookies = response.headers["set-cookie"];
     if (cookies != undefined) {
       // TODO: return exception message?
@@ -43,22 +44,21 @@ export default class HTTPClient {
       return; // TODO: Exceptions? Output error message? Auto authorize?
     }
 
-    let _showConsultations = (!!showConsultations) ? "y" : "n"
-    
-
+    let _showConsultations = !!showConsultations ? "y" : "n";
     let response = await axios.get(`${this.defaultURL}.timetable`, {
       headers: {
         Cookie: this.sessionID,
       },
       params: {
         p_cons: _showConsultations,
-        p_week: week
-      }
+        p_week: week,
+      },
     });
     return response.data;
   }
 
-  async getEblChoice() { // lol
+  async getEblChoice() {
+    // lol
     if (this.sessionID == null) {
       return; // TODO: Exceptions? Output error message? Auto authorize?
     }
@@ -101,8 +101,8 @@ export default class HTTPClient {
         Cookie: this.sessionID,
       },
       params: {
-        p_mode: mode
-      }
+        p_mode: mode,
+      },
     });
     return response.data;
   }
@@ -121,6 +121,9 @@ export default class HTTPClient {
     let response = await axios.get(`${this.defaultURL}.absence`, {
       headers: {
         Cookie: this.sessionID,
+      },
+      params: {
+        p_term: trimester,
       },
     });
     return response.data;
