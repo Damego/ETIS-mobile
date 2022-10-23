@@ -7,6 +7,11 @@ export default class HTTPClient {
   }
 
   async login(username, password, token) {
+    /*
+    `username`: Электронная почта
+    `password`: Пароль
+    `token`: Токен Рекапчи
+    */
     let formData = new FormData();
 
     formData.append("p_redirect", "stu.timetable");
@@ -26,15 +31,29 @@ export default class HTTPClient {
     }
   }
 
-  async getTimeTable() {
+  async getTimeTable(showConsultations = null, week = null) {
+    /*
+    `showConsultations`:
+    - y: Показывать консультации
+    - n: Скрывать консультации
+
+    `week`: неделя в триместре.
+    */
     if (this.sessionID == null) {
       return; // TODO: Exceptions? Output error message? Auto authorize?
     }
+
+    let _showConsultations = (!!showConsultations) ? "y" : "n"
+    
 
     let response = await axios.get(`${this.defaultURL}.timetable`, {
       headers: {
         Cookie: this.sessionID,
       },
+      params: {
+        p_cons: _showConsultations,
+        p_week: week
+      }
     });
     return response.data;
   }
@@ -65,7 +84,14 @@ export default class HTTPClient {
     return response.data;
   }
 
-  async getSigns() {
+  async getSigns(mode) {
+    /*
+    `mode`:
+    - session: оценки за сессии
+    - current: оценки в триместре
+    - rating: итоговый рейтинг за триместр 
+    - diplom: оценки в диплом
+    */
     if (this.sessionID == null) {
       return; // TODO: Exceptions? Output error message? Auto authorize?
     }
@@ -74,11 +100,20 @@ export default class HTTPClient {
       headers: {
         Cookie: this.sessionID,
       },
+      params: {
+        p_mode: mode
+      }
     });
     return response.data;
   }
 
-  async getAbsenses() {
+  async getAbsenses(trimester) {
+    /*
+    `trimester`:
+      - 1: осенний
+      - 2: весенний
+      - 3: летний
+     */
     if (this.sessionID == null) {
       return; // TODO: Exceptions? Output error message? Auto authorize?
     }
