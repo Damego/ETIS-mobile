@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import Form from "./components/Form";
 import HTTPClient from "./utils/http";
 import Storage from "./utils/storage";
+import DataParsing from './utils/parser';
 
 class App extends Component {
   constructor() {
@@ -18,6 +19,7 @@ class App extends Component {
     this.recaptchaToken = null;
     this.httpClient = new HTTPClient();
     this.storage = new Storage();
+    this.parser = new DataParsing();
   }
 
   defaultAuth = async (login, password) => {
@@ -30,6 +32,9 @@ class App extends Component {
 
     await this.storage.storeAccountData(login, password);
     await this.storage.storeSessionID(sessionID);
+
+    let html = await this.httpClient.getTimeTable();
+    let text = this.parser.getDataTimeTable(html);
   };
 
   async tryLogin() {
