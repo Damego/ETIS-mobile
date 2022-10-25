@@ -15,8 +15,8 @@ export default class HTTPClient {
     let formData = new FormData();
 
     formData.append("p_redirect", "stu.timetable");
-    formData.append("p_username", "damego@vk.com");
-    formData.append("p_password", "ASDFGh123");
+    formData.append("p_username", username);
+    formData.append("p_password", password);
     formData.append("p_recaptcha_ver", "3");
     formData.append("p_recaptcha_response", token);
 
