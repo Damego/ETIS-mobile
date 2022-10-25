@@ -1,8 +1,9 @@
 {
   "expo": {
     "name": "ETIS-mobile",
-    "slug": "ETIS-mobile",
-    "version": "1.0.0",
+    "slug": "etis-mobile",
+    "version": "0.0.1",
+    "owner": "damego",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -24,10 +25,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.damego.etismobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a3b11e9a-6c2e-4082-81e8-58bc2324b582"
+      }
     }
   }
 }

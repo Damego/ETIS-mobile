@@ -13,13 +13,13 @@
     "axios": "^1.1.3",
     "expo": "~46.0.16",
     "expo-status-bar": "~1.4.0",
-    "jsdom": "^20.0.1",
     "react": "18.0.0",
     "react-native": "0.69.6",
     "react-native-webview": "11.23.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.12.9",
+    "eas-cli": "^2.5.1"
   },
   "private": true
 }
