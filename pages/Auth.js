@@ -1,19 +1,17 @@
-import React, {Component} from 'react';
-import {SafeAreaView} from 'react-native';
-import Form from '../components/Form';
-import Header from '../components/Header';
+import React, { Component } from "react";
+import { SafeAreaView } from "react-native";
+import Form from "../components/AuthForm";
+import Header from "../components/Header";
+import Footer from "../components/AuthFooter";
 
 export default class FormPage extends Component {
-    /*
-    TODO:
-        Header and footer components
-    */
-    render() {
-        return (
-            <SafeAreaView>
-                <Header/>
-                <Form defaultAuth={this.props.defaultAuth}/>
-            </SafeAreaView>
-        )
-    }
+  render() {
+    return (
+      <SafeAreaView>
+        <Header />
+        <Form onSubmit={this.props.onSubmit} />
+        <Footer />
+      </SafeAreaView>
+    );
+  }
 }

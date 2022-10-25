@@ -20,7 +20,7 @@ class App extends Component {
     this.storage = new Storage();
   }
 
-  defaultAuth = async (login, password) => {
+  onFormSubmit = async (login, password) => {
     let sessionID = await this.httpClient.login(
       login,
       password,
@@ -88,6 +88,7 @@ class App extends Component {
 
   render() {
     return this.state.currentPage;
+    // return <FormPage onSubmit={this.onFormSubmit} />;
   }
 }
 

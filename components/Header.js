@@ -10,15 +10,15 @@ export default function Header({ text }) {
 }
 
 const styles = StyleSheet.create({
-  main: {
-    paddingTop: 45,
-    height: 90,
-    backgroundColor: "#C62E3E",
-  },
-  text: {
-    fontSize: 18,
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
+    main: {
+        paddingTop: 45,
+        height: 90,
+        backgroundColor: '#C62E3E'
+    },
+    text: {
+        fontSize: 19,
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    }
 });
