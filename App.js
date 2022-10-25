@@ -4,7 +4,7 @@ import { StyleSheet, SafeAreaView } from 'react-native';
 
 import Header from './components/Header';
 import Form from './components/Form';
-import HTTPClient from './http/client';
+import HTTPClient from './utils/http';
 
 class App extends Component {
   constructor() {
