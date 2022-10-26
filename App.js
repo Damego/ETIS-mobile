@@ -22,7 +22,7 @@ class App extends Component {
     // 
     return (
     <SafeAreaView>
-      <Header/>
+      <Header text={"Авторизация"}/>
       <Form defaultAuth={this.defaultAuth} />
     </SafeAreaView>
   );
