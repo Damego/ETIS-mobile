@@ -8,7 +8,7 @@ export default class FormPage extends Component {
   render() {
     return (
       <SafeAreaView>
-        <Header />
+        <Header text={"ЕТИС | Авторизация"} />
         <Form onSubmit={this.props.onSubmit} />
         <Footer />
       </SafeAreaView>
