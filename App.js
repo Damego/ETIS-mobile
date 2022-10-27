@@ -16,32 +16,34 @@ class App extends Component {
     this.httpClient = new HTTPClient();
     this.storage = new Storage();
 
-    this.storage.getSessionID().then(
-      (sessionID) => {
-        if (!!sessionID) {
-          console.log(this.httpClient.sessionID);
-          return this.httpClient.sessionID = sessionID;
-        }
-
-        // TODO: Здесь токен пуст
-        // this.storage.getAccountData().then(
-        //   (accountData) => {
-        //     if (!accountData.login || !accountData.password) {
-        //       return;
-        //     }
-        //     this.httpClient.login(accountData.login, accountData.password, this.recaptchaToken).then(
-        //       (sessionID) => {
-        //         this.httpClient.sessionID = sessionID;
-        //     }
-        //   )
-        //   }
-        // )
+    this.storage.getSessionID().then((sessionID) => {
+      if (!!sessionID) {
+        console.log(this.httpClient.sessionID);
+        return (this.httpClient.sessionID = sessionID);
       }
-    )
+
+      // TODO: Здесь токен пуст
+      // this.storage.getAccountData().then(
+      //   (accountData) => {
+      //     if (!accountData.login || !accountData.password) {
+      //       return;
+      //     }
+      //     this.httpClient.login(accountData.login, accountData.password, this.recaptchaToken).then(
+      //       (sessionID) => {
+      //         this.httpClient.sessionID = sessionID;
+      //     }
+      //   )
+      //   }
+      // )
+    });
   }
 
   defaultAuth = async (login, password) => {
-    let sessionID = await this.httpClient.login(login, password, this.recaptchaToken);
+    let sessionID = await this.httpClient.login(
+      login,
+      password,
+      this.recaptchaToken
+    );
     if (!sessionID) return;
 
     await this.storage.storeAccountData(login, password);
@@ -64,7 +66,7 @@ class App extends Component {
               this.recaptchaToken = token;
             }}
           />
-  
+
           <Header text={"Авторизация"} />
           <Form defaultAuth={this.defaultAuth} />
         </SafeAreaView>
@@ -73,11 +75,10 @@ class App extends Component {
 
     // TODO: Вывод страницы с расписанием
     return (
-      <SafeAreaView> 
+      <SafeAreaView>
         <Text>{`Вы авторизованы! ${this.httpClient.sessionID}`}</Text>
       </SafeAreaView>
-    )
-    
+    );
   }
 }
 
