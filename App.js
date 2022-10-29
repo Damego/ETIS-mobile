@@ -18,7 +18,8 @@ class App extends Component {
   defaultAuth = async (login, password, token) => {
     await this.httpClient.login(login, password, token);
     let html = await this.httpClient.getTimeTable();
-    let text = this.parser.getDataTimeTable(html);
+    let text = this.parser.parseHeader(html);
+    console.log(text);
   };
 
   render() {
