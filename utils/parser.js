@@ -6,20 +6,13 @@ export default class DataParsing {
     const $ = cheerio.load(html);
     // Способы добавления элемента в словарь:   data['header'] = header  |  data.header = header;
 
-    // Сленг ВУЗа
-    let header_caption = $(
-      "body > div.navbar.navbar-static-top > div > div > a"
-    ).text();
-    data["caption"] = header_caption;
-
     // ФИО и г.р. человека
-    let header_name = $(
+    let headerName = $(
       "body > div.navbar.navbar-static-top > div > div > div > div > span"
     ).text();
     let reg = /.*/g;
-    let header_name_array = reg.exec(header_name);
-    let name_bd = header_name_array[0];
-    data["name"] = name_bd;
+    let headerNameArray = reg.exec(headerName);
+    data.userFullName = headerNameArray[0];
 
     // Получение только ФИО (на всякий случай, если нужно будет)
     // let header_name = $('body > div.navbar.navbar-static-top > div > div > div > div > span').text();
@@ -29,22 +22,22 @@ export default class DataParsing {
     // data['name'] = name;
 
     // Название специальности
-    let header_speciality = $(
+    let headerSpeciality = $(
       "body > div.navbar.navbar-static-top > div > div > div > div > span > span:nth-child(1)"
     ).text();
-    data["speciality"] = header_speciality;
+    data.speciality = headerSpeciality;
 
     // Форма обчуения
-    let header_form_of_education = $(
+    let headerFormEducationForm = $(
       "body > div.navbar.navbar-static-top > div > div > div > div > span > span:nth-child(2)"
     ).text();
-    data["form_of_education"] = header_form_of_education;
+    data.educationForm = headerFormEducationForm;
 
     // Текущий год обучения
-    let header_year = $(
+    let headerYear = $(
       "body > div.navbar.navbar-static-top > div > div > div > div > span > span:nth-child(3)"
     ).text();
-    data["year"] = header_year;
+    data.year = headerYear;
 
     return data;
   }
