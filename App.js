@@ -7,7 +7,7 @@ import Header from "./components/Header";
 import Form from "./components/Form";
 import HTTPClient from "./utils/http";
 import Storage from "./utils/storage";
-import DataParsing from './utils/parser';
+import DataParsing from "./utils/parser";
 
 class App extends Component {
   constructor() {
