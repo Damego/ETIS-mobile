@@ -34,7 +34,8 @@ class App extends Component {
     await this.storage.storeSessionID(sessionID);
 
     let html = await this.httpClient.getTimeTable();
-    let text = this.parser.getDataTimeTable(html);
+    let text = this.parser.parseHeader(html);
+    console.log(text);
   };
 
   async tryLogin() {
