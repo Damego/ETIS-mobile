@@ -1,25 +1,15 @@
 import React, { Component } from "react";
 import { StyleSheet, View, TextInput, Button } from "react-native";
-import ReCaptchaV3 from "@haskkor/react-native-recaptchav3";
 
 class Form extends Component {
   states = {
     login: "",
     password: "",
-    token: "",
   };
 
   render() {
     return (
       <View>
-        <ReCaptchaV3
-          action={"submit"}
-          captchaDomain={"https://student.psu.ru"}
-          siteKey={"6LfeYf8UAAAAAIF22Cn9YFwXlZk1exjVNyF2Jmo6"}
-          onReceiveToken={(token) => {
-            this.token = token;
-          }}
-        />
         <TextInput
           style={styles.input}
           onChangeText={(login) => {
@@ -37,7 +27,7 @@ class Form extends Component {
         <Button
           title="Войти"
           onPress={() => {
-            this.props.defaultAuth(this.login, this.password, this.token);
+            this.props.defaultAuth(this.login, this.password);
           }}
         />
       </View>

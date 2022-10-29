@@ -26,15 +26,15 @@ export default class HTTPClient {
 
     let cookies = response.headers["set-cookie"];
     if (!cookies) {
-      console.warn(
+      return console.warn(
         "No cookies! Make sure you passed right login and password. Also maybe you have reached auth limit (5). Try again in 10 minutes."
       );
     }
-    if (cookies != undefined) {
-      // TODO: return exception message?
-      this.sessionID = cookies[0].split(";")[0];
-      console.log(`Authorized with ${this.sessionID}`);
-    }
+
+    this.sessionID = cookies[0].split(";")[0];
+    console.log(`Authorized with ${this.sessionID}`);
+
+    return this.sessionID;
   }
 
   async getTimeTable(showConsultations = null, week = null) {
