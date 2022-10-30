@@ -7,7 +7,7 @@ export default class AuthFooter extends Component {
       <View style={styles.view}>
         <Text style={styles.text}>
           {
-            "Приложение ЕТИС-mobile является неоффициальным мобильным приложением для ЕТИС"
+            "Приложение ЕТИС мобайл является неоффициальным мобильным приложением для ЕТИС"
           }
         </Text>
       </View>

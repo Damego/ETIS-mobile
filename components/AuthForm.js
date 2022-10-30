@@ -3,30 +3,18 @@ import {
   StyleSheet,
   View,
   TextInput,
-  Text,
-  TouchableOpacity,
 } from "react-native";
-import ReCaptchaV3 from "@haskkor/react-native-recaptchav3";
 import AuthButton from "./AuthButton";
 
 class Form extends Component {
   states = {
     login: "",
     password: "",
-    token: "",
   };
 
   render() {
     return (
       <View style={styles.view}>
-        <ReCaptchaV3
-          action={"submit"}
-          captchaDomain={"https://student.psu.ru"}
-          siteKey={"6LfeYf8UAAAAAIF22Cn9YFwXlZk1exjVNyF2Jmo6"}
-          onReceiveToken={(token) => {
-            this.token = token;
-          }}
-        />
         <TextInput
           style={styles.input}
           onChangeText={(login) => {
@@ -45,7 +33,7 @@ class Form extends Component {
 
         <AuthButton
           onPress={() => {
-            this.props.onSubmit(this.login, this.password, this.token);
+            this.props.onSubmit(this.login, this.password);
           }}
         />
       </View>
