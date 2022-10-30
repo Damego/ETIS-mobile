@@ -45,7 +45,7 @@ export default class AuthPage extends Component {
   async onReceiveRecaptchaToken(token) {
     this.recaptchaToken = token;
 
-    await this.tryLogin()
+    await this.tryLogin();
   }
 
   reRenderPage(page) {
@@ -71,7 +71,7 @@ export default class AuthPage extends Component {
           action={"submit"}
           captchaDomain={"https://student.psu.ru"}
           siteKey={"6LfeYf8UAAAAAIF22Cn9YFwXlZk1exjVNyF2Jmo6"}
-          onReceiveToken={token => this.onReceiveRecaptchaToken(token)}
+          onReceiveToken={(token) => this.onReceiveRecaptchaToken(token)}
         />
 
         <Header text={"ЕТИС | Авторизация"} />

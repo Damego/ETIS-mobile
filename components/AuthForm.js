@@ -1,9 +1,5 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  View,
-  TextInput,
-} from "react-native";
+import { StyleSheet, View, TextInput } from "react-native";
 import AuthButton from "./AuthButton";
 
 class Form extends Component {
