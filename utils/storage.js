@@ -1,9 +1,9 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from 'expo-secure-store';
 
 export default class Storage {
   async storeSessionID(sessionID) {
     try {
-      await AsyncStorage.setItem("sessionID", sessionID);
+      await SecureStore.setItemAsync("sessionID", sessionID);
     } catch (exception) {
       console.warn("Error saving sessionID", e);
     }
@@ -11,7 +11,7 @@ export default class Storage {
 
   async getSessionID() {
     try {
-      return await AsyncStorage.getItem("sessionID");
+      return await SecureStore.getItemAsync("sessionID");
     } catch (exception) {
       console.warn("Error getting sessionID", e);
     }
@@ -20,8 +20,8 @@ export default class Storage {
   async storeAccountData(login, password) {
     // ! Я думаю, что хранить данные в незащищённом виде это плохо.
     try {
-      await AsyncStorage.setItem("userLogin", login);
-      await AsyncStorage.setItem("userPassword", password);
+      await SecureStore.setItemAsync("userLogin", login);
+      await SecureStore.setItemAsync("userPassword", password);
     } catch (exception) {
       console.warn("Error saving user data", e);
     }
@@ -30,8 +30,8 @@ export default class Storage {
   async getAccountData() {
     try {
       return {
-        login: await AsyncStorage.getItem("userLogin"),
-        password: await AsyncStorage.getItem("userPassword"),
+        login: await SecureStore.getItemAsync("userLogin"),
+        password: await SecureStore.getItemAsync("userPassword"),
       };
     } catch (exception) {
       console.warn("Error getting user data", e);
