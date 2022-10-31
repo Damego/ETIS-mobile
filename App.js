@@ -3,9 +3,9 @@ import React, { Component } from "react";
 import { StyleSheet, SafeAreaView, Text, StatusBar } from "react-native";
 import ReCaptchaV3 from "@haskkor/react-native-recaptchav3";
 
-import Header from './components/Header';
-import Form from './components/Form';
-import HTTPClient from './utils/http';
+import Header from "./components/Header";
+import Form from "./components/Form";
+import HTTPClient from "./utils/http";
 
 class App extends Component {
   constructor() {
