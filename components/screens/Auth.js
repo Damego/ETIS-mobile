@@ -1,17 +1,19 @@
+"use strict";
+
 import React, { Component } from "react";
 import { SafeAreaView, Text, StatusBar } from "react-native";
 import ReCaptchaV3 from "@haskkor/react-native-recaptchav3";
 
-import Form from "../components/AuthForm";
-import Header from "../components/Header";
-import Footer from "../components/AuthFooter";
+import Form from "../AuthForm";
+import Header from "../Header";
+import Footer from "../AuthFooter";
 
 export default class AuthPage extends Component {
   constructor(props) {
     super(props);
 
-    this.storage = this.props.storage;
-    this.httpClient = this.props.httpClient;
+    // this.storage = this.props.storage;
+    // this.httpClient = this.props.httpClient;
   }
 
   async tryLogin() {
@@ -25,9 +27,8 @@ export default class AuthPage extends Component {
       accountData.password,
       this.recaptchaToken
     );
+  
     this.httpClient.sessionID = sessionID;
-
-    this.reRenderPage(this.renderTimeTablePage());
   }
 
   async onFormSubmit(login, password) {
@@ -40,28 +41,13 @@ export default class AuthPage extends Component {
 
     await this.storage.storeAccountData(login, password);
     await this.storage.storeSessionID(sessionID);
+
+    this.RenderPage(this.renderTimeTablePage());
   }
 
   async onReceiveRecaptchaToken(token) {
     this.recaptchaToken = token;
-
-    await this.tryLogin();
-  }
-
-  reRenderPage(page) {
-    this.setState((state, props) => {
-      return { currentPage: page };
-    });
-  }
-
-  renderTimeTablePage() {
-    console.log("timetable");
-    return (
-      <SafeAreaView>
-        <Text>{`Вы авторизованы! ${this.httpClient.sessionID}`}</Text>
-        <StatusBar></StatusBar>
-      </SafeAreaView>
-    );
+    // await this.tryLogin();
   }
 
   render() {
