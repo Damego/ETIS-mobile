@@ -6,6 +6,7 @@ import ReCaptchaV3 from "@haskkor/react-native-recaptchav3";
 import Header from "./components/Header";
 import Form from "./components/Form";
 import HTTPClient from "./utils/http";
+import Storage from "./utils/storage";
 
 class App extends Component {
   constructor() {
@@ -16,6 +17,7 @@ class App extends Component {
 
     this.recaptchaToken = null;
     this.httpClient = new HTTPClient();
+    this.storage = new Storage();
   }
 
   defaultAuth = async (login, password, token) => {
