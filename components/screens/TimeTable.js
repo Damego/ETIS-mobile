@@ -14,8 +14,8 @@ export default class TimeTablePage extends Component {
       isLoaded: false,
     };
 
-    // this.storage = this.props.storage;
-    // this.httpClient = this.props.httpClient;
+    this.httpClient = this.props.route.params.httpClient;
+    this.storage = this.props.route.params.storage;
 
     this.daysList = [
       "Понедельник",
@@ -65,6 +65,8 @@ export default class TimeTablePage extends Component {
         ],
       },
     ];
+
+    this.setState({isLoaded: true})
   }
 
   render() {

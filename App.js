@@ -49,6 +49,7 @@ class App extends Component {
               name="Navigator"
               component={TabNavigator}
               options={{ headerShown: false }}
+              initialParams={{httpClient: this.httpClient, storage: this.storage}}
             />
           )}
         </Stack.Navigator>
@@ -57,7 +58,6 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    // this.setState({isLoaded: true})
     this.httpClient.sessionID = await this.storage.getSessionID();
     if (this.httpClient.sessionID) {
       // TODO: заменить на парсер
