@@ -64,10 +64,10 @@ class App extends Component {
       // let html = await this.httpClient.getTimeTable();
       let studentData = true;
       this.studentData = studentData;
-      
+
       if (studentData) {
-        this.setState({isLoaded: true})
-        this.setState({isSignedIn: true})
+        this.setState({ isLoaded: true });
+        this.setState({ isSignedIn: true });
       }
     }
   }
