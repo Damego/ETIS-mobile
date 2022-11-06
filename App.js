@@ -31,7 +31,7 @@ class App extends Component {
     if (!this.state.isLoaded) {
       return (
         <SafeAreaView>
-          <Text>{"Loading"}</Text>
+          <Text>{"Loading..."}</Text>
         </SafeAreaView>
       );
     }
@@ -58,6 +58,9 @@ class App extends Component {
   }
 
   async componentDidMount() {
+    this.setState({ isLoaded: true });
+    this.setState({ isSignedIn: true });
+    return;
     this.httpClient.sessionID = await this.storage.getSessionID();
     if (this.httpClient.sessionID) {
       // TODO: заменить на парсер

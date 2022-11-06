@@ -8,6 +8,8 @@ import MessagesPage from "./screens/Message";
 import SignsPage from "./screens/Signs";
 import TimeTablePage from "./screens/TimeTable";
 
+import { GLOBAL_STYLES } from "../utils/styles";
+
 const Tab = createBottomTabNavigator();
 
 export default class TabNavigator extends Component {

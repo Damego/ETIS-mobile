@@ -5,6 +5,7 @@ import { SafeAreaView, FlatList, Text, ScrollView } from "react-native";
 
 import Header from "../Header";
 import LoadingText from "../LoadingText";
+import TimeTableDay from "../TimeTableDay";
 
 export default class TimeTablePage extends Component {
   constructor(props) {
@@ -66,7 +67,7 @@ export default class TimeTablePage extends Component {
       },
     ];
 
-    this.setState({isLoaded: true})
+    this.setState({ isLoaded: true });
   }
 
   render() {
@@ -75,12 +76,11 @@ export default class TimeTablePage extends Component {
     return (
       <SafeAreaView>
         <Header text={"ЕТИС | Расписание"} />
+        <Text>{"TEST"}</Text>
         <ScrollView>
-          <Text>{this.data[0].date}</Text>
-          <FlatList
-            data={this.data[0].lessons}
-            renderItem={({ item }) => <Text>{item.subject}</Text>}
-          />
+          {this.data.map((day) => {
+            return <TimeTableDay key={day.date} data={day} />;
+          })}
         </ScrollView>
       </SafeAreaView>
     );

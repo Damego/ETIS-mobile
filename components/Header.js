@@ -1,24 +1,13 @@
 import React from "react";
-import { StyleSheet, SafeAreaView, Text } from "react-native";
+import { View, Text, StatusBar } from "react-native";
+
+import { GLOBAL_STYLES } from "../utils/styles";
 
 export default function Header({ text }) {
   return (
-    <SafeAreaView style={styles.main}>
-      <Text style={styles.text}>{text}</Text>
-    </SafeAreaView>
+    <View style={GLOBAL_STYLES.headerContainer}>
+      <StatusBar style="auto"/>
+      <Text style={GLOBAL_STYLES.headerText}>{text}</Text>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  main: {
-    paddingTop: 45,
-    height: 90,
-    backgroundColor: "#C62E3E",
-  },
-  text: {
-    fontSize: 19,
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-});
