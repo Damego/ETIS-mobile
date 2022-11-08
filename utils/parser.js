@@ -48,48 +48,78 @@ export default class DataParsing {
     // Способы добавления элемента в словарь:   data['header'] = header  |  data.header = header;
 
     let data = [];
-    $('body > div.container > div > div.span9 > div.timetable > div').each((i) => {
-      // Создаем словарь i дня
-      data.push({});
-      // Дата (ч.м.)
-      $(`body > div.container > div > div.span9 > div.timetable > div:nth-child(${i + 1}) > h3`).each((el, date) => {
-        let reg = /[0-9].*/;
-        let dateReg = reg.exec($(date).text());
-        data[i].date = dateReg[0];
-      })
-      
-      data[i].lessons = [];
-      $(`body > div.container > div > div.span9 > div.timetable > div:nth-child(${i + 1}) > table > tbody > tr`).each((cnt, line) => {
-        // Создаем урок в виде словаря
-        data[i].lessons.push({});
+    $("body > div.container > div > div.span9 > div.timetable > div").each(
+      (i) => {
+        // Создаем словарь i дня
+        data.push({});
+        // Дата (ч.м.)
+        $(
+          `body > div.container > div > div.span9 > div.timetable > div:nth-child(${
+            i + 1
+          }) > h3`
+        ).each((el, date) => {
+          let reg = /[0-9].*/;
+          let dateReg = reg.exec($(date).text());
+          data[i].date = dateReg[0];
+        });
 
-        // Аудитория
-        $(`body > div.container > div > div.span9 > div.timetable > div:nth-child(${i + 1}) > table > tbody > tr:nth-child(${cnt + 1}) > td.pair_info > div > div:nth-child(2) > span`).each((el, audience) => {
-          let reg = /ауд.*\)$/mg;
-          let audienceReg = reg.exec($(audience).text());
-          data[i].lessons[cnt].audience = audienceReg[0];
-        })
+        data[i].lessons = [];
+        $(
+          `body > div.container > div > div.span9 > div.timetable > div:nth-child(${
+            i + 1
+          }) > table > tbody > tr`
+        ).each((cnt, line) => {
+          // Создаем урок в виде словаря
+          data[i].lessons.push({});
 
-        // Номер пары
-        $(`body > div.container > div > div.span9 > div.timetable > div:nth-child(${i + 1}) > table > tbody > tr:nth-child(${cnt + 1}) > td.pair_num`).each((el, lesson) => {
-          let reg = /[0-9].*а/;
-          let lessonReg = reg.exec($(lesson).text());
-          data[i].lessons[cnt].lesson = lessonReg[0];
-        })
+          // Аудитория
+          $(
+            `body > div.container > div > div.span9 > div.timetable > div:nth-child(${
+              i + 1
+            }) > table > tbody > tr:nth-child(${
+              cnt + 1
+            }) > td.pair_info > div > div:nth-child(2) > span`
+          ).each((el, audience) => {
+            let reg = /ауд.*\)$/gm;
+            let audienceReg = reg.exec($(audience).text());
+            data[i].lessons[cnt].audience = audienceReg[0];
+          });
 
-        // Предмет
-        $(`body > div.container > div > div.span9 > div.timetable > div:nth-child(${i + 1}) > table > tbody > tr:nth-child(${cnt + 1}) > td.pair_info > div > div:nth-child(1) > span.dis > a`).each((el, subject) => {
-        data[i].lessons[cnt].subject = $(subject).text();
-        })
+          // Номер пары
+          $(
+            `body > div.container > div > div.span9 > div.timetable > div:nth-child(${
+              i + 1
+            }) > table > tbody > tr:nth-child(${cnt + 1}) > td.pair_num`
+          ).each((el, lesson) => {
+            let reg = /[0-9].*а/;
+            let lessonReg = reg.exec($(lesson).text());
+            data[i].lessons[cnt].lesson = lessonReg[0];
+          });
 
-        // Время пары
-        $(`body > div.container > div > div.span9 > div.timetable > div:nth-child(${i + 1}) > table > tbody > tr:nth-child(${cnt + 1}) > td.pair_num`).each((el, time) => {
-          let reg = /\d*:\d+/;
-          let timeReg = reg.exec($(time).text());
-          data[i].lessons[cnt].time = timeReg[0];
-        })
-      })
-    })
+          // Предмет
+          $(
+            `body > div.container > div > div.span9 > div.timetable > div:nth-child(${
+              i + 1
+            }) > table > tbody > tr:nth-child(${
+              cnt + 1
+            }) > td.pair_info > div > div:nth-child(1) > span.dis > a`
+          ).each((el, subject) => {
+            data[i].lessons[cnt].subject = $(subject).text();
+          });
+
+          // Время пары
+          $(
+            `body > div.container > div > div.span9 > div.timetable > div:nth-child(${
+              i + 1
+            }) > table > tbody > tr:nth-child(${cnt + 1}) > td.pair_num`
+          ).each((el, time) => {
+            let reg = /\d*:\d+/;
+            let timeReg = reg.exec($(time).text());
+            data[i].lessons[cnt].time = timeReg[0];
+          });
+        });
+      }
+    );
     return data;
   }
 }
