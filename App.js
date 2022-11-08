@@ -20,44 +20,9 @@ class App extends Component {
     this.storage = new Storage();
   }
 
-  defaultAuth = async (login, password) => {
-    let sessionID = await this.httpClient.login(
-      login,
-      password,
-      this.recaptchaToken
-    );
-    if (!sessionID) return;
-
-    await this.storage.storeAccountData(login, password);
-    await this.storage.storeSessionID(sessionID);
-  };
-
-  async tryLogin() {
-    let accountData = await this.storage.getAccountData();
-    if (!accountData.login || !accountData.password) {
-      return;
-    }
-
-    let sessionID = await this.httpClient.login(
-      accountData.login,
-      accountData.password,
-      this.recaptchaToken
-    );
-    this.httpClient.sessionID = sessionID;
-
-    this.reRenderPage(this.renderTimeTablePage());
-  }
-
-  reRenderPage(page) {
-    this.setState((state, props) => {
-      return { currentPage: page };
-    });
-  }
-
-  onReceiveToken = async (token) => {
-    this.recaptchaToken = token;
-
-    await this.tryLogin();
+  defaultAuth = async (login, password, token) => {
+    await this.httpClient.login(login, password, token);
+    await this.httpClient.getTimeTable();
   };
 
   renderAuthPage() {
