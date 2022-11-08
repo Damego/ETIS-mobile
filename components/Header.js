@@ -6,7 +6,7 @@ import { GLOBAL_STYLES } from "../utils/styles";
 export default function Header({ text }) {
   return (
     <View style={GLOBAL_STYLES.headerContainer}>
-      <StatusBar style="auto"/>
+      <StatusBar style="auto" />
       <Text style={GLOBAL_STYLES.headerText}>{text}</Text>
     </View>
   );

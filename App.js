@@ -49,7 +49,10 @@ class App extends Component {
               name="Navigator"
               component={TabNavigator}
               options={{ headerShown: false }}
-              initialParams={{httpClient: this.httpClient, storage: this.storage}}
+              initialParams={{
+                httpClient: this.httpClient,
+                storage: this.storage,
+              }}
             />
           )}
         </Stack.Navigator>

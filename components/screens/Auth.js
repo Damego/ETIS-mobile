@@ -27,7 +27,7 @@ export default class AuthPage extends Component {
       accountData.password,
       this.recaptchaToken
     );
-  
+
     this.httpClient.sessionID = sessionID;
   }
 

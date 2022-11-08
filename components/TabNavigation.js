@@ -19,32 +19,32 @@ export default class TabNavigator extends Component {
 
   render() {
     return (
-          <Tab.Navigator>
-            <Tab.Screen
-              name="Расписание"
-              component={TimeTablePage}
-              options={{ headerShown: false }}
-              initialParams={this.props.route.params}
-            />
-            <Tab.Screen
-              name="Оценки"
-              component={SignsPage}
-              options={{ headerShown: false }}
-              initialParams={this.props.route.params}
-            />
-            <Tab.Screen
-              name="Пропуски"
-              component={AbsensesPage}
-              options={{ headerShown: false }}
-              initialParams={this.props.route.params}
-            />
-            <Tab.Screen
-              name="Сообщения"
-              component={MessagesPage}
-              options={{ headerShown: false }}
-              initialParams={this.props.route.params}
-            />
-          </Tab.Navigator>
+      <Tab.Navigator>
+        <Tab.Screen
+          name="Расписание"
+          component={TimeTablePage}
+          options={{ headerShown: false }}
+          initialParams={this.props.route.params}
+        />
+        <Tab.Screen
+          name="Оценки"
+          component={SignsPage}
+          options={{ headerShown: false }}
+          initialParams={this.props.route.params}
+        />
+        <Tab.Screen
+          name="Пропуски"
+          component={AbsensesPage}
+          options={{ headerShown: false }}
+          initialParams={this.props.route.params}
+        />
+        <Tab.Screen
+          name="Сообщения"
+          component={MessagesPage}
+          options={{ headerShown: false }}
+          initialParams={this.props.route.params}
+        />
+      </Tab.Navigator>
     );
   }
 }
