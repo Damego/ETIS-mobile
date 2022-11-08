@@ -30,7 +30,7 @@ class App extends Component {
   }
 
   changeSingInState() {
-    this.setState({isSignedIn: true});
+    this.setState({ isSignedIn: true });
   }
 
   render() {
@@ -48,12 +48,12 @@ class App extends Component {
             <Stack.Screen
               name="Authorization"
               component={AuthPage}
-              options={{ headerShown: false}}
+              options={{ headerShown: false }}
               initialParams={{
                 httpClient: this.httpClient,
                 storage: this.storage,
               }}
-              navigationKey={this.state.isSignedIn ? 'user' : 'guest'}
+              navigationKey={this.state.isSignedIn ? "user" : "guest"}
             />
           ) : (
             <Stack.Screen
@@ -75,9 +75,9 @@ class App extends Component {
     this.setState({ isLoaded: true });
     this.httpClient.sessionID = await this.storage.getSessionID();
     if (this.httpClient.sessionID && !(await this.isLoginPage())) {
-        this.setState({ isSignedIn: true });
-        return;
-    };
+      this.setState({ isSignedIn: true });
+      return;
+    }
     this.setState({ isSignedIn: false });
   }
 

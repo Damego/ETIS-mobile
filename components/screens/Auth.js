@@ -14,7 +14,7 @@ export default class AuthPage extends Component {
 
     this.httpClient = this.props.route.params.httpClient;
     this.storage = this.props.route.params.storage;
-    console.log(this.props)
+    console.log(this.props);
   }
 
   async tryLogin() {
@@ -30,7 +30,7 @@ export default class AuthPage extends Component {
     );
 
     this.httpClient.sessionID = sessionID;
-    this.httpClient.changeSingInState() // I know this code is shit but I don't fucking care rn
+    this.httpClient.changeSingInState(); // I know this code is shit but I don't fucking care rn
   }
 
   async onFormSubmit(login, password) {
@@ -61,7 +61,9 @@ export default class AuthPage extends Component {
         />
 
         <Header text={"ЕТИС | Авторизация"} />
-        <Form onSubmit={(login, password) => this.onFormSubmit(login, password)} />
+        <Form
+          onSubmit={(login, password) => this.onFormSubmit(login, password)}
+        />
         <Footer />
       </SafeAreaView>
     );
