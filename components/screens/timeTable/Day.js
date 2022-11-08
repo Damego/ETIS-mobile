@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
 
-import TimeTableDayLesson from "./TimeTableDayLesson";
-import { GLOBAL_STYLES } from "../utils/styles";
+import Lesson from "./Lesson";
+import { GLOBAL_STYLES } from "../../../utils/styles";
 
-export default class TimeTableDay extends Component {
+export default class Day extends Component {
   constructor(props) {
     super(props);
 
@@ -16,12 +16,7 @@ export default class TimeTableDay extends Component {
       <View style={GLOBAL_STYLES.timeTableDay}>
         <Text style={GLOBAL_STYLES.timeTableDate}>{this.date}</Text>
         {this.lessons.map((lesson) => {
-          return (
-            <TimeTableDayLesson
-              key={this.date + lesson.time + lesson.subject}
-              data={lesson}
-            />
-          );
+          return <Lesson key={this.date + lesson.time + lesson.subject} data={lesson} />;
         })}
       </View>
     );

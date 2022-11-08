@@ -1,11 +1,11 @@
 "use strict";
 
 import React, { Component } from "react";
-import { SafeAreaView, FlatList, Text, ScrollView } from "react-native";
+import { SafeAreaView, Text, ScrollView } from "react-native";
 
-import Header from "../Header";
-import LoadingText from "../LoadingText";
-import TimeTableDay from "../TimeTableDay";
+import Header from "../../Header";
+import LoadingText from "../../LoadingText";
+import Day from "./Day";
 
 export default class TimeTablePage extends Component {
   constructor(props) {
@@ -76,10 +76,9 @@ export default class TimeTablePage extends Component {
     return (
       <SafeAreaView>
         <Header text={"ЕТИС | Расписание"} />
-        <Text>{"TEST"}</Text>
         <ScrollView>
           {this.data.map((day) => {
-            return <TimeTableDay key={day.date} data={day} />;
+            return <Day key={day.date} data={day} />;
           })}
         </ScrollView>
       </SafeAreaView>

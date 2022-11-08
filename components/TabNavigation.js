@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AbsensesPage from "./screens/Absenses";
 import MessagesPage from "./screens/Message";
 import SignsPage from "./screens/Signs";
-import TimeTablePage from "./screens/TimeTable";
+import TimeTablePage from "./screens/timeTable/TimeTable";
 
 import { GLOBAL_STYLES } from "../utils/styles";
 

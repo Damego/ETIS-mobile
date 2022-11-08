@@ -1,7 +1,7 @@
 "use strict";
 
 import React, { Component } from "react";
-import { SafeAreaView, Text, StatusBar } from "react-native";
+import { SafeAreaView } from "react-native";
 import ReCaptchaV3 from "@haskkor/react-native-recaptchav3";
 
 import Form from "../AuthForm";
@@ -12,8 +12,9 @@ export default class AuthPage extends Component {
   constructor(props) {
     super(props);
 
-    // this.storage = this.props.storage;
-    // this.httpClient = this.props.httpClient;
+    this.httpClient = this.props.route.params.httpClient;
+    this.storage = this.props.route.params.storage;
+    console.log(this.props)
   }
 
   async tryLogin() {
@@ -29,6 +30,7 @@ export default class AuthPage extends Component {
     );
 
     this.httpClient.sessionID = sessionID;
+    this.httpClient.changeSingInState() // I know this code is shit but I don't fucking care rn
   }
 
   async onFormSubmit(login, password) {
@@ -41,13 +43,11 @@ export default class AuthPage extends Component {
 
     await this.storage.storeAccountData(login, password);
     await this.storage.storeSessionID(sessionID);
-
-    this.RenderPage(this.renderTimeTablePage());
   }
 
   async onReceiveRecaptchaToken(token) {
     this.recaptchaToken = token;
-    // await this.tryLogin();
+    await this.tryLogin();
   }
 
   render() {
@@ -61,7 +61,7 @@ export default class AuthPage extends Component {
         />
 
         <Header text={"ЕТИС | Авторизация"} />
-        <Form onSubmit={this.onFormSubmit} />
+        <Form onSubmit={(login, password) => this.onFormSubmit(login, password)} />
         <Footer />
       </SafeAreaView>
     );

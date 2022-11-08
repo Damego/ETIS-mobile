@@ -9,6 +9,7 @@ import TabNavigator from "./components/TabNavigation";
 
 import HTTPClient from "./utils/http";
 import Storage from "./utils/storage";
+import DataParsing from "./utils/parser";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,12 +20,17 @@ class App extends Component {
       isSignedIn: false,
       isLoaded: false,
     };
+    this.changeSingInState = this.changeSingInState.bind(this);
 
-    // Они мне нужны во всех экранах, как мне их использовать?
     this.httpClient = new HTTPClient();
     this.storage = new Storage();
+    this.parser = new DataParsing();
 
-    this.studentData = null;
+    this.httpClient.changeSingInState = this.changeSingInState; // I know this code is shit but I don't fucking care rn
+  }
+
+  changeSingInState() {
+    this.setState({isSignedIn: true});
   }
 
   render() {
@@ -42,7 +48,12 @@ class App extends Component {
             <Stack.Screen
               name="Authorization"
               component={AuthPage}
-              options={{ headerShown: false }}
+              options={{ headerShown: false}}
+              initialParams={{
+                httpClient: this.httpClient,
+                storage: this.storage,
+              }}
+              navigationKey={this.state.isSignedIn ? 'user' : 'guest'}
             />
           ) : (
             <Stack.Screen
@@ -62,20 +73,18 @@ class App extends Component {
 
   async componentDidMount() {
     this.setState({ isLoaded: true });
-    this.setState({ isSignedIn: true });
-    return;
     this.httpClient.sessionID = await this.storage.getSessionID();
-    if (this.httpClient.sessionID) {
-      // TODO: заменить на парсер
-      // let html = await this.httpClient.getTimeTable();
-      let studentData = true;
-      this.studentData = studentData;
-
-      if (studentData) {
-        this.setState({ isLoaded: true });
+    if (this.httpClient.sessionID && !(await this.isLoginPage())) {
         this.setState({ isSignedIn: true });
-      }
-    }
+        return;
+    };
+    this.setState({ isSignedIn: false });
+  }
+
+  async isLoginPage() {
+    let html = await this.httpClient.getTimeTable();
+    let data = this.parser.parseHeader(html);
+    return !data;
   }
 }
 

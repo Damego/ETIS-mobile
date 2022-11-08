@@ -3,10 +3,13 @@ import { StyleSheet, View, TextInput } from "react-native";
 import AuthButton from "./AuthButton";
 
 class Form extends Component {
-  states = {
-    login: "",
-    password: "",
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      login: "",
+      password: "",
+    };
+  }
 
   render() {
     return (

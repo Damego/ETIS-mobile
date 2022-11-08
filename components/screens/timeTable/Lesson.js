@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
 
-import { GLOBAL_STYLES } from "../utils/styles";
+import { GLOBAL_STYLES } from "../../../utils/styles";
 
-export default class TimeTableDayLesson extends Component {
+export default class Lesson extends Component {
   constructor(props) {
     super(props);
 

@@ -1,9 +1,17 @@
 import cheerio from "cheerio";
 
 export default class DataParsing {
+  isLoginPage(_cheerio) {
+    let loginDiv = _cheerio(".login");
+    return !!loginDiv;
+  }
+
   parseHeader(html) {
     let data = {};
     const $ = cheerio.load(html);
+    if (this.isLoginPage($)) {
+      return null;
+    }
     // Способы добавления элемента в словарь:   data['header'] = header  |  data.header = header;
 
     // ФИО и г.р. человека
@@ -45,7 +53,9 @@ export default class DataParsing {
   //Парсинг расписания
   parseTimeTable(html) {
     const $ = cheerio.load(html);
-    // Способы добавления элемента в словарь:   data['header'] = header  |  data.header = header;
+    if (this.isLoginPage($)) {
+      return null;
+    }
 
     let data = [];
     $("body > div.container > div > div.span9 > div.timetable > div").each(
