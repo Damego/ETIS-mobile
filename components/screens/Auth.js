@@ -59,7 +59,7 @@ export default class AuthPage extends Component {
           onReceiveToken={(token) => this.onReceiveRecaptchaToken(token)}
         />
 
-        <Header text={"ЕТИС | Авторизация"} />
+        <Header text={"Авторизация"} />
         <Form
           onSubmit={(login, password) => this.onFormSubmit(login, password)}
         />

@@ -4,20 +4,23 @@ export const GLOBAL_STYLES = StyleSheet.create({
   loadingDataView: {},
   loadingDataText: {},
   headerContainer: {
-    height: "10%",
+    height: "7%",
     backgroundColor: "#C62E3E",
+    display: "flex",
+    alignItems: "center"
+    
   },
   headerText: {
-    paddingTop: "3%",
     fontSize: 19,
     color: "white",
     fontWeight: "bold",
-    textAlign: "center",
   },
-  timeTableDay: {
-    width: "90%",
+  timeTableDayView: {
+    flex: 1,
+    display: "flex",
+    width: "96%",
     backgroundColor: "#ffffff",
-    marginLeft: "5%",
+    marginLeft: "2%",
     marginTop: "3%",
     borderRadius: 10,
 
@@ -28,20 +31,31 @@ export const GLOBAL_STYLES = StyleSheet.create({
     },
     shadowOpacity: 0.35,
     shadowRadius: 6,
+    
   },
-  timeTableDate: {
-    fontSize: 20,
+  timeTableDateView: {
+    marginLeft: "1%",
+  },
+  timeTableDateText: {
+    fontSize: 18,
     fontWeight: "400",
   },
   lessonContainer: {
+    marginLeft: "1%",
     display: "flex",
+    marginTop: "1%",
+    marginBottom: "1%",
+    flex: 1,
+    flexWrap: 'wrap',
+    flexShrink: 1,
   },
-  lessonTimeView: {},
+  lessonTimeView: {
+    marginRight: "1%"
+  },
   lessonTimeText: {
-    fontSize: 18,
+    fontSize: 16,
   },
-  lessonInfoView: {},
+  lessonInfoView: {
+  },
   lessonInfoText: {},
-  lessonTeacherView: {},
-  lessonTeacherText: {},
 });
