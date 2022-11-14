@@ -20,13 +20,11 @@ class App extends Component {
       isSignedIn: false,
       isLoaded: false,
     };
-    this.changeSingInState = this.changeSingInState.bind(this);
 
     this.httpClient = new HTTPClient();
     this.storage = new Storage();
     this.parser = new DataParsing();
 
-    this.httpClient.changeSingInState = this.changeSingInState; // I know this code is shit but I don't fucking care rn
   }
 
   changeSingInState() {
@@ -47,14 +45,10 @@ class App extends Component {
           {!this.state.isSignedIn ? (
             <Stack.Screen
               name="Authorization"
-              component={AuthPage}
               options={{ headerShown: false }}
-              initialParams={{
-                httpClient: this.httpClient,
-                storage: this.storage,
-              }}
-              navigationKey={this.state.isSignedIn ? "user" : "guest"}
-            />
+            >
+              {(props) => <AuthPage {...props} httpClient={this.httpClient} storage={this.storage} onSignIn={() => this.changeSingInState()}/>}
+              </Stack.Screen>
           ) : (
             <Stack.Screen
               name="Navigator"
@@ -63,6 +57,7 @@ class App extends Component {
               initialParams={{
                 httpClient: this.httpClient,
                 storage: this.storage,
+                parser: this.parser,
               }}
             />
           )}
@@ -78,7 +73,6 @@ class App extends Component {
       this.setState({ isSignedIn: true });
       return;
     }
-    this.setState({ isSignedIn: false });
   }
 
   async isLoginPage() {

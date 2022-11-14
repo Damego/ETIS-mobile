@@ -12,9 +12,8 @@ export default class AuthPage extends Component {
   constructor(props) {
     super(props);
 
-    this.httpClient = this.props.route.params.httpClient;
-    this.storage = this.props.route.params.storage;
-    console.log(this.props);
+    this.httpClient = this.props.httpClient;
+    this.storage = this.props.storage;
   }
 
   async tryLogin() {
@@ -30,7 +29,7 @@ export default class AuthPage extends Component {
     );
 
     this.httpClient.sessionID = sessionID;
-    this.httpClient.changeSingInState(); // I know this code is shit but I don't fucking care rn
+    this.props.onSignIn();
   }
 
   async onFormSubmit(login, password) {
