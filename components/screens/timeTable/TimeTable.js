@@ -1,7 +1,7 @@
 "use strict";
 
 import React, { Component } from "react";
-import { SafeAreaView, Text, ScrollView } from "react-native";
+import { SafeAreaView, ScrollView } from "react-native";
 
 import Header from "../../Header";
 import LoadingText from "../../LoadingText";
@@ -15,8 +15,10 @@ export default class TimeTablePage extends Component {
       isLoaded: false,
     };
 
+    // TODO: Make special class to control it?
     this.httpClient = this.props.route.params.httpClient;
     this.storage = this.props.route.params.storage;
+    this.parser = this.props.route.params.parser;
 
     this.daysList = [
       "Понедельник",
@@ -30,42 +32,8 @@ export default class TimeTablePage extends Component {
 
   async componentDidMount() {
     // Эти данные будут заполнены с парсера
-    this.data = [
-      {
-        date: "31 октября",
-        lessons: [
-          {
-            audience: "ауд. 408/2 (407) (2 корпус, 3 этаж)",
-            lesson: "1 пара",
-            subject: "Введение в математический анализ (практ)",
-            time: "8:00",
-          },
-          {
-            audience: "ауд. 512/2 (510) (2 корпус, 4 этаж)",
-            lesson: "2 пара",
-            subject: "Введение в математический анализ (лек)",
-            time: "9:45",
-          },
-        ],
-      },
-      {
-        date: "1 ноября",
-        lessons: [
-          {
-            audience: "ауд. 408/2 (407) (2 корпус, 3 этаж)",
-            lesson: "1 пара",
-            subject: "Введение в математический анализ (практ)",
-            time: "8:00",
-          },
-          {
-            audience: "ауд. 512/2 (510) (2 корпус, 4 этаж)",
-            lesson: "2 пара",
-            subject: "Введение в математический анализ (лек)",
-            time: "9:45",
-          },
-        ],
-      },
-    ];
+    let html = await this.httpClient.getTimeTable();
+    this.data = await this.parser.parseTimeTable(html);
 
     this.setState({ isLoaded: true });
   }
@@ -75,9 +43,9 @@ export default class TimeTablePage extends Component {
 
     return (
       <SafeAreaView>
-        <Header text={"ЕТИС | Расписание"} />
+        <Header text={"Расписание"} />
         <ScrollView>
-          {this.data.map((day) => {
+          {this.data.days.map((day) => {
             return <Day key={day.date} data={day} />;
           })}
         </ScrollView>
