@@ -6,6 +6,7 @@ import { SafeAreaView, ScrollView } from "react-native";
 import Header from "../../Header";
 import LoadingText from "../../LoadingText";
 import Day from "./Day";
+import WeekNavigation from "./WeekNagivator";
 
 export default class TimeTablePage extends Component {
   constructor(props) {
@@ -44,6 +45,7 @@ export default class TimeTablePage extends Component {
     return (
       <SafeAreaView>
         <Header text={"Расписание"} />
+        <WeekNavigation lastWeek={this.data.lastWeek} currentWeek={this.data.currentWeek} />
         <ScrollView>
           {this.data.days.map((day) => {
             return <Day key={day.date} data={day} />;
