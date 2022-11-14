@@ -45,7 +45,10 @@ export default class TimeTablePage extends Component {
     return (
       <SafeAreaView>
         <Header text={"Расписание"} />
-        <WeekNavigation lastWeek={this.data.lastWeek} currentWeek={this.data.currentWeek} />
+        <WeekNavigation
+          lastWeek={this.data.lastWeek}
+          currentWeek={this.data.currentWeek}
+        />
         <ScrollView>
           {this.data.days.map((day) => {
             return <Day key={day.date} data={day} />;

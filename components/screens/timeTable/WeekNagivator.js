@@ -26,8 +26,8 @@ export default class WeekNavigation extends Component {
       rightLimit = this.lastWeek;
     }
 
-    this.leftLimit = leftLimit
-    this.rightLimit = rightLimit
+    this.leftLimit = leftLimit;
+    this.rightLimit = rightLimit;
   }
 
   render() {
@@ -40,6 +40,6 @@ export default class WeekNavigation extends Component {
           <Text>{">"}</Text>
         </TouchableOpacity>
       </View>
-    )
+    );
   }
 }

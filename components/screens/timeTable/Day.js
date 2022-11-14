@@ -17,7 +17,7 @@ export default class Day extends Component {
         <View style={GLOBAL_STYLES.timeTableDateView}>
           <Text style={GLOBAL_STYLES.timeTableDateText}>{this.date}</Text>
         </View>
-        
+
         {this.lessons.map((lesson) => {
           return (
             <Lesson

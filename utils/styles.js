@@ -7,8 +7,7 @@ export const GLOBAL_STYLES = StyleSheet.create({
     height: "7%",
     backgroundColor: "#C62E3E",
     display: "flex",
-    alignItems: "center"
-    
+    alignItems: "center",
   },
   headerText: {
     fontSize: 19,
@@ -31,7 +30,6 @@ export const GLOBAL_STYLES = StyleSheet.create({
     },
     shadowOpacity: 0.35,
     shadowRadius: 6,
-    
   },
   timeTableDateView: {
     marginLeft: "1%",
@@ -46,16 +44,15 @@ export const GLOBAL_STYLES = StyleSheet.create({
     marginTop: "1%",
     marginBottom: "1%",
     flex: 1,
-    flexWrap: 'wrap',
+    flexWrap: "wrap",
     flexShrink: 1,
   },
   lessonTimeView: {
-    marginRight: "1%"
+    marginRight: "1%",
   },
   lessonTimeText: {
     fontSize: 16,
   },
-  lessonInfoView: {
-  },
+  lessonInfoView: {},
   lessonInfoText: {},
 });

@@ -61,7 +61,7 @@ export default class DataParsing {
       lastWeek: $(".week-select .weeks .week").last().text(),
       currentWeek: $(".week-select .weks .week .current").text(),
       weekString: $(".week-select span").text(),
-      days: []
+      days: [],
     };
     let days = data.days;
     $("body > div.container > div > div.span9 > div.timetable > div").each(

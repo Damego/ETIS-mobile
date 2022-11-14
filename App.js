@@ -24,7 +24,6 @@ class App extends Component {
     this.httpClient = new HTTPClient();
     this.storage = new Storage();
     this.parser = new DataParsing();
-
   }
 
   changeSingInState() {
@@ -43,12 +42,16 @@ class App extends Component {
       <NavigationContainer>
         <Stack.Navigator>
           {!this.state.isSignedIn ? (
-            <Stack.Screen
-              name="Authorization"
-              options={{ headerShown: false }}
-            >
-              {(props) => <AuthPage {...props} httpClient={this.httpClient} storage={this.storage} onSignIn={() => this.changeSingInState()}/>}
-              </Stack.Screen>
+            <Stack.Screen name="Authorization" options={{ headerShown: false }}>
+              {(props) => (
+                <AuthPage
+                  {...props}
+                  httpClient={this.httpClient}
+                  storage={this.storage}
+                  onSignIn={() => this.changeSingInState()}
+                />
+              )}
+            </Stack.Screen>
           ) : (
             <Stack.Screen
               name="Navigator"
