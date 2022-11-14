@@ -26,9 +26,6 @@ export default class Lesson extends Component {
             {this.lesson.audience}
           </Text>
         </View>
-        <View style={GLOBAL_STYLES.lessonTeacherView}>
-          <Text style={GLOBAL_STYLES.lessonTeacherText}>{"Teacher 1"}</Text>
-        </View>
       </View>
     );
   }
