@@ -5,14 +5,12 @@ export const GLOBAL_STYLES = StyleSheet.create({
   loadingDataText: {},
   headerContainer: {
     height: "7%",
-    backgroundColor: "#C62E3E",
     display: "flex",
-    alignItems: "center",
   },
   headerText: {
-    fontSize: 19,
-    color: "white",
-    fontWeight: "bold",
+    fontSize: 26,
+    color: "#C62E3E",
+    fontWeight: "700",
   },
   timeTableDayView: {
     flex: 1,
@@ -20,7 +18,7 @@ export const GLOBAL_STYLES = StyleSheet.create({
     width: "96%",
     backgroundColor: "#ffffff",
     marginLeft: "2%",
-    marginTop: "3%",
+    marginBottom: "3%",
     borderRadius: 10,
 
     shadowColor: "#000",
@@ -30,48 +28,60 @@ export const GLOBAL_STYLES = StyleSheet.create({
     },
     shadowOpacity: 0.35,
     shadowRadius: 6,
+    elevation: 4,
   },
   timeTableDateView: {
-    marginLeft: "1%",
+    marginLeft: "2%",
+    marginBottom: 4,
   },
   timeTableDateText: {
-    fontSize: 18,
-    fontWeight: "400",
+    fontSize: 16,
+    fontWeight: "600",
   },
   lessonContainer: {
     marginLeft: "1%",
     display: "flex",
     marginTop: "1%",
     marginBottom: "1%",
-    flex: 1,
     flexWrap: "wrap",
     flexShrink: 1,
+    flexDirection: "row",
   },
   lessonTimeView: {
     marginRight: "1%",
+    paddingHorizontal: 1,
   },
   lessonTimeText: {
-    fontSize: 16,
+    fontSize: 13,
   },
   lessonInfoView: {},
-  lessonInfoText: {},
+  lessonInfoText: {
+    fontSize: 14,
+    fontWeight: "500",
+  },
+  lessonAudienceText: {
+    color: "#353535",
+  },
   weekNavigationView: {
-    display:"flex",
+    display: "flex",
     flexDirection: "row",
     alignItems: "center",
   },
-  navigaionArrowView: {
-  },
+  navigaionArrowView: {},
   navigaionArrowText: {
     color: "#C62E3E",
-    fontSize: 40
+    fontSize: 40,
   },
   weekButtonView: {
-    backgroundColor: "#FFFFFF",
     marginHorizontal: 5,
-
+    padding: 5,
+  },
+  weekButtonText: {
+    fontSize: 20,
+  },
+  currentWeekButtonView: {
+    backgroundColor: "#C62E3E",
     borderRadius: 10,
-
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -79,14 +89,9 @@ export const GLOBAL_STYLES = StyleSheet.create({
     },
     shadowOpacity: 0.35,
     shadowRadius: 6,
-    padding: 5,
+    elevation: 4,
   },
-  currentWeekButtonView: {
-    borderColor: "#C62E3E",
-    borderWidth: 1,
+  currentWeekButtonText: {
+    color: "#FFFFFF",
   },
-  weekButtonText: {
-    fontSize: 20,
-
-  }
 });

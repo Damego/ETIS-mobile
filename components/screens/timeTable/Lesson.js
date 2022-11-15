@@ -22,7 +22,7 @@ export default class Lesson extends Component {
           <Text style={GLOBAL_STYLES.lessonInfoText}>
             {this.lesson.subject}
           </Text>
-          <Text style={GLOBAL_STYLES.lessonInfoText}>
+          <Text style={GLOBAL_STYLES.lessonAudienceText}>
             {this.lesson.audience}
           </Text>
         </View>
