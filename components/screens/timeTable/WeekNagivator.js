@@ -21,8 +21,9 @@ export default class WeekNavigation extends Component {
   }
 
   componentDidMount() {
-    let leftLimit = this.currentWeek - 3;
-    let rightLimit = this.currentWeek + 3;
+    const limits = 3;
+    let leftLimit = this.currentWeek - limits;
+    let rightLimit = this.currentWeek + limits;
 
     if (leftLimit < 1) {
       rightLimit += this.currentWeek - leftLimit;
@@ -56,22 +57,20 @@ export default class WeekNavigation extends Component {
           <View style={GLOBAL_STYLES.navigaionArrowView}>
             <Text style={GLOBAL_STYLES.navigaionArrowText}>{"<"}</Text>
           </View>
-
         </TouchableOpacity>
 
         {
-          // TODO: yeet this shit
+          // TODO: yeet this shit too lol
           this.state.buttons.map((i) => (
-            <TouchableOpacity key={i} onPress={(el) => this.onClickTest(i)}>
+            <TouchableOpacity key={i} onPress={() => this.onClickTest(i)}>
               <View key={i} style={(this.currentWeek != i) ? GLOBAL_STYLES.weekButtonView : [GLOBAL_STYLES.weekButtonView, GLOBAL_STYLES.currentWeekButtonView]}>
-                <Text style={GLOBAL_STYLES.weekButtonText}>{i}</Text>
+                <Text style={(this.currentWeek != i) ? GLOBAL_STYLES.weekButtonText : [GLOBAL_STYLES.weekButtonText, GLOBAL_STYLES.currentWeekButtonText]}>{i}</Text>
               </View>
             </TouchableOpacity>
           ))
         }
         <TouchableOpacity>
           <View style={GLOBAL_STYLES.navigaionArrowView}>
-
             <Text style={GLOBAL_STYLES.navigaionArrowText}>{">"}</Text>
           </View>
 
