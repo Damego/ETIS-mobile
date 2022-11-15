@@ -1,7 +1,8 @@
 "use strict";
 
-import React, { Component } from "react";
-import { SafeAreaView, ScrollView } from "react-native";
+import React, { Component, Image } from "react";
+import { ScrollView, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import Header from "../../Header";
 import LoadingText from "../../LoadingText";
@@ -43,18 +44,21 @@ export default class TimeTablePage extends Component {
     if (!this.state.isLoaded) return <LoadingText />;
 
     return (
-      <SafeAreaView>
+      <View style={{paddingBottom: "25%", backgroundColor: "#F8F8FA"}}>
         <Header text={"Расписание"} />
         <WeekNavigation
           lastWeek={this.data.lastWeek}
           currentWeek={this.data.currentWeek}
         />
         <ScrollView>
+          <View>
           {this.data.days.map((day) => {
             return <Day key={day.date} data={day} />;
           })}
+          </View>
         </ScrollView>
-      </SafeAreaView>
+        
+      </View>
     );
   }
 }
