@@ -58,8 +58,8 @@ export default class DataParsing {
     }
 
     let data = {
-      lastWeek: $(".week-select .weeks .week").last().text(),
-      currentWeek: $(".week-select .weks .week .current").text(),
+      lastWeek: parseInt($(".week-select .weeks .week").last().text()),
+      currentWeek: parseInt($(".week-select .weks .week current").text()),
       weekString: $(".week-select span").text(),
       days: [],
     };

@@ -55,4 +55,38 @@ export const GLOBAL_STYLES = StyleSheet.create({
   },
   lessonInfoView: {},
   lessonInfoText: {},
+  weekNavigationView: {
+    display:"flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  navigaionArrowView: {
+  },
+  navigaionArrowText: {
+    color: "#C62E3E",
+    fontSize: 40
+  },
+  weekButtonView: {
+    backgroundColor: "#FFFFFF",
+    marginHorizontal: 5,
+
+    borderRadius: 10,
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.35,
+    shadowRadius: 6,
+    padding: 5,
+  },
+  currentWeekButtonView: {
+    borderColor: "#C62E3E",
+    borderWidth: 1,
+  },
+  weekButtonText: {
+    fontSize: 20,
+
+  }
 });
