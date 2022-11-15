@@ -74,9 +74,7 @@ export default class DataParsing {
             i + 1
           }) > h3`
         ).each((el, date) => {
-          let reg = /[0-9].*/;
-          let dateReg = reg.exec($(date).text());
-          days[i].date = dateReg[0];
+          days[i].date = $(date).text();
         });
 
         days[i].lessons = [];
