@@ -13,19 +13,20 @@ export default class Day extends Component {
   }
   render() {
     return (
-      <View style={GLOBAL_STYLES.timeTableDayView}>
+      <View>
         <View style={GLOBAL_STYLES.timeTableDateView}>
           <Text style={GLOBAL_STYLES.timeTableDateText}>{this.date}</Text>
         </View>
-
-        {this.lessons.map((lesson) => {
-          return (
-            <Lesson
-              key={this.date + lesson.time + lesson.subject}
-              data={lesson}
-            />
-          );
-        })}
+        <View style={GLOBAL_STYLES.timeTableDayView}>
+          {this.lessons.map((lesson) => {
+            return (
+              <Lesson
+                key={this.date + lesson.time + lesson.subject}
+                data={lesson}
+              />
+            );
+          })}
+        </View>
       </View>
     );
   }
