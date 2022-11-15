@@ -3,6 +3,9 @@ import React, { Component } from "react";
 import { Text, SafeAreaView } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+
+import TimeTablePage from "./components/screens/timeTable/TimeTable";
 
 import AuthPage from "./components/screens/Auth";
 import TabNavigator from "./components/TabNavigation";
@@ -38,34 +41,59 @@ class App extends Component {
         </SafeAreaView>
       );
     }
+
     return (
-      <NavigationContainer>
-        <Stack.Navigator>
-          {!this.state.isSignedIn ? (
-            <Stack.Screen name="Authorization" options={{ headerShown: false }}>
-              {(props) => (
-                <AuthPage
-                  {...props}
-                  httpClient={this.httpClient}
-                  storage={this.storage}
-                  onSignIn={() => this.changeSingInState()}
-                />
-              )}
-            </Stack.Screen>
-          ) : (
-            <Stack.Screen
-              name="Navigator"
-              component={TabNavigator}
-              options={{ headerShown: false }}
-              initialParams={{
-                httpClient: this.httpClient,
-                storage: this.storage,
-                parser: this.parser,
-              }}
-            />
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              contentStyle: {
+                backgroundColor: "#FFFFFF",
+              },
+            }}
+          >
+            {!this.state.isSignedIn ? (
+              <Stack.Screen
+                name="Authorization"
+                options={{ headerShown: false }}
+                screenOptions={{
+                  contentStyle: {
+                    backgroundColor: "#FFFFFF",
+                  },
+                }}
+              >
+                {(props) => (
+                  <AuthPage
+                    {...props}
+                    httpClient={this.httpClient}
+                    storage={this.storage}
+                    onSignIn={() => this.changeSingInState()}
+                  />
+                )}
+              </Stack.Screen>
+            ) : (
+              <Stack.Screen
+                name="Navigator"
+                options={{ headerShown: false }}
+                screenOptions={{
+                  contentStyle: {
+                    backgroundColor: "#FFFFFF",
+                  },
+                }}
+              >
+                {(props) => (
+                  <TabNavigator
+                    {...props}
+                    httpClient={this.httpClient}
+                    storage={this.storage}
+                    parser={this.parser}
+                  />
+                )}
+              </Stack.Screen>
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SafeAreaProvider>
     );
   }
 
