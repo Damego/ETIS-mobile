@@ -1,7 +1,7 @@
 "use strict";
 
 import React, { Component } from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createBottomTabNavigator, Image } from "@react-navigation/bottom-tabs";
 
 import AbsensesPage from "./screens/Absenses";
 import MessagesPage from "./screens/Message";
@@ -23,14 +23,24 @@ export default class TabNavigator extends Component {
         <Tab.Screen
           name="Расписание"
           component={TimeTablePage}
-          options={{ headerShown: false }}
-          initialParams={this.props.route.params}
+          options={{
+            headerShown: false,
+            tabBarItem: (tabInfo) => (
+              <View>
+                <Image
+                source={require("../assets/tab_icons/timetable.png")} 
+                resizeMode="contain"
+                />
+              </View>
+            ),
+          }}
+          initialParams={this.props}
         />
         <Tab.Screen
           name="Оценки"
           component={SignsPage}
           options={{ headerShown: false }}
-          initialParams={this.props.route.params}
+          initialParams={this.props}
         />
         <Tab.Screen
           name="Пропуски"
