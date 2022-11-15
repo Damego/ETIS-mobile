@@ -1,4 +1,4 @@
-import cheerio from "cheerio";
+import cheerio, { html } from "cheerio";
 
 export default class DataParsing {
   parseHeader(html) {
@@ -60,7 +60,7 @@ export default class DataParsing {
         ).each((el, date) => {
           let reg = /[0-9].*/;
           let dateReg = reg.exec($(date).text());
-          data[i].date = dateReg[0];
+          data[i].date = date;
         });
 
         data[i].lessons = [];
@@ -117,9 +117,65 @@ export default class DataParsing {
             let timeReg = reg.exec($(time).text());
             data[i].lessons[cnt].time = timeReg[0];
           });
+
+          //Преподаватели
+          // $(
+          //   `body > div.container > div > div.span9 > div.timetable > div:nth-child(${
+          //     i + 1
+          //   }) > table > tbody > tr:nth-child(${cnt + 1}) > td.pair_info > div > div:nth-child(1) > span.teacher`
+          // ).each((el, teacher) => {
+          //   let reg = /[А-Я].*\n[А-Я].*/gm;
+          //   let teacherReg = reg.exec($(teacher).text());
+          //   data[i].lessons[cnt].teacher = teacherReg[1];
+          // });
         });
       }
     );
+    // console.log(data[0].lessons[0].teacher);
     return data;
   }
+
+  parseTeachers(html) {
+    const $ = cheerio.load(html);
+    let teachers = [];
+    $('.teacher_info', html).each((el, teacher) => {
+      const photo = $(teacher).find('img').attr('src');
+      const name = $(teacher).find('.teacher_name').text();
+      const cathedra = $(teacher).find('.chair').text();
+      const subject = $(teacher).find('.dis').text();
+      teachers.push({
+        photo,
+        name,
+        cathedra,
+        subject
+      });
+    });
+    console.log(teachers);
+  }
+
+  // parseAnnounce(html) {
+  //   const $ = cheerio.load(html);
+  //   let notice = [];
+  //   $('.nav.msg', html).each((el, announce) => {
+  //     const time = $(announce).find('font').eq(0).text();
+  //     const caption = $(announce).find('font').eq(1).text();
+  //     notice.push({
+  //       time,
+  //       caption
+  //     });
+  //   })
+  //   console.log(notice);
+  // }
+
+  // parseTeacherNotes(html) {
+  //   const $ = cheerio.load(html);
+  //   let ads = [];
+  //   $('.nav.msg', html).each((el, announce) => {
+  //     const ad = $(announce).text();
+  //     ads.push({
+  //       ad
+  //     });
+  //   })
+  //   console.log(ads);
+  // }
 }
