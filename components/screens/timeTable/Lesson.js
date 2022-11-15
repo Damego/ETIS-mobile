@@ -15,7 +15,7 @@ export default class Lesson extends Component {
       <View style={GLOBAL_STYLES.lessonContainer}>
         <View style={GLOBAL_STYLES.lessonTimeView}>
           <Text style={GLOBAL_STYLES.lessonTimeText}>
-            {this.lesson.lesson + " " + this.lesson.time}
+            {this.lesson.time}
           </Text>
         </View>
         <View style={GLOBAL_STYLES.lessonInfoView}>
