@@ -15,27 +15,14 @@ export default class WeekNavigation extends Component {
     this.httpClient = this.props.httpClient;
     this.storage = this.props.storage;
     this.parser = this.props.parser;
-
-    this.lastWeek = props.lastWeek;
-    this.currentWeek = 14; // TODO: doesn't work props.currentWeek;
   }
 
   componentDidMount() {
-    const limits = 3;
-    let leftLimit = this.currentWeek - limits;
-    let rightLimit = this.currentWeek + limits;
-
-    if (leftLimit < 1) {
-      rightLimit += this.currentWeek - leftLimit;
-      leftLimit = 1;
-    }
-    if (rightLimit > this.lastWeek) {
-      leftLimit -= rightLimit - this.lastWeek;
-      rightLimit = this.lastWeek;
-    }
-
-    this.leftLimit = leftLimit;
-    this.rightLimit = rightLimit;
+    this.lastWeek = this.props.lastWeek;
+    this.currentWeek = this.props.currentWeek;
+    console.log(this.props)
+    this.leftLimit = this.props.limits.leftLimit;
+    this.rightLimit = this.props.limits.rightLimit;
 
     // TODO: yeet this shit
     let buttons = [];
@@ -43,10 +30,6 @@ export default class WeekNavigation extends Component {
       buttons.push(i);
     }
     this.setState({ buttons: buttons })
-  }
-
-  onClickTest(el) {
-    console.log(el);
   }
 
   render() {
@@ -62,7 +45,7 @@ export default class WeekNavigation extends Component {
         {
           // TODO: yeet this shit too lol
           this.state.buttons.map((i) => (
-            <TouchableOpacity key={i} onPress={() => this.onClickTest(i)}>
+            <TouchableOpacity key={i} onPress={async () => await this.props.onWeekChange(i)}>
               <View key={i} style={(this.currentWeek != i) ? GLOBAL_STYLES.weekButtonView : [GLOBAL_STYLES.weekButtonView, GLOBAL_STYLES.currentWeekButtonView]}>
                 <Text style={(this.currentWeek != i) ? GLOBAL_STYLES.weekButtonText : [GLOBAL_STYLES.weekButtonText, GLOBAL_STYLES.currentWeekButtonText]}>{i}</Text>
               </View>

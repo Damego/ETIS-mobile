@@ -16,6 +16,7 @@ export default class TimeTablePage extends Component {
 
     this.state = {
       isLoaded: false,
+      data: null
     };
 
     // TODO: Make special class to control it?
@@ -23,22 +24,65 @@ export default class TimeTablePage extends Component {
     this.storage = this.props.route.params.storage;
     this.parser = this.props.route.params.parser;
 
-    this.daysList = [
-      "Понедельник",
-      "Вторник",
-      "Среда",
-      "Четверг",
-      "Пятница",
-      "Суббота",
-    ];
+    this.changeLimits = true;
+  }
+
+  async getWeekData(week = null) {
+    let html;
+    if (!!week) {
+      html = await this.httpClient.getTimeTable({week: week});
+    } else {
+      html = await this.httpClient.getTimeTable();
+    }
+
+    this.data = await this.parser.parseTimeTable(html);
   }
 
   async componentDidMount() {
-    // Эти данные будут заполнены с парсера
-    let html = await this.httpClient.getTimeTable();
-    this.data = await this.parser.parseTimeTable(html);
+    await this.getWeekData()
 
     this.setState({ isLoaded: true });
+  }
+
+  async changeWeek(week) {
+    this.setState({ isLoaded: false });
+    await this.getWeekData(week);
+    this.changeLimits = false;
+
+    // TODO: Find more better way to re-render components
+    this.forceUpdate();
+    this.setState({ isLoaded: true });
+  }
+
+  async onWeekChange(week) {
+    await this.changeWeek(week);
+  }
+
+  calculateLimits() {
+    if (!this.changeLimits) {
+      let leftLimit = this.leftLimit;
+      let rightLimit = this.rightLimit;
+      return {leftLimit, rightLimit}
+    };
+    const limits = 3;
+    let currentWeek = this.data.currentWeek;
+    let lastWeek = this.data.lastWeek;
+
+    let leftLimit = currentWeek - limits;
+    let rightLimit = currentWeek + limits;
+
+    if (leftLimit < 1) {
+      rightLimit += currentWeek - leftLimit;
+      leftLimit = 1;
+    }
+    if (rightLimit > lastWeek) {
+      leftLimit -= rightLimit - lastWeek;
+      rightLimit = lastWeek;
+    }
+    this.leftLimit = leftLimit;
+    this.rightLimit = rightLimit;
+
+    return {leftLimit, rightLimit}
   }
 
   render() {
@@ -50,6 +94,8 @@ export default class TimeTablePage extends Component {
         <WeekNavigation
           lastWeek={this.data.lastWeek}
           currentWeek={this.data.currentWeek}
+          onWeekChange={(week) => this.onWeekChange(week)}
+          limits={this.calculateLimits()}
         />
         <ScrollView>
           <View>
@@ -58,7 +104,6 @@ export default class TimeTablePage extends Component {
           })}
           </View>
         </ScrollView>
-        
       </View>
     );
   }
