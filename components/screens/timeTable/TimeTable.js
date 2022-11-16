@@ -3,6 +3,7 @@
 import React, { Component, Image } from "react";
 import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { GLOBAL_STYLES } from "../../../utils/styles";
 
 import Header from "../../Header";
 import LoadingText from "../../LoadingText";
@@ -44,7 +45,7 @@ export default class TimeTablePage extends Component {
     if (!this.state.isLoaded) return <LoadingText />;
 
     return (
-      <View style={{paddingBottom: "25%", backgroundColor: "#F8F8FA"}}>
+      <View style={GLOBAL_STYLES.screen}>
         <Header text={"Расписание"} />
         <WeekNavigation
           lastWeek={this.data.lastWeek}

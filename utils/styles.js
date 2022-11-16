@@ -1,8 +1,20 @@
 import { StyleSheet } from "react-native";
 
 export const GLOBAL_STYLES = StyleSheet.create({
-  loadingDataView: {},
-  loadingDataText: {},
+  screen: {
+    backgroundColor: "#F8F8FA",
+    height: "100%"
+  },
+  buttomNavigator: {
+    tabBarStyle: { zIndex: 1}, // Why it doesn't do by default?
+  },
+  loadingDataView: {
+    textAlignVertical: "center",
+    textAlign: "center"
+  },
+  loadingDataText: {
+    fontSize: 30
+  },
   headerContainer: {
     height: "7%",
     display: "flex",
@@ -66,6 +78,7 @@ export const GLOBAL_STYLES = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
+    width: "100%"
   },
   navigaionArrowView: {},
   navigaionArrowText: {

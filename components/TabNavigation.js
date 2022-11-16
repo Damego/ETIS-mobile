@@ -19,7 +19,7 @@ export default class TabNavigator extends Component {
 
   render() {
     return (
-      <Tab.Navigator>
+      <Tab.Navigator screenOptions={GLOBAL_STYLES.buttomNavigator}>
         <Tab.Screen
           name="Расписание"
           component={TimeTablePage}
