@@ -60,7 +60,6 @@ export const GLOBAL_STYLES = StyleSheet.create({
     flexDirection: "row",
   },
   lessonTimeView: {
-    marginRight: "1%",
     paddingHorizontal: 1,
   },
   lessonTimeText: {
@@ -68,7 +67,7 @@ export const GLOBAL_STYLES = StyleSheet.create({
   },
   lessonInfoView: {},
   lessonInfoText: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: "500",
   },
   lessonAudienceText: {
@@ -77,22 +76,22 @@ export const GLOBAL_STYLES = StyleSheet.create({
   weekNavigationView: {
     display: "flex",
     flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    width: "100%"
   },
   navigaionArrowView: {},
   navigaionArrowText: {
     color: "#C62E3E",
     fontSize: 40,
   },
-  weekButtonView: {
-    marginHorizontal: 5,
-    padding: 5,
-  },
+  weekButtonView: {},
   weekButtonText: {
     fontSize: 20,
   },
   currentWeekButtonView: {
+    alignItems:"center",
+    width: 35,
+    height: 35,
     backgroundColor: "#C62E3E",
     borderRadius: 10,
     shadowColor: "#000",

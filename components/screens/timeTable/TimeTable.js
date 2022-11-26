@@ -8,6 +8,7 @@ import { GLOBAL_STYLES } from "../../../utils/styles";
 import Header from "../../Header";
 import LoadingText from "../../LoadingText";
 import Day from "./Day";
+import EmptyDay from "./EmptyDay";
 import WeekNavigation from "./WeekNagivator";
 
 export default class TimeTablePage extends Component {
@@ -100,6 +101,7 @@ export default class TimeTablePage extends Component {
         <ScrollView>
           <View>
           {this.data.days.map((day) => {
+            if (day.lessons[0] == undefined) return <EmptyDay key={day.date} date={day.date}/>
             return <Day key={day.date} data={day} />;
           })}
           </View>

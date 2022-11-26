@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, Text } from "react-native";
 
 import Lesson from "./Lesson";
+
 import { GLOBAL_STYLES } from "../../../utils/styles";
 
 export default class Day extends Component {

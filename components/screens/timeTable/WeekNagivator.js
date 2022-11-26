@@ -20,7 +20,6 @@ export default class WeekNavigation extends Component {
   componentDidMount() {
     this.lastWeek = this.props.lastWeek;
     this.currentWeek = this.props.currentWeek;
-    console.log(this.props)
     this.leftLimit = this.props.limits.leftLimit;
     this.rightLimit = this.props.limits.rightLimit;
 
