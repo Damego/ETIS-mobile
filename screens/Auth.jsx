@@ -4,14 +4,14 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native";
 import ReCaptchaV3 from "@haskkor/react-native-recaptchav3";
 
-import Form from "../components/AuthForm";
-import {Header} from "../components/Header";
-import Footer from "../components/AuthFooter";
+import { Form } from "../components/AuthForm";
+import { Header } from "../components/Header";
+import { Footer } from "../components/AuthFooter";
 import { vars } from "../utils/vars";
 
-export default AuthPage = (props) => {
+const AuthPage = (props) => {
   const [recaptchaToken, setRecaptchaToken] = useState("");
-  
+
   const tryLogin = async () => {
     let accountData = await vars.storage.getAccountData();
     if (!accountData.login || !accountData.password) {
@@ -41,7 +41,7 @@ export default AuthPage = (props) => {
   };
 
   const onReceiveRecaptchaToken = async (token) => {
-    setRecaptchaToken = token;
+    setRecaptchaToken(token);
     await tryLogin();
   };
 
@@ -55,10 +55,10 @@ export default AuthPage = (props) => {
       />
 
       <Header text={"Авторизация"} />
-      <Form
-        onSubmit={(login, password) => onFormSubmit(login, password)}
-      />
+      <Form onSubmit={(login, password) => onFormSubmit(login, password)} />
       <Footer />
     </SafeAreaView>
   );
 };
+
+export default AuthPage;

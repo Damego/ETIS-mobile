@@ -1,8 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 
-export default class AuthFooter extends Component {
-  render() {
+const AuthFooter = () => {
     return (
       <View style={styles.view}>
         <Text style={styles.text}>
@@ -12,7 +11,7 @@ export default class AuthFooter extends Component {
         </Text>
       </View>
     );
-  }
+  
 }
 
 const styles = StyleSheet.create({
@@ -25,3 +24,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
+
+export default AuthFooter;

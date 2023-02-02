@@ -6,7 +6,8 @@ import { vars } from "./utils/vars";
 
 import {StackNavigator} from "./navigation/StackNavigation";
 
-export default App = () => {
+const App = () => {
+
   const [isSignedIn, setSignedIn] = useState(false);
   const [isLoaded, setLoaded] = useState(false);
 
@@ -16,13 +17,20 @@ export default App = () => {
     return !data;
   };
 
-  useEffect(async () => {
-    setLoaded = true;
-    vars.httpClient.sessionID = await vars.storage.getSessionID();
+  useEffect(() => {
+    console.log(isLoaded);
+    if (isLoaded) return;
+    const wrapper = async () => {
+      setLoaded(true)
+      console.log("now ", isLoaded);
+      vars.httpClient.sessionID = await vars.storage.getSessionID();
 
-    if (vars.httpClient.sessionID && !(await isLoginPage())) {
-      isSignedIn = true;
+      if (vars.httpClient.sessionID && !(await isLoginPage())) {
+        setSignedIn(true);
+      }
     }
+    wrapper();
+    
   });
 
   if (!isLoaded) {
@@ -34,3 +42,5 @@ export default App = () => {
   }
   return <StackNavigator isSignedIn={isSignedIn} setSignedIn={setSignedIn} />;
 };
+
+export default App;

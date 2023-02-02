@@ -1,17 +1,16 @@
-import React, { Component } from "react";
+import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
-export default class AuthButton extends Component {
-  render() {
+const AuthButton = (props) =>{
     return (
       <View style={styles.view}>
-        <TouchableOpacity onPress={this.props.onPress}>
+        <TouchableOpacity onPress={props.onPress}>
           <Text style={styles.text}>{"Войти"}</Text>
         </TouchableOpacity>
       </View>
     );
   }
-}
+
 
 const styles = StyleSheet.create({
   view: {
@@ -29,3 +28,5 @@ const styles = StyleSheet.create({
     paddingTop: 5,
   },
 });
+
+export default AuthButton;

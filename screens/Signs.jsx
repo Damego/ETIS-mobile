@@ -1,23 +1,16 @@
 "use strict";
 
-import React, { Component } from "react";
+import React from "react";
 import { SafeAreaView } from "react-native";
 
 import {Header} from "../components/Header";
 
-export default class SignsPage extends Component {
-  constructor(props) {
-    super(props);
-
-    // this.storage = this.props.storage;
-    // this.httpClient = this.props.httpClient;
-  }
-
-  render() {
+const SignsPage = () => {
     return (
       <SafeAreaView>
         <Header text={"ЕТИС | Оценки"} />
       </SafeAreaView>
     );
-  }
 }
+
+export default SignsPage;

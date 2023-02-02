@@ -1,14 +1,16 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import {AuthPage} from "../screens/Auth";
-import TabNavigator from "../components/TabNavigation";
+import {MessagesPage} from "../screens/Message";
+// import {TabNavigator} from "./TabNavigation";
 
-import { vars } from "../utils/vars";
+// import { vars } from "../utils/vars";
 
 const Stack = createNativeStackNavigator();
 
-export const StackNavigator = (isSignedIn, setSignedIn) => {
+const StackNavigator = (isSignedIn, setSignedIn) => {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
@@ -19,7 +21,22 @@ export const StackNavigator = (isSignedIn, setSignedIn) => {
             },
           }}
         >
-          {!isSignedIn ? (
+          <Stack.Screen
+              name="Authorization"
+              options={{ headerShown: false }}
+              screenOptions={{
+                contentStyle: {
+                  backgroundColor: "#FFFFFF",
+                },
+              }}
+              component={MessagesPage}
+            >
+              {/* {(props) => (
+                <AuthPage onSignIn={() => (setSignedIn(true))} />
+              )} */}
+            </Stack.Screen>
+          {/* {
+          !isSignedIn ? (
             <Stack.Screen
               name="Authorization"
               options={{ headerShown: false }}
@@ -30,7 +47,7 @@ export const StackNavigator = (isSignedIn, setSignedIn) => {
               }}
             >
               {(props) => (
-                <AuthPage {...props} onSignIn={() => (setSignedIn = true)} />
+                <AuthPage onSignIn={() => (setSignedIn(true))} />
               )}
             </Stack.Screen>
           ) : (
@@ -45,9 +62,11 @@ export const StackNavigator = (isSignedIn, setSignedIn) => {
             >
               {(props) => <TabNavigator {...props} />}
             </Stack.Screen>
-          )}
+          )} */}
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
   );
 };
+
+export default StackNavigator;

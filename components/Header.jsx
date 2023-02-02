@@ -3,7 +3,7 @@ import { View, Text, StatusBar } from "react-native";
 
 import { GLOBAL_STYLES } from "../styles/styles";
 
-export default Header = ({ text }) => {
+const Header = ({ text }) => {
   return (
     <View style={GLOBAL_STYLES.headerContainer}>
       <StatusBar style="auto" />
@@ -11,3 +11,5 @@ export default Header = ({ text }) => {
     </View>
   );
 }
+
+export default Header;
