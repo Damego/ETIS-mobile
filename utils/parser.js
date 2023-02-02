@@ -42,7 +42,7 @@ export default class DataParsing {
   }
 
   //Парсинг расписания
-  parseTimeTableV2(html) {
+  parseTimeTable(html) {
     const $ = cheerio.load(html);
     let data = [];
     $('.day', html).each((el, day) => {
