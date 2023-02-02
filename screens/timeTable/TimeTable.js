@@ -3,10 +3,10 @@
 import React, { Component, Image } from "react";
 import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { GLOBAL_STYLES } from "../../../utils/styles";
+import { GLOBAL_STYLES } from "../../styles/styles";
 
-import Header from "../../Header";
-import LoadingText from "../../LoadingText";
+import Header from "../../components/Header";
+import LoadingText from "../../components/LoadingText";
 import Day from "./Day";
 import EmptyDay from "./EmptyDay";
 import WeekNavigation from "./WeekNagivator";

@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
-import { GLOBAL_STYLES } from "../../../utils/styles";
+import { GLOBAL_STYLES } from "../../styles/styles";
 
 export default class WeekNavigation extends Component {
   constructor(props) {

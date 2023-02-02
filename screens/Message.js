@@ -3,14 +3,11 @@
 import React, { Component } from "react";
 import { SafeAreaView } from "react-native";
 
-import Header from "../Header";
+import {Header} from "../components/Header";
 
 export default class MessagesPage extends Component {
   constructor(props) {
     super(props);
-
-    // this.storage = this.props.storage;
-    // this.httpClient = this.props.httpClient;
   }
 
   render() {

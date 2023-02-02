@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
 
-import { GLOBAL_STYLES } from "../../../utils/styles";
+import { GLOBAL_STYLES } from "../../styles/styles";
 
 export default class EmptyDay extends Component {
   constructor(props) {

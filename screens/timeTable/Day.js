@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 
 import Lesson from "./Lesson";
 
-import { GLOBAL_STYLES } from "../../../utils/styles";
+import { GLOBAL_STYLES } from "../../styles/styles";
 
 export default class Day extends Component {
   constructor(props) {

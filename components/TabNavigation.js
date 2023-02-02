@@ -3,12 +3,12 @@
 import React, { Component } from "react";
 import { createBottomTabNavigator, Image } from "@react-navigation/bottom-tabs";
 
-import AbsensesPage from "./screens/Absenses";
-import MessagesPage from "./screens/Message";
-import SignsPage from "./screens/Signs";
-import TimeTablePage from "./screens/timeTable/TimeTable";
+import AbsensesPage from "../screens/Absenses";
+import MessagesPage from "../screens/Message";
+import SignsPage from "../screens/Signs";
+import TimeTablePage from "../screens/timeTable/TimeTable";
 
-import { GLOBAL_STYLES } from "../utils/styles";
+import { GLOBAL_STYLES } from "../styles/styles";
 
 const Tab = createBottomTabNavigator();
 
@@ -28,8 +28,8 @@ export default class TabNavigator extends Component {
             tabBarItem: (tabInfo) => (
               <View>
                 <Image
-                source={require("../assets/tab_icons/timetable.png")} 
-                resizeMode="contain"
+                  source={require("../assets/tab_icons/timetable.png")}
+                  resizeMode="contain"
                 />
               </View>
             ),

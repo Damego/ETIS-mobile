@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import { SafeAreaView } from "react-native";
 
-import Header from "../Header";
+import Header from "../components/Header";
 
 export default class AbsensesPage extends Component {
   constructor(props) {
