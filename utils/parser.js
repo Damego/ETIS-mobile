@@ -1,9 +1,17 @@
-import cheerio from "cheerio";
+import * as cheerio from 'cheerio';
 
 export default class DataParsing {
+  isLoginPage(_cheerio) {
+    let loginDiv = _cheerio(".login");
+    return !!loginDiv.html();
+  }
+
   parseHeader(html) {
     let data = {};
     const $ = cheerio.load(html);
+    if (this.isLoginPage($)) {
+      return null;
+    }
     // Способы добавления элемента в словарь:   data['header'] = header  |  data.header = header;
 
     // ФИО и г.р. человека
@@ -45,32 +53,37 @@ export default class DataParsing {
   //Парсинг расписания
   parseTimeTable(html) {
     const $ = cheerio.load(html);
-    // Способы добавления элемента в словарь:   data['header'] = header  |  data.header = header;
+    if (this.isLoginPage($)) {
+      return null;
+    }
 
-    let data = [];
+    let data = {
+      lastWeek: parseInt($(".week-select .weeks .week").last().text()),
+      currentWeek: parseInt($(".week-select .weeks .week.current").text()),
+      days: [],
+    };
+    let days = data.days;
     $("body > div.container > div > div.span9 > div.timetable > div").each(
       (i) => {
         // Создаем словарь i дня
-        data.push({});
+        days.push({});
         // Дата (ч.м.)
         $(
           `body > div.container > div > div.span9 > div.timetable > div:nth-child(${
             i + 1
           }) > h3`
         ).each((el, date) => {
-          let reg = /[0-9].*/;
-          let dateReg = reg.exec($(date).text());
-          data[i].date = dateReg[0];
+          days[i].date = $(date).text();
         });
 
-        data[i].lessons = [];
+        days[i].lessons = [];
         $(
           `body > div.container > div > div.span9 > div.timetable > div:nth-child(${
             i + 1
           }) > table > tbody > tr`
         ).each((cnt, line) => {
           // Создаем урок в виде словаря
-          data[i].lessons.push({});
+          days[i].lessons.push({});
 
           // Аудитория
           $(
@@ -82,7 +95,7 @@ export default class DataParsing {
           ).each((el, audience) => {
             let reg = /ауд.*\)$/gm;
             let audienceReg = reg.exec($(audience).text());
-            data[i].lessons[cnt].audience = audienceReg[0];
+            days[i].lessons[cnt].audience = audienceReg[0];
           });
 
           // Номер пары
@@ -93,7 +106,7 @@ export default class DataParsing {
           ).each((el, lesson) => {
             let reg = /[0-9].*а/;
             let lessonReg = reg.exec($(lesson).text());
-            data[i].lessons[cnt].lesson = lessonReg[0];
+            days[i].lessons[cnt].lesson = lessonReg[0];
           });
 
           // Предмет
@@ -104,7 +117,7 @@ export default class DataParsing {
               cnt + 1
             }) > td.pair_info > div > div:nth-child(1) > span.dis > a`
           ).each((el, subject) => {
-            data[i].lessons[cnt].subject = $(subject).text();
+            days[i].lessons[cnt].subject = $(subject).text();
           });
 
           // Время пары
@@ -115,11 +128,12 @@ export default class DataParsing {
           ).each((el, time) => {
             let reg = /\d*:\d+/;
             let timeReg = reg.exec($(time).text());
-            data[i].lessons[cnt].time = timeReg[0];
+            days[i].lessons[cnt].time = timeReg[0];
           });
         });
       }
     );
+
     return data;
   }
 }

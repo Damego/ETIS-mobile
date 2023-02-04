@@ -37,7 +37,7 @@ export default class HTTPClient {
     return this.sessionID;
   }
 
-  async getTimeTable(showConsultations = null, week = null) {
+  async getTimeTable({showConsultations = null, week = null} = {}) {
     /*
     `showConsultations`:
     - y: Показывать консультации

@@ -1,59 +1,46 @@
 "use strict";
-import React, { Component } from "react";
-import { StyleSheet, SafeAreaView, Text, StatusBar } from "react-native";
-import ReCaptchaV3 from "@haskkor/react-native-recaptchav3";
+import React, { useState, useEffect } from "react";
+import { Text, SafeAreaView } from "react-native";
 
-import Header from "./components/Header";
-import Form from "./components/Form";
-import HTTPClient from "./utils/http";
-import Storage from "./utils/storage";
+import { vars } from "./utils/vars";
 
-class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      currentPage: this.renderAuthPage(),
-    };
+import StackNavigator from "./navigation/StackNavigation";
 
-    this.recaptchaToken = null;
-    this.httpClient = new HTTPClient();
-    this.storage = new Storage();
-  }
+const App = () => {
 
-  defaultAuth = async (login, password, token) => {
-    await this.httpClient.login(login, password, token);
-    await this.httpClient.getTimeTable();
+  const [isSignedIn, setSignedIn] = useState(false);
+  const [isLoaded, setLoaded] = useState(false);
+
+  const isLoginPage = async () => {
+    let html = await vars.httpClient.getTimeTable();
+    let data = vars.parser.parseHeader(html);
+    return !data;
   };
 
-  renderAuthPage() {
+  useEffect(() => {
+    if (isLoaded) return;
+    const wrapper = async () => {
+      setLoaded(true)
+      vars.httpClient.sessionID = await vars.storage.getSessionID();
+
+      console.log("session id ", vars.httpClient.sessionID);
+      let d = await isLoginPage();
+
+      if (vars.httpClient.sessionID && !(await isLoginPage())) {
+        setSignedIn(true);
+      }
+    }
+    wrapper();
+  });
+
+  if (!isLoaded) {
     return (
       <SafeAreaView>
-        <ReCaptchaV3
-          action={"submit"}
-          captchaDomain={"https://student.psu.ru"}
-          siteKey={"6LfeYf8UAAAAAIF22Cn9YFwXlZk1exjVNyF2Jmo6"}
-          onReceiveToken={this.onReceiveToken}
-        />
-
-        <Header text={"Авторизация"} />
-        <Form defaultAuth={this.defaultAuth} />
+        <Text>{"Loading..."}</Text>
       </SafeAreaView>
     );
   }
-
-  renderTimeTablePage() {
-    console.log("timetable");
-    return (
-      <SafeAreaView>
-        <Text>{`Вы авторизованы! ${this.httpClient.sessionID}`}</Text>
-        <StatusBar></StatusBar>
-      </SafeAreaView>
-    );
-  }
-
-  render() {
-    return this.state.currentPage;
-  }
-}
+  return <StackNavigator isSignedIn={isSignedIn} setSignedIn={setSignedIn} />;
+};
 
 export default App;

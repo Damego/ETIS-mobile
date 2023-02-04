@@ -18,7 +18,6 @@ export default class Storage {
   }
 
   async storeAccountData(login, password) {
-    // ! Я думаю, что хранить данные в незащищённом виде это плохо.
     try {
       await SecureStore.setItemAsync("userLogin", login);
       await SecureStore.setItemAsync("userPassword", password);
