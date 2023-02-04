@@ -4,7 +4,7 @@ import { Text, SafeAreaView } from "react-native";
 
 import { vars } from "./utils/vars";
 
-import {StackNavigator} from "./navigation/StackNavigation";
+import StackNavigator from "./navigation/StackNavigation";
 
 const App = () => {
 
@@ -18,11 +18,9 @@ const App = () => {
   };
 
   useEffect(() => {
-    console.log(isLoaded);
     if (isLoaded) return;
     const wrapper = async () => {
       setLoaded(true)
-      console.log("now ", isLoaded);
       vars.httpClient.sessionID = await vars.storage.getSessionID();
 
       if (vars.httpClient.sessionID && !(await isLoginPage())) {

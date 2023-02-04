@@ -2,11 +2,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import {AuthPage} from "../screens/Auth";
-import {MessagesPage} from "../screens/Message";
-// import {TabNavigator} from "./TabNavigation";
+import AuthPage from "../screens/Auth";
 
-// import { vars } from "../utils/vars";
+import TabNavigator from "./TabNavigation";
+
+import { vars } from "../utils/vars";
 
 const Stack = createNativeStackNavigator();
 
@@ -29,13 +29,12 @@ const StackNavigator = (isSignedIn, setSignedIn) => {
                   backgroundColor: "#FFFFFF",
                 },
               }}
-              component={MessagesPage}
             >
-              {/* {(props) => (
+              {(props) => (
                 <AuthPage onSignIn={() => (setSignedIn(true))} />
-              )} */}
+              )}
             </Stack.Screen>
-          {/* {
+          {
           !isSignedIn ? (
             <Stack.Screen
               name="Authorization"
@@ -62,7 +61,7 @@ const StackNavigator = (isSignedIn, setSignedIn) => {
             >
               {(props) => <TabNavigator {...props} />}
             </Stack.Screen>
-          )} */}
+          )}
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

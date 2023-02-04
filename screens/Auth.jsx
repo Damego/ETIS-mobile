@@ -4,9 +4,9 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native";
 import ReCaptchaV3 from "@haskkor/react-native-recaptchav3";
 
-import { Form } from "../components/AuthForm";
-import { Header } from "../components/Header";
-import { Footer } from "../components/AuthFooter";
+import Form from "../components/AuthForm";
+import Header from "../components/Header";
+import Footer from "../components/AuthFooter";
 import { vars } from "../utils/vars";
 
 const AuthPage = (props) => {
