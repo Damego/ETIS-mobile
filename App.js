@@ -23,12 +23,14 @@ const App = () => {
       setLoaded(true)
       vars.httpClient.sessionID = await vars.storage.getSessionID();
 
+      console.log("session id ", vars.httpClient.sessionID);
+      let d = await isLoginPage();
+
       if (vars.httpClient.sessionID && !(await isLoginPage())) {
         setSignedIn(true);
       }
     }
     wrapper();
-    
   });
 
   if (!isLoaded) {

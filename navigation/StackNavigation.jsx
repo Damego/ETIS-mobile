@@ -6,11 +6,10 @@ import AuthPage from "../screens/Auth";
 
 import TabNavigator from "./TabNavigation";
 
-import { vars } from "../utils/vars";
-
 const Stack = createNativeStackNavigator();
 
-const StackNavigator = (isSignedIn, setSignedIn) => {
+const StackNavigator = ({isSignedIn, setSignedIn}) => {
+  console.log("signed in ", isSignedIn);
   return (
     <SafeAreaProvider>
       <NavigationContainer>
@@ -21,19 +20,6 @@ const StackNavigator = (isSignedIn, setSignedIn) => {
             },
           }}
         >
-          <Stack.Screen
-              name="Authorization"
-              options={{ headerShown: false }}
-              screenOptions={{
-                contentStyle: {
-                  backgroundColor: "#FFFFFF",
-                },
-              }}
-            >
-              {(props) => (
-                <AuthPage onSignIn={() => (setSignedIn(true))} />
-              )}
-            </Stack.Screen>
           {
           !isSignedIn ? (
             <Stack.Screen

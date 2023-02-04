@@ -1,8 +1,7 @@
 "use strict";
 
-import React, { Component, Image } from "react";
+import React, { useState, useEffect } from "react";
 import { ScrollView, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { GLOBAL_STYLES } from "../../styles/styles";
 
 import Header from "../../components/Header";
@@ -11,66 +10,56 @@ import Day from "./Day";
 import EmptyDay from "./EmptyDay";
 import WeekNavigation from "./WeekNagivator";
 
-export default class TimeTablePage extends Component {
-  constructor(props) {
-    super(props);
+import { vars } from "../../utils/vars";
 
-    this.state = {
-      isLoaded: false,
-      data: null
-    };
 
-    // TODO: Make special class to control it?
-    this.httpClient = this.props.route.params.httpClient;
-    this.storage = this.props.route.params.storage;
-    this.parser = this.props.route.params.parser;
+const TimeTablePage = () => {
+  const [isLoaded, setLoaded] = useState(false);
+  var data = null;
+  var changeLimits = false;
+  var leftLimit = null;
+  var rightLimit = null;
 
-    this.changeLimits = true;
-  }
+  useEffect(() => {
+    const wrapper = async () => {
+      data = await getWeekData();
+      console.log("loaded data ", data);
+      setLoaded(true);
+    }
+    wrapper();
+  })
 
-  async getWeekData(week = null) {
+  const getWeekData = async (week = null) => {
     let html;
-    if (!!week) {
-      html = await this.httpClient.getTimeTable({week: week});
+    if (week != null) {
+      html = await vars.httpClient.getTimeTable({week: week});
     } else {
-      html = await this.httpClient.getTimeTable();
+      html = await vars.httpClient.getTimeTable();
     }
 
-    this.data = await this.parser.parseTimeTable(html);
+    if (!html) return null;
+    return vars.parser.parseTimeTable(html);
   }
 
-  async componentDidMount() {
-    await this.getWeekData()
+  const changeWeek = async (week) => {
+    setLoaded(false);
+    await getWeekData(week);
+    changeLimits = true;
 
-    this.setState({ isLoaded: true });
+    setLoaded(true);
   }
 
-  async changeWeek(week) {
-    this.setState({ isLoaded: false });
-    await this.getWeekData(week);
-    this.changeLimits = false;
-
-    // TODO: Find more better way to re-render components
-    this.forceUpdate();
-    this.setState({ isLoaded: true });
-  }
-
-  async onWeekChange(week) {
-    await this.changeWeek(week);
-  }
-
-  calculateLimits() {
-    if (!this.changeLimits) {
-      let leftLimit = this.leftLimit;
-      let rightLimit = this.rightLimit;
+  const calculateLimits = () => {
+    if (!changeLimits) {
       return {leftLimit, rightLimit}
     };
-    const limits = 3;
-    let currentWeek = this.data.currentWeek;
-    let lastWeek = this.data.lastWeek;
 
-    let leftLimit = currentWeek - limits;
-    let rightLimit = currentWeek + limits;
+    const limits = 3;
+    let currentWeek = data.currentWeek;
+    let lastWeek = data.lastWeek;
+
+    leftLimit = currentWeek - limits;
+    rightLimit = currentWeek + limits;
 
     if (leftLimit < 1) {
       rightLimit += currentWeek - leftLimit;
@@ -80,33 +69,38 @@ export default class TimeTablePage extends Component {
       leftLimit -= rightLimit - lastWeek;
       rightLimit = lastWeek;
     }
-    this.leftLimit = leftLimit;
-    this.rightLimit = rightLimit;
 
     return {leftLimit, rightLimit}
   }
 
-  render() {
-    if (!this.state.isLoaded) return <LoadingText />;
-
-    return (
-      <View style={GLOBAL_STYLES.screen}>
-        <Header text={"Расписание"} />
-        <WeekNavigation
-          lastWeek={this.data.lastWeek}
-          currentWeek={this.data.currentWeek}
-          onWeekChange={(week) => this.onWeekChange(week)}
-          limits={this.calculateLimits()}
-        />
-        <ScrollView>
-          <View>
-          {this.data.days.map((day) => {
-            if (day.lessons[0] == undefined) return <EmptyDay key={day.date} date={day.date}/>
-            return <Day key={day.date} data={day} />;
-          })}
-          </View>
-        </ScrollView>
-      </View>
-    );
+  const onWeekChange = async (week) => {
+    await changeWeek(week);
   }
+
+  if (!isLoaded || !data) return <LoadingText />;
+  console.log("check");
+  console.log(isLoaded);
+  console.log(data);
+  return (
+    <View style={GLOBAL_STYLES.screen}>
+      <Header text={"Расписание"} />
+      <WeekNavigation
+        lastWeek={data.lastWeek}
+        currentWeek={data.currentWeek}
+        onWeekChange={(week) => onWeekChange(week)}
+        limits={calculateLimits()}
+      />
+      <ScrollView>
+        <View>
+        {data.days.map((day) => {
+          if (day.lessons[0] == undefined) return <EmptyDay key={day.date} date={day.date}/>
+          return <Day key={day.date} data={day} />;
+        })}
+        </View>
+      </ScrollView>
+    </View>
+  );
+
 }
+
+export default TimeTablePage;

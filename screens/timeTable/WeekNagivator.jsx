@@ -11,10 +11,6 @@ export default class WeekNavigation extends Component {
     this.state = {
       buttons: []
     }
-
-    this.httpClient = this.props.httpClient;
-    this.storage = this.props.storage;
-    this.parser = this.props.parser;
   }
 
   componentDidMount() {

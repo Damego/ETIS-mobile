@@ -11,6 +11,7 @@ import { vars } from "../utils/vars";
 
 const AuthPage = (props) => {
   const [recaptchaToken, setRecaptchaToken] = useState("");
+  console.log("AUTH?")
 
   const tryLogin = async () => {
     let accountData = await vars.storage.getAccountData();
