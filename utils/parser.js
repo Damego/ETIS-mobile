@@ -1,4 +1,4 @@
-import cheerio, { Cheerio, html } from "cheerio";
+import * as cheerio from "cheerio";
 
 export default class DataParsing {
   parseHeader(html) {
@@ -41,54 +41,68 @@ export default class DataParsing {
     return data;
   }
 
-  //Парсинг расписания
+  /**
+   * Метод для парсинга страницы с расписанием.
+   * @param {string} html
+   */
   parseTimeTable(html) {
     const $ = cheerio.load(html);
-    let data = [];
-    $('.day', html).each((el, day) => {
+
+    let data = {
+      currentWeek: $(".week.theory.current").text(),
+      lastWeek: $(".week").last().text(),
+    };
+
+    let days = [];
+
+    $(".day", html).each((el, day) => {
       let lessons = [];
-      const date = $(day).find('h3').text();
-      if($(day).children().last().hasClass('no_pairs')) {
+      const date = $(day).find("h3").text();
+
+      if ($(day).children().last().hasClass("no_pairs")) {
         const subject = $(day).children().last().text();
         lessons.push({
-          audience : "",
+          audience: "",
           subject,
-          time : ""
-        })
+          time: "",
+        });
       }
       else {
-        $('tr', day).each((_, tr) => {
-          const audience = $(tr).find(".pair_info").find(".aud").text();
-          const subject = $(tr).find(".pair_info").find(".dis").text();
-          const time = $(tr).find(".pair_num").find(".eval").text();
+        $("tr", day).each((_, tr) => {
+          const audience = $(tr).find(".pair_info").find(".aud").text().trim();
+          const subject = $(tr).find(".pair_info").find(".dis").text().trim();
+          const time = $(tr).find(".pair_num").find(".eval").text().trim();
           lessons.push({
             audience,
             subject,
-            time
-          })
-        })
+            time,
+          });
+        });
       }
-      data.push({
+      days.push({
         date,
-        lessons
+        lessons,
       });
     });
+
+    data.days = days;
+
     return data;
   }
 
   parseTeachers(html) {
     const $ = cheerio.load(html);
     let data = [];
-    $('.teacher_info', html).each((el, teacher) => {
-      const photo = $(teacher).find('img').attr('src');
-      const name = $(teacher).find('.teacher_name').text();
-      const cathedra = $(teacher).find('.chair').text();
-      const subject = $(teacher).find('.dis').text();
+    $(".teacher_info", html).each((el, teacher) => {
+      const photo = $(teacher).find("img").attr("src");
+      const name = $(teacher).find(".teacher_name").text();
+      const cathedra = $(teacher).find(".chair").text();
+      const subject = $(teacher).find(".dis").text();
       data.push({
         photo,
         name,
         cathedra,
-        subject
+        subject,
       });
     });
     return data;
@@ -97,18 +111,20 @@ export default class DataParsing {
   parseAnnounce(html) {
     const $ = cheerio.load(html);
     let data = [];
-    $('.nav.msg', html).each((el, announce) => {
+    $(".nav.msg", html).each((el, announce) => {
       const time = /\d+.\d+.\d+\s\d+\:\d+\:\d+/gm.exec($(announce).text())[0];
-      const author = /[А-Я]{1}[а-я]{1,15}\s[А-Я]\.\s[А-Я]\./mg.exec($(announce).text())[0];
+      const author = /[А-Я]{1}[а-я]{1,15}\s[А-Я]\.\s[А-Я]\./gm.exec(
+        $(announce).text()
+      )[0];
       let info = $(announce).text();
-      info = info.replace(time, '');
-      info = info.replace(author, '');
+      info = info.replace(time, "");
+      info = info.replace(author, "");
       data.push({
         time,
         info,
-        author
+        author,
       });
-    })
+    });
     return data;
   }
 
@@ -116,53 +132,63 @@ export default class DataParsing {
     const $ = cheerio.load(html);
     let data = [];
     let cnt = -1;
-    $('.nav.msg', html).each((el, announce) => {
-      if ($(announce).hasClass('repl_t')) {
+    $(".nav.msg", html).each((el, announce) => {
+      if ($(announce).hasClass("repl_t")) {
         const type = "repl_t";
-        let time = $(announce).find('font').eq(0).text();
-        let author = $(announce).find('b').eq(0).text();
-        let content = $(announce).find('li').contents().filter(function () {
-          return this.type === "text";
-        }).text();
+        let time = $(announce).find("font").eq(0).text();
+        let author = $(announce).find("b").eq(0).text();
+        let content = $(announce)
+          .find("li")
+          .contents()
+          .filter(function () {
+            return this.type === "text";
+          })
+          .text();
         data[cnt].push({
           type,
           time,
           author,
-          content
-        })
-      }
-      else if($(announce).hasClass('repl_s')) {
+          content,
+        });
+      } else if ($(announce).hasClass("repl_s")) {
         const type = "repl_s";
-        let time = $(announce).find('font').eq(0).text();
-        let content = $(announce).find('li').contents().filter(function () {
-          return this.type === "text";
-        }).text();
+        let time = $(announce).find("font").eq(0).text();
+        let content = $(announce)
+          .find("li")
+          .contents()
+          .filter(function () {
+            return this.type === "text";
+          })
+          .text();
         data[cnt].push({
           type,
           time,
-          content
-        })
-      }
-      else {
+          content,
+        });
+      } else {
         cnt++;
         const type = "msg";
-        let time = $(announce).find('font').eq(0).text();
-        let author = $(announce).find('b').eq(0).text();
-        let subject = $(announce).find('font').eq(1).text();
-        let theme = $(announce).find('font').eq(2).text();
-        let content = $(announce).find('li').contents().filter(function () {
-          return this.type === "text";
-        }).text();
+        let time = $(announce).find("font").eq(0).text();
+        let author = $(announce).find("b").eq(0).text();
+        let subject = $(announce).find("font").eq(1).text();
+        let theme = $(announce).find("font").eq(2).text();
+        let content = $(announce)
+          .find("li")
+          .contents()
+          .filter(function () {
+            return this.type === "text";
+          })
+          .text();
         data.push([
-            {
-              type,
-              time,
-              author,
-              subject,
-              theme,
-              content
-            }
-          ])
+          {
+            type,
+            time,
+            author,
+            subject,
+            theme,
+            content,
+          },
+        ]);
       }
     });
     console.log(data);
@@ -172,22 +198,22 @@ export default class DataParsing {
   parseAbsenses(html) {
     const $ = cheerio.load(html);
     let data = [];
-    $('tr', html).each((el, tableRow) => {
+    $("tr", html).each((el, tableRow) => {
       if (el != 0) {
-        const number = $(tableRow).find('td').eq(0).text();
-        const time = $(tableRow).find('td').eq(1).text();
-        const subject = $(tableRow).find('td').eq(2).text();
-        const type = $(tableRow).find('td').eq(3).text();
-        const teacher = $(tableRow).find('td').eq(4).text();
+        const number = $(tableRow).find("td").eq(0).text();
+        const time = $(tableRow).find("td").eq(1).text();
+        const subject = $(tableRow).find("td").eq(2).text();
+        const type = $(tableRow).find("td").eq(3).text();
+        const teacher = $(tableRow).find("td").eq(4).text();
         data.push({
           number,
           time,
           subject,
           type,
-          teacher
+          teacher,
         });
       }
-    })
+    });
     return data;
   }
 
@@ -195,28 +221,28 @@ export default class DataParsing {
   parseTeachPlan(html) {
     const $ = cheerio.load(html);
     let data = [];
-    $('.common', html).each((el, table) => {
-      const trimester = `${el+1} триместр`;
+    $(".common", html).each((el, table) => {
+      const trimester = `${el + 1} триместр`;
       let subjects = [];
-      $('.cgrldatarow', table).each((el, tr) => {
-        const subject = $(tr).find('td').eq(0).text();
-        const reporting = $(tr).find('td').eq(1).text();
-        const classWork = $(tr).find('td').eq(2).text();
-        const soloWork = $(tr).find('td').eq(3).text();
-        const total = $(tr).find('td').eq(4).text();
+      $(".cgrldatarow", table).each((el, tr) => {
+        const subject = $(tr).find("td").eq(0).text();
+        const reporting = $(tr).find("td").eq(1).text();
+        const classWork = $(tr).find("td").eq(2).text();
+        const soloWork = $(tr).find("td").eq(3).text();
+        const total = $(tr).find("td").eq(4).text();
         subjects.push({
           subject,
           reporting,
           classWork,
           soloWork,
-          total
-        })
-      })
+          total,
+        });
+      });
       data.push({
         trimester,
-        subjects
-      })
-    })
+        subjects,
+      });
+    });
     return data;
   }
 
@@ -224,18 +250,18 @@ export default class DataParsing {
   parseSigns(html) {
     const $ = cheerio.load(html);
     let data = [];
-    $('.common', html).each((el, table) => {
+    $(".common", html).each((el, table) => {
       let info = [];
-      $('tr', table).each((i, tr) => {
-        const theme = $(tr).find('td').eq(0).text();
-        const typeWork = $(tr).find('td').eq(1).text();
-        const typeControl= $(tr).find('td').eq(2).text();
-        const mark = $(tr).find('td').eq(3).text();
-        const passScore = $(tr).find('td').eq(4).text();
-        const currentScore = $(tr).find('td').eq(5).text();
-        const maxScore = $(tr).find('td').eq(6).text();
-        const date = $(tr).find('td').eq(7).text();
-        const teacher = $(tr).find('td').eq(8).text();
+      $("tr", table).each((i, tr) => {
+        const theme = $(tr).find("td").eq(0).text();
+        const typeWork = $(tr).find("td").eq(1).text();
+        const typeControl = $(tr).find("td").eq(2).text();
+        const mark = $(tr).find("td").eq(3).text();
+        const passScore = $(tr).find("td").eq(4).text();
+        const currentScore = $(tr).find("td").eq(5).text();
+        const maxScore = $(tr).find("td").eq(6).text();
+        const date = $(tr).find("td").eq(7).text();
+        const teacher = $(tr).find("td").eq(8).text();
         info.push({
           theme,
           typeWork,
@@ -245,19 +271,19 @@ export default class DataParsing {
           currentScore,
           maxScore,
           date,
-          teacher
-        })
-      })
+          teacher,
+        });
+      });
       info.splice(0, 2);
       info.splice(-1, 1);
       data.push({
-        info
-      })
-    })
-    $('h3', html).each((el, name) => {
+        info,
+      });
+    });
+    $("h3", html).each((el, name) => {
       const subject = $(name).text();
       data[el].subject = subject;
-    })
+    });
     return data;
   }
 }
