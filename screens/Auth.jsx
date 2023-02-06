@@ -11,7 +11,7 @@ import { vars } from "../utils/vars";
 
 const AuthPage = (props) => {
   const [recaptchaToken, setRecaptchaToken] = useState("");
-  console.log("AUTH?")
+  console.log("AUTH?", props);
 
   const tryLogin = async () => {
     let accountData = await vars.storage.getAccountData();
@@ -24,9 +24,12 @@ const AuthPage = (props) => {
       accountData.password,
       recaptchaToken
     );
-
-    vars.httpClient.sessionID = sessionID;
-    props.onSignIn();
+    console.log("auto auth in auth page");
+    console.log(accountData);
+    console.log(sessionID)
+    if (sessionID) {
+      props.onSignIn();
+    }
   };
 
   const onFormSubmit = async (login, password) => {
@@ -39,10 +42,12 @@ const AuthPage = (props) => {
 
     await vars.storage.storeAccountData(login, password);
     await vars.storage.storeSessionID(sessionID);
+    props.onSignIn();
   };
 
   const onReceiveRecaptchaToken = async (token) => {
     setRecaptchaToken(token);
+    console.log("RECEIVED TOKEN", token);
     await tryLogin();
   };
 

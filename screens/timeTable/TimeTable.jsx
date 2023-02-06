@@ -23,8 +23,11 @@ const TimeTablePage = () => {
   useEffect(() => {
     const wrapper = async () => {
       data = await getWeekData();
-      console.log("loaded data ", data);
-      setLoaded(true);
+      console.log("LOADED DATA TIMETABLE", data);
+      if (data != null) {
+        setLoaded(true);
+      }
+      
     }
     wrapper();
   })

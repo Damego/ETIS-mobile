@@ -32,7 +32,7 @@ const StackNavigator = ({isSignedIn, setSignedIn}) => {
               }}
             >
               {(props) => (
-                <AuthPage onSignIn={() => (setSignedIn(true))} />
+                <AuthPage onSignIn={() => {setSignedIn(true)}} /> // 
               )}
             </Stack.Screen>
           ) : (

@@ -6,12 +6,14 @@ export default class HTTPClient {
     this.sessionID = null;
   }
 
+  /**
+   * 
+   * @param {string} username Электронная почта
+   * @param {string} password Пароль
+   * @param {string} token Токен ReCaptcha v3
+   * @returns 
+   */
   async login(username, password, token) {
-    /*
-    `username`: Электронная почта
-    `password`: Пароль
-    `token`: Токен Рекапчи
-    */
     let formData = new FormData();
 
     formData.append("p_redirect", "stu.timetable");
@@ -25,10 +27,12 @@ export default class HTTPClient {
     });
 
     let cookies = response.headers["set-cookie"];
+    console.log(response.headers);
     if (!cookies) {
-      return console.warn(
+      console.warn(
         "No cookies! Make sure you passed right login and password. Also maybe you have reached auth limit (5). Try again in 10 minutes."
       );
+      return;
     }
 
     this.sessionID = cookies[0].split(";")[0];
