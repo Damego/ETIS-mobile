@@ -12,50 +12,53 @@ import WeekNavigation from "./WeekNagivator";
 
 import { vars } from "../../utils/vars";
 
-
 const TimeTablePage = () => {
   const [isLoaded, setLoaded] = useState(false);
-  var data = null;
-  var changeLimits = false;
-  var leftLimit = null;
-  var rightLimit = null;
+  const [data, setData] = useState(null);
+
+  let changeLimits = true;
+  let leftLimit = null;
+  let rightLimit = null;
 
   useEffect(() => {
+    if (isLoaded) return;
+    console.log("INIT TIMETABLE", isLoaded);
     const wrapper = async () => {
-      data = await getWeekData();
-      console.log("LOADED DATA TIMETABLE", data);
-      if (data != null) {
+      let res = await getWeekData();
+      console.log("LOADED DATA TIMETABLE", res);
+      if (res != null) {
+        setData(res);
         setLoaded(true);
       }
-      
-    }
+    };
     wrapper();
-  })
+  });
 
   const getWeekData = async (week = null) => {
+    // TODO: cache data
+
     let html;
     if (week != null) {
-      html = await vars.httpClient.getTimeTable({week: week});
+      html = await vars.httpClient.getTimeTable({ week: week });
     } else {
       html = await vars.httpClient.getTimeTable();
     }
 
     if (!html) return null;
     return vars.parser.parseTimeTable(html);
-  }
+  };
 
   const changeWeek = async (week) => {
-    setLoaded(false);
-    await getWeekData(week);
+    let res = await getWeekData(week);
+    setData(res);
     changeLimits = true;
 
-    setLoaded(true);
-  }
+  };
 
   const calculateLimits = () => {
     if (!changeLimits) {
-      return {leftLimit, rightLimit}
-    };
+      return { leftLimit, rightLimit };
+    }
 
     const limits = 3;
     let currentWeek = data.currentWeek;
@@ -73,37 +76,31 @@ const TimeTablePage = () => {
       rightLimit = lastWeek;
     }
 
-    return {leftLimit, rightLimit}
-  }
-
-  const onWeekChange = async (week) => {
-    await changeWeek(week);
-  }
+    return { leftLimit, rightLimit };
+  };
 
   if (!isLoaded || !data) return <LoadingText />;
-  console.log("check");
-  console.log(isLoaded);
-  console.log(data);
+
   return (
     <View style={GLOBAL_STYLES.screen}>
       <Header text={"Расписание"} />
       <WeekNavigation
         lastWeek={data.lastWeek}
         currentWeek={data.currentWeek}
-        onWeekChange={(week) => onWeekChange(week)}
+        onWeekChange={async (week) => (await changeWeek(week))}
         limits={calculateLimits()}
       />
       <ScrollView>
         <View>
-        {data.days.map((day) => {
-          if (day.lessons[0] == undefined) return <EmptyDay key={day.date} date={day.date}/>
-          return <Day key={day.date} data={day} />;
-        })}
+          {data.days.map((day) => {
+            if (day.lessons.lenght == 0)
+              return <EmptyDay key={day.date} date={day.date} />;
+            return <Day key={day.date} data={day} />;
+          })}
         </View>
       </ScrollView>
     </View>
   );
-
-}
+};
 
 export default TimeTablePage;
