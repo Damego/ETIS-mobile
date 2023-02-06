@@ -163,4 +163,17 @@ export default class HTTPClient {
     });
     return response.data;
   }
+
+  async getTeacherNotes() {
+    if (this.sessionID == null) {
+      return; // TODO: Exceptions? Output error message? Auto authorize?
+    }
+
+    let response = await axios.get(`${this.defaultURL}.teacher_notes`, {
+      headers: {
+        Cookie: this.sessionID,
+      },
+    });
+    return response.data;
+  }
 }
