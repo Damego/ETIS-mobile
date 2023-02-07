@@ -9,7 +9,7 @@ import TabNavigator from "./TabNavigation";
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = ({isSignedIn, setSignedIn}) => {
-  console.log("signed in ", isSignedIn);
+  console.log("is signed in ", isSignedIn);
   return (
     <SafeAreaProvider>
       <NavigationContainer>

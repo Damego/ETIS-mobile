@@ -19,12 +19,13 @@ const App = () => {
 
   useEffect(() => {
     if (isLoaded) return;
+
     const wrapper = async () => {
       setLoaded(true)
       vars.httpClient.sessionID = await vars.storage.getSessionID();
 
       if (vars.httpClient.sessionID && !(await isLoginPage())) {
-        console.log("signed in");
+        console.log("set sign in");
         setSignedIn(true);
       }
     }
