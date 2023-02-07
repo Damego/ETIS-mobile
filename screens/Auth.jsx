@@ -10,10 +10,10 @@ import Footer from "../components/AuthFooter";
 import { vars } from "../utils/vars";
 
 const AuthPage = (props) => {
-  const [recaptchaToken, setRecaptchaToken] = useState("");
+  const [recaptchaToken, setRecaptchaToken] = useState();
   console.log("AUTH?", props);
 
-  const tryLogin = async () => {
+  const tryLogin = async (token = null) => {
     let accountData = await vars.storage.getAccountData();
     if (!accountData.login || !accountData.password) {
       return;
@@ -22,12 +22,10 @@ const AuthPage = (props) => {
     let sessionID = await vars.httpClient.login(
       accountData.login,
       accountData.password,
-      recaptchaToken
+      (token == null) ? recaptchaToken : token
     );
-    console.log("auto auth in auth page");
-    console.log(accountData);
-    console.log(sessionID)
     if (sessionID) {
+      console.log("AUTO AUTHENTICATED");
       props.onSignIn();
     }
   };
@@ -46,9 +44,9 @@ const AuthPage = (props) => {
   };
 
   const onReceiveRecaptchaToken = async (token) => {
-    setRecaptchaToken(token);
     console.log("RECEIVED TOKEN", token);
-    await tryLogin();
+    await tryLogin(token);
+    setRecaptchaToken(token);
   };
 
   return (
