@@ -1,6 +1,6 @@
 "use strict";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
 import LoadingText from "../../components/LoadingText";
