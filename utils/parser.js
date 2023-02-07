@@ -55,7 +55,7 @@ export default class DataParsing {
       days: []
     };
 
-    let days = [];
+    let days = data.days;
 
     $(".day", html).each((el, day) => {
       let lessons = [];
@@ -86,8 +86,6 @@ export default class DataParsing {
         lessons,
       });
     });
-
-    data.days = days;
 
     return data;
   }
