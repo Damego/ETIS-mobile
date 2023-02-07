@@ -14,13 +14,17 @@ export default class HTTPClient {
    * @returns 
    */
   async login(username, password, token) {
+    console.log("login method");
+    if (!token) {
+      return console.warn("No token was passed!");
+    }
     let formData = new FormData();
 
     formData.append("p_redirect", "stu.timetable");
-    formData.append("p_username", username);
-    formData.append("p_password", password);
+    formData.append("p_username", username.trim());
+    formData.append("p_password", password.trim());
     formData.append("p_recaptcha_ver", "3");
-    formData.append("p_recaptcha_response", token);
+    formData.append("p_recaptcha_response", token.trim());
 
     let response = await axios.post(`${this.defaultURL}.login`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
@@ -28,10 +32,21 @@ export default class HTTPClient {
 
     let cookies = response.headers["set-cookie"];
     console.log(response.headers);
+
+    // Figuring out error via content lenght
     if (!cookies) {
-      console.warn(
-        "No cookies! Make sure you passed right login and password. Also maybe you have reached auth limit (5). Try again in 10 minutes."
-      );
+      if (response.headers["content-length"] == "20020") {
+        console.warn("You have been ratelimited (5 requests per 10 minutes).")
+      }
+      else if (response.headers["content-length"] == "20073") {
+        console.warn(
+          "You passed wrong login or password, or ReCaptcha token is outdated."
+        );
+      }
+      else {
+        console.warn("Unknown error. Content lenght:", response.headers["content-length"]);
+      }
+      
       return;
     }
 
