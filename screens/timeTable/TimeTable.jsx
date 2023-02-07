@@ -59,6 +59,7 @@ const TimeTablePage = () => {
     <View style={GLOBAL_STYLES.screen}>
       <Header text={"Расписание"} />
       <WeekNavigation
+        firstWeek={data.firstWeek}
         lastWeek={data.lastWeek}
         currentWeek={data.currentWeek}
         onWeekChange={async (week) => (await changeWeek(week))}

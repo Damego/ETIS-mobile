@@ -49,8 +49,10 @@ export default class DataParsing {
     const $ = cheerio.load(html);
 
     let data = {
-      currentWeek: $(".week.theory.current").text(),
-      lastWeek: $(".week").last().text(),
+      firstWeek: parseInt($(".week").first().text()),
+      currentWeek: parseInt($(".week.theory.current").text()),
+      lastWeek: parseInt($(".week").last().text()),
+      days: []
     };
 
     let days = [];
