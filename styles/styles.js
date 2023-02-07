@@ -104,6 +104,8 @@ export const GLOBAL_STYLES = StyleSheet.create({
     elevation: 4,
   },
   currentWeekButtonText: {
+    marginTop: "6%",
+    fontSize: 20,
     color: "#FFFFFF",
   },
 });
