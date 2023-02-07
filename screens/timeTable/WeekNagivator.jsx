@@ -5,14 +5,16 @@ import { Text, TouchableOpacity, View } from "react-native";
 
 import LoadingText from "../../components/LoadingText";
 import { GLOBAL_STYLES } from "../../styles/styles";
+import { calculateLimits } from "../../utils/funcs";
 
 const WeekNagivation = (props) => {
   const [buttons, changeButtons] = useState([]);
+  const [isLoaded, setLoaded] = useState(false);
 
-  if (buttons.length == 0) {
-    let leftLimit = props.limits.leftLimit;
-    let rightLimit = props.limits.rightLimit;
 
+  const renderNavigation = () => {
+    let {leftLimit, rightLimit} = calculateLimits(...firstCurrentLastWeek);
+    console.log(leftLimit, rightLimit);
     let _buttons = [];
 
     for (let i = leftLimit; i < rightLimit + 1; i++) {
@@ -20,6 +22,12 @@ const WeekNagivation = (props) => {
     }
     changeButtons(_buttons);
   };
+
+  useEffect(() => {
+    if (isLoaded) return;
+    renderNavigation();
+    setLoaded(true);
+  });
 
   if (buttons.length == 0) return <LoadingText />; // Can't happen. If it's then its a bug.
 

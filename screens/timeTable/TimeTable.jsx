@@ -16,16 +16,12 @@ const TimeTablePage = () => {
   const [isLoaded, setLoaded] = useState(false);
   const [data, setData] = useState(null);
 
-  let changeLimits = true;
-  let leftLimit = null;
-  let rightLimit = null;
-
   useEffect(() => {
     if (isLoaded) return;
-    console.log("INIT TIMETABLE", isLoaded);
+    console.log("TIMETABLE IS LOADED:", isLoaded);
     const wrapper = async () => {
       let res = await getWeekData();
-      console.log("LOADED DATA TIMETABLE", res);
+      console.log("Got response data:", res);
       if (res != null) {
         setLoaded(true);
         setData(res);
@@ -34,6 +30,10 @@ const TimeTablePage = () => {
     wrapper();
   });
 
+  /**
+   * 
+   * @param {number} week День недели
+   */
   const getWeekData = async (week = null) => {
     // TODO: cache data
 
@@ -51,32 +51,6 @@ const TimeTablePage = () => {
   const changeWeek = async (week) => {
     let res = await getWeekData(week);
     setData(res);
-    changeLimits = true;
-
-  };
-
-  const calculateLimits = () => {
-    if (!changeLimits) {
-      return { leftLimit, rightLimit };
-    }
-
-    const limits = 3;
-    let currentWeek = data.currentWeek;
-    let lastWeek = data.lastWeek;
-
-    leftLimit = currentWeek - limits;
-    rightLimit = currentWeek + limits;
-
-    if (leftLimit < 1) {
-      rightLimit += currentWeek - leftLimit;
-      leftLimit = 1;
-    }
-    if (rightLimit > lastWeek) {
-      leftLimit -= rightLimit - lastWeek;
-      rightLimit = lastWeek;
-    }
-
-    return { leftLimit, rightLimit };
   };
 
   if (!isLoaded || !data) return <LoadingText />;
@@ -88,7 +62,6 @@ const TimeTablePage = () => {
         lastWeek={data.lastWeek}
         currentWeek={data.currentWeek}
         onWeekChange={async (week) => (await changeWeek(week))}
-        limits={calculateLimits()}
       />
       <ScrollView>
         <View>
