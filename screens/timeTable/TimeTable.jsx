@@ -27,8 +27,8 @@ const TimeTablePage = () => {
       let res = await getWeekData();
       console.log("LOADED DATA TIMETABLE", res);
       if (res != null) {
-        setData(res);
         setLoaded(true);
+        setData(res);
       }
     };
     wrapper();
