@@ -52,7 +52,7 @@ export default class DataParsing {
       firstWeek: parseInt($(".week").first().text()),
       currentWeek: parseInt($(".week.theory.current").text()),
       lastWeek: parseInt($(".week").last().text()),
-      days: []
+      days: [],
     };
 
     let days = data.days;
@@ -68,8 +68,7 @@ export default class DataParsing {
           subject,
           time: "",
         });
-      }
-      else {
+      } else {
         $("tr", day).each((_, tr) => {
           const audience = $(tr).find(".pair_info").find(".aud").text().trim();
           const subject = $(tr).find(".pair_info").find(".dis").text().trim();
