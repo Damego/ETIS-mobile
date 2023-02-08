@@ -75,6 +75,7 @@ const WeekNagivation = (props) => {
           );
         })
       }
+
       <TouchableOpacity onPress={() => onArrowClick(1)}>
         <View style={GLOBAL_STYLES.navigaionArrowView}>
           <Text style={GLOBAL_STYLES.navigaionArrowText}>{">"}</Text>
