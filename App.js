@@ -7,7 +7,6 @@ import { vars } from "./utils/vars";
 import StackNavigator from "./navigation/StackNavigation";
 
 const App = () => {
-
   const [isSignedIn, setSignedIn] = useState(false);
   const [isLoaded, setLoaded] = useState(false);
 
@@ -21,14 +20,14 @@ const App = () => {
     if (isLoaded) return;
 
     const wrapper = async () => {
-      setLoaded(true)
+      setLoaded(true);
       vars.httpClient.sessionID = await vars.storage.getSessionID();
 
       if (vars.httpClient.sessionID && !(await isLoginPage())) {
         console.log("set sign in");
         setSignedIn(true);
       }
-    }
+    };
     wrapper();
   });
 
