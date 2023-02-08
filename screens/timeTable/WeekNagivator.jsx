@@ -17,8 +17,6 @@ const WeekNagivation = (props) => {
   ]);
 
   const onArrowClick = (direction) => {
-    console.log("clicked", direction);
-
     let to_add = 0;
     if (direction == 1) to_add = 7;
     else to_add = -7;
@@ -34,18 +32,15 @@ const WeekNagivation = (props) => {
 
   const renderNavigation = () => {
     let { leftLimit, rightLimit } = calculateLimits(...firstCurrentLastWeek);
-    console.log(leftLimit, rightLimit);
     let _buttons = [];
 
     for (let i = leftLimit; i < rightLimit + 1; i++) {
       _buttons.push(i);
     }
-    console.log("generated btns", _buttons);
     changeButtons(_buttons);
   };
 
   useEffect(() => {
-    console.log("fclw", firstCurrentLastWeek);
     if (isLoaded) return;
     renderNavigation();
     setLoaded(true);
