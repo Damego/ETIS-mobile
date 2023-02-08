@@ -20,12 +20,12 @@ const WeekNagivation = (props) => {
     else to_add = -7;
 
     setLastCurrentLastWeek(
-      firstCurrentLastWeek[0],
-      buttons[3], // central button,
-      firstCurrentLastWeek[2]
+      [firstCurrentLastWeek[0],
+      buttons[3] + to_add, // central button,
+      firstCurrentLastWeek[2]]
     );
 
-    renderNavigation();
+    setLoaded(false);
   };
 
   const renderNavigation = () => {
@@ -41,12 +41,13 @@ const WeekNagivation = (props) => {
   };
 
   useEffect(() => {
+    console.log("fclw", firstCurrentLastWeek);
     if (isLoaded) return;
     renderNavigation();
     setLoaded(true);
   });
 
-  if (buttons.length == 0) return <LoadingText />; // Can't happen. If it's then its a bug.
+  if (buttons.length == 0) return <LoadingText />;
 
   return (
     <View style={GLOBAL_STYLES.weekNavigationView}>

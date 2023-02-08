@@ -3,13 +3,13 @@ export const calculateLimits = (firstWeek, currentWeek, lastWeek) => {
   let leftLimit = currentWeek - limits;
   let rightLimit = currentWeek + limits;
 
-  if (leftLimit < firstWeek) {
-    rightLimit += currentWeek - leftLimit;
+  if (currentWeek - firstWeek <= limits) {
     leftLimit = firstWeek;
+    rightLimit = firstWeek + limits * 2;
   }
-  if (rightLimit > lastWeek) {
-    leftLimit -= rightLimit - lastWeek;
+  if (lastWeek - currentWeek <= limits) {
     rightLimit = lastWeek;
+    leftLimit = lastWeek - limits * 2;
   }
 
   return { leftLimit, rightLimit };
