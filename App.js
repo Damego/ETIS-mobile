@@ -12,8 +12,9 @@ const App = () => {
 
   const isLoginPage = async () => {
     let html = await vars.httpClient.getTimeTable();
-    let data = vars.parser.parseHeader(html);
-    return !data;
+    let data = vars.parser.isLoginPage(html);
+    console.log("is login page", data);
+    return data;
   };
 
   useEffect(() => {

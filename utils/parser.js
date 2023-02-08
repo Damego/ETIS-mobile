@@ -1,6 +1,11 @@
 import * as cheerio from "cheerio";
 
 export default class DataParsing {
+  isLoginPage(html) {
+    const $ = cheerio.load(html);
+    return !!$(".login");
+  }
+
   parseHeader(html) {
     let data = {};
     const $ = cheerio.load(html);
