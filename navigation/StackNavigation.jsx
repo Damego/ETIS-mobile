@@ -3,6 +3,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import AuthPage from "../screens/Auth";
+import TimeTablePage from "../screens/timeTable/TimeTable";
 
 import TabNavigator from "./TabNavigation";
 
@@ -44,8 +45,9 @@ const StackNavigator = ({isSignedIn, setSignedIn}) => {
                   backgroundColor: "#FFFFFF",
                 },
               }}
+              component={TimeTablePage}
             >
-              {(props) => <TabNavigator {...props} />}
+              {/* {(props) => <TabNavigator {...props} />} */}
             </Stack.Screen>
           )}
         </Stack.Navigator>
