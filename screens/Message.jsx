@@ -9,7 +9,6 @@ const MessagesPage = () => {
   return (
     <SafeAreaView>
       <Header text={"ЕТИС | Сообщения"} />
-
     </SafeAreaView>
   );
 };

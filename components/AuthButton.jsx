@@ -1,16 +1,15 @@
 import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
-const AuthButton = (props) =>{
-    return (
-      <View style={styles.view}>
-        <TouchableOpacity onPress={props.onPress}>
-          <Text style={styles.text}>{"Войти"}</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
-
+const AuthButton = (props) => {
+  return (
+    <View style={styles.view}>
+      <TouchableOpacity onPress={props.onPress}>
+        <Text style={styles.text}>{"Войти"}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   view: {

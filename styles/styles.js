@@ -3,17 +3,17 @@ import { StyleSheet } from "react-native";
 export const GLOBAL_STYLES = StyleSheet.create({
   screen: {
     backgroundColor: "#F8F8FA",
-    height: "100%"
+    height: "100%",
   },
   buttomNavigator: {
-    tabBarStyle: { zIndex: 1}, // Why it doesn't do by default?
+    tabBarStyle: { zIndex: 1 }, // Why it doesn't do by default?
   },
   loadingDataView: {
     textAlignVertical: "center",
-    textAlign: "center"
+    textAlign: "center",
   },
   loadingDataText: {
-    fontSize: 30
+    fontSize: 30,
   },
   headerContainer: {
     height: "7%",
@@ -89,7 +89,7 @@ export const GLOBAL_STYLES = StyleSheet.create({
     fontSize: 20,
   },
   currentWeekButtonView: {
-    alignItems:"center",
+    alignItems: "center",
     width: 35,
     height: 35,
     backgroundColor: "#C62E3E",

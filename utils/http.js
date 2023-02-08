@@ -7,11 +7,11 @@ export default class HTTPClient {
   }
 
   /**
-   * 
+   *
    * @param {string} username Электронная почта
    * @param {string} password Пароль
    * @param {string} token Токен ReCaptcha v3
-   * @returns 
+   * @returns
    */
   async login(username, password, token) {
     console.log("login method");
@@ -36,17 +36,18 @@ export default class HTTPClient {
     // Figuring out error via content lenght
     if (!cookies) {
       if (response.headers["content-length"] == "20020") {
-        console.warn("You have been ratelimited (5 requests per 10 minutes).")
-      }
-      else if (response.headers["content-length"] == "20073") {
+        console.warn("You have been ratelimited (5 requests per 10 minutes).");
+      } else if (response.headers["content-length"] == "20073") {
         console.warn(
           "You passed wrong login or password, or ReCaptcha token is outdated."
         );
+      } else {
+        console.warn(
+          "Unknown error. Content lenght:",
+          response.headers["content-length"]
+        );
       }
-      else {
-        console.warn("Unknown error. Content lenght:", response.headers["content-length"]);
-      }
-      
+
       return;
     }
 
@@ -56,7 +57,7 @@ export default class HTTPClient {
     return this.sessionID;
   }
 
-  async getTimeTable({showConsultations = null, week = null} = {}) {
+  async getTimeTable({ showConsultations = null, week = null } = {}) {
     /*
     `showConsultations`:
     - y: Показывать консультации

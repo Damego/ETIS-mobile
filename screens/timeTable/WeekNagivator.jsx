@@ -10,7 +10,11 @@ import { calculateLimits } from "../../utils/funcs";
 const WeekNagivation = (props) => {
   const [buttons, changeButtons] = useState([]);
   const [isLoaded, setLoaded] = useState(false);
-  const [firstCurrentLastWeek, setLastCurrentLastWeek] = useState([props.firstWeek, props.currentWeek, props.lastWeek]);
+  const [firstCurrentLastWeek, setLastCurrentLastWeek] = useState([
+    props.firstWeek,
+    props.currentWeek,
+    props.lastWeek,
+  ]);
 
   const onArrowClick = (direction) => {
     console.log("clicked", direction);
@@ -19,17 +23,17 @@ const WeekNagivation = (props) => {
     if (direction == 1) to_add = 7;
     else to_add = -7;
 
-    setLastCurrentLastWeek(
-      [firstCurrentLastWeek[0],
+    setLastCurrentLastWeek([
+      firstCurrentLastWeek[0],
       buttons[3] + to_add, // central button,
-      firstCurrentLastWeek[2]]
-    );
+      firstCurrentLastWeek[2],
+    ]);
 
     setLoaded(false);
   };
 
   const renderNavigation = () => {
-    let {leftLimit, rightLimit} = calculateLimits(...firstCurrentLastWeek);
+    let { leftLimit, rightLimit } = calculateLimits(...firstCurrentLastWeek);
     console.log(leftLimit, rightLimit);
     let _buttons = [];
 

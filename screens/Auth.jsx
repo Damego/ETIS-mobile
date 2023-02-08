@@ -22,7 +22,7 @@ const AuthPage = (props) => {
     let sessionID = await vars.httpClient.login(
       accountData.login,
       accountData.password,
-      (token == null) ? recaptchaToken : token
+      token == null ? recaptchaToken : token
     );
     if (sessionID) {
       console.log("AUTO AUTHENTICATED");
