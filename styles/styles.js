@@ -18,6 +18,8 @@ export const GLOBAL_STYLES = StyleSheet.create({
   headerContainer: {
     height: "7%",
     display: "flex",
+    marginLeft: "5%",
+    paddingTop: "2%"
   },
   headerText: {
     fontSize: 26,
@@ -57,17 +59,18 @@ export const GLOBAL_STYLES = StyleSheet.create({
     marginBottom: "1%",
     flexWrap: "wrap",
     flexShrink: 1,
-    flexDirection: "row",
+
+    paddingHorizontal: "1%"
   },
   lessonTimeView: {
     paddingHorizontal: 1,
   },
   lessonTimeText: {
-    fontSize: 13,
+    fontSize: 14,
   },
   lessonInfoView: {},
   lessonInfoText: {
-    fontSize: 13,
+    fontSize: 16,
     fontWeight: "500",
   },
   lessonAudienceText: {
@@ -78,6 +81,8 @@ export const GLOBAL_STYLES = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+
+    paddingHorizontal: "2%"
   },
   navigaionArrowView: {},
   navigaionArrowText: {
