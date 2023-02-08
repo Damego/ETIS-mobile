@@ -19,7 +19,7 @@ export const GLOBAL_STYLES = StyleSheet.create({
     height: "7%",
     display: "flex",
     marginLeft: "5%",
-    paddingTop: "2%"
+    paddingTop: "2%",
   },
   headerText: {
     fontSize: 26,
@@ -60,7 +60,7 @@ export const GLOBAL_STYLES = StyleSheet.create({
     flexWrap: "wrap",
     flexShrink: 1,
 
-    paddingHorizontal: "1%"
+    paddingHorizontal: "1%",
   },
   lessonTimeView: {
     paddingHorizontal: 1,
@@ -82,7 +82,7 @@ export const GLOBAL_STYLES = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
 
-    paddingHorizontal: "2%"
+    paddingHorizontal: "2%",
   },
   navigaionArrowView: {},
   navigaionArrowText: {
