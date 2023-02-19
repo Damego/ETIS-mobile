@@ -5,7 +5,7 @@ import { ScrollView, View } from "react-native";
 import { GLOBAL_STYLES } from "../../styles/styles";
 
 import Header from "../../components/Header";
-import LoadingText from "../../components/LoadingText";
+import LoadingPage from "../../components/LoadingPage";
 import Day from "./Day";
 import EmptyDay from "./EmptyDay";
 import WeekNavigation from "./WeekNagivator";
@@ -58,7 +58,7 @@ const TimeTablePage = ({navigation}) => {
     setData(res);
   };
 
-  if (!isLoaded || !data) return <LoadingText />;
+  if (!isLoaded || !data) return <LoadingPage />;
   return (
     <View style={GLOBAL_STYLES.screen}>
       <Header text={"Расписание"} />

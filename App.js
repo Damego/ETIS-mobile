@@ -5,6 +5,7 @@ import { Text, SafeAreaView } from "react-native";
 import { vars } from "./utils/vars";
 
 import StackNavigator from "./navigation/StackNavigation";
+import LoadingPage from "./components/LoadingPage";
 
 const App = () => {
   const [isSignedIn, setSignedIn] = useState(false);
@@ -33,11 +34,7 @@ const App = () => {
   });
 
   if (!isLoaded) {
-    return (
-      <SafeAreaView>
-        <Text>{"Loading..."}</Text>
-      </SafeAreaView>
-    );
+    return <LoadingPage />;
   }
   return <StackNavigator isSignedIn={isSignedIn} setSignedIn={setSignedIn} />;
 };

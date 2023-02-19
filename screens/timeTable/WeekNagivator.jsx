@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
-import LoadingText from "../../components/LoadingText";
 import { GLOBAL_STYLES } from "../../styles/styles";
 import { calculateLimits } from "../../utils/funcs";
 
@@ -45,8 +44,6 @@ const WeekNagivation = (props) => {
     renderNavigation();
     setLoaded(true);
   });
-
-  if (buttons.length == 0) return <LoadingText />;
 
   return (
     <View style={GLOBAL_STYLES.weekNavigationView}>
