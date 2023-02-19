@@ -8,10 +8,6 @@ export const GLOBAL_STYLES = StyleSheet.create({
   buttomNavigator: {
     tabBarStyle: { zIndex: 1 }, // Why it doesn't do by default?
   },
-  loadingDataView: {
-    textAlignVertical: "center",
-    textAlign: "center",
-  },
   loadingDataText: {
     fontSize: 30,
   },

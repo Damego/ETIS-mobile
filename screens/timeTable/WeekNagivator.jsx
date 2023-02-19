@@ -1,7 +1,7 @@
 "use strict";
 
 import React, { useEffect, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View, Image, StyleSheet } from "react-native";
 
 import { GLOBAL_STYLES } from "../../styles/styles";
 import { calculateLimits } from "../../utils/funcs";
@@ -48,9 +48,10 @@ const WeekNagivation = (props) => {
   return (
     <View style={GLOBAL_STYLES.weekNavigationView}>
       <TouchableOpacity onPress={() => onArrowClick(0)}>
-        <View style={GLOBAL_STYLES.navigaionArrowView}>
-          <Text style={GLOBAL_STYLES.navigaionArrowText}>{"<"}</Text>
-        </View>
+        <Image
+        style={styles.arrow}
+        source={require("../../assets/arrow_week_nav.png")}
+        />
       </TouchableOpacity>
 
       {
@@ -74,12 +75,26 @@ const WeekNagivation = (props) => {
       }
 
       <TouchableOpacity onPress={() => onArrowClick(1)}>
-        <View style={GLOBAL_STYLES.navigaionArrowView}>
-          <Text style={GLOBAL_STYLES.navigaionArrowText}>{">"}</Text>
-        </View>
+        <Image
+        style={styles.arrowMirror}
+        source={require("../../assets/arrow_week_nav.png")}
+        />
       </TouchableOpacity>
     </View>
   );
 };
 
 export default WeekNagivation;
+
+
+const styles = StyleSheet.create({
+  arrow: {
+    width: 25,
+    height: 25
+  },
+  arrowMirror: {
+    width: 25,
+    height: 25,
+    transform: [{rotateY: '180deg'}]
+  }
+})
