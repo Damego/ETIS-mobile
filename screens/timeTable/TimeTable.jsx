@@ -12,7 +12,7 @@ import WeekNavigation from "./WeekNagivator";
 
 import { vars } from "../../utils/vars";
 
-const TimeTablePage = () => {
+const TimeTablePage = ({navigation}) => {
   const [isLoaded, setLoaded] = useState(false);
   const [data, setData] = useState(null);
 
@@ -43,6 +43,11 @@ const TimeTablePage = () => {
     } else {
       html = await vars.httpClient.getTimeTable();
     }
+    // TODO: What the fuck why navigation don't work?
+    // if (vars.parser.isLoginPage(html)) {
+    //   navigation.navigate("StackNavigator", {screen: "Authorization"});
+    //   return;
+    // }
 
     if (!html) return null;
     return vars.parser.parseTimeTable(html);
