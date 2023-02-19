@@ -78,7 +78,8 @@ export const GLOBAL_STYLES = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
 
-    paddingHorizontal: "2%",
+    paddingHorizontal: "1%",
+    height: "8%"
   },
   navigaionArrowView: {},
   navigaionArrowText: {
