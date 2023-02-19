@@ -18,7 +18,7 @@ const TimeTablePage = () => {
 
   useEffect(() => {
     if (isLoaded) return;
-    console.log("TIMETABLE IS LOADED:", isLoaded);
+  
     const wrapper = async () => {
       let res = await getWeekData();
       console.log("Got response data:", res);
@@ -54,7 +54,6 @@ const TimeTablePage = () => {
   };
 
   if (!isLoaded || !data) return <LoadingText />;
-
   return (
     <View style={GLOBAL_STYLES.screen}>
       <Header text={"Расписание"} />
@@ -64,8 +63,8 @@ const TimeTablePage = () => {
         currentWeek={data.currentWeek}
         onWeekChange={async (week) => (await changeWeek(week))}
       />
-      <ScrollView>
-        <View>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={GLOBAL_STYLES.daysView}>
           {data.days.map((day) => {
             if (day.lessons.lenght == 0)
               return <EmptyDay key={day.date} date={day.date} />;
