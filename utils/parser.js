@@ -3,7 +3,7 @@ import * as cheerio from "cheerio";
 export default class DataParsing {
   isLoginPage(html) {
     const $ = cheerio.load(html);
-    return !!$(".login");
+    return !!$(".login").html();
   }
 
   parseHeader(html) {
