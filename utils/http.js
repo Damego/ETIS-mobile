@@ -31,14 +31,13 @@ export default class HTTPClient {
     if (response.headers["content-length"] == "20020") {
       console.warn("You have been ratelimited (5 requests per 10 minutes).");
       return true;
-    }
-    else if (response.headers["content-length"] == "20073") {
+    } else if (response.headers["content-length"] == "20073") {
       console.warn(
         "You passed wrong login or password, or ReCaptcha token is outdated."
       );
       return true;
     }
-    return false;    
+    return false;
   }
 
   /**
@@ -71,13 +70,13 @@ export default class HTTPClient {
     // Figuring out error via content lenght
     if (!cookies) {
       if (!this.checkForError(response)) {
-          console.warn(
-            "Unknown error. Content lenght:",
-            response.headers["content-length"]
-          );
-        }
-      return;
+        console.warn(
+          "Unknown error. Content lenght:",
+          response.headers["content-length"]
+        );
       }
+      return;
+    }
 
     this.sessionID = cookies[0].split(";")[0];
     console.log(`Authorized with ${this.sessionID}`);
@@ -116,7 +115,7 @@ export default class HTTPClient {
     - rating: итоговый рейтинг за триместр 
     - diplom: оценки в диплом
     */
-   return await this.request("signs", {p_mode: mode});
+    return await this.request("signs", { p_mode: mode });
   }
 
   async getAbsenses(trimester) {
@@ -126,7 +125,7 @@ export default class HTTPClient {
       - 2: весенний
       - 3: летний
      */
-    return await this.request("absence", {p_term: trimester});
+    return await this.request("absence", { p_term: trimester });
   }
 
   async getTeachers() {
