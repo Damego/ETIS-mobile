@@ -229,11 +229,11 @@ export default class DataParsing {
       const trimester = `${el + 1} триместр`;
       let subjects = [];
       $(".cgrldatarow", table).each((el, tr) => {
-        const subject = $(tr).find("td").eq(0).text();
-        const reporting = $(tr).find("td").eq(1).text();
-        const classWork = $(tr).find("td").eq(2).text();
-        const soloWork = $(tr).find("td").eq(3).text();
-        const total = $(tr).find("td").eq(4).text();
+        const subject = $(tr).find("td").eq(0).text().trim();
+        const reporting = $(tr).find("td").eq(1).text().trim();
+        const classWork = $(tr).find("td").eq(2).text().trim();
+        const soloWork = $(tr).find("td").eq(3).text().trim();
+        const total = $(tr).find("td").eq(4).text().trim();
         subjects.push({
           subject,
           reporting,

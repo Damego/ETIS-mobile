@@ -13,7 +13,7 @@ export default class HTTPClient {
 
     let url = `${this.defaultURL}.${endpoint}`;
 
-    console.log(`[HTTP] Sending request to '${url}' with params: `, params);
+    console.log(`[HTTP] Sending request to '${url}' with params:`, params);
 
     let response = await axios.get(url, {
       headers: {

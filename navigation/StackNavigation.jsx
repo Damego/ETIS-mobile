@@ -45,9 +45,8 @@ const StackNavigator = ({isSignedIn, setSignedIn}) => {
                   backgroundColor: "#FFFFFF",
                 },
               }}
-              component={TimeTablePage}
             >
-              {/* {(props) => <TabNavigator {...props} />} */}
+              {(props) => <TabNavigator {...props} />}
             </Stack.Screen>
           )}
         </Stack.Navigator>

@@ -6,16 +6,16 @@ export const GLOBAL_STYLES = StyleSheet.create({
     height: "100%",
   },
   buttomNavigator: {
-    tabBarStyle: { zIndex: 1 }, // Why it doesn't do by default?
+    tabBarStyle: { zIndex: 1 },
   },
   loadingDataText: {
     fontSize: 30,
   },
   headerContainer: {
-    height: "7%",
     display: "flex",
     marginLeft: "5%",
     paddingTop: "2%",
+    paddingBottom: "2%",
   },
   headerText: {
     fontSize: 26,

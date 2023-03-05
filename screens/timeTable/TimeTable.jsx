@@ -21,7 +21,6 @@ const TimeTablePage = ({navigation}) => {
   
     const wrapper = async () => {
       let res = await getWeekData();
-      console.log("Got response data:", res);
       if (res != null) {
         setLoaded(true);
         setData(res);

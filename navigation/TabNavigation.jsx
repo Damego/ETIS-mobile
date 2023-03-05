@@ -3,9 +3,7 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import AbsensesPage from "../screens/Absenses";
-import MessagesPage from "../screens/Message";
-import SignsPage from "../screens/Signs";
+import ShortTeachPlan from "../screens/shortTeachPlan/shortTeachPlan";
 import TimeTablePage from "../screens/timeTable/TimeTable";
 
 import { GLOBAL_STYLES } from "../styles/styles";
@@ -23,18 +21,8 @@ const TabNavigator = () => {
           }}
         />
         <Tab.Screen
-          name="Оценки"
-          component={SignsPage}
-          options={{ headerShown: false }}
-        />
-        <Tab.Screen
-          name="Пропуски"
-          component={AbsensesPage}
-          options={{ headerShown: false }}
-        />
-        <Tab.Screen
-          name="Сообщения"
-          component={MessagesPage}
+          name="Учебный план"
+          component={ShortTeachPlan}
           options={{ headerShown: false }}
         />
       </Tab.Navigator>
