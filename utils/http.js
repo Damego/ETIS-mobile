@@ -6,6 +6,41 @@ export default class HTTPClient {
     this.sessionID = null;
   }
 
+  async request(endpoint, params = null) {
+    if (this.sessionID == null) {
+      return;
+    }
+
+    let url = `${this.defaultURL}.${endpoint}`;
+
+    console.log(`[HTTP] Sending request to '${url}' with params: `, params);
+
+    let response = await axios.get(url, {
+      headers: {
+        Cookie: this.sessionID,
+      },
+      params: params,
+    });
+
+    if (this.checkForError(response)) return null;
+
+    return response.data;
+  }
+
+  checkForError(response) {
+    if (response.headers["content-length"] == "20020") {
+      console.warn("You have been ratelimited (5 requests per 10 minutes).");
+      return true;
+    }
+    else if (response.headers["content-length"] == "20073") {
+      console.warn(
+        "You passed wrong login or password, or ReCaptcha token is outdated."
+      );
+      return true;
+    }
+    return false;    
+  }
+
   /**
    *
    * @param {string} username Электронная почта
@@ -35,21 +70,14 @@ export default class HTTPClient {
 
     // Figuring out error via content lenght
     if (!cookies) {
-      if (response.headers["content-length"] == "20020") {
-        console.warn("You have been ratelimited (5 requests per 10 minutes).");
-      } else if (response.headers["content-length"] == "20073") {
-        console.warn(
-          "You passed wrong login or password, or ReCaptcha token is outdated."
-        );
-      } else {
-        console.warn(
-          "Unknown error. Content lenght:",
-          response.headers["content-length"]
-        );
-      }
-
+      if (!this.checkForError(response)) {
+          console.warn(
+            "Unknown error. Content lenght:",
+            response.headers["content-length"]
+          );
+        }
       return;
-    }
+      }
 
     this.sessionID = cookies[0].split(";")[0];
     console.log(`Authorized with ${this.sessionID}`);
@@ -65,48 +93,19 @@ export default class HTTPClient {
 
     `week`: неделя в триместре.
     */
-    if (this.sessionID == null) {
-      return; // TODO: Exceptions? Output error message? Auto authorize?
-    }
-
     let _showConsultations = !!showConsultations ? "y" : "n";
-    let response = await axios.get(`${this.defaultURL}.timetable`, {
-      headers: {
-        Cookie: this.sessionID,
-      },
-      params: {
-        p_cons: _showConsultations,
-        p_week: week,
-      },
+    return await this.request("timetable", {
+      p_cons: _showConsultations,
+      p_week: week,
     });
-    return response.data;
   }
 
   async getEblChoice() {
-    // lol
-    if (this.sessionID == null) {
-      return; // TODO: Exceptions? Output error message? Auto authorize?
-    }
-
-    let response = await axios.get(`${this.defaultURL}.ebl_choice`, {
-      headers: {
-        Cookie: this.sessionID,
-      },
-    });
-    return response.data;
+    return await this.request("ebl_choice");
   }
 
   async getTeachPlan() {
-    if (this.sessionID == null) {
-      return; // TODO: Exceptions? Output error message? Auto authorize?
-    }
-
-    let response = await axios.get(`${this.defaultURL}.teach_plan`, {
-      headers: {
-        Cookie: this.sessionID,
-      },
-    });
-    return response.data;
+    return await this.request("teach_plan");
   }
 
   async getSigns(mode) {
@@ -117,19 +116,7 @@ export default class HTTPClient {
     - rating: итоговый рейтинг за триместр 
     - diplom: оценки в диплом
     */
-    if (this.sessionID == null) {
-      return; // TODO: Exceptions? Output error message? Auto authorize?
-    }
-
-    let response = await axios.get(`${this.defaultURL}.signs`, {
-      headers: {
-        Cookie: this.sessionID,
-      },
-      params: {
-        p_mode: mode,
-      },
-    });
-    return response.data;
+   return await this.request("signs", {p_mode: mode});
   }
 
   async getAbsenses(trimester) {
@@ -139,57 +126,18 @@ export default class HTTPClient {
       - 2: весенний
       - 3: летний
      */
-    if (this.sessionID == null) {
-      return; // TODO: Exceptions? Output error message? Auto authorize?
-    }
-
-    let response = await axios.get(`${this.defaultURL}.absence`, {
-      headers: {
-        Cookie: this.sessionID,
-      },
-      params: {
-        p_term: trimester,
-      },
-    });
-    return response.data;
+    return await this.request("absence", {p_term: trimester});
   }
 
   async getTeachers() {
-    if (this.sessionID == null) {
-      return; // TODO: Exceptions? Output error message? Auto authorize?
-    }
-
-    let response = await axios.get(`${this.defaultURL}.teachers`, {
-      headers: {
-        Cookie: this.sessionID,
-      },
-    });
-    return response.data;
+    return await this.request("teachers");
   }
 
   async getAnnounce() {
-    if (this.sessionID == null) {
-      return; // TODO: Exceptions? Output error message? Auto authorize?
-    }
-
-    let response = await axios.get(`${this.defaultURL}.announce`, {
-      headers: {
-        Cookie: this.sessionID,
-      },
-    });
-    return response.data;
+    return await this.request("announce");
   }
 
   async getTeacherNotes() {
-    if (this.sessionID == null) {
-      return; // TODO: Exceptions? Output error message? Auto authorize?
-    }
-
-    let response = await axios.get(`${this.defaultURL}.teacher_notes`, {
-      headers: {
-        Cookie: this.sessionID,
-      },
-    });
-    return response.data;
+    return await this.request("teacher_notes");
   }
 }
