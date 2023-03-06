@@ -12,13 +12,13 @@ import WeekNavigation from "./WeekNagivator";
 
 import { vars } from "../../utils/vars";
 
-const TimeTablePage = ({navigation}) => {
+const TimeTablePage = ({ navigation }) => {
   const [isLoaded, setLoaded] = useState(false);
   const [data, setData] = useState(null);
 
   useEffect(() => {
     if (isLoaded) return;
-  
+
     const wrapper = async () => {
       let res = await getWeekData();
       if (res != null) {
@@ -30,7 +30,7 @@ const TimeTablePage = ({navigation}) => {
   });
 
   /**
-   * 
+   *
    * @param {number} week День недели
    */
   const getWeekData = async (week = null) => {
@@ -59,15 +59,16 @@ const TimeTablePage = ({navigation}) => {
 
   if (!isLoaded || !data) return <LoadingPage />;
   return (
-    <View style={GLOBAL_STYLES.screen}>
-      <Header text={"Расписание"} />
-      <WeekNavigation
-        firstWeek={data.firstWeek}
-        lastWeek={data.lastWeek}
-        currentWeek={data.currentWeek}
-        onWeekChange={async (week) => (await changeWeek(week))}
-      />
-      <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={GLOBAL_STYLES.screen}>
+        <Header text={"Расписание"} />
+        <WeekNavigation
+          firstWeek={data.firstWeek}
+          lastWeek={data.lastWeek}
+          currentWeek={data.currentWeek}
+          onWeekChange={async (week) => await changeWeek(week)}
+        />
+
         <View style={GLOBAL_STYLES.daysView}>
           {data.days.map((day) => {
             if (day.lessons.lenght == 0)
@@ -75,8 +76,8 @@ const TimeTablePage = ({navigation}) => {
             return <Day key={day.date} data={day} />;
           })}
         </View>
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 };
 

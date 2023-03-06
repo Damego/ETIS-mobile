@@ -79,7 +79,8 @@ export const GLOBAL_STYLES = StyleSheet.create({
     alignItems: "center",
 
     paddingHorizontal: "1%",
-    height: "8%"
+    paddingBottom: "2%",
+    paddingTop: "2%"
   },
   navigaionArrowView: {},
   navigaionArrowText: {
