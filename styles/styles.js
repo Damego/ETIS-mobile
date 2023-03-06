@@ -72,43 +72,5 @@ export const GLOBAL_STYLES = StyleSheet.create({
   lessonAudienceText: {
     color: "#353535",
   },
-  weekNavigationView: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-
-    paddingHorizontal: "1%",
-    paddingBottom: "2%",
-    paddingTop: "2%"
-  },
-  navigaionArrowView: {},
-  navigaionArrowText: {
-    color: "#C62E3E",
-    fontSize: 40,
-  },
-  weekButtonView: {},
-  weekButtonText: {
-    fontSize: 20,
-  },
-  currentWeekButtonView: {
-    alignItems: "center",
-    width: 35,
-    height: 35,
-    backgroundColor: "#C62E3E",
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.35,
-    shadowRadius: 6,
-    elevation: 4,
-  },
-  currentWeekButtonText: {
-    marginTop: "6%",
-    fontSize: 20,
-    color: "#FFFFFF",
-  },
+  
 });
