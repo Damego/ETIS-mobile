@@ -257,15 +257,18 @@ export default class DataParsing {
     $(".common", html).each((el, table) => {
       let info = [];
       $("tr", table).each((i, tr) => {
-        const theme = $(tr).find("td").eq(0).text();
-        const typeWork = $(tr).find("td").eq(1).text();
-        const typeControl = $(tr).find("td").eq(2).text();
-        const mark = $(tr).find("td").eq(3).text();
-        const passScore = $(tr).find("td").eq(4).text();
-        const currentScore = $(tr).find("td").eq(5).text();
-        const maxScore = $(tr).find("td").eq(6).text();
-        const date = $(tr).find("td").eq(7).text();
-        const teacher = $(tr).find("td").eq(8).text();
+
+        // TODO: yeeeeeeeeeeet this shit lol
+        let td = $(tr).find("td");
+        let theme = td.eq(0).text().trim();
+        let typeWork = td.eq(1).text().trim();
+        let typeControl = td.eq(2).text().trim();
+        let mark = parseInt(td.eq(3).text().trim());
+        let passScore = parseInt(td.eq(4).text().trim());
+        let currentScore = parseInt(td.eq(5).text().trim());
+        let maxScore = parseInt(td.eq(6).text().trim());
+        let date = td.eq(7).text().trim();
+        let teacher = td.eq(8).text().trim();
         info.push({
           theme,
           typeWork,
