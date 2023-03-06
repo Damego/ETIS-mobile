@@ -66,14 +66,7 @@ export default class DataParsing {
       let lessons = [];
       const date = $(day).find("h3").text();
 
-      if ($(day).children().last().hasClass("no_pairs")) {
-        const subject = $(day).children().last().text();
-        lessons.push({
-          audience: "",
-          subject,
-          time: "",
-        });
-      } else {
+      if (!$(day).children().last().hasClass("no_pairs")) {
         $("tr", day).each((_, tr) => {
           const audience = $(tr).find(".pair_info").find(".aud").text().trim();
           const subject = $(tr).find(".pair_info").find(".dis").text().trim();
