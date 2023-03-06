@@ -257,7 +257,6 @@ export default class DataParsing {
     $(".common", html).each((el, table) => {
       let info = [];
       $("tr", table).each((i, tr) => {
-
         // TODO: yeeeeeeeeeeet this shit lol
         let td = $(tr).find("td");
         let theme = td.eq(0).text().trim();

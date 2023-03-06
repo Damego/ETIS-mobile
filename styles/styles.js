@@ -72,5 +72,4 @@ export const GLOBAL_STYLES = StyleSheet.create({
   lessonAudienceText: {
     color: "#353535",
   },
-  
 });
