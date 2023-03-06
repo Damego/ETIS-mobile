@@ -6,8 +6,7 @@ import { GLOBAL_STYLES } from "../../styles/styles";
 
 import Header from "../../components/Header";
 import LoadingPage from "../../components/LoadingPage";
-import Day from "./Day";
-import EmptyDay from "./EmptyDay";
+import { Day, EmptyDay } from "./Day";
 import WeekNavigation from "./WeekNagivator";
 
 import { vars } from "../../utils/vars";
@@ -71,8 +70,9 @@ const TimeTablePage = ({ navigation }) => {
 
         <View style={GLOBAL_STYLES.daysView}>
           {data.days.map((day) => {
-            if (day.lessons.lenght == 0)
-              return <EmptyDay key={day.date} date={day.date} />;
+            if (day.lessons.length === 0) {
+              return <EmptyDay key={day.date} data={day} />;
+            }
             return <Day key={day.date} data={day} />;
           })}
         </View>

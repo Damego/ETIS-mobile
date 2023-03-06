@@ -22,32 +22,6 @@ export const GLOBAL_STYLES = StyleSheet.create({
     color: "#C62E3E",
     fontWeight: "700",
   },
-  timeTableDayView: {
-    flex: 1,
-    display: "flex",
-    width: "96%",
-    backgroundColor: "#ffffff",
-    marginLeft: "2%",
-    marginBottom: "3%",
-    borderRadius: 10,
-
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.35,
-    shadowRadius: 6,
-    elevation: 4,
-  },
-  timeTableDateView: {
-    marginLeft: "2%",
-    marginBottom: 4,
-  },
-  timeTableDateText: {
-    fontSize: 16,
-    fontWeight: "600",
-  },
   lessonContainer: {
     marginLeft: "1%",
     display: "flex",
