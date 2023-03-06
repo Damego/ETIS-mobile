@@ -7,6 +7,7 @@ import Header from "../../components/Header";
 import { vars } from "../../utils/vars";
 import LoadingPage from "../../components/LoadingPage";
 import Trimester from "./trimester";
+import Card from "../../components/Card";
 
 const getTeachPlan = async () => {
   let html = await vars.httpClient.getTeachPlan();
@@ -35,13 +36,14 @@ const ShortTeachPlan = () => {
   });
 
   if (!isLoaded || !data) return <LoadingPage />;
-  console.log(data);
   return (
     <ScrollView>
       <View style={GLOBAL_STYLES.screen}>
         <Header text={"Учебный план"} />
+        
         {data.map((trimester) => (
-          <Trimester data={trimester} key={data.indexOf(trimester)} />
+          <Card topText={trimester.trimester} component={<Trimester data={trimester} key={data.indexOf(trimester)} />}/>
+          
         ))}
       </View>
     </ScrollView>
