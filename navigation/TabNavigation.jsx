@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import ShortTeachPlan from "../screens/shortTeachPlan/shortTeachPlan";
 import TimeTablePage from "../screens/timeTable/TimeTable";
-
+import Signs from "../screens/signs/Signs";
 import { GLOBAL_STYLES } from "../styles/styles";
 
 const Tab = createBottomTabNavigator();
@@ -23,6 +23,11 @@ const TabNavigator = () => {
         <Tab.Screen
           name="Учебный план"
           component={ShortTeachPlan}
+          options={{ headerShown: false }}
+        />
+        <Tab.Screen
+          name="Оценки"
+          component={Signs}
           options={{ headerShown: false }}
         />
       </Tab.Navigator>
