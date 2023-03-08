@@ -18,7 +18,7 @@ const getTeachPlan = async () => {
 };
 
 const ShortTeachPlan = () => {
-  const [data, setData] = useState();
+  const [data, setData] = useState(null);
   const [isLoaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -36,13 +36,14 @@ const ShortTeachPlan = () => {
   });
 
   if (!isLoaded || !data) return <LoadingPage />;
+
   return (
-    <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
       <View style={GLOBAL_STYLES.screen}>
         <Header text={"Учебный план"} />
-        
-        {data.map((trimester) => (
-          <Card topText={trimester.trimester} component={<Trimester data={trimester} key={data.indexOf(trimester)} />}/>
+
+        {data.map((trimester, index) => (
+          <Card topText={trimester.trimester} component={<Trimester data={trimester} key={index} />}/>
           
         ))}
       </View>

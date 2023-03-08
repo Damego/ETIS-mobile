@@ -69,11 +69,11 @@ const TimeTablePage = ({ navigation }) => {
         />
 
         <View style={GLOBAL_STYLES.daysView}>
-          {data.days.map((day) => {
+          {data.days.map((day, index) => {
             if (day.lessons.length === 0) {
-              return <EmptyDay key={day.date} data={day} />;
+              return <EmptyDay key={index} data={day} />;
             }
-            return <Day key={day.date} data={day} />;
+            return <Day key={index} data={day} />;
           })}
         </View>
       </View>
