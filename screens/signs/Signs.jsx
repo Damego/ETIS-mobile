@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ScrollView } from "react-native";
 
 import { vars } from "../../utils/vars";
 import LoadingPage from "../../components/LoadingPage";
 import Subject from "./Subject";
-import { GLOBAL_STYLES } from "../../styles/styles";
-import Header from "../../components/Header";
 import Card from "../../components/Card";
+import Screen from "../../components/Screen";
 
 const Signs = () => {
   const [isLoaded, setLoaded] = useState(false);
@@ -29,14 +27,17 @@ const Signs = () => {
   if (!isLoaded || !data) return <LoadingPage />;
 
   return (
-    <ScrollView>
-      <View style={GLOBAL_STYLES.screen}>
-        <Header text={"Оценки"} />
-        {data.map((subject) => {
-          return <Card topText={subject.subject} component={<Subject data={subject}/>} key={data.indexOf(subject)}/>;
-        })}
-      </View>
-    </ScrollView>
+    <Screen headerText={"Оценки"}>
+      {data.map((subject) => {
+        return (
+          <Card
+            topText={subject.subject}
+            component={<Subject data={subject} />}
+            key={data.indexOf(subject)}
+          />
+        );
+      })}
+    </Screen>
   );
 };
 

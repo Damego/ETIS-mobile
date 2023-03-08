@@ -4,11 +4,11 @@ import { ScrollView, View } from "react-native";
 import { GLOBAL_STYLES } from "../styles/styles";
 import Header from "./Header";
 
-const Screen = ({text, children}) => {
+const Screen = ({headerText, children}) => {
   return (
     <ScrollView showsVerticalScrollIndicator={false} overScrollMode={"never"}>
       <View style={GLOBAL_STYLES.screen}>
-        <Header text={text} />
+        <Header text={headerText} />
         {children}
       </View>
     </ScrollView>

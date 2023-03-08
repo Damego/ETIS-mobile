@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, View } from "react-native";
 
-import { GLOBAL_STYLES } from "../../styles/styles";
-
-import Header from "../../components/Header";
 import { vars } from "../../utils/vars";
 import LoadingPage from "../../components/LoadingPage";
 import Trimester from "./trimester";
 import Card from "../../components/Card";
+import Screen from "../../components/Screen";
 
 const getTeachPlan = async () => {
   let html = await vars.httpClient.getTeachPlan();
@@ -38,16 +35,15 @@ const ShortTeachPlan = () => {
   if (!isLoaded || !data) return <LoadingPage />;
 
   return (
-      <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={GLOBAL_STYLES.screen}>
-        <Header text={"Учебный план"} />
-
-        {data.map((trimester, index) => (
-          <Card topText={trimester.trimester} component={<Trimester data={trimester} key={index} />}/>
-          
-        ))}
-      </View>
-    </ScrollView>
+    <Screen headerText={"Учебный план"}>
+      {data.map((trimester, index) => (
+        <Card
+          topText={trimester.trimester}
+          component={<Trimester data={trimester} key={"t" + index} />}
+          key={"c" + index}
+        />
+      ))}
+    </Screen>
   );
 };
 

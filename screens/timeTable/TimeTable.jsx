@@ -1,17 +1,17 @@
 "use strict";
 
 import React, { useState, useEffect } from "react";
-import { ScrollView, View } from "react-native";
+import { View } from "react-native";
 import { GLOBAL_STYLES } from "../../styles/styles";
 
-import Header from "../../components/Header";
 import LoadingPage from "../../components/LoadingPage";
 import { Day, EmptyDay } from "./Day";
 import WeekNavigation from "./WeekNagivator";
+import Screen from "../../components/Screen";
 
 import { vars } from "../../utils/vars";
 
-const TimeTablePage = ({ navigation }) => {
+const TimeTablePage = () => {
   const [isLoaded, setLoaded] = useState(false);
   const [data, setData] = useState(null);
 
@@ -58,26 +58,23 @@ const TimeTablePage = ({ navigation }) => {
 
   if (!isLoaded || !data) return <LoadingPage />;
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={GLOBAL_STYLES.screen}>
-        <Header text={"Расписание"} />
-        <WeekNavigation
-          firstWeek={data.firstWeek}
-          lastWeek={data.lastWeek}
-          currentWeek={data.currentWeek}
-          onWeekChange={async (week) => await changeWeek(week)}
-        />
+    <Screen headerText={"Расписание"}>
+      <WeekNavigation
+        firstWeek={data.firstWeek}
+        lastWeek={data.lastWeek}
+        currentWeek={data.currentWeek}
+        onWeekChange={async (week) => await changeWeek(week)}
+      />
 
-        <View style={GLOBAL_STYLES.daysView}>
-          {data.days.map((day, index) => {
-            if (day.lessons.length === 0) {
-              return <EmptyDay key={index} data={day} />;
-            }
-            return <Day key={index} data={day} />;
-          })}
-        </View>
+      <View style={GLOBAL_STYLES.daysView}>
+        {data.days.map((day, index) => {
+          if (day.lessons.length === 0) {
+            return <EmptyDay key={index} data={day} />;
+          }
+          return <Day key={index} data={day} />;
+        })}
       </View>
-    </ScrollView>
+    </Screen>
   );
 };
 
