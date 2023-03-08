@@ -1,9 +1,9 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export const GLOBAL_STYLES = StyleSheet.create({
   screen: {
-    backgroundColor: "#F8F8FA",
-    height: "100%",
+    backgroundColor: '#F8F8FA',
+    height: '100%',
   },
   buttomNavigator: {
     tabBarStyle: { zIndex: 1 },
@@ -12,25 +12,25 @@ export const GLOBAL_STYLES = StyleSheet.create({
     fontSize: 30,
   },
   headerContainer: {
-    display: "flex",
-    marginLeft: "5%",
-    paddingTop: "2%",
-    paddingBottom: "2%",
+    display: 'flex',
+    marginLeft: '5%',
+    paddingTop: '2%',
+    paddingBottom: '2%',
   },
   headerText: {
     fontSize: 26,
-    color: "#C62E3E",
-    fontWeight: "700",
+    color: '#C62E3E',
+    fontWeight: '700',
   },
   lessonContainer: {
-    marginLeft: "1%",
-    display: "flex",
-    marginTop: "1%",
-    marginBottom: "1%",
-    flexWrap: "wrap",
+    marginLeft: '1%',
+    display: 'flex',
+    marginTop: '1%',
+    marginBottom: '1%',
+    flexWrap: 'wrap',
     flexShrink: 1,
 
-    paddingHorizontal: "1%",
+    paddingHorizontal: '1%',
   },
   lessonTimeView: {
     paddingHorizontal: 1,
@@ -41,9 +41,9 @@ export const GLOBAL_STYLES = StyleSheet.create({
   lessonInfoView: {},
   lessonInfoText: {
     fontSize: 16,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   lessonAudienceText: {
-    color: "#353535",
+    color: '#353535',
   },
 });

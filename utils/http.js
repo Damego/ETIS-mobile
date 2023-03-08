@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios from 'axios';
 
 export default class HTTPClient {
   constructor() {
-    this.defaultURL = "https://student.psu.ru/pls/stu_cus_et/stu";
+    this.defaultURL = 'https://student.psu.ru/pls/stu_cus_et/stu';
     this.sessionID = null;
   }
 
@@ -28,13 +28,11 @@ export default class HTTPClient {
   }
 
   checkForError(response) {
-    if (response.headers["content-length"] == "20020") {
-      console.warn("You have been ratelimited (5 requests per 10 minutes).");
+    if (response.headers['content-length'] == '20020') {
+      console.warn('You have been ratelimited (5 requests per 10 minutes).');
       return true;
-    } else if (response.headers["content-length"] == "20073") {
-      console.warn(
-        "You passed wrong login or password, or ReCaptcha token is outdated."
-      );
+    } else if (response.headers['content-length'] == '20073') {
+      console.warn('You passed wrong login or password, or ReCaptcha token is outdated.');
       return true;
     }
     return false;
@@ -48,37 +46,34 @@ export default class HTTPClient {
    * @returns
    */
   async login(username, password, token) {
-    console.log("login method");
+    console.log('login method');
     if (!token) {
-      return console.warn("No token was passed!");
+      return console.warn('No token was passed!');
     }
     let formData = new FormData();
 
-    formData.append("p_redirect", "stu.timetable");
-    formData.append("p_username", username.trim());
-    formData.append("p_password", password.trim());
-    formData.append("p_recaptcha_ver", "3");
-    formData.append("p_recaptcha_response", token.trim());
+    formData.append('p_redirect', 'stu.timetable');
+    formData.append('p_username', username.trim());
+    formData.append('p_password', password.trim());
+    formData.append('p_recaptcha_ver', '3');
+    formData.append('p_recaptcha_response', token.trim());
 
     let response = await axios.post(`${this.defaultURL}.login`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: { 'Content-Type': 'multipart/form-data' },
     });
 
-    let cookies = response.headers["set-cookie"];
+    let cookies = response.headers['set-cookie'];
     console.log(response.headers);
 
     // Figuring out error via content lenght
     if (!cookies) {
       if (!this.checkForError(response)) {
-        console.warn(
-          "Unknown error. Content lenght:",
-          response.headers["content-length"]
-        );
+        console.warn('Unknown error. Content lenght:', response.headers['content-length']);
       }
       return;
     }
 
-    this.sessionID = cookies[0].split(";")[0];
+    this.sessionID = cookies[0].split(';')[0];
     console.log(`Authorized with ${this.sessionID}`);
 
     return this.sessionID;
@@ -92,19 +87,19 @@ export default class HTTPClient {
 
     `week`: неделя в триместре.
     */
-    let _showConsultations = !!showConsultations ? "y" : "n";
-    return await this.request("timetable", {
+    let _showConsultations = !!showConsultations ? 'y' : 'n';
+    return await this.request('timetable', {
       p_cons: _showConsultations,
       p_week: week,
     });
   }
 
   async getEblChoice() {
-    return await this.request("ebl_choice");
+    return await this.request('ebl_choice');
   }
 
   async getTeachPlan() {
-    return await this.request("teach_plan");
+    return await this.request('teach_plan');
   }
 
   async getSigns(mode) {
@@ -115,7 +110,7 @@ export default class HTTPClient {
     - rating: итоговый рейтинг за триместр 
     - diplom: оценки в диплом
     */
-    return await this.request("signs", { p_mode: mode });
+    return await this.request('signs', { p_mode: mode });
   }
 
   async getAbsenses(trimester) {
@@ -125,18 +120,18 @@ export default class HTTPClient {
       - 2: весенний
       - 3: летний
      */
-    return await this.request("absence", { p_term: trimester });
+    return await this.request('absence', { p_term: trimester });
   }
 
   async getTeachers() {
-    return await this.request("teachers");
+    return await this.request('teachers');
   }
 
   async getAnnounce() {
-    return await this.request("announce");
+    return await this.request('announce');
   }
 
   async getTeacherNotes() {
-    return await this.request("teacher_notes");
+    return await this.request('teacher_notes');
   }
 }
