@@ -48,8 +48,8 @@ const WeekNagivation = (props) => {
     <View style={styles.weekNavigationView}>
       <TouchableOpacity onPress={() => onArrowClick(0)}>
         <Image
-        style={styles.arrow}
-        source={require("../../assets/arrow_week_nav.png")}
+          style={styles.arrow}
+          source={require("../../assets/arrow_week_nav.png")}
         />
       </TouchableOpacity>
 
@@ -75,8 +75,8 @@ const WeekNagivation = (props) => {
 
       <TouchableOpacity onPress={() => onArrowClick(1)}>
         <Image
-        style={styles.arrowMirror}
-        source={require("../../assets/arrow_week_nav.png")}
+          style={styles.arrowMirror}
+          source={require("../../assets/arrow_week_nav.png")}
         />
       </TouchableOpacity>
     </View>
@@ -85,19 +85,17 @@ const WeekNagivation = (props) => {
 
 export default WeekNagivation;
 
-
 const styles = StyleSheet.create({
   arrow: {
     width: 25,
-    height: 25
+    height: 25,
   },
   arrowMirror: {
     width: 25,
     height: 25,
-    transform: [{rotateY: '180deg'}]
+    transform: [{ rotateY: "180deg" }],
   },
   weekNavigationView: {
-    display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -105,14 +103,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: "1%",
     paddingBottom: "2%",
     paddingTop: "2%",
-    height: "4%"
   },
-  navigaionArrowView: {},
-  navigaionArrowText: {
-    color: "#C62E3E",
-    fontSize: 40,
+  weekButtonView: {
+    height: 35,
   },
-  weekButtonView: {},
   weekButtonText: {
     fontSize: 20,
   },
@@ -136,4 +130,4 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#FFFFFF",
   },
-})
+});
