@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export const GLOBAL_STYLES = StyleSheet.create({
   buttonNavigator: {
@@ -9,14 +9,14 @@ export const GLOBAL_STYLES = StyleSheet.create({
   },
 
   lessonContainer: {
-    marginLeft: "1%",
-    display: "flex",
-    marginTop: "1%",
-    marginBottom: "1%",
-    flexWrap: "wrap",
+    marginLeft: '1%',
+    display: 'flex',
+    marginTop: '1%',
+    marginBottom: '1%',
+    flexWrap: 'wrap',
     flexShrink: 1,
 
-    paddingHorizontal: "1%",
+    paddingHorizontal: '1%',
   },
   lessonTimeView: {
     paddingHorizontal: 1,
@@ -27,9 +27,9 @@ export const GLOBAL_STYLES = StyleSheet.create({
   lessonInfoView: {},
   lessonInfoText: {
     fontSize: 16,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   lessonAudienceText: {
-    color: "#353535",
+    color: '#353535',
   },
 });
