@@ -1,4 +1,4 @@
-export const calculateLimits = (firstWeek, currentWeek, lastWeek) => {
+const calculateLimits = (firstWeek, currentWeek, lastWeek) => {
   const limits = 3;
   let leftLimit = currentWeek - limits;
   let rightLimit = currentWeek + limits;
@@ -14,3 +14,5 @@ export const calculateLimits = (firstWeek, currentWeek, lastWeek) => {
 
   return { leftLimit, rightLimit };
 };
+
+export default calculateLimits;

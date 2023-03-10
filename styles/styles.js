@@ -1,27 +1,13 @@
 import { StyleSheet } from "react-native";
 
 export const GLOBAL_STYLES = StyleSheet.create({
-  screen: {
-    backgroundColor: "#F8F8FA",
-    height: "100%",
-  },
-  buttomNavigator: {
+  buttonNavigator: {
     tabBarStyle: { zIndex: 1 },
   },
   loadingDataText: {
     fontSize: 30,
   },
-  headerContainer: {
-    display: "flex",
-    marginLeft: "5%",
-    paddingTop: "2%",
-    paddingBottom: "2%",
-  },
-  headerText: {
-    fontSize: 26,
-    color: "#C62E3E",
-    fontWeight: "700",
-  },
+
   lessonContainer: {
     marginLeft: "1%",
     display: "flex",

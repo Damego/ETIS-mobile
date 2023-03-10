@@ -163,7 +163,7 @@ export default class DataParsing {
           content,
         });
       } else {
-        cnt++;
+        cnt += 1;
         const type = "msg";
         let time = $(announce).find("font").eq(0).text();
         let author = $(announce).find("b").eq(0).text();
@@ -251,16 +251,16 @@ export default class DataParsing {
       let info = [];
       $("tr", table).each((i, tr) => {
         // TODO: yeeeeeeeeeeet this shit lol
-        let td = $(tr).find("td");
-        let theme = td.eq(0).text().trim();
-        let typeWork = td.eq(1).text().trim();
-        let typeControl = td.eq(2).text().trim();
-        let mark = parseInt(td.eq(3).text().trim());
-        let passScore = parseInt(td.eq(4).text().trim());
-        let currentScore = parseInt(td.eq(5).text().trim());
-        let maxScore = parseInt(td.eq(6).text().trim());
-        let date = td.eq(7).text().trim();
-        let teacher = td.eq(8).text().trim();
+        const td = $(tr).find("td");
+        const theme = td.eq(0).text().trim();
+        const typeWork = td.eq(1).text().trim();
+        const typeControl = td.eq(2).text().trim();
+        const mark = parseInt(td.eq(3).text().trim());
+        const passScore = parseInt(td.eq(4).text().trim());
+        const currentScore = parseInt(td.eq(5).text().trim());
+        const maxScore = parseInt(td.eq(6).text().trim());
+        const date = td.eq(7).text().trim();
+        const teacher = td.eq(8).text().trim();
         info.push({
           theme,
           typeWork,

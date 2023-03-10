@@ -19,7 +19,7 @@ export default class HTTPClient {
       headers: {
         Cookie: this.sessionID,
       },
-      params: params,
+      params,
     });
 
     if (this.checkForError(response)) return null;
@@ -28,10 +28,10 @@ export default class HTTPClient {
   }
 
   checkForError(response) {
-    if (response.headers["content-length"] == "20020") {
+    if (response.headers["content-length"] === "20020") {
       console.warn("You have been ratelimited (5 requests per 10 minutes).");
       return true;
-    } else if (response.headers["content-length"] == "20073") {
+    } else if (response.headers["content-length"] === "20073") {
       console.warn(
         "You passed wrong login or password, or ReCaptcha token is outdated."
       );
@@ -67,11 +67,11 @@ export default class HTTPClient {
     let cookies = response.headers["set-cookie"];
     console.log(response.headers);
 
-    // Figuring out error via content lenght
+    // Figuring out error via content length
     if (!cookies) {
       if (!this.checkForError(response)) {
         console.warn(
-          "Unknown error. Content lenght:",
+          "Unknown error. Content length:",
           response.headers["content-length"]
         );
       }

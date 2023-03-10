@@ -20,5 +20,11 @@
         "react-native"
     ],
     "rules": {
+        "radix": "off",
+        "react/function-component-definition": "off",
+        "react/prop-types": "off",
+        "consistent-return": "off",
+        "no-console": "off",
+        "global-require": "off"
     }
 }

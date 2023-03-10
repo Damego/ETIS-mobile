@@ -1,40 +1,41 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import AuthPage from "../screens/Auth";
-import TimeTablePage from "../screens/timeTable/TimeTable";
+import AuthPage from '../screens/auth/Auth';
 
-import TabNavigator from "./TabNavigation";
+import TabNavigator from './TabNavigation';
 
 const Stack = createNativeStackNavigator();
 
-const StackNavigator = ({isSignedIn, setSignedIn}) => {
-  console.log("is signed in ", isSignedIn);
+const StackNavigator = ({ isSignedIn, setSignedIn }) => {
+  console.log('is signed in ', isSignedIn);
   return (
     <SafeAreaProvider>
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
             contentStyle: {
-              backgroundColor: "#FFFFFF",
+              backgroundColor: '#FFFFFF',
             },
           }}
         >
-          {
-          !isSignedIn ? (
+          {!isSignedIn ? (
             <Stack.Screen
               name="Authorization"
               options={{ headerShown: false }}
               screenOptions={{
                 contentStyle: {
-                  backgroundColor: "#FFFFFF",
+                  backgroundColor: '#FFFFFF',
                 },
               }}
             >
-              {(props) => (
-                <AuthPage onSignIn={() => {setSignedIn(true)}} /> // 
-              )}
+              <AuthPage
+                onSignIn={() => {
+                  setSignedIn(true);
+                }}
+              />
             </Stack.Screen>
           ) : (
             <Stack.Screen
@@ -42,11 +43,11 @@ const StackNavigator = ({isSignedIn, setSignedIn}) => {
               options={{ headerShown: false }}
               screenOptions={{
                 contentStyle: {
-                  backgroundColor: "#FFFFFF",
+                  backgroundColor: '#FFFFFF',
                 },
               }}
             >
-              {(props) => <TabNavigator {...props} />}
+              <TabNavigator />
             </Stack.Screen>
           )}
         </Stack.Navigator>

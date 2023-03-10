@@ -1,30 +1,22 @@
-import React, { Component } from "react";
-import { View, Text } from "react-native";
+import React from 'react';
+import { View, Text } from 'react-native';
 
-import { GLOBAL_STYLES } from "../../styles/styles";
+import { GLOBAL_STYLES } from '../../styles/styles';
 
-export default class Lesson extends Component {
-  constructor(props) {
-    super(props);
+const Lesson = (data) => {
+  const { lesson } = data;
 
-    this.lesson = this.props.data;
-  }
-
-  render() {
-    return (
-      <View style={GLOBAL_STYLES.lessonContainer}>
-        <View style={GLOBAL_STYLES.lessonTimeView}>
-          <Text style={GLOBAL_STYLES.lessonTimeText}>{this.lesson.time}</Text>
-        </View>
-        <View style={GLOBAL_STYLES.lessonInfoView}>
-          <Text style={GLOBAL_STYLES.lessonInfoText}>
-            {this.lesson.subject}
-          </Text>
-          <Text style={GLOBAL_STYLES.lessonAudienceText}>
-            {this.lesson.audience}
-          </Text>
-        </View>
+  return (
+    <View style={GLOBAL_STYLES.lessonContainer}>
+      <View style={GLOBAL_STYLES.lessonTimeView}>
+        <Text style={GLOBAL_STYLES.lessonTimeText}>{lesson.time}</Text>
       </View>
-    );
-  }
-}
+      <View style={GLOBAL_STYLES.lessonInfoView}>
+        <Text style={GLOBAL_STYLES.lessonInfoText}>{lesson.subject}</Text>
+        <Text style={GLOBAL_STYLES.lessonAudienceText}>{lesson.audience}</Text>
+      </View>
+    </View>
+  );
+};
+
+export default Lesson;
