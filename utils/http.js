@@ -11,11 +11,11 @@ export default class HTTPClient {
       return;
     }
 
-    let url = `${this.defaultURL}.${endpoint}`;
+    const url = `${this.defaultURL}.${endpoint}`;
 
     console.log(`[HTTP] Sending request to '${url}' with params:`, params);
 
-    let response = await axios.get(url, {
+    const response = await axios.get(url, {
       headers: {
         Cookie: this.sessionID,
       },
@@ -28,10 +28,12 @@ export default class HTTPClient {
   }
 
   checkForError(response) {
-    if (response.headers['content-length'] === '20020') {
+    const contentLength = response.headers['content-length']
+    if (contentLength === '20020') {
       console.warn('You have been ratelimited (5 requests per 10 minutes).');
       return true;
-    } else if (response.headers['content-length'] === '20073') {
+    }
+    if (contentLength === '20073') {
       console.warn('You passed wrong login or password, or ReCaptcha token is outdated.');
       return true;
     }
@@ -50,7 +52,7 @@ export default class HTTPClient {
     if (!token) {
       return console.warn('No token was passed!');
     }
-    let formData = new FormData();
+    const formData = new FormData();
 
     formData.append('p_redirect', 'stu.timetable');
     formData.append('p_username', username.trim());
@@ -58,12 +60,11 @@ export default class HTTPClient {
     formData.append('p_recaptcha_ver', '3');
     formData.append('p_recaptcha_response', token.trim());
 
-    let response = await axios.post(`${this.defaultURL}.login`, formData, {
+    const response = await axios.post(`${this.defaultURL}.login`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
 
-    let cookies = response.headers['set-cookie'];
-    console.log(response.headers);
+    const cookies = response.headers['set-cookie'];
 
     // Figuring out error via content length
     if (!cookies) {
@@ -73,13 +74,14 @@ export default class HTTPClient {
       return;
     }
 
+    // eslint-disable-next-line prefer-destructuring
     this.sessionID = cookies[0].split(';')[0];
     console.log(`Authorized with ${this.sessionID}`);
 
     return this.sessionID;
   }
 
-  async getTimeTable({ showConsultations = null, week = null } = {}) {
+  getTimeTable({ showConsultations = null, week = null } = {}) {
     /*
     `showConsultations`:
     - y: Показывать консультации
@@ -87,22 +89,23 @@ export default class HTTPClient {
 
     `week`: неделя в триместре.
     */
-    let _showConsultations = !!showConsultations ? 'y' : 'n';
-    return await this.request('timetable', {
-      p_cons: _showConsultations,
+    const showConsultationsParam = showConsultations ? 'y' : 'n';
+
+    return this.request('timetable', {
+      p_cons: showConsultationsParam,
       p_week: week,
     });
   }
 
-  async getEblChoice() {
-    return await this.request('ebl_choice');
+  getEblChoice() {
+    return this.request('ebl_choice');
   }
 
-  async getTeachPlan() {
-    return await this.request('teach_plan');
+  getTeachPlan() {
+    return this.request('teach_plan');
   }
 
-  async getSigns(mode) {
+  getSigns(mode) {
     /*
     `mode`:
     - session: оценки за сессии
@@ -110,28 +113,28 @@ export default class HTTPClient {
     - rating: итоговый рейтинг за триместр 
     - diplom: оценки в диплом
     */
-    return await this.request('signs', { p_mode: mode });
+    return this.request('signs', { p_mode: mode });
   }
 
-  async getAbsenses(trimester) {
+  getAbsenses(trimester) {
     /*
     `trimester`:
       - 1: осенний
       - 2: весенний
       - 3: летний
      */
-    return await this.request('absence', { p_term: trimester });
+    return this.request('absence', { p_term: trimester });
   }
 
-  async getTeachers() {
-    return await this.request('teachers');
+  getTeachers() {
+    return this.request('teachers');
   }
 
-  async getAnnounce() {
-    return await this.request('announce');
+  getAnnounce() {
+    return this.request('announce');
   }
 
-  async getTeacherNotes() {
-    return await this.request('teacher_notes');
+  getTeacherNotes() {
+    return this.request('teacher_notes');
   }
 }
