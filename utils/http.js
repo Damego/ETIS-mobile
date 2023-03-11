@@ -28,7 +28,7 @@ export default class HTTPClient {
   }
 
   checkForError(response) {
-    const contentLength = response.headers['content-length']
+    const contentLength = response.headers['content-length'];
     if (contentLength === '20020') {
       console.warn('You have been ratelimited (5 requests per 10 minutes).');
       return true;
