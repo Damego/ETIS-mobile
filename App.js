@@ -4,5 +4,4 @@ import StackNavigator from './navigation/StackNavigation';
 
 const App = () => <StackNavigator />;
 
-
 export default App;
