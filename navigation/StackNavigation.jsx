@@ -22,7 +22,7 @@ const StackNavigator = () => {
         <Stack.Navigator
           screenOptions={{
             contentStyle: {
-              backgroundColor: '#FFFFFF',
+              backgroundColor: '#F8F8Fa',
             },
           }}
         >

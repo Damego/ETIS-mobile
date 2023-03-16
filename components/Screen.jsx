@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
 });
 
 const Screen = ({ headerText, children }) => (
-  <View style={{marginTop: Constants.statusBarHeight }}>
+  <View style={{ marginTop: Constants.statusBarHeight }}>
     <ScrollView showsVerticalScrollIndicator={false} overScrollMode='never'>
       <View style={styles.screen}>
         <Header text={headerText} />
