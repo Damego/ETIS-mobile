@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
+import 'react-native-get-random-values';
 import { v4 as uuid4 } from 'uuid';
 
 import LoadingPage from '../../components/LoadingPage';
@@ -48,7 +49,7 @@ const TimeTablePage = () => {
       }
     };
     wrapper();
-  });
+  }, [isLoaded, setLoaded, setData]);
 
   const changeWeek = async (week) => {
     const res = await getWeekData(week);

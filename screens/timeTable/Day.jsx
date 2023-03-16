@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
+import { v4 as uuid4 } from 'uuid';
 
 import Lesson from './Lesson';
 import Card from '../../components/Card';
@@ -24,11 +25,11 @@ const EmptyDay = ({ data }) => {
 };
 
 const Day = ({ data }) => {
-  const { date } = data;
-  const { lessons } = data;
+  const { date, lessons } = data;
 
   return (
     <Card
+      key={uuid4()}
       topText={date}
       component={lessons.map((lesson) => (
         <Lesson key={date + lesson.time + lesson.subject} data={lesson} />
