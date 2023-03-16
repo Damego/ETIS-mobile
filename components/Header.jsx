@@ -17,11 +17,15 @@ const styles = StyleSheet.create({
 });
 
 const Header = ({ text }) => (
-  <View style={styles.headerContainer}>
-    {/* eslint-disable-next-line react/style-prop-object */}
-    <StatusBar style="auto" />
-    <Text style={styles.headerText}>{text}</Text>
+  <View>
+    <StatusBar/>
+    <View style={styles.headerContainer}>
+      {/* eslint-disable-next-line react/style-prop-object */}
+
+      <Text style={styles.headerText}>{text}</Text>
+    </View>
   </View>
+
 );
 
 export default Header;
