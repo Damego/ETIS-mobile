@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
-
+import Constants from 'expo-constants';
 import Header from './Header';
 
 const styles = StyleSheet.create({
@@ -11,12 +11,14 @@ const styles = StyleSheet.create({
 });
 
 const Screen = ({ headerText, children }) => (
-  <ScrollView showsVerticalScrollIndicator={false} overScrollMode='never'>
-    <View style={styles.screen}>
-      <Header text={headerText} />
-      {children}
-    </View>
-  </ScrollView>
+  <View style={{marginTop: Constants.statusBarHeight }}>
+    <ScrollView showsVerticalScrollIndicator={false} overScrollMode='never'>
+      <View style={styles.screen}>
+        <Header text={headerText} />
+        {children}
+      </View>
+    </ScrollView>
+  </View>
 );
 
 export default Screen;
