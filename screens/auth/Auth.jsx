@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { SafeAreaView } from 'react-native';
 import ReCaptchaV3 from '@haskkor/react-native-recaptchav3';
 
@@ -6,9 +6,34 @@ import Form from './AuthForm';
 import Header from '../../components/Header';
 import Footer from './AuthFooter';
 import { vars } from '../../utils/vars';
+import AuthContext from "../../context/AuthContext";
 
-const AuthPage = ({ onSignIn }) => {
+const AuthPage = () => {
+  const [isLoaded, setLoaded] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState();
+  const {toggleSignIn} = useContext(AuthContext);
+
+  const isLoginPage = async () => {
+    const html = await vars.httpClient.getTimeTable();
+    const data = vars.parser.isLoginPage(html);
+    console.log('is login page', data);
+    return data;
+  };
+
+  useEffect(() => {
+    if (isLoaded) return;
+
+    const wrapper = async () => {
+      setLoaded(true);
+      vars.httpClient.sessionID = await vars.storage.getSessionID();
+
+      if (vars.httpClient.sessionID && !(await isLoginPage())) {
+        console.log('set sign in');
+        toggleSignIn();
+      }
+    };
+    wrapper();
+  }, [isLoaded, toggleSignIn]);
 
   const tryLogin = async (token = null) => {
     const accountData = await vars.storage.getAccountData();
@@ -23,7 +48,7 @@ const AuthPage = ({ onSignIn }) => {
     );
     if (sessionID) {
       console.log('AUTO AUTHENTICATED');
-      onSignIn();
+      toggleSignIn();
     }
   };
 
@@ -33,11 +58,10 @@ const AuthPage = ({ onSignIn }) => {
 
     await vars.storage.storeAccountData(login, password);
     await vars.storage.storeSessionID(sessionID);
-    onSignIn();
+    toggleSignIn();
   };
 
   const onReceiveRecaptchaToken = async (token) => {
-    console.log('RECEIVED TOKEN', token);
     await tryLogin(token);
     setRecaptchaToken(token);
   };

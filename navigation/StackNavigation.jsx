@@ -1,18 +1,23 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import AuthPage from '../screens/auth/Auth';
-
+import AuthContext from '../context/AuthContext';
 import TabNavigator from './TabNavigation';
 
 const Stack = createNativeStackNavigator();
 
-const StackNavigator = ({ isSignedIn, setSignedIn }) => {
-  console.log('is signed in ', isSignedIn);
+const StackNavigator = () => {
+  const [isSignIn, setSignIn] = useState(false);
+
+  const toggleSignIn = () => {
+    setSignIn(!isSignIn);
+  }
+
   return (
-    <SafeAreaProvider>
+    <AuthContext.Provider value={{toggleSignIn}}>
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
@@ -21,7 +26,7 @@ const StackNavigator = ({ isSignedIn, setSignedIn }) => {
             },
           }}
         >
-          {!isSignedIn ? (
+          {!isSignIn ? (
             <Stack.Screen
               name="Authorization"
               options={{ headerShown: false }}
@@ -30,13 +35,8 @@ const StackNavigator = ({ isSignedIn, setSignedIn }) => {
                   backgroundColor: '#FFFFFF',
                 },
               }}
-            >
-              <AuthPage
-                onSignIn={() => {
-                  setSignedIn(true);
-                }}
-              />
-            </Stack.Screen>
+              component={AuthPage}
+            />
           ) : (
             <Stack.Screen
               name="Navigator"
@@ -46,13 +46,12 @@ const StackNavigator = ({ isSignedIn, setSignedIn }) => {
                   backgroundColor: '#FFFFFF',
                 },
               }}
-            >
-              <TabNavigator />
-            </Stack.Screen>
+              component={TabNavigator}
+            />
           )}
         </Stack.Navigator>
       </NavigationContainer>
-    </SafeAreaProvider>
+    </AuthContext.Provider>
   );
 };
 
