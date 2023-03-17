@@ -9,7 +9,6 @@ import Footer from './AuthFooter';
 import { vars } from '../../utils/vars';
 import AuthContext from '../../context/AuthContext';
 
-const styles = StyleSheet.create({});
 
 const AuthPage = () => {
   const [isLoaded, setLoaded] = useState(false);
