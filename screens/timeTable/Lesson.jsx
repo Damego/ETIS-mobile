@@ -3,8 +3,8 @@ import { View, Text } from 'react-native';
 
 import { GLOBAL_STYLES } from '../../styles/styles';
 
-const Lesson = ({data}) => {
-  const {audience, subject, time} = data;
+const Lesson = ({ data }) => {
+  const { audience, subject, time } = data;
 
   return (
     <View style={GLOBAL_STYLES.lessonContainer}>
