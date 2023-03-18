@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as cheerio from 'cheerio';
 
 export default class HTTPClient {
   constructor() {
@@ -22,20 +23,26 @@ export default class HTTPClient {
       params,
     });
 
-    if (this.checkForError(response)) return null;
+    if (this.logError(response)) return null;
 
     return response.data;
   }
 
-  checkForError(response) {
-    const contentLength = response.headers['content-length'];
-    if (contentLength === '20020') {
+  logError(contentLength) {
+    // 19961 - outdated token?
+    // 19994 - ?
+    // 19975 - ?
+    if (contentLength === 20020) {
       console.warn('You have been ratelimited (5 requests per 10 minutes).');
       return true;
     }
-    if (contentLength === '20073') {
+    if (contentLength === 20073) {
       console.warn('You passed wrong login or password, or ReCaptcha token is outdated.');
       return true;
+    }
+
+    if (contentLength === 71) {
+      console.warn('Neither login nor password were passed');
     }
     return false;
   }
@@ -48,7 +55,6 @@ export default class HTTPClient {
    * @returns
    */
   async login(username, password, token) {
-    console.log('login method');
     if (!token) {
       return console.warn('No token was passed!');
     }
@@ -60,6 +66,8 @@ export default class HTTPClient {
     formData.append('p_recaptcha_ver', '3');
     formData.append('p_recaptcha_response', token.trim());
 
+    console.log(formData);
+
     const response = await axios.post(`${this.defaultURL}.login`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
@@ -67,18 +75,25 @@ export default class HTTPClient {
     const cookies = response.headers['set-cookie'];
 
     // Figuring out error via content length
+    let contentLength = Number(response.headers['content-length']);
     if (!cookies) {
-      if (!this.checkForError(response)) {
-        console.warn('Unknown error. Content length:', response.headers['content-length']);
+      if (contentLength > 10000) contentLength -= username.length + password.length;
+
+      const $ = cheerio.load(response.data);
+      const errorMessage = $('.error_message').text();
+
+      if (!this.logError(contentLength)) {
+        console.warn('Unknown error. Content length:', contentLength);
       }
-      return;
+      return { errorMessage };
     }
 
-    // eslint-disable-next-line prefer-destructuring
-    this.sessionID = cookies[0].split(';')[0];
-    console.log(`Authorized with ${this.sessionID}`);
+    const [sessionID] = cookies[0].split(';');
+    this.sessionID = sessionID;
 
-    return this.sessionID;
+    console.log(`Authorized with ${sessionID}`);
+
+    return { sessionID };
   }
 
   getTimeTable({ showConsultations = null, week = null } = {}) {
