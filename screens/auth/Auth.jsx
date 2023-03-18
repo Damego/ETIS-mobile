@@ -1,71 +1,85 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { SafeAreaView, View, StyleSheet } from 'react-native';
 import ReCaptchaV3 from '@haskkor/react-native-recaptchav3';
 import Constants from 'expo-constants';
+import React, { useContext, useEffect, useState } from 'react';
+import { SafeAreaView, View } from 'react-native';
 
-import Form from './AuthForm';
 import Header from '../../components/Header';
-import Footer from './AuthFooter';
-import { vars } from '../../utils/vars';
 import AuthContext from '../../context/AuthContext';
-
+import { vars } from '../../utils/vars';
+import Footer from './AuthFooter';
+import Form from './AuthForm';
 
 const AuthPage = () => {
-  const [isLoaded, setLoaded] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [loginErrorMessage, changeLoginMessageError] = useState(null);
   const [recaptchaToken, setRecaptchaToken] = useState();
   const { toggleSignIn } = useContext(AuthContext);
 
   const isLoginPage = async () => {
     const html = await vars.httpClient.getTimeTable();
-    const data = vars.parser.isLoginPage(html);
-    console.log('is login page', data);
-    return data;
+    return vars.parser.isLoginPage(html);
   };
 
-  // useEffect(() => {
-  //   if (isLoaded) return;
-  //
-  //   const wrapper = async () => {
-  //     setLoaded(true);
-  //     vars.httpClient.sessionID = await vars.storage.getSessionID();
-  //
-  //     if (vars.httpClient.sessionID && !(await isLoginPage())) {
-  //       console.log('set sign in');
-  //       toggleSignIn();
-  //     }
-  //   };
-  //   wrapper();
-  // }, [isLoaded, toggleSignIn]);
+  useEffect(() => {
+    if (!isLoading) return;
+
+    const wrapper = async () => {
+      setLoading(true);
+      vars.httpClient.sessionID = await vars.storage.getSessionID();
+
+      if (vars.httpClient.sessionID && !(await isLoginPage())) {
+        setLoading(false);
+        toggleSignIn();
+      }
+    };
+    wrapper();
+  }, [isLoading, toggleSignIn]);
 
   const tryLogin = async (token = null) => {
     const accountData = await vars.storage.getAccountData();
     if (!accountData.login || !accountData.password) {
       return;
     }
+    setLoading(true);
 
     const sessionID = await vars.httpClient.login(
       accountData.login,
       accountData.password,
       token == null ? recaptchaToken : token
     );
-    if (sessionID) {
+    if (sessionID && !(await isLoginPage())) {
       console.log('AUTO AUTHENTICATED');
       toggleSignIn();
     }
+    setLoading(false);
   };
 
   const onFormSubmit = async (login, password) => {
-    const sessionID = await vars.httpClient.login(login, password, recaptchaToken);
-    if (!sessionID) return;
+    if (login.length === 0 || password.length === 0) {
+      changeLoginMessageError('Вы не ввели логин или пароль');
+      return;
+    }
 
-    await vars.storage.storeAccountData(login, password);
-    await vars.storage.storeSessionID(sessionID);
+    setLoading(true);
+    const { sessionID, errorMessage } = await vars.httpClient.login(
+      login,
+      password,
+      recaptchaToken
+    );
+    if (sessionID) {
+      await vars.storage.storeAccountData(login, password);
+      await vars.storage.storeSessionID(sessionID);
+    } else {
+      changeLoginMessageError(errorMessage);
+    }
+
     toggleSignIn();
+    setLoading(false);
   };
 
   const onReceiveRecaptchaToken = async (token) => {
-    // await tryLogin(token);
-    // setRecaptchaToken(token);
+    await tryLogin(token);
+    setRecaptchaToken(token);
   };
 
   return (
@@ -80,7 +94,11 @@ const AuthPage = () => {
 
         <Header text="Авторизация" />
 
-        <Form onSubmit={(login, password) => onFormSubmit(login, password)} />
+        <Form
+          onSubmit={(login, password) => onFormSubmit(login, password)}
+          isLoading={isLoading}
+          errorMessage={loginErrorMessage}
+        />
 
         <Footer />
       </SafeAreaView>
@@ -89,9 +107,3 @@ const AuthPage = () => {
 };
 
 export default AuthPage;
-
-/*
-        <View style={styles.container}>
-          <ActivityIndicator size="large" color="#C62E3E" />
-        </View>
- */

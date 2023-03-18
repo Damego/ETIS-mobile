@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, TextInput, Image } from 'react-native';
-import AuthButton from './AuthButton';
+import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
+
 import { GLOBAL_STYLES } from '../../styles/styles';
+import { AuthButton, LoadingButton } from './AuthButton';
 
 const styles = StyleSheet.create({
   container: {
@@ -10,44 +11,58 @@ const styles = StyleSheet.create({
     marginLeft: '5%',
     borderRadius: 10,
     marginTop: '15%',
-  },
-  imageContainer: {
+
+    flexDirection: 'column',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   logoImage: {
     width: 150,
     height: 150,
-    marginVertical: '5%',
+    marginVertical: '8%',
   },
   input: {
     fontSize: 20,
     borderWidth: 1,
     borderColor: '#F8F8FE',
     borderRadius: 10,
-    backgroundColor: '#fff',
-    padding: 10,
-    marginVertical: 20,
-    marginHorizontal: '10%',
-    width: '80%',
+    backgroundColor: '#FFFFFF',
+    paddingLeft: 5,
+    height: '10%',
+    marginVertical: '6%',
+    marginHorizontal: '5%',
+    width: '90%',
+
   },
 });
 
-const Form = ({ onSubmit }) => {
+const ErrorMessage = ({ messageText }) => (
+  <View>
+    <Text>{messageText}</Text>
+  </View>
+);
+
+const Form = ({ onSubmit, isLoading, errorMessage }) => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
 
   return (
     <View style={[styles.container, GLOBAL_STYLES.shadow]}>
-      <View style={styles.imageContainer}>
-        <Image style={styles.logoImage} source={require('../../assets/logo_red.png')} />
-      </View>
+      <Image style={styles.logoImage} source={require('../../assets/logo_red.png')} />
+
+      {errorMessage !== null ? <ErrorMessage messageText={errorMessage} /> : <View />}
 
       <TextInput
         style={[styles.input, GLOBAL_STYLES.shadow]}
         onChangeText={(newLogin) => {
           setLogin(newLogin);
         }}
-        placeholder="Логин"
+        placeholder="Эл. почта"
+        autoComplete="email"
+        inputMode="email"
+        keyboardType="email-address"
+        selectionColor="#C62E3E"
+        autoCapitalize="none"
       />
       <TextInput
         style={[styles.input, GLOBAL_STYLES.shadow]}
@@ -56,13 +71,20 @@ const Form = ({ onSubmit }) => {
         }}
         placeholder="Пароль"
         secureTextEntry
+        autoComplete="password"
+        selectionColor="#C62E3E"
+        autoCompleteType="password"
       />
 
-      <AuthButton
-        onPress={() => {
-          onSubmit(login, password);
-        }}
-      />
+      {isLoading ? (
+        <LoadingButton />
+      ) : (
+        <AuthButton
+          onPress={() => {
+            onSubmit(login, password);
+          }}
+        />
+      )}
     </View>
   );
 };

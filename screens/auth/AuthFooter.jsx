@@ -3,7 +3,7 @@ import { StyleSheet, View, Text } from 'react-native';
 
 const styles = StyleSheet.create({
   view: {
-    flexDirection: 'column',
+    marginTop: "10%"
   },
   text: {
     flexGrow: 1,
