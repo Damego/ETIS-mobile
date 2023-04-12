@@ -1,105 +1,82 @@
-"use strict";
+import React, { useState, useEffect } from 'react';
+import { View } from 'react-native';
+import 'react-native-get-random-values';
+import { v4 as uuid4 } from 'uuid';
 
-import React, { useState, useEffect } from "react";
-import { ScrollView, View } from "react-native";
-import { GLOBAL_STYLES } from "../../styles/styles";
+import LoadingPage from '../../components/LoadingPage';
+import { Day, EmptyDay } from './Day';
+import WeekNavigation from './WeekNavigator';
+import Screen from '../../components/Screen';
 
-import Header from "../../components/Header";
-import LoadingText from "../../components/LoadingText";
-import Day from "./Day";
-import EmptyDay from "./EmptyDay";
-import WeekNavigation from "./WeekNagivator";
-
-import { vars } from "../../utils/vars";
+import { vars } from '../../utils/vars';
+import { GLOBAL_STYLES } from '../../styles/styles';
 
 const TimeTablePage = () => {
   const [isLoaded, setLoaded] = useState(false);
   const [data, setData] = useState(null);
 
-  let changeLimits = true;
-  let leftLimit = null;
-  let rightLimit = null;
-
-  useEffect(() => {
-    if (isLoaded) return;
-    console.log("INIT TIMETABLE", isLoaded);
-    const wrapper = async () => {
-      let res = await getWeekData();
-      console.log("LOADED DATA TIMETABLE", res);
-      if (res != null) {
-        setData(res);
-        setLoaded(true);
-      }
-    };
-    wrapper();
-  });
-
+  /**
+   *
+   * @param {number | null} week День недели
+   */
   const getWeekData = async (week = null) => {
     // TODO: cache data
 
     let html;
     if (week != null) {
-      html = await vars.httpClient.getTimeTable({ week: week });
+      html = await vars.httpClient.getTimeTable({ week });
     } else {
       html = await vars.httpClient.getTimeTable();
     }
+    // TODO: What the fuck why navigation doesn't work?
+    // if (vars.parser.isLoginPage(html)) {
+    //   navigation.navigate("StackNavigator", {screen: "Authorization"});
+    //   return;
+    // }
 
     if (!html) return null;
     return vars.parser.parseTimeTable(html);
   };
 
+  useEffect(() => {
+    if (isLoaded) return;
+
+    const wrapper = async () => {
+      const res = await getWeekData();
+      if (res != null) {
+        setLoaded(true);
+        setData(res);
+      }
+    };
+    wrapper();
+  }, [isLoaded, setLoaded, setData]);
+
   const changeWeek = async (week) => {
-    let res = await getWeekData(week);
+    const res = await getWeekData(week);
     setData(res);
-    changeLimits = true;
-
   };
 
-  const calculateLimits = () => {
-    if (!changeLimits) {
-      return { leftLimit, rightLimit };
-    }
-
-    const limits = 3;
-    let currentWeek = data.currentWeek;
-    let lastWeek = data.lastWeek;
-
-    leftLimit = currentWeek - limits;
-    rightLimit = currentWeek + limits;
-
-    if (leftLimit < 1) {
-      rightLimit += currentWeek - leftLimit;
-      leftLimit = 1;
-    }
-    if (rightLimit > lastWeek) {
-      leftLimit -= rightLimit - lastWeek;
-      rightLimit = lastWeek;
-    }
-
-    return { leftLimit, rightLimit };
-  };
-
-  if (!isLoaded || !data) return <LoadingText />;
+  if (!isLoaded || !data) return <LoadingPage />;
 
   return (
-    <View style={GLOBAL_STYLES.screen}>
-      <Header text={"Расписание"} />
+    <Screen headerText="Расписание">
       <WeekNavigation
+        firstWeek={data.firstWeek}
         lastWeek={data.lastWeek}
         currentWeek={data.currentWeek}
-        onWeekChange={async (week) => (await changeWeek(week))}
-        limits={calculateLimits()}
+        onWeekChange={(week) => changeWeek(week)}
       />
-      <ScrollView>
-        <View>
-          {data.days.map((day) => {
-            if (day.lessons.lenght == 0)
-              return <EmptyDay key={day.date} date={day.date} />;
-            return <Day key={day.date} data={day} />;
-          })}
-        </View>
-      </ScrollView>
-    </View>
+
+      <View style={GLOBAL_STYLES.daysView}>
+        {data.days.map((day) =>
+          day.lessons.length === 0 ? (
+            <EmptyDay key={uuid4()} data={day} />
+          ) : (
+            <Day key={uuid4()} data={day} />
+          )
+        )}
+      </View>
+    </Screen>
   );
 };
 

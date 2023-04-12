@@ -1,34 +1,41 @@
-import React, { Component } from "react";
-import { View, Text } from "react-native";
+import React from 'react';
+import { Text, View } from 'react-native';
+import { v4 as uuid4 } from 'uuid';
 
-import Lesson from "./Lesson";
+import Lesson from './Lesson';
+import Card from '../../components/Card';
+import { GLOBAL_STYLES } from '../../styles/styles';
 
-import { GLOBAL_STYLES } from "../../styles/styles";
+const EmptyDay = ({ data }) => {
+  const { date } = data;
 
-export default class Day extends Component {
-  constructor(props) {
-    super(props);
-
-    this.date = this.props.data.date;
-    this.lessons = this.props.data.lessons;
-  }
-  render() {
-    return (
-      <View>
-        <View style={GLOBAL_STYLES.timeTableDateView}>
-          <Text style={GLOBAL_STYLES.timeTableDateText}>{this.date}</Text>
+  return (
+    <Card
+      topText={date}
+      component={
+        // TODO: Rename these styles
+        <View style={GLOBAL_STYLES.lessonContainer}>
+          <View style={GLOBAL_STYLES.lessonInfoView}>
+            <Text style={GLOBAL_STYLES.lessonInfoText}>{'\nПар нет!\n'}</Text>
+          </View>
         </View>
-        <View style={GLOBAL_STYLES.timeTableDayView}>
-          {this.lessons.map((lesson) => {
-            return (
-              <Lesson
-                key={this.date + lesson.time + lesson.subject}
-                data={lesson}
-              />
-            );
-          })}
-        </View>
-      </View>
-    );
-  }
-}
+      }
+    />
+  );
+};
+
+const Day = ({ data }) => {
+  const { date, lessons } = data;
+
+  return (
+    <Card
+      key={uuid4()}
+      topText={date}
+      component={lessons.map((lesson) => (
+        <Lesson key={date + lesson.time + lesson.subject} data={lesson} />
+      ))}
+    />
+  );
+};
+
+export { Day, EmptyDay };

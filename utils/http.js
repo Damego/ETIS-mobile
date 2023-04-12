@@ -1,47 +1,102 @@
-import axios from "axios";
+import axios from 'axios';
+import * as cheerio from 'cheerio';
 
 export default class HTTPClient {
   constructor() {
-    this.defaultURL = "https://student.psu.ru/pls/stu_cus_et/stu";
+    this.defaultURL = 'https://student.psu.ru/pls/stu_cus_et/stu';
     this.sessionID = null;
   }
 
-  /**
-   * 
-   * @param {string} username Электронная почта
-   * @param {string} password Пароль
-   * @param {string} token Токен ReCaptcha v3
-   * @returns 
-   */
-  async login(username, password, token) {
-    let formData = new FormData();
-
-    formData.append("p_redirect", "stu.timetable");
-    formData.append("p_username", username);
-    formData.append("p_password", password);
-    formData.append("p_recaptcha_ver", "3");
-    formData.append("p_recaptcha_response", token);
-
-    let response = await axios.post(`${this.defaultURL}.login`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-
-    let cookies = response.headers["set-cookie"];
-    console.log(response.headers);
-    if (!cookies) {
-      console.warn(
-        "No cookies! Make sure you passed right login and password. Also maybe you have reached auth limit (5). Try again in 10 minutes."
-      );
+  async request(endpoint, params = null) {
+    if (this.sessionID == null) {
       return;
     }
 
-    this.sessionID = cookies[0].split(";")[0];
-    console.log(`Authorized with ${this.sessionID}`);
+    const url = `${this.defaultURL}.${endpoint}`;
 
-    return this.sessionID;
+    console.log(`[HTTP] Sending request to '${url}' with params:`, params);
+
+    const response = await axios.get(url, {
+      headers: {
+        Cookie: this.sessionID,
+      },
+      params,
+    });
+
+    if (this.logError(response)) return null;
+
+    return response.data;
   }
 
-  async getTimeTable({showConsultations = null, week = null} = {}) {
+  logError(contentLength) {
+    // 19961 - outdated token?
+    // 19994 - ?
+    // 19975 - ?
+    if (contentLength === 20020) {
+      console.warn('You have been ratelimited (5 requests per 10 minutes).');
+      return true;
+    }
+    if (contentLength === 20073) {
+      console.warn('You passed wrong login or password, or ReCaptcha token is outdated.');
+      return true;
+    }
+
+    if (contentLength === 71) {
+      console.warn('Neither login nor password were passed');
+    }
+    return false;
+  }
+
+  /**
+   *
+   * @param {string} username Электронная почта
+   * @param {string} password Пароль
+   * @param {string} token Токен ReCaptcha v3
+   * @returns
+   */
+  async login(username, password, token) {
+    if (!token) {
+      return console.warn('No token was passed!');
+    }
+    const formData = new FormData();
+
+    formData.append('p_redirect', 'stu.timetable');
+    formData.append('p_username', username.trim());
+    formData.append('p_password', password.trim());
+    formData.append('p_recaptcha_ver', '3');
+    formData.append('p_recaptcha_response', token.trim());
+
+    console.log(formData);
+
+    const response = await axios.post(`${this.defaultURL}.login`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+
+    const cookies = response.headers['set-cookie'];
+
+    // Figuring out error via content length
+    let contentLength = Number(response.headers['content-length']);
+    if (!cookies) {
+      if (contentLength > 10000) contentLength -= username.length + password.length;
+
+      const $ = cheerio.load(response.data);
+      const errorMessage = $('.error_message').text();
+
+      if (!this.logError(contentLength)) {
+        console.warn('Unknown error. Content length:', contentLength);
+      }
+      return { errorMessage };
+    }
+
+    const [sessionID] = cookies[0].split(';');
+    this.sessionID = sessionID;
+
+    console.log(`Authorized with ${sessionID}`);
+
+    return { sessionID };
+  }
+
+  getTimeTable({ showConsultations = null, week = null } = {}) {
     /*
     `showConsultations`:
     - y: Показывать консультации
@@ -49,51 +104,23 @@ export default class HTTPClient {
 
     `week`: неделя в триместре.
     */
-    if (this.sessionID == null) {
-      return; // TODO: Exceptions? Output error message? Auto authorize?
-    }
+    const showConsultationsParam = showConsultations ? 'y' : 'n';
 
-    let _showConsultations = !!showConsultations ? "y" : "n";
-    let response = await axios.get(`${this.defaultURL}.timetable`, {
-      headers: {
-        Cookie: this.sessionID,
-      },
-      params: {
-        p_cons: _showConsultations,
-        p_week: week,
-      },
+    return this.request('timetable', {
+      p_cons: showConsultationsParam,
+      p_week: week,
     });
-    return response.data;
   }
 
-  async getEblChoice() {
-    // lol
-    if (this.sessionID == null) {
-      return; // TODO: Exceptions? Output error message? Auto authorize?
-    }
-
-    let response = await axios.get(`${this.defaultURL}.ebl_choice`, {
-      headers: {
-        Cookie: this.sessionID,
-      },
-    });
-    return response.data;
+  getEblChoice() {
+    return this.request('ebl_choice');
   }
 
-  async getTeachPlan() {
-    if (this.sessionID == null) {
-      return; // TODO: Exceptions? Output error message? Auto authorize?
-    }
-
-    let response = await axios.get(`${this.defaultURL}.teach_plan`, {
-      headers: {
-        Cookie: this.sessionID,
-      },
-    });
-    return response.data;
+  getTeachPlan() {
+    return this.request('teach_plan');
   }
 
-  async getSigns(mode) {
+  getSigns(mode) {
     /*
     `mode`:
     - session: оценки за сессии
@@ -101,79 +128,28 @@ export default class HTTPClient {
     - rating: итоговый рейтинг за триместр 
     - diplom: оценки в диплом
     */
-    if (this.sessionID == null) {
-      return; // TODO: Exceptions? Output error message? Auto authorize?
-    }
-
-    let response = await axios.get(`${this.defaultURL}.signs`, {
-      headers: {
-        Cookie: this.sessionID,
-      },
-      params: {
-        p_mode: mode,
-      },
-    });
-    return response.data;
+    return this.request('signs', { p_mode: mode });
   }
 
-  async getAbsenses(trimester) {
+  getAbsenses(trimester) {
     /*
     `trimester`:
       - 1: осенний
       - 2: весенний
       - 3: летний
      */
-    if (this.sessionID == null) {
-      return; // TODO: Exceptions? Output error message? Auto authorize?
-    }
-
-    let response = await axios.get(`${this.defaultURL}.absence`, {
-      headers: {
-        Cookie: this.sessionID,
-      },
-      params: {
-        p_term: trimester,
-      },
-    });
-    return response.data;
+    return this.request('absence', { p_term: trimester });
   }
 
-  async getTeachers() {
-    if (this.sessionID == null) {
-      return; // TODO: Exceptions? Output error message? Auto authorize?
-    }
-
-    let response = await axios.get(`${this.defaultURL}.teachers`, {
-      headers: {
-        Cookie: this.sessionID,
-      },
-    });
-    return response.data;
+  getTeachers() {
+    return this.request('teachers');
   }
 
-  async getAnnounce() {
-    if (this.sessionID == null) {
-      return; // TODO: Exceptions? Output error message? Auto authorize?
-    }
-
-    let response = await axios.get(`${this.defaultURL}.announce`, {
-      headers: {
-        Cookie: this.sessionID,
-      },
-    });
-    return response.data;
+  getAnnounce() {
+    return this.request('announce');
   }
 
-  async getTeacherNotes() {
-    if (this.sessionID == null) {
-      return; // TODO: Exceptions? Output error message? Auto authorize?
-    }
-
-    let response = await axios.get(`${this.defaultURL}.teacher_notes`, {
-      headers: {
-        Cookie: this.sessionID,
-      },
-    });
-    return response.data;
+  getTeacherNotes() {
+    return this.request('teacher_notes');
   }
 }

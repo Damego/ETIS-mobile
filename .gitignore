@@ -105,3 +105,5 @@ dist
 
 # expo config
 .expo
+
+.idea
