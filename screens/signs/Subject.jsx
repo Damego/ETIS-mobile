@@ -7,7 +7,7 @@ const Subject = ({ data }) => (
         const theme = `КТ ${index + 1}`;
 
         return (
-          <Text key={info.theme}>{`${theme}: ${
+          <Text style={{fontSize: 16, fontWeight: '600'}} key={info.theme}>{`${theme}: ${
             !Number.isNaN(info.mark) ? info.mark : "-"
           }/${info.passScore}/${info.maxScore}`}</Text>
         );
