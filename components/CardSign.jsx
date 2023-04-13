@@ -40,19 +40,44 @@ const styles = StyleSheet.create({
   markNumberText: {
     fontSize: 36,
     fontWeight: '600',
-    marginBottom: '-5%',
   },
   markWordText: {
     fontSize: 20,
     fontWeight: '600',
   },
+  colorMark2: {
+    color: '#CE2539',
+  },
+  colorMark3: {
+    color: '#f6d832',
+  },
+  colorMark4: {
+    color: '#76c248',
+  },
+  colorMark5: {
+    color: '#5c9f38',
+  },
+  colorNoMark: {
+    color: '#000',
+  },
 });
 
 const CardSign = ({ subject }) => {
   let collectedPoints = 0;
-  subject.info.forEach(({ maxScore, mark }) => {
+  let textStyle = null;
+
+  subject.info.forEach(({ maxScore, passScore, mark }) => {
+    if (mark < passScore) textStyle = styles.colorMark2;
     collectedPoints += Number.isNaN(mark) || maxScore === 0 ? 0 : mark;
   });
+
+  if (textStyle === null) {
+    if (collectedPoints === 0) textStyle = styles.colorNoMark;
+    else if (collectedPoints < 41) textStyle = styles.colorMark2;
+    else if (collectedPoints < 61) textStyle = styles.colorMark3;
+    else if (collectedPoints < 81) textStyle = styles.colorMark4;
+    else textStyle = styles.colorMark5;
+  }
 
   return (
     <View style={[styles.cardView, GLOBAL_STYLES.shadow]}>
@@ -61,7 +86,7 @@ const CardSign = ({ subject }) => {
       </View>
       <View style={styles.cardMainView}>
         <View style={styles.markView}>
-          <Text style={styles.markNumberText}>{collectedPoints}</Text>
+          <Text style={[styles.markNumberText, textStyle]}>{collectedPoints}</Text>
           <Text style={styles.markWordText}>баллов</Text>
         </View>
         <View style={styles.subjects}>
