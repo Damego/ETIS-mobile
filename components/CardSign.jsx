@@ -31,15 +31,18 @@ const styles = StyleSheet.create({
     marginLeft: '4%',
     marginBottom: '4%',
     marginRight: '4%',
-    justifyContent: 'space-between',
   },
   markView: {
     alignItems: 'center',
     marginRight: '5%',
+    width: "22%"
   },
   markNumberText: {
     fontSize: 36,
     fontWeight: '600',
+  },
+  subjects: {
+    marginLeft: "10%"
   },
   markWordText: {
     fontSize: 20,
@@ -71,6 +74,11 @@ const CardSign = ({ subject }) => {
     collectedPoints += Number.isNaN(mark) || maxScore === 0 ? 0 : mark;
   });
 
+  let pointsWord = "балл";
+  const mod10 = collectedPoints % 10;
+  if ([2, 3, 4].includes(mod10)) pointsWord += "а";
+  else if ([0, 5, 6, 7, 8, 9].includes(mod10)) pointsWord += "ов";
+
   if (textStyle === null) {
     if (collectedPoints === 0) textStyle = styles.colorNoMark;
     else if (collectedPoints < 41) textStyle = styles.colorMark2;
@@ -87,7 +95,7 @@ const CardSign = ({ subject }) => {
       <View style={styles.cardMainView}>
         <View style={styles.markView}>
           <Text style={[styles.markNumberText, textStyle]}>{collectedPoints}</Text>
-          <Text style={styles.markWordText}>баллов</Text>
+          <Text style={styles.markWordText}>{pointsWord}</Text>
         </View>
         <View style={styles.subjects}>
           <Subject data={subject} />
