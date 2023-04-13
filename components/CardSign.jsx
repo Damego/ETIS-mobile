@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
+import Subject from '../screens/signs/Subject';
 import { GLOBAL_STYLES } from '../styles/styles';
 
 const styles = StyleSheet.create({
@@ -45,19 +46,28 @@ const styles = StyleSheet.create({
   },
 });
 
-const CardSign = ({ topText, component , mark}) => (
-  <View style={[styles.cardView, GLOBAL_STYLES.shadow]}>
+const CardSign = ({ subject }) => {
+  let collectedPoints = 0;
+  subject.info.forEach(({ maxScore, mark }) => {
+    collectedPoints += Number.isNaN(mark) || maxScore === 0 ? 0 : mark;
+  });
+
+  return (
+    <View style={[styles.cardView, GLOBAL_STYLES.shadow]}>
       <View style={styles.cardHeaderView}>
-        <Text style={styles.cardHeaderText}>{topText}</Text>
+        <Text style={styles.cardHeaderText}>{subject.subject}</Text>
       </View>
       <View style={styles.cardMainView}>
         <View style={styles.markView}>
-          <Text style={styles.markNumberText}>{mark}</Text>
+          <Text style={styles.markNumberText}>{collectedPoints}</Text>
           <Text style={styles.markWordText}>баллов</Text>
         </View>
-        <View>{component}</View>
+        <View style={styles.subjects}>
+          <Subject data={subject} />
+        </View>
       </View>
-  </View>
-);
+    </View>
+  );
+};
 
 export default CardSign;
