@@ -28,8 +28,10 @@ const styles = StyleSheet.create({
   cardMainView: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: '4%', 
-    marginBottom: '5%',
+    marginLeft: '4%',
+    marginBottom: '4%',
+    marginRight: '4%',
+    justifyContent: 'space-between',
   },
   markView: {
     alignItems: 'center',
