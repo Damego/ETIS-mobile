@@ -1,5 +1,17 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+
+const styles = StyleSheet.create ({
+  markSuccess: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  markFail: {
+    color: '#CE2539',
+    fontSize: 16,
+    fontWeight: '600',
+  }
+});
 
 const Subject = ({ data }) => (
     <View>
@@ -7,7 +19,7 @@ const Subject = ({ data }) => (
         const theme = `КТ ${index + 1}`;
 
         return (
-          <Text style={{fontSize: 16, fontWeight: '600'}} key={info.theme}>{`${theme}: ${
+          <Text style={(isNaN(info.mark) || info.passScore <= info.mark) ? styles.markSuccess : styles.markFail} key={info.theme}>{`${theme}: ${
             !Number.isNaN(info.mark) ? info.mark : "-"
           }/${info.passScore}/${info.maxScore}`}</Text>
         );
