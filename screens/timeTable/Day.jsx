@@ -31,9 +31,12 @@ const Day = ({ data }) => {
     <Card
       key={uuid4()}
       topText={date}
-      component={lessons.map((lesson) => (
+      component={lessons.map((lesson, index) => {
+        lesson.pair = `${index + 1} пара`;
+        return (
         <Lesson key={date + lesson.time + lesson.subject} data={lesson} />
-      ))}
+        )
+      })}
     />
   );
 };

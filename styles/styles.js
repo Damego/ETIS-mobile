@@ -31,13 +31,17 @@ export const GLOBAL_STYLES = StyleSheet.create({
   lessonTimeView: {
     paddingHorizontal: 1,
     paddingVertical: 2,
-    width: '13%',
+    width: '15%',
+    alignItems: 'center',
   },
   lessonTimeText: {
     fontSize: 14,
   },
+  lessonPairText: {
+    fontSize: 13,
+  },
   lessonInfoView: {
-    width: '87%',
+    width: '85%',
     paddingHorizontal: 1,
   },
   lessonInfoText: {
