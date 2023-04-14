@@ -42,4 +42,8 @@ export const GLOBAL_STYLES = StyleSheet.create({
   lessonAudienceText: {
     color: '#353535',
   },
+  textIcon: {
+    marginBottom: '5%',
+    fontSize: 10,
+  }
 });
