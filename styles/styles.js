@@ -23,18 +23,23 @@ export const GLOBAL_STYLES = StyleSheet.create({
     display: 'flex',
     marginTop: '1%',
     marginBottom: '1%',
-    flexWrap: 'wrap',
+    flexWrap: 'nowrap',
     flexShrink: 1,
-
+    flexDirection: 'row',
     paddingHorizontal: '1%',
   },
   lessonTimeView: {
     paddingHorizontal: 1,
+    paddingVertical: 2,
+    width: '13%',
   },
   lessonTimeText: {
     fontSize: 14,
   },
-  lessonInfoView: {},
+  lessonInfoView: {
+    width: '87%',
+    paddingHorizontal: 1,
+  },
   lessonInfoText: {
     fontSize: 16,
     fontWeight: '500',
