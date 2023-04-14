@@ -50,5 +50,5 @@ export const GLOBAL_STYLES = StyleSheet.create({
   textIcon: {
     marginBottom: '5%',
     fontSize: 10,
-  }
+  },
 });
