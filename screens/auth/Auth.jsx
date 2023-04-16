@@ -27,11 +27,11 @@ const AuthPage = () => {
     if (!isLoading) return;
 
     const wrapper = async () => {
-      setLoading(true);
+      // setLoading(true);
       vars.httpClient.sessionID = await vars.storage.getSessionID();
 
       if (vars.httpClient.sessionID && !(await isLoginPage())) {
-        setLoading(false);
+        // setLoading(false);
         toggleSignIn();
       }
     };
