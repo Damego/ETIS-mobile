@@ -27,11 +27,11 @@ const AuthPage = () => {
     if (!isLoading) return;
 
     const wrapper = async () => {
-      // setLoading(true);
+      setLoading(true);
       vars.httpClient.sessionID = await vars.storage.getSessionID();
 
       if (vars.httpClient.sessionID && !(await isLoginPage())) {
-        // setLoading(false);
+        setLoading(false);
         toggleSignIn();
       }
     };
@@ -63,7 +63,7 @@ const AuthPage = () => {
       return;
     }
 
-    setLoading(true);
+    // setLoading(true);
     Alert.alert("first");
     const { sessionID, errorMessage } = await vars.httpClient.login(
       login,
@@ -81,7 +81,7 @@ const AuthPage = () => {
       changeLoginMessageError(errorMessage);
     }
 
-    setLoading(false);
+    // setLoading(false);
   };
 
   const onReceiveRecaptchaToken = async (token) => {

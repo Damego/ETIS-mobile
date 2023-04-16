@@ -56,7 +56,8 @@ export default class HTTPClient {
    */
   async login(username, password, token) {
     if (!token) {
-      return console.warn('No token was passed!');
+      console.warn('No token was passed!');
+      return {sessionID: null, errorMessage: "recaptcha token is undefined!"} 
     }
     const formData = new FormData();
 
@@ -85,7 +86,7 @@ export default class HTTPClient {
       if (!this.logError(contentLength)) {
         console.warn('Unknown error. Content length:', contentLength);
       }
-      return { errorMessage };
+      return { sessionID: null, errorMessage };
     }
 
     const [sessionID] = cookies[0].split(';');
@@ -93,7 +94,7 @@ export default class HTTPClient {
 
     console.log(`Authorized with ${sessionID}`);
 
-    return { sessionID };
+    return { sessionID, errorMessage: null };
   }
 
   getTimeTable({ showConsultations = null, week = null } = {}) {
