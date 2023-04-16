@@ -51,7 +51,7 @@ const AuthPage = () => {
       token == null ? recaptchaToken : token
     );
     if (sessionID && !(await isLoginPage())) {
-      console.log('AUTO AUTHENTICATED');
+      console.log('[AUTHORIZATION] Authorized using recaptcha token');
       toggleSignIn();
     }
     setLoading(false);
@@ -64,18 +64,15 @@ const AuthPage = () => {
     }
 
     // setLoading(true);
-    Alert.alert("first");
+    Alert.alert("recaptcha", recaptchaToken);
     const { sessionID, errorMessage } = await vars.httpClient.login(
       login,
       password,
       recaptchaToken
     );
-    Alert.alert("second");
     if (sessionID) {
       await vars.storage.storeAccountData(login, password);
-      Alert.alert("third");
       await vars.storage.storeSessionID(sessionID);
-      Alert.alert("4th");
       toggleSignIn();
     } else {
       changeLoginMessageError(errorMessage);
@@ -85,7 +82,7 @@ const AuthPage = () => {
   };
 
   const onReceiveRecaptchaToken = async (token) => {
-    Alert.alert("received token", token);
+    Alert.alert("token received", token);
     await tryLogin(token);
     setRecaptchaToken(token);
   };
