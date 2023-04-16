@@ -2,6 +2,9 @@ import ReCaptchaV3 from '@haskkor/react-native-recaptchav3';
 import Constants from 'expo-constants';
 import React, { useContext, useEffect, useState } from 'react';
 import { SafeAreaView, View } from 'react-native';
+import axios from "axios";
+
+import {ErrorBoundary} from 'react-error-boundary';
 
 import Header from '../../components/Header';
 import AuthContext from '../../context/AuthContext';
@@ -82,7 +85,19 @@ const AuthPage = () => {
     setRecaptchaToken(token);
   };
 
+  const onError = async (error, info) => {
+    const data = {
+      api_dev_key: process.env.PASTEBIN_KEY,
+      api_paste_code: error.toString() + info.toString(),
+      api_paste_private: 0,
+      api_paste_name: "etis mobile error"
+    }
+    await axios.post("https://pastebin.com/api/api_post.php", data)
+
+  }
+
   return (
+    <ErrorBoundary onError={onError}>
     <View style={{ marginTop: Constants.statusBarHeight }}>
       <SafeAreaView>
         <ReCaptchaV3
@@ -103,6 +118,7 @@ const AuthPage = () => {
         <Footer />
       </SafeAreaView>
     </View>
+    </ErrorBoundary>
   );
 };
 
