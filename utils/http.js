@@ -57,7 +57,7 @@ export default class HTTPClient {
   async login(username, password, token) {
     if (!token) {
       console.warn('No token was passed!');
-      return {sessionID: null, errorMessage: "recaptcha token is undefined!"} 
+      return { sessionID: null, errorMessage: 'recaptcha token is undefined!' };
     }
     const formData = new FormData();
 
