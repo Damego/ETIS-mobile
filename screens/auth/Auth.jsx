@@ -1,10 +1,7 @@
 import ReCaptchaV3 from '@haskkor/react-native-recaptchav3';
 import Constants from 'expo-constants';
-import React, { useContext, useEffect, useState } from 'react';
-import { SafeAreaView, View, Alert, Text } from 'react-native';
-import axios from "axios";
-
-import {ErrorBoundary} from 'react-error-boundary';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Alert, SafeAreaView, View } from 'react-native';
 
 import Header from '../../components/Header';
 import AuthContext from '../../context/AuthContext';
@@ -13,9 +10,10 @@ import Footer from './AuthFooter';
 import Form from './AuthForm';
 
 const AuthPage = () => {
+  const recaptchaToken = useRef();
   const [isLoading, setLoading] = useState(false);
   const [loginErrorMessage, changeLoginMessageError] = useState(null);
-  const [recaptchaToken, setRecaptchaToken] = useState();
+  // const [recaptchaToken, setRecaptchaToken] = useState();
   const { toggleSignIn } = useContext(AuthContext);
 
   const isLoginPage = async () => {
@@ -64,11 +62,11 @@ const AuthPage = () => {
     }
 
     // setLoading(true);
-    Alert.alert("recaptcha", recaptchaToken);
+    Alert.alert('recaptcha', recaptchaToken.current);
     const { sessionID, errorMessage } = await vars.httpClient.login(
       login,
       password,
-      recaptchaToken
+      recaptchaToken.current
     );
     if (sessionID) {
       await vars.storage.storeAccountData(login, password);
@@ -82,9 +80,9 @@ const AuthPage = () => {
   };
 
   const onReceiveRecaptchaToken = async (token) => {
-    Alert.alert("token received", token);
+    Alert.alert('token received', token);
     await tryLogin(token);
-    setRecaptchaToken(token);
+    recaptchaToken.current = token;
   };
 
   return (
