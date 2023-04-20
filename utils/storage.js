@@ -35,5 +35,6 @@ export default class Storage {
     } catch (exception) {
       console.warn('Error getting user data', e);
     }
+    return {}
   }
 }

@@ -37,7 +37,7 @@ const AuthPage = () => {
 
   const tryLogin = async (token = null) => {
     const accountData = await vars.storage.getAccountData();
-    if (!accountData || !accountData.login || !accountData.password) {
+    if (!accountData.login || !accountData.password) {
       return;
     }
     setLoading(true);
@@ -82,8 +82,8 @@ const AuthPage = () => {
   };
 
   const onReceiveRecaptchaToken = async (token) => {
-    await tryLogin(token);
     setRecaptchaToken(token);
+    await tryLogin(token);
   };
 
   return (
