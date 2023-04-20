@@ -86,9 +86,9 @@ const AuthPage = () => {
     setLoading(false);
   };
 
-  const onReceiveRecaptchaToken = async (token) => {
+  const onReceiveRecaptchaToken = (token) => {
     // Alert.alert('token received', token);
-    await tryLogin(token);
+    // await tryLogin(token);
     setRecaptchaToken(token);
   };
 
