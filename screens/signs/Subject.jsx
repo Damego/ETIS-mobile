@@ -19,7 +19,7 @@ const Subject = ({ data }) => (
         const theme = `КТ ${index + 1}`;
 
         return (
-          <Text style={(isNaN(info.mark) || info.passScore <= info.mark) ? styles.markSuccess : styles.markFail} key={info.theme}>{`${theme}: ${
+          <Text style={(Number.isNaN(info.mark) || info.passScore <= info.mark) ? styles.markSuccess : styles.markFail} key={info.theme}>{`${theme}: ${
             !Number.isNaN(info.mark) ? info.mark : "-"
           }/${info.passScore}/${info.maxScore}`}</Text>
         );
