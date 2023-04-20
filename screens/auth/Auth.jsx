@@ -36,6 +36,10 @@ const AuthPage = () => {
     wrapper();
   }, [isLoading, toggleSignIn]);
 
+  useEffect(() => {
+    Alert.alert("use effect token", recaptchaToken.current);
+  }, [recaptchaToken])
+
   const tryLogin = async (token = null) => {
     const accountData = await vars.storage.getAccountData();
     if (!accountData.login || !accountData.password) {
@@ -46,7 +50,7 @@ const AuthPage = () => {
     const sessionID = await vars.httpClient.login(
       accountData.login,
       accountData.password,
-      token == null ? recaptchaToken : token
+      token || recaptchaToken.current
     );
     if (sessionID && !(await isLoginPage())) {
       console.log('[AUTHORIZATION] Authorized using recaptcha token');
@@ -60,8 +64,12 @@ const AuthPage = () => {
       changeLoginMessageError('Вы не ввели логин или пароль');
       return;
     }
+    if (!recaptchaToken.current) {
+      changeLoginMessageError('Токен авторизации не найден');
+      return;
+    }
 
-    // setLoading(true);
+    setLoading(true);
     Alert.alert('recaptcha', recaptchaToken.current);
     const { sessionID, errorMessage } = await vars.httpClient.login(
       login,
@@ -76,7 +84,7 @@ const AuthPage = () => {
       changeLoginMessageError(errorMessage);
     }
 
-    // setLoading(false);
+    setLoading(false);
   };
 
   const onReceiveRecaptchaToken = async (token) => {
@@ -98,7 +106,7 @@ const AuthPage = () => {
         <Header text="Авторизация" />
 
         <Form
-          onSubmit={(login, password) => onFormSubmit(login, password)}
+          onSubmit={onFormSubmit}
           isLoading={isLoading}
           errorMessage={loginErrorMessage}
         />

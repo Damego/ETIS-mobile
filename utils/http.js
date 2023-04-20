@@ -29,18 +29,6 @@ export default class HTTPClient {
   }
 
   logError(contentLength) {
-    // 19961 - outdated token?
-    // 19994 - ?
-    // 19975 - ?
-    if (contentLength === 20020) {
-      console.warn('You have been ratelimited (5 requests per 10 minutes).');
-      return true;
-    }
-    if (contentLength === 20073) {
-      console.warn('You passed wrong login or password, or ReCaptcha token is outdated.');
-      return true;
-    }
-
     if (contentLength === 71) {
       console.warn('Neither login nor password were passed');
     }
@@ -55,12 +43,7 @@ export default class HTTPClient {
    * @returns
    */
   async login(username, password, token) {
-    if (!token) {
-      console.warn('No token was passed!');
-      return { sessionID: null, errorMessage: 'recaptcha token is undefined!' };
-    }
     const formData = new FormData();
-
     formData.append('p_redirect', 'stu.timetable');
     formData.append('p_username', username.trim());
     formData.append('p_password', password.trim());
