@@ -41,7 +41,7 @@ const AuthPage = () => {
 
   const tryLogin = async (token = null) => {
     const accountData = await vars.storage.getAccountData();
-    if (!accountData.login || !accountData.password) {
+    if (!accountData || !accountData.login || !accountData.password) {
       return;
     }
     setLoading(true);
