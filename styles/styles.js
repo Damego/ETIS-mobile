@@ -17,16 +17,13 @@ export const GLOBAL_STYLES = StyleSheet.create({
   loadingDataText: {
     fontSize: 30,
   },
-
   lessonContainer: {
-    marginLeft: '1%',
     display: 'flex',
     marginTop: '1%',
     marginBottom: '1%',
     flexWrap: 'nowrap',
     flexShrink: 1,
     flexDirection: 'row',
-    paddingHorizontal: '1%',
   },
   lessonTimeView: {
     paddingHorizontal: 1,
@@ -42,7 +39,7 @@ export const GLOBAL_STYLES = StyleSheet.create({
   },
   lessonInfoView: {
     width: '85%',
-    paddingHorizontal: 1,
+    // paddingHorizontal: 1,
   },
   lessonInfoText: {
     fontSize: 16,
