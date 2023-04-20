@@ -10,10 +10,9 @@ import Footer from './AuthFooter';
 import Form from './AuthForm';
 
 const AuthPage = () => {
-  const recaptchaToken = useRef();
   const [isLoading, setLoading] = useState(false);
   const [loginErrorMessage, changeLoginMessageError] = useState(null);
-  // const [recaptchaToken, setRecaptchaToken] = useState();
+  const [recaptchaToken, setRecaptchaToken] = useState();
   const { toggleSignIn } = useContext(AuthContext);
 
   const isLoginPage = async () => {
@@ -37,7 +36,7 @@ const AuthPage = () => {
   }, [isLoading, toggleSignIn]);
 
   useEffect(() => {
-    Alert.alert("use effect token", recaptchaToken.current);
+    Alert.alert("use effect token", recaptchaToken);
   }, [recaptchaToken])
 
   const tryLogin = async (token = null) => {
@@ -50,7 +49,7 @@ const AuthPage = () => {
     const sessionID = await vars.httpClient.login(
       accountData.login,
       accountData.password,
-      token || recaptchaToken.current
+      token || recaptchaToken
     );
     if (sessionID && !(await isLoginPage())) {
       console.log('[AUTHORIZATION] Authorized using recaptcha token');
@@ -64,17 +63,17 @@ const AuthPage = () => {
       changeLoginMessageError('Вы не ввели логин или пароль');
       return;
     }
-    if (!recaptchaToken.current) {
+    if (!recaptchaToken) {
       changeLoginMessageError('Токен авторизации не найден');
       return;
     }
 
     setLoading(true);
-    Alert.alert('recaptcha', recaptchaToken.current);
+    Alert.alert('recaptcha', recaptchaToken);
     const { sessionID, errorMessage } = await vars.httpClient.login(
       login,
       password,
-      recaptchaToken.current
+      recaptchaToken
     );
     if (sessionID) {
       await vars.storage.storeAccountData(login, password);
@@ -88,9 +87,9 @@ const AuthPage = () => {
   };
 
   const onReceiveRecaptchaToken = async (token) => {
-    Alert.alert('token received', token);
+    // Alert.alert('token received', token);
     await tryLogin(token);
-    recaptchaToken.current = token;
+    setRecaptchaToken(token);
   };
 
   return (
