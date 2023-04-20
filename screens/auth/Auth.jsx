@@ -1,6 +1,6 @@
 import ReCaptchaV3 from '@haskkor/react-native-recaptchav3';
 import Constants from 'expo-constants';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Alert, SafeAreaView, View } from 'react-native';
 
 import Header from '../../components/Header';
@@ -34,10 +34,6 @@ const AuthPage = () => {
     };
     wrapper();
   }, [isLoading, toggleSignIn]);
-
-  useEffect(() => {
-    Alert.alert("use effect token", recaptchaToken);
-  }, [recaptchaToken])
 
   const tryLogin = async (token = null) => {
     const accountData = await vars.storage.getAccountData();
@@ -86,9 +82,8 @@ const AuthPage = () => {
     setLoading(false);
   };
 
-  const onReceiveRecaptchaToken = (token) => {
-    // Alert.alert('token received', token);
-    // await tryLogin(token);
+  const onReceiveRecaptchaToken = async (token) => {
+    await tryLogin(token);
     setRecaptchaToken(token);
   };
 
