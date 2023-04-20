@@ -1,7 +1,7 @@
 import ReCaptchaV3 from '@haskkor/react-native-recaptchav3';
 import Constants from 'expo-constants';
 import React, { useContext, useEffect, useState } from 'react';
-import { Alert, SafeAreaView, View } from 'react-native';
+import { SafeAreaView, View } from 'react-native';
 
 import Header from '../../components/Header';
 import AuthContext from '../../context/AuthContext';
