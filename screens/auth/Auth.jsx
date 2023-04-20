@@ -65,7 +65,6 @@ const AuthPage = () => {
     }
 
     setLoading(true);
-    Alert.alert('recaptcha', recaptchaToken);
     const { sessionID, errorMessage } = await vars.httpClient.login(
       login,
       password,
