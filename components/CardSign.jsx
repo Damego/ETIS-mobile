@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   },
   markView: {
     alignItems: 'center',
-    width: '22%'
+    width: '25%'
   },
   markNumberText: {
     fontSize: 36,

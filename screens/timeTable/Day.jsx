@@ -14,7 +14,7 @@ const EmptyDay = ({ data }) => {
       topText={date}
       component={
         // TODO: Rename these styles
-        <View style={GLOBAL_STYLES.lessonContainer}>
+        <View style={[GLOBAL_STYLES.lessonContainer, {paddingLeft: '1%'}]}>
           <View style={GLOBAL_STYLES.lessonInfoView}>
             <Text style={GLOBAL_STYLES.lessonInfoText}>{'\nПар нет!\n'}</Text>
           </View>
