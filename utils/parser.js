@@ -251,10 +251,10 @@ export default class DataParsing {
         const theme = td.eq(0).text().trim();
         const typeWork = td.eq(1).text().trim();
         const typeControl = td.eq(2).text().trim();
-        const mark = parseInt(td.eq(3).text().trim());
-        const passScore = parseInt(td.eq(4).text().trim());
-        const currentScore = parseInt(td.eq(5).text().trim());
-        const maxScore = parseInt(td.eq(6).text().trim());
+        const mark = parseFloat(td.eq(3).text().trim());
+        const passScore = parseFloat(td.eq(4).text().trim());
+        const currentScore = parseFloat(td.eq(5).text().trim());
+        const maxScore = parseFloat(td.eq(6).text().trim());
         const date = td.eq(7).text().trim();
         const teacher = td.eq(8).text().trim();
         info.push({
