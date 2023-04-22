@@ -71,6 +71,7 @@ const CardSign = ({ subject }) => {
 
   subject.info.forEach(({ maxScore, passScore, mark }) => {
     if (mark < passScore) textStyle = styles.colorMark2;
+    else if (Number.isNaN(mark)) textStyle = styles.colorNoMark;
     collectedPoints += Number.isNaN(mark) || maxScore === 0 ? 0 : mark;
   });
 
