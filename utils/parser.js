@@ -7,15 +7,20 @@ export default class DataParsing {
   }
 
   parseHeader(html) {
-    let data = {};
+    const data = {
+      userFullName: null,
+      headerSpeciality: null,
+    };
+    const {} = data;
     const $ = cheerio.load(html);
     // Способы добавления элемента в словарь:   data['header'] = header  |  data.header = header;
 
     // ФИО и г.р. человека
-    let headerName = $('body > div.navbar.navbar-static-top > div > div > div > div > span').text();
-    let reg = /.*/g;
-    let headerNameArray = reg.exec(headerName);
-    data.userFullName = headerNameArray[0];
+    const headerName = $(
+      'body > div.navbar.navbar-static-top > div > div > div > div > span'
+    ).text();
+    const reg = /.*/g;
+    data.userFullName = reg.exec(headerName)[0];
 
     // Получение только ФИО (на всякий случай, если нужно будет)
     // let header_name = $('body > div.navbar.navbar-static-top > div > div > div > div > span').text();
@@ -50,25 +55,28 @@ export default class DataParsing {
    */
   parseTimeTable(html) {
     const $ = cheerio.load(html);
+    const week = $('.week')
 
     let data = {
-      firstWeek: parseInt($('.week').first().text()),
+      firstWeek: parseInt(week.first().text()),
       currentWeek: parseInt($('.week.current').text()),
-      lastWeek: parseInt($('.week').last().text()),
+      lastWeek: parseInt(week.last().text()),
       days: [],
     };
 
-    let days = data.days;
+    const {days} = data;
 
     $('.day', html).each((el, day) => {
+      const daySelector = $(day);
       let lessons = [];
-      const date = $(day).find('h3').text();
+      const date = daySelector.find('h3').text();
 
-      if (!$(day).children().last().hasClass('no_pairs')) {
+      if (!daySelector.children().last().hasClass('no_pairs')) {
         $('tr', day).each((_, tr) => {
-          const audience = $(tr).find('.pair_info').find('.aud').text().trim();
-          const subject = $(tr).find('.pair_info').find('.dis').text().trim();
-          const time = $(tr).find('.pair_num').find('.eval').text().trim();
+          const trSelector = $(tr);
+          const audience = trSelector.find('.pair_info').find('.aud').text().trim();
+          const subject = trSelector.find('.pair_info').find('.dis').text().trim();
+          const time = trSelector.find('.pair_num').find('.eval').text().trim();
           lessons.push({
             audience,
             subject,
