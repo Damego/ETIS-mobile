@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { v4 as uuid4 } from 'uuid';
 
 import CardSign from '../../components/CardSign';
 import LoadingPage from '../../components/LoadingPage';
@@ -15,7 +14,7 @@ const Signs = () => {
 
     const wrapper = async () => {
       const html = await vars.httpClient.getSigns('current');
-      if (vars.parser.isLoginPage(html)) return;
+      if (vars.parser.isLoginPage(html)) return; // TODO: move to auth page
 
       const parsedData = vars.parser.parseSigns(html);
       setLoaded(true);
@@ -29,7 +28,7 @@ const Signs = () => {
   return (
     <Screen headerText="Оценки">
       {data.map((subject) => (
-        <CardSign subject={subject} key={uuid4()} />
+        <CardSign subject={subject} key={subject.subject} />
       ))}
     </Screen>
   );
