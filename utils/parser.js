@@ -55,7 +55,7 @@ export default class DataParsing {
    */
   parseTimeTable(html) {
     const $ = cheerio.load(html);
-    const week = $('.week')
+    const week = $('.week');
 
     let data = {
       firstWeek: parseInt(week.first().text()),
@@ -64,7 +64,7 @@ export default class DataParsing {
       days: [],
     };
 
-    const {days} = data;
+    const { days } = data;
 
     $('.day', html).each((el, day) => {
       const daySelector = $(day);
