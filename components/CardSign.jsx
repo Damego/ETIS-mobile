@@ -81,8 +81,7 @@ const CardSign = ({ subject }) => {
   else if ([0, 5, 6, 7, 8, 9].includes(mod10)) pointsWord += 'ов';
 
   if (textStyle === null) {
-    if (collectedPoints === 0) textStyle = styles.colorNoMark;
-    else if (collectedPoints < 41) textStyle = styles.colorMark2;
+    if (collectedPoints < 41) textStyle = styles.colorMark2;
     else if (collectedPoints < 61) textStyle = styles.colorMark3;
     else if (collectedPoints < 81) textStyle = styles.colorMark4;
     else textStyle = styles.colorMark5;
