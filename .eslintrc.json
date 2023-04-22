@@ -26,6 +26,7 @@
         "consistent-return": "off",
         "no-console": "off",
         "global-require": "off",
-        "class-methods-use-this": "off"
+        "class-methods-use-this": "off",
+        "prefer-const": "off"
     }
 }
