@@ -259,7 +259,9 @@ export default class DataParsing {
         const theme = td.eq(0).text().trim();
         const typeWork = td.eq(1).text().trim();
         const typeControl = td.eq(2).text().trim();
-        const mark = parseFloat(td.eq(3).text().trim());
+        const rawMark = td.eq(3).text().trim();
+        const mark = parseFloat(rawMark);
+        const isAbsent = rawMark === "н";
         const passScore = parseFloat(td.eq(4).text().trim());
         const currentScore = parseFloat(td.eq(5).text().trim());
         const maxScore = parseFloat(td.eq(6).text().trim());
@@ -270,6 +272,7 @@ export default class DataParsing {
           typeWork,
           typeControl,
           mark,
+          isAbsent,
           passScore,
           currentScore,
           maxScore,

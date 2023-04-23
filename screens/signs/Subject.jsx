@@ -1,8 +1,8 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
-const styles = StyleSheet.create ({
-  markSuccess: {
+const styles = StyleSheet.create({
+  markNeutral: {
     fontSize: 16,
     fontWeight: '600',
   },
@@ -10,22 +10,31 @@ const styles = StyleSheet.create ({
     color: '#CE2539',
     fontSize: 16,
     fontWeight: '600',
-  }
+  },
 });
 
 const Subject = ({ data }) => (
-    <View>
-      {data.info.map((info, index) => {
-        const theme = `КТ ${index + 1}`;
+  <View>
+    {data.info.map((info, index) => {
+      const theme = `КТ ${index + 1}`;
 
-        return (
-          <Text style={(Number.isNaN(info.mark) || info.passScore <= info.mark) ? styles.markSuccess : styles.markFail} key={info.theme}>{`${theme}: ${
-            !Number.isNaN(info.mark) ? info.mark : "-"
-          }/${info.passScore}/${info.maxScore}`}</Text>
-        );
-      })}
-    </View>
-  );
+      let markText;
+      if (info.isAbsent) markText = 'н';
+      else if (Number.isNaN(info.mark)) markText = '-';
+      else markText = info.mark;
 
+      return (
+        <Text
+          style={
+            Number.isNaN(info.mark) && info.isAbsent || info.mark < info.passScore
+              ? styles.markFail
+              : styles.markNeutral
+          }
+          key={info.theme}
+        >{`${theme}: ${markText} / ${info.passScore} / ${info.maxScore}`}</Text>
+      );
+    })}
+  </View>
+);
 
 export default Subject;

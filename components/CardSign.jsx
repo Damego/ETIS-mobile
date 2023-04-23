@@ -35,15 +35,13 @@ const styles = StyleSheet.create({
   },
   markView: {
     alignItems: 'center',
-    width: '25%'
+    width: '25%',
   },
   markNumberText: {
     fontSize: 36,
     fontWeight: '600',
   },
-  subjects: {
-    
-  },
+  subjects: {},
   markWordText: {
     fontSize: 16,
     fontWeight: '600',
@@ -69,10 +67,12 @@ const CardSign = ({ subject }) => {
   let collectedPoints = 0;
   let textStyle = null;
 
-  subject.info.forEach(({ maxScore, passScore, mark }) => {
-    if (mark < passScore) textStyle = styles.colorMark2;
-    else if (Number.isNaN(mark)) textStyle = styles.colorNoMark;
+  subject.info.forEach(({ maxScore, passScore, mark, isAbsent }) => {
     collectedPoints += Number.isNaN(mark) || maxScore === 0 ? 0 : mark;
+
+    if (textStyle !== null) return;
+    if (isAbsent || mark < passScore) textStyle = styles.colorMark2;
+    else if (Number.isNaN(mark)) textStyle = styles.colorNoMark;
   });
 
   let pointsWord = 'балл';
