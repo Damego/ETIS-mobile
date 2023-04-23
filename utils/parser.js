@@ -261,7 +261,7 @@ export default class DataParsing {
         const typeControl = td.eq(2).text().trim();
         const rawMark = td.eq(3).text().trim();
         const mark = parseFloat(rawMark);
-        const isAbsent = rawMark === "н";
+        const isAbsent = rawMark === 'н';
         const passScore = parseFloat(td.eq(4).text().trim());
         const currentScore = parseFloat(td.eq(5).text().trim());
         const maxScore = parseFloat(td.eq(6).text().trim());
