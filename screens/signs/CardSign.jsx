@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import Subject from '../screens/signs/Subject';
-import { GLOBAL_STYLES } from '../styles/styles';
+import Subject from './Subject';
+import { GLOBAL_STYLES } from '../../styles/styles';
 
 const styles = StyleSheet.create({
   cardView: {

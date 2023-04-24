@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import CardSign from '../../components/CardSign';
+import CardSign from './CardSign';
 import LoadingPage from '../../components/LoadingPage';
 import Screen from '../../components/Screen';
 import { vars } from '../../utils/vars';
