@@ -74,6 +74,7 @@ const CardSign = ({ subject }) => {
     if (isAbsent || mark < passScore) textStyle = styles.colorMark2;
     else if (Number.isNaN(mark)) textStyle = styles.colorNoMark;
   });
+  collectedPoints = collectedPoints.toFixed(1);
 
   let pointsWord = 'балл';
   const mod10 = collectedPoints % 10;
