@@ -1,6 +1,7 @@
-import React from 'react';
-import { ScrollView, View, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
+import React, { useState } from 'react';
+import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
+
 import Header from './Header';
 
 const styles = StyleSheet.create({
@@ -10,15 +11,30 @@ const styles = StyleSheet.create({
   },
 });
 
-const Screen = ({ headerText, children }) => (
-  <View style={{ marginTop: Constants.statusBarHeight }}>
-    <ScrollView showsVerticalScrollIndicator={false} overScrollMode='never'>
-      <View style={styles.screen}>
-        <Header text={headerText} />
-        {children}
-      </View>
-    </ScrollView>
-  </View>
-);
+const Screen = ({ headerText, onUpdate, children }) => {
+  const [refreshing, setRefreshing] = useState(false);
+
+  // not a useCallback hook because `onUpdate` function of parent component uses first state of useState hooks
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await onUpdate();
+    setRefreshing(false);
+  };
+
+  return (
+    <View style={{ marginTop: Constants.statusBarHeight }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        overScrollMode="never"
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      >
+        <View style={styles.screen}>
+          <Header text={headerText} />
+          {children}
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
 
 export default Screen;
