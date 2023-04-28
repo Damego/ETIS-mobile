@@ -1,37 +1,27 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import {v4 as uuid4} from 'uuid';
+import { StyleSheet, View } from 'react-native';
 
 import Subject from './Subject';
 
-const Trimester = ({ data }) => {
+const BorderLine = () => (
+  <View
+    style={{
+      borderBottomColor: '#1c1c1c',
+      borderBottomWidth: StyleSheet.hairlineWidth,
+    }}
+  />
+);
 
-  return (
-    <View>
-      {data.subjects.map((subject, index) => {
-        if (index == data.subjects.length - 1) {
-          return (
-          <View key={uuid4()}>
-            <Subject data={subject} key={uuid4()} />
-          </View>
-          );
-        }
-        return (
-          <View key={uuid4()}>
-            <Subject data={subject} key={uuid4()} />
-            <View
-              style={{
-                borderBottomColor: '#1c1c1c',
-                borderBottomWidth: StyleSheet.hairlineWidth,
-              }}
-              key={uuid4()}
-            />
-          </View>
-        );
-      })}
+const Trimester = ({ data }) => (
+  <View>
+    {data.subjects.map((subject, index) => (
+      <View key={subject.subject}>
+        <Subject data={subject} />
 
-    </View>
-  );
-};
+        {index !== data.subjects.length - 1 ? <BorderLine /> : ''}
+      </View>
+    ))}
+  </View>
+);
 
 export default Trimester;
