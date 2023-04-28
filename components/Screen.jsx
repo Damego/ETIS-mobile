@@ -14,14 +14,11 @@ const styles = StyleSheet.create({
 const Screen = ({ headerText, onUpdate, children }) => {
   const [refreshing, setRefreshing] = useState(false);
 
-  const onRefresh = useCallback(() => {
-    const wrapper = async () => {
-      setRefreshing(true);
-      await onUpdate();
-      setRefreshing(false);
-    };
-    wrapper();
-  }, []);
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await onUpdate();
+    setRefreshing(false);
+  };
 
   return (
     <View style={{ marginTop: Constants.statusBarHeight }}>
