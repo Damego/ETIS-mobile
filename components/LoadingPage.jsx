@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 
 const styles = StyleSheet.create({
   view: {
@@ -18,6 +19,7 @@ const styles = StyleSheet.create({
 
 const LoadingPage = () => (
   <View style={styles.view}>
+    <StatusBar />
     <Image style={styles.image} source={require('../assets/logo_red.png')} />
   </View>
 );
