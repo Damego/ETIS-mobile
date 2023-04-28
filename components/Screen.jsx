@@ -1,5 +1,5 @@
 import Constants from 'expo-constants';
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 
 import Header from './Header';
@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
 const Screen = ({ headerText, onUpdate, children }) => {
   const [refreshing, setRefreshing] = useState(false);
 
+  // not a useCallback hook because `onUpdate` function of parent component uses first state of useState hooks
   const onRefresh = async () => {
     setRefreshing(true);
     await onUpdate();
