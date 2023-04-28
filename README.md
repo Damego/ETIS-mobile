@@ -1,4 +1,5 @@
 [![wakatime](https://wakatime.com/badge/user/d6a559cb-3190-4b5a-9176-720d57c53941/project/4fd4884a-36b0-49e0-86e0-320c8fbedd38.svg)](https://wakatime.com/badge/user/d6a559cb-3190-4b5a-9176-720d57c53941/project/4fd4884a-36b0-49e0-86e0-320c8fbedd38) - Damego
+
 # [WIP] ЕТИС мобайл
 
 Неоффициальное мобильное приложение для ЕТИС ПГНИУ.
