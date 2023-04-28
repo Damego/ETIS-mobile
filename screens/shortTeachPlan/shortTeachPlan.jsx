@@ -1,47 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { v4 as uuid4 } from 'uuid';
+import React, { useEffect, useState } from 'react';
 
-import { vars } from '../../utils/vars';
-import LoadingPage from '../../components/LoadingPage';
-import Trimester from './Trimester';
 import Card from '../../components/Card';
+import LoadingPage from '../../components/LoadingPage';
 import Screen from '../../components/Screen';
-
-
-const getTeachPlan = async () => {
-  const html = await vars.httpClient.getTeachPlan();
-  if (html) {
-    return vars.parser.parseTeachPlan(html);
-  }
-};
+import { vars } from '../../utils/vars';
+import Trimester from './Trimester';
 
 const ShortTeachPlan = () => {
   const [data, setData] = useState(null);
-  const [isLoaded, setLoaded] = useState(false);
+
+  const loadData = async () => {
+    const html = await vars.httpClient.getTeachPlan();
+    if (html) {
+      const loadedData = vars.parser.parseTeachPlan(html);
+      setData(loadedData);
+    }
+  };
 
   useEffect(() => {
-    if (isLoaded) return;
+    if (data) return;
+    loadData();
+  }, [data]);
 
-    const wrapper = async () => {
-      const loadedData = await getTeachPlan();
-      if (!loadedData) {
-        return console.warn('cannot load teach plan');
-      }
-      setLoaded(true);
-      setData(loadedData);
-    };
-    wrapper();
-  });
-
-  if (!isLoaded || !data) return <LoadingPage />;
+  if (!data) return <LoadingPage />;
 
   return (
-    <Screen headerText="Учебный план">
+    <Screen headerText="Учебный план" onUpdate={loadData}>
       {data.map((trimester) => (
         <Card
           topText={trimester.trimester}
-          component={<Trimester data={trimester} key={uuid4()} />}
-          key={uuid4()}
+          component={<Trimester data={trimester} key={trimester.trimester} />}
+          key={`card-${trimester.trimester}`}
         />
       ))}
     </Screen>
