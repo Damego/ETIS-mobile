@@ -15,10 +15,6 @@ const TimeTablePage = () => {
 
   const loadData = async () => {
     let html;
-    console.log('current week', week);
-    // TODO:
-    //  When I refresh page it uses previous state
-
     if (week != null) {
       html = await vars.httpClient.getTimeTable({ week });
     } else {
@@ -34,7 +30,6 @@ const TimeTablePage = () => {
   };
 
   useEffect(() => {
-    console.log('useeffect week', week);
     loadData();
   }, [week, setData]);
 
