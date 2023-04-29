@@ -23,12 +23,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const Card = ({ topText, component }) => (
+const Card = ({ topText, children }) => (
   <View>
     <View style={styles.cardHeaderView}>
       <Text style={styles.cardHeaderText}>{topText}</Text>
     </View>
-    <View style={[styles.cardView, GLOBAL_STYLES.shadow]}>{component}</View>
+    <View style={[styles.cardView, GLOBAL_STYLES.shadow]}>{children}</View>
   </View>
 );
 
