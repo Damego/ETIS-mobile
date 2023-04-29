@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import { v4 as uuid4 } from 'uuid';
 
 import Lesson from './Lesson';
 import Card from '../../components/Card';
@@ -29,7 +28,6 @@ const Day = ({ data }) => {
 
   return (
     <Card
-      key={uuid4()}
       topText={date}
       component={lessons.map((lesson, index) => {
         lesson.pair = `${index + 1} пара`;
