@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import AuthPage from '../screens/auth/Auth';
@@ -30,22 +29,12 @@ const StackNavigator = () => {
             <Stack.Screen
               name="Authorization"
               options={{ headerShown: false }}
-              screenOptions={{
-                contentStyle: {
-                  backgroundColor: '#FFFFFF',
-                },
-              }}
               component={AuthPage}
             />
           ) : (
             <Stack.Screen
               name="Navigator"
               options={{ headerShown: false }}
-              screenOptions={{
-                contentStyle: {
-                  backgroundColor: '#FFFFFF',
-                },
-              }}
               component={TabNavigator}
             />
           )}

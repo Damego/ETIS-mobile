@@ -6,7 +6,6 @@ import Header from './Header';
 
 const styles = StyleSheet.create({
   screen: {
-    backgroundColor: '#F8F8FA',
     height: '100%',
     width: '96%',
     marginLeft: '2%',
@@ -24,7 +23,7 @@ const Screen = ({ headerText, onUpdate, children }) => {
   };
 
   return (
-    <View style={{ marginTop: Constants.statusBarHeight }}>
+    <View style={{ marginTop: Constants.statusBarHeight, backgroundColor: "#F8F8Fa" }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         overScrollMode="never"
