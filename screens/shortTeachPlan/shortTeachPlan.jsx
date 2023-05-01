@@ -18,9 +18,8 @@ const ShortTeachPlan = () => {
   };
 
   useEffect(() => {
-    if (data) return;
     loadData();
-  }, [data]);
+  }, []);
 
   if (!data) return <LoadingPage />;
 
@@ -29,9 +28,10 @@ const ShortTeachPlan = () => {
       {data.map((trimester) => (
         <Card
           topText={trimester.trimester}
-          component={<Trimester data={trimester} key={trimester.trimester} />}
           key={`card-${trimester.trimester}`}
-        />
+        >
+          <Trimester data={trimester} key={trimester.trimester} />
+        </Card>
       ))}
     </Screen>
   );
