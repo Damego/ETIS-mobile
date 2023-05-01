@@ -8,6 +8,8 @@ const styles = StyleSheet.create({
   screen: {
     backgroundColor: '#F8F8FA',
     height: '100%',
+    width: '96%',
+    marginLeft: '2%',
   },
 });
 

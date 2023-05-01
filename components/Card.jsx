@@ -7,9 +7,7 @@ const styles = StyleSheet.create({
   cardView: {
     flex: 1,
     display: 'flex',
-    width: '96%',
     backgroundColor: '#ffffff',
-    marginLeft: '2%',
     marginBottom: '3%',
     borderRadius: 10,
   },
