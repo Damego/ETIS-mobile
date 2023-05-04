@@ -26,7 +26,8 @@ const Subject = ({ data }) => (
       return (
         <Text
           style={
-            Number.isNaN(info.mark) && info.isAbsent || info.mark < info.passScore
+            (Number.isNaN(info.mark) && info.isAbsent || info.mark < info.passScore) &&
+              (info.maxScore !== 0.0)
               ? styles.markFail
               : styles.markNeutral
           }

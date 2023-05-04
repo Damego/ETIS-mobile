@@ -69,7 +69,7 @@ const CardSign = ({ subject }) => {
     collectedPoints += Number.isNaN(mark) || maxScore === 0 ? 0 : mark;
 
     if (textStyle !== null) return;
-    if (isAbsent || mark < passScore) textStyle = styles.colorMark2;
+    if ((isAbsent || mark < passScore) && maxScore !== 0.0) textStyle = styles.colorMark2;
     else if (Number.isNaN(mark)) textStyle = styles.colorNoMark;
   });
   collectedPoints = collectedPoints.toFixed(1) % 1 === 0 ? collectedPoints.toFixed(0) : collectedPoints.toFixed(1);
