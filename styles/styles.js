@@ -11,9 +11,6 @@ export const GLOBAL_STYLES = StyleSheet.create({
     shadowRadius: 6,
     elevation: 4,
   },
-  buttonNavigator: {
-    tabBarStyle: { zIndex: 1 },
-  },
   loadingDataText: {
     fontSize: 30,
   },
