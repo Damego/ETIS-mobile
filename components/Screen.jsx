@@ -13,21 +13,21 @@ const styles = StyleSheet.create({
 });
 
 const Screen = ({ headerText, onUpdate, children }) => {
-  const [refreshing, setRefreshing] = useState(false);
-
-  // not a useCallback hook because `onUpdate` function of parent component uses first state of useState hooks
-  const onRefresh = async () => {
-    setRefreshing(true);
-    await onUpdate();
-    setRefreshing(false);
-  };
+  // const [refreshing, setRefreshing] = useState(false);
+  //
+  // // not a useCallback hook because `onUpdate` function of parent component uses first state of useState hooks
+  // const onRefresh = async () => {
+  //   setRefreshing(true);
+  //   await onUpdate();
+  //   setRefreshing(false);
+  // };
 
   return (
     <View style={{ marginTop: Constants.statusBarHeight, backgroundColor: "#F8F8Fa" }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         overScrollMode="never"
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        // refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
         <View style={styles.screen}>
           <Header text={headerText} />
