@@ -6,7 +6,6 @@ import Header from './Header';
 
 const styles = StyleSheet.create({
   screen: {
-    height: '100%',
     width: '96%',
     marginLeft: '2%',
   },
