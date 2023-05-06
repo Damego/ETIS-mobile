@@ -253,7 +253,7 @@ export default class DataParsing {
     let data = {
       subjects: [],
       currentTrimester: null,
-      latestTrimester: null
+      latestTrimester: null,
     };
     $('.common', html).each((el, table) => {
       let info = [];
@@ -302,7 +302,7 @@ export default class DataParsing {
         return false;
       }
     });
-    data.latestTrimester = $('.submenu-item', subMenu).last().index()
+    data.latestTrimester = $('.submenu-item', subMenu).last().index();
 
     return data;
   }

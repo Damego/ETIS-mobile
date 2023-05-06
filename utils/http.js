@@ -100,7 +100,7 @@ export default class HTTPClient {
     const params = { p_mode: mode };
 
     if (trimester !== undefined) {
-      params.p_term = trimester
+      params.p_term = trimester;
     }
 
     return this.request('signs', params);
