@@ -29,7 +29,7 @@ const AuthPage = () => {
 
     // TODO: reload recaptcha component
     if (!token && !recaptchaToken) {
-      changeLoginMessageError('Токен авторизации не найден');
+      changeLoginMessageError('Токен авторизации не найден. Перезайдите в приложение');
       return;
     }
 
