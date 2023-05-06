@@ -250,7 +250,11 @@ export default class DataParsing {
   // only for p_mode = current
   parseSigns(html) {
     const $ = cheerio.load(html);
-    let data = [];
+    let data = {
+      subjects: [],
+      currentTrimester: null,
+      latestTrimester: null
+    };
     $('.common', html).each((el, table) => {
       let info = [];
       $('tr', table).each((i, tr) => {
@@ -282,14 +286,24 @@ export default class DataParsing {
       });
       info.splice(0, 2);
       info.splice(-1, 1);
-      data.push({
+      data.subjects.push({
         info,
       });
     });
     $('h3', html).each((el, name) => {
       const subject = $(name).text();
-      data[el].subject = subject;
+      data.subjects[el].subject = subject;
     });
+
+    const subMenu = $('.submenu').last();
+    $('.submenu-item', subMenu).each((i, el) => {
+      if (!$('a', el).text()) {
+        data.currentTrimester = i + 1;
+        return false;
+      }
+    });
+    data.latestTrimester = $('.submenu-item', subMenu).last().index()
+
     return data;
   }
 }
