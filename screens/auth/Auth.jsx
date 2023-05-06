@@ -1,6 +1,6 @@
 import ReCaptchaV3 from '@haskkor/react-native-recaptchav3';
 import Constants from 'expo-constants';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View } from 'react-native';
 
 import Header from '../../components/Header';
@@ -15,95 +15,69 @@ const AuthPage = () => {
   const [recaptchaToken, setRecaptchaToken] = useState();
   const { toggleSignIn } = useContext(AuthContext);
 
-  const isLoginPage = async () => {
-    const html = await vars.httpClient.getTimeTable();
-    return vars.parser.isLoginPage(html);
-  };
-
-  useEffect(() => {
-    if (!isLoading) return;
-
-    const wrapper = async () => {
-      setLoading(true);
-      vars.httpClient.sessionID = await vars.storage.getSessionID();
-
-      if (vars.httpClient.sessionID && !(await isLoginPage())) {
-        setLoading(false);
-        toggleSignIn();
-      }
-    };
-    wrapper();
-  }, [isLoading, toggleSignIn]);
-
-  const tryLogin = async (token = null) => {
-    const accountData = await vars.storage.getAccountData();
-    if (!accountData.login || !accountData.password) {
-      return;
-    }
-    setLoading(true);
-
-    const sessionID = await vars.httpClient.login(
-      accountData.login,
-      accountData.password,
-      token || recaptchaToken
-    );
-    if (sessionID && !(await isLoginPage())) {
-      console.log('[AUTHORIZATION] Authorized using recaptcha token');
-      toggleSignIn();
-    }
-    setLoading(false);
-  };
-
-  const onFormSubmit = async (login, password) => {
-    if (login.length === 0 || password.length === 0) {
+  const makeLogin = async ({ token, useCache, login, password }) => {
+    if (useCache) {
+      const accountData = await vars.storage.getAccountData();
+      // js is weird
+      login = accountData.login;
+      password = accountData.password;
+      if (!login || !password) return;
+    } else if (!login || !password) {
       changeLoginMessageError('Вы не ввели логин или пароль');
       return;
     }
-    if (!recaptchaToken) {
+
+    // TODO: reload recaptcha component
+    if (!token && !recaptchaToken) {
       changeLoginMessageError('Токен авторизации не найден');
       return;
     }
 
     setLoading(true);
+
     const { sessionID, errorMessage } = await vars.httpClient.login(
       login,
       password,
-      recaptchaToken
+      token || recaptchaToken
     );
-    if (sessionID) {
-      await vars.storage.storeAccountData(login, password);
-      await vars.storage.storeSessionID(sessionID);
-      toggleSignIn();
-    } else {
+
+    if (errorMessage) {
       changeLoginMessageError(errorMessage);
+      return;
     }
 
+    await vars.storage.storeSessionID(sessionID);
+    if (!useCache) {
+      await vars.storage.storeAccountData(login, password);
+    }
+
+    toggleSignIn();
     setLoading(false);
   };
 
   const onReceiveRecaptchaToken = async (token) => {
     setRecaptchaToken(token);
-    await tryLogin(token);
+    await makeLogin({ token, useCache: true });
   };
 
   return (
     <View style={{ marginTop: Constants.statusBarHeight }}>
-        <ReCaptchaV3
-          action="submit"
-          captchaDomain="https://student.psu.ru"
-          siteKey="6LfeYf8UAAAAAIF22Cn9YFwXlZk1exjVNyF2Jmo6"
-          onReceiveToken={(token) => onReceiveRecaptchaToken(token)}
-        />
+      <ReCaptchaV3
+        action="submit"
+        captchaDomain="https://student.psu.ru"
+        siteKey="6LfeYf8UAAAAAIF22Cn9YFwXlZk1exjVNyF2Jmo6"
+        onReceiveToken={(token) => onReceiveRecaptchaToken(token)}
+      />
 
-        <Header text="Авторизация" />
+      <Header text="Авторизация" />
 
-        <Form
-          onSubmit={onFormSubmit}
-          isLoading={isLoading}
-          errorMessage={loginErrorMessage}
-        />
+      <Form
+        onSubmit={(login, password) => makeLogin({ login, password })}
+        isLoading={isLoading}
+        errorMessage={loginErrorMessage}
+      />
 
-        <Footer />
+      <Footer />
     </View>
   );
 };

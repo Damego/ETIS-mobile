@@ -23,16 +23,7 @@ export default class HTTPClient {
       params,
     });
 
-    if (this.logError(response)) return null;
-
     return response.data;
-  }
-
-  logError(contentLength) {
-    if (contentLength === 71) {
-      console.warn('Neither login nor password were passed');
-    }
-    return false;
   }
 
   /**
@@ -50,7 +41,7 @@ export default class HTTPClient {
     formData.append('p_recaptcha_ver', '3');
     formData.append('p_recaptcha_response', token.trim());
 
-    console.log(formData);
+    console.log(`[HTTP] Authorizing with data ${formData}`);
 
     const response = await axios.post(`${this.defaultURL}.login`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
@@ -58,24 +49,17 @@ export default class HTTPClient {
 
     const cookies = response.headers['set-cookie'];
 
-    // Figuring out error via content length
-    let contentLength = Number(response.headers['content-length']);
     if (!cookies) {
-      if (contentLength > 10000) contentLength -= username.length + password.length;
-
       const $ = cheerio.load(response.data);
-      const errorMessage = $('.error_message').text();
-
-      if (!this.logError(contentLength)) {
-        console.warn('Unknown error. Content length:', contentLength);
-      }
+      let errorMessage = $('.error_message').text();
+      if (!errorMessage) errorMessage = 'Ошибка авторизации. Попробуйте ещё раз.';
       return { sessionID: null, errorMessage };
     }
 
     const [sessionID] = cookies[0].split(';');
     this.sessionID = sessionID;
 
-    console.log(`Authorized with ${sessionID}`);
+    console.log(`[HTTP] Authorized with ${sessionID}`);
 
     return { sessionID, errorMessage: null };
   }
