@@ -24,33 +24,57 @@ const styles = StyleSheet.create({
   },
   menuView: {
     position: 'absolute',
+    backgroundColor: "#FFFFFF",
+    top: "100%",
+    width: "100%",
+    borderRadius: 10,
   },
   optionView: {
+    paddingHorizontal: '3%',
+    paddingVertical: "2%"
+  },
+  optionText: {
+    fontSize: 16,
+    fontWeight: '500',
   }
 });
 
-function Menu() {
+function SelectOption({label, value, onClick}) {
   return (
-    <View style={styles.menuView}>
-      <View styles={styles.optionView}>
-        <Text>Option 1</Text>
+    <Pressable onPress={() => onClick(value)}>
+      <View style={styles.optionView}>
+        <Text style={styles.optionText}>{label}</Text>
       </View>
+    </Pressable>
+  )
+}
+
+function Menu({options, onSelect}) {
+  return (
+    <View style={[styles.menuView, GLOBAL_STYLES.shadow]}>
+      {
+        options.map(({ label, value }) => (
+          <Pressable onPress={() => onSelect(value)} key={`pressable-${label}`}>
+            <SelectOption label={label} value={value} key={label}/>
+          </Pressable>
+        ))
+      }
     </View>
   );
 }
 
-function Select({isOpened, toggleOpened}) {
+function Select({selectedOption, isOpened, toggleOpened}) {
   return (
     <Pressable onPress={toggleOpened}>
       <View style={[styles.selectButton, GLOBAL_STYLES.shadow]}>
-        <Text style={styles.selectText}>2 Триместр</Text>
+        <Text style={styles.selectText}>{selectedOption}</Text>
         <AntDesign name={isOpened ? 'caretup' : 'caretdown'} size={14} color="black" />
       </View>
     </Pressable>
   )
 }
 
-export default function Dropdown() {
+export default function Dropdown({selectedOption, options, onSelect}) {
   const [isOpened, setOpened] = useState(false);
 
   const toggleOpened = () => {
@@ -59,8 +83,8 @@ export default function Dropdown() {
 
   return (
     <View style={styles.dropdownView}>
-      <Select isOpened={isOpened} toggleOpened={toggleOpened}/>
-      {isOpened ? <Menu /> : ''}
+      <Select selectedOption={selectedOption.label} isOpened={isOpened} toggleOpened={toggleOpened}/>
+      {isOpened ? <Menu options={options} onSelect={onSelect}/> : ''}
     </View>
   );
 }
