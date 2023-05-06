@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
 
+import Dropdown from '../../components/Dropdown';
 import LoadingPage from '../../components/LoadingPage';
 import Screen from '../../components/Screen';
 import { vars } from '../../utils/vars';
