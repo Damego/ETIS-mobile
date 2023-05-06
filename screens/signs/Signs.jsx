@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
 
+import Dropdown from '../../components/Dropdown';
 import LoadingPage from '../../components/LoadingPage';
 import Screen from '../../components/Screen';
 import { vars } from '../../utils/vars';
@@ -25,6 +27,9 @@ const Signs = () => {
 
   return (
     <Screen headerText="Оценки" onUpdate={loadData}>
+      <View style={{marginLeft: "auto", marginRight: 0, paddingBottom: "2%"}}>
+        <Dropdown />
+      </View>
       {data.map((subject) => (
         <CardSign subject={subject} key={subject.subject} />
       ))}
