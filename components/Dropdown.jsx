@@ -9,13 +9,13 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   selectButton: {
-    paddingVertical: '1%',
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: '3%',
+    paddingHorizontal: '6%',
+    paddingVertical: "3%"
   },
   selectText: {
     textAlign: 'center',
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   menuView: {
     position: 'absolute',
     backgroundColor: '#FFFFFF',
-    top: '100%',
+    top: '90%',
     width: '100%',
     borderRadius: 10,
   },
