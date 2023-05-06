@@ -88,7 +88,7 @@ export default class HTTPClient {
     return this.request('teach_plan');
   }
 
-  getSigns(mode) {
+  getSigns(mode, { trimester }) {
     /*
     `mode`:
     - session: оценки за сессии
@@ -96,7 +96,14 @@ export default class HTTPClient {
     - rating: итоговый рейтинг за триместр 
     - diplom: оценки в диплом
     */
-    return this.request('signs', { p_mode: mode });
+
+    const params = { p_mode: mode };
+
+    if (trimester !== undefined) {
+      params.p_term = trimester
+    }
+
+    return this.request('signs', params);
   }
 
   getAbsenses(trimester) {
