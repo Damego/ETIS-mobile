@@ -25,7 +25,7 @@ const Signs = () => {
 
   return (
     <Screen headerText="Оценки" onUpdate={loadData}>
-      {data.map((subject) => (
+      {data.subjects.map((subject) => (
         <CardSign subject={subject} key={subject.subject} />
       ))}
     </Screen>
