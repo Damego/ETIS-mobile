@@ -117,10 +117,8 @@ export default class DataParsing {
 
     // Let WebView work with this shit
     $('.nav.msg').each((index, el) => {
-      data.push(
-        $(el).html()
-      )
-    })
+      data.push($(el).html());
+    });
 
     return data;
   }
