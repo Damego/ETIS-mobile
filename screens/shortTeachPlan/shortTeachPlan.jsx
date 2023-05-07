@@ -3,16 +3,16 @@ import React, { useEffect, useState } from 'react';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import LoadingPage from '../../components/LoadingPage';
 import Screen from '../../components/Screen';
-import { vars } from '../../utils/vars';
+import { httpClient, parser } from '../../utils';
 import Trimester from './Trimester';
 
 const ShortTeachPlan = () => {
   const [data, setData] = useState(null);
 
   const loadData = async () => {
-    const html = await vars.httpClient.getTeachPlan();
+    const html = await httpClient.getTeachPlan();
     if (html) {
-      const loadedData = vars.parser.parseTeachPlan(html);
+      const loadedData = parser.parseTeachPlan(html);
       setData(loadedData);
     }
   };
