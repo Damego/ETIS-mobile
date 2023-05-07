@@ -3,11 +3,7 @@ import Storage from './storage';
 import DataParsing from './parser';
 
 const httpClient = new HTTPClient();
-const storage = new Storage()
-const parser = new DataParsing()
+const storage = new Storage();
+const parser = new DataParsing();
 
-export {
-  httpClient,
-  storage,
-  parser,
-}
+export { httpClient, storage, parser };
