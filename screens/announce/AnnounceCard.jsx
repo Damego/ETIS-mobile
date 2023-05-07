@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 
 import Card from '../../components/Card';
@@ -14,17 +15,19 @@ a {
   text-decoration: none;
   color: #CE2539
 }
-`
+`;
 
 export default function AnnounceCard({ data }) {
   return (
     <Card>
-      <AutoHeightWebView
-        originWhitelist={['*']}
-        source={{ html: data }}
-        style={{ flex: 0}}
-        customStyle={style}
-      />
+      <View style={{ paddingHorizontal: '2%', paddingVertical: '2%' }}>
+        <AutoHeightWebView
+          originWhitelist={['*']}
+          source={{ html: data }}
+          style={{ flex: 0, width: '100%' }}
+          customStyle={style}
+        />
+      </View>
     </Card>
   );
 }
