@@ -300,4 +300,23 @@ export default class DataParsing {
 
     return data;
   }
+
+  parseMenu(html) {
+    const $ = cheerio.load(html);
+
+    const data = {
+      announceCount: null,
+      messageCount: null,
+    };
+
+    $('.nav.nav-tabs.nav-stacked')
+      .find('.badge')
+      .each((i, el) => {
+        const span = $(el);
+        if (span.parent().attr('href') === 'stu.announce') {
+          data.announceCount = parseInt(span.text());
+        }
+      });
+    return data;
+  }
 }

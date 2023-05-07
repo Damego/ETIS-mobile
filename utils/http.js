@@ -127,4 +127,8 @@ export default class HTTPClient {
   getTeacherNotes() {
     return this.request('teacher_notes');
   }
+
+  getBlankPage() {
+    return this.request('blank_page')
+  }
 }
