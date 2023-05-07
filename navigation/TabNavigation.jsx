@@ -6,7 +6,7 @@ import Announce from '../screens/announce/Announce';
 import ShortTeachPlan from '../screens/shortTeachPlan/shortTeachPlan';
 import Signs from '../screens/signs/Signs';
 import TimeTablePage from '../screens/timeTable/TimeTable';
-import { vars } from '../utils/vars';
+import { httpClient, parser } from '../utils';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,8 +15,8 @@ const TabNavigator = () => {
 
   useEffect(() => {
     const wrapper = async () => {
-      const html = await vars.httpClient.getBlankPage();
-      const data = vars.parser.parseMenu(html);
+      const html = await httpClient.getBlankPage();
+      const data = parser.parseMenu(html);
       setAnnounceMessageCount(data.announceCount);
     };
     wrapper();
