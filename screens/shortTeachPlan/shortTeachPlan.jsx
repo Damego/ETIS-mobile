@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import Card from '../../components/Card';
+import CardHeaderOut from '../../components/CardHeaderOut';
 import LoadingPage from '../../components/LoadingPage';
 import Screen from '../../components/Screen';
 import { vars } from '../../utils/vars';
@@ -26,12 +26,12 @@ const ShortTeachPlan = () => {
   return (
     <Screen headerText="Учебный план" onUpdate={loadData}>
       {data.map((trimester) => (
-        <Card
+        <CardHeaderOut
           topText={trimester.trimester}
           key={`card-${trimester.trimester}`}
         >
           <Trimester data={trimester} key={trimester.trimester} />
-        </Card>
+        </CardHeaderOut>
       ))}
     </Screen>
   );
