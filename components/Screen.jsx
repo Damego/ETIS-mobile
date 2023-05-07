@@ -6,6 +6,7 @@ import Header from './Header';
 
 const styles = StyleSheet.create({
   screen: {
+    flex: 1,
     width: '96%',
     marginLeft: '2%',
   },
@@ -22,8 +23,10 @@ const Screen = ({ headerText, onUpdate, children }) => {
   };
 
   return (
-    <View style={{ marginTop: Constants.statusBarHeight, backgroundColor: "#F8F8Fa" }}>
+    <View style={{ marginTop: Constants.statusBarHeight, backgroundColor: "#F8F8Fa", flex: 1 }}>
       <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        style={{flex: 1}}
         showsVerticalScrollIndicator={false}
         overScrollMode="never"
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
