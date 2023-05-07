@@ -1,28 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import CardHeaderIn from '../../components/CardHeaderIn';
 import Subject from './Subject';
-import { GLOBAL_STYLES } from '../../styles/styles';
 
 const styles = StyleSheet.create({
-  cardView: {
-    flex: 1,
-    display: 'flex',
-    backgroundColor: '#ffffff',
-    marginBottom: '3%',
-    borderRadius: 10,
-  },
-  cardHeaderView: {
-    width: '96%',
-    marginTop: '2%',
-    marginLeft: '4%',
-    marginBottom: '5%',
-    paddingRight: '2%',
-  },
-  cardHeaderText: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
   cardMainView: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -72,7 +54,8 @@ const CardSign = ({ subject }) => {
     if ((isAbsent || mark < passScore) && maxScore !== 0.0) textStyle = styles.colorMark2;
     else if (Number.isNaN(mark)) textStyle = styles.colorNoMark;
   });
-  collectedPoints = collectedPoints.toFixed(1) % 1 === 0 ? collectedPoints.toFixed(0) : collectedPoints.toFixed(1);
+  collectedPoints =
+    collectedPoints.toFixed(1) % 1 === 0 ? collectedPoints.toFixed(0) : collectedPoints.toFixed(1);
 
   let pointsWord = 'балл';
   const mod10 = collectedPoints % 10;
@@ -87,10 +70,7 @@ const CardSign = ({ subject }) => {
   }
 
   return (
-    <View style={[styles.cardView, GLOBAL_STYLES.shadow]}>
-      <View style={styles.cardHeaderView}>
-        <Text style={styles.cardHeaderText}>{subject.subject}</Text>
-      </View>
+    <CardHeaderIn topText={subject.subject}>
       <View style={styles.cardMainView}>
         <View style={styles.subjects}>
           <Subject data={subject} />
@@ -100,7 +80,7 @@ const CardSign = ({ subject }) => {
           <Text style={styles.markWordText}>{pointsWord}</Text>
         </View>
       </View>
-    </View>
+    </CardHeaderIn>
   );
 };
 

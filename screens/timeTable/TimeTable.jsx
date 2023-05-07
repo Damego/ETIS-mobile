@@ -44,7 +44,7 @@ const TimeTablePage = () => {
         onWeekChange={(selectedWeek) => changeWeek(selectedWeek)}
       />
 
-      <View style={GLOBAL_STYLES.daysView}>
+      <View>
         {data.days.map((day) =>
           day.lessons.length === 0 ? (
             <EmptyDay key={day.date} data={day} />

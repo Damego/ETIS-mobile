@@ -8,24 +8,20 @@ import { vars } from '../../utils/vars';
 import CardSign from './CardSign';
 
 function buildTrimesterOptions(currentTrimester, latestTrimester) {
+  const buildOption = (trimester) => {
+    return { label: `${trimester} Триместр`, value: trimester };
+  };
+
   const options = [];
+  // TODO: Do we need to specify first trimester which shows on site?
   let index = 0;
-
   while (index <= latestTrimester) {
-    index += 1
-    if (index === currentTrimester) continue;
-
-    options.push({
-      label: `${index} Триместр`,
-      value: index,
-    });
+    index += 1;
+    if (index !== currentTrimester) options.push(buildOption(index));
   }
 
   return {
-    current: {
-      label: `${currentTrimester} Триместр`,
-      value: currentTrimester,
-    },
+    current: buildOption(currentTrimester),
     options,
   };
 }
