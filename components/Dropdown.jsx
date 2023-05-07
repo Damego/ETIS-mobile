@@ -1,6 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
 
 import { GLOBAL_STYLES } from '../styles/styles';
 
@@ -52,9 +52,9 @@ function Menu({ options, onSelect }) {
   return (
     <View style={[styles.menuView, GLOBAL_STYLES.shadow]}>
       {options.map(({ label, value }) => (
-        <Pressable onPress={() => onSelect(value)} key={`pressable-${label}`}>
+        <TouchableOpacity onPress={() => onSelect(value)} key={`pressable-${label}`}>
           <SelectOption label={label} key={label} />
-        </Pressable>
+        </TouchableOpacity>
       ))}
     </View>
   );
@@ -62,12 +62,12 @@ function Menu({ options, onSelect }) {
 
 function Select({ selectedOption, isOpened, toggleOpened }) {
   return (
-    <Pressable onPress={toggleOpened}>
+    <TouchableOpacity onPress={toggleOpened}>
       <View style={[styles.selectButton, GLOBAL_STYLES.shadow]}>
         <Text style={styles.selectText}>{selectedOption}</Text>
         <AntDesign name={isOpened ? 'caretup' : 'caretdown'} size={14} color="black" />
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 }
 
