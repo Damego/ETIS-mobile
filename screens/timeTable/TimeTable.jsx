@@ -4,8 +4,7 @@ import 'react-native-get-random-values';
 
 import LoadingPage from '../../components/LoadingPage';
 import Screen from '../../components/Screen';
-import { GLOBAL_STYLES } from '../../styles/styles';
-import { vars } from '../../utils/vars';
+import { httpClient, parser } from '../../utils';
 import { Day, EmptyDay } from './Day';
 import WeekNavigation from './WeekNavigator';
 
@@ -16,16 +15,16 @@ const TimeTablePage = () => {
   const loadData = async () => {
     let html;
     if (week != null) {
-      html = await vars.httpClient.getTimeTable({ week });
+      html = await httpClient.getTimeTable({ week });
     } else {
-      html = await vars.httpClient.getTimeTable();
+      html = await httpClient.getTimeTable();
     }
 
     if (!html) {
       console.warn('failed to load timetable');
       return;
     }
-    const parsedData = vars.parser.parseTimeTable(html);
+    const parsedData = parser.parseTimeTable(html);
     setData(parsedData);
   };
 

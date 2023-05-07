@@ -5,7 +5,7 @@ import { View } from 'react-native';
 
 import Header from '../../components/Header';
 import AuthContext from '../../context/AuthContext';
-import { vars } from '../../utils/vars';
+import { httpClient, storage } from '../../utils';
 import Footer from './AuthFooter';
 import Form from './AuthForm';
 
@@ -17,7 +17,7 @@ const AuthPage = () => {
 
   const makeLogin = async ({ token, useCache, login, password }) => {
     if (useCache) {
-      const accountData = await vars.storage.getAccountData();
+      const accountData = await storage.getAccountData();
       // js is weird
       login = accountData.login;
       password = accountData.password;
@@ -35,7 +35,7 @@ const AuthPage = () => {
 
     setLoading(true);
 
-    const { sessionID, errorMessage } = await vars.httpClient.login(
+    const { sessionID, errorMessage } = await httpClient.login(
       login,
       password,
       token || recaptchaToken
@@ -46,9 +46,9 @@ const AuthPage = () => {
       return;
     }
 
-    await vars.storage.storeSessionID(sessionID);
+    await storage.storeSessionID(sessionID);
     if (!useCache) {
-      await vars.storage.storeAccountData(login, password);
+      await storage.storeAccountData(login, password);
     }
 
     toggleSignIn();

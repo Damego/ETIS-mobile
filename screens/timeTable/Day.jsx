@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import Card from '../../components/Card';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import { GLOBAL_STYLES } from '../../styles/styles';
 import Lesson from './Lesson';
