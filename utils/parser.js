@@ -114,18 +114,14 @@ export default class DataParsing {
   parseAnnounce(html) {
     const $ = cheerio.load(html);
     let data = [];
-    $('.nav.msg', html).each((el, announce) => {
-      const time = /\d+.\d+.\d+\s\d+\:\d+\:\d+/gm.exec($(announce).text())[0];
-      const author = /[А-Я]{1}[а-я]{1,15}\s[А-Я]\.\s[А-Я]\./gm.exec($(announce).text())[0];
-      let info = $(announce).text();
-      info = info.replace(time, '');
-      info = info.replace(author, '');
-      data.push({
-        time,
-        info,
-        author,
-      });
-    });
+
+    // Let WebView work with this shit
+    $('.nav.msg').each((index, el) => {
+      data.push(
+        $(el).html()
+      )
+    })
+
     return data;
   }
 

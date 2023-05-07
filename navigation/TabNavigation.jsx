@@ -6,24 +6,22 @@ import { Text } from 'react-native';
 import ShortTeachPlan from '../screens/shortTeachPlan/shortTeachPlan';
 import Signs from '../screens/signs/Signs';
 import TimeTablePage from '../screens/timeTable/TimeTable';
-import { GLOBAL_STYLES } from '../styles/styles';
+import Announce from '../screens/announce/Announce';
 
 const Tab = createBottomTabNavigator();
-
-const renderOptionTitle = (text) => () => <Text style={GLOBAL_STYLES.textIcon}>{text}</Text>;
 
 const TabNavigator = () => (
   <Tab.Navigator
     screenOptions={{
       headerShown: false,
       tabBarActiveTintColor: '#CE2539',
+      tabBarShowLabel: false
     }}
   >
     <Tab.Screen
       name="Расписание"
       component={TimeTablePage}
       options={{
-        tabBarLabel: renderOptionTitle('Расписание'),
         tabBarIcon: ({ size, color }) => <AntDesign name="calendar" size={size} color={color} />,
       }}
     />
@@ -31,7 +29,6 @@ const TabNavigator = () => (
       name="Учебный план"
       component={ShortTeachPlan}
       options={{
-        tabBarLabel: renderOptionTitle('Учебный план'),
         tabBarIcon: ({ size, color }) => <FontAwesome name="list-alt" size={size} color={color} />,
       }}
     />
@@ -39,7 +36,13 @@ const TabNavigator = () => (
       name="Оценки"
       component={Signs}
       options={{
-        tabBarLabel: renderOptionTitle('Оценки'),
+        tabBarIcon: ({ size, color }) => <MaterialIcons name="grade" size={size} color={color} />,
+      }}
+    />
+    <Tab.Screen
+      name="Объявления"
+      component={Announce}
+      options={{
         tabBarIcon: ({ size, color }) => <MaterialIcons name="grade" size={size} color={color} />,
       }}
     />
