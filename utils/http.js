@@ -129,6 +129,6 @@ export default class HTTPClient {
   }
 
   getBlankPage() {
-    return this.request('blank_page')
+    return this.request('blank_page');
   }
 }
