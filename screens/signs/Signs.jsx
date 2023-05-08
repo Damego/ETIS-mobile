@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 import Dropdown from '../../components/Dropdown';
-import LoadingPage from '../../components/LoadingPage';
+import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
 import { httpClient, parser } from '../../utils';
 import CardSign from './CardSign';
@@ -30,6 +30,8 @@ const Signs = () => {
 
   const loadData = async (trimester) => {
     const html = await httpClient.getSigns('current', { trimester });
+    if (!html) return;
+
     if (parser.isLoginPage(html)) return; // TODO: move to auth page
 
     const parsedData = parser.parseSigns(html);
@@ -41,7 +43,7 @@ const Signs = () => {
     loadData();
   }, []);
 
-  if (!data || !optionData) return <LoadingPage />;
+  if (!data || !optionData) return <LoadingScreen headerText="Оценки" />;
   return (
     <Screen headerText="Оценки" onUpdate={loadData}>
       <View style={{ marginLeft: 'auto', marginRight: 0, paddingBottom: '2%', zIndex: 1 }}>

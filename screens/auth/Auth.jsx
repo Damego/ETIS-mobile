@@ -57,8 +57,9 @@ const AuthPage = () => {
   };
 
   const onReceiveRecaptchaToken = async (token) => {
-    setRecaptchaToken(token);
-    await makeLogin({ token, useCache: true });
+    toggleSignIn() // TODO: Remove
+    // setRecaptchaToken(token);
+    // await makeLogin({ token, useCache: true });
   };
 
   return (

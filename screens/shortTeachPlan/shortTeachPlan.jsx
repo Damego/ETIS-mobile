@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import CardHeaderOut from '../../components/CardHeaderOut';
-import LoadingPage from '../../components/LoadingPage';
+import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
 import { httpClient, parser } from '../../utils';
 import Trimester from './Trimester';
@@ -21,15 +21,12 @@ const ShortTeachPlan = () => {
     loadData();
   }, []);
 
-  if (!data) return <LoadingPage />;
+  if (!data) return <LoadingScreen headerText="Учебный план" />;
 
   return (
     <Screen headerText="Учебный план" onUpdate={loadData}>
       {data.map((trimester) => (
-        <CardHeaderOut
-          topText={trimester.trimester}
-          key={`card-${trimester.trimester}`}
-        >
+        <CardHeaderOut topText={trimester.trimester} key={`card-${trimester.trimester}`}>
           <Trimester data={trimester} key={trimester.trimester} />
         </CardHeaderOut>
       ))}
