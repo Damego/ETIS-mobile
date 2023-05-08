@@ -17,13 +17,13 @@ const TabNavigator = () => (
     screenOptions={{
       headerShown: false,
       tabBarActiveTintColor: '#CE2539',
+      tabBarShowLabel: false
     }}
   >
     <Tab.Screen
       name="Расписание"
       component={TimeTablePage}
       options={{
-        tabBarLabel: renderOptionTitle('Расписание'),
         tabBarIcon: ({ size, color }) => <AntDesign name="calendar" size={size} color={color} />,
       }}
     />
@@ -31,16 +31,14 @@ const TabNavigator = () => (
       name="Учебный план"
       component={ShortTeachPlan}
       options={{
-        tabBarLabel: renderOptionTitle('Учебный план'),
-        tabBarIcon: ({ size, color }) => <FontAwesome name="list-alt" size={size} color={color} />,
+        tabBarIcon: ({ size, color }) => <AntDesign name="profile" size={size} color={color} />,
       }}
     />
     <Tab.Screen
       name="Оценки"
       component={Signs}
       options={{
-        tabBarLabel: renderOptionTitle('Оценки'),
-        tabBarIcon: ({ size, color }) => <MaterialIcons name="grade" size={size} color={color} />,
+        tabBarIcon: ({ size, color }) => <AntDesign name="barschart" size={size} color={color} />,
       }}
     />
   </Tab.Navigator>
