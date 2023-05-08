@@ -1,3 +1,3 @@
 import ShortTeachPlan from './ShortTeachPlan';
 
-export default ShortTeachPlan
+export default ShortTeachPlan;
