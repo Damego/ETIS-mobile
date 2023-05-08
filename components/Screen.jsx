@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Screen = ({ headerText, onUpdate, children }) => {
+const Screen = ({ headerText, onUpdate, disableRefresh, children }) => {
   const [refreshing, setRefreshing] = useState(false);
 
   // not a useCallback hook because `onUpdate` function of parent component uses first state of useState hooks
@@ -23,13 +23,15 @@ const Screen = ({ headerText, onUpdate, children }) => {
   };
 
   return (
-    <View style={{ marginTop: Constants.statusBarHeight, backgroundColor: "#F8F8Fa", flex: 1 }}>
+    <View style={{ marginTop: Constants.statusBarHeight, backgroundColor: '#F8F8Fa', flex: 1 }}>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
-        style={{flex: 1}}
+        style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
         overScrollMode="never"
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        refreshControl={
+          !disableRefresh ? <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> : null
+        }
       >
         <View style={styles.screen}>
           <Header text={headerText} />
