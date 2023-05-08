@@ -8,7 +8,7 @@ import { httpClient, parser } from '../../utils';
 import { Day, EmptyDay } from './Day';
 import WeekNavigation from './WeekNavigator';
 
-const TimeTablePage = () => {
+const TimeTable = () => {
   const [data, setData] = useState(null);
   const [week, changeWeek] = useState(null);
 
@@ -55,4 +55,4 @@ const TimeTablePage = () => {
   );
 };
 
-export default TimeTablePage;
+export default TimeTable;
