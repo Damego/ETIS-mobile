@@ -26,4 +26,4 @@ jobs:
         run: npm install
 
       - name: 🚀 Build app
-        run: eas build -p android --profile development
+        run: eas build -p android --profile development --non-interactive
