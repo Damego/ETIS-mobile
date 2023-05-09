@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { useEffect, useState } from 'react';
 
 import Announce from '../screens/announce/Announce';
-import ShortTeachPlan from '../screens/shortTeachPlan/shortTeachPlan';
+import ShortTeachPlan from '../screens/shortTeachPlan';
 import Signs from '../screens/signs/Signs';
 import TimeTablePage from '../screens/timeTable/TimeTable';
 import { httpClient, parser } from '../utils';
@@ -43,7 +43,7 @@ const TabNavigator = () => {
         component={ShortTeachPlan}
         options={{
           tabBarIcon: ({ size, color }) => (
-            <FontAwesome name="list-alt" size={size} color={color} />
+            <AntDesign name="profile" size={size} color={color} />
           ),
         }}
       />
@@ -51,7 +51,7 @@ const TabNavigator = () => {
         name="Оценки"
         component={Signs}
         options={{
-          tabBarIcon: ({ size, color }) => <MaterialIcons name="grade" size={size} color={color} />,
+          tabBarIcon: ({ size, color }) => <AntDesign name="barschart" size={size} color={color} />,
         }}
       />
       <Tab.Screen
