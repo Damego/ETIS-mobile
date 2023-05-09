@@ -2,26 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import 'react-native-get-random-values';
 
-import LoadingPage from '../../components/LoadingPage';
+import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
 import { httpClient, parser } from '../../utils';
 import { Day, EmptyDay } from './Day';
 import WeekNavigation from './WeekNavigator';
 
-const TimeTablePage = () => {
+const TimeTable = () => {
   const [data, setData] = useState(null);
   const [week, changeWeek] = useState(null);
 
   const loadData = async () => {
     let html;
-    if (week != null) {
+    if (week !== null) {
       html = await httpClient.getTimeTable({ week });
     } else {
       html = await httpClient.getTimeTable();
     }
 
     if (!html) {
-      console.warn('failed to load timetable');
       return;
     }
     const parsedData = parser.parseTimeTable(html);
@@ -30,9 +29,9 @@ const TimeTablePage = () => {
 
   useEffect(() => {
     loadData();
-  }, [week, setData]);
+  }, [week]);
 
-  if (!data) return <LoadingPage />;
+  if (!data) return <LoadingScreen headerText="Расписание"/>;
 
   return (
     <Screen headerText="Расписание" onUpdate={loadData}>
@@ -56,4 +55,4 @@ const TimeTablePage = () => {
   );
 };
 
-export default TimeTablePage;
+export default TimeTable;

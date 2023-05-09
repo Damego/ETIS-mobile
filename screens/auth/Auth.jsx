@@ -41,6 +41,8 @@ const AuthPage = () => {
       token || recaptchaToken
     );
 
+    setLoading(false);
+
     if (errorMessage) {
       changeLoginMessageError(errorMessage);
       return;
@@ -52,12 +54,12 @@ const AuthPage = () => {
     }
 
     toggleSignIn();
-    setLoading(false);
   };
 
   const onReceiveRecaptchaToken = async (token) => {
-    setRecaptchaToken(token);
-    await makeLogin({ token, useCache: true });
+    toggleSignIn() // TODO: Remove
+    // setRecaptchaToken(token);
+    // await makeLogin({ token, useCache: true });
   };
 
   return (

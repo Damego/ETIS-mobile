@@ -16,14 +16,17 @@ export default class HTTPClient {
 
     console.log(`[HTTP] Sending request to '${url}' with params:`, params);
 
-    const response = await axios.get(url, {
-      headers: {
-        Cookie: this.sessionID,
-      },
-      params,
-    });
-
-    return response.data;
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Cookie: this.sessionID,
+        },
+        params,
+      });
+      return response.data;
+    } catch (e) {
+      return null;
+    }
   }
 
   /**
@@ -43,9 +46,16 @@ export default class HTTPClient {
 
     console.log(`[HTTP] Authorizing with data ${formData}`);
 
-    const response = await axios.post(`${this.defaultURL}.login`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    let response;
+    try {
+      response = await axios.post(`${this.defaultURL}.login`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+    } catch (e) {
+      return {
+        errorMessage: 'Ошибка соединения. \nПопробуйте зайти позже',
+      };
+    }
 
     const cookies = response.headers['set-cookie'];
 
