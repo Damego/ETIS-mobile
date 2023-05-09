@@ -114,18 +114,22 @@ export default class DataParsing {
   parseAnnounce(html) {
     const $ = cheerio.load(html);
     let data = [];
-    $('.nav.msg', html).each((el, announce) => {
-      const time = /\d+.\d+.\d+\s\d+\:\d+\:\d+/gm.exec($(announce).text())[0];
-      const author = /[А-Я]{1}[а-я]{1,15}\s[А-Я]\.\s[А-Я]\./gm.exec($(announce).text())[0];
-      let info = $(announce).text();
-      info = info.replace(time, '');
-      info = info.replace(author, '');
-      data.push({
-        time,
-        info,
-        author,
-      });
+
+    // Let WebView work with this shit
+    $('.nav.msg').each((index, el) => {
+      // source code is fucked up. WebView is fucked up (it always throws an error if link tag doesn't have a target)
+      // So why my code can't be fucked up?
+      const messageHtml = $(el)
+        .html()
+        .replaceAll('<a', `<a target="_blank"`)
+        .replaceAll(`href="df_pkg.`, `href="https://student.psu.ru/pls/stu_cus_et/df_pkg.`)
+        .replaceAll(
+          `<a target="_blank" target="_blank" href="https://student.psu.ru/pls/stu_cus_et/df_pkg.`,
+          `<a href="https://student.psu.ru/pls/stu_cus_et/df_pkg.`
+        );
+      data.push(messageHtml);
     });
+
     return data;
   }
 
@@ -304,6 +308,25 @@ export default class DataParsing {
     });
     data.latestTrimester = $('.submenu-item', subMenu).last().index();
 
+    return data;
+  }
+
+  parseMenu(html) {
+    const $ = cheerio.load(html);
+
+    const data = {
+      announceCount: null,
+      messageCount: null,
+    };
+
+    $('.nav.nav-tabs.nav-stacked')
+      .find('.badge')
+      .each((i, el) => {
+        const span = $(el);
+        if (span.parent().attr('href') === 'stu.announce') {
+          data.announceCount = parseInt(span.text());
+        }
+      });
     return data;
   }
 }
