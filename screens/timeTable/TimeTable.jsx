@@ -6,7 +6,7 @@ import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
 import { httpClient, parser } from '../../utils';
 import { Day, EmptyDay } from './Day';
-import WeekNavigation from './WeekNavigator';
+import PageNavigator from '../../components/PageNavigator';
 
 const TimeTable = () => {
   const [data, setData] = useState(null);
@@ -35,11 +35,11 @@ const TimeTable = () => {
 
   return (
     <Screen headerText="Расписание" onUpdate={loadData}>
-      <WeekNavigation
-        firstWeek={data.firstWeek}
-        lastWeek={data.lastWeek}
-        currentWeek={data.currentWeek}
-        onWeekChange={(selectedWeek) => changeWeek(selectedWeek)}
+      <PageNavigator
+        firstPage={data.firstWeek}
+        lastPage={data.lastWeek}
+        currentPage={data.currentWeek}
+        onPageChange={(selectedWeek) => changeWeek(selectedWeek)}
       />
 
       <View>
