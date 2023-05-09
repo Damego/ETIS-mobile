@@ -117,7 +117,8 @@ export default class DataParsing {
 
     // Let WebView work with this shit
     $('.nav.msg').each((index, el) => {
-      data.push($(el).html());
+      // WebView is fucked, so I manually add target to every tag
+      data.push($(el).html().replace("<a", `<a target="_blank"`));
     });
 
     return data;

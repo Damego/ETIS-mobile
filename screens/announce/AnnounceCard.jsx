@@ -20,7 +20,7 @@ a {
 export default function AnnounceCard({ data }) {
   return (
     <Card>
-      <View style={{ padding: '2%'}}>
+      <View style={{ padding: '2%' }}>
         <AutoHeightWebView
           originWhitelist={['*']}
           source={{ html: data }}
