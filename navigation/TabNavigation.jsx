@@ -16,6 +16,7 @@ const TabNavigator = () => {
   useEffect(() => {
     const wrapper = async () => {
       const html = await httpClient.getBlankPage();
+      if (!html) return;
       const data = parser.parseMenu(html);
       setAnnounceMessageCount(data.announceCount);
     };
@@ -59,7 +60,7 @@ const TabNavigator = () => {
         component={Announce}
         options={{
           tabBarBadge: announceMessageCount,
-          tabBarIcon: ({ size, color }) => <AntDesign name="message1" size={size} color={color} />,
+          tabBarIcon: ({ size, color }) => <AntDesign name="notification" size={size} color={color} />,
         }}
       />
     </Tab.Navigator>
