@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 
 import Card from '../../components/Card';
+import { httpClient } from '../../utils';
 
 const style = `
 * {
@@ -26,6 +27,7 @@ export default function AnnounceCard({ data }) {
           source={{ html: data }}
           style={{ flex: 0, width: '100%' }}
           customStyle={style}
+          injectedJavaScript={`document.cookie = ${httpClient.sessionID}` /* Allows download files */}
         />
       </View>
     </Card>
