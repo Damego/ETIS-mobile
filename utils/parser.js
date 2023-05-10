@@ -11,7 +11,7 @@ export default class DataParsing {
         speciality: null,
         educationForm: null,
         year: null,
-        group: null
+        group: null,
       },
     };
   }
@@ -294,14 +294,14 @@ export default class DataParsing {
         speciality: null,
         educationForm: null,
         year: null,
-        group: null
+        group: null,
       },
     };
 
     // Получение информации о студенте
 
     const rawData = $('.span12').text().trim();
-    const [rawName, speciality, form, year] = rawData.split('\n').map(string => string.trim());
+    const [rawName, speciality, form, year] = rawData.split('\n').map((string) => string.trim());
     const [name1, name2, name3] = rawName.split(' ');
     data.student.name = `${name1} ${name2} ${name3}`;
     data.student.speciality = speciality;
@@ -309,7 +309,7 @@ export default class DataParsing {
     data.student.year = year;
 
     if (parseGroupJournal) {
-      data.student.group = $(".span9").find("h3").text().split(" ")[1]
+      data.student.group = $('.span9').find('h3').text().split(' ')[1];
     }
 
     // Получения количества новых объявлений

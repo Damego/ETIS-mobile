@@ -143,6 +143,6 @@ export default class HTTPClient {
   }
 
   getGroupJournal() {
-    return this.request('/stu_jour.group_tt')
+    return this.request('/stu_jour.group_tt');
   }
 }
