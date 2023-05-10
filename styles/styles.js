@@ -52,6 +52,6 @@ export const GLOBAL_STYLES = StyleSheet.create({
   textTitle: {
     fontSize: 20,
     fontWeight: '600',
-    marginBottom: "2%"
-  }
+    marginBottom: '2%',
+  },
 });
