@@ -25,10 +25,13 @@ function buildTrimesterOptions(currentTrimester, latestTrimester) {
 }
 
 const Signs = () => {
+  const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState(null);
   const [optionData, setOptionData] = useState(null);
 
   const loadData = async (trimester) => {
+    if (data) setLoading(true);
+
     const html = await httpClient.getSigns('current', { trimester });
     if (!html) return;
 
@@ -37,13 +40,15 @@ const Signs = () => {
     const parsedData = parser.parseSigns(html);
     setOptionData(buildTrimesterOptions(parsedData.currentTrimester, parsedData.latestTrimester));
     setData(parsedData);
+    if (data) setLoading(false)
   };
 
   useEffect(() => {
     loadData();
   }, []);
 
-  if (!data || !optionData) return <LoadingScreen headerText="Оценки" />;
+  if (!data || !optionData || isLoading) return <LoadingScreen headerText="Оценки" />;
+  
   return (
     <Screen headerText="Оценки" onUpdate={loadData}>
       <View style={{ marginLeft: 'auto', marginRight: 0, paddingBottom: '2%', zIndex: 1 }}>
