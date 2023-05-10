@@ -15,7 +15,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: '6%',
-    paddingVertical: "3%"
+    paddingVertical: "3%",
+    alignItems: "center"
   },
   selectText: {
     textAlign: 'center',
@@ -30,8 +31,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   optionView: {
-    paddingHorizontal: '3%',
-    paddingVertical: '2%',
+    paddingHorizontal: '6%',
+    paddingVertical: '3%',
   },
   optionText: {
     fontSize: 16,

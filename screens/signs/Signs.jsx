@@ -48,7 +48,7 @@ const Signs = () => {
   }, []);
 
   if (!data || !optionData || isLoading) return <LoadingScreen headerText="Оценки" />;
-  
+
   return (
     <Screen headerText="Оценки" onUpdate={loadData}>
       <View style={{ marginLeft: 'auto', marginRight: 0, paddingBottom: '2%', zIndex: 1 }}>
