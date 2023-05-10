@@ -120,7 +120,8 @@ export default class DataParsing {
           .filter(function () {
             return this.type === 'text';
           })
-          .text().trim();
+          .text()
+          .trim();
         data[cnt].push({
           type,
           time,
@@ -136,7 +137,8 @@ export default class DataParsing {
           .filter(function () {
             return this.type === 'text';
           })
-          .text().trim();
+          .text()
+          .trim();
         data[cnt].push({
           type,
           time,
@@ -155,7 +157,8 @@ export default class DataParsing {
           .filter(function () {
             return this.type === 'text';
           })
-          .text().trim();
+          .text()
+          .trim();
         data.push([
           {
             type,
@@ -316,12 +319,11 @@ export default class DataParsing {
       .find('.badge')
       .each((i, el) => {
         const span = $(el);
-        const href = span.parent().attr('href')
+        const href = span.parent().attr('href');
         if (href === 'stu.announce') {
           data.announceCount = parseInt(span.text());
-        }
-        else if (href === 'stu.teacher_notes') {
-          data.messageCount = parseInt(span.text())
+        } else if (href === 'stu.teacher_notes') {
+          data.messageCount = parseInt(span.text());
         }
       });
 
