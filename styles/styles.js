@@ -49,4 +49,9 @@ export const GLOBAL_STYLES = StyleSheet.create({
     marginBottom: '5%',
     fontSize: 10,
   },
+  textTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    marginBottom: '2%',
+  },
 });

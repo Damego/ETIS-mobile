@@ -6,6 +6,7 @@ import Announce from '../screens/announce/Announce';
 import ShortTeachPlan from '../screens/shortTeachPlan';
 import Signs from '../screens/signs/Signs';
 import TimeTablePage from '../screens/timeTable/TimeTable';
+import ServicesStackNavigator from './ServicesStackNavigator';
 import { httpClient, parser } from '../utils';
 
 const Tab = createBottomTabNavigator();
@@ -15,9 +16,9 @@ const TabNavigator = () => {
 
   useEffect(() => {
     const wrapper = async () => {
-      const html = await httpClient.getBlankPage();
+      const html = await httpClient.getGroupJournal();
       if (!html) return;
-      const data = parser.parseMenu(html);
+      const data = parser.parseMenu(html, true);
       setAnnounceMessageCount(data.announceCount);
     };
     wrapper();
@@ -40,15 +41,6 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Учебный план"
-        component={ShortTeachPlan}
-        options={{
-          tabBarIcon: ({ size, color }) => (
-            <AntDesign name="profile" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
         name="Оценки"
         component={Signs}
         options={{
@@ -61,6 +53,13 @@ const TabNavigator = () => {
         options={{
           tabBarBadge: announceMessageCount,
           tabBarIcon: ({ size, color }) => <AntDesign name="notification" size={size} color={color} />,
+        }}
+      />
+      <Tab.Screen
+        name="Сервисы-навигатор"
+        component={ServicesStackNavigator}
+        options={{
+          tabBarIcon: ({ size, color }) => <AntDesign name="appstore-o" size={size} color={color} />,
         }}
       />
     </Tab.Navigator>
