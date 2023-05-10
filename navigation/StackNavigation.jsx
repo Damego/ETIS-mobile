@@ -1,10 +1,18 @@
-import React, {useState} from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, { useState } from 'react';
 
-import AuthPage from '../screens/auth/Auth';
 import AuthContext from '../context/AuthContext';
+import AuthPage from '../screens/auth/Auth';
 import TabNavigator from './TabNavigation';
+
+const MyTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: '#F8F8Fa',
+  },
+};
 
 const Stack = createNativeStackNavigator();
 
@@ -13,30 +21,20 @@ const StackNavigator = () => {
 
   const toggleSignIn = () => {
     setSignIn(!isSignIn);
-  }
+  };
 
   return (
-    <AuthContext.Provider value={{toggleSignIn}}>
-      <NavigationContainer>
+    <AuthContext.Provider value={{ toggleSignIn }}>
+      <NavigationContainer theme={MyTheme}>
         <Stack.Navigator
           screenOptions={{
-            contentStyle: {
-              backgroundColor: '#F8F8Fa',
-            },
+            headerShown: false,
           }}
         >
           {!isSignIn ? (
-            <Stack.Screen
-              name="Authorization"
-              options={{ headerShown: false }}
-              component={AuthPage}
-            />
+            <Stack.Screen name="Authorization" component={AuthPage} />
           ) : (
-            <Stack.Screen
-              name="Navigator"
-              options={{ headerShown: false }}
-              component={TabNavigator}
-            />
+            <Stack.Screen name="Navigator" component={TabNavigator} />
           )}
         </Stack.Navigator>
       </NavigationContainer>

@@ -23,7 +23,7 @@ const Screen = ({ headerText, onUpdate, disableRefresh, children }) => {
   };
 
   return (
-    <View style={{ marginTop: Constants.statusBarHeight, backgroundColor: '#F8F8Fa', flex: 1 }}>
+    <View style={{ marginTop: Constants.statusBarHeight, flex: 1 }}>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         style={{ flex: 1 }}
