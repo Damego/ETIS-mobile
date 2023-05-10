@@ -39,7 +39,7 @@ export default class Storage {
   }
 
   async deleteAccountData() {
-    await SecureStore.deleteItemAsync("userLogin");
+    await SecureStore.deleteItemAsync('userLogin');
     await SecureStore.deleteItemAsync('userPassword');
   }
 }
