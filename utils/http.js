@@ -3,7 +3,7 @@ import * as cheerio from 'cheerio';
 
 export default class HTTPClient {
   constructor() {
-    this.defaultURL = 'https://student.psu.ru/pls/stu_cus_et/stu';
+    this.defaultURL = 'https://student.psu.ru/pls/stu_cus_et';
     this.sessionID = null;
   }
 
@@ -12,7 +12,7 @@ export default class HTTPClient {
       return;
     }
 
-    const url = `${this.defaultURL}.${endpoint}`;
+    const url = `${this.defaultURL}${endpoint}`;
 
     console.log(`[HTTP] Sending request to '${url}' with params:`, params);
 
@@ -38,7 +38,7 @@ export default class HTTPClient {
    */
   async login(username, password, token) {
     const formData = new FormData();
-    formData.append('p_redirect', 'stu.timetable');
+    formData.append('p_redirect', '/stu.timetable');
     formData.append('p_username', username.trim());
     formData.append('p_password', password.trim());
     formData.append('p_recaptcha_ver', '3');
@@ -48,7 +48,7 @@ export default class HTTPClient {
 
     let response;
     try {
-      response = await axios.post(`${this.defaultURL}.login`, formData, {
+      response = await axios.post(`${this.defaultURL}/stu.login`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
     } catch (e) {
@@ -84,18 +84,18 @@ export default class HTTPClient {
     */
     const showConsultationsParam = showConsultations ? 'y' : 'n';
 
-    return this.request('timetable', {
+    return this.request('/stu.timetable', {
       p_cons: showConsultationsParam,
       p_week: week,
     });
   }
 
   getEblChoice() {
-    return this.request('ebl_choice');
+    return this.request('/stu.ebl_choice');
   }
 
   getTeachPlan() {
-    return this.request('teach_plan');
+    return this.request('/stu.teach_plan');
   }
 
   getSigns(mode, { trimester }) {
@@ -113,7 +113,7 @@ export default class HTTPClient {
       params.p_term = trimester;
     }
 
-    return this.request('signs', params);
+    return this.request('/stu.signs', params);
   }
 
   getAbsenses(trimester) {
@@ -123,22 +123,26 @@ export default class HTTPClient {
       - 2: весенний
       - 3: летний
      */
-    return this.request('absence', { p_term: trimester });
+    return this.request('/stu.absence', { p_term: trimester });
   }
 
   getTeachers() {
-    return this.request('teachers');
+    return this.request('/stu.teachers');
   }
 
   getAnnounce() {
-    return this.request('announce');
+    return this.request('/stu.announce');
   }
 
   getTeacherNotes() {
-    return this.request('teacher_notes');
+    return this.request('/stu.teacher_notes');
   }
 
   getBlankPage() {
-    return this.request('blank_page');
+    return this.request('/stu.blank_page');
+  }
+
+  getGroupJournal() {
+    return this.request('/stu_jour.group_tt')
   }
 }
