@@ -1,20 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 
 import CardHeaderOut from '../../components/CardHeaderOut';
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
 import { httpClient, parser } from '../../utils';
 import Trimester from './Trimester';
+import AuthContext from '../../context/AuthContext';
 
 const ShortTeachPlan = () => {
+  const { toggleSignIn } = useContext(AuthContext);
   const [data, setData] = useState(null);
 
   const loadData = async () => {
     const html = await httpClient.getTeachPlan();
-    if (html) {
-      const loadedData = parser.parseTeachPlan(html);
-      setData(loadedData);
+    if (!html) return;
+
+    if (parser.isLoginPage(html)) {
+      toggleSignIn();
+      return;
     }
+
+    const loadedData = parser.parseTeachPlan(html);
+    setData(loadedData);
+
   };
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View } from 'react-native';
 import 'react-native-get-random-values';
 
@@ -7,8 +7,11 @@ import Screen from '../../components/Screen';
 import { httpClient, parser } from '../../utils';
 import { Day, EmptyDay } from './Day';
 import PageNavigator from '../../components/PageNavigator';
+import AuthContext from '../../context/AuthContext';
+
 
 const TimeTable = () => {
+  const { toggleSignIn } = useContext(AuthContext);
   const [data, setData] = useState(null);
   const [week, changeWeek] = useState(null);
 
@@ -19,8 +22,11 @@ const TimeTable = () => {
     } else {
       html = await httpClient.getTimeTable();
     }
-
     if (!html) {
+      return;
+    }
+    if (parser.isLoginPage(html)) {
+      toggleSignIn();
       return;
     }
     const parsedData = parser.parseTimeTable(html);

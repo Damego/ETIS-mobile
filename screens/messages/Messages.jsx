@@ -1,17 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
 import WarningCard from '../../components/WarningCard';
 import { httpClient, parser } from '../../utils';
 import MessageBlock from './MessageBlock';
+import AuthContext from '../../context/AuthContext';
 
 const Messages = () => {
+  const { toggleSignIn } = useContext(AuthContext);
   const [data, setData] = useState();
 
   const loadData = async () => {
     const html = await httpClient.getTeacherNotes();
     if (!html) return;
+
+    if (parser.isLoginPage(html)) {
+      toggleSignIn();
+      return;
+    }
 
     setData(parser.parseTeacherNotes(html));
   };
