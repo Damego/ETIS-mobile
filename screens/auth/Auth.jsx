@@ -1,4 +1,3 @@
-import ReCaptchaV3 from '@haskkor/react-native-recaptchav3';
 import Constants from 'expo-constants';
 import React, { useContext, useState } from 'react';
 import { View } from 'react-native';
@@ -8,6 +7,7 @@ import AuthContext from '../../context/AuthContext';
 import { httpClient, storage } from '../../utils';
 import Footer from './AuthFooter';
 import Form from './AuthForm';
+import ReCaptcha from '../../components/ReCaptcha';
 
 const AuthPage = () => {
   const [isLoading, setLoading] = useState(false);
@@ -63,12 +63,7 @@ const AuthPage = () => {
 
   return (
     <View style={{ marginTop: Constants.statusBarHeight }}>
-      <ReCaptchaV3
-        action="submit"
-        captchaDomain="https://student.psu.ru"
-        siteKey="6LfeYf8UAAAAAIF22Cn9YFwXlZk1exjVNyF2Jmo6"
-        onReceiveToken={(token) => onReceiveRecaptchaToken(token)}
-      />
+      <ReCaptcha onReceiveToken={onReceiveRecaptchaToken}/>
 
       <Header text="Авторизация" />
 
