@@ -111,7 +111,7 @@ export default class DataParsing {
     let cnt = -1;
     $('.nav.msg', html).each((el, announce) => {
       if ($(announce).hasClass('repl_t')) {
-        const type = 'repl_t';
+        const type = 'teacher_reply';
         let time = $(announce).find('font').eq(0).text();
         let author = $(announce).find('b').eq(0).text();
         let content = $(announce)
@@ -120,7 +120,7 @@ export default class DataParsing {
           .filter(function () {
             return this.type === 'text';
           })
-          .text();
+          .text().trim();
         data[cnt].push({
           type,
           time,
@@ -128,7 +128,7 @@ export default class DataParsing {
           content,
         });
       } else if ($(announce).hasClass('repl_s')) {
-        const type = 'repl_s';
+        const type = 'student_reply';
         let time = $(announce).find('font').eq(0).text();
         let content = $(announce)
           .find('li')
@@ -136,7 +136,7 @@ export default class DataParsing {
           .filter(function () {
             return this.type === 'text';
           })
-          .text();
+          .text().trim();
         data[cnt].push({
           type,
           time,
@@ -144,7 +144,7 @@ export default class DataParsing {
         });
       } else {
         cnt += 1;
-        const type = 'msg';
+        const type = 'message';
         let time = $(announce).find('font').eq(0).text();
         let author = $(announce).find('b').eq(0).text();
         let subject = $(announce).find('font').eq(1).text();
@@ -155,7 +155,7 @@ export default class DataParsing {
           .filter(function () {
             return this.type === 'text';
           })
-          .text();
+          .text().trim();
         data.push([
           {
             type,
@@ -168,7 +168,6 @@ export default class DataParsing {
         ]);
       }
     });
-    console.log(data);
     return data;
   }
 
@@ -317,8 +316,12 @@ export default class DataParsing {
       .find('.badge')
       .each((i, el) => {
         const span = $(el);
-        if (span.parent().attr('href') === 'stu.announce') {
+        const href = span.parent().attr('href')
+        if (href === 'stu.announce') {
           data.announceCount = parseInt(span.text());
+        }
+        else if (href === 'stu.teacher_notes') {
+          data.messageCount = parseInt(span.text())
         }
       });
 

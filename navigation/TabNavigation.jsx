@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { useEffect, useState } from 'react';
 
 import Announce from '../screens/announce/Announce';
-import ShortTeachPlan from '../screens/shortTeachPlan';
+import Messages from '../screens/messages/Messages'
 import Signs from '../screens/signs/Signs';
 import TimeTablePage from '../screens/timeTable/TimeTable';
 import ServicesStackNavigator from './ServicesStackNavigator';
@@ -45,6 +45,13 @@ const TabNavigator = () => {
         component={Signs}
         options={{
           tabBarIcon: ({ size, color }) => <AntDesign name="barschart" size={size} color={color} />,
+        }}
+      />
+      <Tab.Screen
+        name="Сообщения"
+        component={Messages}
+        options={{
+          tabBarIcon: ({ size, color }) => <AntDesign name="message1" size={size} color={color} />,
         }}
       />
       <Tab.Screen
