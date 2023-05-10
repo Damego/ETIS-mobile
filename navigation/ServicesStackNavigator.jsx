@@ -3,6 +3,7 @@ import React from 'react';
 
 import Services from '../screens/services';
 import ShortTeachPlan from '../screens/shortTeachPlan';
+import About from '../screens/about/About';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ function ServicesStackNavigator() {
         name="Учебный план"
         component={ShortTeachPlan}
       />
+      <Stack.Screen name={"О приложении"} component={About}/>
     </Stack.Navigator>
   );
 }

@@ -39,7 +39,7 @@ function Button({ icon, text, page, link }) {
   };
 
   return (
-    <TouchableOpacity onPress={changePage}>
+    <TouchableOpacity onPress={changePage} activeOpacity={0.9}>
       <View style={styles.buttonView}>
         <View style={[styles.buttonContainer, GLOBAL_STYLES.shadow]}>{icon}</View>
         <Text style={styles.buttonText}>{text}</Text>
@@ -67,6 +67,11 @@ function Menu() {
           text="Исходный код"
           icon={<AntDesign name="github" size={iconSize} color={iconColor} />}
           link={"https://github.com/damego/ETIS-mobile"}
+        />
+        <Button
+          text="О приложении"
+          icon={<AntDesign name="infocirlceo" size={iconSize} color={iconColor} />}
+          page="О приложении"
         />
       </Row>
     </View>

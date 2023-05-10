@@ -4,6 +4,7 @@ import {View, Text} from 'react-native'
 import Screen from '../../components/Screen';
 import UserInfo from './UserInfo';
 import Menu from './Menu'
+import { GLOBAL_STYLES } from '../../styles/styles';
 import {httpClient, parser} from '../../utils';
 
 const Services = () => {
@@ -22,14 +23,14 @@ const Services = () => {
   }, [])
 
   return (
-    <Screen headerText="Сервисы">
+    <Screen headerText="Сервисы" disableRefresh>
       <View style={{flex: 1}}>
-        <Text>Профиль</Text>
+        <Text style={GLOBAL_STYLES.textTitle}>Студент</Text>
         <UserInfo data={parser.userData}/>
       </View>
 
       <View style={{flex: 10}}>
-        <Text>Сервисы</Text>
+        <Text style={GLOBAL_STYLES.textTitle}>Меню</Text>
         <Menu />
       </View>
     </Screen>
