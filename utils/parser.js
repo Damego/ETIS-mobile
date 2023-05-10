@@ -1,52 +1,24 @@
 import * as cheerio from 'cheerio';
 
 export default class DataParsing {
+  constructor() {
+    this.hasUserData = false;
+    this.userData = {
+      announceCount: null,
+      messageCount: null,
+      student: {
+        name: null,
+        speciality: null,
+        educationForm: null,
+        year: null,
+        group: null
+      },
+    };
+  }
+
   isLoginPage(html) {
     const $ = cheerio.load(html);
     return !!$('.login').html();
-  }
-
-  parseHeader(html) {
-    const data = {
-      userFullName: null,
-      headerSpeciality: null,
-    };
-    const {} = data;
-    const $ = cheerio.load(html);
-    // Способы добавления элемента в словарь:   data['header'] = header  |  data.header = header;
-
-    // ФИО и г.р. человека
-    const headerName = $(
-      'body > div.navbar.navbar-static-top > div > div > div > div > span'
-    ).text();
-    const reg = /.*/g;
-    data.userFullName = reg.exec(headerName)[0];
-
-    // Получение только ФИО (на всякий случай, если нужно будет)
-    // let header_name = $('body > div.navbar.navbar-static-top > div > div > div > div > span').text();
-    // let reg = /.*\(/g;
-    // let header_name_new = reg.exec(header_name);
-    // let name = header_name_new[0].replace( ' (','' );
-    // data['name'] = name;
-
-    // Название специальности
-    let headerSpeciality = $(
-      'body > div.navbar.navbar-static-top > div > div > div > div > span > span:nth-child(1)'
-    ).text();
-    data.speciality = headerSpeciality;
-
-    // Форма обчуения
-    let headerFormEducationForm = $(
-      'body > div.navbar.navbar-static-top > div > div > div > div > span > span:nth-child(2)'
-    ).text();
-    data.educationForm = headerFormEducationForm;
-
-    // Текущий год обучения
-    let headerYear = $(
-      'body > div.navbar.navbar-static-top > div > div > div > div > span > span:nth-child(3)'
-    ).text();
-    data.year = headerYear;
-    return data;
   }
 
   /**
@@ -311,14 +283,36 @@ export default class DataParsing {
     return data;
   }
 
-  parseMenu(html) {
+  parseMenu(html, parseGroupJournal = false) {
     const $ = cheerio.load(html);
 
     const data = {
       announceCount: null,
       messageCount: null,
+      student: {
+        name: null,
+        speciality: null,
+        educationForm: null,
+        year: null,
+        group: null
+      },
     };
 
+    // Получение информации о студенте
+
+    const rawData = $('.span12').text().trim();
+    const [rawName, speciality, form, year] = rawData.split('\n').map(string => string.trim());
+    const [name1, name2, name3] = rawName.split(' ');
+    data.student.name = `${name1} ${name2} ${name3}`;
+    data.student.speciality = speciality;
+    data.student.educationForm = form;
+    data.student.year = year;
+
+    if (parseGroupJournal) {
+      data.student.group = $(".span9").find("h3").text().split(" ")[1]
+    }
+
+    // Получения количества новых объявлений
     $('.nav.nav-tabs.nav-stacked')
       .find('.badge')
       .each((i, el) => {
@@ -327,6 +321,9 @@ export default class DataParsing {
           data.announceCount = parseInt(span.text());
         }
       });
+
+    this.userData = data.student;
+    this.hasUserData = true;
     return data;
   }
 }
