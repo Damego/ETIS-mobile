@@ -1,6 +1,6 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -17,13 +17,9 @@ const styles = StyleSheet.create({
 });
 
 const Header = ({ text }) => (
-  <View>
-    <StatusBar/>
-    <View style={styles.headerContainer}>
-      <Text style={styles.headerText}>{text}</Text>
-    </View>
+  <View style={styles.headerContainer}>
+    <Text style={styles.headerText}>{text}</Text>
   </View>
-
 );
 
 export default Header;

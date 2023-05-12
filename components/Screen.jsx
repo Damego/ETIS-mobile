@@ -1,4 +1,5 @@
 import Constants from 'expo-constants';
+import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 
@@ -24,6 +25,7 @@ const Screen = ({ headerText, onUpdate, disableRefresh, children }) => {
 
   return (
     <View style={{ marginTop: Constants.statusBarHeight, flex: 1 }}>
+      <StatusBar style={'dark'}/>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         style={{ flex: 1 }}

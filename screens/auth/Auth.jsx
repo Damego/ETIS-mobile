@@ -8,6 +8,7 @@ import { httpClient, storage } from '../../utils';
 import Footer from './AuthFooter';
 import Form from './AuthForm';
 import ReCaptcha from '../../components/ReCaptcha';
+import { StatusBar } from 'expo-status-bar';
 
 const AuthPage = () => {
   const [isLoading, setLoading] = useState(false);
@@ -63,6 +64,7 @@ const AuthPage = () => {
 
   return (
     <View style={{ marginTop: Constants.statusBarHeight }}>
+      <StatusBar style={'dark'}/>
       <ReCaptcha onReceiveToken={onReceiveRecaptchaToken}/>
 
       <Header text="Авторизация" />
