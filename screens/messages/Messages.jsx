@@ -16,7 +16,7 @@ const Messages = () => {
     if (!html) return;
 
     if (parser.isLoginPage(html)) {
-      toggleSignIn();
+      toggleSignIn(true);
       return;
     }
 

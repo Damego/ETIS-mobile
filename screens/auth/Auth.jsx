@@ -11,10 +11,10 @@ import Footer from './AuthFooter';
 import Form from './AuthForm';
 
 const AuthPage = () => {
-  const [isLoading, setLoading] = useState(false);
+  const { toggleSignIn, showLoading } = useContext(AuthContext);
+  const [isLoading, setLoading] = useState(showLoading);
   const [loginErrorMessage, changeLoginMessageError] = useState(null);
   const [recaptchaToken, setRecaptchaToken] = useState();
-  const { toggleSignIn } = useContext(AuthContext);
 
   const makeLogin = async ({ token, useCache, login, password }) => {
     if (useCache) {
@@ -28,7 +28,6 @@ const AuthPage = () => {
       return;
     }
 
-    // TODO: reload recaptcha component
     if (!token && !recaptchaToken) {
       changeLoginMessageError('Токен авторизации не найден. Перезайдите в приложение');
       return;
@@ -65,7 +64,7 @@ const AuthPage = () => {
   return (
     <View style={{ marginTop: Constants.statusBarHeight }}>
       <StatusBar style={'dark'} />
-      <ReCaptcha onReceiveToken={onReceiveRecaptchaToken}/>
+      <ReCaptcha onReceiveToken={onReceiveRecaptchaToken} />
 
       <Header text="Авторизация" />
 

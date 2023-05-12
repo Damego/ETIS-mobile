@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   logoImage: {
     width: 150,
     height: 150,
-    marginVertical: '3%'
+    marginVertical: '3%',
   },
   input: {
     fontSize: 20,

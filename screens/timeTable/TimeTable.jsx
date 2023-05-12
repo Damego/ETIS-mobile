@@ -15,7 +15,7 @@ const TimeTable = () => {
   const [week, changeWeek] = useState(null);
 
   const loadData = async () => {
-    setLoading(true)
+    setLoading(true);
     let html;
     if (week !== null) {
       html = await httpClient.getTimeTable({ week });
@@ -26,12 +26,12 @@ const TimeTable = () => {
       return;
     }
     if (parser.isLoginPage(html)) {
-      toggleSignIn();
+      toggleSignIn(true);
       return;
     }
     const parsedData = parser.parseTimeTable(html);
     setData(parsedData);
-    setLoading(false)
+    setLoading(false);
   };
 
   useEffect(() => {
