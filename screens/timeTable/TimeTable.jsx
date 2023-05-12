@@ -1,21 +1,21 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { View } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
 import 'react-native-get-random-values';
 
 import LoadingScreen from '../../components/LoadingScreen';
+import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
+import AuthContext from '../../context/AuthContext';
 import { httpClient, parser } from '../../utils';
 import { Day, EmptyDay } from './Day';
-import PageNavigator from '../../components/PageNavigator';
-import AuthContext from '../../context/AuthContext';
-
 
 const TimeTable = () => {
   const { toggleSignIn } = useContext(AuthContext);
+  const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState(null);
   const [week, changeWeek] = useState(null);
 
   const loadData = async () => {
+    setLoading(true)
     let html;
     if (week !== null) {
       html = await httpClient.getTimeTable({ week });
@@ -31,13 +31,14 @@ const TimeTable = () => {
     }
     const parsedData = parser.parseTimeTable(html);
     setData(parsedData);
+    setLoading(false)
   };
 
   useEffect(() => {
     loadData();
   }, [week]);
 
-  if (!data) return <LoadingScreen headerText="Расписание"/>;
+  if (!data || isLoading) return <LoadingScreen headerText="Расписание" />;
 
   return (
     <Screen headerText="Расписание" onUpdate={loadData}>
@@ -48,15 +49,13 @@ const TimeTable = () => {
         onPageChange={(selectedWeek) => changeWeek(selectedWeek)}
       />
 
-      <View>
-        {data.days.map((day) =>
-          day.lessons.length === 0 ? (
-            <EmptyDay key={day.date} data={day} />
-          ) : (
-            <Day key={day.date} data={day} />
-          )
-        )}
-      </View>
+      {data.days.map((day) =>
+        day.lessons.length === 0 ? (
+          <EmptyDay key={day.date} data={day} />
+        ) : (
+          <Day key={day.date} data={day} />
+        )
+      )}
     </Screen>
   );
 };
