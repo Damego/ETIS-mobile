@@ -16,6 +16,10 @@ export default class DataParsing {
     };
   }
 
+  getTextField(component) {
+    return component.text().trim();
+  }
+
   isLoginPage(html) {
     const $ = cheerio.load(html);
     return !!$('.login').html();
@@ -41,14 +45,14 @@ export default class DataParsing {
     $('.day', html).each((el, day) => {
       const daySelector = $(day);
       let lessons = [];
-      const date = daySelector.find('h3').text();
+      const date = this.getTextField(daySelector.find('h3'));
 
       if (!daySelector.children().last().hasClass('no_pairs')) {
         $('tr', day).each((_, tr) => {
           const trSelector = $(tr);
-          const audience = trSelector.find('.pair_info').find('.aud').text().trim();
-          const subject = trSelector.find('.pair_info').find('.dis').text().trim();
-          const time = trSelector.find('.pair_num').find('.eval').text().trim();
+          const audience = this.getTextField(trSelector.find('.pair_info').find('.aud'));
+          const subject = this.getTextField(trSelector.find('.pair_info').find('.dis'));
+          const time = this.getTextField(trSelector.find('.pair_num').find('.eval'));
           lessons.push({
             audience,
             subject,
@@ -70,14 +74,18 @@ export default class DataParsing {
     let data = [];
     $('.teacher_info', html).each((el, teacher) => {
       const photo = $(teacher).find('img').attr('src');
-      const name = $(teacher).find('.teacher_name').text();
-      const cathedra = $(teacher).find('.chair').text();
-      const subject = $(teacher).find('.dis').text();
+      const photoTitle = $(teacher).find('img').attr('title');
+      const name = this.getTextField($(teacher).find('.teacher_name'));
+      const cathedra = this.getTextField($(teacher).find('.chair'));
+      const subject = this.getTextField($(teacher).find('.dis'));
+      const [subjectUntyped, subjectType] = subject.trim().split('(');
       data.push({
         photo,
         name,
         cathedra,
-        subject,
+        subjectUntyped,
+        subjectType: subjectType.slice(0, -1),
+        photoTitle,
       });
     });
     return data;
@@ -110,18 +118,20 @@ export default class DataParsing {
     let data = [];
     let cnt = -1;
     $('.nav.msg', html).each((el, announce) => {
+      const fontComponent = $(announce).find('font');
+      const bComponent = $(announce).find('b');
       if ($(announce).hasClass('repl_t')) {
         const type = 'teacher_reply';
-        let time = $(announce).find('font').eq(0).text();
-        let author = $(announce).find('b').eq(0).text();
-        let content = $(announce)
-          .find('li')
-          .contents()
-          .filter(function () {
-            return this.type === 'text';
-          })
-          .text()
-          .trim();
+        let time = this.getTextField(fontComponent.eq(0));
+        let author = this.getTextField(bComponent.eq(0));
+        let content = this.getTextField(
+          $(announce)
+            .find('li')
+            .contents()
+            .filter(function () {
+              return this.type === 'text';
+            })
+        );
         data[cnt].push({
           type,
           time,
@@ -130,15 +140,15 @@ export default class DataParsing {
         });
       } else if ($(announce).hasClass('repl_s')) {
         const type = 'student_reply';
-        let time = $(announce).find('font').eq(0).text();
-        let content = $(announce)
-          .find('li')
-          .contents()
-          .filter(function () {
-            return this.type === 'text';
-          })
-          .text()
-          .trim();
+        let time = this.getTextField(fontComponent.eq(0));
+        let content = this.getTextField(
+          $(announce)
+            .find('li')
+            .contents()
+            .filter(function () {
+              return this.type === 'text';
+            })
+        );
         data[cnt].push({
           type,
           time,
@@ -147,18 +157,21 @@ export default class DataParsing {
       } else {
         cnt += 1;
         const type = 'message';
-        let time = $(announce).find('font').eq(0).text();
-        let author = $(announce).find('b').eq(0).text();
-        let subject = $(announce).find('font').eq(1).text();
-        let theme = $(announce).find('font').eq(2).text();
-        let content = $(announce)
-          .find('li')
-          .contents()
-          .filter(function () {
-            return this.type === 'text';
-          })
-          .text()
-          .trim();
+        let author = this.getTextField(bComponent.eq(0));
+        const fields = [];
+        for (let i = 0; i < 3; i++) {
+          fields[i] = this.getTextField(fontComponent.eq(i));
+        }
+        const [time, subject, theme] = fields;
+        const content = this.getTextField(
+          $(announce)
+            .find('li')
+            .contents()
+            .filter(function () {
+              return this.type === 'text';
+            })
+        );
+
         data.push([
           {
             type,
@@ -178,12 +191,14 @@ export default class DataParsing {
     const $ = cheerio.load(html);
     let data = [];
     $('tr', html).each((el, tableRow) => {
-      if (el != 0) {
-        const number = $(tableRow).find('td').eq(0).text();
-        const time = $(tableRow).find('td').eq(1).text();
-        const subject = $(tableRow).find('td').eq(2).text();
-        const type = $(tableRow).find('td').eq(3).text();
-        const teacher = $(tableRow).find('td').eq(4).text();
+      if (el !== 0) {
+        const td = $(tableRow).find('td');
+        const fields = [];
+        for (let i = 0; i < 5; i++) {
+          fields[i] = this.getTextField(td.eq(i));
+        }
+        const [number, time, subject, type, teacher] = fields;
+
         data.push({
           number,
           time,
@@ -203,12 +218,15 @@ export default class DataParsing {
     $('.common', html).each((el, table) => {
       const trimester = `${el + 1} триместр`;
       let subjects = [];
-      $('.cgrldatarow', table).each((el, tr) => {
-        const subject = $(tr).find('td').eq(0).text().trim();
-        const reporting = $(tr).find('td').eq(1).text().trim();
-        const classWork = parseInt($(tr).find('td').eq(2).text().trim());
-        const soloWork = parseInt($(tr).find('td').eq(3).text().trim());
-        const total = parseInt($(tr).find('td').eq(4).text().trim());
+      $('.cgrldatarow', table).each((_, tr) => {
+        const td = $(tr).find('td');
+        let isElective = this.getTextField(td.eq(0)) === '{';
+        const fields = [];
+        for (let i = 0; i < isElective + 5; i++) {
+          fields[i] = this.getTextField(td.eq(isElective + i));
+        }
+        const [subject, reporting, classWork, soloWork, total] = fields;
+
         subjects.push({
           subject,
           reporting,
@@ -218,8 +236,8 @@ export default class DataParsing {
         });
       });
       data.push({
-        trimester,
         subjects,
+        trimester,
       });
     });
     return data;
@@ -238,26 +256,34 @@ export default class DataParsing {
       $('tr', table).each((i, tr) => {
         // TODO: yeeeeeeeeeeet this shit lol
         const td = $(tr).find('td');
-        const theme = td.eq(0).text().trim();
-        const typeWork = td.eq(1).text().trim();
-        const typeControl = td.eq(2).text().trim();
-        const rawMark = td.eq(3).text().trim();
+        const fields = [];
+
+        for (let j = 0; j < 9; j++) {
+          fields[j] = this.getTextField(td.eq(j));
+        }
+        const [
+          theme,
+          typeWork,
+          typeControl,
+          rawMark,
+          passScore,
+          currentScore,
+          maxScore,
+          date,
+          teacher,
+        ] = fields;
+
         const mark = parseFloat(rawMark);
         const isAbsent = rawMark === 'н';
-        const passScore = parseFloat(td.eq(4).text().trim());
-        const currentScore = parseFloat(td.eq(5).text().trim());
-        const maxScore = parseFloat(td.eq(6).text().trim());
-        const date = td.eq(7).text().trim();
-        const teacher = td.eq(8).text().trim();
         info.push({
           theme,
           typeWork,
           typeControl,
           mark,
           isAbsent,
-          passScore,
-          currentScore,
-          maxScore,
+          passScore: parseFloat(passScore),
+          currentScore: parseFloat(currentScore),
+          maxScore: parseFloat(maxScore),
           date,
           teacher,
         });
@@ -269,13 +295,12 @@ export default class DataParsing {
       });
     });
     $('h3', html).each((el, name) => {
-      const subject = $(name).text();
-      data.subjects[el].subject = subject;
+      data.subjects[el].subject = this.getTextField($(name));
     });
 
     const subMenu = $('.submenu').last();
     $('.submenu-item', subMenu).each((i, el) => {
-      if (!$('a', el).text()) {
+      if (!this.getTextField($('a', el))) {
         data.currentTrimester = i + 1;
         return false;
       }
@@ -302,13 +327,15 @@ export default class DataParsing {
 
     // Получение информации о студенте
 
-    const rawData = $('.span12').text().trim();
+    const rawData = this.getTextField($('.span12'));
     const [rawName, speciality, form, year] = rawData.split('\n').map((string) => string.trim());
     const [name1, name2, name3] = rawName.split(' ');
-    data.student.name = `${name1} ${name2} ${name3}`;
-    data.student.speciality = speciality;
-    data.student.educationForm = form;
-    data.student.year = year;
+    data.student = {
+      name: `${name1} ${name2} ${name3}`,
+      speciality,
+      educationForm: form,
+      year,
+    };
 
     if (parseGroupJournal) {
       data.student.group = $('.span9').find('h3').text().split(' ')[1];
@@ -321,9 +348,9 @@ export default class DataParsing {
         const span = $(el);
         const href = span.parent().attr('href');
         if (href === 'stu.announce') {
-          data.announceCount = parseInt(span.text());
+          data.announceCount = parseInt(this.getTextField(span));
         } else if (href === 'stu.teacher_notes') {
-          data.messageCount = parseInt(span.text());
+          data.messageCount = parseInt(this.getTextField(span));
         }
       });
 
