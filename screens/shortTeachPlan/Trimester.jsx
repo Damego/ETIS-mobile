@@ -1,13 +1,15 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 
 import Subject from './Subject';
 
 const BorderLine = () => (
   <View
     style={{
-      borderBottomColor: '#1c1c1c',
-      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomColor: '#d3d3d3',
+      borderBottomWidth: 1,
+      alignSelf: "center",
+      width: "95%",
     }}
   />
 );
