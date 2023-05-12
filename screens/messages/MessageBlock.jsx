@@ -26,7 +26,7 @@ function Message({ data }) {
     <CardHeaderOut topText={cardTopText}>
       <View style={styles.view}>
         {data.type === 'message' ? <Text style={styles.subjectText}>{data.subject}</Text> : ''}
-        <Text style={styles.text}>{data.content}</Text>
+        <Text style={styles.text} selectable selectionColor={"#ade1f5"}>{data.content}</Text>
       </View>
     </CardHeaderOut>
   );
