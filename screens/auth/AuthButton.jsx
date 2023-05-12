@@ -5,23 +5,20 @@ import { GLOBAL_STYLES } from '../../styles/styles';
 
 const styles = StyleSheet.create({
   view: {
-    marginTop: '5%',
+    height: '12%',
+    width: '90%',
+    marginHorizontal: '5%',
+    marginVertical: '5%',
+    paddingHorizontal: '5%',
     backgroundColor: '#ce2539',
     borderRadius: 10,
-    paddingHorizontal: '5%',
     alignItems: 'center',
-    marginHorizontal: '5%',
-    width: '90%',
-    marginBottom: '5%',
-    height: '10%',
+    justifyContent: 'center',
   },
   text: {
     color: '#FFFFFF',
     fontWeight: '500',
     fontSize: 25,
-  },
-  textWrapper: {
-    marginTop: '3%',
   },
 });
 
@@ -31,17 +28,13 @@ const AuthButton = ({ onPress }) => (
     activeOpacity={0.6}
     style={[styles.view, GLOBAL_STYLES.shadow]}
   >
-    <View style={styles.textWrapper}>
-      <Text style={styles.text}>Войти</Text>
-    </View>
+    <Text style={styles.text}>Войти</Text>
   </TouchableOpacity>
 );
 
 const LoadingButton = () => (
   <View style={[styles.view, GLOBAL_STYLES.shadow]}>
-    <View style={styles.textWrapper}>
-      <ActivityIndicator size="large" color="#FFFFFF" />
-    </View>
+    <ActivityIndicator size="large" color="#FFFFFF" />
   </View>
 );
 
