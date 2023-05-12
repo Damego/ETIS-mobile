@@ -1,11 +1,11 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Linking } from 'react-native';
+import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { GLOBAL_STYLES } from '../../styles/styles';
 
-const iconSize = 36
+const iconSize = 36;
 const iconColor = '#000000'
 const styles = StyleSheet.create({
   buttonView: {
@@ -59,14 +59,19 @@ function Menu() {
         <Button
           text="Учебный план"
           icon={<AntDesign name="profile" size={iconSize} color={iconColor} />}
-          page={'Учебный план'}
+          page="Учебный план"
+        />
+        <Button
+          text="Преподаватели"
+          icon={<AntDesign name="team" size={iconSize} color={iconColor} />}
+          page="Преподаватели"
         />
       </Row>
       <Row>
         <Button
           text="Исходный код"
           icon={<AntDesign name="github" size={iconSize} color={iconColor} />}
-          link={"https://github.com/damego/ETIS-mobile"}
+          link="https://github.com/damego/ETIS-mobile"
         />
         <Button
           text="О приложении"

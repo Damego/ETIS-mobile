@@ -70,14 +70,18 @@ export default class DataParsing {
     let data = [];
     $('.teacher_info', html).each((el, teacher) => {
       const photo = $(teacher).find('img').attr('src');
-      const name = $(teacher).find('.teacher_name').text();
-      const cathedra = $(teacher).find('.chair').text();
-      const subject = $(teacher).find('.dis').text();
+      const photoTitle = $(teacher).find('img').attr('title');
+      const name = $(teacher).find('.teacher_name').text().trim();
+      const cathedra = $(teacher).find('.chair').text().trim();
+      const subject = $(teacher).find('.dis').text().trim();
+      const [subjectUntyped, subjectType] = subject.trim().split('(');
       data.push({
         photo,
         name,
         cathedra,
-        subject,
+        subjectUntyped,
+        subjectType: subjectType.slice(0, -1),
+        photoTitle,
       });
     });
     return data;
@@ -218,8 +222,8 @@ export default class DataParsing {
         });
       });
       data.push({
-        trimester,
         subjects,
+        trimestr,
       });
     });
     return data;
