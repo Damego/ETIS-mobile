@@ -122,15 +122,16 @@ export default class DataParsing {
     const $ = cheerio.load(html);
     let data = [];
     let cnt = -1;
-    $('.nav.msg', html).each((el, announce) => {
-      const fontComponent = $(announce).find('font');
-      const bComponent = $(announce).find('b');
-      if ($(announce).hasClass('repl_t')) {
+    $('.nav.msg', html).each((el, messageElement) => {
+      const message = $(messageElement);
+      const fontComponent = message.find('font');
+      const bComponent = message.find('b');
+      if (message.hasClass('repl_t')) {
         const type = 'teacher_reply';
         let time = this.parseDate(this.getTextField(fontComponent.eq(0)));
         let author = this.getTextField(bComponent.eq(0));
         let content = this.getTextField(
-          $(announce)
+          message
             .find('li')
             .contents()
             .filter(function () {
@@ -143,20 +144,31 @@ export default class DataParsing {
           author,
           content,
         });
-      } else if ($(announce).hasClass('repl_s')) {
+      } else if (message.hasClass('repl_s')) {
         const type = 'student_reply';
         let time = this.parseDate(this.getTextField(fontComponent.eq(0)));
         let content = this.getTextField(
-          $(announce)
+          message
             .find('li')
             .contents()
             .filter(function () {
               return this.type === 'text';
             })
         );
+
+        const files = [];
+        message.find('a').each((index, element) => {
+          const link = $(element, message);
+          files.push({
+            fileName: link.text(),
+            uri: link.attr('href'),
+          });
+        });
+
         data[cnt].push({
           type,
           time,
+          files,
           content,
         });
       } else {
@@ -173,8 +185,17 @@ export default class DataParsing {
           ? this.getTextField(fontComponent.eq(2))
           : null;
 
+        const files = [];
+        message.find('a').each((index, element) => {
+          const link = $(element, message);
+          files.push({
+            fileName: link.text(),
+            uri: link.attr('href'),
+          });
+        });
+
         const content = this.getTextField(
-          $(announce)
+          message
             .find('li')
             .contents()
             .filter(function () {
@@ -190,6 +211,7 @@ export default class DataParsing {
             subject,
             theme,
             content,
+            files
           },
         ]);
       }
