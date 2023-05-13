@@ -21,7 +21,7 @@ const Header = ({ text, onBackButtonClick }) => (
   <View style={styles.headerContainer}>
     {onBackButtonClick ? (
       <TouchableOpacity onPress={onBackButtonClick}>
-        <AntDesign name={'left'} size={24} color={'#C62E3E'} />
+        <AntDesign name={'arrowleft'} size={24} color={'#C62E3E'} />
       </TouchableOpacity>
     ) : (
       ''
