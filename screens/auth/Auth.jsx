@@ -17,6 +17,7 @@ const AuthPage = () => {
   const [loginErrorMessage, changeLoginMessageError] = useState(null);
   const [recaptchaToken, setRecaptchaToken] = useState();
   const [showRecovery, setShowRecovery] = useState(false);
+  const [saveCreds, setSaveCreds] = useState(true);
 
   const makeLogin = async ({ token, useCache, login, password }) => {
     if (isLoading) return;
@@ -53,7 +54,7 @@ const AuthPage = () => {
     }
 
     await storage.storeSessionID(sessionID);
-    if (!useCache) {
+    if (!useCache && saveCreds) {
       await storage.storeAccountData(login, password);
     }
 
@@ -79,6 +80,8 @@ const AuthPage = () => {
         isLoading={isLoading}
         errorMessage={loginErrorMessage}
         setShowRecovery={setShowRecovery}
+        saveCreds={saveCreds}
+        setSaveCreds={setSaveCreds}
       />
 
       <Footer />

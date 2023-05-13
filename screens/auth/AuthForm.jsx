@@ -63,10 +63,9 @@ const ErrorMessage = ({ messageText }) => (
   </View>
 );
 
-const Form = ({ onSubmit, isLoading, errorMessage, setShowRecovery }) => {
+const Form = ({ onSubmit, isLoading, errorMessage, setShowRecovery, saveCreds, setSaveCreds }) => {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
-  const [isChecked, setChecked] = useState(true);
 
   return (
     <View style={[styles.container, GLOBAL_STYLES.shadow]}>
@@ -101,7 +100,7 @@ const Form = ({ onSubmit, isLoading, errorMessage, setShowRecovery }) => {
 
       <View style={styles.authPropContainer}>
         <View style={styles.section}>
-          <Checkbox style={styles.checkBox} value={isChecked} onValueChange={setChecked} />
+          <Checkbox style={styles.checkBox} value={saveCreds} onValueChange={setSaveCreds} />
           <Text>Запомнить пароль?</Text>
         </View>
         <Text style={styles.forgot} onPress={() => setShowRecovery(true)}>Забыли пароль?</Text>
