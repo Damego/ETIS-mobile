@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   request: {
     height: '12%',
     width: '90%',
-    marginTop: '10%',
+    marginTop: '12.5%',
     paddingHorizontal: '5%',
     backgroundColor: '#ce2539',
     borderRadius: 10,
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     height: '12%',
     width: '90%',
     marginTop: '5%',
-    marginBottom: '2.8%',
+    marginBottom: '0.3%',
     paddingHorizontal: '5%',
     backgroundColor: '#4faee0',
     borderRadius: 10,

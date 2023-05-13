@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { Image, StyleSheet, Text, TextInput, View } from "react-native";
-import { AuthButton, LoadingButton } from "./AuthButton";
-import { GLOBAL_STYLES } fro"../../styles/styles"s';
+import { Checkbox } from 'expo-checkbox';
+import React, { useState } from 'react';
+import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
 
+import { GLOBAL_STYLES } from '../../styles/styles';
+import { AuthButton, LoadingButton } from './AuthButton';
 
 const styles = StyleSheet.create({
   container: {
@@ -20,32 +21,40 @@ const styles = StyleSheet.create({
     height: 150,
     marginVertical: '3%',
   },
+  section: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  checkBox: {
+    marginRight: 6,
+  },
   input: {
     fontSize: 20,
     borderWidth: 1,
-    borderColor: "#F8F8FE",
+    borderColor: '#F8F8FE',
     borderRadius: 10,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF',
     paddingLeft: 5,
-    minHeight: "7%",
-    marginVertical: "1%",
-    marginHorizontal: "5%",
-    width: "90%"
+    minHeight: '7%',
+    marginVertical: '1%',
+    marginHorizontal: '5%',
+    width: '90%',
   },
   authPropContainer: {
-    marginTop: "4%",
+    marginTop: '4%',
     flex: 2,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    minHeight: "3%",
-    width: "95%"
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    minHeight: '3%',
+    width: '95%',
   },
   forgot: {
-    color: "#427ade",
-    justifyContent: "flex-end",
-    alignItems: "flex-end",
-    fontSize: 14
-  }
+    color: '#427ade',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    fontSize: 14,
+  },
 });
 
 const ErrorMessage = ({ messageText }) => (
@@ -91,6 +100,10 @@ const Form = ({ onSubmit, isLoading, errorMessage, setShowRecovery }) => {
       />
 
       <View style={styles.authPropContainer}>
+        <View style={styles.section}>
+          <Checkbox style={styles.checkBox} value={isChecked} onValueChange={setChecked} />
+          <Text>Запомнить пароль?</Text>
+        </View>
         <Text style={styles.forgot} onPress={() => setShowRecovery(true)}>Забыли пароль?</Text>
       </View>
 
