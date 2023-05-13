@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import React, { useState } from "react";
+import { Image, StyleSheet, Text, TextInput, View } from "react-native";
+import { AuthButton, LoadingButton } from "./AuthButton";
+import { GLOBAL_STYLES } fro"../../styles/styles"s';
 
-import { GLOBAL_STYLES } from '../../styles/styles';
-import { AuthButton, LoadingButton } from './AuthButton';
 
 const styles = StyleSheet.create({
   container: {
@@ -23,15 +23,29 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 20,
     borderWidth: 1,
-    borderColor: '#F8F8FE',
+    borderColor: "#F8F8FE",
     borderRadius: 10,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
     paddingLeft: 5,
-    minHeight: '7%',
-    marginVertical: '1%',
-    marginHorizontal: '5%',
-    width: '90%',
+    minHeight: "7%",
+    marginVertical: "1%",
+    marginHorizontal: "5%",
+    width: "90%"
   },
+  authPropContainer: {
+    marginTop: "4%",
+    flex: 2,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    minHeight: "3%",
+    width: "95%"
+  },
+  forgot: {
+    color: "#427ade",
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+    fontSize: 14
+  }
 });
 
 const ErrorMessage = ({ messageText }) => (
@@ -40,13 +54,14 @@ const ErrorMessage = ({ messageText }) => (
   </View>
 );
 
-const Form = ({ onSubmit, isLoading, errorMessage }) => {
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
+const Form = ({ onSubmit, isLoading, errorMessage, setShowRecovery }) => {
+  const [login, setLogin] = useState("");
+  const [password, setPassword] = useState("");
+  const [isChecked, setChecked] = useState(true);
 
   return (
     <View style={[styles.container, GLOBAL_STYLES.shadow]}>
-      <Image style={styles.logoImage} source={require('../../assets/logo_red.png')} />
+      <Image style={styles.logoImage} source={require("../../assets/logo_red.png")} />
 
       <ErrorMessage messageText={errorMessage} />
 
@@ -74,6 +89,10 @@ const Form = ({ onSubmit, isLoading, errorMessage }) => {
         autoCompleteType="password"
         onSubmitEditing={() => onSubmit(login, password)}
       />
+
+      <View style={styles.authPropContainer}>
+        <Text style={styles.forgot} onPress={() => setShowRecovery(true)}>Забыли пароль?</Text>
+      </View>
 
       {isLoading ? (
         <LoadingButton />

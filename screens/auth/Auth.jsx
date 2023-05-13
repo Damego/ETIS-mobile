@@ -7,6 +7,7 @@ import Header from '../../components/Header';
 import ReCaptcha from '../../components/ReCaptcha';
 import AuthContext from '../../context/AuthContext';
 import { httpClient, storage } from '../../utils';
+import SendEmailModal from '../recovery/SendEmail';
 import Footer from './AuthFooter';
 import Form from './AuthForm';
 
@@ -15,8 +16,11 @@ const AuthPage = () => {
   const [isLoading, setLoading] = useState(showLoading);
   const [loginErrorMessage, changeLoginMessageError] = useState(null);
   const [recaptchaToken, setRecaptchaToken] = useState();
+  const [showRecovery, setShowRecovery] = useState(false);
 
   const makeLogin = async ({ token, useCache, login, password }) => {
+    if (isLoading) return;
+
     if (useCache) {
       const accountData = await storage.getAccountData();
       // js is weird
@@ -61,9 +65,11 @@ const AuthPage = () => {
     await makeLogin({ token, useCache: true });
   };
 
-  return (
+  return showRecovery ? (
+    <SendEmailModal setShowModal={setShowRecovery} />
+  ) : (
     <View style={{ marginTop: Constants.statusBarHeight }}>
-      <StatusBar style={'dark'} />
+      <StatusBar style="dark" />
       <ReCaptcha onReceiveToken={onReceiveRecaptchaToken} />
 
       <Header text="Авторизация" />
@@ -72,6 +78,7 @@ const AuthPage = () => {
         onSubmit={(login, password) => makeLogin({ login, password })}
         isLoading={isLoading}
         errorMessage={loginErrorMessage}
+        setShowRecovery={setShowRecovery}
       />
 
       <Footer />
