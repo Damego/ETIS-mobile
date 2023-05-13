@@ -72,15 +72,14 @@ const Form = ({ onSubmit, isLoading, errorMessage }) => {
         autoComplete="password"
         selectionColor="#C62E3E"
         autoCompleteType="password"
+        onSubmitEditing={() => onSubmit(login, password)}
       />
 
       {isLoading ? (
         <LoadingButton />
       ) : (
         <AuthButton
-          onPress={() => {
-            onSubmit(login, password);
-          }}
+          onPress={() => onSubmit(login, password)}
         />
       )}
     </View>
