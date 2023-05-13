@@ -46,6 +46,7 @@ const AuthPage = () => {
       token || recaptchaToken
     );
 
+    setRecaptchaToken(null);
     setLoading(false);
 
     if (errorMessage) {
