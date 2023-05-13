@@ -211,7 +211,7 @@ export default class DataParsing {
             subject,
             theme,
             content,
-            files
+            files,
           },
         ]);
       }
