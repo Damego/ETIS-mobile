@@ -1,7 +1,8 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
+import { documentDirectory, downloadAsync } from 'expo-file-system';
 
-export default class HTTPClient {
+class HTTPClient {
   constructor() {
     this.defaultURL = 'https://student.psu.ru/pls/stu_cus_et';
     this.sessionID = null;
@@ -27,6 +28,17 @@ export default class HTTPClient {
     } catch (e) {
       return null;
     }
+  }
+
+  async downloadFile(uri, fileName) {
+    const url = `${this.defaultURL}/${uri}`;
+    console.log(`[HTTP] Downloading a file from ${url}`);
+    const response = await downloadAsync(url, `${documentDirectory}${fileName}`, {
+      headers: {
+        Cookie: this.sessionID,
+      },
+    });
+    return response;
   }
 
   /**
@@ -146,3 +158,6 @@ export default class HTTPClient {
     return this.request('/stu_jour.group_tt');
   }
 }
+
+const httpClient = new HTTPClient();
+export default httpClient;
