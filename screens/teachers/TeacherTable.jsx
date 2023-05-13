@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import 'react-native-get-random-values';
+import { View } from 'react-native';
 
+import BorderLine from '../../components/BorderLine';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
@@ -39,8 +40,11 @@ const TeacherTable = () => {
     <Screen headerText="Преподаватели" onUpdate={loadData}>
       {data.map(([key, value]) => (
         <CardHeaderOut key={key} topText={key}>
-          {value.map((teacher) => (
-            <Teacher key={teacher.name} data={teacher} />
+          {value.map((teacher, index) => (
+            <View key={teacher.name}>
+              <Teacher data={teacher} />
+              {index !== value.length - 1 ? <BorderLine /> : ''}
+            </View>
           ))}
         </CardHeaderOut>
       ))}

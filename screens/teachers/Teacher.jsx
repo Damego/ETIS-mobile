@@ -9,38 +9,26 @@ import {
 } from 'react-native';
 
 const styles = StyleSheet.create({
-  teacherNameView: {
-    marginLeft: '1%',
-    marginBottom: '1%',
-    paddingHorizontal: '1%',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
+  container: {
+    flexDirection: 'row',
+    margin: '2%',
   },
-  teacherNameText: {
-    marginTop: '1%',
+  teacherNameView: {},
+  fontW500: {
+    fontWeight: '500',
+  },
+  fontS16: {
     fontSize: 16,
-    fontWeight: '400',
   },
-  subjectInfoView: {
-    marginLeft: '2%',
-  },
+  subjectInfoView: {},
   subjectInfoText: {
-    fontSize: 13,
-    color: '#1c1c1c',
+    fontSize: 14,
   },
-  photoContainer: {
-    justifyContent: 'center',
-    padding: '1%',
-  },
+  photoContainer: {},
   photoStyle: {
     width: 100,
     height: 100,
-    borderRadius: 20,
-  },
-  container: {
-    flex: 2,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
+    borderRadius: 6,
   },
   teacherInfo: {
     flex: 2,
@@ -51,12 +39,12 @@ const Teacher = ({ data: { cathedra, name, photo, photoTitle, subjectType } }) =
   <View style={styles.container}>
     <View style={styles.teacherInfo}>
       <View style={styles.teacherNameView}>
-        <Text style={styles.teacherNameText}>{name}</Text>
+        <Text style={[styles.fontS16, styles.fontW500]}>{name}</Text>
+        <Text style={styles.fontS16}>{subjectType}</Text>
       </View>
 
       <View style={styles.subjectInfoView}>
         <Text style={styles.subjectInfoText}>{cathedra}</Text>
-        <Text style={styles.subjectInfoText}>{subjectType}</Text>
       </View>
     </View>
 
