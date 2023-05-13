@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio';
+import moment from 'moment';
 
 export default class DataParsing {
   constructor() {
@@ -18,6 +19,10 @@ export default class DataParsing {
 
   getTextField(component) {
     return component.text().trim();
+  }
+
+  parseDate(dateString) {
+    return moment(dateString, 'DD.MM.YYYY HH:mm:ss');
   }
 
   isLoginPage(html) {
@@ -122,7 +127,7 @@ export default class DataParsing {
       const bComponent = $(announce).find('b');
       if ($(announce).hasClass('repl_t')) {
         const type = 'teacher_reply';
-        let time = this.getTextField(fontComponent.eq(0));
+        let time = this.parseDate(this.getTextField(fontComponent.eq(0)));
         let author = this.getTextField(bComponent.eq(0));
         let content = this.getTextField(
           $(announce)
@@ -140,7 +145,7 @@ export default class DataParsing {
         });
       } else if ($(announce).hasClass('repl_s')) {
         const type = 'student_reply';
-        let time = this.getTextField(fontComponent.eq(0));
+        let time = this.parseDate(this.getTextField(fontComponent.eq(0)));
         let content = this.getTextField(
           $(announce)
             .find('li')
@@ -159,10 +164,15 @@ export default class DataParsing {
         const type = 'message';
         let author = this.getTextField(bComponent.eq(0));
         const fields = [];
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 2; i++) {
           fields[i] = this.getTextField(fontComponent.eq(i));
         }
-        const [time, subject, theme] = fields;
+        const [time, subject] = fields;
+
+        const theme = !fontComponent.eq(2).parent().is('form')
+          ? this.getTextField(fontComponent.eq(2))
+          : null;
+
         const content = this.getTextField(
           $(announce)
             .find('li')
@@ -175,7 +185,7 @@ export default class DataParsing {
         data.push([
           {
             type,
-            time,
+            time: this.parseDate(time),
             author,
             subject,
             theme,

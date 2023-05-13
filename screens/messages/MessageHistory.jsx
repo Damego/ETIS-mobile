@@ -4,10 +4,10 @@ import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
 import WarningCard from '../../components/WarningCard';
 import { httpClient, parser } from '../../utils';
-import MessageBlock from './MessageBlock';
+import MessagePreview from './MessagePreview';
 import AuthContext from '../../context/AuthContext';
 
-const Messages = () => {
+const MessageHistory = () => {
   const { toggleSignIn } = useContext(AuthContext);
   const [data, setData] = useState();
 
@@ -34,10 +34,10 @@ const Messages = () => {
       <WarningCard text="🚧 Страница находится в разработке!" />
 
       {data.map((messageBlock) => (
-        <MessageBlock data={messageBlock} key={messageBlock[0].time} />
+        <MessagePreview data={messageBlock} key={messageBlock[0].time.format()} />
       ))}
     </Screen>
   );
 };
 
-export default Messages;
+export default MessageHistory;

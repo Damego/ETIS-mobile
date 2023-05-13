@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Screen = ({ headerText, onUpdate, disableRefresh, children }) => {
+const Screen = ({ headerText, onUpdate, disableRefresh, children, onBackPageClick }) => {
   const [refreshing, setRefreshing] = useState(false);
 
   // not a useCallback hook because `onUpdate` function of parent component uses first state of useState hooks
@@ -36,7 +36,7 @@ const Screen = ({ headerText, onUpdate, disableRefresh, children }) => {
         }
       >
         <View style={styles.screen}>
-          <Header text={headerText} />
+          <Header text={headerText} onBackButtonClick={onBackPageClick} />
           {children}
         </View>
       </ScrollView>

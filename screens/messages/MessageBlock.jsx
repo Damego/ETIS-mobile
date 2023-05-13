@@ -1,43 +1,24 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 
-import CardHeaderOut from '../../components/CardHeaderOut';
+import Screen from '../../components/Screen';
+import Message from './Message';
 
-const styles = StyleSheet.create({
-  subjectText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  view: {
-    margin: '2%',
-  },
-  text: {
-    fontSize: 16,
-  },
-});
+export default function MessageBlock({ route, navigation }) {
+  const { data } = route.params;
+  const [name1, name2, name3] = data[0].author.split(' ');
+  const author = `${name1} ${name2.charAt(0)}. ${name3.charAt(0)}.`;
 
-function Message({ data }) {
-  let cardTopText;
-  if (data.type === 'message') cardTopText = `${data.time}\n${data.author}`;
-  else if (data.type === 'teacher_reply') cardTopText = `${data.time}\nОтвет`;
-  else if (data.type === 'student_reply') cardTopText = `${data.time}\nВы`;
+  const sortMessages = (first, second) => {
+    if (first.time < second.time) return -1
+    if (first.time > second.time) return 1;
+    return 0
+  }
 
   return (
-    <CardHeaderOut topText={cardTopText}>
-      <View style={styles.view}>
-        {data.type === 'message' ? <Text style={styles.subjectText}>{data.subject}</Text> : ''}
-        <Text style={styles.text} selectable selectionColor={"#ade1f5"}>{data.content}</Text>
-      </View>
-    </CardHeaderOut>
-  );
-}
-
-export default function MessageBlock({ data }) {
-  return (
-    <>
-      {data.map((message) => (
-        <Message data={message} key={message.time} />
+    <Screen headerText={author} onBackPageClick={() => navigation.navigate('Все сообщения')}>
+      {data.sort(sortMessages).map((message) => (
+        <Message data={message} key={message.time.format()} />
       ))}
-    </>
+    </Screen>
   );
 }
