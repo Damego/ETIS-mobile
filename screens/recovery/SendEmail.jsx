@@ -17,7 +17,7 @@ const SendEmailModal = ({ setShowModal }) => {
   const [recaptchaToken, setRecaptchaToken] = useState();
   const [disabledRequestButton, setDisabledRequestButton] = useState(false);
 
-  const makeRequest = async ({ token, mail }) => {
+  const makeRequest = async ({ mail }) => {
     if (isLoading || disabledRequestButton) return;
 
     if (!mail) {
@@ -25,14 +25,14 @@ const SendEmailModal = ({ setShowModal }) => {
       return;
     }
 
-    if (!token && !recaptchaToken) {
+    if (!recaptchaToken) {
       changeMessage('Токен авторизации не найден. Перезайдите в приложение');
       return;
     }
 
     setLoading(true);
 
-    const { errorMessage } = await httpClient.sendRecoveryMail(mail, token || recaptchaToken);
+    const { errorMessage } = await httpClient.sendRecoveryMail(mail, recaptchaToken);
     setRecaptchaToken(null);
 
     setLoading(false);

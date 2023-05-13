@@ -75,13 +75,16 @@ export default class HTTPClient {
   }
 
   async sendRecoveryMail(username, token) {
-    const body = `p_step=1&p_email=${username.trim()}&p_recaptcha_response=${token.trim()};`;
+    const formData = new FormData();
+    formData.append('p_step', '1');
+    formData.append('p_email', username.trim());
+    formData.append('p_recaptcha_response', token.trim());
 
-    console.log(`[HTTP] Recovering with data ${JSON.stringify(body)}`);
+    console.log(`[HTTP] Recovering with data ${JSON.stringify(formData)}`);
 
     let response;
     try {
-      response = await axios.post(`${this.defaultURL}/stu_email_pkg.send_r_email`, body, {
+      response = await axios.post(`${this.defaultURL}/stu_email_pkg.send_r_email`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
     } catch (e) {
