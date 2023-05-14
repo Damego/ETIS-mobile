@@ -2,7 +2,7 @@
   "name": "etis-mobile",
   "version": "0.0.1-alpha.1",
   "scripts": {
-    "start": "expo start --dev-client",
+    "start": "expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web"
@@ -34,7 +34,8 @@
     "react-native-web": "~0.18.10",
     "react-native-webview": "11.26.0",
     "uuid": "^9.0.0",
-    "expo-sharing": "~11.2.2"
+    "expo-sharing": "~11.2.2",
+    "expo-checkbox": "~2.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
