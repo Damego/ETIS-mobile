@@ -30,15 +30,14 @@ class HTTPClient {
     }
   }
 
-  async downloadFile(uri, fileName) {
+  downloadFile(uri, fileName) {
     const url = `${this.defaultURL}/${uri}`;
     console.log(`[HTTP] Downloading a file from ${url}`);
-    const response = await downloadAsync(url, `${documentDirectory}${fileName}`, {
+    return downloadAsync(url, `${documentDirectory}${fileName}`, {
       headers: {
         Cookie: this.sessionID,
       },
     });
-    return response;
   }
 
   /**
