@@ -34,7 +34,7 @@ const AuthPage = () => {
     }
 
     if (!token && !recaptchaToken) {
-      changeLoginMessageError('Токен авторизации не найден. Перезайдите в приложение');
+      changeLoginMessageError('Токен авторизации не найден. Подождите немного');
       return;
     }
 
@@ -72,8 +72,7 @@ const AuthPage = () => {
   ) : (
     <View style={{ marginTop: Constants.statusBarHeight }}>
       <StatusBar style="dark" />
-      <ReCaptcha onReceiveToken={onReceiveRecaptchaToken} />
-
+      {!recaptchaToken && <ReCaptcha onReceiveToken={onReceiveRecaptchaToken} />}
       <Header text="Авторизация" />
 
       <Form

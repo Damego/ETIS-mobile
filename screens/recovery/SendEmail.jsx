@@ -26,7 +26,7 @@ const SendEmailModal = ({ setShowModal }) => {
     }
 
     if (!recaptchaToken) {
-      changeMessage('Токен авторизации не найден. Перезайдите в приложение');
+      changeMessage('Токен авторизации не найден. Подождите немного');
       return;
     }
 
@@ -53,7 +53,8 @@ const SendEmailModal = ({ setShowModal }) => {
   return (
     <View style={{ marginTop: Constants.statusBarHeight }}>
       <StatusBar style="dark" />
-      <ReCaptcha onReceiveToken={onReceiveRecaptchaToken} />
+
+      {!recaptchaToken && <ReCaptcha onReceiveToken={onReceiveRecaptchaToken} />}
 
       <Header text="Восстановление доступа" />
 
