@@ -1,5 +1,12 @@
 import React from 'react';
-import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 
 import { GLOBAL_STYLES } from '../../styles/styles';
 
@@ -25,6 +32,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  backText: {
+    color: '#000',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    fontSize: 20,
+    marginTop: '5%',
+  },
 
   text: {
     color: '#FFFFFF',
@@ -45,13 +59,12 @@ const RequestButton = ({ onPress, disabled }) => (
 );
 
 const BackButton = ({ onPress }) => (
-  <TouchableOpacity
+  <TouchableWithoutFeedback
     onPress={onPress}
-    activeOpacity={0.6}
     style={[styles.back, GLOBAL_STYLES.shadow]}
   >
-    <Text style={styles.text}>Назад</Text>
-  </TouchableOpacity>
+    <Text style={styles.backText}>Назад</Text>
+  </TouchableWithoutFeedback>
 );
 
 const LoadingButton = () => (
