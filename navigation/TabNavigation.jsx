@@ -31,6 +31,7 @@ const TabNavigator = () => {
         tabBarActiveTintColor: '#CE2539',
         tabBarShowLabel: false,
         tabBarBadgeStyle: { backgroundColor: '#CE2539' },
+        tabBarHideOnKeyboard: true
       }}
     >
       <Tab.Screen

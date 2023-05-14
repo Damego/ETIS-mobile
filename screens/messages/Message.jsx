@@ -19,9 +19,9 @@ const styles = StyleSheet.create({
 
 const MessageFiles = ({ files }) => (
   <View style={{ flexDirection: 'column' }}>
-    <Text>Прикреплённые файлы: </Text>
+    <Text style={styles.subjectText}>Прикреплённые файлы: </Text>
     {files.map((file) => (
-      <FileTextLink src={file.uri} fileName={file.fileName} key={file.fileName}>
+      <FileTextLink src={file.uri} fileName={file.fileName} key={file.fileName} style={styles.text}>
         {file.fileName}
       </FileTextLink>
     ))}
