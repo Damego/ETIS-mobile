@@ -44,7 +44,7 @@ export default class HTTPClient {
     formData.append('p_recaptcha_ver', '3');
     formData.append('p_recaptcha_response', token.trim());
 
-    console.log(`[HTTP] Authorizing with data ${formData}`);
+    console.log(`[HTTP] Authorizing with data ${JSON.stringify(formData)}`);
 
     let response;
     try {
@@ -72,6 +72,34 @@ export default class HTTPClient {
     console.log(`[HTTP] Authorized with ${sessionID}`);
 
     return { sessionID, errorMessage: null };
+  }
+
+  async sendRecoveryMail(username, token) {
+    const formData = new FormData();
+    formData.append('p_step', '1');
+    formData.append('p_email', username.trim());
+    formData.append('p_recaptcha_response', token.trim());
+
+    console.log(`[HTTP] Recovering with data ${JSON.stringify(formData)}`);
+
+    let response;
+    try {
+      response = await axios.post(`${this.defaultURL}/stu_email_pkg.send_r_email`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+    } catch (e) {
+      return {
+        errorMessage: 'Ошибка соединения. \nПопробуйте зайти позже',
+      };
+    }
+
+    const $ = cheerio.load(response.data);
+    if ($('#sbmt > span').text() === 'Получить письмо') {
+      let errorMessage = $('.error_message').text();
+      return { errorMessage };
+    }
+
+    return { errorMessage: null };
   }
 
   getTimeTable({ showConsultations = null, week = null } = {}) {

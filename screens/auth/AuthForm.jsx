@@ -1,3 +1,4 @@
+import { Checkbox } from 'expo-checkbox';
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
 
@@ -20,6 +21,14 @@ const styles = StyleSheet.create({
     height: 150,
     marginVertical: '3%',
   },
+  section: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  checkBox: {
+    marginRight: 6,
+  },
   input: {
     fontSize: 20,
     borderWidth: 1,
@@ -32,6 +41,20 @@ const styles = StyleSheet.create({
     marginHorizontal: '5%',
     width: '90%',
   },
+  authPropContainer: {
+    marginTop: '4%',
+    flex: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    minHeight: '3%',
+    width: '95%',
+  },
+  forgot: {
+    color: '#427ade',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    fontSize: 14,
+  },
 });
 
 const ErrorMessage = ({ messageText }) => (
@@ -40,13 +63,13 @@ const ErrorMessage = ({ messageText }) => (
   </View>
 );
 
-const Form = ({ onSubmit, isLoading, errorMessage }) => {
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
+const Form = ({ onSubmit, isLoading, errorMessage, setShowRecovery, saveCreds, setSaveCreds }) => {
+  const [login, setLogin] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <View style={[styles.container, GLOBAL_STYLES.shadow]}>
-      <Image style={styles.logoImage} source={require('../../assets/logo_red.png')} />
+      <Image style={styles.logoImage} source={require("../../assets/logo_red.png")} />
 
       <ErrorMessage messageText={errorMessage} />
 
@@ -72,15 +95,22 @@ const Form = ({ onSubmit, isLoading, errorMessage }) => {
         autoComplete="password"
         selectionColor="#C62E3E"
         autoCompleteType="password"
+        onSubmitEditing={() => onSubmit(login, password)}
       />
+
+      <View style={styles.authPropContainer}>
+        <View style={styles.section}>
+          <Checkbox style={styles.checkBox} value={saveCreds} onValueChange={setSaveCreds} />
+          <Text>Запомнить пароль?</Text>
+        </View>
+        <Text style={styles.forgot} onPress={() => setShowRecovery(true)}>Забыли пароль?</Text>
+      </View>
 
       {isLoading ? (
         <LoadingButton />
       ) : (
         <AuthButton
-          onPress={() => {
-            onSubmit(login, password);
-          }}
+          onPress={() => onSubmit(login, password)}
         />
       )}
     </View>

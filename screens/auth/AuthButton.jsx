@@ -4,13 +4,24 @@ import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'rea
 import { GLOBAL_STYLES } from '../../styles/styles';
 
 const styles = StyleSheet.create({
-  view: {
+  auth: {
+    height: '14%',
+    width: '90%',
+    marginTop: '5%',
+    marginBottom: '10%',
+    paddingHorizontal: '5%',
+    backgroundColor: '#ce2539',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  forgot: {
     height: '12%',
     width: '90%',
     marginHorizontal: '5%',
-    marginVertical: '5%',
+    marginVertical: '1%',
     paddingHorizontal: '5%',
-    backgroundColor: '#ce2539',
+    backgroundColor: '#3090db',
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
@@ -26,14 +37,14 @@ const AuthButton = ({ onPress }) => (
   <TouchableOpacity
     onPress={onPress}
     activeOpacity={0.6}
-    style={[styles.view, GLOBAL_STYLES.shadow]}
+    style={[styles.auth, GLOBAL_STYLES.shadow]}
   >
     <Text style={styles.text}>Войти</Text>
   </TouchableOpacity>
 );
 
 const LoadingButton = () => (
-  <View style={[styles.view, GLOBAL_STYLES.shadow]}>
+  <View style={[styles.auth, GLOBAL_STYLES.shadow]}>
     <ActivityIndicator size="large" color="#FFFFFF" />
   </View>
 );
