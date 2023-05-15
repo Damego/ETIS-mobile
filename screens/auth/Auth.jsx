@@ -1,14 +1,31 @@
 import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
-import React, { useContext, useState } from 'react';
-import { View } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { Alert, Linking, View } from 'react-native';
 
 import Header from '../../components/Header';
 import ReCaptcha from '../../components/ReCaptcha';
 import AuthContext from '../../context/AuthContext';
-import { httpClient, storage } from '../../utils';
+import { PRIVACY_POLICY_URL, httpClient, storage } from '../../utils';
 import Footer from './AuthFooter';
 import Form from './AuthForm';
+
+const showPrivacyPolicy = () => {
+  Alert.alert(
+    'Политика приватности',
+    'Перед использованием приложения примите политику конфиденциальности',
+    [
+      {
+        text: 'Открыть',
+        onPress: () => {
+          showPrivacyPolicy();
+          Linking.openURL(PRIVACY_POLICY_URL);
+        },
+      },
+      { text: 'Принять', onPress: () => storage.acceptPrivacyPolicy() },
+    ]
+  );
+};
 
 const AuthPage = () => {
   const { toggleSignIn, showLoading } = useContext(AuthContext);
@@ -16,7 +33,21 @@ const AuthPage = () => {
   const [loginErrorMessage, changeLoginMessageError] = useState(null);
   const [recaptchaToken, setRecaptchaToken] = useState();
 
+  useEffect(() => {
+    const wrapper = async () => {
+      if (!(await storage.hasAcceptedPrivacyPolicy())) {
+        showPrivacyPolicy();
+      }
+    };
+    wrapper();
+  }, []);
+
   const makeLogin = async ({ token, useCache, login, password }) => {
+    if (!(await storage.hasAcceptedPrivacyPolicy())) {
+      changeLoginMessageError('Политика конфиденциальности не принята');
+      return;
+    }
+
     if (useCache) {
       const accountData = await storage.getAccountData();
       // js is weird
@@ -62,7 +93,7 @@ const AuthPage = () => {
   };
 
   return (
-    <View style={{ marginTop: Constants.statusBarHeight }}>
+    <View style={{ marginTop: Constants.statusBarHeight, flex: 1 }}>
       <StatusBar style={'dark'} />
       <ReCaptcha onReceiveToken={onReceiveRecaptchaToken} />
 
