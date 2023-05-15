@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 1,
     height: 30,
     paddingHorizontal: 5,
-    paddingTop: 5
+    paddingTop: 5,
   },
   fileText: {
     alignSelf: 'flex-end',
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   scrollContainer: {},
   innerScrollContainer: {},
   removeIcon: {
-    marginHorizontal: 5
+    marginHorizontal: 5,
   },
 });
 
@@ -50,8 +50,8 @@ const MessageFiles = ({ files, onFileRemove }) => (
       contentContainerStyle={styles.innerScrollContainer}
       horizontal
     >
-      {files.map(({ name }) => (
-        <File name={name} onRemove={onFileRemove} key={name} />
+      {files.map(({ name }, index) => (
+        <File name={name} onRemove={onFileRemove} key={`${name}-${index}`} />
       ))}
     </ScrollView>
   </View>

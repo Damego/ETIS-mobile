@@ -20,8 +20,13 @@ const styles = StyleSheet.create({
 const AttachedFiles = ({ files }) => (
   <View style={{ flexDirection: 'column' }}>
     <Text style={styles.subjectText}>Прикреплённые файлы: </Text>
-    {files.map((file) => (
-      <FileTextLink src={file.uri} fileName={file.fileName} key={file.fileName} style={styles.text}>
+    {files.map((file, index) => (
+      <FileTextLink
+        src={file.uri}
+        fileName={file.fileName}
+        key={`${file.fileName}-${index}`}
+        style={styles.text}
+      >
         {file.fileName}
       </FileTextLink>
     ))}
