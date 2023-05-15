@@ -165,11 +165,20 @@ export default class DataParsing {
           });
         });
 
+        let answerMessageID;
+        message.find('input').each((index, element) => {
+          const input = $(element, message);
+          if (input.attr('type') === 'button') {
+            answerMessageID = input.attr('id').split('_').at(-1);
+          }
+        });
+
         data[cnt].push({
           type,
           time,
           files,
           content,
+          answerMessageID,
         });
       } else {
         cnt += 1;
@@ -203,6 +212,14 @@ export default class DataParsing {
             })
         );
 
+        let messageID;
+        let answerID;
+        message.find('input').each((index, element) => {
+          const input = $(element, message);
+          if (input.attr('type') === 'hidden') answerID = input.attr('value');
+          else if (input.attr('type') === 'button') messageID = input.attr('id').split('_').at(1);
+        });
+
         data.push([
           {
             type,
@@ -212,6 +229,8 @@ export default class DataParsing {
             theme,
             content,
             files,
+            answerID,
+            messageID,
           },
         ]);
       }
@@ -286,7 +305,6 @@ export default class DataParsing {
     $('.common', html).each((el, table) => {
       let info = [];
       $('tr', table).each((i, tr) => {
-        // TODO: yeeeeeeeeeeet this shit lol
         const td = $(tr).find('td');
         const fields = [];
 
