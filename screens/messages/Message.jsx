@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const MessageFiles = ({ files }) => (
+const AttachedFiles = ({ files }) => (
   <View style={{ flexDirection: 'column' }}>
     <Text style={styles.subjectText}>Прикреплённые файлы: </Text>
     {files.map((file) => (
@@ -40,7 +40,7 @@ function Message({ data: { type, time, content, files } }) {
         <Text style={styles.text} selectable selectionColor={'#ade1f5'}>
           {content}
         </Text>
-        {files && files.length !== 0 ? <MessageFiles files={files} /> : ''}
+        {files && files.length !== 0 ? <AttachedFiles files={files} /> : ''}
       </View>
     </CardHeaderOut>
   );

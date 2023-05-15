@@ -2,8 +2,8 @@ import React, { useRef, useState } from 'react';
 
 import Screen from '../../components/Screen';
 import Message from './Message';
-import MessageInput from './MessageInput';
 import MessageFiles from './MessageFiles';
+import MessageInput from './MessageInput';
 
 export default function MessageBlock({ route, navigation }) {
   const { data } = route.params;
@@ -23,35 +23,40 @@ export default function MessageBlock({ route, navigation }) {
   };
 
   const onFileSelect = (fileData) => {
+    if (files.map((file) => file.name).includes(fileData.name)) return;
+
     const file = {
       name: fileData.name,
       size: fileData.size,
       uri: fileData.uri,
-      type: fileData.mimeType
-    }
+      type: fileData.mimeType,
+    };
 
-    setFiles(
-      [
-        ...files,
-        file
-      ]
-    )
-  }
+    setFiles([...files, file]);
+  };
 
   const onFileRemove = (fileName) => {
-    setFiles(files.filter(file => file.name !== fileName))
-  }
+    setFiles(files.filter((file) => file.name !== fileName));
+  };
 
   return (
     <>
-      <Screen headerText={author} onBackPageClick={() => navigation.navigate('Все сообщения')}>
+      <Screen
+        headerText={author}
+        scrollHeader={false}
+        onBackPageClick={() => navigation.navigate('Все сообщения')}
+      >
         {data.sort(compareMessages).map((message) => (
           <Message data={message} key={message.time.format()} />
         ))}
       </Screen>
 
-      <MessageFiles files={files} onFileRemove={onFileRemove}/>
-      <MessageInput onFileSelect={onFileSelect} onChangeText={changeMessageText} value={messageText.current}/>
+      {files.length !== 0 && <MessageFiles files={files} onFileRemove={onFileRemove} />}
+      <MessageInput
+        onFileSelect={onFileSelect}
+        onChangeText={changeMessageText}
+        value={messageText.current}
+      />
     </>
   );
 }
