@@ -5,10 +5,6 @@ import { PRIVACY_POLICY_URL } from '../../utils';
 
 const styles = StyleSheet.create({
   view: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
     alignItems: 'center',
   },
   infoText: {

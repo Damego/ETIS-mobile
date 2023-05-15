@@ -93,20 +93,21 @@ const AuthPage = () => {
   };
 
   return (
-    <View style={{ marginTop: Constants.statusBarHeight, flex: 1 }}>
-      <StatusBar style={'dark'} />
-      <ReCaptcha onReceiveToken={onReceiveRecaptchaToken} />
+    <>
+      <View style={{ marginTop: Constants.statusBarHeight }}>
+        <StatusBar style={'dark'} />
+        <ReCaptcha onReceiveToken={onReceiveRecaptchaToken} />
 
-      <Header text="Авторизация" />
+        <Header text="Авторизация" />
 
-      <Form
-        onSubmit={(login, password) => makeLogin({ login, password })}
-        isLoading={isLoading}
-        errorMessage={loginErrorMessage}
-      />
-
+        <Form
+          onSubmit={(login, password) => makeLogin({ login, password })}
+          isLoading={isLoading}
+          errorMessage={loginErrorMessage}
+        />
+      </View>
       <Footer />
-    </View>
+    </>
   );
 };
 
