@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Screen = ({ headerText, onUpdate, disableRefresh, children, onBackPageClick }) => {
+const Screen = ({ headerText, scrollHeader = true, onUpdate, disableRefresh, children, onBackPageClick }) => {
   const [refreshing, setRefreshing] = useState(false);
 
   // not a useCallback hook because `onUpdate` function of parent component uses first state of useState hooks
@@ -26,6 +26,7 @@ const Screen = ({ headerText, onUpdate, disableRefresh, children, onBackPageClic
   return (
     <View style={{ marginTop: Constants.statusBarHeight, flex: 1 }}>
       <StatusBar style={'dark'}/>
+      {!scrollHeader && <Header text={headerText} onBackButtonClick={onBackPageClick} />}
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         style={{ flex: 1 }}
@@ -36,7 +37,7 @@ const Screen = ({ headerText, onUpdate, disableRefresh, children, onBackPageClic
         }
       >
         <View style={styles.screen}>
-          <Header text={headerText} onBackButtonClick={onBackPageClick} />
+          {scrollHeader && <Header text={headerText} onBackButtonClick={onBackPageClick} />}
           {children}
         </View>
       </ScrollView>
