@@ -23,9 +23,9 @@
 
 ## Как скачать?
 
-- Через [RuStore](https://apps.rustore.ru/app/com.damego.etismobile)
+- [Google Play](https://play.google.com/store/apps/details?id=com.damego.etismobile)
+- [RuStore](https://apps.rustore.ru/app/com.damego.etismobile)
 - Через раздел [релизы](https://github.com/Damego/ETIS-mobile/releases). У каждого релиза есть кнопка скачать, которая перекинет на сайт, где будет кнопка `install`. Релизы, которые были выпущены более месяца назад установить невозможно.
-- Релиз в Google Play Store планируется в будущем.
 - Версия для IOS планируется в будущем.
 
 ## Я нашёл баг!
