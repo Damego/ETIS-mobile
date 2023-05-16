@@ -1,6 +1,8 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { documentDirectory, downloadAsync } from 'expo-file-system';
+import 'fastestsmallesttextencoderdecoder';
+import qs from 'qs';
 
 class HTTPClient {
   constructor() {
@@ -111,6 +113,48 @@ class HTTPClient {
     }
 
     return { errorMessage: null };
+  }
+
+  async replyToMessage(answerID, content) {
+    // stu.send_reply p_anv_id: 1863863 p_msg_txt
+    // stu.repl_doc_write file: (binary) p_ant_id: 73510 p_anr_id: 47734
+
+    // TODO: fuck it
+    const encodedContent = new TextEncoder().encode(content);
+    const decodedContent = new TextDecoder('windows-1251').decode(encodedContent, {});
+    // const encodedData = encode(content);
+    console.log('content', content);
+    console.log('encoded content 1', encodedContent);
+
+    // const formData = new FormData();
+    // formData.append('p_anv_id', answerID);
+    // formData.append('p_msg_txt', encodeURIComponent(decodedContent));
+    const data = {
+      p_anv_id: answerID,
+      p_msg_txt: content,
+    };
+
+    const url = `${this.defaultURL}/stu.send_reply`;
+
+    console.log(`[HTTP] [POST] ${url} data: ${qs.stringify(data)}`);
+
+    const res = await axios.post(url, qs.stringify(data), {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    });
+    // console.log(res)
+  }
+
+  async attachFilesToMessage(messageID, answerMessageID, files) {
+    const formData = new FormData();
+    formData.append('p_ant_id', messageID);
+    formData.append('p_anr_id', answerMessageID);
+
+    files.map(async (file) => {
+      formData.set('file', file);
+      await axios.post(`${this.defaultURL}/stu.send_reply`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+    });
   }
 
   getTimeTable({ showConsultations = null, week = null } = {}) {

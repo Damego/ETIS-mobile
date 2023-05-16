@@ -1,19 +1,44 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import Screen from '../../components/Screen';
+import AuthContext from '../../context/AuthContext';
+import { httpClient, parser } from '../../utils';
 import Message from './Message';
 import MessageFiles from './MessageFiles';
 import MessageInput from './MessageInput';
 
 export default function MessageBlock({ route, navigation }) {
-  const { data } = route.params;
-  const messageText = useRef();
-  const [files, setFiles] = useState([{name: 'test.png'}]);
-  const [name1, name2, name3] = data[0].author.split(' ');
-  const author = `${name1} ${name2.charAt(0)}. ${name3.charAt(0)}.`;
+  const { toggleSignIn } = useContext(AuthContext);
+
+  const [data, setData] = useState(route.params.data);
+  const [files, setFiles] = useState([]);
+  const [messageText, setMessageText] = useState();
+
+  const [mainMessage] = data;
+  const { author, answerID, messageID } = mainMessage;
+  const [name1, name2, name3] = author.split(' ');
+  const shortAuthor = `${name1} ${name2.charAt(0)}. ${name3.charAt(0)}.`;
+
+  const loadData = async () => {
+    const html = await httpClient.getTeacherNotes();
+    if (!html) return;
+    if (parser.isLoginPage(html)) {
+      toggleSignIn(true);
+      return;
+    }
+
+    const allMessages = parser.parseTeacherNotes(html);
+    for (const messageBlock of allMessages) {
+      const [mainMsg] = messageBlock;
+      if (mainMsg.messageID === messageID) {
+        setData(messageBlock);
+        return messageBlock;
+      }
+    }
+  };
 
   const changeMessageText = (text) => {
-    messageText.current = text;
+    setMessageText(text);
   };
 
   const compareMessages = (first, second) => {
@@ -39,12 +64,26 @@ export default function MessageBlock({ route, navigation }) {
     setFiles(files.filter((file) => file.name !== fileName));
   };
 
+  const onSubmit = async () => {
+    await httpClient.replyToMessage(answerID, messageText);
+
+    const messageBlock = await loadData();
+    if (!messageBlock || files.length === 0) return;
+
+    const replyMessage = messageBlock.at(1);
+    await httpClient.attachFilesToMessage(messageID, replyMessage.answerMessageID, files);
+
+    setFiles([]);
+  };
+
   return (
     <>
       <Screen
-        headerText={author}
+        headerText={shortAuthor}
         scrollHeader={false}
         onBackPageClick={() => navigation.navigate('Все сообщения')}
+        startScrollFromBottom
+        onUpdate={loadData}
       >
         {data.sort(compareMessages).map((message) => (
           <Message data={message} key={message.time.format()} />
@@ -55,7 +94,8 @@ export default function MessageBlock({ route, navigation }) {
       <MessageInput
         onFileSelect={onFileSelect}
         onChangeText={changeMessageText}
-        value={messageText.current}
+        value={messageText}
+        onSubmit={onSubmit}
       />
     </>
   );

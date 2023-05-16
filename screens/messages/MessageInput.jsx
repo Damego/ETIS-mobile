@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const MessageInput = ({ onChangeText, value, onFileSelect }) => {
+const MessageInput = ({ onChangeText, value, onFileSelect, onSubmit }) => {
   const innerSelectFile = async () => {
     const fileResult = await selectFile();
     if (fileResult) onFileSelect(fileResult);
@@ -44,7 +44,7 @@ const MessageInput = ({ onChangeText, value, onFileSelect }) => {
         selectionColor="#C62E3E"
       />
 
-      <TouchableOpacity style={styles.iconView}>
+      <TouchableOpacity style={styles.iconView} onPress={onSubmit}>
         <Ionicons name="send" size={24} color="#C62E3E" />
       </TouchableOpacity>
     </View>
