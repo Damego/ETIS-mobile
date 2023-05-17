@@ -22,6 +22,7 @@ export default function MessageBlock({ route, navigation }) {
       scrollHeader={false}
       onBackPageClick={() => navigation.navigate('Все сообщения')}
       startScrollFromBottom
+      disableRefresh
     >
       {data.sort(compareMessages).map((message) => (
         <Message data={message} key={message.time.format()} />
