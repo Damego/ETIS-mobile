@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio';
+import moment from 'moment';
 
 export default class DataParsing {
   constructor() {
@@ -18,6 +19,10 @@ export default class DataParsing {
 
   getTextField(component) {
     return component.text().trim();
+  }
+
+  parseDate(dateString) {
+    return moment(dateString, 'DD.MM.YYYY HH:mm:ss');
   }
 
   isLoginPage(html) {
@@ -117,15 +122,16 @@ export default class DataParsing {
     const $ = cheerio.load(html);
     let data = [];
     let cnt = -1;
-    $('.nav.msg', html).each((el, announce) => {
-      const fontComponent = $(announce).find('font');
-      const bComponent = $(announce).find('b');
-      if ($(announce).hasClass('repl_t')) {
+    $('.nav.msg', html).each((el, messageElement) => {
+      const message = $(messageElement);
+      const fontComponent = message.find('font');
+      const bComponent = message.find('b');
+      if (message.hasClass('repl_t')) {
         const type = 'teacher_reply';
-        let time = this.getTextField(fontComponent.eq(0));
+        let time = this.parseDate(this.getTextField(fontComponent.eq(0)));
         let author = this.getTextField(bComponent.eq(0));
         let content = this.getTextField(
-          $(announce)
+          message
             .find('li')
             .contents()
             .filter(function () {
@@ -138,33 +144,11 @@ export default class DataParsing {
           author,
           content,
         });
-      } else if ($(announce).hasClass('repl_s')) {
+      } else if (message.hasClass('repl_s')) {
         const type = 'student_reply';
-        let time = this.getTextField(fontComponent.eq(0));
+        let time = this.parseDate(this.getTextField(fontComponent.eq(0)));
         let content = this.getTextField(
-          $(announce)
-            .find('li')
-            .contents()
-            .filter(function () {
-              return this.type === 'text';
-            })
-        );
-        data[cnt].push({
-          type,
-          time,
-          content,
-        });
-      } else {
-        cnt += 1;
-        const type = 'message';
-        let author = this.getTextField(bComponent.eq(0));
-        const fields = [];
-        for (let i = 0; i < 3; i++) {
-          fields[i] = this.getTextField(fontComponent.eq(i));
-        }
-        const [time, subject, theme] = fields;
-        const content = this.getTextField(
-          $(announce)
+          message
             .find('li')
             .contents()
             .filter(function () {
@@ -172,14 +156,81 @@ export default class DataParsing {
             })
         );
 
+        const files = [];
+        message.find('a').each((index, element) => {
+          const link = $(element, message);
+          files.push({
+            fileName: link.text(),
+            uri: link.attr('href'),
+          });
+        });
+
+        let answerMessageID;
+        message.find('input').each((index, element) => {
+          const input = $(element, message);
+          if (input.attr('type') === 'button') {
+            answerMessageID = input.attr('id').split('_').at(-1);
+          }
+        });
+
+        data[cnt].push({
+          type,
+          time,
+          files,
+          content,
+          answerMessageID,
+        });
+      } else {
+        cnt += 1;
+        const type = 'message';
+        let author = this.getTextField(bComponent.eq(0));
+        const fields = [];
+        for (let i = 0; i < 2; i++) {
+          fields[i] = this.getTextField(fontComponent.eq(i));
+        }
+        const [time, subject] = fields;
+
+        const theme = !fontComponent.eq(2).parent().is('form')
+          ? this.getTextField(fontComponent.eq(2))
+          : null;
+
+        const files = [];
+        message.find('a').each((index, element) => {
+          const link = $(element, message);
+          files.push({
+            fileName: link.text(),
+            uri: link.attr('href'),
+          });
+        });
+
+        const content = this.getTextField(
+          message
+            .find('li')
+            .contents()
+            .filter(function () {
+              return this.type === 'text';
+            })
+        );
+
+        let messageID;
+        let answerID;
+        message.find('input').each((index, element) => {
+          const input = $(element, message);
+          if (input.attr('type') === 'hidden') answerID = input.attr('value');
+          else if (input.attr('type') === 'button') messageID = input.attr('id').split('_').at(1);
+        });
+
         data.push([
           {
             type,
-            time,
+            time: this.parseDate(time),
             author,
             subject,
             theme,
             content,
+            files,
+            answerID,
+            messageID,
           },
         ]);
       }
@@ -254,7 +305,6 @@ export default class DataParsing {
     $('.common', html).each((el, table) => {
       let info = [];
       $('tr', table).each((i, tr) => {
-        // TODO: yeeeeeeeeeeet this shit lol
         const td = $(tr).find('td');
         const fields = [];
 
