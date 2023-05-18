@@ -53,8 +53,7 @@ const AuthPage = () => {
       changeLoginMessageError(errorMessage);
       return;
     }
-
-    await storage.storeSessionID(sessionID);
+    
     if (!useCache && saveCreds) {
       await storage.storeAccountData(login, password);
     }

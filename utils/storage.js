@@ -1,22 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 
 export default class Storage {
-  async storeSessionID(sessionID) {
-    try {
-      await SecureStore.setItemAsync('sessionID', sessionID);
-    } catch (exception) {
-      console.warn('Error saving sessionID', e);
-    }
-  }
-
-  async getSessionID() {
-    try {
-      return await SecureStore.getItemAsync('sessionID');
-    } catch (exception) {
-      console.warn('Error getting sessionID', e);
-    }
-  }
-
   async storeAccountData(login, password) {
     try {
       await SecureStore.setItemAsync('userLogin', login);
