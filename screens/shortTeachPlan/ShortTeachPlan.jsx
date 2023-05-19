@@ -1,11 +1,13 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import CardHeaderOut from '../../components/CardHeaderOut';
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
-import { httpClient, parser } from '../../utils';
-import Trimester from './Trimester';
 import AuthContext from '../../context/AuthContext';
+import { parseShortTeachPlan } from '../../parser';
+import { isLoginPage } from '../../parser/utils';
+import { httpClient } from '../../utils';
+import Trimester from './Trimester';
 
 const ShortTeachPlan = () => {
   const { toggleSignIn } = useContext(AuthContext);
@@ -15,14 +17,13 @@ const ShortTeachPlan = () => {
     const html = await httpClient.getTeachPlan();
     if (!html) return;
 
-    if (parser.isLoginPage(html)) {
+    if (isLoginPage(html)) {
       toggleSignIn(true);
       return;
     }
 
-    const loadedData = parser.parseTeachPlan(html);
+    const loadedData = parseShortTeachPlan(html);
     setData(loadedData);
-
   };
 
   useEffect(() => {

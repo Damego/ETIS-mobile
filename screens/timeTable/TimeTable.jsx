@@ -5,8 +5,10 @@ import LoadingScreen from '../../components/LoadingScreen';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
 import AuthContext from '../../context/AuthContext';
-import { httpClient, parser } from '../../utils';
+import { httpClient } from '../../utils';
 import { Day, EmptyDay } from './Day';
+import { isLoginPage } from '../../parser/utils';
+import { parseTimeTable } from '../../parser';
 
 const TimeTable = () => {
   const { toggleSignIn } = useContext(AuthContext);
@@ -25,11 +27,11 @@ const TimeTable = () => {
     if (!html) {
       return;
     }
-    if (parser.isLoginPage(html)) {
+    if (isLoginPage(html)) {
       toggleSignIn(true);
       return;
     }
-    const parsedData = parser.parseTimeTable(html);
+    const parsedData = parseTimeTable(html);
     setData(parsedData);
     setLoading(false);
   };

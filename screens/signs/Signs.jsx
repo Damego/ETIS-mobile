@@ -1,12 +1,14 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 import Dropdown from '../../components/Dropdown';
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
-import { httpClient, parser } from '../../utils';
-import CardSign from './CardSign';
 import AuthContext from '../../context/AuthContext';
+import { parseCurrentPoints } from '../../parser';
+import { isLoginPage } from '../../parser/utils';
+import { httpClient } from '../../utils';
+import CardSign from './CardSign';
 
 function buildTrimesterOptions(currentTrimester, latestTrimester) {
   const buildOption = (trimester) => ({ label: `${trimester} Триместр`, value: trimester });
@@ -37,15 +39,15 @@ const Signs = () => {
     const html = await httpClient.getSigns('current', { trimester });
     if (!html) return;
 
-    if (parser.isLoginPage(html)) {
+    if (isLoginPage(html)) {
       toggleSignIn(true);
       return;
     }
 
-    const parsedData = parser.parseSigns(html);
+    const parsedData = parseCurrentPoints(html);
     setOptionData(buildTrimesterOptions(parsedData.currentTrimester, parsedData.latestTrimester));
     setData(parsedData);
-    if (data) setLoading(false)
+    if (data) setLoading(false);
   };
 
   useEffect(() => {

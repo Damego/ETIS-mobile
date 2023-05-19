@@ -1,11 +1,13 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
 import WarningCard from '../../components/WarningCard';
-import { httpClient, parser } from '../../utils';
-import MessagePreview from './MessagePreview';
 import AuthContext from '../../context/AuthContext';
+import { parseTeacherMessages } from '../../parser';
+import { isLoginPage } from '../../parser/utils';
+import { httpClient } from '../../utils';
+import MessagePreview from './MessagePreview';
 
 const MessageHistory = () => {
   const { toggleSignIn } = useContext(AuthContext);
@@ -15,12 +17,12 @@ const MessageHistory = () => {
     const html = await httpClient.getTeacherNotes();
     if (!html) return;
 
-    if (parser.isLoginPage(html)) {
+    if (isLoginPage(html)) {
       toggleSignIn(true);
       return;
     }
 
-    setData(parser.parseTeacherNotes(html));
+    setData(parseTeacherMessages(html));
   };
 
   useEffect(() => {

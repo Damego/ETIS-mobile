@@ -5,6 +5,7 @@ import { LogBox, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import CardHeaderOut from '../../components/CardHeaderOut';
 
 LogBox.ignoreLogs(['Non-serializable values were found in the navigation state']);
+
 const styles = StyleSheet.create({
   view: {
     margin: '2%',

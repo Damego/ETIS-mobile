@@ -2,10 +2,11 @@ import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { useEffect, useState } from 'react';
 
+import { parseMenu } from '../parser';
 import Announce from '../screens/announce/Announce';
 import Signs from '../screens/signs/Signs';
 import TimeTablePage from '../screens/timeTable/TimeTable';
-import { httpClient, parser } from '../utils';
+import { httpClient } from '../utils';
 import MessageStackNavigator from './MessageStackNavigator';
 import ServicesStackNavigator from './ServicesStackNavigator';
 
@@ -18,7 +19,7 @@ const TabNavigator = () => {
   const loadData = async () => {
     const html = await httpClient.getGroupJournal();
     if (!html) return;
-    const data = parser.parseMenu(html, true);
+    const data = parseMenu(html, true);
     setAnnounceMessageCount(data.announceCount);
     setTeacherMessageCount(data.messageCount);
   };
