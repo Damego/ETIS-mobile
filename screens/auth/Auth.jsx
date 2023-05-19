@@ -66,9 +66,11 @@ const AuthPage = () => {
     await makeLogin({ token, useCache: true });
   };
 
-  return showRecovery ? (
-    <SendEmailModal setShowModal={setShowRecovery} />
-  ) : (
+  if (showRecovery) {
+    return <SendEmailModal setShowModal={setShowRecovery} />
+  }
+
+  return (
     <View style={{ marginTop: Constants.statusBarHeight }}>
       <StatusBar style="dark" />
       {!recaptchaToken && <ReCaptcha onReceiveToken={onReceiveRecaptchaToken} />}
