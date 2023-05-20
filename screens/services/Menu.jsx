@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: '1%',
     width: 100,
-    height: 80,
   },
   buttonContainer: {
     backgroundColor: '#FFFFFF',
@@ -29,6 +28,7 @@ const styles = StyleSheet.create({
     marginVertical: "1%",
     flexDirection: 'row',
     justifyContent: 'flex-start',
+    marginBottom: '5%'
   },
 });
 
