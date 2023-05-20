@@ -6,6 +6,7 @@ import { Alert, Linking, View } from 'react-native';
 import Header from '../../components/Header';
 import ReCaptcha from '../../components/ReCaptcha';
 import AuthContext from '../../context/AuthContext';
+import SendEmailModal from './SendEmailModal';
 import { PRIVACY_POLICY_URL, httpClient, storage } from '../../utils';
 import Footer from './AuthFooter';
 import Form from './AuthForm';
@@ -32,6 +33,8 @@ const AuthPage = () => {
   const [isLoading, setLoading] = useState(showLoading);
   const [loginErrorMessage, changeLoginMessageError] = useState(null);
   const [recaptchaToken, setRecaptchaToken] = useState();
+  const [showRecovery, setShowRecovery] = useState(false);
+  const [saveCreds, setSaveCreds] = useState(true);
 
   useEffect(() => {
     const wrapper = async () => {
@@ -43,6 +46,7 @@ const AuthPage = () => {
   }, []);
 
   const makeLogin = async ({ token, useCache, login, password }) => {
+    if (isLoading) return;
     if (!(await storage.hasAcceptedPrivacyPolicy())) {
       changeLoginMessageError('Политика конфиденциальности не принята');
       return;
@@ -60,7 +64,7 @@ const AuthPage = () => {
     }
 
     if (!token && !recaptchaToken) {
-      changeLoginMessageError('Токен авторизации не найден. Перезайдите в приложение');
+      changeLoginMessageError('Токен авторизации не найден. Подождите немного');
       return;
     }
 
@@ -72,6 +76,7 @@ const AuthPage = () => {
       token || recaptchaToken
     );
 
+    setRecaptchaToken(null);
     setLoading(false);
 
     if (errorMessage) {
@@ -79,8 +84,7 @@ const AuthPage = () => {
       return;
     }
 
-    await storage.storeSessionID(sessionID);
-    if (!useCache) {
+    if (!useCache && saveCreds) {
       await storage.storeAccountData(login, password);
     }
 
@@ -92,18 +96,24 @@ const AuthPage = () => {
     await makeLogin({ token, useCache: true });
   };
 
+  if (showRecovery) {
+    return <SendEmailModal setShowModal={setShowRecovery} />;
+  }
+
   return (
     <>
       <View style={{ marginTop: Constants.statusBarHeight }}>
-        <StatusBar style={'dark'} />
-        <ReCaptcha onReceiveToken={onReceiveRecaptchaToken} />
-
+        <StatusBar style="dark" />
+        {!recaptchaToken && <ReCaptcha onReceiveToken={onReceiveRecaptchaToken} />}
         <Header text="Авторизация" />
 
         <Form
           onSubmit={(login, password) => makeLogin({ login, password })}
           isLoading={isLoading}
           errorMessage={loginErrorMessage}
+          setShowRecovery={setShowRecovery}
+          saveCreds={saveCreds}
+          setSaveCreds={setSaveCreds}
         />
       </View>
       <Footer />

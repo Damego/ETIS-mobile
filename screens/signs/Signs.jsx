@@ -1,21 +1,20 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 
 import Dropdown from '../../components/Dropdown';
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
-import { httpClient, parser } from '../../utils';
-import CardSign from './CardSign';
 import AuthContext from '../../context/AuthContext';
+import { parseSessionMarks, parseSessionPoints } from '../../parser';
+import { isLoginPage } from '../../parser/utils';
+import { httpClient } from '../../utils';
+import CardSign from './CardSign';
 
 function buildTrimesterOptions(currentTrimester, latestTrimester) {
   const buildOption = (trimester) => ({ label: `${trimester} Триместр`, value: trimester });
 
   const options = [];
-  // TODO: Do we need to specify first trimester which shows on site?
-  let index = 0;
-  while (index <= latestTrimester) {
-    index += 1;
+  for (let index = latestTrimester; index > 0; index -= 1) {
     if (index !== currentTrimester) options.push(buildOption(index));
   }
 
@@ -29,23 +28,42 @@ const Signs = () => {
   const { toggleSignIn } = useContext(AuthContext);
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState(null);
+  const allSessionMarks = useRef();
   const [optionData, setOptionData] = useState(null);
 
   const loadData = async (trimester) => {
     if (data) setLoading(true);
 
-    const html = await httpClient.getSigns('current', { trimester });
+    const html = await httpClient.getSigns('current', trimester);
     if (!html) return;
 
-    if (parser.isLoginPage(html)) {
+    if (isLoginPage(html)) {
       toggleSignIn(true);
       return;
     }
 
-    const parsedData = parser.parseSigns(html);
-    setOptionData(buildTrimesterOptions(parsedData.currentTrimester, parsedData.latestTrimester));
-    setData(parsedData);
-    if (data) setLoading(false)
+    if (allSessionMarks.current === undefined)
+      allSessionMarks.current = parseSessionMarks(await httpClient.getSigns('session'));
+
+    const sessionPoints = parseSessionPoints(html);
+    const sessionMarks = allSessionMarks.current
+      .filter((sessionData) => sessionData.fullSessionNumber === sessionPoints.currentTrimester)
+      .at(0);
+
+    if (sessionMarks) {
+      sessionPoints.subjects.forEach((subject) => {
+        const [subjectMarkData] = sessionMarks.disciplines
+          .filter((discipline) => discipline.name === subject.subject);
+        if (subjectMarkData)
+          subject.mark = subjectMarkData.mark
+      });
+    }
+
+    setOptionData(
+      buildTrimesterOptions(sessionPoints.currentTrimester, sessionPoints.latestTrimester)
+    );
+    setData(sessionPoints);
+    if (data) setLoading(false);
   };
 
   useEffect(() => {

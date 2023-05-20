@@ -6,6 +6,7 @@ import CardHeaderIn from '../../components/CardHeaderIn';
 const styles = StyleSheet.create({
   view: {
     paddingLeft: '4%',
+    marginBottom: '2%'
   },
   text: {
     fontSize: 16,

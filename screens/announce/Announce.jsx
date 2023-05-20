@@ -1,11 +1,13 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
-import { httpClient, parser } from '../../utils';
-import AnnounceCard from './AnnounceCard';
 import AuthContext from '../../context/AuthContext';
+import { parseAnnounce } from '../../parser';
+import { isLoginPage } from '../../parser/utils';
+import { httpClient } from '../../utils';
+import AnnounceCard from './AnnounceCard';
 
 export default function Announce() {
   const { toggleSignIn } = useContext(AuthContext);
@@ -18,12 +20,12 @@ export default function Announce() {
 
     if (!html) return;
 
-    if (parser.isLoginPage(html)) {
+    if (isLoginPage(html)) {
       toggleSignIn(true);
       return;
     }
 
-    const parsedData = parser.parseAnnounce(html);
+    const parsedData = parseAnnounce(html);
     setPageCount(Math.ceil(parsedData.length / 5));
     setData(parsedData);
   };

@@ -1,9 +1,10 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
+import About from '../screens/about/About';
 import Services from '../screens/services';
 import ShortTeachPlan from '../screens/shortTeachPlan';
-import About from '../screens/about/About';
+import TeacherTable from '../screens/teachers';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,11 +16,9 @@ function ServicesStackNavigator() {
       }}
     >
       <Stack.Screen name="Сервисы" component={Services} />
-      <Stack.Screen
-        name="Учебный план"
-        component={ShortTeachPlan}
-      />
-      <Stack.Screen name={"О приложении"} component={About}/>
+      <Stack.Screen name="Учебный план" component={ShortTeachPlan} />
+      <Stack.Screen name="Преподаватели" component={TeacherTable} />
+      <Stack.Screen name="О приложении" component={About} />
     </Stack.Navigator>
   );
 }

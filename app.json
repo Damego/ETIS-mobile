@@ -2,7 +2,7 @@
   "expo": {
     "name": "ЕТИС мобайл",
     "slug": "etis-mobile",
-    "version": "0.2.2",
+    "version": "0.3.0",
     "owner": "damego",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,12 +22,13 @@
       "supportsTablet": true
     },
     "android": {
-      "versionCode": 202,
+      "versionCode": 300,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.damego.etismobile"
+      "package": "com.damego.etismobile",
+      "playStoreUrl": "https://play.google.com/store/apps/details?id=com.damego.etismobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"

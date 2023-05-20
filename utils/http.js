@@ -1,7 +1,9 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
+import { documentDirectory, downloadAsync } from 'expo-file-system';
+import 'fastestsmallesttextencoderdecoder';
 
-export default class HTTPClient {
+class HTTPClient {
   constructor() {
     this.defaultURL = 'https://student.psu.ru/pls/stu_cus_et';
     this.sessionID = null;
@@ -29,6 +31,16 @@ export default class HTTPClient {
     }
   }
 
+  downloadFile(uri, fileName) {
+    const url = `${this.defaultURL}/${uri}`;
+    console.log(`[HTTP] Downloading a file from ${url}`);
+    return downloadAsync(url, `${documentDirectory}${fileName}`, {
+      headers: {
+        Cookie: this.sessionID,
+      },
+    });
+  }
+
   /**
    *
    * @param {string} username Электронная почта
@@ -44,7 +56,7 @@ export default class HTTPClient {
     formData.append('p_recaptcha_ver', '3');
     formData.append('p_recaptcha_response', token.trim());
 
-    console.log(`[HTTP] Authorizing with data ${formData}`);
+    console.log(`[HTTP] Authorizing with data ${JSON.stringify(formData)}`);
 
     let response;
     try {
@@ -74,6 +86,34 @@ export default class HTTPClient {
     return { sessionID, errorMessage: null };
   }
 
+  async sendRecoveryMail(username, token) {
+    const formData = new FormData();
+    formData.append('p_step', '1');
+    formData.append('p_email', username.trim());
+    formData.append('p_recaptcha_response', token.trim());
+
+    console.log(`[HTTP] Recovering with data ${JSON.stringify(formData)}`);
+
+    let response;
+    try {
+      response = await axios.post(`${this.defaultURL}/stu_email_pkg.send_r_email`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+    } catch (e) {
+      return {
+        errorMessage: 'Ошибка соединения. \nПопробуйте зайти позже',
+      };
+    }
+
+    const $ = cheerio.load(response.data);
+    if ($('#sbmt > span').text() === 'Получить письмо') {
+      let errorMessage = $('.error_message').text();
+      return { errorMessage };
+    }
+
+    return { errorMessage: null };
+  }
+
   getTimeTable({ showConsultations = null, week = null } = {}) {
     /*
     `showConsultations`:
@@ -98,7 +138,7 @@ export default class HTTPClient {
     return this.request('/stu.teach_plan');
   }
 
-  getSigns(mode, { trimester }) {
+  getSigns(mode, trimester) {
     /*
     `mode`:
     - session: оценки за сессии
@@ -146,3 +186,6 @@ export default class HTTPClient {
     return this.request('/stu_jour.group_tt');
   }
 }
+
+const httpClient = new HTTPClient();
+export default httpClient;

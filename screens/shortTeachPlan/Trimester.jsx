@@ -2,17 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 import Subject from './Subject';
-
-const BorderLine = () => (
-  <View
-    style={{
-      borderBottomColor: '#d3d3d3',
-      borderBottomWidth: 1,
-      alignSelf: "center",
-      width: "95%",
-    }}
-  />
-);
+import BorderLine from '../../components/BorderLine';
 
 const Trimester = ({ data }) => (
   <View>

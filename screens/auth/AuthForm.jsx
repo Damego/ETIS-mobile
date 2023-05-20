@@ -1,17 +1,17 @@
+import { Checkbox } from 'expo-checkbox';
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
+import { Button, LoadingButton } from '../../components/Button';
 import { GLOBAL_STYLES } from '../../styles/styles';
-import { AuthButton, LoadingButton } from './AuthButton';
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
     width: '90%',
     marginLeft: '5%',
     borderRadius: 10,
     marginTop: '15%',
-
     flexDirection: 'column',
     alignItems: 'center',
   },
@@ -19,6 +19,14 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     marginVertical: '3%',
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  checkbox: {
+    marginRight: 6,
   },
   input: {
     fontSize: 20,
@@ -32,6 +40,16 @@ const styles = StyleSheet.create({
     marginHorizontal: '5%',
     width: '90%',
   },
+  authPropContainer: {
+    marginTop: '4%',
+    flexDirection: 'row',
+    width: '95%',
+    justifyContent: 'space-around',
+  },
+  forgotButton: {
+    color: '#427ade',
+    fontSize: 14,
+  },
 });
 
 const ErrorMessage = ({ messageText }) => (
@@ -40,7 +58,7 @@ const ErrorMessage = ({ messageText }) => (
   </View>
 );
 
-const Form = ({ onSubmit, isLoading, errorMessage }) => {
+const Form = ({ onSubmit, isLoading, errorMessage, setShowRecovery, saveCreds, setSaveCreds }) => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
 
@@ -72,16 +90,25 @@ const Form = ({ onSubmit, isLoading, errorMessage }) => {
         autoComplete="password"
         selectionColor="#C62E3E"
         autoCompleteType="password"
+        onSubmitEditing={() => onSubmit(login, password)}
       />
+
+      <View style={styles.authPropContainer}>
+        <View style={styles.checkboxContainer}>
+          <Checkbox style={styles.checkbox} value={saveCreds} onValueChange={setSaveCreds} />
+          <Text>Запомнить пароль?</Text>
+        </View>
+        <TouchableOpacity>
+          <Text style={styles.forgotButton} onPress={() => setShowRecovery(true)}>
+            Забыли пароль?
+          </Text>
+        </TouchableOpacity>
+      </View>
 
       {isLoading ? (
         <LoadingButton />
       ) : (
-        <AuthButton
-          onPress={() => {
-            onSubmit(login, password);
-          }}
-        />
+        <Button text="Войти" onPress={() => onSubmit(login, password)} />
       )}
     </View>
   );
