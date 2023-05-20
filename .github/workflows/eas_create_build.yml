@@ -25,5 +25,8 @@ jobs:
       - name: 📦 Install dependencies
         run: npm install
 
-      - name: 🚀 Build app
+      - name: 🚀 Build APK
         run: eas build -p android --profile development --non-interactive
+        
+      - name: 🚀 Build AAB
+        run: eas build -p android --profile production
