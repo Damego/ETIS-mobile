@@ -9,6 +9,21 @@ export default class Storage {
     }
   }
 
+  async bumpReviewRequest() {
+    const reviewStep = await SecureStore.getItemAsync('reviewStep');
+    if (reviewStep === null) {
+      // первый запуск
+      await SecureStore.setItemAsync('reviewStep', 'first-login');
+    } else if (reviewStep === 'first-login') {
+      // второй запуск - предложить отставить отзыв
+      return true;
+    }
+  }
+
+  async setReviewSubmitted() {
+    await SecureStore.setItemAsync('reviewStep', 'stop');
+  }
+
   async getSessionID() {
     try {
       return await SecureStore.getItemAsync('sessionID');
@@ -41,5 +56,6 @@ export default class Storage {
   async deleteAccountData() {
     await SecureStore.deleteItemAsync('userLogin');
     await SecureStore.deleteItemAsync('userPassword');
+    await SecureStore.deleteItemAsync('reviewStep');
   }
 }

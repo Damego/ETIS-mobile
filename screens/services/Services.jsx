@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+import ReviewBox from '../../components/ReviewBox';
 import Screen from '../../components/Screen';
 import AuthContext from '../../context/AuthContext';
 import { GLOBAL_STYLES } from '../../styles/styles';
@@ -20,8 +21,10 @@ const styles = StyleSheet.create({
 const Services = () => {
   const { toggleSignIn } = useContext(AuthContext);
   const [userDataLoaded, setUserDataLoaded] = useState(parser.hasUserData);
+  const [showReviewModal, setShowReviewModal] = useState(false)
 
   useEffect(() => {
+    storage.bumpReviewRequest().then(res => setShowReviewModal(res));
     const wrapper = async () => {
       if (!userDataLoaded) {
         const html = await httpClient.getGroupJournal();
@@ -49,6 +52,18 @@ const Services = () => {
         <Text style={GLOBAL_STYLES.textTitle}>Меню</Text>
         <Menu />
       </View>
+
+      {showReviewModal ?
+        <View style={{ paddingBottom: 150}}>
+          <ReviewBox
+            setReviewed={() => {
+              setShowReviewModal(false);
+              storage.setReviewSubmitted();
+            }}
+            setViewed={() => setShowReviewModal(false)}
+          />
+        </View> :
+        null}
 
       <TouchableOpacity onPress={signOut}>
         <View style={styles.exitView}>
