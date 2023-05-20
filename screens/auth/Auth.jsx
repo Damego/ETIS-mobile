@@ -6,7 +6,6 @@ import { Alert, Linking, View } from 'react-native';
 import Header from '../../components/Header';
 import ReCaptcha from '../../components/ReCaptcha';
 import AuthContext from '../../context/AuthContext';
-import { httpClient, storage } from '../../utils';
 import SendEmailModal from '../recovery/SendEmail';
 import { PRIVACY_POLICY_URL, httpClient, storage } from '../../utils';
 import Footer from './AuthFooter';
