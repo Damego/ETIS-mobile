@@ -1,38 +1,10 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Image, Text, TextInput, View } from 'react-native';
 
+import { Button, LoadingButton } from '../../components/Button';
 import { GLOBAL_STYLES } from '../../styles/styles';
-import { BackButton, LoadingButton, RequestButton } from './RequestButton';
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#FFFFFF',
-    width: '90%',
-    marginLeft: '5%',
-    borderRadius: 10,
-    marginTop: '15%',
-
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  logoImage: {
-    width: 150,
-    height: 150,
-    marginVertical: '3%',
-  },
-  input: {
-    fontSize: 20,
-    borderWidth: 1,
-    borderColor: '#F8F8FE',
-    borderRadius: 10,
-    backgroundColor: '#FFFFFF',
-    paddingLeft: 5,
-    minHeight: '7%',
-    marginVertical: '1%',
-    marginHorizontal: '5%',
-    width: '90%',
-  },
-});
+import { styles } from './AuthForm';
+import BackButton from './BackButton';
 
 const Message = ({ messageText }) => (
   <View>
@@ -66,9 +38,15 @@ const SendEmailForm = ({ onSubmit, isLoading, message, setShowModal, disabledReq
       {isLoading ? (
         <LoadingButton />
       ) : (
-        <RequestButton onPress={() => onSubmit(login)} disabled={disabledRequestButton} />
+        <Button
+          text="Отправить письмо"
+          onPress={() => onSubmit(login)}
+          disabled={disabledRequestButton}
+        />
       )}
-      <BackButton onPress={() => setShowModal(false)} />
+      <View style={{marginTop: '15%'}}>
+        <BackButton onPress={() => setShowModal(false)} />
+      </View>
     </View>
   );
 };

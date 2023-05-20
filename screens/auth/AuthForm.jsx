@@ -1,18 +1,17 @@
 import { Checkbox } from 'expo-checkbox';
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
+import { Button, LoadingButton } from '../../components/Button';
 import { GLOBAL_STYLES } from '../../styles/styles';
-import { AuthButton, LoadingButton } from './AuthButton';
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
     width: '90%',
     marginLeft: '5%',
     borderRadius: 10,
     marginTop: '15%',
-
     flexDirection: 'column',
     alignItems: 'center',
   },
@@ -21,12 +20,12 @@ const styles = StyleSheet.create({
     height: 150,
     marginVertical: '3%',
   },
-  section: {
+  checkboxContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
-  checkBox: {
+  checkbox: {
     marginRight: 6,
   },
   input: {
@@ -43,16 +42,12 @@ const styles = StyleSheet.create({
   },
   authPropContainer: {
     marginTop: '4%',
-    flex: 2,
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    minHeight: '3%',
     width: '95%',
+    justifyContent: 'space-around',
   },
-  forgot: {
+  forgotButton: {
     color: '#427ade',
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
     fontSize: 14,
   },
 });
@@ -64,12 +59,12 @@ const ErrorMessage = ({ messageText }) => (
 );
 
 const Form = ({ onSubmit, isLoading, errorMessage, setShowRecovery, saveCreds, setSaveCreds }) => {
-  const [login, setLogin] = useState("");
-  const [password, setPassword] = useState("");
+  const [login, setLogin] = useState('');
+  const [password, setPassword] = useState('');
 
   return (
     <View style={[styles.container, GLOBAL_STYLES.shadow]}>
-      <Image style={styles.logoImage} source={require("../../assets/logo_red.png")} />
+      <Image style={styles.logoImage} source={require('../../assets/logo_red.png')} />
 
       <ErrorMessage messageText={errorMessage} />
 
@@ -99,19 +94,21 @@ const Form = ({ onSubmit, isLoading, errorMessage, setShowRecovery, saveCreds, s
       />
 
       <View style={styles.authPropContainer}>
-        <View style={styles.section}>
-          <Checkbox style={styles.checkBox} value={saveCreds} onValueChange={setSaveCreds} />
+        <View style={styles.checkboxContainer}>
+          <Checkbox style={styles.checkbox} value={saveCreds} onValueChange={setSaveCreds} />
           <Text>Запомнить пароль?</Text>
         </View>
-        <Text style={styles.forgot} onPress={() => setShowRecovery(true)}>Забыли пароль?</Text>
+        <TouchableOpacity>
+          <Text style={styles.forgotButton} onPress={() => setShowRecovery(true)}>
+            Забыли пароль?
+          </Text>
+        </TouchableOpacity>
       </View>
 
       {isLoading ? (
         <LoadingButton />
       ) : (
-        <AuthButton
-          onPress={() => onSubmit(login, password)}
-        />
+        <Button text="Войти" onPress={() => onSubmit(login, password)} />
       )}
     </View>
   );

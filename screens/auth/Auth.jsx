@@ -6,7 +6,7 @@ import { Alert, Linking, View } from 'react-native';
 import Header from '../../components/Header';
 import ReCaptcha from '../../components/ReCaptcha';
 import AuthContext from '../../context/AuthContext';
-import SendEmailModal from '../recovery/SendEmail';
+import SendEmailModal from './SendEmailModal';
 import { PRIVACY_POLICY_URL, httpClient, storage } from '../../utils';
 import Footer from './AuthFooter';
 import Form from './AuthForm';
@@ -83,7 +83,7 @@ const AuthPage = () => {
       changeLoginMessageError(errorMessage);
       return;
     }
-    
+
     if (!useCache && saveCreds) {
       await storage.storeAccountData(login, password);
     }
@@ -97,24 +97,24 @@ const AuthPage = () => {
   };
 
   if (showRecovery) {
-    return <SendEmailModal setShowModal={setShowRecovery} />
+    return <SendEmailModal setShowModal={setShowRecovery} />;
   }
 
   return (
     <>
-    <View style={{ marginTop: Constants.statusBarHeight }}>
-      <StatusBar style="dark" />
-      {!recaptchaToken && <ReCaptcha onReceiveToken={onReceiveRecaptchaToken} />}
-      <Header text="Авторизация" />
+      <View style={{ marginTop: Constants.statusBarHeight }}>
+        <StatusBar style="dark" />
+        {!recaptchaToken && <ReCaptcha onReceiveToken={onReceiveRecaptchaToken} />}
+        <Header text="Авторизация" />
 
-      <Form
-        onSubmit={(login, password) => makeLogin({ login, password })}
-        isLoading={isLoading}
-        errorMessage={loginErrorMessage}
-        setShowRecovery={setShowRecovery}
-        saveCreds={saveCreds}
-        setSaveCreds={setSaveCreds}
-      />
+        <Form
+          onSubmit={(login, password) => makeLogin({ login, password })}
+          isLoading={isLoading}
+          errorMessage={loginErrorMessage}
+          setShowRecovery={setShowRecovery}
+          saveCreds={saveCreds}
+          setSaveCreds={setSaveCreds}
+        />
       </View>
       <Footer />
     </>

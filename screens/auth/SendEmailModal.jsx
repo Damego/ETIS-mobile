@@ -7,7 +7,7 @@ import Header from '../../components/Header';
 import ReCaptcha from '../../components/ReCaptcha';
 import AuthContext from '../../context/AuthContext';
 import { httpClient } from '../../utils';
-import Footer from '../auth/AuthFooter';
+import Footer from './AuthFooter';
 import SendEmailForm from './SendEmailForm';
 
 const SendEmailModal = ({ setShowModal }) => {
@@ -51,23 +51,24 @@ const SendEmailModal = ({ setShowModal }) => {
   };
 
   return (
-    <View style={{ marginTop: Constants.statusBarHeight }}>
-      <StatusBar style="dark" />
+    <>
+      <View style={{ marginTop: Constants.statusBarHeight }}>
+        <StatusBar style="dark" />
 
-      {!recaptchaToken && <ReCaptcha onReceiveToken={onReceiveRecaptchaToken} />}
+        {!recaptchaToken && <ReCaptcha onReceiveToken={onReceiveRecaptchaToken} />}
 
-      <Header text="Восстановление доступа" />
+        <Header text="Восстановление доступа" />
 
-      <SendEmailForm
-        onSubmit={(mail) => makeRequest({ mail })}
-        isLoading={isLoading}
-        message={message}
-        setShowModal={setShowModal}
-        disabledRequestButton={disabledRequestButton}
-      />
-
+        <SendEmailForm
+          onSubmit={(mail) => makeRequest({ mail })}
+          isLoading={isLoading}
+          message={message}
+          setShowModal={setShowModal}
+          disabledRequestButton={disabledRequestButton}
+        />
+      </View>
       <Footer />
-    </View>
+    </>
   );
 };
 

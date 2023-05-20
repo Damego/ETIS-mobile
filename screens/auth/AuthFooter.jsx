@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 const AuthFooter = () => (
   <View style={styles.view}>
     <Text style={styles.infoText}>
-      Приложение ЕТИС мобайл является неоффициальным мобильным приложением для ЕТИС
+      Приложение ЕТИС мобайл является неоффициальным мобильным приложением для ЕТИС ПГНИУ
     </Text>
     <TouchableOpacity onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}>
       <Text style={styles.privacyPolicyText}>Политика конфиденциальности</Text>
