@@ -11,6 +11,8 @@ const styles = StyleSheet.create({
   buttonView: {
     alignItems: 'center',
     marginHorizontal: '1%',
+    width: 100,
+    height: 80,
   },
   buttonContainer: {
     backgroundColor: '#FFFFFF',
