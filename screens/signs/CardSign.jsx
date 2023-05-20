@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import CardHeaderIn from '../../components/CardHeaderIn';
-import Subject from './Subject';
 import SubjectCheckPoint from './Subject';
 
 const styles = StyleSheet.create({
