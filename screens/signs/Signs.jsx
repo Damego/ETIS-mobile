@@ -14,10 +14,7 @@ function buildTrimesterOptions(currentTrimester, latestTrimester) {
   const buildOption = (trimester) => ({ label: `${trimester} Триместр`, value: trimester });
 
   const options = [];
-  // TODO: Do we need to specify first trimester which shows on site?
-  let index = 0;
-  while (index <= latestTrimester) {
-    index += 1;
+  for (let index = latestTrimester; index > 0; index -= 1) {
     if (index !== currentTrimester) options.push(buildOption(index));
   }
 
