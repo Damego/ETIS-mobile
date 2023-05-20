@@ -1,7 +1,7 @@
 import { load } from 'cheerio';
 import { getTextField } from './utils';
 
-export default function parseCurrentPoints(html) {
+export default function parseSessionPoints(html) {
   const $ = load(html);
   let data = {
     subjects: [],
@@ -14,14 +14,14 @@ export default function parseCurrentPoints(html) {
       const td = $(tr).find('td');
       const fields = [];
 
-      for (let j = 0; j < 9; j++) {
+      for (let j = 0; j < 9; j += 1) {
         fields[j] = getTextField(td.eq(j));
       }
       const [
         theme,
         typeWork,
         typeControl,
-        rawMark,
+        rawPoints,
         passScore,
         currentScore,
         maxScore,
@@ -29,13 +29,13 @@ export default function parseCurrentPoints(html) {
         teacher,
       ] = fields;
 
-      const mark = parseFloat(rawMark);
-      const isAbsent = rawMark === 'н';
+      const points = parseFloat(rawPoints);
+      const isAbsent = rawPoints === 'н';
       info.push({
         theme,
         typeWork,
         typeControl,
-        mark,
+        points,
         isAbsent,
         passScore: parseFloat(passScore),
         currentScore: parseFloat(currentScore),
@@ -48,6 +48,7 @@ export default function parseCurrentPoints(html) {
     info.splice(-1, 1);
     data.subjects.push({
       info,
+      mark: null,
     });
   });
   $('h3', html).each((el, name) => {

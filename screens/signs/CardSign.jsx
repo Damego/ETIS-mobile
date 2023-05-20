@@ -3,17 +3,19 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import CardHeaderIn from '../../components/CardHeaderIn';
 import Subject from './Subject';
+import SubjectCheckPoint from './Subject';
 
 const styles = StyleSheet.create({
-  cardMainView: {
+  cardView: {
+    margin: '4%',
+    marginTop: 0,
+  },
+  pointsView: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: '4%',
-    marginBottom: '4%',
-    marginRight: '4%',
     justifyContent: 'space-between',
   },
-  markView: {
+  totalPoints: {
     alignItems: 'center',
     width: '25%',
   },
@@ -21,7 +23,10 @@ const styles = StyleSheet.create({
     fontSize: 36,
     fontWeight: '600',
   },
-  subjects: {},
+  markView: {
+    marginTop: '2%',
+    alignItems: 'flex-end'
+  },
   markWordText: {
     fontSize: 16,
     fontWeight: '600',
@@ -43,42 +48,64 @@ const styles = StyleSheet.create({
   },
 });
 
-const CardSign = ({ subject }) => {
-  let collectedPoints = 0;
-  let textStyle = null;
-
-  subject.info.forEach(({ maxScore, passScore, mark, isAbsent }) => {
-    collectedPoints += Number.isNaN(mark) || maxScore === 0 ? 0 : mark;
-
-    if (textStyle !== null) return;
-    if ((isAbsent || mark < passScore) && maxScore !== 0.0) textStyle = styles.colorMark2;
-    else if (Number.isNaN(mark)) textStyle = styles.colorNoMark;
-  });
-  collectedPoints =
-    collectedPoints.toFixed(1) % 1 === 0 ? collectedPoints.toFixed(0) : collectedPoints.toFixed(1);
-
+const getPointsWord = (points) => {
   let pointsWord = 'балл';
-  const mod10 = collectedPoints % 10;
+  const mod10 = points % 10;
   if ([2, 3, 4].includes(mod10)) pointsWord += 'а';
   else if ([0, 5, 6, 7, 8, 9].includes(mod10)) pointsWord += 'ов';
 
-  if (textStyle === null) {
-    if (collectedPoints < 41) textStyle = styles.colorMark2;
-    else if (collectedPoints < 61) textStyle = styles.colorMark3;
-    else if (collectedPoints < 81) textStyle = styles.colorMark4;
-    else textStyle = styles.colorMark5;
-  }
+  return pointsWord;
+};
+
+const getSubjectPointsStyle = (subject, totalPoint) => {
+  if (subject.info.length === 0) return styles.colorNoMark;
+
+  let textStyle;
+  subject.info.forEach(({ maxScore, passScore, points, isAbsent }) => {
+    if ((isAbsent || points < passScore) && maxScore !== 0.0) textStyle = styles.colorMark2;
+    if (Number.isNaN(points)) textStyle = styles.colorNoMark;
+  });
+
+  if (textStyle) return textStyle;
+
+  if (totalPoint < 61) return styles.colorMark3;
+  if (totalPoint < 81) return styles.colorMark4;
+  return styles.colorMark5;
+};
+
+const getSubjectTotalPoints = (subject) => {
+  let subjectTotalPoints = 0;
+  subject.info.forEach(({ maxScore, points }) => {
+    subjectTotalPoints += Number.isNaN(points) || maxScore === 0 ? 0 : points;
+  });
+  subjectTotalPoints = Number(subjectTotalPoints.toFixed(1));
+  if (subjectTotalPoints % 1 === 0) subjectTotalPoints = Number(subjectTotalPoints.toFixed(0));
+
+  return subjectTotalPoints;
+};
+
+const CardSign = ({ subject }) => {
+  const subjectTotalPoints = getSubjectTotalPoints(subject);
+  const textStyle = getSubjectPointsStyle(subject, subjectTotalPoints);
+  const pointsWord = getPointsWord(subjectTotalPoints);
 
   return (
     <CardHeaderIn topText={subject.subject}>
-      <View style={styles.cardMainView}>
-        <View style={styles.subjects}>
-          <Subject data={subject} />
+      <View style={styles.cardView}>
+        <View style={styles.pointsView}>
+          <View style={styles.subjects}>
+            <SubjectCheckPoint data={subject.info} />
+          </View>
+          <View style={styles.totalPoints}>
+            <Text style={[styles.markNumberText, textStyle]}>{subjectTotalPoints}</Text>
+            <Text style={styles.markWordText}>{pointsWord}</Text>
+          </View>
         </View>
-        <View style={styles.markView}>
-          <Text style={[styles.markNumberText, textStyle]}>{collectedPoints}</Text>
-          <Text style={styles.markWordText}>{pointsWord}</Text>
-        </View>
+        {subject.mark !== null && (
+          <View style={styles.markView}>
+            <Text style={styles.markWordText}>Оценка: {subject.mark}</Text>
+          </View>
+        )}
       </View>
     </CardHeaderIn>
   );

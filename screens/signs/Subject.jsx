@@ -13,20 +13,20 @@ const styles = StyleSheet.create({
   },
 });
 
-const Subject = ({ data }) => (
+const SubjectCheckPoint = ({ data }) => (
   <View>
-    {data.info.map((info, index) => {
+    {data.map((info, index) => {
       const theme = `КТ ${index + 1}`;
 
       let markText;
       if (info.isAbsent) markText = 'н';
-      else if (Number.isNaN(info.mark)) markText = '-';
-      else markText = info.mark;
+      else if (Number.isNaN(info.points)) markText = '-';
+      else markText = info.points;
 
       return (
         <Text
           style={
-            (Number.isNaN(info.mark) && info.isAbsent || info.mark < info.passScore) &&
+            (Number.isNaN(info.points) && info.isAbsent || info.points < info.passScore) &&
               (info.maxScore !== 0.0)
               ? styles.markFail
               : styles.markNeutral
@@ -38,4 +38,4 @@ const Subject = ({ data }) => (
   </View>
 );
 
-export default Subject;
+export default SubjectCheckPoint;

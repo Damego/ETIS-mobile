@@ -138,7 +138,7 @@ class HTTPClient {
     return this.request('/stu.teach_plan');
   }
 
-  getSigns(mode, { trimester }) {
+  getSigns(mode, trimester) {
     /*
     `mode`:
     - session: оценки за сессии
