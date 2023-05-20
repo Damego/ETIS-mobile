@@ -46,27 +46,27 @@ const Services = () => {
 
   return (
     <Screen headerText="Сервисы" disableRefresh>
-      <View style={{ flex: 1 }}>
+      <View style={{ height: "30%" }}>
         <Text style={GLOBAL_STYLES.textTitle}>Студент</Text>
         <UserInfo data={userData.data.student} />
       </View>
 
-      <View style={{ flex: 10 }}>
+      <View style={{flex:1}}>
         <Text style={GLOBAL_STYLES.textTitle}>Меню</Text>
         <Menu />
       </View>
 
-      {showReviewModal ?
-        <View style={{ paddingBottom: 150}}>
-          <ReviewBox
-            setReviewed={() => {
-              setShowReviewModal(false);
-              storage.setReviewSubmitted();
-            }}
-            setViewed={() => setShowReviewModal(false)}
-          />
-        </View> :
-        null}
+      {showReviewModal &&
+        <View style={{flex:100}}>
+        <ReviewBox
+          setReviewed={() => {
+            setShowReviewModal(false);
+            storage.setReviewSubmitted();
+          }}
+          setViewed={() => setShowReviewModal(false)}
+        />
+        </View>
+      }
 
       <TouchableOpacity onPress={signOut}>
         <View style={styles.exitView}>

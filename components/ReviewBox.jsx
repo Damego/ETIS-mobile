@@ -14,7 +14,6 @@ const ReviewBox = ({ setReviewed, setViewed }) => {
         setReviewed();
       }
     }
-    setReviewed(true);
   };
 
   const handleDismiss = () => {
