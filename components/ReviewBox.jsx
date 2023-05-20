@@ -6,13 +6,13 @@ const ReviewBox = ({ setReviewed, setViewed }) => {
   const handleReview = async () => {
     if (await StoreReview.isAvailableAsync()) {
       StoreReview.requestReview().then(() => setReviewed());
-    } else {
-      let link = `${StoreReview.storeUrl()}&showAllReviews=true`;
+      return;
+    }
 
-      if (await Linking.canOpenURL(link)) {
-        await Linking.openURL(link);
-        setReviewed();
-      }
+    let link = `${StoreReview.storeUrl()}&showAllReviews=true`;
+    if (await Linking.canOpenURL(link)) {
+      await Linking.openURL(link);
+      setReviewed();
     }
   };
 
