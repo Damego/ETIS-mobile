@@ -115,12 +115,6 @@ const AuthPage = () => {
         saveCreds={saveCreds}
         setSaveCreds={setSaveCreds}
       />
-
-        <Form
-          onSubmit={(login, password) => makeLogin({ login, password })}
-          isLoading={isLoading}
-          errorMessage={loginErrorMessage}
-        />
       </View>
       <Footer />
     </>
