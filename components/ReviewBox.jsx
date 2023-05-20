@@ -44,11 +44,11 @@ const ReviewBox = ({ setReviewed, setViewed }) => {
           paddingTop: '5%',
         }}
       >
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, marginHorizontal: '1%' }}>
           <Button title="Оставить отзыв" onPress={() => handleReview()} />
         </View>
 
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, marginHorizontal: '1%' }}>
           <Button title="Нет, спасибо" color="#999" onPress={() => handleDismiss()} />
         </View>
       </View>
