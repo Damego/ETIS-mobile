@@ -2,22 +2,17 @@ import * as StoreReview from 'expo-store-review';
 import React from 'react';
 import { Alert, Button, Linking, Text, View } from 'react-native';
 
-const ReviewVox = ({ setReviewed, setViewed }) => {
+const ReviewBox = ({ setReviewed, setViewed }) => {
   const handleReview = async () => {
     if (await StoreReview.isAvailableAsync()) {
-      await StoreReview.requestReview();
+      StoreReview.requestReview().then(() => setReviewed());
     } else {
       let link = `${StoreReview.storeUrl()}&showAllReviews=true`;
 
-      Linking.canOpenURL(link)
-        .then(() => {
-          Linking.openURL(link)
-            .then(() => {
-              setReviewed();
-            })
-            .catch((e) => console.log(e));
-        })
-        .catch((e) => console.log(e));
+      if (await Linking.canOpenURL(link)) {
+        await Linking.openURL(link);
+        setReviewed();
+      }
     }
     setReviewed(true);
   };
@@ -61,4 +56,4 @@ const ReviewVox = ({ setReviewed, setViewed }) => {
     </View>
   );
 };
-export default ReviewVox;
+export default ReviewBox;
