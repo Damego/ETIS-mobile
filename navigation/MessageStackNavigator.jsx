@@ -1,10 +1,10 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
 import MessageBlock from '../screens/messages/MessageBlock';
 import MessageHistory from '../screens/messages/MessageHistory';
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
 function MessageStackNavigator() {
   return (
