@@ -1,6 +1,6 @@
 import { load } from 'cheerio';
 
-import {getTextField} from './utils';
+import { getTextField } from './utils';
 
 export default function parseAbsenses(html) {
   const $ = load(html);
