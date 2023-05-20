@@ -1,22 +1,29 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
+import { PRIVACY_POLICY_URL } from '../../utils';
 
 const styles = StyleSheet.create({
   view: {
-    marginTop: "10%"
+    alignItems: 'center',
   },
-  text: {
-    flexGrow: 1,
-    fontSize: 10,
+  infoText: {
     textAlign: 'center',
+  },
+  privacyPolicyText: {
+    fontWeight: 'bold',
+    color: '#C62E3E',
   },
 });
 
 const AuthFooter = () => (
   <View style={styles.view}>
-    <Text style={styles.text}>
+    <Text style={styles.infoText}>
       Приложение ЕТИС мобайл является неоффициальным мобильным приложением для ЕТИС
     </Text>
+    <TouchableOpacity onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}>
+      <Text style={styles.privacyPolicyText}>Политика конфиденциальности</Text>
+    </TouchableOpacity>
   </View>
 );
 

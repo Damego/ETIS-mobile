@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 import BorderLine from '../../components/BorderLine';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
-import { httpClient, parser } from '../../utils';
+import AuthContext from '../../context/AuthContext';
+import { parseTeachers } from '../../parser';
+import { isLoginPage } from '../../parser/utils';
+import { httpClient } from '../../utils';
 import Teacher from './Teacher';
 
 const TeacherTable = () => {
+  const { toggleSignIn } = useContext(AuthContext);
   const [data, setData] = useState(null);
 
   const loadData = async () => {
@@ -17,7 +21,13 @@ const TeacherTable = () => {
     if (!html) {
       return;
     }
-    const parsedData = parser.parseTeachers(html);
+
+    if (isLoginPage(html)) {
+      toggleSignIn(true);
+      return;
+    }
+
+    const parsedData = parseTeachers(html);
 
     const dataGrouped = {};
     parsedData.forEach((val) => {

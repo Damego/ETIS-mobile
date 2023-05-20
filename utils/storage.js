@@ -1,14 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 
 export default class Storage {
-  async storeSessionID(sessionID) {
-    try {
-      await SecureStore.setItemAsync('sessionID', sessionID);
-    } catch (exception) {
-      console.warn('Error saving sessionID', e);
-    }
-  }
-
   async bumpReviewRequest() {
     const reviewStep = await SecureStore.getItemAsync('reviewStep');
     if (reviewStep === null) {
@@ -18,18 +10,11 @@ export default class Storage {
       // второй запуск - предложить отставить отзыв
       return true;
     }
+    return false;
   }
 
   async setReviewSubmitted() {
     await SecureStore.setItemAsync('reviewStep', 'stop');
-  }
-
-  async getSessionID() {
-    try {
-      return await SecureStore.getItemAsync('sessionID');
-    } catch (exception) {
-      console.warn('Error getting sessionID', e);
-    }
   }
 
   async storeAccountData(login, password) {
@@ -57,5 +42,13 @@ export default class Storage {
     await SecureStore.deleteItemAsync('userLogin');
     await SecureStore.deleteItemAsync('userPassword');
     await SecureStore.deleteItemAsync('reviewStep');
+  }
+
+  hasAcceptedPrivacyPolicy() {
+    return SecureStore.getItemAsync('hasAcceptedPrivacyPolicy');
+  }
+
+  async acceptPrivacyPolicy() {
+    await SecureStore.setItemAsync('hasAcceptedPrivacyPolicy', 'true');
   }
 }

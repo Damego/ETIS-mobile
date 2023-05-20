@@ -1,13 +1,14 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
-import WarningCard from '../../components/WarningCard';
-import { httpClient, parser } from '../../utils';
-import MessageBlock from './MessageBlock';
 import AuthContext from '../../context/AuthContext';
+import { parseTeacherMessages } from '../../parser';
+import { isLoginPage } from '../../parser/utils';
+import { httpClient } from '../../utils';
+import MessagePreview from './MessagePreview';
 
-const Messages = () => {
+const MessageHistory = () => {
   const { toggleSignIn } = useContext(AuthContext);
   const [data, setData] = useState();
 
@@ -15,12 +16,12 @@ const Messages = () => {
     const html = await httpClient.getTeacherNotes();
     if (!html) return;
 
-    if (parser.isLoginPage(html)) {
+    if (isLoginPage(html)) {
       toggleSignIn(true);
       return;
     }
 
-    setData(parser.parseTeacherNotes(html));
+    setData(parseTeacherMessages(html));
   };
 
   useEffect(() => {
@@ -31,13 +32,12 @@ const Messages = () => {
 
   return (
     <Screen headerText="Сообщения" onUpdate={loadData}>
-      <WarningCard text="🚧 Страница находится в разработке!" />
 
       {data.map((messageBlock) => (
-        <MessageBlock data={messageBlock} key={messageBlock[0].time} />
+        <MessagePreview data={messageBlock} key={messageBlock[0].time.format()} />
       ))}
     </Screen>
   );
 };
 
-export default Messages;
+export default MessageHistory;

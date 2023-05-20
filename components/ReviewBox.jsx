@@ -8,7 +8,6 @@ const ReviewVox = ({ setReviewed, setViewed }) => {
       await StoreReview.requestReview();
     } else {
       let link = `${StoreReview.storeUrl()}&showAllReviews=true`;
-      console.warn(link);
 
       Linking.canOpenURL(link)
         .then(() => {
@@ -20,6 +19,7 @@ const ReviewVox = ({ setReviewed, setViewed }) => {
         })
         .catch((e) => console.log(e));
     }
+    setReviewed(true);
   };
 
   const handleDismiss = () => {

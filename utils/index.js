@@ -1,9 +1,8 @@
-import HTTPClient from './http';
+import { downloadFile, saveFile, selectFile } from './files';
+import httpClient from './http';
 import Storage from './storage';
-import DataParsing from './parser';
+import { PRIVACY_POLICY_URL } from './consts';
 
-const httpClient = new HTTPClient();
 const storage = new Storage();
-const parser = new DataParsing();
 
-export { httpClient, storage, parser };
+export { httpClient, storage, downloadFile, saveFile, selectFile, PRIVACY_POLICY_URL };

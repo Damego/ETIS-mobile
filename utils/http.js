@@ -1,7 +1,9 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
+import { documentDirectory, downloadAsync } from 'expo-file-system';
+import 'fastestsmallesttextencoderdecoder';
 
-export default class HTTPClient {
+class HTTPClient {
   constructor() {
     this.defaultURL = 'https://student.psu.ru/pls/stu_cus_et';
     this.sessionID = null;
@@ -27,6 +29,16 @@ export default class HTTPClient {
     } catch (e) {
       return null;
     }
+  }
+
+  downloadFile(uri, fileName) {
+    const url = `${this.defaultURL}/${uri}`;
+    console.log(`[HTTP] Downloading a file from ${url}`);
+    return downloadAsync(url, `${documentDirectory}${fileName}`, {
+      headers: {
+        Cookie: this.sessionID,
+      },
+    });
   }
 
   /**
@@ -126,7 +138,7 @@ export default class HTTPClient {
     return this.request('/stu.teach_plan');
   }
 
-  getSigns(mode, { trimester }) {
+  getSigns(mode, trimester) {
     /*
     `mode`:
     - session: оценки за сессии
@@ -174,3 +186,6 @@ export default class HTTPClient {
     return this.request('/stu_jour.group_tt');
   }
 }
+
+const httpClient = new HTTPClient();
+export default httpClient;

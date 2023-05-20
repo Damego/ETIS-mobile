@@ -2,26 +2,30 @@ import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { useEffect, useState } from 'react';
 
+import { parseMenu } from '../parser';
 import Announce from '../screens/announce/Announce';
-import Messages from '../screens/messages/Messages'
 import Signs from '../screens/signs/Signs';
 import TimeTablePage from '../screens/timeTable/TimeTable';
+import { httpClient } from '../utils';
+import MessageStackNavigator from './MessageStackNavigator';
 import ServicesStackNavigator from './ServicesStackNavigator';
-import { httpClient, parser } from '../utils';
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
   const [announceMessageCount, setAnnounceMessageCount] = useState();
+  const [teacherMessageCount, setTeacherMessageCount] = useState();
+
+  const loadData = async () => {
+    const html = await httpClient.getGroupJournal();
+    if (!html) return;
+    const data = parseMenu(html, true);
+    setAnnounceMessageCount(data.announceCount);
+    setTeacherMessageCount(data.messageCount);
+  };
 
   useEffect(() => {
-    const wrapper = async () => {
-      const html = await httpClient.getGroupJournal();
-      if (!html) return;
-      const data = parser.parseMenu(html, true);
-      setAnnounceMessageCount(data.announceCount);
-    };
-    wrapper();
+    loadData();
   }, []);
 
   return (
@@ -31,6 +35,7 @@ const TabNavigator = () => {
         tabBarActiveTintColor: '#CE2539',
         tabBarShowLabel: false,
         tabBarBadgeStyle: { backgroundColor: '#CE2539' },
+        tabBarHideOnKeyboard: true,
       }}
     >
       <Tab.Screen
@@ -49,8 +54,9 @@ const TabNavigator = () => {
       />
       <Tab.Screen
         name="Сообщения"
-        component={Messages}
+        component={MessageStackNavigator}
         options={{
+          tabBarBadge: teacherMessageCount,
           tabBarIcon: ({ size, color }) => <AntDesign name="message1" size={size} color={color} />,
         }}
       />
@@ -59,14 +65,18 @@ const TabNavigator = () => {
         component={Announce}
         options={{
           tabBarBadge: announceMessageCount,
-          tabBarIcon: ({ size, color }) => <AntDesign name="notification" size={size} color={color} />,
+          tabBarIcon: ({ size, color }) => (
+            <AntDesign name="notification" size={size} color={color} />
+          ),
         }}
       />
       <Tab.Screen
         name="Сервисы-навигатор"
         component={ServicesStackNavigator}
         options={{
-          tabBarIcon: ({ size, color }) => <AntDesign name="appstore-o" size={size} color={color} />,
+          tabBarIcon: ({ size, color }) => (
+            <AntDesign name="appstore-o" size={size} color={color} />
+          ),
         }}
       />
     </Tab.Navigator>

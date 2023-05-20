@@ -4,8 +4,10 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ReviewBox from '../../components/ReviewBox';
 import Screen from '../../components/Screen';
 import AuthContext from '../../context/AuthContext';
+import { parseMenu } from '../../parser';
+import { userData } from '../../parser/menu';
 import { GLOBAL_STYLES } from '../../styles/styles';
-import { httpClient, parser, storage } from '../../utils';
+import { httpClient, storage } from '../../utils';
 import Menu from './Menu';
 import UserInfo from './UserInfo';
 
@@ -20,7 +22,8 @@ const styles = StyleSheet.create({
 
 const Services = () => {
   const { toggleSignIn } = useContext(AuthContext);
-  const [userDataLoaded, setUserDataLoaded] = useState(parser.hasUserData);
+  // TODO: replace with redux state
+  const [userDataLoaded, setUserDataLoaded] = useState(userData.data?.student !== undefined);
   const [showReviewModal, setShowReviewModal] = useState(false)
 
   useEffect(() => {
@@ -29,7 +32,7 @@ const Services = () => {
       if (!userDataLoaded) {
         const html = await httpClient.getGroupJournal();
         if (!html) return;
-        parser.parseMenu(html, true);
+        parseMenu(html, true);
         setUserDataLoaded(true);
       }
     };
@@ -45,7 +48,7 @@ const Services = () => {
     <Screen headerText="Сервисы" disableRefresh>
       <View style={{ flex: 1 }}>
         <Text style={GLOBAL_STYLES.textTitle}>Студент</Text>
-        <UserInfo data={parser.userData} />
+        <UserInfo data={userData.data.student} />
       </View>
 
       <View style={{ flex: 10 }}>
