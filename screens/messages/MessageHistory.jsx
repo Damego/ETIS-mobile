@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
-import WarningCard from '../../components/WarningCard';
 import AuthContext from '../../context/AuthContext';
 import { parseTeacherMessages } from '../../parser';
 import { isLoginPage } from '../../parser/utils';
@@ -33,7 +32,6 @@ const MessageHistory = () => {
 
   return (
     <Screen headerText="Сообщения" onUpdate={loadData}>
-      <WarningCard text="🚧 Страница находится в разработке!" />
 
       {data.map((messageBlock) => (
         <MessagePreview data={messageBlock} key={messageBlock[0].time.format()} />
