@@ -62,7 +62,7 @@ export default function parseSessionPoints(html) {
       return false;
     }
   });
-  data.latestTrimester = $('.submenu-item', subMenu).last().index();
+  data.latestTrimester = $('.submenu-item', subMenu).last().index() + 1;
 
   return data;
 }
