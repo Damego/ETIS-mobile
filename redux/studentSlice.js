@@ -4,8 +4,8 @@ const studentSlice = createSlice({
   name: 'student',
   initialState: {
     info: null,
-    messageCount: 0,
-    announceCount: 0,
+    messageCount: null,
+    announceCount: null,
   },
   reducers: {
     setStudentInfo(state, action) {
