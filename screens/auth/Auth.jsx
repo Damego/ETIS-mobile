@@ -33,7 +33,7 @@ const AuthPage = () => {
   const dispatch = useDispatch();
   const autoAuth = useSelector((state) => state.auth.shouldAutoAuth);
 
-  // TODO: Replace with new loading screen
+  // TODO: Replace with the new loading screen
   const [isLoading, setLoading] = useState(autoAuth);
   const [message, setMessage] = useState(null);
   const [recaptchaToken, setRecaptchaToken] = useState();

@@ -49,7 +49,7 @@ const TimeTable = () => {
         firstPage={data.firstWeek}
         lastPage={data.lastWeek}
         currentPage={data.currentWeek}
-        onPageChange={(selectedWeek) => changeWeek(selectedWeek)}
+        onPageChange={changeWeek}
       />
 
       {data.days.map((day) =>
