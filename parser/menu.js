@@ -2,16 +2,13 @@ import { load } from 'cheerio';
 
 import { getTextField } from './utils';
 
-// TODO: Replace with redux
-export const userData = { data: undefined };
-
 export default function parseMenu(html, parseGroupJournal = false) {
   const $ = load(html);
 
   const data = {
     announceCount: null,
     messageCount: null,
-    student: {
+    studentInfo: {
       name: null,
       speciality: null,
       educationForm: null,
@@ -24,7 +21,7 @@ export default function parseMenu(html, parseGroupJournal = false) {
   const rawData = getTextField($('.span12'));
   const [rawName, speciality, form, year] = rawData.split('\n').map((string) => string.trim());
   const [name1, name2, name3] = rawName.split(' ');
-  data.student = {
+  data.studentInfo = {
     name: `${name1} ${name2} ${name3}`,
     speciality,
     educationForm: form,
@@ -33,7 +30,7 @@ export default function parseMenu(html, parseGroupJournal = false) {
 
   // Получение группы студента
   if (parseGroupJournal) {
-    data.student.group = $('.span9').find('h3').text().split(' ').at(1);
+    data.studentInfo.group = $('.span9').find('h3').text().split(' ').at(1);
   }
 
   // Получения количества новых уведомлений
@@ -48,8 +45,6 @@ export default function parseMenu(html, parseGroupJournal = false) {
         data.messageCount = parseInt(getTextField(span));
       }
     });
-
-  userData.data = data;
 
   return data;
 }
