@@ -52,12 +52,6 @@ export const styles = StyleSheet.create({
   },
 });
 
-const ErrorMessage = ({ messageText }) => (
-  <View>
-    <Text>{messageText}</Text>
-  </View>
-);
-
 const Form = ({ onSubmit, isLoading, errorMessage, setShowRecovery, saveCreds, setSaveCreds }) => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
@@ -66,7 +60,7 @@ const Form = ({ onSubmit, isLoading, errorMessage, setShowRecovery, saveCreds, s
     <View style={[styles.container, GLOBAL_STYLES.shadow]}>
       <Image style={styles.logoImage} source={require('../../assets/logo_red.png')} />
 
-      <ErrorMessage messageText={errorMessage} />
+      <Text>{errorMessage}</Text>
 
       <TextInput
         style={[styles.input, GLOBAL_STYLES.shadow]}
