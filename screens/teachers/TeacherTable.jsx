@@ -28,16 +28,7 @@ const TeacherTable = () => {
     }
 
     const parsedData = parseTeachers(html);
-
-    const dataGrouped = {};
-    parsedData.forEach((val) => {
-      if (dataGrouped[val.subjectUntyped]) {
-        dataGrouped[val.subjectUntyped].push(val);
-      } else {
-        dataGrouped[val.subjectUntyped] = [val];
-      }
-    });
-    setData(Object.entries(dataGrouped));
+    setData(parsedData);
   };
 
   useEffect(() => {
