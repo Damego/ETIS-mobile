@@ -41,7 +41,6 @@ export default class Storage {
   async deleteAccountData() {
     await SecureStore.deleteItemAsync('userLogin');
     await SecureStore.deleteItemAsync('userPassword');
-    await SecureStore.deleteItemAsync('reviewStep');
   }
 
   hasAcceptedPrivacyPolicy() {
