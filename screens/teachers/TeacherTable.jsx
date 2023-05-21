@@ -1,29 +1,29 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import BorderLine from '../../components/BorderLine';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
-import AuthContext from '../../context/AuthContext';
 import { parseTeachers } from '../../parser';
 import { isLoginPage } from '../../parser/utils';
+import { signOut } from '../../redux/authSlice';
 import { httpClient } from '../../utils';
 import Teacher from './Teacher';
 
 const TeacherTable = () => {
-  const { toggleSignIn } = useContext(AuthContext);
+  const dispatch = useDispatch();
   const [data, setData] = useState(null);
 
   const loadData = async () => {
-    let html;
-    html = await httpClient.getTeachers();
+    const html = await httpClient.getTeachers();
     if (!html) {
       return;
     }
 
     if (isLoginPage(html)) {
-      toggleSignIn(true);
+      dispatch(signOut({ autoAuth: true }));
       return;
     }
 

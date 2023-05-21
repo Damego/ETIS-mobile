@@ -1,12 +1,13 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import Dropdown from '../../components/Dropdown';
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
-import AuthContext from '../../context/AuthContext';
 import { parseSessionMarks, parseSessionPoints } from '../../parser';
 import { isLoginPage } from '../../parser/utils';
+import { signOut } from '../../redux/authSlice';
 import { httpClient } from '../../utils';
 import CardSign from './CardSign';
 
@@ -40,20 +41,21 @@ const addSessionMarksToPoints = (allSessionMarks, sessionPoints) => {
 };
 
 const Signs = () => {
-  const { toggleSignIn } = useContext(AuthContext);
+  const dispatch = useDispatch();
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState(null);
   const allSessionMarks = useRef();
   const [optionData, setOptionData] = useState(null);
 
   const loadData = async (trimester) => {
+    // We use dropdown to fetch new data, and we need to show loading state while data is fetching
     if (data) setLoading(true);
 
     const html = await httpClient.getSigns('current', trimester);
     if (!html) return;
 
     if (isLoginPage(html)) {
-      toggleSignIn(true);
+      dispatch(signOut({ autoAuth: true }));
       return;
     }
 

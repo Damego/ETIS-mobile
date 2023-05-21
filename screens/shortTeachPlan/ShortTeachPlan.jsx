@@ -1,16 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import CardHeaderOut from '../../components/CardHeaderOut';
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
-import AuthContext from '../../context/AuthContext';
 import { parseShortTeachPlan } from '../../parser';
 import { isLoginPage } from '../../parser/utils';
+import { signOut } from '../../redux/authSlice';
 import { httpClient } from '../../utils';
 import Trimester from './Trimester';
 
 const ShortTeachPlan = () => {
-  const { toggleSignIn } = useContext(AuthContext);
+  const dispatch = useDispatch();
   const [data, setData] = useState(null);
 
   const loadData = async () => {
@@ -18,7 +19,7 @@ const ShortTeachPlan = () => {
     if (!html) return;
 
     if (isLoginPage(html)) {
-      toggleSignIn(true);
+      dispatch(signOut({ autoAuth: true }));
       return;
     }
 

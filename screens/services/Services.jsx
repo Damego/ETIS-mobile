@@ -1,15 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import ReviewBox from '../../components/ReviewBox';
 import Screen from '../../components/Screen';
-import AuthContext from '../../context/AuthContext';
 import { parseMenu } from '../../parser';
 import { userData } from '../../parser/menu';
 import { GLOBAL_STYLES } from '../../styles/styles';
 import { httpClient, storage } from '../../utils';
 import Menu from './Menu';
 import UserInfo from './UserInfo';
+import { signOut } from '../../redux/authSlice';
 
 const styles = StyleSheet.create({
   exitView: { position: 'absolute', bottom: '2%', left: 0, right: 0, alignItems: 'center' },
@@ -21,13 +22,13 @@ const styles = StyleSheet.create({
 });
 
 const Services = () => {
-  const { toggleSignIn } = useContext(AuthContext);
+  const dispatch = useDispatch();
   // TODO: replace with redux state
   const [userDataLoaded, setUserDataLoaded] = useState(userData.data?.student !== undefined);
   const [showReviewModal, setShowReviewModal] = useState(false);
 
   useEffect(() => {
-    storage.bumpReviewRequest().then(res => setShowReviewModal(res));
+    storage.bumpReviewRequest().then((res) => setShowReviewModal(res));
     const wrapper = async () => {
       if (!userDataLoaded) {
         const html = await httpClient.getGroupJournal();
@@ -39,9 +40,9 @@ const Services = () => {
     wrapper();
   }, []);
 
-  const signOut = async () => {
+  const doSignOut = async () => {
     await storage.deleteAccountData();
-    toggleSignIn();
+    dispatch(signOut({ autoAuth: false }));
   };
 
   return (
@@ -64,7 +65,7 @@ const Services = () => {
         )}
       </View>
 
-      <TouchableOpacity style={styles.exitView} onPress={signOut}>
+      <TouchableOpacity style={styles.exitView} onPress={doSignOut}>
         <Text style={styles.exitText}>Выйти из аккаунта</Text>
       </TouchableOpacity>
     </Screen>
