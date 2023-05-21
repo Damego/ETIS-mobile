@@ -6,11 +6,12 @@ import { useSelector } from 'react-redux';
 import AuthPage from '../screens/auth/Auth';
 import TabNavigator from './TabNavigation';
 
-const MyTheme = {
+const LightTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: '#F8F8Fa',
+    background: '#F8F8FA',
+    primary: '#C62E3E'
   },
 };
 
@@ -20,7 +21,7 @@ const StackNavigator = () => {
   const isSignedIn = useSelector(state => state.auth.isSignedIn )
 
   return (
-    <NavigationContainer theme={MyTheme}>
+    <NavigationContainer theme={LightTheme}>
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
