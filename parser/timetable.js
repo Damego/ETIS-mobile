@@ -16,7 +16,7 @@ export default function parseTimeTable(html) {
   const { days } = data;
 
   $('.day', html).each((el, day) => {
-    let lessonPosition = 1
+    let lessonPosition = 1;
     const daySelector = $(day);
     let lessons = [];
     const date = getTextField(daySelector.find('h3'));
@@ -31,9 +31,9 @@ export default function parseTimeTable(html) {
           audience,
           subject,
           time,
-          lessonPosition
+          lessonPosition,
         });
-        lessonPosition += 1
+        lessonPosition += 1;
       });
     }
     days.push({
