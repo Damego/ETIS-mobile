@@ -37,7 +37,7 @@ const Services = () => {
     <Screen headerText="Сервисы" disableRefresh>
       <View>
         <Text style={GLOBAL_STYLES.textTitle}>Студент</Text>
-        <UserInfo data={studentInfo.data.student} />
+        <UserInfo data={studentInfo} />
 
         <Text style={GLOBAL_STYLES.textTitle}>Меню</Text>
         <Menu />
