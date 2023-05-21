@@ -5,11 +5,10 @@ import { GLOBAL_STYLES } from '../styles/styles';
 
 const styles = StyleSheet.create({
   cardView: {
-    flex: 1,
-    display: 'flex',
     backgroundColor: '#ffffff',
-    marginBottom: '3%',
     borderRadius: 10,
+    padding: '2%',
+    marginBottom: '2%'
   },
 });
 

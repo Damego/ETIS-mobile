@@ -8,6 +8,7 @@ const BorderLine = () => (
       borderBottomWidth: 1,
       alignSelf: 'center',
       width: '95%',
+      marginVertical: '2%'
     }}
   />
 );

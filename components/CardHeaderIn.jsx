@@ -5,11 +5,7 @@ import Card from './Card';
 
 const styles = StyleSheet.create({
   cardHeaderView: {
-    width: '96%',
-    marginTop: '2%',
-    marginLeft: '4%',
-    marginBottom: '5%',
-    paddingRight: '2%',
+    marginBottom: '4%',
   },
   cardHeaderText: {
     fontSize: 16,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 
 import CardHeaderOut from '../../components/CardHeaderOut';
 import Lesson from './Lesson';
@@ -9,7 +9,9 @@ const EmptyDay = ({ data }) => {
 
   return (
     <CardHeaderOut topText={date}>
-      <Text>Пар нет</Text>
+      <View style={{alignItems: 'center'}}>
+        <Text style={{fontSize: 16, fontWeight: '600'}}>Пар нет</Text>
+      </View>
     </CardHeaderOut>
   );
 };

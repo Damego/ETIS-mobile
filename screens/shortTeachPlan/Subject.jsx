@@ -4,9 +4,6 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const styles = StyleSheet.create({
   subjectDropdownView: {
-    marginHorizontal: '2%',
-    marginVertical: '2%',
-
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

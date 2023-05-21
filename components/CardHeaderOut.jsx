@@ -14,12 +14,12 @@ const styles = StyleSheet.create({
 });
 
 const CardHeaderOut = ({ topText, children }) => (
-  <View>
+  <>
     <View style={styles.cardHeaderView}>
       <Text style={styles.cardHeaderText}>{topText}</Text>
     </View>
     <Card>{children}</Card>
-  </View>
+  </>
 );
 
 export default CardHeaderOut;

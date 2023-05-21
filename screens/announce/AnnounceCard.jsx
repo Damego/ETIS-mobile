@@ -21,15 +21,13 @@ a {
 export default function AnnounceCard({ data }) {
   return (
     <Card>
-      <View style={{ padding: '2%' }}>
-        <AutoHeightWebView
-          originWhitelist={['*']}
-          source={{ html: data }}
-          style={{ flex: 0, width: '100%' }}
-          customStyle={style}
-          injectedJavaScript={`document.cookie = ${httpClient.sessionID}` /* Allows download files */}
-        />
-      </View>
+      <AutoHeightWebView
+        originWhitelist={['*']}
+        source={{ html: data }}
+        style={{ flex: 0, width: '100%' }}
+        customStyle={style}
+        injectedJavaScript={`document.cookie = ${httpClient.sessionID}` /* Allows download files */}
+      />
     </Card>
   );
 }

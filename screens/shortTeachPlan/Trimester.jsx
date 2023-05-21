@@ -1,19 +1,16 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import Subject from './Subject';
 import BorderLine from '../../components/BorderLine';
+import Subject from './Subject';
 
-const Trimester = ({ data }) => (
-  <View>
-    {data.subjects.map((subject, index) => (
-      <View key={subject.subject}>
-        <Subject data={subject}/>
+const Trimester = ({ data }) =>
+  data.subjects.map((subject, index) => (
+    <View key={subject.subject}>
+      <Subject data={subject} />
 
-        {index !== data.subjects.length - 1 ? <BorderLine /> : ''}
-      </View>
-    ))}
-  </View>
-);
+      {index !== data.subjects.length - 1 ? <BorderLine /> : ''}
+    </View>
+  ));
 
 export default Trimester;

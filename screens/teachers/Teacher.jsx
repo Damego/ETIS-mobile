@@ -11,7 +11,6 @@ import {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    margin: '2%',
   },
   teacherNameView: {},
   fontW500: {

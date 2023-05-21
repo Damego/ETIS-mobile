@@ -5,10 +5,6 @@ import CardHeaderIn from '../../components/CardHeaderIn';
 import SubjectCheckPoint from './Subject';
 
 const styles = StyleSheet.create({
-  cardView: {
-    margin: '4%',
-    marginTop: 0,
-  },
   pointsView: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -24,7 +20,7 @@ const styles = StyleSheet.create({
   },
   markView: {
     marginTop: '2%',
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
   },
   markWordText: {
     fontSize: 16,
@@ -90,22 +86,20 @@ const CardSign = ({ subject }) => {
 
   return (
     <CardHeaderIn topText={subject.subject}>
-      <View style={styles.cardView}>
-        <View style={styles.pointsView}>
-          <View style={styles.subjects}>
-            <SubjectCheckPoint data={subject.info} />
-          </View>
-          <View style={styles.totalPoints}>
-            <Text style={[styles.markNumberText, textStyle]}>{subjectTotalPoints}</Text>
-            <Text style={styles.markWordText}>{pointsWord}</Text>
-          </View>
+      <View style={styles.pointsView}>
+        <View style={styles.subjects}>
+          <SubjectCheckPoint data={subject.info} />
         </View>
-        {subject.mark !== null && (
-          <View style={styles.markView}>
-            <Text style={styles.markWordText}>Оценка: {subject.mark}</Text>
-          </View>
-        )}
+        <View style={styles.totalPoints}>
+          <Text style={[styles.markNumberText, textStyle]}>{subjectTotalPoints}</Text>
+          <Text style={styles.markWordText}>{pointsWord}</Text>
+        </View>
       </View>
+      {subject.mark !== null && (
+        <View style={styles.markView}>
+          <Text style={styles.markWordText}>Оценка: {subject.mark}</Text>
+        </View>
+      )}
     </CardHeaderIn>
   );
 };
