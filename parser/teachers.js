@@ -2,6 +2,19 @@ import { load } from 'cheerio';
 
 import { getTextField } from './utils';
 
+const groupTeachers = (data) => {
+  const dataGrouped = {};
+  data.forEach((val) => {
+    if (dataGrouped[val.subjectUntyped]) {
+      dataGrouped[val.subjectUntyped].push(val);
+    } else {
+      dataGrouped[val.subjectUntyped] = [val];
+    }
+  });
+
+  return Object.entries(dataGrouped);
+};
+
 export default function parseTeachers(html) {
   const $ = load(html);
   let data = [];
@@ -25,5 +38,6 @@ export default function parseTeachers(html) {
       photoTitle,
     });
   });
-  return data;
+
+  return groupTeachers(data);
 }

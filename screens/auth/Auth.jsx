@@ -1,15 +1,16 @@
 import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Linking, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Header from '../../components/Header';
 import ReCaptcha from '../../components/ReCaptcha';
-import AuthContext from '../../context/AuthContext';
-import SendEmailModal from './SendEmailModal';
+import { signIn } from '../../redux/authSlice';
 import { PRIVACY_POLICY_URL, httpClient, storage } from '../../utils';
 import Footer from './AuthFooter';
 import Form from './AuthForm';
+import Recovery from './Recovery';
 
 const showPrivacyPolicy = () => {
   Alert.alert(
@@ -29,9 +30,12 @@ const showPrivacyPolicy = () => {
 };
 
 const AuthPage = () => {
-  const { toggleSignIn, showLoading } = useContext(AuthContext);
-  const [isLoading, setLoading] = useState(showLoading);
-  const [loginErrorMessage, changeLoginMessageError] = useState(null);
+  const dispatch = useDispatch();
+  const autoAuth = useSelector((state) => state.auth.shouldAutoAuth);
+
+  // TODO: Replace with the new loading screen
+  const [isLoading, setLoading] = useState(autoAuth);
+  const [message, setMessage] = useState(null);
   const [recaptchaToken, setRecaptchaToken] = useState();
   const [showRecovery, setShowRecovery] = useState(false);
   const [saveCreds, setSaveCreds] = useState(true);
@@ -46,9 +50,8 @@ const AuthPage = () => {
   }, []);
 
   const makeLogin = async ({ token, useCache, login, password }) => {
-    if (isLoading) return;
     if (!(await storage.hasAcceptedPrivacyPolicy())) {
-      changeLoginMessageError('Политика конфиденциальности не принята');
+      setMessage('Политика конфиденциальности не принята');
       return;
     }
 
@@ -57,30 +60,30 @@ const AuthPage = () => {
       // js is weird
       login = accountData.login;
       password = accountData.password;
-      if (!login || !password) return;
+      if (!login || !password) {
+        setMessage('Данные аккаунта не найдены. Введите логин и пароль для входа');
+        return;
+      }
     } else if (!login || !password) {
-      changeLoginMessageError('Вы не ввели логин или пароль');
+      setMessage('Вы не ввели логин или пароль');
       return;
     }
 
     if (!token && !recaptchaToken) {
-      changeLoginMessageError('Токен авторизации не найден. Подождите немного');
+      // TODO: make auto attempt
+      setMessage('Токен авторизации не найден. Подождите немного');
       return;
     }
 
     setLoading(true);
 
-    const { sessionID, errorMessage } = await httpClient.login(
-      login,
-      password,
-      token || recaptchaToken
-    );
+    const { errorMessage } = await httpClient.login(login, password, token || recaptchaToken);
 
     setRecaptchaToken(null);
     setLoading(false);
 
     if (errorMessage) {
-      changeLoginMessageError(errorMessage);
+      setMessage(errorMessage);
       return;
     }
 
@@ -88,7 +91,7 @@ const AuthPage = () => {
       await storage.storeAccountData(login, password);
     }
 
-    toggleSignIn();
+    dispatch(signIn());
   };
 
   const onReceiveRecaptchaToken = async (token) => {
@@ -97,7 +100,7 @@ const AuthPage = () => {
   };
 
   if (showRecovery) {
-    return <SendEmailModal setShowModal={setShowRecovery} />;
+    return <Recovery setShowModal={setShowRecovery} />;
   }
 
   return (
@@ -110,7 +113,7 @@ const AuthPage = () => {
         <Form
           onSubmit={(login, password) => makeLogin({ login, password })}
           isLoading={isLoading}
-          errorMessage={loginErrorMessage}
+          errorMessage={message}
           setShowRecovery={setShowRecovery}
           saveCreds={saveCreds}
           setSaveCreds={setSaveCreds}

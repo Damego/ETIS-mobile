@@ -1,13 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ReviewBox from '../../components/ReviewBox';
 import Screen from '../../components/Screen';
-import AuthContext from '../../context/AuthContext';
-import { parseMenu } from '../../parser';
-import { userData } from '../../parser/menu';
+import { signOut } from '../../redux/authSlice';
 import { GLOBAL_STYLES } from '../../styles/styles';
-import { httpClient, storage } from '../../utils';
+import { storage } from '../../utils';
 import Menu from './Menu';
 import UserInfo from './UserInfo';
 
@@ -21,34 +20,24 @@ const styles = StyleSheet.create({
 });
 
 const Services = () => {
-  const { toggleSignIn } = useContext(AuthContext);
-  // TODO: replace with redux state
-  const [userDataLoaded, setUserDataLoaded] = useState(userData.data?.student !== undefined);
+  const dispatch = useDispatch();
+  const studentInfo = useSelector((state) => state.student.info);
   const [showReviewModal, setShowReviewModal] = useState(false);
 
   useEffect(() => {
-    storage.bumpReviewRequest().then(res => setShowReviewModal(res));
-    const wrapper = async () => {
-      if (!userDataLoaded) {
-        const html = await httpClient.getGroupJournal();
-        if (!html) return;
-        parseMenu(html, true);
-        setUserDataLoaded(true);
-      }
-    };
-    wrapper();
+    storage.bumpReviewRequest().then((res) => setShowReviewModal(res));
   }, []);
 
-  const signOut = async () => {
+  const doSignOut = async () => {
     await storage.deleteAccountData();
-    toggleSignIn();
+    dispatch(signOut({ autoAuth: false }));
   };
 
   return (
     <Screen headerText="Сервисы" disableRefresh>
       <View>
         <Text style={GLOBAL_STYLES.textTitle}>Студент</Text>
-        <UserInfo data={userData.data.student} />
+        <UserInfo data={studentInfo.data.student} />
 
         <Text style={GLOBAL_STYLES.textTitle}>Меню</Text>
         <Menu />
@@ -64,7 +53,7 @@ const Services = () => {
         )}
       </View>
 
-      <TouchableOpacity style={styles.exitView} onPress={signOut}>
+      <TouchableOpacity style={styles.exitView} onPress={doSignOut}>
         <Text style={styles.exitText}>Выйти из аккаунта</Text>
       </TouchableOpacity>
     </Screen>

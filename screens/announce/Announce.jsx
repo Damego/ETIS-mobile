@@ -1,16 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
-import AuthContext from '../../context/AuthContext';
 import { parseAnnounce } from '../../parser';
 import { isLoginPage } from '../../parser/utils';
+import { signOut } from '../../redux/authSlice';
 import { httpClient } from '../../utils';
 import AnnounceCard from './AnnounceCard';
 
 export default function Announce() {
-  const { toggleSignIn } = useContext(AuthContext);
+  const dispatch = useDispatch();
   const [data, setData] = useState();
   const [pageCount, setPageCount] = useState();
   const [currentPageNum, setCurrentPageNum] = useState(1);
@@ -21,7 +22,7 @@ export default function Announce() {
     if (!html) return;
 
     if (isLoginPage(html)) {
-      toggleSignIn(true);
+      dispatch(signOut({ autoAuth: true }));
       return;
     }
 

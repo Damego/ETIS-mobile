@@ -1,15 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
-import AuthContext from '../../context/AuthContext';
 import { parseTeacherMessages } from '../../parser';
 import { isLoginPage } from '../../parser/utils';
 import { httpClient } from '../../utils';
 import MessagePreview from './MessagePreview';
+import { signOut } from '../../redux/authSlice';
 
 const MessageHistory = () => {
-  const { toggleSignIn } = useContext(AuthContext);
+  const dispatch = useDispatch();
   const [data, setData] = useState();
 
   const loadData = async () => {
@@ -17,7 +18,7 @@ const MessageHistory = () => {
     if (!html) return;
 
     if (isLoginPage(html)) {
-      toggleSignIn(true);
+      dispatch(signOut({ autoAuth: true }));
       return;
     }
 
@@ -32,7 +33,6 @@ const MessageHistory = () => {
 
   return (
     <Screen headerText="Сообщения" onUpdate={loadData}>
-
       {data.map((messageBlock) => (
         <MessagePreview data={messageBlock} key={messageBlock[0].time.format()} />
       ))}

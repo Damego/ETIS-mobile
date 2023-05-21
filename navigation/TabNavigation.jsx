@@ -1,8 +1,10 @@
 import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { parseMenu } from '../parser';
+import { setAnnounceCount, setMessageCount, setStudentInfo } from '../redux/studentSlice';
 import Announce from '../screens/announce/Announce';
 import Signs from '../screens/signs/Signs';
 import TimeTablePage from '../screens/timeTable/TimeTable';
@@ -13,15 +15,19 @@ import ServicesStackNavigator from './ServicesStackNavigator';
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
-  const [announceMessageCount, setAnnounceMessageCount] = useState();
-  const [teacherMessageCount, setTeacherMessageCount] = useState();
+  const dispatch = useDispatch();
+  const messageCount = useSelector((state) => state.student.messageCount);
+  const announceCount = useSelector((state) => state.student.announceCount);
 
   const loadData = async () => {
     const html = await httpClient.getGroupJournal();
     if (!html) return;
+
     const data = parseMenu(html, true);
-    setAnnounceMessageCount(data.announceCount);
-    setTeacherMessageCount(data.messageCount);
+
+    dispatch(setStudentInfo(data.studentInfo))
+    dispatch(setMessageCount(data.messageCount));
+    dispatch(setAnnounceCount(data.announceCount));
   };
 
   useEffect(() => {
@@ -56,7 +62,7 @@ const TabNavigator = () => {
         name="Сообщения"
         component={MessageStackNavigator}
         options={{
-          tabBarBadge: teacherMessageCount,
+          tabBarBadge: messageCount,
           tabBarIcon: ({ size, color }) => <AntDesign name="message1" size={size} color={color} />,
         }}
       />
@@ -64,7 +70,7 @@ const TabNavigator = () => {
         name="Объявления"
         component={Announce}
         options={{
-          tabBarBadge: announceMessageCount,
+          tabBarBadge: announceCount,
           tabBarIcon: ({ size, color }) => (
             <AntDesign name="notification" size={size} color={color} />
           ),

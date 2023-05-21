@@ -1,17 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'react-native-get-random-values';
+import { useDispatch } from 'react-redux';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
-import AuthContext from '../../context/AuthContext';
+import { parseTimeTable } from '../../parser';
+import { isLoginPage } from '../../parser/utils';
+import { signOut } from '../../redux/authSlice';
 import { httpClient } from '../../utils';
 import { Day, EmptyDay } from './Day';
-import { isLoginPage } from '../../parser/utils';
-import { parseTimeTable } from '../../parser';
 
 const TimeTable = () => {
-  const { toggleSignIn } = useContext(AuthContext);
+  const dispatch = useDispatch();
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState(null);
   const [week, changeWeek] = useState(null);
@@ -28,7 +29,7 @@ const TimeTable = () => {
       return;
     }
     if (isLoginPage(html)) {
-      toggleSignIn(true);
+      dispatch(signOut({ autoAuth: true }));
       return;
     }
     const parsedData = parseTimeTable(html);
@@ -48,7 +49,7 @@ const TimeTable = () => {
         firstPage={data.firstWeek}
         lastPage={data.lastWeek}
         currentPage={data.currentWeek}
-        onPageChange={(selectedWeek) => changeWeek(selectedWeek)}
+        onPageChange={changeWeek}
       />
 
       {data.days.map((day) =>

@@ -1,8 +1,8 @@
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { useState, useRef } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
-import AuthContext from '../context/AuthContext';
 import AuthPage from '../screens/auth/Auth';
 import TabNavigator from './TabNavigation';
 
@@ -17,30 +17,22 @@ const MyTheme = {
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
-  const showLoading = useRef(false);
-  const [isSignIn, setSignIn] = useState(false);
-
-  const toggleSignIn = (asReAuth) => {
-    setSignIn(!isSignIn);
-    showLoading.current = asReAuth;
-  };
+  const isSignedIn = useSelector(state => state.auth.isSignedIn )
 
   return (
-    <AuthContext.Provider value={{ toggleSignIn, showLoading: showLoading.current }}>
-      <NavigationContainer theme={MyTheme}>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          {!isSignIn ? (
-            <Stack.Screen name="Authorization" component={AuthPage} />
-          ) : (
-            <Stack.Screen name="Navigator" component={TabNavigator} />
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
-    </AuthContext.Provider>
+    <NavigationContainer theme={MyTheme}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        {!isSignedIn  ? (
+          <Stack.Screen name="Authorization" component={AuthPage} />
+        ) : (
+          <Stack.Screen name="Navigator" component={TabNavigator} />
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
