@@ -4,10 +4,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import CardHeaderIn from '../../components/CardHeaderIn';
 
 const styles = StyleSheet.create({
-  view: {
-    paddingLeft: '4%',
-    marginBottom: '2%'
-  },
   text: {
     fontSize: 16,
   },
@@ -24,7 +20,7 @@ function UserInfo({ data }) {
 
   return (
     <CardHeaderIn topText={name}>
-      <View style={styles.view}>
+      <View>
         <Text style={[styles.text, styles.boldText]}>Направление:</Text>
         <Text style={styles.text}>{speciality}</Text>
 

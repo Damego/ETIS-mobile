@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   markView: {
-    marginTop: '2%',
+    marginTop: '1%',
     alignItems: 'flex-end',
   },
   markWordText: {
