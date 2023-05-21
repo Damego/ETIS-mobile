@@ -2,7 +2,7 @@ import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
 import { Alert, Linking, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Header from '../../components/Header';
 import ReCaptcha from '../../components/ReCaptcha';
@@ -30,9 +30,11 @@ const showPrivacyPolicy = () => {
 };
 
 const AuthPage = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const autoAuth = useSelector((state) => state.auth.shouldAutoAuth);
 
-  const [isLoading, setLoading] = useState();
+  // TODO: Replace with new loading screen
+  const [isLoading, setLoading] = useState(autoAuth);
   const [message, setMessage] = useState(null);
   const [recaptchaToken, setRecaptchaToken] = useState();
   const [showRecovery, setShowRecovery] = useState(false);
@@ -76,11 +78,7 @@ const AuthPage = () => {
 
     setLoading(true);
 
-    const {errorMessage } = await httpClient.login(
-      login,
-      password,
-      token || recaptchaToken
-    );
+    const { errorMessage } = await httpClient.login(login, password, token || recaptchaToken);
 
     setRecaptchaToken(null);
     setLoading(false);
