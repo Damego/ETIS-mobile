@@ -26,7 +26,6 @@ const Day = ({ data }) => {
   return (
     <CardHeaderOut topText={date}>
       {lessons.map((lesson, index) => {
-        lesson.pair = `${index + 1} пара`;
         return <Lesson key={date + lesson.time + lesson.subject} data={lesson} />;
       })}
     </CardHeaderOut>
