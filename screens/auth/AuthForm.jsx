@@ -1,8 +1,9 @@
 import { Checkbox } from 'expo-checkbox';
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { Button, LoadingButton } from '../../components/Button';
+import ClickableText from '../../components/ClickableText';
 import { GLOBAL_STYLES } from '../../styles/styles';
 
 export const styles = StyleSheet.create({
@@ -92,11 +93,12 @@ const Form = ({ onSubmit, isLoading, errorMessage, setShowRecovery, saveCreds, s
           <Checkbox style={styles.checkbox} value={saveCreds} onValueChange={setSaveCreds} />
           <Text>Запомнить пароль?</Text>
         </View>
-        <TouchableOpacity>
-          <Text style={styles.forgotButton} onPress={() => setShowRecovery(true)}>
-            Забыли пароль?
-          </Text>
-        </TouchableOpacity>
+
+        <ClickableText
+          textStyle={styles.forgotButton}
+          text="Забыли пароль?"
+          onPress={() => setShowRecovery(true)}
+        />
       </View>
 
       {isLoading ? (

@@ -4,13 +4,8 @@ import { Image, Text, TextInput, View } from 'react-native';
 import { Button, LoadingButton } from '../../components/Button';
 import { GLOBAL_STYLES } from '../../styles/styles';
 import { styles } from './AuthForm';
-import BackButton from './BackButton';
+import ClickableText from '../../components/ClickableText';
 
-const Message = ({ messageText }) => (
-  <View>
-    <Text>{messageText}</Text>
-  </View>
-);
 
 const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequestButton }) => {
   const [login, setLogin] = useState('');
@@ -19,7 +14,7 @@ const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequ
     <View style={[styles.container, GLOBAL_STYLES.shadow]}>
       <Image style={styles.logoImage} source={require('../../assets/logo_red.png')} />
 
-      <Message messageText={message} />
+      <Text>{message}</Text>
 
       <TextInput
         style={[styles.input, GLOBAL_STYLES.shadow]}
@@ -44,9 +39,13 @@ const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequ
           disabled={disabledRequestButton}
         />
       )}
-      <View style={{marginTop: '15%'}}>
-        <BackButton onPress={() => setShowModal(false)} />
-      </View>
+
+      <ClickableText
+        textStyle={{fontSize: 20}}
+        viewStyle={{marginTop: '15%'}}
+        text="Назад"
+        onPress={() => setShowModal(false)}
+      />
     </View>
   );
 };
