@@ -61,7 +61,7 @@ const AuthPage = () => {
       login = accountData.login;
       password = accountData.password;
       if (!login || !password) {
-        setMessage('Данные аккаунта не найдены. Введите логин и пароль для входа');
+        if (autoAuth) setMessage('Данные аккаунта не найдены. Введите логин и пароль для входа');
         return;
       }
     } else if (!login || !password) {
