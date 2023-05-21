@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   subjectTitleView: {
-    maxWidth: '90%',
+    flex: 1,
   },
   subjectNameText: {
     fontSize: 16,
@@ -17,10 +17,6 @@ const styles = StyleSheet.create({
   },
   subjectReportingText: {
     fontSize: 16,
-  },
-  subjectInfoView: {
-    marginLeft: '2%',
-    marginBottom: '2%',
   },
   boldText: {
     fontWeight: 'bold',

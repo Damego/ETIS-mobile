@@ -14,7 +14,7 @@ const style = `
 
 a {
   text-decoration: none;
-  color: #CE2539
+  color: #427ADE
 }
 `;
 

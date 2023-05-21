@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import calculateLimits from '../utils/funcs';
+import { AntDesign } from '@expo/vector-icons';
+import { useTheme } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   arrow: {
@@ -30,7 +32,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 35,
     height: 35,
-    backgroundColor: '#C62E3E',
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {
@@ -49,12 +50,13 @@ const styles = StyleSheet.create({
 });
 
 const Arrow = ({ onClick, isMirrored }) => {
-  const style = [styles.arrow];
-  if (isMirrored) style.push(styles.mirrored);
+  const {
+    colors: { primary },
+  } = useTheme();
 
   return (
     <TouchableOpacity onPress={onClick}>
-      <Image style={style} source={require('../assets/arrow_week_nav.png')} />
+      <AntDesign name={isMirrored ? 'right' : 'left'} size={22} color={primary}/>
     </TouchableOpacity>
   );
 };
@@ -67,11 +69,17 @@ const Button = ({ number, onClick }) => (
   </TouchableOpacity>
 );
 
-const ActiveButton = ({ number }) => (
-  <View style={styles.activeButtonView}>
-    <Text style={styles.activeButtonText}>{number}</Text>
-  </View>
-);
+const ActiveButton = ({ number }) => {
+  const {
+    colors: { primary },
+  } = useTheme();
+
+  return (
+    <View style={[styles.activeButtonView, {backgroundColor: primary}]}>
+      <Text style={styles.activeButtonText}>{number}</Text>
+    </View>
+  );
+}
 
 const PageNavigator = ({ firstPage, currentPage, lastPage, onPageChange }) => {
   const [buttons, changeButtons] = useState([]);

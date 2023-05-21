@@ -5,8 +5,8 @@ import { downloadFile, saveFile } from '../utils';
 
 const defaultStyle = StyleSheet.create({
   text: {
-    color: '#C62E3E',
     fontWeight: 'bold',
+    color: '#427ADE',
   },
 });
 

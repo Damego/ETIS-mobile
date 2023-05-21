@@ -11,10 +11,15 @@ import TimeTablePage from '../screens/timeTable/TimeTable';
 import { httpClient } from '../utils';
 import MessageStackNavigator from './MessageStackNavigator';
 import ServicesStackNavigator from './ServicesStackNavigator';
+import { useTheme } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
+  const {
+    colors: { primary },
+  } = useTheme();
+
   const dispatch = useDispatch();
   const messageCount = useSelector((state) => state.student.messageCount);
   const announceCount = useSelector((state) => state.student.announceCount);
@@ -38,9 +43,9 @@ const TabNavigator = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#CE2539',
+        tabBarActiveTintColor: primary,
         tabBarShowLabel: false,
-        tabBarBadgeStyle: { backgroundColor: '#CE2539' },
+        tabBarBadgeStyle: { backgroundColor: primary },
         tabBarHideOnKeyboard: true,
       }}
     >

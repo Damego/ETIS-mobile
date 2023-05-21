@@ -1,4 +1,5 @@
 import { AntDesign } from '@expo/vector-icons';
+import { useTheme } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -11,23 +12,28 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 26,
-    color: '#C62E3E',
     fontWeight: '700',
     marginLeft: '5%',
   },
 });
 
-const Header = ({ text, onBackButtonClick }) => (
-  <View style={styles.headerContainer}>
-    {onBackButtonClick ? (
-      <TouchableOpacity onPress={onBackButtonClick}>
-        <AntDesign name={'arrowleft'} size={24} color={'#C62E3E'} />
-      </TouchableOpacity>
-    ) : (
-      ''
-    )}
-    <Text style={styles.headerText}>{text}</Text>
-  </View>
-);
+const Header = ({ text, onBackButtonClick }) => {
+  const {
+    colors: { primary },
+  } = useTheme();
+
+  return (
+    <View style={styles.headerContainer}>
+      {onBackButtonClick ? (
+        <TouchableOpacity onPress={onBackButtonClick}>
+          <AntDesign name="arrowleft" size={24} color={primary} />
+        </TouchableOpacity>
+      ) : (
+        ''
+      )}
+      <Text style={[styles.headerText, {color: primary}]}>{text}</Text>
+    </View>
+  );
+};
 
 export default Header;

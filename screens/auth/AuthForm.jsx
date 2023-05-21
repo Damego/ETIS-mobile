@@ -48,7 +48,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   forgotButton: {
-    color: '#427ade',
+    color: '#427ADE',
     fontSize: 14,
   },
 });
