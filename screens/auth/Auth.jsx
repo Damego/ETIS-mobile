@@ -50,7 +50,6 @@ const AuthPage = () => {
   }, []);
 
   const makeLogin = async ({ token, useCache, login, password }) => {
-    if (isLoading) return;
     if (!(await storage.hasAcceptedPrivacyPolicy())) {
       setMessage('Политика конфиденциальности не принята');
       return;
