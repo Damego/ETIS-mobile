@@ -18,24 +18,15 @@ export default class Storage {
   }
 
   async storeAccountData(login, password) {
-    try {
-      await SecureStore.setItemAsync('userLogin', login);
-      await SecureStore.setItemAsync('userPassword', password);
-    } catch (exception) {
-      console.warn('Error saving user data', e);
-    }
+    await SecureStore.setItemAsync('userLogin', login);
+    await SecureStore.setItemAsync('userPassword', password);
   }
 
   async getAccountData() {
-    try {
-      return {
-        login: await SecureStore.getItemAsync('userLogin'),
-        password: await SecureStore.getItemAsync('userPassword'),
-      };
-    } catch (exception) {
-      console.warn('Error getting user data', e);
-    }
-    return {};
+    return {
+      login: await SecureStore.getItemAsync('userLogin'),
+      password: await SecureStore.getItemAsync('userPassword'),
+    };
   }
 
   async deleteAccountData() {

@@ -59,7 +59,10 @@ const AuthPage = () => {
       // js is weird
       login = accountData.login;
       password = accountData.password;
-      if (!login || !password) return;
+      if (!login || !password) {
+        setMessage('Данные аккаунта не найдены. Введите логин и пароль для входа');
+        return;
+      }
     } else if (!login || !password) {
       setMessage('Вы не ввели логин или пароль');
       return;
