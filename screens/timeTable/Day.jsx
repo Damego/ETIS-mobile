@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 
 import CardHeaderOut from '../../components/CardHeaderOut';
 import Lesson from './Lesson';
@@ -19,9 +19,9 @@ const Day = ({ data }) => {
 
   return (
     <CardHeaderOut topText={date}>
-      {lessons.map((lesson, index) => {
-        return <Lesson key={date + lesson.time + lesson.subject} data={lesson} />;
-      })}
+      {lessons.map((lesson) => (
+        <Lesson key={date + lesson.time + lesson.subject} data={lesson} />
+      ))}
     </CardHeaderOut>
   );
 };
