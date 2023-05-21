@@ -12,7 +12,7 @@ const Message = ({ messageText }) => (
   </View>
 );
 
-const SendEmailForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequestButton }) => {
+const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequestButton }) => {
   const [login, setLogin] = useState('');
 
   return (
@@ -51,4 +51,4 @@ const SendEmailForm = ({ onSubmit, isLoading, message, setShowModal, disabledReq
   );
 };
 
-export default SendEmailForm;
+export default RecoveryForm;

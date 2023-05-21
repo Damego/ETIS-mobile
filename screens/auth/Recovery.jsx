@@ -1,18 +1,18 @@
+// TODO: Simplify this component
+
 import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { View } from 'react-native';
 
 import Header from '../../components/Header';
 import ReCaptcha from '../../components/ReCaptcha';
-import AuthContext from '../../context/AuthContext';
 import { httpClient } from '../../utils';
 import Footer from './AuthFooter';
-import SendEmailForm from './SendEmailForm';
+import RecoveryForm from './RecoveryForm';
 
-const SendEmailModal = ({ setShowModal }) => {
-  const { showLoading } = useContext(AuthContext);
-  const [isLoading, setLoading] = useState(showLoading);
+const Recovery = ({ setShowModal }) => {
+  const [isLoading, setLoading] = useState();
   const [message, changeMessage] = useState(null);
   const [recaptchaToken, setRecaptchaToken] = useState();
   const [disabledRequestButton, setDisabledRequestButton] = useState(false);
@@ -59,7 +59,7 @@ const SendEmailModal = ({ setShowModal }) => {
 
         <Header text="Восстановление доступа" />
 
-        <SendEmailForm
+        <RecoveryForm
           onSubmit={(mail) => makeRequest({ mail })}
           isLoading={isLoading}
           message={message}
@@ -72,4 +72,4 @@ const SendEmailModal = ({ setShowModal }) => {
   );
 };
 
-export default SendEmailModal;
+export default Recovery;

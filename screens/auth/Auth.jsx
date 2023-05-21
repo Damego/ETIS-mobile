@@ -6,10 +6,10 @@ import { Alert, Linking, View } from 'react-native';
 import Header from '../../components/Header';
 import ReCaptcha from '../../components/ReCaptcha';
 import AuthContext from '../../context/AuthContext';
-import SendEmailModal from './SendEmailModal';
 import { PRIVACY_POLICY_URL, httpClient, storage } from '../../utils';
 import Footer from './AuthFooter';
 import Form from './AuthForm';
+import Recovery from './Recovery';
 
 const showPrivacyPolicy = () => {
   Alert.alert(
@@ -97,7 +97,7 @@ const AuthPage = () => {
   };
 
   if (showRecovery) {
-    return <SendEmailModal setShowModal={setShowRecovery} />;
+    return <Recovery setShowModal={setShowRecovery} />;
   }
 
   return (
