@@ -24,6 +24,21 @@ function buildTrimesterOptions(currentTrimester, latestTrimester) {
   };
 }
 
+const addSessionMarksToPoints = (allSessionMarks, sessionPoints) => {
+  const sessionMarks = allSessionMarks.current
+    .filter((sessionData) => sessionData.fullSessionNumber === sessionPoints.currentTrimester)
+    .at(0);
+
+  if (sessionMarks) {
+    sessionPoints.subjects.forEach((subject) => {
+      const [subjectMarkData] = sessionMarks.disciplines.filter(
+        (discipline) => discipline.name === subject.subject
+      );
+      if (subjectMarkData) subject.mark = subjectMarkData.mark;
+    });
+  }
+};
+
 const Signs = () => {
   const { toggleSignIn } = useContext(AuthContext);
   const [isLoading, setLoading] = useState(false);
@@ -46,18 +61,7 @@ const Signs = () => {
       allSessionMarks.current = parseSessionMarks(await httpClient.getSigns('session'));
 
     const sessionPoints = parseSessionPoints(html);
-    const sessionMarks = allSessionMarks.current
-      .filter((sessionData) => sessionData.fullSessionNumber === sessionPoints.currentTrimester)
-      .at(0);
-
-    if (sessionMarks) {
-      sessionPoints.subjects.forEach((subject) => {
-        const [subjectMarkData] = sessionMarks.disciplines
-          .filter((discipline) => discipline.name === subject.subject);
-        if (subjectMarkData)
-          subject.mark = subjectMarkData.mark
-      });
-    }
+    addSessionMarksToPoints(allSessionMarks, sessionPoints);
 
     setOptionData(
       buildTrimesterOptions(sessionPoints.currentTrimester, sessionPoints.latestTrimester)
