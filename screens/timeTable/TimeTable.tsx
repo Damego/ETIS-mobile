@@ -8,15 +8,14 @@ import { parseTimeTable } from '../../parser';
 import { isLoginPage } from '../../parser/utils';
 import { signOut } from '../../redux/authSlice';
 import { httpClient } from '../../utils';
-import { Day, EmptyDay } from './Day';
 
-import {TimeTable} from '../../parser/timeTable';
+import {ITimeTable} from '../../parser/timeTable';
 import DayArray from './DayArray';
 
 const TimeTable = () => {
   const dispatch = useDispatch();
   const [isLoading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<TimeTable>(null);
+  const [data, setData] = useState<ITimeTable>(null);
   const [week, changeWeek] = useState<number>(null);
 
   const loadData = async () => {
