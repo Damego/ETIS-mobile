@@ -2,7 +2,7 @@ import { load } from 'cheerio';
 
 import { getTextField } from './utils';
 
-export default function parseAbsenses(html) {
+export default function parseAbsences(html) {
   const $ = load(html);
   let data = [];
   $('tr', html).each((index, element) => {

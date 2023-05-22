@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import 'react-native-get-random-values';
 import { useDispatch } from 'react-redux';
 
 import LoadingScreen from '../../components/LoadingScreen';
@@ -11,15 +10,18 @@ import { signOut } from '../../redux/authSlice';
 import { httpClient } from '../../utils';
 import { Day, EmptyDay } from './Day';
 
+import {TimeTable} from '../../parser/timeTable';
+import DayArray from './DayArray';
+
 const TimeTable = () => {
   const dispatch = useDispatch();
-  const [isLoading, setLoading] = useState(false);
-  const [data, setData] = useState(null);
-  const [week, changeWeek] = useState(null);
+  const [isLoading, setLoading] = useState<boolean>(false);
+  const [data, setData] = useState<TimeTable>(null);
+  const [week, changeWeek] = useState<number>(null);
 
   const loadData = async () => {
     setLoading(true);
-    let html;
+    let html: string;
     if (week !== null) {
       html = await httpClient.getTimeTable({ week });
     } else {
@@ -52,13 +54,7 @@ const TimeTable = () => {
         onPageChange={changeWeek}
       />
 
-      {data.days.map((day) =>
-        day.lessons.length === 0 ? (
-          <EmptyDay key={day.date} data={day} />
-        ) : (
-          <Day key={day.date} data={day} />
-        )
-      )}
+      <DayArray data={data.days} />
     </Screen>
   );
 };

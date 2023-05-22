@@ -2,11 +2,30 @@ import { load } from 'cheerio';
 
 import { getTextField } from './utils';
 
+export interface ILesson {
+  audience: string;
+  subject: string;
+  time: string;
+  lessonPosition: number;
+}
+
+export interface ITimeTableDay {
+  date: string;
+  lessons: ILesson[]
+}
+
+export interface ITimeTable {
+  firstWeek: number;
+  currentWeek: number;
+  lastWeek: number;
+  days: ITimeTableDay[]
+}
+
 export default function parseTimeTable(html) {
   const $ = load(html);
   const week = $('.week');
 
-  let data = {
+  const data: ITimeTable = {
     firstWeek: parseInt(week.first().text()),
     currentWeek: parseInt($('.week.current').text()),
     lastWeek: parseInt(week.last().text()),
@@ -16,13 +35,12 @@ export default function parseTimeTable(html) {
   const { days } = data;
 
   $('.day', html).each((el, day) => {
-    let lessonPosition = 1;
     const daySelector = $(day);
-    let lessons = [];
+    const lessons: ILesson[] = [];
     const date = getTextField(daySelector.find('h3'));
 
     if (!daySelector.children().last().hasClass('no_pairs')) {
-      $('tr', day).each((_, tr) => {
+      $('tr', day).each((index, tr) => {
         const trSelector = $(tr);
         const audience = getTextField(trSelector.find('.pair_info').find('.aud'));
         const subject = getTextField(trSelector.find('.pair_info').find('.dis'));
@@ -31,9 +49,8 @@ export default function parseTimeTable(html) {
           audience,
           subject,
           time,
-          lessonPosition,
+          lessonPosition: index + 1,
         });
-        lessonPosition += 1;
       });
     }
     days.push({

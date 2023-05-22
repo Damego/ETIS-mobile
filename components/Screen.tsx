@@ -1,6 +1,6 @@
 import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
-import React, { useRef, useState } from 'react';
+import React, { ReactElement, useRef, useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 
 import Header from './Header';
@@ -13,6 +13,16 @@ const styles = StyleSheet.create({
   },
 });
 
+interface ScreenProps {
+  headerText: string;
+  scrollHeader?: boolean;
+  onUpdate?(): Promise<void>;
+  disableRefresh?: boolean;
+  children: ReactElement | ReactElement[];
+  onBackPageClick?(): void | Promise<void>;
+  startScrollFromBottom?: boolean;
+}
+
 const Screen = ({
   headerText,
   scrollHeader = true,
@@ -21,11 +31,10 @@ const Screen = ({
   children,
   onBackPageClick,
   startScrollFromBottom,
-}) => {
-  const [refreshing, setRefreshing] = useState(false);
-  const scrollRef = useRef();
+}: ScreenProps) => {
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const scrollRef = useRef<ScrollView>();
 
-  // not a useCallback hook because `onUpdate` function of parent component uses first state of useState hooks
   const onRefresh = async () => {
     setRefreshing(true);
     await onUpdate();

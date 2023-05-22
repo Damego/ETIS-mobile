@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { ILesson } from '../../parser/timeTable';
 
 const styles = StyleSheet.create({
   lessonContainer: {
@@ -23,7 +24,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const Lesson = ({ data }) => {
+interface ILessonProps {
+  data: ILesson
+}
+
+const Lesson = ({ data }: ILessonProps) => {
   const { audience, subject, time, lessonPosition } = data;
   const lessonNum = `${lessonPosition} пара`
 

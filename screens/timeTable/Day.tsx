@@ -4,7 +4,13 @@ import { Text, View } from 'react-native';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import Lesson from './Lesson';
 
-const EmptyDay = ({ data }) => {
+import {TimeTableDay} from '../../parser/timeTable';
+
+interface DayData {
+  data: TimeTableDay;
+}
+
+const EmptyDay = ({ data }: DayData) => {
   const { date } = data;
 
   return (
@@ -16,7 +22,7 @@ const EmptyDay = ({ data }) => {
   );
 };
 
-const Day = ({ data }) => {
+const Day = ({ data }: DayData) => {
   const { date, lessons } = data;
 
   return (
