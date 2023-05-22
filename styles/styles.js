@@ -9,7 +9,7 @@ export const GLOBAL_STYLES = StyleSheet.create({
     },
     shadowOpacity: 0.35,
     shadowRadius: 6,
-    elevation: 4,
+    elevation: 3,
   },
   loadingDataText: {
     fontSize: 30,
