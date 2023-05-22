@@ -1,6 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { parseMenu } from '../parser';
@@ -11,14 +11,12 @@ import TimeTablePage from '../screens/timeTable/TimeTable';
 import { httpClient } from '../utils';
 import MessageStackNavigator from './MessageStackNavigator';
 import ServicesStackNavigator from './ServicesStackNavigator';
-import { useTheme } from '@react-navigation/native';
+import useGlobalStyles from '../styles';
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
-  const {
-    colors: { primary },
-  } = useTheme();
+  const globalStyles = useGlobalStyles();
 
   const dispatch = useDispatch();
   const messageCount = useSelector((state) => state.student.messageCount);
@@ -43,9 +41,9 @@ const TabNavigator = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: primary,
+        tabBarActiveTintColor: globalStyles.primaryFontColor.color,
         tabBarShowLabel: false,
-        tabBarBadgeStyle: { backgroundColor: primary },
+        tabBarBadgeStyle: globalStyles.primaryBackgroundColor,
         tabBarHideOnKeyboard: true,
       }}
     >

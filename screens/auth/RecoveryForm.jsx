@@ -2,22 +2,22 @@ import React, { useState } from 'react';
 import { Image, Text, TextInput, View } from 'react-native';
 
 import { Button, LoadingButton } from '../../components/Button';
-import { GLOBAL_STYLES } from '../../styles/styles';
-import { styles } from './AuthForm';
 import ClickableText from '../../components/ClickableText';
-
+import useGlobalStyles from '../../styles';
+import { styles } from './AuthForm';
 
 const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequestButton }) => {
+  const globalStyles = useGlobalStyles();
   const [login, setLogin] = useState('');
 
   return (
-    <View style={[styles.container, GLOBAL_STYLES.shadow]}>
+    <View style={[styles.container, globalStyles.shadow]}>
       <Image style={styles.logoImage} source={require('../../assets/logo_red.png')} />
 
       <Text>{message}</Text>
 
       <TextInput
-        style={[styles.input, GLOBAL_STYLES.shadow]}
+        style={[styles.input, globalStyles.shadow]}
         onChangeText={(newLogin) => {
           setLogin(newLogin);
         }}
@@ -41,8 +41,8 @@ const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequ
       )}
 
       <ClickableText
-        textStyle={{fontSize: 20}}
-        viewStyle={{marginTop: '15%'}}
+        textStyle={{ fontSize: 20 }}
+        viewStyle={{ marginTop: '15%' }}
         text="Назад"
         onPress={() => setShowModal(false)}
       />

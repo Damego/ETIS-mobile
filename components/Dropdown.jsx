@@ -1,8 +1,8 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { GLOBAL_STYLES } from '../styles/styles';
+import useGlobalStyles from '../styles';
 
 const styles = StyleSheet.create({
   dropdownView: {
@@ -15,8 +15,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: '6%',
-    paddingVertical: "3%",
-    alignItems: "center"
+    paddingVertical: '3%',
+    alignItems: 'center',
   },
   selectText: {
     textAlign: 'center',
@@ -49,11 +49,16 @@ function SelectOption({ label }) {
 }
 
 function Menu({ options, onSelect }) {
+  const globalStyles = useGlobalStyles();
 
   return (
-    <View style={[styles.menuView, GLOBAL_STYLES.shadow]}>
+    <View style={[styles.menuView, globalStyles.shadow]}>
       {options.map(({ label, value }) => (
-        <TouchableOpacity onPress={() => onSelect(value)} key={`pressable-${label}`} activeOpacity={0.9}>
+        <TouchableOpacity
+          onPress={() => onSelect(value)}
+          key={`pressable-${label}`}
+          activeOpacity={0.9}
+        >
           <SelectOption label={label} key={label} />
         </TouchableOpacity>
       ))}
@@ -62,9 +67,11 @@ function Menu({ options, onSelect }) {
 }
 
 function Select({ selectedOption, isOpened, toggleOpened }) {
+  const globalStyles = useGlobalStyles();
+
   return (
     <TouchableOpacity onPress={toggleOpened} activeOpacity={0.9}>
-      <View style={[styles.selectButton, GLOBAL_STYLES.shadow]}>
+      <View style={[styles.selectButton, globalStyles.shadow]}>
         <Text style={styles.selectText}>{selectedOption}</Text>
         <AntDesign name={isOpened ? 'caretup' : 'caretdown'} size={14} color="black" />
       </View>

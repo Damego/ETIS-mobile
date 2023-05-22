@@ -2,8 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
-import { GLOBAL_STYLES } from '../../styles/styles';
+import useGlobalStyles from '../../styles';
 
 const iconSize = 36;
 const iconColor = '#000000'
@@ -33,6 +32,7 @@ const styles = StyleSheet.create({
 });
 
 function Button({ icon, text, page, link }) {
+  const globalStyles = useGlobalStyles();
   const navigation = useNavigation();
 
   const changePage = () => {
@@ -41,11 +41,9 @@ function Button({ icon, text, page, link }) {
   };
 
   return (
-    <TouchableOpacity onPress={changePage} activeOpacity={0.9}>
-      <View style={styles.buttonView}>
-        <View style={[styles.buttonContainer, GLOBAL_STYLES.shadow]}>{icon}</View>
-        <Text style={styles.buttonText}>{text}</Text>
-      </View>
+    <TouchableOpacity style={styles.buttonView} onPress={changePage} activeOpacity={0.9}>
+      <View style={[styles.buttonContainer, globalStyles.shadow]}>{icon}</View>
+      <Text style={styles.buttonText}>{text}</Text>
     </TouchableOpacity>
   );
 }

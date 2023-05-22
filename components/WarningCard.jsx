@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-
-import { GLOBAL_STYLES } from '../styles/styles';
+import useGlobalStyles from '../styles';
 
 const styles = StyleSheet.create({
   cardView: {
@@ -19,10 +18,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const WarningCard = ({ text }) => (
-  <View style={[styles.cardView, GLOBAL_STYLES.shadow]}>
-    <Text style={styles.text}>{text}</Text>
-  </View>
-);
+const WarningCard = ({ text }) => {
+  const globalStyles = useGlobalStyles();
+
+  return (
+    <View style={[styles.cardView, globalStyles.shadow]}>
+      <Text style={styles.text}>{text}</Text>
+    </View>
+  );
+}
 
 export default WarningCard;

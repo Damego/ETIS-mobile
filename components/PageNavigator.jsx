@@ -3,8 +3,8 @@ import { useTheme } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { GLOBAL_STYLES } from '../styles/styles';
 import ClickableText from './ClickableText';
+import useGlobalStyles from '../styles';
 
 const styles = StyleSheet.create({
   containerView: {
@@ -44,17 +44,15 @@ const Arrow = ({ onClick, name }) => {
 };
 
 const ActiveButton = ({ number }) => {
-  const {
-    colors: { primary },
-  } = useTheme();
+  const globalStyles = useGlobalStyles();
 
   return (
     <View
       style={[
         styles.button,
         styles.activeButtonView,
-        { backgroundColor: primary },
-        GLOBAL_STYLES.shadow,
+        globalStyles.primaryBackgroundColor,
+        globalStyles.shadow,
       ]}
     >
       <Text style={styles.activeButtonText}>{number}</Text>

@@ -1,8 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { GLOBAL_STYLES } from '../styles/styles';
-import { useTheme } from '@react-navigation/native';
+import useGlobalStyles from '../styles';
 
 export const styles = StyleSheet.create({
   container: {
@@ -22,26 +21,28 @@ export const styles = StyleSheet.create({
 });
 
 const Button = ({ text, onPress, disabled }) => {
-  const {
-    colors: { primary },
-  } = useTheme();
+  const globalStyles = useGlobalStyles();
 
   return (
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.6}
-      style={[styles.container, GLOBAL_STYLES.shadow, {backgroundColor: primary}]}
+      style={[styles.container, globalStyles.shadow, globalStyles.primaryBackgroundColor]}
       disabled={disabled}
     >
       <Text style={styles.text}>{text}</Text>
     </TouchableOpacity>
   );
-}
+};
 
-const LoadingButton = () => (
-  <View style={[styles.container, GLOBAL_STYLES.shadow]}>
-    <ActivityIndicator size="large" color="#FFFFFF" />
-  </View>
-);
+const LoadingButton = () => {
+  const globalStyles = useGlobalStyles();
+
+  return (
+    <View style={[styles.container, globalStyles.shadow, globalStyles.primaryBackgroundColor]}>
+      <ActivityIndicator size="large" color="#FFFFFF" />
+    </View>
+  );
+};
 
 export { Button, LoadingButton };

@@ -1,7 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
-import { useTheme } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import useGlobalStyles from '../styles';
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -18,20 +18,18 @@ const styles = StyleSheet.create({
 });
 
 const Header = ({ text, onBackButtonClick }) => {
-  const {
-    colors: { primary },
-  } = useTheme();
+  const globalStyles = useGlobalStyles();
 
   return (
     <View style={styles.headerContainer}>
       {onBackButtonClick ? (
         <TouchableOpacity onPress={onBackButtonClick}>
-          <AntDesign name="arrowleft" size={24} color={primary} />
+          <AntDesign name="arrowleft" size={24}  style={globalStyles.primaryFontColor} />
         </TouchableOpacity>
       ) : (
         ''
       )}
-      <Text style={[styles.headerText, {color: primary}]}>{text}</Text>
+      <Text style={[styles.headerText, globalStyles.primaryFontColor]}>{text}</Text>
     </View>
   );
 };

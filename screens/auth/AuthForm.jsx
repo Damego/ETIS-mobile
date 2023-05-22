@@ -4,7 +4,7 @@ import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { Button, LoadingButton } from '../../components/Button';
 import ClickableText from '../../components/ClickableText';
-import { GLOBAL_STYLES } from '../../styles/styles';
+import useGlobalStyles from '../../styles';
 
 export const styles = StyleSheet.create({
   container: {
@@ -54,17 +54,19 @@ export const styles = StyleSheet.create({
 });
 
 const Form = ({ onSubmit, isLoading, errorMessage, setShowRecovery, saveCreds, setSaveCreds }) => {
+  const globalStyles = useGlobalStyles();
+
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
 
   return (
-    <View style={[styles.container, GLOBAL_STYLES.shadow]}>
+    <View style={[styles.container, globalStyles.shadow]}>
       <Image style={styles.logoImage} source={require('../../assets/logo_red.png')} />
 
       <Text>{errorMessage}</Text>
 
       <TextInput
-        style={[styles.input, GLOBAL_STYLES.shadow]}
+        style={[styles.input, globalStyles.shadow]}
         onChangeText={(newLogin) => {
           setLogin(newLogin);
         }}
@@ -76,7 +78,7 @@ const Form = ({ onSubmit, isLoading, errorMessage, setShowRecovery, saveCreds, s
         autoCapitalize="none"
       />
       <TextInput
-        style={[styles.input, GLOBAL_STYLES.shadow]}
+        style={[styles.input, globalStyles.shadow]}
         onChangeText={(newPassword) => {
           setPassword(newPassword);
         }}
