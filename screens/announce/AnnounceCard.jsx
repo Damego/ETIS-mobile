@@ -1,5 +1,4 @@
 import React from 'react';
-import { View } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 
 import Card from '../../components/Card';

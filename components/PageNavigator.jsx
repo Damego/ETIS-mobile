@@ -1,73 +1,47 @@
-import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
-import calculateLimits from '../utils/funcs';
 import { AntDesign } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
+import { GLOBAL_STYLES } from '../styles/styles';
+import ClickableText from './ClickableText';
 
 const styles = StyleSheet.create({
-  arrow: {
-    width: 25,
-    height: 25,
-  },
-  mirrored: {
-    transform: [{ rotateY: '180deg' }],
-  },
   containerView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-
-    paddingHorizontal: '1%',
-    paddingBottom: '2%',
-    paddingTop: '2%',
+    marginBottom: '1%',
   },
-  clickableButtonView: {
+  button: {
+    width: 35,
     height: 35,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  clickableButtonText: {
+  clickableText: {
     fontSize: 20,
   },
   activeButtonView: {
-    alignItems: 'center',
-    width: 35,
-    height: 35,
     borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.35,
-    shadowRadius: 6,
-    elevation: 4,
   },
   activeButtonText: {
-    marginTop: '10%',
     fontSize: 20,
     color: '#FFFFFF',
   },
 });
 
-const Arrow = ({ onClick, isMirrored }) => {
+const Arrow = ({ onClick, name }) => {
   const {
     colors: { primary },
   } = useTheme();
 
   return (
-    <TouchableOpacity onPress={onClick}>
-      <AntDesign name={isMirrored ? 'right' : 'left'} size={22} color={primary}/>
+    <TouchableOpacity style={styles.button} onPress={onClick}>
+      <AntDesign name={name} size={20} color={primary} />
     </TouchableOpacity>
   );
 };
-
-const Button = ({ number, onClick }) => (
-  <TouchableOpacity onPress={() => onClick(number)}>
-    <View style={styles.clickableButtonView}>
-      <Text style={styles.clickableButtonText}>{number}</Text>
-    </View>
-  </TouchableOpacity>
-);
 
 const ActiveButton = ({ number }) => {
   const {
@@ -75,15 +49,52 @@ const ActiveButton = ({ number }) => {
   } = useTheme();
 
   return (
-    <View style={[styles.activeButtonView, {backgroundColor: primary}]}>
+    <View
+      style={[
+        styles.button,
+        styles.activeButtonView,
+        { backgroundColor: primary },
+        GLOBAL_STYLES.shadow,
+      ]}
+    >
       <Text style={styles.activeButtonText}>{number}</Text>
     </View>
   );
-}
+};
+
+const calculateLimits = (firstPage, currentPage, lastPage) => {
+  const limits = 3;
+  if (lastPage - firstPage <= limits * 2) {
+    return { leftLimit: firstPage, rightLimit: lastPage };
+  }
+
+  let leftLimit = currentPage - limits;
+  let rightLimit = currentPage + limits;
+
+  if (currentPage - firstPage <= limits) {
+    leftLimit = firstPage;
+    rightLimit = firstPage + limits * 2;
+  }
+  if (lastPage - currentPage <= limits) {
+    rightLimit = lastPage;
+    leftLimit = lastPage - limits * 2;
+  }
+
+  return { leftLimit, rightLimit };
+};
+
+const getNewButtonArray = (firstPage, currentPage, lastPage) => {
+  const { leftLimit, rightLimit } = calculateLimits(firstPage, currentPage, lastPage);
+  const buttonNums = [];
+
+  for (let i = leftLimit; i < rightLimit + 1; i += 1) {
+    buttonNums.push(i);
+  }
+  return buttonNums;
+};
 
 const PageNavigator = ({ firstPage, currentPage, lastPage, onPageChange }) => {
   const [buttons, changeButtons] = useState([]);
-  const [isLoaded, setLoaded] = useState(false);
   const [pageNums, setPageNums] = useState([firstPage, currentPage, lastPage]);
 
   const onArrowClick = (direction) => {
@@ -96,41 +107,31 @@ const PageNavigator = ({ firstPage, currentPage, lastPage, onPageChange }) => {
       buttons[3] + toAdd, // central button,
       pageNums[2],
     ]);
-
-    setLoaded(false);
   };
 
   useEffect(() => {
-    const renderNavigation = () => {
-      const { leftLimit, rightLimit } = calculateLimits(...pageNums);
-      const buttonNums = [];
-
-      for (let i = leftLimit; i < rightLimit + 1; i += 1) {
-        buttonNums.push(i);
-      }
-      changeButtons(buttonNums);
-    };
-
-    if (isLoaded) return;
-
-    renderNavigation();
-
-    setLoaded(true);
-  }, [isLoaded, pageNums]);
+    changeButtons(getNewButtonArray(...pageNums));
+  }, [pageNums]);
 
   return (
     <View style={styles.containerView}>
-      <Arrow onClick={() => onArrowClick(0)} />
+      <Arrow name="left" onClick={() => onArrowClick(0)} />
 
       {buttons.map((number) =>
         currentPage !== number ? (
-          <Button number={number} onClick={onPageChange} key={number}/>
+          <ClickableText
+            viewStyle={[styles.button]}
+            textStyle={styles.clickableText}
+            text={number}
+            onPress={() => onPageChange(number)}
+            key={number}
+          />
         ) : (
-          <ActiveButton number={number} key={number}/>
+          <ActiveButton number={number} key={number} />
         )
       )}
 
-      <Arrow isMirrored onClick={() => onArrowClick(1)} />
+      <Arrow name="right" onClick={() => onArrowClick(1)} />
     </View>
   );
 };
