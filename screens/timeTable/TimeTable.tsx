@@ -28,16 +28,18 @@ const TimeTable = () => {
     setLoading(true);
 
     /*
-    Идея в том, чтобы использовать кеш для предыдущих недель, так как они больше не обновлятся в ЕТИС
-    и хранить кешированные недели в стейте, пока в приложение не перезашли.
+    Идея в том, чтобы использовать кэш для предыдущих недель,
+    так как они больше не обновлятся в ЕТИС
+    и хранить кэшированные номера недель в стейте, чтобы не грузить их по новой
     */
+    const useCacheFirst =
+      ((data && selectedWeek < currentWeek) || fetchedWeeks.includes(selectedWeek)) && !forceFetch;
+
     const payload: IGetProps = {
       week: selectedWeek,
-      useCacheFirst:
-        ((data && selectedWeek < currentWeek) || fetchedWeeks.includes(selectedWeek)) &&
-        !forceFetch,
+      useCacheFirst,
+      useCache: true // Если не получится получить данные, будем использовать кэшированные данные
     };
-
     const result = await getTimeTableData(payload);
 
     if (result.isLoginPage) {
@@ -45,7 +47,7 @@ const TimeTable = () => {
       return;
     }
 
-    // Obviously this is real current week
+    // Очевидно, что это будет текущей неделей
     if (!data) dispatch(setCurrentWeek(result.data.selectedWeek));
 
     dispatch(setData(result.data));
