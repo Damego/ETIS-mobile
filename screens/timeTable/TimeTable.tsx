@@ -7,14 +7,21 @@ import { cacheTimeTableData, getTimeTableData } from '../../data/timeTable';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { IGetProps } from '../../models/timeTable';
 import { signOut } from '../../redux/reducers/authSlice';
-import { addFetchedWeek, setData, setCurrentWeek, changeSelectedWeek } from '../../redux/reducers/timeTableSlice';
+import {
+  addFetchedWeek,
+  changeSelectedWeek,
+  setCurrentWeek,
+  setData,
+} from '../../redux/reducers/timeTableSlice';
 import { TimeTableState } from '../../redux/reducers/timeTableSlice';
 import DayArray from './DayArray';
 
 const TimeTable = () => {
   const dispatch = useAppDispatch();
 
-  const { fetchedWeeks, data, selectedWeek, currentWeek }: TimeTableState = useAppSelector((state) => state.timeTable);
+  const { fetchedWeeks, data, selectedWeek, currentWeek }: TimeTableState = useAppSelector(
+    (state) => state.timeTable
+  );
   const [isLoading, setLoading] = useState<boolean>(false);
 
   const loadData = async (forceFetch?: boolean) => {
@@ -27,7 +34,8 @@ const TimeTable = () => {
     const payload: IGetProps = {
       week: selectedWeek,
       useCacheFirst:
-        ((data && selectedWeek < currentWeek) || fetchedWeeks.includes(selectedWeek)) && !forceFetch,
+        ((data && selectedWeek < currentWeek) || fetchedWeeks.includes(selectedWeek)) &&
+        !forceFetch,
     };
 
     const result = await getTimeTableData(payload);
