@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import ClickableText from './ClickableText';
-import useGlobalStyles from '../styles';
+import { useGlobalStyles } from '../hooks';
 
 const styles = StyleSheet.create({
   containerView: {

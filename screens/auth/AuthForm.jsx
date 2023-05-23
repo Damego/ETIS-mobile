@@ -4,7 +4,7 @@ import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { Button, LoadingButton } from '../../components/Button';
 import ClickableText from '../../components/ClickableText';
-import useGlobalStyles from '../../styles';
+import { useGlobalStyles } from '../../hooks';
 
 export const styles = StyleSheet.create({
   container: {

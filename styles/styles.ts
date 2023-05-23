@@ -1,7 +1,4 @@
-import {useMemo} from 'react';
-
 import { StyleSheet } from "react-native";
-import { useTheme } from '@react-navigation/native'
 
 const getGlobalStyles = ({ colors }) => StyleSheet.create({
   shadow: {
@@ -25,10 +22,4 @@ const getGlobalStyles = ({ colors }) => StyleSheet.create({
   }
 });
 
-function useGlobalStyles() {
-  const { colors } = useTheme();
-  return useMemo(() => getGlobalStyles({ colors }), [colors]);
-
-}
-
-export default useGlobalStyles;
+export default getGlobalStyles

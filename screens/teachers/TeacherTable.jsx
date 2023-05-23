@@ -8,7 +8,7 @@ import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
 import { parseTeachers } from '../../parser';
 import { isLoginPage } from '../../parser/utils';
-import { signOut } from '../../redux/authSlice';
+import { signOut } from '../../redux/reducers/authSlice';
 import { httpClient } from '../../utils';
 import Teacher from './Teacher';
 
