@@ -1,4 +1,5 @@
 import { load } from 'cheerio';
+
 import { getTextField } from './utils';
 
 export default function parseSessionPoints(html) {
@@ -37,10 +38,10 @@ export default function parseSessionPoints(html) {
         typeControl,
         points,
         isAbsent,
-        isIntroductionWork: maxScore === 0.0,
         passScore: parseFloat(passScore),
         currentScore: parseFloat(currentScore),
         maxScore: parseFloat(maxScore),
+        isIntroductionWork: parseFloat(maxScore) === 0.0,
         date,
         teacher,
       });
