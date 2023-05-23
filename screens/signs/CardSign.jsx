@@ -74,8 +74,8 @@ const getSubjectPointsStyle = (subject, totalPoint) => {
 
 const getSubjectTotalPoints = (subject) => {
   let subjectTotalPoints = 0;
-  subject.info.forEach(({ maxScore, points }) => {
-    subjectTotalPoints += Number.isNaN(points) || maxScore === 0 ? 0 : points;
+  subject.info.forEach(({ currentScore, isIntroductionWork }) => {
+    subjectTotalPoints += Number.isNaN(currentScore) || isIntroductionWork ? 0 : currentScore;
   });
   subjectTotalPoints = Number(subjectTotalPoints.toFixed(1));
   if (subjectTotalPoints % 1 === 0) subjectTotalPoints = Number(subjectTotalPoints.toFixed(0));

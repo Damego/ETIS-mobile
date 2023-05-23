@@ -37,6 +37,7 @@ export default function parseSessionPoints(html) {
         typeControl,
         points,
         isAbsent,
+        isIntroductionWork: maxScore === 0.0,
         passScore: parseFloat(passScore),
         currentScore: parseFloat(currentScore),
         maxScore: parseFloat(maxScore),
