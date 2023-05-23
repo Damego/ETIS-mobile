@@ -17,13 +17,17 @@ const TimeTable = () => {
   const { fetchedWeeks, data, selectedWeek, currentWeek }: TimeTableState = useAppSelector((state) => state.timeTable);
   const [isLoading, setLoading] = useState<boolean>(false);
 
-  const loadData = async () => {
+  const loadData = async (forceFetch?: boolean) => {
     setLoading(true);
 
+    /*
+    Идея в том, чтобы использовать кеш для предыдущих недель, так как они больше не обновлятся в ЕТИС
+    и хранить кешированные недели в стейте, пока в приложение не перезашли.
+    */
     const payload: IGetProps = {
       week: selectedWeek,
       useCacheFirst:
-        (data && selectedWeek < currentWeek) || fetchedWeeks.includes(selectedWeek),
+        ((data && selectedWeek < currentWeek) || fetchedWeeks.includes(selectedWeek)) && !forceFetch,
     };
 
     const result = await getTimeTableData(payload);
@@ -55,7 +59,7 @@ const TimeTable = () => {
   if (!data || isLoading) return <LoadingScreen headerText="Расписание" />;
 
   return (
-    <Screen headerText="Расписание" onUpdate={loadData}>
+    <Screen headerText="Расписание" onUpdate={() => loadData(true)}>
       <PageNavigator
         firstPage={data.firstWeek}
         lastPage={data.lastWeek}
