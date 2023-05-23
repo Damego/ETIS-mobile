@@ -60,9 +60,9 @@ const getSubjectPointsStyle = (subject, totalPoint) => {
   if (subject.info.length === 0) return styles.colorNoMark;
 
   let textStyle;
-  subject.info.forEach(({ maxScore, passScore, points, isAbsent }) => {
-    if ((isAbsent || points < passScore) && maxScore !== 0.0) textStyle = styles.colorMark2;
-    if (Number.isNaN(points)) textStyle = styles.colorNoMark;
+  subject.info.forEach(({ passScore, points, currentScore, isAbsent, isIntroductionWork }) => {
+    if ((isAbsent || currentScore < passScore) && !isIntroductionWork) textStyle = styles.colorMark2;
+    else if (Number.isNaN(points) && !isAbsent) textStyle = styles.colorNoMark;
   });
 
   if (textStyle) return textStyle;
