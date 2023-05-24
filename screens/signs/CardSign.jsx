@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   },
   markView: {
     marginTop: '2%',
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
   },
   markWordText: {
     fontSize: 16,
@@ -60,9 +60,11 @@ const getSubjectPointsStyle = (subject, totalPoint) => {
   if (subject.info.length === 0) return styles.colorNoMark;
 
   let textStyle;
-  subject.info.forEach(({ maxScore, passScore, points, isAbsent }) => {
-    if ((isAbsent || points < passScore) && maxScore !== 0.0) textStyle = styles.colorMark2;
-    if (Number.isNaN(points)) textStyle = styles.colorNoMark;
+  subject.info.forEach(({ passScore, points, currentScore, isAbsent, isIntroductionWork }) => {
+    if (!isIntroductionWork) {
+      if (isAbsent || currentScore < passScore) textStyle = styles.colorMark2;
+      else if (Number.isNaN(points) && !isAbsent) textStyle = styles.colorNoMark;
+    }
   });
 
   if (textStyle) return textStyle;
@@ -74,8 +76,8 @@ const getSubjectPointsStyle = (subject, totalPoint) => {
 
 const getSubjectTotalPoints = (subject) => {
   let subjectTotalPoints = 0;
-  subject.info.forEach(({ maxScore, points }) => {
-    subjectTotalPoints += Number.isNaN(points) || maxScore === 0 ? 0 : points;
+  subject.info.forEach(({ currentScore, isIntroductionWork }) => {
+    subjectTotalPoints += Number.isNaN(currentScore) || isIntroductionWork ? 0 : currentScore;
   });
   subjectTotalPoints = Number(subjectTotalPoints.toFixed(1));
   if (subjectTotalPoints % 1 === 0) subjectTotalPoints = Number(subjectTotalPoints.toFixed(0));
