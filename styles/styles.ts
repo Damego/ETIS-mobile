@@ -22,6 +22,12 @@ const getGlobalStyles = ({ colors }) => StyleSheet.create({
   primaryBackgroundColor: {
     backgroundColor: colors.primary
   },
+  block: {
+    backgroundColor: colors.block
+  },
+  textColor: {
+    color: colors.text
+  }
 });
 
 export default getGlobalStyles

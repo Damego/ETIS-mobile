@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { useGlobalStyles } from '../../hooks';
+
 const styles = StyleSheet.create({
   markNeutral: {
     fontSize: 16,
@@ -13,29 +15,33 @@ const styles = StyleSheet.create({
   },
 });
 
-const SubjectCheckPoint = ({ data }) => (
-  <View>
-    {data.map((info, index) => {
-      const theme = `КТ ${index + 1}`;
+const SubjectCheckPoint = ({ data }) => {
+  const globalStyles = useGlobalStyles();
 
-      let markText;
-      if (info.isAbsent) markText = 'н';
-      else if (Number.isNaN(info.points)) markText = '-';
-      else markText = info.points;
+  return (
+    <View>
+      {data.map((info, index) => {
+        const theme = `КТ ${index + 1}`;
 
-      return (
-        <Text
-          style={
-            (Number.isNaN(info.points) && info.isAbsent || info.points < info.passScore) &&
-              (info.maxScore !== 0.0)
-              ? styles.markFail
-              : styles.markNeutral
-          }
-          key={info.theme}
-        >{`${theme}: ${markText} / ${info.passScore} / ${info.maxScore}`}</Text>
-      );
-    })}
-  </View>
-);
+        let markText;
+        if (info.isAbsent) markText = 'н';
+        else if (Number.isNaN(info.points)) markText = '-';
+        else markText = info.points;
+
+        return (
+          <Text
+            style={
+              ((Number.isNaN(info.points) && info.isAbsent) || info.points < info.passScore) &&
+              info.maxScore !== 0.0
+                ? styles.markFail
+                : [styles.markNeutral, globalStyles.textColor]
+            }
+            key={info.theme}
+          >{`${theme}: ${markText} / ${info.passScore} / ${info.maxScore}`}</Text>
+        );
+      })}
+    </View>
+  );
+};
 
 export default SubjectCheckPoint;

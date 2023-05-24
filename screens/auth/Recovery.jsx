@@ -1,9 +1,8 @@
 // TODO: Simplify this component
-
 import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View, useColorScheme } from 'react-native';
 
 import Header from '../../components/Header';
 import ReCaptcha from '../../components/ReCaptcha';
@@ -12,6 +11,8 @@ import Footer from './AuthFooter';
 import RecoveryForm from './RecoveryForm';
 
 const Recovery = ({ setShowModal }) => {
+  const scheme = useColorScheme();
+
   const [isLoading, setLoading] = useState();
   const [message, changeMessage] = useState(null);
   const [recaptchaToken, setRecaptchaToken] = useState();
@@ -53,7 +54,7 @@ const Recovery = ({ setShowModal }) => {
   return (
     <>
       <View style={{ marginTop: Constants.statusBarHeight }}>
-        <StatusBar style="dark" />
+        <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
 
         {!recaptchaToken && <ReCaptcha onReceiveToken={onReceiveRecaptchaToken} />}
 

@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   selectButton: {
-    backgroundColor: '#FFFFFF',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -25,7 +24,6 @@ const styles = StyleSheet.create({
   },
   menuView: {
     position: 'absolute',
-    backgroundColor: '#FFFFFF',
     top: '90%',
     width: '100%',
     elevation: 10,
@@ -40,11 +38,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const SelectOption = ({ label }) => (
-  <View style={styles.optionView}>
-    <Text style={styles.optionText}>{label}</Text>
-  </View>
-);
+const SelectOption = ({ label }) => {
+  const globalStyles = useGlobalStyles();
+
+  return (
+    <View style={styles.optionView}>
+      <Text style={[styles.optionText, globalStyles.textColor]}>{label}</Text>
+    </View>
+  );
+}
 
 function Menu({ options, onSelect }) {
   const globalStyles = useGlobalStyles();
@@ -54,7 +56,7 @@ function Menu({ options, onSelect }) {
       entering={FadeInUp}
       layout={Layout.springify()}
       exiting={FadeOutUp}
-      style={[styles.menuView, globalStyles.border]}
+      style={[styles.menuView, globalStyles.border, globalStyles.block]}
     >
       {options.map(({ label, value }) => (
         <TouchableOpacity
@@ -74,12 +76,12 @@ function Select({ selectedOption, isOpened, toggleOpened }) {
 
   return (
     <TouchableOpacity
-      style={[styles.selectButton, globalStyles.border]}
+      style={[styles.selectButton, globalStyles.border, globalStyles.block]}
       onPress={toggleOpened}
       activeOpacity={0.9}
     >
-      <Text style={styles.selectText}>{selectedOption}</Text>
-      <AntDesign name={isOpened ? 'caretup' : 'caretdown'} size={14} color="black" />
+      <Text style={[styles.selectText, globalStyles.textColor]}>{selectedOption}</Text>
+      <AntDesign name={isOpened ? 'caretup' : 'caretdown'} size={14} color={globalStyles.textColor.color} />
     </TouchableOpacity>
   );
 }

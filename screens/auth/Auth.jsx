@@ -1,7 +1,7 @@
 import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { Alert, Linking, View } from 'react-native';
+import { Alert, Linking, View, useColorScheme } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Header from '../../components/Header';
@@ -32,6 +32,7 @@ const showPrivacyPolicy = () => {
 const AuthPage = () => {
   const dispatch = useDispatch();
   const autoAuth = useSelector((state) => state.auth.shouldAutoAuth);
+  const scheme = useColorScheme();
 
   // TODO: Replace with the new loading screen
   const [isLoading, setLoading] = useState(autoAuth);
@@ -106,7 +107,7 @@ const AuthPage = () => {
   return (
     <>
       <View style={{ marginTop: Constants.statusBarHeight }}>
-        <StatusBar style="dark" />
+        <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
         {!recaptchaToken && <ReCaptcha onReceiveToken={onReceiveRecaptchaToken} />}
         <Header text="Авторизация" />
 

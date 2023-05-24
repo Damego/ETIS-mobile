@@ -1,28 +1,21 @@
-import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
 import AuthPage from '../screens/auth/Auth';
 import TabNavigator from './TabNavigation';
-
-const LightTheme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    background: '#F8F8FA',
-    primary: '#C62E3E',
-    border: '#EAEAEA'
-  },
-};
+import {LightTheme, DarkTheme} from '../styles/themes';
+import { useColorScheme } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
   const isSignedIn = useSelector(state => state.auth.isSignedIn )
+  const scheme = useColorScheme();
 
   return (
-    <NavigationContainer theme={LightTheme}>
+    <NavigationContainer theme={scheme === 'dark' ? DarkTheme : LightTheme}>
       <Stack.Navigator
         screenOptions={{
           headerShown: false,

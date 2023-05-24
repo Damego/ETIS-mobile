@@ -2,21 +2,22 @@ import React from 'react';
 import { Text, View } from 'react-native';
 
 import CardHeaderOut from '../../components/CardHeaderOut';
+import { useGlobalStyles } from '../../hooks';
+import { ITimeTableDay } from '../../models/timeTable';
 import Lesson from './Lesson';
 
-import {TimeTableDay} from '../../parser/timeTable';
-
 interface DayData {
-  data: TimeTableDay;
+  data: ITimeTableDay;
 }
 
 const EmptyDay = ({ data }: DayData) => {
   const { date } = data;
+  const globalStyles = useGlobalStyles();
 
   return (
     <CardHeaderOut topText={date}>
-      <View style={{alignItems: 'center'}}>
-        <Text style={{fontSize: 16, fontWeight: '600'}}>Пар нет</Text>
+      <View style={{ alignItems: 'center' }}>
+        <Text style={{ fontSize: 16, fontWeight: '600', ...globalStyles.textColor }}>Пар нет</Text>
       </View>
     </CardHeaderOut>
   );
