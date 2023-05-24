@@ -3,21 +3,22 @@ import { Image, Text, TextInput, View } from 'react-native';
 
 import { Button, LoadingButton } from '../../components/Button';
 import ClickableText from '../../components/ClickableText';
-import { useGlobalStyles } from '../../hooks';
 import { styles } from './AuthForm';
+import { useGlobalStyles } from '../../hooks';
 
 const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequestButton }) => {
   const globalStyles = useGlobalStyles();
+
   const [login, setLogin] = useState('');
 
   return (
-    <View style={[styles.container, globalStyles.shadow]}>
+    <View style={[styles.container, globalStyles.border]}>
       <Image style={styles.logoImage} source={require('../../assets/logo_red.png')} />
 
       <Text>{message}</Text>
 
       <TextInput
-        style={[styles.input, globalStyles.shadow]}
+        style={[styles.input, globalStyles.border]}
         onChangeText={(newLogin) => {
           setLogin(newLogin);
         }}

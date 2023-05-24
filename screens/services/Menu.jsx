@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     width: 50,
     height: 50,
-    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -32,8 +31,8 @@ const styles = StyleSheet.create({
 });
 
 function Button({ icon, text, page, link }) {
-  const globalStyles = useGlobalStyles();
   const navigation = useNavigation();
+  const globalStyles = useGlobalStyles()
 
   const changePage = () => {
     if (page) navigation.navigate(page);
@@ -42,7 +41,7 @@ function Button({ icon, text, page, link }) {
 
   return (
     <TouchableOpacity style={styles.buttonView} onPress={changePage} activeOpacity={0.9}>
-      <View style={[styles.buttonContainer, globalStyles.shadow]}>{icon}</View>
+      <View style={[styles.buttonContainer, globalStyles.border]}>{icon}</View>
       <Text style={styles.buttonText}>{text}</Text>
     </TouchableOpacity>
   );

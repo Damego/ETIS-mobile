@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { useGlobalStyles } from '../hooks';
 
 const styles = StyleSheet.create({
   cardView: {
@@ -9,12 +8,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: '2%',
     marginBottom: '2%',
+    borderWidth: 1,
+    borderColor: '#eaeaea'
   },
 });
 
 const Card = ({ children }) => {
-  const globalStyles = useGlobalStyles();
-  return <View style={[styles.cardView, globalStyles.shadow]}>{children}</View>;
+  return <View style={styles.cardView}>{children}</View>;
 };
 
 export default Card;

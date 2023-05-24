@@ -13,13 +13,15 @@ const getGlobalStyles = ({ colors }) => StyleSheet.create({
   },
   border: {
     borderRadius: 10,
+    borderWidth: 1,
+    borderColor: colors.border
   },
   primaryFontColor: {
     color: colors.primary
   },
   primaryBackgroundColor: {
     backgroundColor: colors.primary
-  }
+  },
 });
 
 export default getGlobalStyles

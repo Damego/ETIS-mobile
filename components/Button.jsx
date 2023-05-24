@@ -27,7 +27,7 @@ const Button = ({ text, onPress, disabled }) => {
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.6}
-      style={[styles.container, globalStyles.shadow, globalStyles.primaryBackgroundColor]}
+      style={[styles.container, globalStyles.primaryBackgroundColor]}
       disabled={disabled}
     >
       <Text style={styles.text}>{text}</Text>
@@ -39,7 +39,7 @@ const LoadingButton = () => {
   const globalStyles = useGlobalStyles();
 
   return (
-    <View style={[styles.container, globalStyles.shadow, globalStyles.primaryBackgroundColor]}>
+    <View style={[styles.container, globalStyles.primaryBackgroundColor]}>
       <ActivityIndicator size="large" color="#FFFFFF" />
     </View>
   );

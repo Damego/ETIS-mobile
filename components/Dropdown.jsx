@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
   },
   selectButton: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 10,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -28,7 +27,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     top: '90%',
     width: '100%',
-    borderRadius: 10,
+    elevation: 10
   },
   optionView: {
     paddingHorizontal: '6%',
@@ -40,19 +39,19 @@ const styles = StyleSheet.create({
   },
 });
 
-function SelectOption({ label }) {
-  return (
+const SelectOption = ({ label }) =>
+  (
     <View style={styles.optionView}>
       <Text style={styles.optionText}>{label}</Text>
     </View>
   );
-}
+
 
 function Menu({ options, onSelect }) {
   const globalStyles = useGlobalStyles();
 
   return (
-    <View style={[styles.menuView, globalStyles.shadow]}>
+    <View style={[styles.menuView, globalStyles.border]}>
       {options.map(({ label, value }) => (
         <TouchableOpacity
           onPress={() => onSelect(value)}
@@ -70,11 +69,9 @@ function Select({ selectedOption, isOpened, toggleOpened }) {
   const globalStyles = useGlobalStyles();
 
   return (
-    <TouchableOpacity onPress={toggleOpened} activeOpacity={0.9}>
-      <View style={[styles.selectButton, globalStyles.shadow]}>
+    <TouchableOpacity style={[styles.selectButton, globalStyles.border]} onPress={toggleOpened} activeOpacity={0.9}>
         <Text style={styles.selectText}>{selectedOption}</Text>
         <AntDesign name={isOpened ? 'caretup' : 'caretdown'} size={14} color="black" />
-      </View>
     </TouchableOpacity>
   );
 }

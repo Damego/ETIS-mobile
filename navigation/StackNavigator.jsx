@@ -11,7 +11,8 @@ const LightTheme = {
   colors: {
     ...DefaultTheme.colors,
     background: '#F8F8FA',
-    primary: '#C62E3E'
+    primary: '#C62E3E',
+    border: '#EAEAEA'
   },
 };
 

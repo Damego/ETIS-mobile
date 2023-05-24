@@ -52,7 +52,6 @@ const ActiveButton = ({ number }) => {
         styles.button,
         styles.activeButtonView,
         globalStyles.primaryBackgroundColor,
-        globalStyles.shadow,
       ]}
     >
       <Text style={styles.activeButtonText}>{number}</Text>

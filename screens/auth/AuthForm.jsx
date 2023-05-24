@@ -11,7 +11,6 @@ export const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     width: '90%',
     marginLeft: '5%',
-    borderRadius: 10,
     marginTop: '15%',
     flexDirection: 'column',
     alignItems: 'center',
@@ -31,9 +30,6 @@ export const styles = StyleSheet.create({
   },
   input: {
     fontSize: 20,
-    borderWidth: 1,
-    borderColor: '#F8F8FE',
-    borderRadius: 10,
     backgroundColor: '#FFFFFF',
     paddingLeft: 5,
     height: '12%',
@@ -60,13 +56,13 @@ const Form = ({ onSubmit, isLoading, errorMessage, setShowRecovery, saveCreds, s
   const [password, setPassword] = useState('');
 
   return (
-    <View style={[styles.container, globalStyles.shadow]}>
+    <View style={[styles.container, globalStyles.border]}>
       <Image style={styles.logoImage} source={require('../../assets/logo_red.png')} />
 
       <Text>{errorMessage}</Text>
 
       <TextInput
-        style={[styles.input, globalStyles.shadow]}
+        style={[styles.input, globalStyles.border]}
         onChangeText={(newLogin) => {
           setLogin(newLogin);
         }}
@@ -78,7 +74,7 @@ const Form = ({ onSubmit, isLoading, errorMessage, setShowRecovery, saveCreds, s
         autoCapitalize="none"
       />
       <TextInput
-        style={[styles.input, globalStyles.shadow]}
+        style={[styles.input, globalStyles.border]}
         onChangeText={(newPassword) => {
           setPassword(newPassword);
         }}
