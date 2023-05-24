@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import useGlobalStyles from '../styles';
+import { useGlobalStyles } from '../hooks';
 
 export const styles = StyleSheet.create({
   container: {

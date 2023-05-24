@@ -7,7 +7,7 @@ import { parseTeacherMessages } from '../../parser';
 import { isLoginPage } from '../../parser/utils';
 import { httpClient } from '../../utils';
 import MessagePreview from './MessagePreview';
-import { signOut } from '../../redux/authSlice';
+import { signOut } from '../../redux/reducers/authSlice';
 
 const MessageHistory = () => {
   const dispatch = useDispatch();

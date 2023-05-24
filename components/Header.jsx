@@ -1,7 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import useGlobalStyles from '../styles';
+import { useGlobalStyles } from '../hooks';
 
 const styles = StyleSheet.create({
   headerContainer: {

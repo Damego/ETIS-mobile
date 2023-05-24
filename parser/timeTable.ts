@@ -1,25 +1,7 @@
 import { load } from 'cheerio';
 
+import { ILesson, ITimeTable } from '../models/timeTable';
 import { getTextField } from './utils';
-
-export interface ILesson {
-  audience: string;
-  subject: string;
-  time: string;
-  lessonPosition: number;
-}
-
-export interface ITimeTableDay {
-  date: string;
-  lessons: ILesson[]
-}
-
-export interface ITimeTable {
-  firstWeek: number;
-  currentWeek: number;
-  lastWeek: number;
-  days: ITimeTableDay[]
-}
 
 export default function parseTimeTable(html) {
   const $ = load(html);
@@ -27,7 +9,7 @@ export default function parseTimeTable(html) {
 
   const data: ITimeTable = {
     firstWeek: parseInt(week.first().text()),
-    currentWeek: parseInt($('.week.current').text()),
+    selectedWeek: parseInt($('.week.current').text()),
     lastWeek: parseInt(week.last().text()),
     days: [],
   };

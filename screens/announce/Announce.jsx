@@ -6,7 +6,7 @@ import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
 import { parseAnnounce } from '../../parser';
 import { isLoginPage } from '../../parser/utils';
-import { signOut } from '../../redux/authSlice';
+import { signOut } from '../../redux/reducers/authSlice';
 import { httpClient } from '../../utils';
 import AnnounceCard from './AnnounceCard';
 

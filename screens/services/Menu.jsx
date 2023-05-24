@@ -2,7 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import useGlobalStyles from '../../styles';
+import { useGlobalStyles } from '../../hooks';
 
 const iconSize = 36;
 const iconColor = '#000000'

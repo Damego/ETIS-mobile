@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Header from '../../components/Header';
 import ReCaptcha from '../../components/ReCaptcha';
-import { signIn } from '../../redux/authSlice';
+import { signIn } from '../../redux/reducers/authSlice';
 import { PRIVACY_POLICY_URL, httpClient, storage } from '../../utils';
 import Footer from './AuthFooter';
 import Form from './AuthForm';

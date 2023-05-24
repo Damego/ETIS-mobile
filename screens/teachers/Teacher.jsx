@@ -47,12 +47,10 @@ const Teacher = ({ data: { cathedra, name, photo, photoTitle, subjectType } }) =
       </View>
     </View>
 
-    <View style={styles.photoContainer}>
       {/* Фотография загружена... */}
-      <TouchableWithoutFeedback onPress={() => ToastAndroid.show(photoTitle, ToastAndroid.SHORT)}>
+      <TouchableWithoutFeedback style={styles.photoContainer} onPress={() => ToastAndroid.show(photoTitle, ToastAndroid.SHORT)}>
         <Image style={styles.photoStyle} src={`https://student.psu.ru/pls/stu_cus_et/${photo}`} />
       </TouchableWithoutFeedback>
-    </View>
   </View>
 );
 

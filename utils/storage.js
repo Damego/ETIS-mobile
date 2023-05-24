@@ -41,4 +41,21 @@ export default class Storage {
   async acceptPrivacyPolicy() {
     await SecureStore.setItemAsync('hasAcceptedPrivacyPolicy', 'true');
   }
+
+  async getTimeTableData(week) {
+    let stringData;
+    if (week === undefined) {
+      stringData = await SecureStore.getItemAsync('timetable-current');
+    } else stringData = await SecureStore.getItemAsync(`timetable-${week}`);
+
+    return JSON.parse(stringData);
+  }
+
+  async storeTimeTableData(data, week) {
+    const stringData = JSON.stringify(data);
+
+    if (week === undefined) {
+      await SecureStore.setItemAsync('timetable-current', stringData);
+    } else await SecureStore.setItemAsync(`timetable-${week}`, stringData);
+  }
 }
