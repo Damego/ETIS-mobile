@@ -4,7 +4,7 @@ import { IGetProps, IGetResult, ITimeTable } from '../models/timeTable';
 import { httpClient, storage } from '../utils';
 
 export const getCachedTimeTable = async (week) => {
-  console.log('[DATA] Use cached time table with week', week)
+  console.log(`[DATA] Use cached timetable for week ${week}`)
   return {
     data: await storage.getTimeTableData(week),
     isLoginPage: false,
@@ -37,7 +37,7 @@ export const getTimeTableData = async ({
     return { data: null, isLoginPage: true, fetched: false };
   }
 
-  console.log('[DATA] Fetched timetable with week', week)
+  console.log(`[DATA] Fetched timetable for week ${week}`)
   return {
     data: parseTimeTable(html),
     isLoginPage: false,
@@ -46,6 +46,6 @@ export const getTimeTableData = async ({
 };
 
 export const cacheTimeTableData = async (data: ITimeTable, week?: number) => {
-  console.log('[DATA] Cached timetable')
+  console.log(`[DATA] Cached timetable for week ${week}`);
   await storage.storeTimeTableData(data, week);
 };

@@ -156,7 +156,7 @@ class HTTPClient {
     return this.request('/stu.signs', params);
   }
 
-  getAbsenses(trimester) {
+  getAbsences(trimester) {
     /*
     `trimester`:
       - 1: осенний
