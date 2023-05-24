@@ -3,8 +3,8 @@ import { useTheme } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import ClickableText from './ClickableText';
 import { useGlobalStyles } from '../hooks';
+import ClickableText from './ClickableText';
 
 const styles = StyleSheet.create({
   containerView: {
@@ -47,17 +47,13 @@ const ActiveButton = ({ number }) => {
   const globalStyles = useGlobalStyles();
 
   return (
-    <View
-      style={[
-        styles.button,
-        styles.activeButtonView,
-        globalStyles.primaryBackgroundColor,
-      ]}
-    >
+    <View style={[styles.button, styles.activeButtonView, globalStyles.primaryBackgroundColor]}>
       <Text style={styles.activeButtonText}>{number}</Text>
     </View>
   );
 };
+
+const HiddenView = () => <View style={styles.button}></View>;
 
 const calculateLimits = (firstPage, currentPage, lastPage) => {
   const limits = 3;
@@ -112,7 +108,11 @@ const PageNavigator = ({ firstPage, currentPage, lastPage, onPageChange }) => {
 
   return (
     <View style={styles.containerView}>
-      <Arrow name="left" onClick={() => onArrowClick(0)} />
+      {buttons.at(0) !== firstPage ? (
+        <Arrow name="left" onClick={() => onArrowClick(0)} />
+      ) : (
+        <HiddenView />
+      )}
 
       {buttons.map((number) =>
         currentPage !== number ? (
@@ -128,7 +128,11 @@ const PageNavigator = ({ firstPage, currentPage, lastPage, onPageChange }) => {
         )
       )}
 
-      <Arrow name="right" onClick={() => onArrowClick(1)} />
+      {buttons.at(-1) !== lastPage ? (
+        <Arrow name="right" onClick={() => onArrowClick(1)} />
+      ) : (
+        <HiddenView />
+      )}
     </View>
   );
 };
