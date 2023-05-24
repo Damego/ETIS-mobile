@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   },
   markView: {
     marginTop: '2%',
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
   },
   markWordText: {
     fontSize: 16,
@@ -61,8 +61,10 @@ const getSubjectPointsStyle = (subject, totalPoint) => {
 
   let textStyle;
   subject.info.forEach(({ passScore, points, currentScore, isAbsent, isIntroductionWork }) => {
-    if ((isAbsent || currentScore < passScore) && !isIntroductionWork) textStyle = styles.colorMark2;
-    else if (Number.isNaN(points) && !isAbsent) textStyle = styles.colorNoMark;
+    if (!isIntroductionWork) {
+      if (isAbsent || currentScore < passScore) textStyle = styles.colorMark2;
+      else if (Number.isNaN(points) && !isAbsent) textStyle = styles.colorNoMark;
+    }
   });
 
   if (textStyle) return textStyle;
