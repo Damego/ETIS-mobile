@@ -2,6 +2,8 @@ import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+import BorderLine from '../../components/BorderLine';
+
 const styles = StyleSheet.create({
   subjectDropdownView: {
     flexDirection: 'row',
@@ -42,23 +44,26 @@ const SubjectInfo = ({ classWork, soloWork, total }) => (
   </View>
 );
 
-const Subject = ({ data: { subject, reporting, classWork, soloWork, total } }) => {
+const Subject = ({ data: { subject, reporting, classWork, soloWork, total }, showBorderLine }) => {
   const [isOpened, setOpened] = useState(false);
 
   return (
     <>
-      <View style={styles.subjectDropdownView}>
+      <TouchableOpacity
+        onPress={() => setOpened(!isOpened)}
+        style={styles.subjectDropdownView}
+        activeOpacity={0.45}
+      >
         <View style={styles.subjectTitleView}>
           <Text style={styles.subjectNameText}>{subject}</Text>
           <Text style={styles.subjectReportingText}>Отчётность: {reporting}</Text>
         </View>
 
-        <TouchableOpacity onPress={() => setOpened(!isOpened)}>
-          <AntDesign name={isOpened ? 'up' : 'down'} size={24} color="black" />
-        </TouchableOpacity>
-      </View>
+        <AntDesign name={isOpened ? 'up' : 'down'} size={18} color="black" />
+      </TouchableOpacity>
 
-      {isOpened ? <SubjectInfo classWork={classWork} soloWork={soloWork} total={total} /> : ''}
+      {isOpened && <SubjectInfo classWork={classWork} soloWork={soloWork} total={total} />}
+      {showBorderLine && <BorderLine />}
     </>
   );
 };

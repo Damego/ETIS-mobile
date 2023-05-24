@@ -1,16 +1,18 @@
 import React from 'react';
-import { View } from 'react-native';
 
-import BorderLine from '../../components/BorderLine';
+import CardHeaderOut from '../../components/CardHeaderOut';
 import Subject from './Subject';
 
-const Trimester = ({ data }) =>
-  data.subjects.map((subject, index) => (
-    <View key={subject.subject}>
-      <Subject data={subject} />
-
-      {index !== data.subjects.length - 1 ? <BorderLine /> : ''}
-    </View>
-  ));
+const Trimester = ({ data }) => (
+  <CardHeaderOut topText={data.trimester} key={`card-${data.trimester}`}>
+    {data.subjects.map((subject, index) => (
+      <Subject
+        data={subject}
+        showBorderLine={index !== data.subjects.length - 1}
+        key={subject.subject}
+      />
+    ))}
+  </CardHeaderOut>
+);
 
 export default Trimester;

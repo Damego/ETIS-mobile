@@ -36,9 +36,7 @@ const ShortTeachPlan = () => {
   return (
     <Screen headerText="Учебный план" onUpdate={loadData}>
       {data.map((trimester) => (
-        <CardHeaderOut topText={trimester.trimester} key={`card-${trimester.trimester}`}>
-          <Trimester data={trimester} key={trimester.trimester} />
-        </CardHeaderOut>
+        <Trimester data={trimester} key={trimester.trimester} />
       ))}
     </Screen>
   );
