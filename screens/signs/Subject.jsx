@@ -27,7 +27,7 @@ const SubjectCheckPoint = ({ data }) => (
         <Text
           style={
             (Number.isNaN(info.points) && info.isAbsent || info.points < info.passScore) &&
-              (info.maxScore !== 0.0)
+              (!info.isIntroductionWork)
               ? styles.markFail
               : styles.markNeutral
           }
