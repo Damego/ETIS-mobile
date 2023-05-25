@@ -25,7 +25,6 @@ const styles = StyleSheet.create({
     top: '100%',
     width: '100%',
     elevation: 10,
-
   },
   optionView: {
     paddingHorizontal: '6%',
