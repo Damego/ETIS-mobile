@@ -1,7 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Animated, { FadeInUp, FadeOutUp, Layout } from 'react-native-reanimated';
 
 import { useGlobalStyles } from '../hooks';
 
@@ -52,10 +51,7 @@ function Menu({ options, onSelect }) {
   const globalStyles = useGlobalStyles();
 
   return (
-    <Animated.View
-      entering={FadeInUp}
-      layout={Layout.springify()}
-      exiting={FadeOutUp}
+    <View
       style={[styles.menuView, globalStyles.border, globalStyles.block]}
     >
       {options.map(({ label, value }) => (
@@ -67,7 +63,7 @@ function Menu({ options, onSelect }) {
           <SelectOption label={label} key={label} />
         </TouchableOpacity>
       ))}
-    </Animated.View>
+    </View>
   );
 }
 
