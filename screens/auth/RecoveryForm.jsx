@@ -12,7 +12,7 @@ const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequ
   const [login, setLogin] = useState('');
 
   return (
-    <View style={[styles.container, globalStyles.border]}>
+    <View style={[styles.container, globalStyles.border, globalStyles.block]}>
       <Image style={styles.logoImage} source={require('../../assets/logo_red.png')} />
 
       <Text>{message}</Text>
@@ -23,6 +23,7 @@ const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequ
           setLogin(newLogin);
         }}
         placeholder="Эл. почта"
+        placeholderTextColor={globalStyles.textColor.color}
         autoComplete="email"
         inputMode="email"
         keyboardType="email-address"
@@ -42,7 +43,7 @@ const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequ
       )}
 
       <ClickableText
-        textStyle={{ fontSize: 20 }}
+        textStyle={{ fontSize: 20, ...globalStyles.textColor }}
         viewStyle={{ marginTop: '15%' }}
         text="Назад"
         onPress={() => setShowModal(false)}

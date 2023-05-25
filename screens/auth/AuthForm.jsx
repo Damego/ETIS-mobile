@@ -8,7 +8,6 @@ import { useGlobalStyles } from '../../hooks';
 
 export const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFFFFF',
     width: '90%',
     marginLeft: '5%',
     marginTop: '15%',
@@ -30,7 +29,6 @@ export const styles = StyleSheet.create({
   },
   input: {
     fontSize: 20,
-    backgroundColor: '#FFFFFF',
     paddingLeft: 5,
     height: '12%',
     marginVertical: '1%',
@@ -56,17 +54,18 @@ const Form = ({ onSubmit, isLoading, errorMessage, setShowRecovery, saveCreds, s
   const [password, setPassword] = useState('');
 
   return (
-    <View style={[styles.container, globalStyles.border]}>
+    <View style={[styles.container, globalStyles.border, globalStyles.block]}>
       <Image style={styles.logoImage} source={require('../../assets/logo_red.png')} />
 
       <Text>{errorMessage}</Text>
 
       <TextInput
-        style={[styles.input, globalStyles.border]}
+        style={[styles.input, globalStyles.border, globalStyles.textColor]}
         onChangeText={(newLogin) => {
           setLogin(newLogin);
         }}
         placeholder="Эл. почта"
+        placeholderTextColor={globalStyles.textColor.color}
         autoComplete="email"
         inputMode="email"
         keyboardType="email-address"
@@ -74,11 +73,12 @@ const Form = ({ onSubmit, isLoading, errorMessage, setShowRecovery, saveCreds, s
         autoCapitalize="none"
       />
       <TextInput
-        style={[styles.input, globalStyles.border]}
+        style={[styles.input, globalStyles.border, globalStyles.textColor]}
         onChangeText={(newPassword) => {
           setPassword(newPassword);
         }}
         placeholder="Пароль"
+        placeholderTextColor={globalStyles.textColor.color}
         secureTextEntry
         autoComplete="password"
         selectionColor="#C62E3E"
@@ -89,7 +89,7 @@ const Form = ({ onSubmit, isLoading, errorMessage, setShowRecovery, saveCreds, s
       <View style={styles.authPropContainer}>
         <View style={styles.checkboxContainer}>
           <Checkbox style={styles.checkbox} value={saveCreds} onValueChange={setSaveCreds} />
-          <Text>Запомнить пароль?</Text>
+          <Text style={globalStyles.textColor}>Запомнить пароль?</Text>
         </View>
 
         <ClickableText

@@ -8,6 +8,8 @@ import {
   View,
 } from 'react-native';
 
+import { useGlobalStyles } from '../../hooks';
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -34,24 +36,31 @@ const styles = StyleSheet.create({
   },
 });
 
-const Teacher = ({ data: { cathedra, name, photo, photoTitle, subjectType } }) => (
-  <View style={styles.container}>
-    <View style={styles.teacherInfo}>
-      <View style={styles.teacherNameView}>
-        <Text style={[styles.fontS16, styles.fontW500]}>{name}</Text>
-        <Text style={styles.fontS16}>{subjectType}</Text>
-      </View>
+const Teacher = ({ data: { cathedra, name, photo, photoTitle, subjectType } }) => {
+  const globalStyles = useGlobalStyles();
 
-      <View style={styles.subjectInfoView}>
-        <Text style={styles.subjectInfoText}>{cathedra}</Text>
+  return (
+    <View style={styles.container}>
+      <View style={styles.teacherInfo}>
+        <View style={styles.teacherNameView}>
+          <Text style={[styles.fontS16, styles.fontW500, globalStyles.textColor]}>{name}</Text>
+          <Text style={[styles.fontS16, globalStyles.textColor]}>{subjectType}</Text>
+        </View>
+
+        <View style={styles.subjectInfoView}>
+          <Text style={[styles.subjectInfoText, globalStyles.textColor]}>{cathedra}</Text>
+        </View>
       </View>
-    </View>
 
       {/* Фотография загружена... */}
-      <TouchableWithoutFeedback style={styles.photoContainer} onPress={() => ToastAndroid.show(photoTitle, ToastAndroid.SHORT)}>
+      <TouchableWithoutFeedback
+        style={styles.photoContainer}
+        onPress={() => ToastAndroid.show(photoTitle, ToastAndroid.SHORT)}
+      >
         <Image style={styles.photoStyle} src={`https://student.psu.ru/pls/stu_cus_et/${photo}`} />
       </TouchableWithoutFeedback>
-  </View>
-);
+    </View>
+  );
+};
 
 export default Teacher;

@@ -2,7 +2,11 @@ import * as StoreReview from 'expo-store-review';
 import React from 'react';
 import { Alert, Button, Linking, Text, View } from 'react-native';
 
+import { useGlobalStyles } from '../hooks';
+
 const ReviewBox = ({ setReviewed, setViewed }) => {
+  const globalStyles = useGlobalStyles();
+
   const handleReview = async () => {
     if (await StoreReview.isAvailableAsync()) {
       StoreReview.requestReview().then(() => setReviewed());
@@ -23,17 +27,22 @@ const ReviewBox = ({ setReviewed, setViewed }) => {
 
   return (
     <View
-      style={{
-        backgroundColor: '#DDD',
-        borderRadius: 10,
-        padding: 15,
-      }}
+      style={[
+        globalStyles.border,
+        globalStyles.block,
+        {
+          padding: '4%',
+        },
+      ]}
     >
       <Text
-        style={{
-          fontWeight: '600',
-          fontSize: 20,
-        }}
+        style={[
+          globalStyles.textColor,
+          {
+            fontWeight: '600',
+            fontSize: 20,
+          },
+        ]}
       >
         Вам нравится приложение?
       </Text>

@@ -28,7 +28,8 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.damego.etismobile",
-      "playStoreUrl": "https://play.google.com/store/apps/details?id=com.damego.etismobile"
+      "playStoreUrl": "https://play.google.com/store/apps/details?id=com.damego.etismobile",
+      "userInterfaceStyle": "automatic"
     },
     "web": {
       "favicon": "./assets/favicon.png"

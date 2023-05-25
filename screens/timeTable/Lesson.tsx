@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { ILesson } from '../../parser/timeTable';
+import { StyleSheet, Text, View } from 'react-native';
+
+import { useGlobalStyles } from '../../hooks';
+import { ILesson } from '../../models/timeTable';
 
 const styles = StyleSheet.create({
   lessonContainer: {
@@ -16,7 +18,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   lessonInfoView: {
-    flex: 1
+    flex: 1,
   },
   lessonInfoText: {
     fontSize: 16,
@@ -25,22 +27,24 @@ const styles = StyleSheet.create({
 });
 
 interface ILessonProps {
-  data: ILesson
+  data: ILesson;
 }
 
 const Lesson = ({ data }: ILessonProps) => {
+  const globalStyles = useGlobalStyles();
+
   const { audience, subject, time, lessonPosition } = data;
-  const lessonNum = `${lessonPosition} пара`
+  const lessonNum = `${lessonPosition} пара`;
 
   return (
     <View style={styles.lessonContainer}>
       <View style={styles.lessonTimeView}>
-        <Text style={styles.lessonPairText}>{lessonNum}</Text>
-        <Text>{time}</Text>
+        <Text style={[styles.lessonPairText, globalStyles.textColor]}>{lessonNum}</Text>
+        <Text style={globalStyles.textColor}>{time}</Text>
       </View>
       <View style={styles.lessonInfoView}>
-        <Text style={styles.lessonInfoText}>{subject}</Text>
-        <Text>{audience}</Text>
+        <Text style={[styles.lessonInfoText, globalStyles.textColor]}>{subject}</Text>
+        <Text style={globalStyles.textColor}>{audience}</Text>
       </View>
     </View>
   );

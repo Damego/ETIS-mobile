@@ -87,6 +87,7 @@ const getNewButtonArray = (firstPage, currentPage, lastPage) => {
 };
 
 const PageNavigator = ({ firstPage, currentPage, lastPage, onPageChange }) => {
+  const globalStyles = useGlobalStyles();
   const [buttons, changeButtons] = useState([]);
   const [pageNums, setPageNums] = useState([firstPage, currentPage, lastPage]);
 
@@ -118,7 +119,7 @@ const PageNavigator = ({ firstPage, currentPage, lastPage, onPageChange }) => {
         currentPage !== number ? (
           <ClickableText
             viewStyle={[styles.button]}
-            textStyle={styles.clickableText}
+            textStyle={[styles.clickableText, globalStyles.textColor]}
             text={number}
             onPress={() => onPageChange(number)}
             key={number}

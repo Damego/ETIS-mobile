@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import CardHeaderIn from '../../components/CardHeaderIn';
 import SubjectCheckPoint from './Subject';
+import { useGlobalStyles } from '../../hooks';
 
 const styles = StyleSheet.create({
   pointsView: {
@@ -37,10 +38,7 @@ const styles = StyleSheet.create({
   },
   colorMark5: {
     color: '#5c9f38',
-  },
-  colorNoMark: {
-    color: '#000',
-  },
+  }
 });
 
 const getPointsWord = (points) => {
@@ -52,13 +50,13 @@ const getPointsWord = (points) => {
   return pointsWord;
 };
 
-const getSubjectPointsStyle = (subject, totalPoint) => {
-  if (subject.info.length === 0) return styles.colorNoMark;
+const getSubjectPointsStyle = (subject, totalPoint, defaultTextColor) => {
+  if (subject.info.length === 0) return defaultTextColor;
 
   let textStyle;
   subject.info.forEach(({ maxScore, passScore, points, isAbsent }) => {
     if ((isAbsent || points < passScore) && maxScore !== 0.0) textStyle = styles.colorMark2;
-    if (Number.isNaN(points)) textStyle = styles.colorNoMark;
+    if (Number.isNaN(points)) textStyle = defaultTextColor;
   });
 
   if (textStyle) return textStyle;
@@ -80,8 +78,10 @@ const getSubjectTotalPoints = (subject) => {
 };
 
 const CardSign = ({ subject }) => {
+  const globalStyles = useGlobalStyles();
+
   const subjectTotalPoints = getSubjectTotalPoints(subject);
-  const textStyle = getSubjectPointsStyle(subject, subjectTotalPoints);
+  const textStyle = getSubjectPointsStyle(subject, subjectTotalPoints, globalStyles.textColor);
   const pointsWord = getPointsWord(subjectTotalPoints);
 
   return (
@@ -92,12 +92,12 @@ const CardSign = ({ subject }) => {
         </View>
         <View style={styles.totalPoints}>
           <Text style={[styles.markNumberText, textStyle]}>{subjectTotalPoints}</Text>
-          <Text style={styles.markWordText}>{pointsWord}</Text>
+          <Text style={[styles.markWordText, globalStyles.textColor]}>{pointsWord}</Text>
         </View>
       </View>
       {subject.mark !== null && (
         <View style={styles.markView}>
-          <Text style={styles.markWordText}>Оценка: {subject.mark}</Text>
+          <Text style={[styles.markWordText, globalStyles.textColor]}>Оценка: {subject.mark}</Text>
         </View>
       )}
     </CardHeaderIn>

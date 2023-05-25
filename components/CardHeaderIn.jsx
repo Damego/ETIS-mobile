@@ -1,7 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+
+
+import { useGlobalStyles } from '../hooks';
 import Card from './Card';
+
 
 const styles = StyleSheet.create({
   cardHeaderView: {
@@ -13,13 +17,17 @@ const styles = StyleSheet.create({
   },
 });
 
-const CardHeaderIn = ({ topText, children }) => (
-  <Card>
-    <View style={styles.cardHeaderView}>
-      <Text style={styles.cardHeaderText}>{topText}</Text>
-    </View>
-    {children}
-  </Card>
-);
+const CardHeaderIn = ({ topText, children }) => {
+  const globalStyles = useGlobalStyles();
+
+  return (
+    <Card>
+      <View style={styles.cardHeaderView}>
+        <Text style={[styles.cardHeaderText, globalStyles.textColor]}>{topText}</Text>
+      </View>
+      {children}
+    </Card>
+  );
+};
 
 export default CardHeaderIn;

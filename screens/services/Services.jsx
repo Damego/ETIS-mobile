@@ -5,11 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import ClickableText from '../../components/ClickableText';
 import ReviewBox from '../../components/ReviewBox';
 import Screen from '../../components/Screen';
+import { useGlobalStyles } from '../../hooks';
 import { signOut } from '../../redux/reducers/authSlice';
 import { storage } from '../../utils';
 import Menu from './Menu';
 import UserInfo from './UserInfo';
-import { useGlobalStyles } from '../../hooks';
 
 const styles = StyleSheet.create({
   exitView: { position: 'absolute', bottom: '2%', left: 0, right: 0, alignItems: 'center' },
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 });
 
 const Services = () => {
-  const globalStyles = useGlobalStyles()
+  const globalStyles = useGlobalStyles();
 
   const dispatch = useDispatch();
   const studentInfo = useSelector((state) => state.student.info);
@@ -43,10 +43,10 @@ const Services = () => {
   return (
     <Screen headerText="Сервисы" disableRefresh>
       <View>
-        <Text style={styles.textTitle}>Студент</Text>
+        <Text style={[styles.textTitle, globalStyles.textColor]}>Студент</Text>
         <UserInfo data={studentInfo} />
 
-        <Text style={styles.textTitle}>Меню</Text>
+        <Text style={[styles.textTitle, globalStyles.textColor]}>Меню</Text>
         <Menu />
 
         {showReviewModal && (
