@@ -50,7 +50,8 @@
     "react-native-web": "~0.18.10",
     "react-native-webview": "11.26.0",
     "react-redux": "^8.0.5",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "expo-navigation-bar": "~2.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

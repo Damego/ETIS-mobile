@@ -62,11 +62,12 @@ export default class Storage {
   }
 
   storeAppTheme(theme) {
-    return AsyncStorage.setItem('theme', theme);
+    return AsyncStorage.setItem('theme', theme.toString());
     }
 
   async getAppTheme() {
     const theme = await AsyncStorage.getItem('theme');
     if (theme === null) return ThemeType.auto;
+    return theme
   }
 }

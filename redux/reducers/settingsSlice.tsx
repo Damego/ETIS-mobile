@@ -1,9 +1,9 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 export enum ThemeType {
-    auto = 1,
-    light,
-    dark
+    auto = 'auto',
+    light = 'light',
+    dark = 'dark'
 }
 
 export interface TimeTableState {

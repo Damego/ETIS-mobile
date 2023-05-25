@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   selectButton: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: '6%',
@@ -24,9 +23,10 @@ const styles = StyleSheet.create({
   },
   menuView: {
     position: 'absolute',
-    top: '90%',
+    top: '100%',
     width: '100%',
     elevation: 10,
+
   },
   optionView: {
     paddingHorizontal: '6%',
@@ -46,7 +46,7 @@ const SelectOption = ({ label }) => {
       <Text style={[styles.optionText, globalStyles.textColor]}>{label}</Text>
     </View>
   );
-}
+};
 
 function Menu({ options, onSelect }) {
   const globalStyles = useGlobalStyles();
@@ -81,7 +81,11 @@ function Select({ selectedOption, isOpened, toggleOpened }) {
       activeOpacity={0.9}
     >
       <Text style={[styles.selectText, globalStyles.textColor]}>{selectedOption}</Text>
-      <AntDesign name={isOpened ? 'caretup' : 'caretdown'} size={14} color={globalStyles.textColor.color} />
+      <AntDesign
+        name={isOpened ? 'caretup' : 'caretdown'}
+        size={14}
+        color={globalStyles.textColor.color}
+      />
     </TouchableOpacity>
   );
 }

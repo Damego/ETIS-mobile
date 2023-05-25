@@ -1,46 +1,63 @@
-import React, {useCallback, useState} from 'react';
-import { View, Text} from 'react-native';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import React from 'react';
+import { Text, View } from 'react-native';
+
 import Dropdown from '../../components/Dropdown';
-import { ThemeType, changeTheme } from '../../redux/reducers/settingsSlice';
+import Screen from '../../components/Screen';
+import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
+import { changeTheme, ThemeType } from '../../redux/reducers/settingsSlice';
+import { storage } from '../../utils';
+import Card from '../../components/Card';
 
 const options = [
-    {
-        label: 'Автоматическая',
-        value: ThemeType.auto
-    },
-    {
-        label: 'Светлая',
-        value: ThemeType.light
-    },
-    {
-        label: 'Тёмная',
-        value: ThemeType.dark
-    }
-]
+  {
+    label: 'Автоматическая',
+    value: ThemeType.auto,
+  },
+  {
+    label: 'Светлая',
+    value: ThemeType.light,
+  },
+  {
+    label: 'Тёмная',
+    value: ThemeType.dark,
+  },
+];
 
 const ToggleThemeSetting = () => {
-    const dispatch = useAppDispatch();
-    const theme = useAppSelector(state => state.settings.theme);
+  const dispatch = useAppDispatch();
+  const themeType = useAppSelector((state) => state.settings.theme);
+  const globalStyles = useGlobalStyles();
 
-    const changeAppTheme = (selectedTheme) => {
-        dispatch(changeTheme(selectedTheme));
-    }
+  const changeAppTheme = (selectedTheme: ThemeType) => {
+    dispatch(changeTheme(selectedTheme));
+    storage.storeAppTheme(selectedTheme);
+  };
 
-    return (
-        <View style={{flexDirection: 'row'}}>
-            <Text>Тема</Text>
-            <Dropdown options={options} selectedOption={options.find(option => option.value === theme)} onSelect={changeAppTheme}/>
-        </View>
-    )
-}
-
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}
+    >
+      <Text style={{ fontSize: 20, fontWeight: '500', ...globalStyles.textColor}}>Тема</Text>
+      <Dropdown
+        options={options}
+        selectedOption={options.find((option) => option.value === themeType)}
+        onSelect={changeAppTheme}
+      />
+    </View>
+  );
+};
 
 export default function Settings() {
+  return (
+    <Screen headerText="Настройки" disableRefresh>
+      <Card>
+        <ToggleThemeSetting />
+      </Card>
 
-    return (
-        <View style={{marginTop: '10%'}}>
-            <ToggleThemeSetting />
-        </View>
-    )
+    </Screen>
+  );
 }
