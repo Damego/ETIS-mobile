@@ -6,6 +6,7 @@ export const LightTheme = {
     border: '#EAEAEA',
     text: '#000000',
     block: '#FFFFFF',
+    card: '#FFFFFF',
   },
 };
 
@@ -17,5 +18,6 @@ export const DarkTheme = {
     border: '#3B3B3B',
     text: '#DDDDDD',
     block: '#222222',
+    card: '#222222',
   },
 };
