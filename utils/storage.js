@@ -1,4 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
+import { ThemeType } from "../redux/reducers/settingsSlice";
 
 export default class Storage {
   async bumpReviewRequest() {
@@ -45,8 +47,8 @@ export default class Storage {
   async getTimeTableData(week) {
     let stringData;
     if (week === undefined) {
-      stringData = await SecureStore.getItemAsync('timetable-current');
-    } else stringData = await SecureStore.getItemAsync(`timetable-${week}`);
+      stringData = await AsyncStorage.getItem('timetable-current');
+    } else stringData = await AsyncStorage.getItem(`timetable-${week}`);
 
     return JSON.parse(stringData);
   }
@@ -55,7 +57,16 @@ export default class Storage {
     const stringData = JSON.stringify(data);
 
     if (week === undefined) {
-      await SecureStore.setItemAsync('timetable-current', stringData);
-    } else await SecureStore.setItemAsync(`timetable-${week}`, stringData);
+      await AsyncStorage.setItem('timetable-current', stringData);
+    } else await AsyncStorage.setItem(`timetable-${week}`, stringData);
+  }
+
+  storeAppTheme(theme) {
+    return AsyncStorage.setItem('theme', theme);
+    }
+
+  async getAppTheme() {
+    const theme = await AsyncStorage.getItem('theme');
+    if (theme === null) return ThemeType.auto;
   }
 }

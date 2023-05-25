@@ -7,15 +7,25 @@ import AuthPage from '../screens/auth/Auth';
 import TabNavigator from './TabNavigation';
 import {LightTheme, DarkTheme} from '../styles/themes';
 import { useColorScheme } from 'react-native';
+import { useAppSelector } from '../hooks';
+import { ThemeType } from '../redux/reducers/settingsSlice';
 
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
   const isSignedIn = useSelector(state => state.auth.isSignedIn )
-  const scheme = useColorScheme();
+  const themeNum = useAppSelector(state => state.settings.theme);
+
+  let theme;
+  if (themeNum === ThemeType.auto) {
+    const scheme = useColorScheme();
+    theme = scheme === 'dark' ? DarkTheme : LightTheme;
+  } else {
+    theme = ThemeType.light ? LightTheme : DarkTheme;
+  }
 
   return (
-    <NavigationContainer theme={scheme === 'dark' ? DarkTheme : LightTheme}>
+    <NavigationContainer theme={theme}>
       <Stack.Navigator
         screenOptions={{
           headerShown: false,

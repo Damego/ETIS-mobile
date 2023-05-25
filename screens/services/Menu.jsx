@@ -75,6 +75,11 @@ function Menu() {
           link="https://github.com/damego/ETIS-mobile"
         />
         <Button
+          text="Настройки"
+          icon={<AntDesign name="setting" size={iconSize} color={iconColor} />}
+          page='Настройки'
+        />
+        <Button
           text="О приложении"
           icon={<AntDesign name="infocirlceo" size={iconSize} color={iconColor} />}
           page="О приложении"
