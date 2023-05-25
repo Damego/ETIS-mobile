@@ -3,25 +3,28 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
+import { useAppColorScheme } from '../hooks/theme';
 import AuthPage from '../screens/auth/Auth';
+import { DarkTheme, LightTheme } from '../styles/themes';
 import TabNavigator from './TabNavigation';
-import {LightTheme, DarkTheme} from '../styles/themes';
-import { useColorScheme } from 'react-native';
+import { setBackgroundColorAsync } from 'expo-navigation-bar';
 
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
-  const isSignedIn = useSelector(state => state.auth.isSignedIn )
-  const scheme = useColorScheme();
+  const isSignedIn = useSelector((state) => state.auth.isSignedIn);
+  const scheme = useAppColorScheme();
+  const theme = scheme === 'dark' ? DarkTheme : LightTheme;
+  setBackgroundColorAsync(theme.colors.card)
 
   return (
-    <NavigationContainer theme={scheme === 'dark' ? DarkTheme : LightTheme}>
+    <NavigationContainer theme={theme}>
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
         }}
       >
-        {!isSignedIn  ? (
+        {!isSignedIn ? (
           <Stack.Screen name="Authorization" component={AuthPage} />
         ) : (
           <Stack.Screen name="Navigator" component={TabNavigator} />

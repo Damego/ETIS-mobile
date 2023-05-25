@@ -1,9 +1,10 @@
 import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
 import React, { ReactElement, useRef, useState } from 'react';
-import { RefreshControl, ScrollView, StyleSheet, useColorScheme, View } from 'react-native';
+import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 
 import Header from './Header';
+import { useAppColorScheme } from '../hooks/theme';
 
 const styles = StyleSheet.create({
   screen: {
@@ -34,7 +35,6 @@ const Screen = ({
 }: ScreenProps) => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const scrollRef = useRef<ScrollView>();
-  const scheme = useColorScheme()
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -44,7 +44,7 @@ const Screen = ({
 
   return (
     <View style={{ marginTop: Constants.statusBarHeight, flex: 1 }}>
-      <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
+      <StatusBar style={useAppColorScheme() === 'dark' ? 'light' : 'dark'} />
       {!scrollHeader && <Header text={headerText} onBackButtonClick={onBackPageClick} />}
       <ScrollView
         ref={startScrollFromBottom ? scrollRef : undefined}

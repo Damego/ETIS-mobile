@@ -10,6 +10,7 @@
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
     "@haskkor/react-native-recaptchav3": "github:Damego/react-native-recaptchav3",
+    "@react-native-async-storage/async-storage": "^1.18.1",
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
@@ -43,13 +44,14 @@
     "react-native-autoheight-webview": "^1.6.5",
     "react-native-gesture-handler": "~2.9.0",
     "react-native-get-random-values": "~1.8.0",
+    "react-native-reanimated": "~2.14.4",
     "react-native-safe-area-context": "4.5.0",
     "react-native-screens": "~3.20.0",
     "react-native-web": "~0.18.10",
     "react-native-webview": "11.26.0",
     "react-redux": "^8.0.5",
     "uuid": "^9.0.0",
-    "react-native-reanimated": "~2.14.4"
+    "expo-navigation-bar": "~2.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

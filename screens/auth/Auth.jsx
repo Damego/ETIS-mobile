@@ -11,6 +11,7 @@ import { PRIVACY_POLICY_URL, httpClient, storage } from '../../utils';
 import Footer from './AuthFooter';
 import Form from './AuthForm';
 import Recovery from './Recovery';
+import { useAppColorScheme } from '../../hooks/theme';
 
 const showPrivacyPolicy = () => {
   Alert.alert(
@@ -32,7 +33,6 @@ const showPrivacyPolicy = () => {
 const AuthPage = () => {
   const dispatch = useDispatch();
   const autoAuth = useSelector((state) => state.auth.shouldAutoAuth);
-  const scheme = useColorScheme();
 
   // TODO: Replace with the new loading screen
   const [isLoading, setLoading] = useState(autoAuth);
@@ -40,6 +40,8 @@ const AuthPage = () => {
   const [recaptchaToken, setRecaptchaToken] = useState();
   const [showRecovery, setShowRecovery] = useState(false);
   const [saveCreds, setSaveCreds] = useState(true);
+
+  const statusBarStyle = useAppColorScheme() === 'dark' ? 'light' : 'dark'
 
   useEffect(() => {
     const wrapper = async () => {
@@ -107,7 +109,7 @@ const AuthPage = () => {
   return (
     <>
       <View style={{ marginTop: Constants.statusBarHeight }}>
-        <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
+        <StatusBar style={statusBarStyle} />
         {!recaptchaToken && <ReCaptcha onReceiveToken={onReceiveRecaptchaToken} />}
         <Header text="Авторизация" />
 
