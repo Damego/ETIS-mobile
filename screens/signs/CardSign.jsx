@@ -91,7 +91,7 @@ const CardSign = ({ subject }) => {
           <SubjectCheckPoint data={subject.info} />
         </View>
         <View style={styles.totalPoints}>
-          <Text style={[styles.markNumberText, textStyle, globalStyles.textColor]}>{subjectTotalPoints}</Text>
+          <Text style={[styles.markNumberText, textStyle]}>{subjectTotalPoints}</Text>
           <Text style={[styles.markWordText, globalStyles.textColor]}>{pointsWord}</Text>
         </View>
       </View>

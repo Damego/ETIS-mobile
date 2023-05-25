@@ -1,7 +1,7 @@
 import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { Alert, Linking, View, useColorScheme } from 'react-native';
+import { Alert, Linking, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Header from '../../components/Header';

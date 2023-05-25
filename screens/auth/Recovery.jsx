@@ -2,7 +2,7 @@
 import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { View, useColorScheme } from 'react-native';
+import { View } from 'react-native';
 
 import Header from '../../components/Header';
 import ReCaptcha from '../../components/ReCaptcha';
