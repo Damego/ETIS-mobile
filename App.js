@@ -10,12 +10,14 @@ import { storage } from './utils';
 const store = setupStore();
 
 const loadTheme = () => {
-  return dispatch => {
-    storage.getAppTheme().then(theme => {dispatch(changeTheme(theme))})
-  }
-}
+  return (dispatch) => {
+    storage.getAppTheme().then((theme) => {
+      dispatch(changeTheme(theme));
+    });
+  };
+};
 
-store.dispatch(loadTheme())
+store.dispatch(loadTheme());
 
 const App = () => (
   <Provider store={store}>

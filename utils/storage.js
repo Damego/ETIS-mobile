@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
-import { ThemeType } from "../redux/reducers/settingsSlice";
+import { ThemeType } from '../redux/reducers/settingsSlice';
 
 export default class Storage {
   async bumpReviewRequest() {
@@ -63,11 +63,11 @@ export default class Storage {
 
   storeAppTheme(theme) {
     return AsyncStorage.setItem('theme', theme.toString());
-    }
+  }
 
   async getAppTheme() {
     const theme = await AsyncStorage.getItem('theme');
     if (theme === null) return ThemeType.auto;
-    return theme
+    return theme;
   }
 }
