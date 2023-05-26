@@ -7,6 +7,7 @@ import { useGlobalStyles } from '../hooks';
 const styles = StyleSheet.create({
   dropdownView: {
     position: 'relative',
+    width: '60%',
   },
   selectButton: {
     flexDirection: 'row',
