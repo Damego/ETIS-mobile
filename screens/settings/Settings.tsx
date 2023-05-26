@@ -1,12 +1,12 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
+import Card from '../../components/Card';
 import Dropdown from '../../components/Dropdown';
 import Screen from '../../components/Screen';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
-import { changeTheme, ThemeType } from '../../redux/reducers/settingsSlice';
+import { ThemeType, changeTheme } from '../../redux/reducers/settingsSlice';
 import { storage } from '../../utils';
-import Card from '../../components/Card';
 
 const options = [
   {
@@ -41,7 +41,9 @@ const ToggleThemeSetting = () => {
         alignItems: 'center',
       }}
     >
-      <Text style={{ fontSize: 20, fontWeight: '500', ...globalStyles.textColor}}>Тема</Text>
+      <View style={{flex: 2}}>
+        <Text style={{ fontSize: 20, fontWeight: '500', ...globalStyles.textColor }}>Тема</Text>
+      </View>
       <Dropdown
         options={options}
         selectedOption={options.find((option) => option.value === themeType)}
@@ -57,7 +59,6 @@ export default function Settings() {
       <Card>
         <ToggleThemeSetting />
       </Card>
-
     </Screen>
   );
 }
