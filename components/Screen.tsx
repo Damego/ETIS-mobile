@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 interface ScreenProps {
   headerText: string;
   scrollHeader?: boolean;
-  onUpdate?(): Promise<void>;
+  onUpdate?(arg?: any): Promise<void>;
   disableRefresh?: boolean;
   children: ReactElement | ReactElement[];
   onBackPageClick?(): void | Promise<void>;

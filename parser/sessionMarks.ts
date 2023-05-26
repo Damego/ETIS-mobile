@@ -1,15 +1,17 @@
 import { load } from 'cheerio';
 
 import { getTextField } from './utils';
+import {ISessionMarks} from '../models/sessionMarks';
 
-export default function parseSessionMarks(html) {
+export default function parseSessionMarks(html): ISessionMarks[] {
   const $ = load(html);
   const table = $('.common');
 
-  const data = [];
+  const data: ISessionMarks[] = [];
   let sessionIndex = -1;
 
   table.find('tr').each((elementIndex, element) => {
+    // @ts-ignore
     const tr = table.find(element);
     const title = tr.find('th');
 

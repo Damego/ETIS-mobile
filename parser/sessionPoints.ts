@@ -1,22 +1,32 @@
 import { load } from 'cheerio';
 
+import { ICheckPoint, ISessionPoints } from '../models/sessionPoints';
 import { getTextField } from './utils';
 
-export default function parseSessionPoints(html) {
+export default function parseSessionPoints(html): ISessionPoints {
   const $ = load(html);
-  let data = {
+  const data: ISessionPoints = {
     subjects: [],
     currentTrimester: null,
     latestTrimester: null,
   };
-  $('.common', html).each((el, table) => {
-    let info = [];
-    $('tr', table).each((i, tr) => {
-      const td = $(tr).find('td');
+  $('.common', html).each((index, tableElement) => {
+    const table = $(tableElement);
+    const checkPoints: ICheckPoint[] = [];
+
+    const trs = table.find('tr');
+    trs.each((i, trElement) => {
+      // @ts-ignore
+      const tr = $(trElement, trs);
+      if (tr.find('th').length !== 0) {
+        return;
+      }
+
+      const td = tr.find('td');
       const fields = [];
 
       for (let j = 0; j < 9; j += 1) {
-        fields[j] = getTextField(td.eq(j));
+        fields.push(getTextField(td.eq(j)));
       }
       const [
         theme,
@@ -32,7 +42,7 @@ export default function parseSessionPoints(html) {
 
       const points = parseFloat(rawPoints);
       const isAbsent = rawPoints === 'н';
-      info.push({
+      checkPoints.push({
         theme,
         typeWork,
         typeControl,
@@ -46,15 +56,20 @@ export default function parseSessionPoints(html) {
         teacher,
       });
     });
-    info.splice(0, 2);
-    info.splice(-1, 1);
+
+    checkPoints.splice(-1, 1);
+
+    let totalPoints = parseFloat(getTextField(trs.eq(-1).find('td').eq(1)));
+    if (Number.isNaN(totalPoints)) totalPoints = 0;
+
     data.subjects.push({
-      info,
+      checkPoints,
+      totalPoints,
       mark: null,
     });
   });
-  $('h3', html).each((el, name) => {
-    data.subjects[el].subject = getTextField($(name));
+  $('h3', html).each((index, element) => {
+    data.subjects[index].name = getTextField($(element));
   });
 
   const subMenu = $('.submenu').last();

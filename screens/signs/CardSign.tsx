@@ -2,8 +2,9 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import CardHeaderIn from '../../components/CardHeaderIn';
-import SubjectCheckPoints from './SubjectCheckPoints';
 import { useGlobalStyles } from '../../hooks';
+import { ISubject } from '../../models/sessionPoints';
+import SubjectCheckPoints from './SubjectCheckPoints';
 
 const styles = StyleSheet.create({
   pointsView: {
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
   },
   colorMark5: {
     color: '#5c9f38',
-  }
+  },
 });
 
 const getPointsWord = (points) => {
@@ -50,11 +51,11 @@ const getPointsWord = (points) => {
   return pointsWord;
 };
 
-const getSubjectPointsStyle = (subject, totalPoint, defaultTextColor) => {
-  if (subject.info.length === 0) return defaultTextColor;
+const getSubjectPointsStyle = (subject: ISubject, totalPoints: number, defaultTextColor) => {
+  if (subject.checkPoints.length === 0) return defaultTextColor;
 
   let textStyle;
-  subject.info.forEach(({ passScore, points, isAbsent, isIntroductionWork }) => {
+  subject.checkPoints.forEach(({ passScore, points, isAbsent, isIntroductionWork }) => {
     if (!isIntroductionWork) {
       if (isAbsent || points < passScore) textStyle = styles.colorMark2;
       else if (Number.isNaN(points) && !isAbsent) textStyle = defaultTextColor;
@@ -63,40 +64,35 @@ const getSubjectPointsStyle = (subject, totalPoint, defaultTextColor) => {
 
   if (textStyle) return textStyle;
 
-  if (totalPoint < 61) return styles.colorMark3;
-  if (totalPoint < 81) return styles.colorMark4;
+  if (totalPoints < 61) return styles.colorMark3;
+  if (totalPoints < 81) return styles.colorMark4;
   return styles.colorMark5;
 };
 
-const getSubjectTotalPoints = (subject) => {
-  let subjectTotalPoints = 0;
-  subject.info.forEach(({ currentScore, isIntroductionWork }) => {
-    subjectTotalPoints += Number.isNaN(currentScore) || isIntroductionWork ? 0 : currentScore;
-  });
-  subjectTotalPoints = Number(subjectTotalPoints.toFixed(1));
-  if (subjectTotalPoints % 1 === 0) subjectTotalPoints = Number(subjectTotalPoints.toFixed(0));
+interface CardSignProps {
+  subject: ISubject;
+}
 
-  return subjectTotalPoints;
-};
-
-const CardSign = ({ subject }) => {
+const CardSign = ({ subject }: CardSignProps) => {
   const globalStyles = useGlobalStyles();
 
-  const subjectTotalPoints = getSubjectTotalPoints(subject);
+  const subjectTotalPoints = subject.totalPoints;
   const textStyle = getSubjectPointsStyle(subject, subjectTotalPoints, globalStyles.textColor);
   const pointsWord = getPointsWord(subjectTotalPoints);
 
   return (
-    <CardHeaderIn topText={subject.subject}>
+    <CardHeaderIn topText={subject.name}>
       <View style={styles.pointsView}>
-        <View style={styles.subjects}>
-          <SubjectCheckPoints data={subject.info} />
+        <View>
+          <SubjectCheckPoints data={subject.checkPoints} />
         </View>
+
         <View style={styles.totalPoints}>
           <Text style={[styles.markNumberText, textStyle]}>{subjectTotalPoints}</Text>
           <Text style={[styles.markWordText, globalStyles.textColor]}>{pointsWord}</Text>
         </View>
       </View>
+
       {subject.mark !== null && (
         <View style={styles.markView}>
           <Text style={[styles.markWordText, globalStyles.textColor]}>Оценка: {subject.mark}</Text>

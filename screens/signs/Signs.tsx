@@ -5,15 +5,17 @@ import { useDispatch } from 'react-redux';
 import Dropdown from '../../components/Dropdown';
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
+import { ISessionMarks } from '../../models/sessionMarks';
+import { ISessionPoints } from '../../models/sessionPoints';
 import { parseSessionMarks, parseSessionPoints } from '../../parser';
 import { isLoginPage } from '../../parser/utils';
 import { signOut } from '../../redux/reducers/authSlice';
 import { httpClient } from '../../utils';
 import CardSign from './CardSign';
 
-function buildTrimesterOptions(currentTrimester, latestTrimester) {
-  const buildOption = (trimester) => ({ label: `${trimester} Триместр`, value: trimester });
+const buildOption = (trimester: number) => ({ label: `${trimester} Триместр`, value: trimester });
 
+function buildTrimesterOptions(currentTrimester: number, latestTrimester: number) {
   const options = [];
   for (let index = latestTrimester; index > 0; index -= 1) {
     if (index !== currentTrimester) options.push(buildOption(index));
@@ -25,29 +27,39 @@ function buildTrimesterOptions(currentTrimester, latestTrimester) {
   };
 }
 
-const addSessionMarksToPoints = (allSessionMarks, sessionPoints) => {
-  const sessionMarks = allSessionMarks.current
-    .filter((sessionData) => sessionData.fullSessionNumber === sessionPoints.currentTrimester)
-    .at(0);
+const addSessionMarksToPoints = (
+  allSessionMarks: ISessionMarks[],
+  sessionPoints: ISessionPoints
+) => {
+  const sessionMarks = allSessionMarks.find(
+    (sessionData) => sessionData.fullSessionNumber === sessionPoints.currentTrimester
+  );
 
   if (sessionMarks) {
     sessionPoints.subjects.forEach((subject) => {
-      const [subjectMarkData] = sessionMarks.disciplines.filter(
-        (discipline) => discipline.name === subject.subject
+      const discipline = sessionMarks.disciplines.find(
+        (discipline) => discipline.name === subject.name
       );
-      if (subjectMarkData) subject.mark = subjectMarkData.mark;
+      if (discipline) subject.mark = discipline.mark;
     });
   }
 };
 
+interface ISubjectList {
+  data: ISessionPoints;
+}
+
+const SubjectList = ({ data }: ISubjectList): JSX.Element[] =>
+  data.subjects.map((subject) => <CardSign subject={subject} key={subject.name} />);
+
 const Signs = () => {
   const dispatch = useDispatch();
-  const [isLoading, setLoading] = useState(false);
-  const [data, setData] = useState(null);
-  const allSessionMarks = useRef();
+  const [isLoading, setLoading] = useState<boolean>(false);
+  const [data, setData] = useState<ISessionPoints>(null);
+  const allSessionMarks = useRef<ISessionMarks[]>();
   const [optionData, setOptionData] = useState(null);
 
-  const loadData = async (trimester) => {
+  const loadData = async (trimester?: number) => {
     // We use dropdown to fetch new data, and we need to show loading state while data is fetching
     if (data) setLoading(true);
 
@@ -63,7 +75,7 @@ const Signs = () => {
       allSessionMarks.current = parseSessionMarks(await httpClient.getSigns('session'));
 
     const sessionPoints = parseSessionPoints(html);
-    addSessionMarksToPoints(allSessionMarks, sessionPoints);
+    addSessionMarksToPoints(allSessionMarks.current, sessionPoints);
 
     setOptionData(
       buildTrimesterOptions(sessionPoints.currentTrimester, sessionPoints.latestTrimester)
@@ -87,9 +99,8 @@ const Signs = () => {
           options={optionData.options}
         />
       </View>
-      {data.subjects.map((subject) => (
-        <CardSign subject={subject} key={subject.subject} />
-      ))}
+
+      <SubjectList data={data} />
     </Screen>
   );
 };
