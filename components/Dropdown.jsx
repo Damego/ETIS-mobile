@@ -7,7 +7,7 @@ import { useGlobalStyles } from '../hooks';
 const styles = StyleSheet.create({
   dropdownView: {
     position: 'relative',
-    flexGrow: 1
+    flexGrow: 1,
   },
   selectButton: {
     flexDirection: 'row',
@@ -47,15 +47,11 @@ const SelectOption = ({ label }) => {
   );
 };
 
-function Menu({ options, onSelect, isOpened }) {
+function Menu({ options, onSelect }) {
   const globalStyles = useGlobalStyles();
-  const menuStyles = [styles.menuView, globalStyles.border, globalStyles.block]
-  if (isOpened) menuStyles.push({display: 'none'})
 
   return (
-    <View
-      style={menuStyles}
-    >
+    <View style={[styles.menuView, globalStyles.border, globalStyles.block]}>
       {options.map(({ label, value }) => (
         <TouchableOpacity
           onPress={() => onSelect(value)}
@@ -102,7 +98,7 @@ export default function Dropdown({ selectedOption, options, onSelect }) {
         isOpened={isOpened}
         toggleOpened={toggleOpened}
       />
-      <Menu options={options} onSelect={onSelect} isOpened={isOpened} />
+      {isOpened && <Menu options={options} onSelect={onSelect} />}
     </View>
   );
 }
