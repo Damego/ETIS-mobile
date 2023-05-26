@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import CardHeaderIn from '../../components/CardHeaderIn';
-import SubjectCheckPoint from './Subject';
+import SubjectCheckPoints from './SubjectCheckPoints';
 import { useGlobalStyles } from '../../hooks';
 
 const styles = StyleSheet.create({
@@ -90,7 +90,7 @@ const CardSign = ({ subject }) => {
     <CardHeaderIn topText={subject.subject}>
       <View style={styles.pointsView}>
         <View style={styles.subjects}>
-          <SubjectCheckPoint data={subject.info} />
+          <SubjectCheckPoints data={subject.info} />
         </View>
         <View style={styles.totalPoints}>
           <Text style={[styles.markNumberText, textStyle]}>{subjectTotalPoints}</Text>

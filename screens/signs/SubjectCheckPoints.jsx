@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const SubjectCheckPoint = ({ data }) => {
+const SubjectCheckPoints = ({ data }) => {
   const globalStyles = useGlobalStyles();
 
   return (
@@ -44,4 +44,4 @@ const SubjectCheckPoint = ({ data }) => {
   );
 };
 
-export default SubjectCheckPoint;
+export default SubjectCheckPoints;
