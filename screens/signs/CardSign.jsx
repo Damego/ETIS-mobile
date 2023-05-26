@@ -54,9 +54,11 @@ const getSubjectPointsStyle = (subject, totalPoint, defaultTextColor) => {
   if (subject.info.length === 0) return defaultTextColor;
 
   let textStyle;
-  subject.info.forEach(({ maxScore, passScore, points, isAbsent }) => {
-    if ((isAbsent || points < passScore) && maxScore !== 0.0) textStyle = styles.colorMark2;
-    if (Number.isNaN(points)) textStyle = defaultTextColor;
+  subject.info.forEach(({ passScore, points, isAbsent, isIntroductionWork }) => {
+    if (!isIntroductionWork) {
+      if (isAbsent || points < passScore) textStyle = styles.colorMark2;
+      else if (Number.isNaN(points) && !isAbsent) textStyle = defaultTextColor;
+    }
   });
 
   if (textStyle) return textStyle;
@@ -68,8 +70,8 @@ const getSubjectPointsStyle = (subject, totalPoint, defaultTextColor) => {
 
 const getSubjectTotalPoints = (subject) => {
   let subjectTotalPoints = 0;
-  subject.info.forEach(({ maxScore, points }) => {
-    subjectTotalPoints += Number.isNaN(points) || maxScore === 0 ? 0 : points;
+  subject.info.forEach(({ currentScore, isIntroductionWork }) => {
+    subjectTotalPoints += Number.isNaN(currentScore) || isIntroductionWork ? 0 : currentScore;
   });
   subjectTotalPoints = Number(subjectTotalPoints.toFixed(1));
   if (subjectTotalPoints % 1 === 0) subjectTotalPoints = Number(subjectTotalPoints.toFixed(0));
