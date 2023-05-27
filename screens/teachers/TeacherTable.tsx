@@ -6,6 +6,7 @@ import BorderLine from '../../components/BorderLine';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
+import { ITeacher } from '../../models/teachers';
 import { parseTeachers } from '../../parser';
 import { isLoginPage } from '../../parser/utils';
 import { signOut } from '../../redux/reducers/authSlice';
@@ -14,7 +15,7 @@ import Teacher from './Teacher';
 
 const TeacherTable = () => {
   const dispatch = useDispatch();
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<[string, ITeacher[]][]>(null);
 
   const loadData = async () => {
     const html = await httpClient.getTeachers();
