@@ -185,6 +185,12 @@ class HTTPClient {
   getGroupJournal() {
     return this.request('/stu_jour.group_tt');
   }
+  getOrders() {
+    return this.request('/stu.orders');
+  }
+  getCertificate() {
+    return this.request('/cert_pkg.stu_certif');
+  }
 }
 
 const httpClient = new HTTPClient();
