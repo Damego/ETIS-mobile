@@ -8,7 +8,7 @@ import { parseShortTeachPlan } from '../../parser';
 import { isLoginPage } from '../../parser/utils';
 import { signOut } from '../../redux/reducers/authSlice';
 import { httpClient } from '../../utils';
-import Trimester from './Trimester';
+import SessionCard from './SessionCard';
 
 const ShortTeachPlan = () => {
   const dispatch = useDispatch();
@@ -35,8 +35,8 @@ const ShortTeachPlan = () => {
 
   return (
     <Screen headerText="Учебный план" onUpdate={loadData}>
-      {data.map((trimester) => (
-        <Trimester data={trimester} key={trimester.trimester} />
+      {data.map((session) => (
+        <SessionCard data={session} key={session.trimester} />
       ))}
     </Screen>
   );
