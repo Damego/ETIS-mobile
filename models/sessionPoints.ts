@@ -21,6 +21,7 @@ export interface ISubject {
 
 export interface ISessionPoints {
   subjects: ISubject[];
-  currentTrimester: number;
-  latestTrimester: number;
+  currentSession: number;
+  latestSession: number;
+  sessionName: string;
 }

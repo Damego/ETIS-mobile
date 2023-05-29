@@ -7,8 +7,9 @@ export default function parseSessionPoints(html): ISessionPoints {
   const $ = load(html);
   const data: ISessionPoints = {
     subjects: [],
-    currentTrimester: null,
-    latestTrimester: null,
+    currentSession: null,
+    latestSession: null,
+    sessionName: null,
   };
   $('.common', html).each((index, tableElement) => {
     const table = $(tableElement);
@@ -75,11 +76,13 @@ export default function parseSessionPoints(html): ISessionPoints {
   const subMenu = $('.submenu').last();
   $('.submenu-item', subMenu).each((i, el) => {
     if (!getTextField($('a', el))) {
-      data.currentTrimester = i + 1;
+      data.currentSession = i + 1;
       return false;
     }
   });
-  data.latestTrimester = $('.submenu-item', subMenu).last().index() + 1;
+  const latestSession = $('.submenu-item', subMenu).last();
+  data.latestSession = latestSession.index() + 1;
+  data.sessionName = getTextField(latestSession).split(' ').at(-1);
 
   return data;
 }

@@ -6,37 +6,40 @@ import Dropdown from '../../components/Dropdown';
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
 import { ISessionMarks } from '../../models/sessionMarks';
-import { ISessionPoints } from '../../models/sessionPoints';
+import { ISessionPoints } from '../../models/sessionSignsData';
 import { parseSessionMarks, parseSessionPoints } from '../../parser';
 import { isLoginPage } from '../../parser/utils';
 import { signOut } from '../../redux/reducers/authSlice';
 import { httpClient } from '../../utils';
 import CardSign from './CardSign';
 
-const buildOption = (trimester: number) => ({ label: `${trimester} Триместр`, value: trimester });
+const buildOption = (session: number, sessionName: string) => ({
+  label: `${session} ${sessionName}`,
+  value: session,
+});
 
-function buildTrimesterOptions(currentTrimester: number, latestTrimester: number) {
+function buildTrimesterOptions(currentSession: number, latestSession: number, sessionName: string) {
   const options = [];
-  for (let index = latestTrimester; index > 0; index -= 1) {
-    if (index !== currentTrimester) options.push(buildOption(index));
+  for (let index = latestSession; index > 0; index -= 1) {
+    if (index !== currentSession) options.push(buildOption(index, sessionName));
   }
 
   return {
-    current: buildOption(currentTrimester),
+    current: buildOption(currentSession, sessionName),
     options,
   };
 }
 
 const addSessionMarksToPoints = (
   allSessionMarks: ISessionMarks[],
-  sessionPoints: ISessionPoints
+  sessionSignsData: ISessionPoints
 ) => {
   const sessionMarks = allSessionMarks.find(
-    (sessionData) => sessionData.fullSessionNumber === sessionPoints.currentTrimester
+    (sessionData) => sessionData.fullSessionNumber === sessionSignsData.currentSession
   );
 
   if (sessionMarks) {
-    sessionPoints.subjects.forEach((subject) => {
+    sessionSignsData.subjects.forEach((subject) => {
       const discipline = sessionMarks.disciplines.find(
         (discipline) => discipline.name === subject.name
       );
@@ -59,11 +62,11 @@ const Signs = () => {
   const allSessionMarks = useRef<ISessionMarks[]>();
   const [optionData, setOptionData] = useState(null);
 
-  const loadData = async (trimester?: number) => {
+  const loadData = async (session?: number) => {
     // We use dropdown to fetch new data, and we need to show loading state while data is fetching
     if (data) setLoading(true);
 
-    const html = await httpClient.getSigns('current', trimester);
+    const html = await httpClient.getSigns('current', session);
     if (!html) return;
 
     if (isLoginPage(html)) {
@@ -74,13 +77,17 @@ const Signs = () => {
     if (allSessionMarks.current === undefined)
       allSessionMarks.current = parseSessionMarks(await httpClient.getSigns('session'));
 
-    const sessionPoints = parseSessionPoints(html);
-    addSessionMarksToPoints(allSessionMarks.current, sessionPoints);
+    const sessionSignsData = parseSessionPoints(html);
+    addSessionMarksToPoints(allSessionMarks.current, sessionSignsData);
 
     setOptionData(
-      buildTrimesterOptions(sessionPoints.currentTrimester, sessionPoints.latestTrimester)
+      buildTrimesterOptions(
+        sessionSignsData.currentSession,
+        sessionSignsData.latestSession,
+        sessionSignsData.sessionName
+      )
     );
-    setData(sessionPoints);
+    setData(sessionSignsData);
     if (data) setLoading(false);
   };
 
