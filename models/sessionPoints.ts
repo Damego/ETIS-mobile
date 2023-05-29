@@ -10,6 +10,7 @@ export interface ICheckPoint {
   teacher: string;
   isAbsent: boolean;
   isIntroductionWork: boolean;
+  hasPoints: boolean;
 }
 
 export interface ISubject {
@@ -19,7 +20,7 @@ export interface ISubject {
   mark?: string;
 }
 
-export interface ISessionPoints {
+export interface ISessionSignsData {
   subjects: ISubject[];
   currentSession: number;
   latestSession: number;

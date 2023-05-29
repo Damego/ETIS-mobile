@@ -4,6 +4,7 @@ import * as SecureStore from 'expo-secure-store';
 import { ITeacher, TeacherType } from '../models/teachers';
 import { ITimeTable } from '../models/timeTable';
 import { ThemeType } from '../redux/reducers/settingsSlice';
+import { ISessionSignsData } from '../models/sessionPoints';
 
 export default class Storage {
   async bumpReviewRequest() {
@@ -66,13 +67,29 @@ export default class Storage {
 
   async getTeacherData(): Promise<TeacherType | null> {
     const stringData = await AsyncStorage.getItem('teachers');
-    if (stringData === undefined) return;
-
-    return JSON.parse(stringData);
+    if (stringData) JSON.parse(stringData);
   }
 
   storeTeacherData(data: TeacherType) {
     return AsyncStorage.setItem('teachers', JSON.stringify(data));
+  }
+
+  async getSignsData(session: number): Promise<ISessionSignsData> {
+    const stringData = await AsyncStorage.getItem(`session-${session}`);
+    if (stringData) return JSON.parse(stringData);
+  }
+
+  storeSignsData(data: ISessionSignsData) {
+    return AsyncStorage.setItem(`session-${data.currentSession}`, JSON.stringify(data))
+  }
+
+  async getMarksData() {
+    const stringData = await AsyncStorage.getItem(`marks`);
+    if (stringData) return JSON.parse(stringData);
+  }
+
+  async storeMarksData(data) {
+    return AsyncStorage.setItem(`marks`, JSON.stringify(data))
   }
 
   storeAppTheme(theme: ThemeType) {

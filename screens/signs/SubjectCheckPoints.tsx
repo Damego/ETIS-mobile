@@ -18,9 +18,10 @@ const styles = StyleSheet.create({
 
 const getCheckPointScore = (checkPoint: ICheckPoint) => {
   if (checkPoint.isAbsent) return 'н';
-  else if (Number.isNaN(checkPoint.points)) return '-';
+  else if (Number.isNaN(checkPoint.points) || !checkPoint.points) return '-';
 
-  return checkPoint.currentScore;
+  // Вводные работы в рейтинге не показываются, поэтому выводим просто полученные баллы
+  return checkPoint.isIntroductionWork ? checkPoint.points : checkPoint.currentScore;
 };
 
 interface SubjectCheckPointsProps {
@@ -32,16 +33,15 @@ const SubjectCheckPoints = ({ data }: SubjectCheckPointsProps) => {
 
   return data.map((checkPoint, index) => {
     const checkPointName = `КТ ${index + 1}`;
-    const score: string | number = getCheckPointScore(checkPoint);
-    const pointsString = `${checkPointName}: ${score} / ${checkPoint.passScore} / ${checkPoint.maxScore}`;
-    const styleCondition =
-      ((Number.isNaN(checkPoint.points) && checkPoint.isAbsent) ||
-        checkPoint.points < checkPoint.passScore) &&
-      !checkPoint.isIntroductionWork;
+    const scoreText: string | number = getCheckPointScore(checkPoint);
+    const pointsString = `${checkPointName}: ${scoreText} / ${checkPoint.passScore} / ${checkPoint.maxScore}`;
+    // Проверка на вводный урок, отсутствовал ли студент, количество баллов >= проходного, оценка вообще поставлена
+    const score = checkPoint.isIntroductionWork ? checkPoint.points : checkPoint.currentScore
+    const failStyleCondition = (checkPoint.isAbsent || !checkPoint.isIntroductionWork) && score && score < checkPoint.passScore
 
     return (
       <Text
-        style={styleCondition ? styles.markFail : [styles.markNeutral, globalStyles.textColor]}
+        style={failStyleCondition ? styles.markFail : [styles.markNeutral, globalStyles.textColor]}
         key={checkPoint.theme}
       >
         {pointsString}

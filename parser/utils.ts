@@ -5,6 +5,12 @@ export const getTextField = (component: cheerio.Cheerio): string => component.te
 
 export const parseDate = (date: string) => moment(date, 'DD.MM.YYYY HH:mm:ss');
 
+export const getAsNumber = (str: string, defaultValue: number = null): number | null => {
+  const number = parseFloat(str);
+  if (Number.isNaN(number)) return defaultValue;
+  return number;
+}
+
 export const isLoginPage = (html) => {
   const $ = cheerio.load(html);
   return !!$('.login').html();
