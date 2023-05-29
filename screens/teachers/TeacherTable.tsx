@@ -12,6 +12,7 @@ import { isLoginPage } from '../../parser/utils';
 import { signOut } from '../../redux/reducers/authSlice';
 import { httpClient } from '../../utils';
 import Teacher from './Teacher';
+import TeacherCard from './TeacherCard';
 
 const TeacherTable = () => {
   const dispatch = useDispatch();
@@ -40,15 +41,8 @@ const TeacherTable = () => {
 
   return (
     <Screen headerText="Преподаватели" onUpdate={loadData}>
-      {data.map(([key, value]) => (
-        <CardHeaderOut key={key} topText={key}>
-          {value.map((teacher, index) => (
-            <View key={teacher.name}>
-              <Teacher data={teacher} />
-              {index !== value.length - 1 ? <BorderLine /> : ''}
-            </View>
-          ))}
-        </CardHeaderOut>
+      {data.map(([discipline, teachers]) => (
+        <TeacherCard discipline={discipline} teachers={teachers} key={discipline}/>
       ))}
     </Screen>
   );

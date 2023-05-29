@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import { useGlobalStyles } from '../../hooks';
+import { ITeacher } from '../../models/teachers';
 
 const styles = StyleSheet.create({
   container: {
@@ -36,28 +37,35 @@ const styles = StyleSheet.create({
   },
 });
 
-const Teacher = ({ data: { cathedra, name, photo, photoTitle, subjectType } }) => {
+interface TeacherProps {
+  data: ITeacher;
+}
+
+const Teacher = ({ data }: TeacherProps) => {
   const globalStyles = useGlobalStyles();
 
   return (
     <View style={styles.container}>
       <View style={styles.teacherInfo}>
         <View style={styles.teacherNameView}>
-          <Text style={[styles.fontS16, styles.fontW500, globalStyles.textColor]}>{name}</Text>
-          <Text style={[styles.fontS16, globalStyles.textColor]}>{subjectType}</Text>
+          <Text style={[styles.fontS16, styles.fontW500, globalStyles.textColor]}>{data.name}</Text>
+          <Text style={[styles.fontS16, globalStyles.textColor]}>{data.subjectType}</Text>
         </View>
 
         <View style={styles.subjectInfoView}>
-          <Text style={[styles.subjectInfoText, globalStyles.textColor]}>{cathedra}</Text>
+          <Text style={[styles.subjectInfoText, globalStyles.textColor]}>{data.cathedra}</Text>
         </View>
       </View>
 
       {/* Фотография загружена... */}
       <TouchableWithoutFeedback
         style={styles.photoContainer}
-        onPress={() => ToastAndroid.show(photoTitle, ToastAndroid.SHORT)}
+        onPress={() => ToastAndroid.show(data.photoTitle, ToastAndroid.SHORT)}
       >
-        <Image style={styles.photoStyle} src={`https://student.psu.ru/pls/stu_cus_et/${photo}`} />
+        <Image
+          style={styles.photoStyle}
+          src={`https://student.psu.ru/pls/stu_cus_et/${data.photo}`}
+        />
       </TouchableWithoutFeedback>
     </View>
   );
