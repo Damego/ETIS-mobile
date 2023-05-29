@@ -1,10 +1,11 @@
+import { emptyResult, IGetResult } from '../models/results';
+import { ITimeTable, ITimeTableGetProps } from '../models/timeTable';
 import { parseTimeTable } from '../parser';
 import { isLoginPage } from '../parser/utils';
-import { IGetProps, IGetResult, ITimeTable } from '../models/timeTable';
 import { httpClient, storage } from '../utils';
 
 export const getCachedTimeTable = async (week) => {
-  console.log(`[DATA] Use cached timetable for week ${week}`)
+  console.log(`[DATA] Use cached timetable for week ${week}`);
   return {
     data: await storage.getTimeTableData(week),
     isLoginPage: false,
@@ -15,7 +16,7 @@ export const getTimeTableData = async ({
   week,
   useCache,
   useCacheFirst,
-}: IGetProps): Promise<IGetResult> => {
+}: ITimeTableGetProps): Promise<IGetResult<ITimeTable>> => {
   if (useCacheFirst) {
     const result = await getCachedTimeTable(week);
     if (result.data) return result;
@@ -29,7 +30,7 @@ export const getTimeTableData = async ({
   }
 
   if (!html) {
-    if (!useCache) return { data: null, isLoginPage: false, fetched: false };
+    if (!useCache) return emptyResult;
     return await getCachedTimeTable(week);
   }
 
@@ -37,11 +38,11 @@ export const getTimeTableData = async ({
     return { data: null, isLoginPage: true, fetched: false };
   }
 
-  console.log(`[DATA] Fetched timetable for week ${week}`)
+  console.log(`[DATA] Fetched timetable for week ${week}`);
   return {
     data: parseTimeTable(html),
     isLoginPage: false,
-    fetched: true
+    fetched: true,
   };
 };
 

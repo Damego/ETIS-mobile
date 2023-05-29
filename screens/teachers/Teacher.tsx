@@ -64,7 +64,9 @@ const Teacher = ({ data }: TeacherProps) => {
       >
         <Image
           style={styles.photoStyle}
-          src={`https://student.psu.ru/pls/stu_cus_et/${data.photo}`}
+          source={{
+            uri: `https://student.psu.ru/pls/stu_cus_et/${data.photo}`,
+          }}
         />
       </TouchableWithoutFeedback>
     </View>

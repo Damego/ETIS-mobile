@@ -5,7 +5,7 @@ import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
 import { cacheTimeTableData, getTimeTableData } from '../../data/timeTable';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { IGetProps } from '../../models/timeTable';
+import { ITimeTableGetProps } from '../../models/timeTable';
 import { signOut } from '../../redux/reducers/authSlice';
 import {
   addFetchedWeek,
@@ -35,10 +35,10 @@ const TimeTable = () => {
     const useCacheFirst =
       ((data && selectedWeek < currentWeek) || fetchedWeeks.includes(selectedWeek)) && !forceFetch;
 
-    const payload: IGetProps = {
+    const payload: ITimeTableGetProps = {
       week: selectedWeek,
       useCacheFirst,
-      useCache: true // Если не получится получить данные, будем использовать кэшированные данные
+      useCache: true, // Если не получится получить данные, будем использовать кэшированные данные
     };
     const result = await getTimeTableData(payload);
 

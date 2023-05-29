@@ -1,5 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
+
+import { ITeacher, TeacherType } from '../models/teachers';
+import { ITimeTable } from '../models/timeTable';
 import { ThemeType } from '../redux/reducers/settingsSlice';
 
 export default class Storage {
@@ -19,7 +22,7 @@ export default class Storage {
     await SecureStore.setItemAsync('reviewStep', 'stop');
   }
 
-  async storeAccountData(login, password) {
+  async storeAccountData(login: string, password: string) {
     await SecureStore.setItemAsync('userLogin', login);
     await SecureStore.setItemAsync('userPassword', password);
   }
@@ -44,7 +47,7 @@ export default class Storage {
     await SecureStore.setItemAsync('hasAcceptedPrivacyPolicy', 'true');
   }
 
-  async getTimeTableData(week) {
+  async getTimeTableData(week: number): Promise<ITimeTable> {
     let stringData;
     if (week === undefined) {
       stringData = await AsyncStorage.getItem('timetable-current');
@@ -53,7 +56,7 @@ export default class Storage {
     return JSON.parse(stringData);
   }
 
-  async storeTimeTableData(data, week) {
+  async storeTimeTableData(data: ITimeTable, week?: number) {
     const stringData = JSON.stringify(data);
 
     if (week === undefined) {
@@ -61,8 +64,19 @@ export default class Storage {
     } else await AsyncStorage.setItem(`timetable-${week}`, stringData);
   }
 
-  storeAppTheme(theme) {
-    return AsyncStorage.setItem('theme', theme.toString());
+  async getTeacherData(): Promise<TeacherType | null> {
+    const stringData = await AsyncStorage.getItem('teachers');
+    if (stringData === undefined) return;
+
+    return JSON.parse(stringData);
+  }
+
+  storeTeacherData(data: TeacherType) {
+    return AsyncStorage.setItem('teachers', JSON.stringify(data));
+  }
+
+  storeAppTheme(theme: ThemeType) {
+    return AsyncStorage.setItem('theme', theme);
   }
 
   async getAppTheme() {
