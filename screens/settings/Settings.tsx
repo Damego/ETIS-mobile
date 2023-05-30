@@ -41,14 +41,14 @@ const ToggleThemeSetting = () => {
         alignItems: 'center',
       }}
     >
-      <View style={{flex: 2}}>
-        <Text style={{ fontSize: 20, fontWeight: '500', ...globalStyles.textColor }}>Тема</Text>
+      <Text style={{ fontSize: 20, fontWeight: '500', ...globalStyles.textColor }}>Тема</Text>
+      <View style={{ width: '60%' }}>
+        <Dropdown
+          options={options}
+          selectedOption={options.find((option) => option.value === themeType)}
+          onSelect={changeAppTheme}
+        />
       </View>
-      <Dropdown
-        options={options}
-        selectedOption={options.find((option) => option.value === themeType)}
-        onSelect={changeAppTheme}
-      />
     </View>
   );
 };

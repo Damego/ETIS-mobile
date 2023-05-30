@@ -6,7 +6,6 @@ import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 
 import { useAppColorScheme } from '../hooks/theme';
 import Header from './Header';
-import LoadingScreen from './LoadingScreen';
 
 const styles = StyleSheet.create({
   screen: {
