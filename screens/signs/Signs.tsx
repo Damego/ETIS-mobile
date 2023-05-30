@@ -38,6 +38,11 @@ interface ISubjectListProps {
   data: ISessionSignsData;
 }
 
+interface loadDataPayload {
+  session?: number;
+  force?: boolean;
+}
+
 const SubjectList = ({ data }: ISubjectListProps): JSX.Element[] =>
   data.subjects.map((subject) => <CardSign subject={subject} key={subject.name} />);
 
@@ -48,16 +53,21 @@ const Signs = () => {
   const [data, setData] = useState<ISessionSignsData>(null);
   const [optionData, setOptionData] = useState(null);
 
-  const loadData = async (session?: number) => {
+  const loadData = async ({ session, force }: loadDataPayload) => {
     // We use dropdown to fetch new data, and we need to show loading state while data is fetching
     if (data) setLoading(true);
+
+    let newSession;
+    if (session !== undefined) newSession = session;
+    else if (data) newSession = data.currentSession;
 
     const result = await getPartialSignsData({
       useCache: true,
       useCacheFirst:
+        !force &&
         data &&
-        (session < data.latestSession || (session === data.latestSession && fetchedLatestSession)),
-      session: session,
+        (newSession < data.latestSession || (newSession === data.latestSession && fetchedLatestSession)),
+      session: newSession,
     });
 
     if (result.isLoginPage) {
@@ -94,16 +104,16 @@ const Signs = () => {
   };
 
   useEffect(() => {
-    loadData();
+    loadData({});
   }, []);
 
   if (!data || !optionData || isLoading) return <LoadingScreen headerText="Оценки" />;
 
   return (
-    <Screen headerText="Оценки" onUpdate={loadData}>
+    <Screen headerText="Оценки" onUpdate={() => loadData({force: true})}>
       <View style={{ marginLeft: 'auto', marginRight: 0, paddingBottom: '2%', zIndex: 1 }}>
         <Dropdown
-          onSelect={loadData}
+          onSelect={(session) => loadData({session})}
           selectedOption={optionData.current}
           options={optionData.options}
         />
