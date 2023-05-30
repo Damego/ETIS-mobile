@@ -31,10 +31,10 @@ const ShortTeachPlan = () => {
     loadData();
   }, []);
 
-  if (!data) return <LoadingScreen headerText="Учебный план" />;
+  if (!data) return <LoadingScreen />;
 
   return (
-    <Screen headerText="Учебный план" onUpdate={loadData}>
+    <Screen onUpdate={loadData}>
       {data.map((session) => (
         <SessionCard data={session} key={session.trimester} />
       ))}

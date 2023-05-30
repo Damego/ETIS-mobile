@@ -66,10 +66,10 @@ const TimeTable = () => {
     loadData();
   }, [selectedWeek]);
 
-  if (!data || isLoading) return <LoadingScreen headerText="Расписание" />;
+  if (!data || isLoading) return <LoadingScreen />;
 
   return (
-    <Screen headerText="Расписание" onUpdate={() => loadData(true)}>
+    <Screen onUpdate={() => loadData(true)}>
       <PageNavigator
         firstPage={data.firstWeek}
         lastPage={data.lastWeek}

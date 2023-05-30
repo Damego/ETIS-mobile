@@ -55,7 +55,7 @@ const ToggleThemeSetting = () => {
 
 export default function Settings() {
   return (
-    <Screen headerText="Настройки" disableRefresh>
+    <Screen disableRefresh>
       <Card>
         <ToggleThemeSetting />
       </Card>

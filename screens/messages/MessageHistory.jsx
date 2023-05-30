@@ -29,10 +29,10 @@ const MessageHistory = () => {
     loadData();
   }, []);
 
-  if (!data) return <LoadingScreen headerText="Сообщения" />;
+  if (!data) return <LoadingScreen />;
 
   return (
-    <Screen headerText="Сообщения" onUpdate={loadData}>
+    <Screen onUpdate={loadData}>
       {data.map((messageBlock) => (
         <MessagePreview data={messageBlock} key={messageBlock[0].time.format()} />
       ))}

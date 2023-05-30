@@ -27,7 +27,11 @@ const EmptyCard = () => {
   );
 };
 
-const LoadingScreen = ({ headerText }) => (
+interface LoadingScreenProps {
+  headerText?: string;
+}
+
+const LoadingScreen = ({ headerText }: LoadingScreenProps) => (
   <Screen headerText={headerText} disableRefresh>
     <View style={{ marginTop: '10%' }} />
     <EmptyCard />

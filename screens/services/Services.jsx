@@ -41,7 +41,7 @@ const Services = () => {
   };
 
   return (
-    <Screen headerText="Сервисы" disableRefresh>
+    <Screen disableRefresh>
       <View>
         <Text style={[styles.textTitle, globalStyles.textColor]}>Студент</Text>
         <UserInfo data={studentInfo} />

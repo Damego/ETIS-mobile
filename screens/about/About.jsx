@@ -23,7 +23,7 @@ const About = () => {
   const textStyles = [styles.text, globalStyles.textColor]
 
   return (
-    <Screen headerText="О приложении" disableRefresh>
+    <Screen disableRefresh>
       <Text style={textStyles}>
         ЕТИС мобайл - это неофициальное мобильное приложение для ЕТИС ПГНИУ. Приложение позволяет в удобном режиме пользоваться ЕТИС используя ваш смартфон.
       </Text>

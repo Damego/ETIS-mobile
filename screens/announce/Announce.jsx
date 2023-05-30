@@ -41,10 +41,10 @@ export default function Announce() {
     setCurrentPageNum(pageNum);
   };
 
-  if (!data) return <LoadingScreen headerText={'Объявления'} />;
+  if (!data) return <LoadingScreen />;
 
   return (
-    <Screen headerText={'Объявления'} onUpdate={loadData}>
+    <Screen onUpdate={loadData}>
       <PageNavigator
         firstPage={1}
         currentPage={currentPageNum}

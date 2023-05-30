@@ -107,10 +107,10 @@ const Signs = () => {
     loadData({});
   }, []);
 
-  if (!data || !optionData || isLoading) return <LoadingScreen headerText="Оценки" />;
+  if (!data || !optionData || isLoading) return <LoadingScreen />;
 
   return (
-    <Screen headerText="Оценки" onUpdate={() => loadData({force: true})}>
+    <Screen onUpdate={() => loadData({force: true})}>
       <View style={{ marginLeft: 'auto', marginRight: 0, paddingBottom: '2%', zIndex: 1 }}>
         <Dropdown
           onSelect={(session) => loadData({session})}

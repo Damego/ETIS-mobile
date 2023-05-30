@@ -35,10 +35,10 @@ const TeacherTable = () => {
     loadData();
   }, []);
 
-  if (!data) return <LoadingScreen headerText="Преподаватели" />;
+  if (!data) return <LoadingScreen />;
 
   return (
-    <Screen headerText="Преподаватели" onUpdate={loadData}>
+    <Screen onUpdate={loadData}>
       {data.map(([discipline, teachers]) => (
         <TeacherCard discipline={discipline} teachers={teachers} key={discipline} />
       ))}

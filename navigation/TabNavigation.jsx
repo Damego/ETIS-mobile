@@ -62,7 +62,7 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Сообщения"
+        name="Сообщения-навигатор"
         component={MessageStackNavigator}
         options={{
           tabBarBadge: messageCount,
