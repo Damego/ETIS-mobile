@@ -13,7 +13,7 @@ import {
 } from '../../data/signs';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ISessionSignsData } from '../../models/sessionPoints';
-import { signOut } from '../../redux/reducers/authSlice';
+import { setAuthorizing, signOut } from '../../redux/reducers/authSlice';
 import { setFetchedLatestSession, setMarks } from '../../redux/reducers/signsSlice';
 import CardSign from './CardSign';
 
@@ -71,7 +71,7 @@ const Signs = () => {
     });
 
     if (result.isLoginPage) {
-      dispatch(signOut({ autoAuth: true }));
+      dispatch(setAuthorizing(true));
       return;
     }
 
