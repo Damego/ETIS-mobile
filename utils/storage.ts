@@ -67,7 +67,7 @@ export default class Storage {
 
   async getTeacherData(): Promise<TeacherType | null> {
     const stringData = await AsyncStorage.getItem('teachers');
-    if (stringData) JSON.parse(stringData);
+    return JSON.parse(stringData);
   }
 
   storeTeacherData(data: TeacherType) {
@@ -76,7 +76,7 @@ export default class Storage {
 
   async getSignsData(session: number): Promise<ISessionSignsData> {
     const stringData = await AsyncStorage.getItem(`session-${session}`);
-    if (stringData) return JSON.parse(stringData);
+    return JSON.parse(stringData);
   }
 
   storeSignsData(data: ISessionSignsData) {
@@ -85,7 +85,7 @@ export default class Storage {
 
   async getMarksData() {
     const stringData = await AsyncStorage.getItem(`marks`);
-    if (stringData) return JSON.parse(stringData);
+    return JSON.parse(stringData);
   }
 
   async storeMarksData(data) {
