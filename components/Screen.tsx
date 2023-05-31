@@ -4,7 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, { ReactElement, useRef, useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 
-import { useAppDispatch, useAppSelector } from '../hooks';
+import { useAppSelector } from '../hooks';
 import { useAppColorScheme } from '../hooks/theme';
 import AuthLoadingModal from './AuthLoadingModal';
 import Header from './Header';
@@ -52,7 +52,7 @@ const Screen = ({
     <View style={{ marginTop: Constants.statusBarHeight, flex: 1 }}>
       {isAuthorizing && <AuthLoadingModal authFunc={authFunc} />}
 
-      <StatusBar style={useAppColorScheme() === 'dark' ? 'light' : 'dark'} />
+      <StatusBar style={useAppColorScheme() === "light" ? "dark" : "light"} />
 
       {!scrollHeader && <Header text={headerText} onBackButtonClick={onBackPageClick} />}
       <ScrollView
