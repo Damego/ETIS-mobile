@@ -43,7 +43,7 @@ const makeLogin = async (token, userCredentials, saveUserCredentials) => {
 
 const AuthLoadingModal = () => {
   const dispatch = useAppDispatch();
-  const {userCredentials, saveUserCredentials} = useAppSelector(state => state.auth)
+  const {userCredentials, saveUserCredentials} = useAppSelector(state => state.auth);
 
   const globalStyles = useGlobalStyles();
 

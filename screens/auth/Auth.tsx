@@ -16,7 +16,6 @@ const AuthScreen = () => {
   const [showRecovery, setShowRecovery] = useState(false);
 
   useEffect(() => {
-    console.log('user', userCredentials)
     if (userCredentials) dispatch(setAuthorizing(true));
   }, [userCredentials]);
 

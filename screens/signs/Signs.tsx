@@ -48,6 +48,8 @@ const SubjectList = ({ data }: ISubjectListProps): JSX.Element[] =>
 
 const Signs = () => {
   const dispatch = useAppDispatch();
+  const { isAuthorizing } = useAppSelector(state => state.auth);
+
   const [isLoading, setLoading] = useState<boolean>(false);
   const { sessionsMarks, fetchedLatestSession } = useAppSelector((state) => state.signs);
   const [data, setData] = useState<ISessionSignsData>(null);
@@ -104,8 +106,8 @@ const Signs = () => {
   };
 
   useEffect(() => {
-    loadData({});
-  }, []);
+    if (!isAuthorizing) loadData({});
+  }, [isAuthorizing]);
 
   if (!data || !optionData || isLoading) return <LoadingScreen />;
 

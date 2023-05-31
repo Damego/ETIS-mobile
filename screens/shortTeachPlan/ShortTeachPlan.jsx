@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 
-import CardHeaderOut from '../../components/CardHeaderOut';
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { parseShortTeachPlan } from '../../parser';
 import { isLoginPage } from '../../parser/utils';
-import { signOut } from '../../redux/reducers/authSlice';
+import { setAuthorizing, signOut } from '../../redux/reducers/authSlice';
 import { httpClient } from '../../utils';
 import SessionCard from './SessionCard';
 
 const ShortTeachPlan = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const { isAuthorizing } = useAppSelector((state) => state.auth);
   const [data, setData] = useState(null);
 
   const loadData = async () => {
@@ -19,7 +19,7 @@ const ShortTeachPlan = () => {
     if (!html) return;
 
     if (isLoginPage(html)) {
-      dispatch(signOut({ autoAuth: true }));
+      dispatch(setAuthorizing(true));
       return;
     }
 
@@ -28,8 +28,8 @@ const ShortTeachPlan = () => {
   };
 
   useEffect(() => {
-    loadData();
-  }, []);
+    if (!isAuthorizing) loadData();
+  }, [isAuthorizing]);
 
   if (!data) return <LoadingScreen />;
 
