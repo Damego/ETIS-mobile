@@ -30,6 +30,7 @@ const authSlice = createSlice({
     signOut(state, action) {
       state.isSignedIn = false;
       state.shouldAutoAuth = action.payload.autoAuth;
+      state.userCredentials = undefined;
     },
     setAuthorizing(state, action: PayloadAction<boolean>) {
       state.isAuthorizing = action.payload;
