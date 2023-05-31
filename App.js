@@ -22,13 +22,13 @@ const loadUserCredentials = () => {
   return (dispatch) => {
     storage.getAccountData().then((payload) => {
       console.log(payload);
-      dispatch(setUserCredentials(payload))
-    })
-  }
-}
+      dispatch(setUserCredentials(payload));
+    });
+  };
+};
 
 store.dispatch(loadTheme());
-store.dispatch(loadUserCredentials())
+store.dispatch(loadUserCredentials());
 
 const App = () => (
   <Provider store={store}>
