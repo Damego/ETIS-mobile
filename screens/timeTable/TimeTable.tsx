@@ -5,8 +5,8 @@ import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
 import { cacheTimeTableData, getTimeTableData } from '../../data/timeTable';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { IGetProps } from '../../models/timeTable';
-import { signOut } from '../../redux/reducers/authSlice';
+import { ITimeTableGetProps } from '../../models/timeTable';
+import { setAuthorizing } from '../../redux/reducers/authSlice';
 import {
   addFetchedWeek,
   changeSelectedWeek,
@@ -18,6 +18,7 @@ import DayArray from './DayArray';
 
 const TimeTable = () => {
   const dispatch = useAppDispatch();
+  const { isAuthorizing } = useAppSelector(state => state.auth);
 
   const { fetchedWeeks, data, selectedWeek, currentWeek }: TimeTableState = useAppSelector(
     (state) => state.timeTable
@@ -35,15 +36,15 @@ const TimeTable = () => {
     const useCacheFirst =
       ((data && selectedWeek < currentWeek) || fetchedWeeks.includes(selectedWeek)) && !forceFetch;
 
-    const payload: IGetProps = {
+    const payload: ITimeTableGetProps = {
       week: selectedWeek,
       useCacheFirst,
-      useCache: true // Если не получится получить данные, будем использовать кэшированные данные
+      useCache: true, // Если не получится получить данные, будем использовать кэшированные данные
     };
     const result = await getTimeTableData(payload);
 
     if (result.isLoginPage) {
-      dispatch(signOut({ autoAuth: true }));
+      dispatch(setAuthorizing(true));
       return;
     }
 
@@ -63,13 +64,13 @@ const TimeTable = () => {
   };
 
   useEffect(() => {
-    loadData();
-  }, [selectedWeek]);
+    if (!isAuthorizing) loadData();
+  }, [selectedWeek, isAuthorizing]);
 
-  if (!data || isLoading) return <LoadingScreen headerText="Расписание" />;
+  if (!data || isLoading) return <LoadingScreen />;
 
   return (
-    <Screen headerText="Расписание" onUpdate={() => loadData(true)}>
+    <Screen onUpdate={() => loadData(true)}>
       <PageNavigator
         firstPage={data.firstWeek}
         lastPage={data.lastWeek}

@@ -1,100 +1,121 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { useDispatch } from 'react-redux';
 
 import Dropdown from '../../components/Dropdown';
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
-import { ISessionMarks } from '../../models/sessionMarks';
-import { ISessionPoints } from '../../models/sessionPoints';
-import { parseSessionMarks, parseSessionPoints } from '../../parser';
-import { isLoginPage } from '../../parser/utils';
-import { signOut } from '../../redux/reducers/authSlice';
-import { httpClient } from '../../utils';
+import {
+  cacheMarksData,
+  cacheSignsData,
+  composePointsAndMarks,
+  getMarksData,
+  getPartialSignsData,
+} from '../../data/signs';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { ISessionSignsData } from '../../models/sessionPoints';
+import { setAuthorizing, signOut } from '../../redux/reducers/authSlice';
+import { setFetchedLatestSession, setMarks } from '../../redux/reducers/signsSlice';
 import CardSign from './CardSign';
 
-const buildOption = (trimester: number) => ({ label: `${trimester} Триместр`, value: trimester });
+const buildOption = (session: number, sessionName: string) => ({
+  label: `${session} ${sessionName}`,
+  value: session,
+});
 
-function buildTrimesterOptions(currentTrimester: number, latestTrimester: number) {
+function buildTrimesterOptions(currentSession: number, latestSession: number, sessionName: string) {
   const options = [];
-  for (let index = latestTrimester; index > 0; index -= 1) {
-    if (index !== currentTrimester) options.push(buildOption(index));
+  for (let index = latestSession; index > 0; index -= 1) {
+    if (index !== currentSession) options.push(buildOption(index, sessionName));
   }
 
   return {
-    current: buildOption(currentTrimester),
+    current: buildOption(currentSession, sessionName),
     options,
   };
 }
 
-const addSessionMarksToPoints = (
-  allSessionMarks: ISessionMarks[],
-  sessionPoints: ISessionPoints
-) => {
-  const sessionMarks = allSessionMarks.find(
-    (sessionData) => sessionData.fullSessionNumber === sessionPoints.currentTrimester
-  );
-
-  if (sessionMarks) {
-    sessionPoints.subjects.forEach((subject) => {
-      const discipline = sessionMarks.disciplines.find(
-        (discipline) => discipline.name === subject.name
-      );
-      if (discipline) subject.mark = discipline.mark;
-    });
-  }
-};
-
-interface ISubjectList {
-  data: ISessionPoints;
+interface ISubjectListProps {
+  data: ISessionSignsData;
 }
 
-const SubjectList = ({ data }: ISubjectList): JSX.Element[] =>
+interface loadDataPayload {
+  session?: number;
+  force?: boolean;
+}
+
+const SubjectList = ({ data }: ISubjectListProps): JSX.Element[] =>
   data.subjects.map((subject) => <CardSign subject={subject} key={subject.name} />);
 
 const Signs = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const { isAuthorizing } = useAppSelector(state => state.auth);
+
   const [isLoading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<ISessionPoints>(null);
-  const allSessionMarks = useRef<ISessionMarks[]>();
+  const { sessionsMarks, fetchedLatestSession } = useAppSelector((state) => state.signs);
+  const [data, setData] = useState<ISessionSignsData>(null);
   const [optionData, setOptionData] = useState(null);
 
-  const loadData = async (trimester?: number) => {
+  const loadData = async ({ session, force }: loadDataPayload) => {
     // We use dropdown to fetch new data, and we need to show loading state while data is fetching
     if (data) setLoading(true);
 
-    const html = await httpClient.getSigns('current', trimester);
-    if (!html) return;
+    let newSession;
+    if (session !== undefined) newSession = session;
+    else if (data) newSession = data.currentSession;
 
-    if (isLoginPage(html)) {
-      dispatch(signOut({ autoAuth: true }));
+    const result = await getPartialSignsData({
+      useCache: true,
+      useCacheFirst:
+        !force &&
+        data &&
+        (newSession < data.latestSession || (newSession === data.latestSession && fetchedLatestSession)),
+      session: newSession,
+    });
+
+    if (result.isLoginPage) {
+      dispatch(setAuthorizing(true));
       return;
     }
 
-    if (allSessionMarks.current === undefined)
-      allSessionMarks.current = parseSessionMarks(await httpClient.getSigns('session'));
+    // Очевидно, что в самом начале мы получаем текущую, т.е. последнюю сессию
+    if (!data) {
+      dispatch(setFetchedLatestSession(true));
+    }
 
-    const sessionPoints = parseSessionPoints(html);
-    addSessionMarksToPoints(allSessionMarks.current, sessionPoints);
+    let marksResult;
+    if (sessionsMarks.length === 0) {
+      marksResult = await getMarksData({ useCache: true });
+      dispatch(setMarks(marksResult.data));
+      cacheMarksData(marksResult.data);
+    }
+
+    const fullData = composePointsAndMarks(
+      result.data,
+      sessionsMarks.length !== 0 ? sessionsMarks : marksResult.data
+    );
 
     setOptionData(
-      buildTrimesterOptions(sessionPoints.currentTrimester, sessionPoints.latestTrimester)
+      buildTrimesterOptions(fullData.currentSession, fullData.latestSession, fullData.sessionName)
     );
-    setData(sessionPoints);
+    setData(fullData);
     if (data) setLoading(false);
+
+    if (result.fetched) {
+      cacheSignsData(result.data);
+    }
   };
 
   useEffect(() => {
-    loadData();
-  }, []);
+    if (!isAuthorizing) loadData({});
+  }, [isAuthorizing]);
 
-  if (!data || !optionData || isLoading) return <LoadingScreen headerText="Оценки" />;
+  if (!data || !optionData || isLoading) return <LoadingScreen />;
 
   return (
-    <Screen headerText="Оценки" onUpdate={loadData}>
+    <Screen onUpdate={() => loadData({force: true})}>
       <View style={{ marginLeft: 'auto', marginRight: 0, paddingBottom: '2%', zIndex: 1 }}>
         <Dropdown
-          onSelect={loadData}
+          onSelect={(session) => loadData({session})}
           selectedOption={optionData.current}
           options={optionData.options}
         />

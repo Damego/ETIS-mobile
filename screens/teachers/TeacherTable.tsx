@@ -1,54 +1,49 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import BorderLine from '../../components/BorderLine';
-import CardHeaderOut from '../../components/CardHeaderOut';
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
-import { ITeacher } from '../../models/teachers';
-import { parseTeachers } from '../../parser';
-import { isLoginPage } from '../../parser/utils';
-import { signOut } from '../../redux/reducers/authSlice';
-import { httpClient } from '../../utils';
-import Teacher from './Teacher';
+import { cacheTeacherData, getTeacherData } from '../../data/teachers';
+import { IGetPayload } from '../../models/results';
+import { TeacherType } from '../../models/teachers';
+import { setAuthorizing } from '../../redux/reducers/authSlice';
+import TeacherCard from './TeacherCard';
+import { useAppSelector } from '../../hooks';
 
 const TeacherTable = () => {
   const dispatch = useDispatch();
-  const [data, setData] = useState<[string, ITeacher[]][]>(null);
+  const { isAuthorizing } = useAppSelector(state => state.auth);
+
+  const [data, setData] = useState<TeacherType>(null);
 
   const loadData = async () => {
-    const html = await httpClient.getTeachers();
-    if (!html) {
+    const payload: IGetPayload = {
+      useCache: true,
+      useCacheFirst: false,
+    };
+    const result = await getTeacherData(payload);
+
+    if (result.isLoginPage) {
+      dispatch(setAuthorizing(true));
       return;
     }
 
-    if (isLoginPage(html)) {
-      dispatch(signOut({ autoAuth: true }));
-      return;
+    setData(result.data);
+    if (result.fetched) {
+      cacheTeacherData(result.data)
     }
-
-    const parsedData = parseTeachers(html);
-    setData(parsedData);
   };
 
   useEffect(() => {
-    loadData();
-  }, []);
+    if (!isAuthorizing) loadData();
+  }, [isAuthorizing]);
 
-  if (!data) return <LoadingScreen headerText="Преподаватели" />;
+  if (!data) return <LoadingScreen />;
 
   return (
-    <Screen headerText="Преподаватели" onUpdate={loadData}>
-      {data.map(([key, value]) => (
-        <CardHeaderOut key={key} topText={key}>
-          {value.map((teacher, index) => (
-            <View key={teacher.name}>
-              <Teacher data={teacher} />
-              {index !== value.length - 1 ? <BorderLine /> : ''}
-            </View>
-          ))}
-        </CardHeaderOut>
+    <Screen onUpdate={loadData}>
+      {data.map(([discipline, teachers]) => (
+        <TeacherCard discipline={discipline} teachers={teachers} key={discipline} />
       ))}
     </Screen>
   );

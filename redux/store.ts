@@ -4,12 +4,14 @@ import authSlice from './reducers/authSlice';
 import studentSlice from './reducers/studentSlice';
 import timeTableSlice from './reducers/timeTableSlice';
 import settingsSlice from './reducers/settingsSlice';
+import signsSlice from './reducers/signsSlice';
 
 const rootReducer = combineReducers({
   auth: authSlice,
   student: studentSlice,
   timeTable: timeTableSlice,
   settings: settingsSlice,
+  signs: signsSlice
 });
 
 export const setupStore = () =>

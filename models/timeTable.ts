@@ -1,3 +1,5 @@
+import { IGetPayload } from './results';
+
 export interface ILesson {
   audience: string;
   subject: string;
@@ -17,14 +19,6 @@ export interface ITimeTable {
   days: ITimeTableDay[]
 }
 
-export interface IGetResult {
-  data: ITimeTable;
-  isLoginPage?: boolean;
-  fetched?: boolean;
-}
-
-export interface IGetProps {
+export interface ITimeTableGetProps extends IGetPayload{
   week?: number;
-  useCache?: boolean;
-  useCacheFirst?: boolean;
 }

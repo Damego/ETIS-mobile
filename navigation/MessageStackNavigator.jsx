@@ -13,7 +13,7 @@ function MessageStackNavigator() {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Все сообщения" component={MessageHistory} />
+      <Stack.Screen name="Сообщения" component={MessageHistory} />
       <Stack.Screen name="Блок сообщений" component={MessageBlock} />
     </Stack.Navigator>
   );

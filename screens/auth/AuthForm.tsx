@@ -4,12 +4,11 @@ import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { Button, LoadingButton } from '../../components/Button';
 import ClickableText from '../../components/ClickableText';
-import { useGlobalStyles } from '../../hooks';
+import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
+import { setUserCredentials } from '../../redux/reducers/authSlice';
 
 export const styles = StyleSheet.create({
   container: {
-    width: '90%',
-    marginLeft: '5%',
     marginTop: '15%',
     flexDirection: 'column',
     alignItems: 'center',
@@ -47,11 +46,17 @@ export const styles = StyleSheet.create({
   },
 });
 
-const Form = ({ onSubmit, isLoading, errorMessage, setShowRecovery, saveCreds, setSaveCreds }) => {
+const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
+  const dispatch = useAppDispatch();
+  const { saveUserCredentials } = useAppSelector((state) => state.auth);
   const globalStyles = useGlobalStyles();
 
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
+
+  const toggleSaveUserCredentials = (value) => {
+    dispatch(setUserCredentials(value));
+  }
 
   return (
     <View style={[styles.container, globalStyles.border, globalStyles.block]}>
@@ -88,7 +93,7 @@ const Form = ({ onSubmit, isLoading, errorMessage, setShowRecovery, saveCreds, s
 
       <View style={styles.authPropContainer}>
         <View style={styles.checkboxContainer}>
-          <Checkbox style={styles.checkbox} value={saveCreds} onValueChange={setSaveCreds} />
+          <Checkbox style={styles.checkbox} value={saveUserCredentials} onValueChange={toggleSaveUserCredentials} />
           <Text style={globalStyles.textColor}>Запомнить пароль?</Text>
         </View>
 
@@ -99,11 +104,7 @@ const Form = ({ onSubmit, isLoading, errorMessage, setShowRecovery, saveCreds, s
         />
       </View>
 
-      {isLoading ? (
-        <LoadingButton />
-      ) : (
-        <Button text="Войти" onPress={() => onSubmit(login, password)} />
-      )}
+      <Button text="Войти" onPress={() => onSubmit(login, password)} />
     </View>
   );
 };

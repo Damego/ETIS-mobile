@@ -15,9 +15,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -38,6 +36,7 @@
       "eas": {
         "projectId": "a3b11e9a-6c2e-4082-81e8-58bc2324b582"
       }
-    }
+    },
+    "plugins": [["./plugins/disabledForcedDarkModeAndroid.ts", {}]]
   }
 }

@@ -1,14 +1,15 @@
 import { load } from 'cheerio';
 
-import { ICheckPoint, ISessionPoints } from '../models/sessionPoints';
-import { getTextField } from './utils';
+import { ICheckPoint, ISessionSignsData } from '../models/sessionPoints';
+import { getAsNumber, getTextField } from './utils';
 
-export default function parseSessionPoints(html): ISessionPoints {
+export default function parseSessionPoints(html): ISessionSignsData {
   const $ = load(html);
-  const data: ISessionPoints = {
+  const data: ISessionSignsData = {
     subjects: [],
-    currentTrimester: null,
-    latestTrimester: null,
+    currentSession: null,
+    latestSession: null,
+    sessionName: null,
   };
   $('.common', html).each((index, tableElement) => {
     const table = $(tableElement);
@@ -40,27 +41,29 @@ export default function parseSessionPoints(html): ISessionPoints {
         teacher,
       ] = fields;
 
-      const points = parseFloat(rawPoints);
+      const points = getAsNumber(rawPoints, 0);
       const isAbsent = rawPoints === 'н';
+      const hasPoints = rawPoints !== '';
+
       checkPoints.push({
         theme,
         typeWork,
         typeControl,
         points,
         isAbsent,
-        passScore: parseFloat(passScore),
-        currentScore: parseFloat(currentScore),
-        maxScore: parseFloat(maxScore),
-        isIntroductionWork: parseFloat(maxScore) === 0.0,
+        passScore: getAsNumber(passScore, 0),
+        currentScore: getAsNumber(currentScore, 0),
+        maxScore: getAsNumber(maxScore, 0),
+        isIntroductionWork: getAsNumber(maxScore) === 0.0,
         date,
         teacher,
+        hasPoints,
       });
     });
 
     checkPoints.splice(-1, 1);
 
-    let totalPoints = parseFloat(getTextField(trs.eq(-1).find('td').eq(1)));
-    if (Number.isNaN(totalPoints)) totalPoints = 0;
+    const totalPoints = getAsNumber(getTextField(trs.eq(-1).find('td').eq(1)), 0);
 
     data.subjects.push({
       checkPoints,
@@ -75,11 +78,13 @@ export default function parseSessionPoints(html): ISessionPoints {
   const subMenu = $('.submenu').last();
   $('.submenu-item', subMenu).each((i, el) => {
     if (!getTextField($('a', el))) {
-      data.currentTrimester = i + 1;
+      data.currentSession = i + 1;
       return false;
     }
   });
-  data.latestTrimester = $('.submenu-item', subMenu).last().index() + 1;
+  const latestSession = $('.submenu-item', subMenu).last();
+  data.latestSession = latestSession.index() + 1;
+  data.sessionName = getTextField(latestSession).split(' ').at(-1);
 
   return data;
 }

@@ -1,10 +1,13 @@
+import { useRoute } from '@react-navigation/native';
 import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
 import React, { ReactElement, useRef, useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 
-import Header from './Header';
+import { useAppDispatch, useAppSelector } from '../hooks';
 import { useAppColorScheme } from '../hooks/theme';
+import AuthLoadingModal from './AuthLoadingModal';
+import Header from './Header';
 
 const styles = StyleSheet.create({
   screen: {
@@ -15,7 +18,7 @@ const styles = StyleSheet.create({
 });
 
 interface ScreenProps {
-  headerText: string;
+  headerText?: string;
   scrollHeader?: boolean;
   onUpdate?(arg?: any): Promise<void>;
   disableRefresh?: boolean;
@@ -33,8 +36,11 @@ const Screen = ({
   onBackPageClick,
   startScrollFromBottom,
 }: ScreenProps) => {
+  const { isAuthorizing, authFunc } = useAppSelector((state) => state.auth);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const scrollRef = useRef<ScrollView>();
+  const route = useRoute();
+  headerText = headerText || route.name;
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -44,7 +50,10 @@ const Screen = ({
 
   return (
     <View style={{ marginTop: Constants.statusBarHeight, flex: 1 }}>
+      {isAuthorizing && <AuthLoadingModal authFunc={authFunc} />}
+
       <StatusBar style={useAppColorScheme() === 'dark' ? 'light' : 'dark'} />
+
       {!scrollHeader && <Header text={headerText} onBackButtonClick={onBackPageClick} />}
       <ScrollView
         ref={startScrollFromBottom ? scrollRef : undefined}

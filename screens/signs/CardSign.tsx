@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import CardHeaderIn from '../../components/CardHeaderIn';
 import { useGlobalStyles } from '../../hooks';
@@ -51,21 +51,23 @@ const getPointsWord = (points) => {
   return pointsWord;
 };
 
-const getSubjectPointsStyle = (subject: ISubject, totalPoints: number, defaultTextColor) => {
+const getSubjectPointsStyle = (subject: ISubject, defaultTextColor) => {
   if (subject.checkPoints.length === 0) return defaultTextColor;
 
   let textStyle;
-  subject.checkPoints.forEach(({ passScore, points, isAbsent, isIntroductionWork }) => {
-    if (!isIntroductionWork) {
-      if (isAbsent || points < passScore) textStyle = styles.colorMark2;
-      else if (Number.isNaN(points) && !isAbsent) textStyle = defaultTextColor;
+  subject.checkPoints.forEach((checkPoint) => {
+    if (!checkPoint.isIntroductionWork) {
+      const score = checkPoint.isIntroductionWork ? checkPoint.points : checkPoint.currentScore;
+      if (checkPoint.isAbsent || (checkPoint.hasPoints && score < checkPoint.passScore))
+        textStyle = styles.colorMark2;
+      else if (!checkPoint.hasPoints && !checkPoint.isAbsent) textStyle = defaultTextColor;
     }
   });
 
   if (textStyle) return textStyle;
 
-  if (totalPoints < 61) return styles.colorMark3;
-  if (totalPoints < 81) return styles.colorMark4;
+  if (subject.totalPoints < 61) return styles.colorMark3;
+  if (subject.totalPoints < 81) return styles.colorMark4;
   return styles.colorMark5;
 };
 
@@ -76,29 +78,37 @@ interface CardSignProps {
 const CardSign = ({ subject }: CardSignProps) => {
   const globalStyles = useGlobalStyles();
 
-  const subjectTotalPoints = subject.totalPoints;
-  const textStyle = getSubjectPointsStyle(subject, subjectTotalPoints, globalStyles.textColor);
-  const pointsWord = getPointsWord(subjectTotalPoints);
+  const textStyle = getSubjectPointsStyle(subject, globalStyles.textColor);
+  const pointsWord = getPointsWord(subject.totalPoints);
 
   return (
-    <CardHeaderIn topText={subject.name}>
-      <View style={styles.pointsView}>
-        <View>
-          <SubjectCheckPoints data={subject.checkPoints} />
+    <Pressable
+      onPress={() => {
+        console.log(subject);
+        console.log(textStyle);
+      }}
+    >
+      <CardHeaderIn topText={subject.name}>
+        <View style={styles.pointsView}>
+          <View>
+            <SubjectCheckPoints data={subject.checkPoints} />
+          </View>
+
+          <View style={styles.totalPoints}>
+            <Text style={[styles.markNumberText, textStyle]}>{subject.totalPoints}</Text>
+            <Text style={[styles.markWordText, globalStyles.textColor]}>{pointsWord}</Text>
+          </View>
         </View>
 
-        <View style={styles.totalPoints}>
-          <Text style={[styles.markNumberText, textStyle]}>{subjectTotalPoints}</Text>
-          <Text style={[styles.markWordText, globalStyles.textColor]}>{pointsWord}</Text>
-        </View>
-      </View>
-
-      {subject.mark !== null && (
-        <View style={styles.markView}>
-          <Text style={[styles.markWordText, globalStyles.textColor]}>Оценка: {subject.mark}</Text>
-        </View>
-      )}
-    </CardHeaderIn>
+        {subject.mark !== null && (
+          <View style={styles.markView}>
+            <Text style={[styles.markWordText, globalStyles.textColor]}>
+              Оценка: {subject.mark}
+            </Text>
+          </View>
+        )}
+      </CardHeaderIn>
+    </Pressable>
   );
 };
 

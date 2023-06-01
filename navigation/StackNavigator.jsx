@@ -4,7 +4,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { useAppColorScheme } from '../hooks/theme';
-import AuthPage from '../screens/auth/Auth';
+import AuthScreen from '../screens/auth/Auth';
 import { DarkTheme, LightTheme } from '../styles/themes';
 import TabNavigator from './TabNavigation';
 import { setBackgroundColorAsync } from 'expo-navigation-bar';
@@ -25,7 +25,7 @@ const StackNavigator = () => {
         }}
       >
         {!isSignedIn ? (
-          <Stack.Screen name="Authorization" component={AuthPage} />
+          <Stack.Screen name="Авторизация" component={AuthScreen} />
         ) : (
           <Stack.Screen name="Navigator" component={TabNavigator} />
         )}

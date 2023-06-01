@@ -3,7 +3,7 @@ import React from 'react';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import Subject from './Subject';
 
-const Trimester = ({ data }) => (
+const SessionCard = ({ data }) => (
   <CardHeaderOut topText={data.trimester} key={`card-${data.trimester}`}>
     {data.subjects.map((subject, index) => (
       <Subject
@@ -15,4 +15,4 @@ const Trimester = ({ data }) => (
   </CardHeaderOut>
 );
 
-export default Trimester;
+export default SessionCard;

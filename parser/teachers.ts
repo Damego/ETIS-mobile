@@ -1,7 +1,10 @@
 import { load } from 'cheerio';
 
-import { ITeacher } from '../models/teachers';
+
+
+import { ITeacher, TeacherType } from '../models/teachers';
 import { getTextField } from './utils';
+
 
 const groupTeachers = (data) => {
   const dataGrouped = {};
@@ -16,15 +19,18 @@ const groupTeachers = (data) => {
   return Object.entries<ITeacher[]>(dataGrouped);
 };
 
-export default function parseTeachers(html) {
+export default function parseTeachers(html): TeacherType {
   const $ = load(html);
   const data: ITeacher[] = [];
 
   $('.teacher_info', html).each((index, element) => {
-    const teacherEl = $(element), photo = teacherEl.find('img').attr('src'),
-      photoTitle = teacherEl.find('img').attr('title'), name = getTextField(teacherEl.find('.teacher_name')),
+    const teacherEl = $(element),
+      photo = teacherEl.find('img').attr('src'),
+      photoTitle = teacherEl.find('img').attr('title'),
+      name = getTextField(teacherEl.find('.teacher_name')),
       cathedra = getTextField(teacherEl.find('.chair')),
-      subject = getTextField(teacherEl.find('.dis')), [subjectUntyped, subjectType] = subject.trim().split('(');
+      subject = getTextField(teacherEl.find('.dis')),
+      [subjectUntyped, subjectType] = subject.trim().split('(');
 
     data.push({
       photo,

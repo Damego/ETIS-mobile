@@ -3,10 +3,11 @@ import { getTextField } from './utils';
 
 export default function parseShortTeachPlan(html) {
   const $ = load(html);
+  const sessionName = $('h3').first().text().split(' ').at(-1);
   let data = [];
 
   $('.common', html).each((index, table) => {
-    const trimester = `${index + 1} триместр`;
+    const trimester = `${index + 1} ${sessionName}`;
     let subjects = [];
 
     $('.cgrldatarow', table).each((ind, tr) => {
