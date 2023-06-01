@@ -8,7 +8,6 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@expo/config-plugins": "^6.0.1",
     "@expo/vector-icons": "^13.0.0",
     "@haskkor/react-native-recaptchav3": "github:Damego/react-native-recaptchav3",
     "@react-native-async-storage/async-storage": "1.17.11",
@@ -43,6 +42,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.71.8",
+    "react-native-app-intro-slider": "^4.0.4",
     "react-native-autoheight-webview": "^1.6.5",
     "react-native-gesture-handler": "~2.9.0",
     "react-native-get-random-values": "~1.8.0",
@@ -51,7 +51,9 @@
     "react-native-web": "~0.18.10",
     "react-native-webview": "11.26.0",
     "react-redux": "^8.0.5",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "expo-linear-gradient": "~12.1.2",
+    "expo-font": "~11.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

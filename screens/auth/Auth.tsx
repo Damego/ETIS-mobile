@@ -1,24 +1,33 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 
 import Screen from '../../components/Screen';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setAuthorizing, setUserCredentials } from '../../redux/reducers/authSlice';
+import { storage } from '../../utils';
 import Footer from './AuthFooter';
 import Form from './AuthForm';
 import Recovery from './Recovery';
 
-
 const AuthScreen = () => {
   const dispatch = useAppDispatch();
+
+  const navigation = useNavigation();
+
   const { userCredentials } = useAppSelector((state) => state.auth);
 
   const [message, setMessage] = useState(null);
   const [showRecovery, setShowRecovery] = useState(false);
 
   useEffect(() => {
+    storage.isNeedIntro().then((res) => {
+      if (res) navigation.navigate('Intro');
+    });
+  }, []);
+
+  useEffect(() => {
     if (userCredentials) dispatch(setAuthorizing(true));
   }, [userCredentials]);
-
 
   const onFormSubmit = (login: string, password: string) => {
     if (!login || !password) {
@@ -28,7 +37,7 @@ const AuthScreen = () => {
 
     dispatch(setUserCredentials({ login, password }));
     dispatch(setAuthorizing(true));
-  }
+  };
 
   if (showRecovery) {
     return <Recovery setShowModal={setShowRecovery} />;
@@ -36,11 +45,7 @@ const AuthScreen = () => {
 
   return (
     <Screen>
-      <Form
-        onSubmit={onFormSubmit}
-        errorMessage={message}
-        setShowRecovery={setShowRecovery}
-      />
+      <Form onSubmit={onFormSubmit} errorMessage={message} setShowRecovery={setShowRecovery} />
       <Footer />
     </Screen>
   );

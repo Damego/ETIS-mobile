@@ -1,3 +1,4 @@
+import * as SplashScreen from 'expo-splash-screen';
 import React from 'react';
 import 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
@@ -26,6 +27,7 @@ const loadUserCredentials = () => {
   };
 };
 
+SplashScreen.preventAutoHideAsync();
 store.dispatch(loadTheme());
 store.dispatch(loadUserCredentials());
 
