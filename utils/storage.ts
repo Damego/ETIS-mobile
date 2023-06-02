@@ -29,9 +29,14 @@ export default class Storage {
   }
 
   async getAccountData() {
+    const login = await SecureStore.getItemAsync('userLogin');
+
+    if (login === null) return;
+
+    const password = await SecureStore.getItemAsync('userPassword');
     return {
-      login: await SecureStore.getItemAsync('userLogin'),
-      password: await SecureStore.getItemAsync('userPassword'),
+      login,
+      password,
     };
   }
 
