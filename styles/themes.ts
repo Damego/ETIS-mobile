@@ -25,6 +25,8 @@ export const AmoledTheme = {
   ...DarkTheme,
   colors: {
     ...DarkTheme.colors,
-    background: '#000',
+    background: '#000000',
+    card: '#000000',
+    block: '#000000'
   },
 };
