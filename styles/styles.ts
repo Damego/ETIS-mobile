@@ -9,7 +9,7 @@ const getGlobalStyles = ({ colors }) => StyleSheet.create({
     },
     shadowOpacity: 0.35,
     shadowRadius: 6,
-    elevation: 1,
+    elevation: 5,
   },
   border: {
     borderRadius: 10,
