@@ -37,7 +37,7 @@ const Services = () => {
 
   const doSignOut = async () => {
     await storage.deleteAccountData();
-    dispatch(signOut({ autoAuth: false }));
+    dispatch(signOut());
   };
 
   return (

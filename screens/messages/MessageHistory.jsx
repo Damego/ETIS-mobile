@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { parseTeacherMessages } from '../../parser';
 import { isLoginPage } from '../../parser/utils';
+import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { httpClient } from '../../utils';
 import MessagePreview from './MessagePreview';
-import { signOut } from '../../redux/reducers/authSlice';
 
 const MessageHistory = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const { isAuthorizing } = useAppSelector((state) => state.auth);
   const [data, setData] = useState();
 
   const loadData = async () => {
@@ -18,7 +19,7 @@ const MessageHistory = () => {
     if (!html) return;
 
     if (isLoginPage(html)) {
-      dispatch(signOut({ autoAuth: true }));
+      dispatch(setAuthorizing(true));
       return;
     }
 
@@ -26,8 +27,8 @@ const MessageHistory = () => {
   };
 
   useEffect(() => {
-    loadData();
-  }, []);
+    if (!isAuthorizing) loadData();
+  }, [isAuthorizing]);
 
   if (!data) return <LoadingScreen />;
 

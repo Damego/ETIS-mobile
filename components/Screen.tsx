@@ -4,7 +4,9 @@ import { StatusBar } from 'expo-status-bar';
 import React, { ReactElement, useRef, useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 
+import { useAppDispatch, useAppSelector } from '../hooks';
 import { useAppColorScheme } from '../hooks/theme';
+import AuthLoadingModal from './AuthLoadingModal';
 import Header from './Header';
 
 const styles = StyleSheet.create({
@@ -34,6 +36,7 @@ const Screen = ({
   onBackPageClick,
   startScrollFromBottom,
 }: ScreenProps) => {
+  const { isAuthorizing, authFunc } = useAppSelector((state) => state.auth);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const scrollRef = useRef<ScrollView>();
   const route = useRoute();
@@ -47,10 +50,11 @@ const Screen = ({
 
   return (
     <View style={{ marginTop: Constants.statusBarHeight, flex: 1 }}>
+      {isAuthorizing && <AuthLoadingModal authFunc={authFunc} />}
+
       <StatusBar style={useAppColorScheme() === 'dark' ? 'light' : 'dark'} />
-      {!scrollHeader && (
-        <Header text={headerText} onBackButtonClick={onBackPageClick} />
-      )}
+
+      {!scrollHeader && <Header text={headerText} onBackButtonClick={onBackPageClick} />}
       <ScrollView
         ref={startScrollFromBottom ? scrollRef : undefined}
         contentContainerStyle={{ flexGrow: 1 }}

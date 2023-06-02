@@ -6,7 +6,7 @@ import Screen from '../../components/Screen';
 import { cacheTimeTableData, getTimeTableData } from '../../data/timeTable';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ITimeTableGetProps } from '../../models/timeTable';
-import { signOut } from '../../redux/reducers/authSlice';
+import { setAuthorizing } from '../../redux/reducers/authSlice';
 import {
   addFetchedWeek,
   changeSelectedWeek,
@@ -18,6 +18,7 @@ import DayArray from './DayArray';
 
 const TimeTable = () => {
   const dispatch = useAppDispatch();
+  const { isAuthorizing } = useAppSelector(state => state.auth);
 
   const { fetchedWeeks, data, selectedWeek, currentWeek }: TimeTableState = useAppSelector(
     (state) => state.timeTable
@@ -43,7 +44,7 @@ const TimeTable = () => {
     const result = await getTimeTableData(payload);
 
     if (result.isLoginPage) {
-      dispatch(signOut({ autoAuth: true }));
+      dispatch(setAuthorizing(true));
       return;
     }
 
@@ -63,8 +64,8 @@ const TimeTable = () => {
   };
 
   useEffect(() => {
-    loadData();
-  }, [selectedWeek]);
+    if (!isAuthorizing) loadData();
+  }, [selectedWeek, isAuthorizing]);
 
   if (!data || isLoading) return <LoadingScreen />;
 

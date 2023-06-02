@@ -6,11 +6,14 @@ import Screen from '../../components/Screen';
 import { cacheTeacherData, getTeacherData } from '../../data/teachers';
 import { IGetPayload } from '../../models/results';
 import { TeacherType } from '../../models/teachers';
-import { signOut } from '../../redux/reducers/authSlice';
+import { setAuthorizing } from '../../redux/reducers/authSlice';
 import TeacherCard from './TeacherCard';
+import { useAppSelector } from '../../hooks';
 
 const TeacherTable = () => {
   const dispatch = useDispatch();
+  const { isAuthorizing } = useAppSelector(state => state.auth);
+
   const [data, setData] = useState<TeacherType>(null);
 
   const loadData = async () => {
@@ -21,7 +24,7 @@ const TeacherTable = () => {
     const result = await getTeacherData(payload);
 
     if (result.isLoginPage) {
-      dispatch(signOut({ autoAuth: true }));
+      dispatch(setAuthorizing(true));
       return;
     }
 
@@ -32,8 +35,8 @@ const TeacherTable = () => {
   };
 
   useEffect(() => {
-    loadData();
-  }, []);
+    if (!isAuthorizing) loadData();
+  }, [isAuthorizing]);
 
   if (!data) return <LoadingScreen />;
 

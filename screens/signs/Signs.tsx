@@ -13,7 +13,7 @@ import {
 } from '../../data/signs';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ISessionSignsData } from '../../models/sessionPoints';
-import { signOut } from '../../redux/reducers/authSlice';
+import { setAuthorizing, signOut } from '../../redux/reducers/authSlice';
 import { setFetchedLatestSession, setMarks } from '../../redux/reducers/signsSlice';
 import CardSign from './CardSign';
 
@@ -48,6 +48,8 @@ const SubjectList = ({ data }: ISubjectListProps): JSX.Element[] =>
 
 const Signs = () => {
   const dispatch = useAppDispatch();
+  const { isAuthorizing } = useAppSelector(state => state.auth);
+
   const [isLoading, setLoading] = useState<boolean>(false);
   const { sessionsMarks, fetchedLatestSession } = useAppSelector((state) => state.signs);
   const [data, setData] = useState<ISessionSignsData>(null);
@@ -71,7 +73,7 @@ const Signs = () => {
     });
 
     if (result.isLoginPage) {
-      dispatch(signOut({ autoAuth: true }));
+      dispatch(setAuthorizing(true));
       return;
     }
 
@@ -104,8 +106,8 @@ const Signs = () => {
   };
 
   useEffect(() => {
-    loadData({});
-  }, []);
+    if (!isAuthorizing) loadData({});
+  }, [isAuthorizing]);
 
   if (!data || !optionData || isLoading) return <LoadingScreen />;
 

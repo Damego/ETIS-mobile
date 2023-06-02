@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
 import { parseAnnounce } from '../../parser';
 import { isLoginPage } from '../../parser/utils';
-import { signOut } from '../../redux/reducers/authSlice';
+import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { httpClient } from '../../utils';
 import AnnounceCard from './AnnounceCard';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 export default function Announce() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const { isAuthorizing } = useAppSelector((state) => state.auth);
+
   const [data, setData] = useState();
   const [pageCount, setPageCount] = useState();
   const [currentPageNum, setCurrentPageNum] = useState(1);
@@ -22,7 +24,7 @@ export default function Announce() {
     if (!html) return;
 
     if (isLoginPage(html)) {
-      dispatch(signOut({ autoAuth: true }));
+      dispatch(setAuthorizing(true));
       return;
     }
 
@@ -32,8 +34,8 @@ export default function Announce() {
   };
 
   useEffect(() => {
-    loadData();
-  }, []);
+    if (!isAuthorizing) loadData();
+  }, [isAuthorizing]);
 
   const filterData = (el, index) => index < currentPageNum * 5 && index >= (currentPageNum - 1) * 5;
 
