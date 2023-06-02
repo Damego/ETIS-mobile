@@ -1,8 +1,11 @@
-import ReCaptcha from './ReCaptcha';
-import { ActivityIndicator, ToastAndroid, View, StyleSheet, Text } from 'react-native';
+import ReCaptchaV3 from '@haskkor/react-native-recaptchav3';
+import React, { MutableRefObject, useRef } from 'react';
+import { ActivityIndicator, StyleSheet, Text, ToastAndroid, View } from 'react-native';
+
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
 import { setAuthorizing, signIn } from '../redux/reducers/authSlice';
 import { httpClient, storage } from '../utils';
+import ReCaptcha from './ReCaptcha';
 
 const styles = StyleSheet.create({
   modalWrapper: {
@@ -11,28 +14,30 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     zIndex: 100,
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
   modalContainer: {
-    backgroundColor: '#DDD',
-    borderRadius: 10,
     padding: '15%',
     alignItems: 'center',
     justifyContent: 'center',
-  }
-})
+  },
+});
 
-const makeLogin = async (token, userCredentials, saveUserCredentials) => {
+const makeLogin = async (token, userCredentials, saveUserCredentials): Promise<boolean | null> => {
   if (!token) {
-    // TODO: make auto attempt
-    ToastAndroid.show('Токен авторизации не найден. Подождите немного', ToastAndroid.SHORT);
-    return false;
+    return null;
   }
-  const { errorMessage } = await httpClient.login(userCredentials.login, userCredentials.password, token);
+  const { errorMessage } = await httpClient.login(
+    userCredentials.login,
+    userCredentials.password,
+    token
+  );
 
   if (errorMessage) {
+    if (errorMessage === 'Вы не прошли проверку') return null;
+
     ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
-    return;
+    return false;
   }
 
   if (saveUserCredentials) {
@@ -43,31 +48,39 @@ const makeLogin = async (token, userCredentials, saveUserCredentials) => {
 
 const AuthLoadingModal = () => {
   const dispatch = useAppDispatch();
-  const {userCredentials, saveUserCredentials} = useAppSelector(state => state.auth);
+  const { userCredentials, saveUserCredentials } = useAppSelector((state) => state.auth);
+  const recaptchaRef: MutableRefObject<ReCaptchaV3> = useRef();
 
   const globalStyles = useGlobalStyles();
 
   const onReceiveToken = async (token: string) => {
     const success = await makeLogin(token, userCredentials, saveUserCredentials);
-
+    if (success === null) {
+      recaptchaRef.current.refreshToken();
+      return;
+    }
     if (success === true) {
       dispatch(signIn());
-      dispatch(setAuthorizing(false));
     }
-    else {
-      console.warn('pizdec')
-    }
-  }
+    dispatch(setAuthorizing(false));
+  };
 
   return (
     <View style={styles.modalWrapper}>
-      <View style={styles.modalContainer}>
-        <ReCaptcha onReceiveToken={onReceiveToken} />
-        <ActivityIndicator size='large' color={globalStyles.primaryFontColor.color}/>
+      <View
+        style={[
+          styles.modalContainer,
+          globalStyles.border,
+          globalStyles.block,
+          globalStyles.shadow,
+        ]}
+      >
+        <ReCaptcha onReceiveToken={onReceiveToken} captchaRef={recaptchaRef}/>
+        <ActivityIndicator size="large" color={globalStyles.primaryFontColor.color} />
         <Text>Авторизация...</Text>
       </View>
     </View>
-  )
-}
+  );
+};
 
 export default AuthLoadingModal;

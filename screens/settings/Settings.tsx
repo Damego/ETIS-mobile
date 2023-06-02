@@ -21,6 +21,10 @@ const options = [
     label: 'Тёмная',
     value: ThemeType.dark,
   },
+  {
+    label: 'Amoled',
+    value: ThemeType.amoled,
+  },
 ];
 
 const ToggleThemeSetting = () => {

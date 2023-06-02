@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { useAppColorScheme } from '../hooks/theme';
 import AuthPage from '../screens/auth/Auth';
 import Intro from '../screens/intro/Intro';
-import { DarkTheme, LightTheme } from '../styles/themes';
+import { AmoledTheme, DarkTheme, LightTheme } from '../styles/themes';
 import TabNavigator from './TabNavigation';
 
 const Stack = createNativeStackNavigator();
@@ -15,7 +15,14 @@ const Stack = createNativeStackNavigator();
 const StackNavigator = () => {
   const isSignedIn = useSelector((state) => state.auth.isSignedIn);
   const scheme = useAppColorScheme();
-  const theme = scheme === 'dark' ? DarkTheme : LightTheme;
+  let theme;
+  if (scheme === 'dark') {
+    theme = DarkTheme;
+  } else if (scheme === 'amoled' ){
+    theme = AmoledTheme;
+  }  else {
+    theme = LightTheme;
+  }
   setBackgroundColorAsync(theme.colors.card)
 
   return (

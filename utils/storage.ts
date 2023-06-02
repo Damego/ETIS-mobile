@@ -29,9 +29,14 @@ export default class Storage {
   }
 
   async getAccountData() {
+    const login = await SecureStore.getItemAsync('userLogin');
+
+    if (login === null) return;
+
+    const password = await SecureStore.getItemAsync('userPassword');
     return {
-      login: await SecureStore.getItemAsync('userLogin'),
-      password: await SecureStore.getItemAsync('userPassword'),
+      login,
+      password,
     };
   }
 
@@ -67,7 +72,7 @@ export default class Storage {
 
   async getTeacherData(): Promise<TeacherType | null> {
     const stringData = await AsyncStorage.getItem('teachers');
-    if (stringData) JSON.parse(stringData);
+    return JSON.parse(stringData);
   }
 
   storeTeacherData(data: TeacherType) {
@@ -76,7 +81,7 @@ export default class Storage {
 
   async getSignsData(session: number): Promise<ISessionSignsData> {
     const stringData = await AsyncStorage.getItem(`session-${session}`);
-    if (stringData) return JSON.parse(stringData);
+    return JSON.parse(stringData);
   }
 
   storeSignsData(data: ISessionSignsData) {
@@ -85,7 +90,7 @@ export default class Storage {
 
   async getMarksData() {
     const stringData = await AsyncStorage.getItem(`marks`);
-    if (stringData) return JSON.parse(stringData);
+    return JSON.parse(stringData);
   }
 
   async storeMarksData(data) {
