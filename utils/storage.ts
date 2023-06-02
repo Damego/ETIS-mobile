@@ -106,4 +106,12 @@ export default class Storage {
     if (theme === null) return ThemeType.auto;
     return theme;
   }
+
+  async isNeedIntro() {
+    return (await AsyncStorage.getItem('intro')) === null;
+  }
+
+  async introDone() {
+    await AsyncStorage.setItem('intro', 'done');
+  }
 }

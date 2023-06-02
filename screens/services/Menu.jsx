@@ -67,6 +67,11 @@ function Menu() {
           icon={<AntDesign name="team" size={iconSize} color={iconColor} />}
           page="Преподаватели"
         />
+        <Button
+          text="Приказы"
+          icon={<AntDesign name="filetext1" size={iconSize} color={iconColor} />}
+          page="Приказы"
+        />
       </Row>
       <Row>
         <Button
