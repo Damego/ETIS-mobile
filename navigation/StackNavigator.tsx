@@ -1,9 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useFonts } from 'expo-font';
 import { setBackgroundColorAsync } from 'expo-navigation-bar';
-import * as SplashScreen from 'expo-splash-screen';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { useAppColorScheme } from '../hooks/theme';
@@ -19,20 +17,6 @@ const StackNavigator = () => {
   const scheme = useAppColorScheme();
   const theme = scheme === 'dark' ? DarkTheme : LightTheme;
   setBackgroundColorAsync(theme.colors.card)
-  const [fontsLoaded] = useFonts({
-    'Nunito-SemiBold': require('./../assets/fonts/Nunito-SemiBold.ttf'),
-    'Nunito-Bold': require('./../assets/fonts/Nunito-Bold.ttf'),
-    'Nunito-Light': require('./../assets/fonts/Nunito-Light.ttf'),
-    'Nunito-Regular': require('./../assets/fonts/Nunito-Regular.ttf'),
-  });
-
-  useEffect(() => {
-    SplashScreen.hideAsync();
-  },[fontsLoaded]);
-
-  if (!fontsLoaded) {
-    return null;
-  }
 
   return (
     <NavigationContainer theme={theme}>

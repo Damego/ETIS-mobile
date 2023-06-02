@@ -1,21 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
-import {
-  Dimensions,
-  Image,
-  ListRenderItemInfo,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Dimensions, Image, ListRenderItemInfo, StyleSheet, Text, View } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { ImageRequireSource } from 'react-native/Libraries/Image/ImageSource';
 
 import { storage } from '../../utils';
 
-const { width, height } = Dimensions.get('window');
+const { fontScale } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   mainContent: {
@@ -30,15 +22,15 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: 'Nunito-SemiBold',
-    color: 'rgba(255, 255, 255, 0.8)',
+    color: '#FFFFFFCC',
     backgroundColor: 'transparent',
     textAlign: 'center',
-    fontSize: (width / 360) * 15,
+    fontSize: 15 * fontScale,
     paddingHorizontal: 16,
   },
   title: {
     fontFamily: 'Nunito-Bold',
-    fontSize: (width / 360) * 20,
+    fontSize: 20 * fontScale,
     color: 'white',
     backgroundColor: 'transparent',
     textAlign: 'center',
@@ -46,8 +38,9 @@ const styles = StyleSheet.create({
   },
 });
 
+type SlideItem = ListRenderItemInfo<ISlide> & { dimensions: { width: number; height: number } };
 interface ISlide {
-  key, title, text: string;
+  key:string , title: string, text: string;
   colors: string[];
   source: ImageRequireSource;
 }
@@ -61,14 +54,6 @@ const slides: ISlide[] = [
     colors: ["#4389A2","#5C258D"],
     source: require('./../../assets/intro/welcome.png')
   },
-  // {
-  //   key: 'offline',
-  //   title: 'Приложение может работать оффлайн!',
-  //   text:
-  //     'Даже при отсутсвии интернета вы сможете узнать расписание!',
-  //   colors: ["#5C258D","#832161"],
-  //   source:  require('./../../assets/intro/welcome.png')
-  // },
   {
     key: 'offline',
     title: 'Оставайся на связи даже оффлайн!',
@@ -105,7 +90,7 @@ const slides: ISlide[] = [
 const Intro = () => {
   const navigation = useNavigation();
 
-  const renderItem = (item: ListRenderItemInfo<ISlide> & { dimensions: { width: number; height: number } }) =>
+  const renderItem = (item: SlideItem) =>
     (
       <LinearGradient
         style={[
@@ -132,7 +117,6 @@ const Intro = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <StatusBar backgroundColor="transparent" translucent={true} />
       <AppIntroSlider nextLabel={'Дальше'}
                       onDone={() => {
                         navigation.goBack();
