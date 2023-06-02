@@ -1,10 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 
-import { ITeacher, TeacherType } from '../models/teachers';
+import { ISessionSignsData } from '../models/sessionPoints';
+import { TeacherType } from '../models/teachers';
 import { ITimeTable } from '../models/timeTable';
 import { ThemeType } from '../redux/reducers/settingsSlice';
-import { ISessionSignsData } from '../models/sessionPoints';
 
 export default class Storage {
   async bumpReviewRequest() {
@@ -85,7 +85,7 @@ export default class Storage {
   }
 
   storeSignsData(data: ISessionSignsData) {
-    return AsyncStorage.setItem(`session-${data.currentSession}`, JSON.stringify(data))
+    return AsyncStorage.setItem(`session-${data.currentSession}`, JSON.stringify(data));
   }
 
   async getMarksData() {
@@ -94,7 +94,7 @@ export default class Storage {
   }
 
   async storeMarksData(data) {
-    return AsyncStorage.setItem(`marks`, JSON.stringify(data))
+    return AsyncStorage.setItem(`marks`, JSON.stringify(data));
   }
 
   storeAppTheme(theme: ThemeType) {
