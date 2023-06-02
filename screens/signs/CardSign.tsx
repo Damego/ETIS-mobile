@@ -82,33 +82,24 @@ const CardSign = ({ subject }: CardSignProps) => {
   const pointsWord = getPointsWord(subject.totalPoints);
 
   return (
-    <Pressable
-      onPress={() => {
-        console.log(subject);
-        console.log(textStyle);
-      }}
-    >
-      <CardHeaderIn topText={subject.name}>
-        <View style={styles.pointsView}>
-          <View>
-            <SubjectCheckPoints data={subject.checkPoints} />
-          </View>
-
-          <View style={styles.totalPoints}>
-            <Text style={[styles.markNumberText, textStyle]}>{subject.totalPoints}</Text>
-            <Text style={[styles.markWordText, globalStyles.textColor]}>{pointsWord}</Text>
-          </View>
+    <CardHeaderIn topText={subject.name}>
+      <View style={styles.pointsView}>
+        <View>
+          <SubjectCheckPoints data={subject.checkPoints} />
         </View>
 
-        {subject.mark !== null && (
-          <View style={styles.markView}>
-            <Text style={[styles.markWordText, globalStyles.textColor]}>
-              Оценка: {subject.mark}
-            </Text>
-          </View>
-        )}
-      </CardHeaderIn>
-    </Pressable>
+        <View style={styles.totalPoints}>
+          <Text style={[styles.markNumberText, textStyle]}>{subject.totalPoints}</Text>
+          <Text style={[styles.markWordText, globalStyles.textColor]}>{pointsWord}</Text>
+        </View>
+      </View>
+
+      {subject.mark !== null && (
+        <View style={styles.markView}>
+          <Text style={[styles.markWordText, globalStyles.textColor]}>Оценка: {subject.mark}</Text>
+        </View>
+      )}
+    </CardHeaderIn>
   );
 };
 
