@@ -7,7 +7,6 @@ interface UserCredentials {
 
 interface AuthState {
   isSignedIn: boolean;
-  shouldAutoAuth: boolean;
   isAuthorizing: boolean;
   userCredentials?: UserCredentials;
   saveUserCredentials: boolean;
@@ -15,7 +14,6 @@ interface AuthState {
 
 const initialState: AuthState = {
   isSignedIn: false,
-  shouldAutoAuth: false,
   isAuthorizing: false,
   saveUserCredentials: true,
 };
@@ -27,9 +25,8 @@ const authSlice = createSlice({
     signIn(state) {
       state.isSignedIn = true;
     },
-    signOut(state, action) {
+    signOut(state) {
       state.isSignedIn = false;
-      state.shouldAutoAuth = action.payload.autoAuth;
       state.userCredentials = undefined;
     },
     setAuthorizing(state, action: PayloadAction<boolean>) {
