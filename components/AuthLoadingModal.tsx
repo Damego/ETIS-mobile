@@ -5,6 +5,7 @@ import { ActivityIndicator, StyleSheet, Text, ToastAndroid, View } from 'react-n
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
 import { setAuthorizing, signIn } from '../redux/reducers/authSlice';
 import { httpClient, storage } from '../utils';
+import ReCaptcha from './ReCaptcha';
 
 const styles = StyleSheet.create({
   modalWrapper: {
@@ -74,13 +75,7 @@ const AuthLoadingModal = () => {
           globalStyles.shadow,
         ]}
       >
-        <ReCaptchaV3
-          ref={recaptchaRef}
-          action="submit"
-          captchaDomain="https://student.psu.ru"
-          siteKey="6LfeYf8UAAAAAIF22Cn9YFwXlZk1exjVNyF2Jmo6"
-          onReceiveToken={onReceiveToken}
-        />
+        <ReCaptcha onReceiveToken={onReceiveToken} captchaRef={recaptchaRef}/>
         <ActivityIndicator size="large" color={globalStyles.primaryFontColor.color} />
         <Text>Авторизация...</Text>
       </View>
