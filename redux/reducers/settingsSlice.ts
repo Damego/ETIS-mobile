@@ -7,12 +7,14 @@ export enum ThemeType {
   amoled = 'amoled',
 }
 
-export interface TimeTableState {
+export interface SettingsState {
   theme: ThemeType;
+  viewedIntro: boolean;
 }
 
-const initialState: TimeTableState = {
+const initialState: SettingsState = {
   theme: ThemeType.auto,
+  viewedIntro: false,
 };
 
 const settingsSlice = createSlice({
@@ -22,8 +24,11 @@ const settingsSlice = createSlice({
     changeTheme(state, action: PayloadAction<ThemeType>) {
         state.theme = action.payload;
     },
+    setIntroViewed(state, action: PayloadAction<boolean>) {
+      state.viewedIntro = action.payload;
+    }
   },
 });
 
 export default settingsSlice.reducer;
-export const { changeTheme} = settingsSlice.actions;
+export const {changeTheme, setIntroViewed} = settingsSlice.actions;

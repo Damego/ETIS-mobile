@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-interface UserCredentials {
+export interface UserCredentials {
   login: string;
   password: string;
 }

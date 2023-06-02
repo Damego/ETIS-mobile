@@ -6,30 +6,12 @@ import { Provider } from 'react-redux';
 
 import StackNavigator from './navigation/StackNavigator';
 import setupStore from './redux';
-import { setUserCredentials } from './redux/reducers/authSlice';
-import { changeTheme } from './redux/reducers/settingsSlice';
-import { storage } from './utils';
-
-const store = setupStore();
-
-const loadTheme = () => {
-  return (dispatch) => {
-    storage.getAppTheme().then((theme) => {
-      dispatch(changeTheme(theme));
-    });
-  };
-};
-
-const loadUserCredentials = () => {
-  return (dispatch) => {
-    storage.getAccountData().then((payload) => {
-      dispatch(setUserCredentials(payload));
-    });
-  };
-};
+import { loadSettings, loadUserCredentials } from './redux/storageLoader';
 
 SplashScreen.preventAutoHideAsync();
-store.dispatch(loadTheme());
+
+const store = setupStore();
+store.dispatch(loadSettings());
 store.dispatch(loadUserCredentials());
 
 const App = () => {

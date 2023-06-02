@@ -5,6 +5,7 @@ import { ISessionSignsData } from '../models/sessionPoints';
 import { TeacherType } from '../models/teachers';
 import { ITimeTable } from '../models/timeTable';
 import { ThemeType } from '../redux/reducers/settingsSlice';
+import { UserCredentials } from '../redux/reducers/authSlice';
 
 export default class Storage {
   async bumpReviewRequest() {
@@ -28,10 +29,10 @@ export default class Storage {
     await SecureStore.setItemAsync('userPassword', password);
   }
 
-  async getAccountData() {
+  async getAccountData(): Promise<UserCredentials | null> {
     const login = await SecureStore.getItemAsync('userLogin');
 
-    if (login === null) return;
+    if (login === null) return null;
 
     const password = await SecureStore.getItemAsync('userPassword');
     return {
@@ -101,17 +102,17 @@ export default class Storage {
     return AsyncStorage.setItem('theme', theme);
   }
 
-  async getAppTheme() {
+  async getAppTheme(): Promise<ThemeType> {
     const theme = await AsyncStorage.getItem('theme');
     if (theme === null) return ThemeType.auto;
-    return theme;
+    return ThemeType[theme];
   }
 
-  async isNeedIntro() {
-    return (await AsyncStorage.getItem('intro')) === null;
+  async hasViewedIntro() {
+    return (await AsyncStorage.getItem('viewedIntro')) !== null;
   }
 
-  async introDone() {
-    await AsyncStorage.setItem('intro', 'done');
+  async setViewedIntro() {
+    await AsyncStorage.setItem('viewedIntro', 'true');
   }
 }
