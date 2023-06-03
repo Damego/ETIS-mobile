@@ -85,8 +85,10 @@ export default class Storage {
     return JSON.parse(stringData);
   }
 
-  storeSignsData(data: ISessionSignsData) {
-    return AsyncStorage.setItem(`session-${data.currentSession}`, JSON.stringify(data));
+  storeSignsData(data: ISessionSignsData, storeForUndefined?: boolean) {
+    const stringData = JSON.stringify(data);
+    AsyncStorage.setItem(`session-${data.currentSession}`, stringData);
+    if (storeForUndefined) AsyncStorage.setItem(`session-undefined`, stringData);
   }
 
   async getMarksData() {

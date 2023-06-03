@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { ToastAndroid, View } from 'react-native';
 
 import Dropdown from '../../components/Dropdown';
 import LoadingScreen from '../../components/LoadingScreen';
@@ -16,6 +16,8 @@ import { ISessionSignsData } from '../../models/sessionPoints';
 import { setAuthorizing, signOut } from '../../redux/reducers/authSlice';
 import { setFetchedLatestSession, setMarks } from '../../redux/reducers/signsSlice';
 import CardSign from './CardSign';
+import { IGetResult } from '../../models/results';
+import { ISessionMarks } from '../../models/sessionMarks';
 
 const buildOption = (session: number, sessionName: string) => ({
   label: `${session} ${sessionName}`,
@@ -43,12 +45,15 @@ interface loadDataPayload {
   force?: boolean;
 }
 
-const SubjectList = ({ data }: ISubjectListProps): JSX.Element[] =>
-  data.subjects.map((subject) => <CardSign subject={subject} key={subject.name} />);
+const SubjectList = ({ data }: ISubjectListProps): JSX.Element[] => {
+  if (!data) return;
+
+  return data.subjects.map((subject) => <CardSign subject={subject} key={subject.name} />);
+};
 
 const Signs = () => {
   const dispatch = useAppDispatch();
-  const { isAuthorizing } = useAppSelector(state => state.auth);
+  const { isAuthorizing } = useAppSelector((state) => state.auth);
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const { sessionsMarks, fetchedLatestSession } = useAppSelector((state) => state.signs);
@@ -68,12 +73,18 @@ const Signs = () => {
       useCacheFirst:
         !force &&
         data &&
-        (newSession < data.latestSession || (newSession === data.latestSession && fetchedLatestSession)),
+        (newSession < data.latestSession ||
+          (newSession === data.latestSession && fetchedLatestSession)),
       session: newSession,
     });
 
     if (result.isLoginPage) {
       dispatch(setAuthorizing(true));
+      return;
+    }
+    if (!result.data) {
+      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG)
+      setLoading(false);
       return;
     }
 
@@ -82,11 +93,13 @@ const Signs = () => {
       dispatch(setFetchedLatestSession(true));
     }
 
-    let marksResult;
+    let marksResult: IGetResult<ISessionMarks[]>;
     if (sessionsMarks.length === 0) {
       marksResult = await getMarksData({ useCache: true });
-      dispatch(setMarks(marksResult.data));
-      cacheMarksData(marksResult.data);
+      if (marksResult.data) {
+        dispatch(setMarks(marksResult.data));
+        cacheMarksData(marksResult.data);
+      }
     }
 
     const fullData = composePointsAndMarks(
@@ -101,7 +114,7 @@ const Signs = () => {
     if (data) setLoading(false);
 
     if (result.fetched) {
-      cacheSignsData(result.data);
+      cacheSignsData(result.data, !data);
     }
   };
 
@@ -112,10 +125,10 @@ const Signs = () => {
   if (!data || !optionData || isLoading) return <LoadingScreen />;
 
   return (
-    <Screen onUpdate={() => loadData({force: true})}>
+    <Screen onUpdate={() => loadData({ force: true })}>
       <View style={{ marginLeft: 'auto', marginRight: 0, paddingBottom: '2%', zIndex: 1 }}>
         <Dropdown
-          onSelect={(session) => loadData({session})}
+          onSelect={(session) => loadData({ session })}
           selectedOption={optionData.current}
           options={optionData.options}
         />

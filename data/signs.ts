@@ -10,6 +10,8 @@ export const composePointsAndMarks = (
   sessionPoints: ISessionSignsData,
   allSessionMarks: ISessionMarks[]
 ) => {
+  if (!allSessionMarks || allSessionMarks.length === 0) return sessionPoints;
+
   const sessionMarks = allSessionMarks.find(
     (sessionData) => sessionData.fullSessionNumber === sessionPoints.currentSession
   );
@@ -95,9 +97,9 @@ export const getMarksData = async (payload: IGetPayload): Promise<IGetResult<ISe
   };
 };
 
-export const cacheSignsData = (data: ISessionSignsData) => {
+export const cacheSignsData = (data: ISessionSignsData, storeForUndefined?: boolean) => {
   console.log(`[DATA] caching signs data for ${data.currentSession} session`);
-  storage.storeSignsData(data);
+  storage.storeSignsData(data, storeForUndefined);
 };
 
 export const cacheMarksData = (data: ISessionMarks[]) => {
