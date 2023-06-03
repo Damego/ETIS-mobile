@@ -23,22 +23,21 @@ const OrderTable = () => {
     }
 
     if (isLoginPage(html)) {
-      dispatch(signOut({ autoAuth: true }));
+      dispatch(signOut());
       return;
     }
 
     const parsedData = parseOrders(html);
     setData(parsedData);
   };
+
   const showOrder = (order) => {
     if (activeOrder && order.id == activeOrder.id) {
       setActiveOrder(null);
+    } else if (order.url) {
+      setActiveOrder(order);
     } else {
-      if (order.url) {
-        setActiveOrder(order);
-      } else {
-        ToastAndroid.show('Ссылка недоступна', ToastAndroid.SHORT);
-      }
+      ToastAndroid.show('Ссылка недоступна', ToastAndroid.SHORT);
     }
   };
 
@@ -46,9 +45,10 @@ const OrderTable = () => {
     loadData();
   }, []);
 
-  if (!data) return <LoadingScreen headerText="Приказы" />;
+  if (!data) return <LoadingScreen />;
+
   return (
-    <Screen headerText="Приказы" onUpdate={loadData}>
+    <Screen onUpdate={loadData}>
       {data.map((order, index) => (
         <Order
           key={index}
