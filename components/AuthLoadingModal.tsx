@@ -77,7 +77,7 @@ const AuthLoadingModal = () => {
       >
         <ReCaptcha onReceiveToken={onReceiveToken} captchaRef={recaptchaRef}/>
         <ActivityIndicator size="large" color={globalStyles.primaryFontColor.color} />
-        <Text>Авторизация...</Text>
+        <Text style={globalStyles.textColor}>Авторизация...</Text>
       </View>
     </View>
   );
