@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from 'react';
+import { ToastAndroid } from 'react-native';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
-import { setAuthorizing } from '../../redux/reducers/authSlice';
-import AnnounceCard from './AnnounceCard';
-import { useAppDispatch, useAppSelector } from '../../hooks';
 import { cacheAnnounceData, getAnnounceData } from '../../data/announce';
-import { ToastAndroid } from 'react-native';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { setAnnounceCount } from '../../redux/reducers/studentSlice';
+import AnnounceCard from './AnnounceCard';
 
 export default function Announce() {
   const dispatch = useAppDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
-  const {announceCount} = useAppSelector(state => state.student)
+  const { announceCount } = useAppSelector((state) => state.student);
 
   const [data, setData] = useState<string[]>();
   const [pageCount, setPageCount] = useState<number>();
   const [currentPageNum, setCurrentPageNum] = useState<number>(1);
 
   const loadData = async (force?: boolean) => {
-    const result = await getAnnounceData({useCache: true, useCacheFirst: !force && announceCount === null});
+    const result = await getAnnounceData({
+      useCache: true,
+      useCacheFirst: !force && announceCount === null,
+    });
 
     if (result.isLoginPage) {
       dispatch(setAuthorizing(true));
@@ -36,7 +39,7 @@ export default function Announce() {
     setData(result.data);
 
     if (result.fetched) {
-      cacheAnnounceData(result.data)
+      cacheAnnounceData(result.data);
     }
   };
 
@@ -46,9 +49,10 @@ export default function Announce() {
 
   useEffect(() => {
     dispatch(setAnnounceCount(null));
-  }, [])
+  }, []);
 
-  const filterData = (el: string, index: number) => index < currentPageNum * 5 && index >= (currentPageNum - 1) * 5;
+  const filterData = (el: string, index: number) =>
+    index < currentPageNum * 5 && index >= (currentPageNum - 1) * 5;
 
   const changePage = (pageNum) => {
     setCurrentPageNum(pageNum);
