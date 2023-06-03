@@ -14,11 +14,11 @@ export default function parseShortTeachPlan(html) {
     $('.cgrldatarow', table).each((ind, tr) => {
       const td = $(tr).find('td');
 
-      const isElective = getTextField(td.eq(0)) === '{';
+      const electiveLimit = Number(getTextField(td.eq(0)) === '{');
 
       const fields = [];
-      for (let i = 0; i < isElective + 5; i += 1) {
-        fields.push(getTextField(td.eq(isElective + i)));
+      for (let i = 0; i < electiveLimit + 5; i += 1) {
+        fields.push(getTextField(td.eq(electiveLimit + i)));
       }
       const [name, reporting, classWorkHours, soloWorkHours, totalWorkHours] = fields;
 
