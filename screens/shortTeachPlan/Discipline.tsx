@@ -4,6 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import BorderLine from '../../components/BorderLine';
 import { useGlobalStyles } from '../../hooks';
+import { ITeachPlanDiscipline } from '../../models/teachPlan';
 
 const styles = StyleSheet.create({
   subjectDropdownView: {
@@ -29,28 +30,42 @@ const styles = StyleSheet.create({
   },
 });
 
-const SubjectInfo = ({ classWork, soloWork, total }) => {
+const DisciplineWorkHours = ({
+  classWorkHours,
+  soloWorkHours,
+  totalWorkHours,
+}: {
+  classWorkHours: number;
+  soloWorkHours: number;
+  totalWorkHours: number;
+}) => {
   const globalStyles = useGlobalStyles();
   const textStyles = [styles.font15, globalStyles.textColor];
 
   return (
-    <View style={styles.subjectInfoView}>
+    <>
       <Text style={[...textStyles, styles.boldText]}>Трудоёмкость:</Text>
 
       <Text style={textStyles}>
-        Аудиторная работа: {classWork} часов ({classWork / 2} пар)
+        Аудиторная работа: {classWorkHours} часов ({classWorkHours / 2} пар)
       </Text>
       <Text style={textStyles}>
-        Самостоятельная работа: {soloWork} часов ({soloWork / 2} пар)
+        Самостоятельная работа: {soloWorkHours} часов ({soloWorkHours / 2} пар)
       </Text>
       <Text style={textStyles}>
-        Всего: {total} часов ({total / 2} пар)
+        Всего: {totalWorkHours} часов ({totalWorkHours / 2} пар)
       </Text>
-    </View>
+    </>
   );
 };
 
-const Subject = ({ data: { subject, reporting, classWork, soloWork, total }, showBorderLine }) => {
+const Subject = ({
+  data,
+  showBorderLine,
+}: {
+  data: ITeachPlanDiscipline;
+  showBorderLine: boolean;
+}) => {
   const globalStyles = useGlobalStyles();
   const [isOpened, setOpened] = useState(false);
 
@@ -61,17 +76,23 @@ const Subject = ({ data: { subject, reporting, classWork, soloWork, total }, sho
         style={styles.subjectDropdownView}
         activeOpacity={0.45}
       >
-        <View style={[styles.subjectTitleView, globalStyles.textColor]}>
-          <Text style={[styles.subjectNameText, globalStyles.textColor]}>{subject}</Text>
+        <View style={[styles.subjectTitleView]}>
+          <Text style={[styles.subjectNameText, globalStyles.textColor]}>{data.name}</Text>
           <Text style={[styles.subjectReportingText, globalStyles.textColor]}>
-            Отчётность: {reporting}
+            Отчётность: {data.reporting}
           </Text>
         </View>
 
         <AntDesign name={isOpened ? 'up' : 'down'} size={18} color={globalStyles.textColor.color} />
       </TouchableOpacity>
 
-      {isOpened && <SubjectInfo classWork={classWork} soloWork={soloWork} total={total} />}
+      {isOpened && (
+        <DisciplineWorkHours
+          classWorkHours={data.classWorkHours}
+          soloWorkHours={data.soloWorkHours}
+          totalWorkHours={data.totalWorkHours}
+        />
+      )}
       {showBorderLine && <BorderLine />}
     </>
   );

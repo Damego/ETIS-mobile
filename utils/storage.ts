@@ -4,8 +4,9 @@ import * as SecureStore from 'expo-secure-store';
 import { ISessionSignsData } from '../models/sessionPoints';
 import { TeacherType } from '../models/teachers';
 import { ITimeTable } from '../models/timeTable';
-import { ThemeType } from '../redux/reducers/settingsSlice';
 import { UserCredentials } from '../redux/reducers/authSlice';
+import { ThemeType } from '../redux/reducers/settingsSlice';
+import { ISessionTeachPlan } from '../models/teachPlan';
 
 export default class Storage {
   async bumpReviewRequest() {
@@ -116,5 +117,14 @@ export default class Storage {
 
   async setViewedIntro() {
     await AsyncStorage.setItem('viewedIntro', 'true');
+  }
+
+  async getTeachPlan(): Promise<ISessionTeachPlan[]> {
+    const stringData = await AsyncStorage.getItem('teachPlan');
+    return JSON.parse(stringData);
+  }
+
+  storeTeachPlan(data: ISessionTeachPlan[]) {
+    return AsyncStorage.setItem('teachPlan', JSON.stringify(data))
   }
 }
