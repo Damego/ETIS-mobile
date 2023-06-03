@@ -1,8 +1,8 @@
 import { load } from 'cheerio';
 
-export default function parseAnnounce(html) {
+export default function parseAnnounce(html): string[] {
   const $ = load(html);
-  let data = [];
+  const data: string[] = [];
 
   // Let WebView work with this shit
   $('.nav.msg').each((index, el) => {

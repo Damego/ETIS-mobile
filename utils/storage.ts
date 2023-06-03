@@ -127,4 +127,13 @@ export default class Storage {
   storeTeachPlan(data: ISessionTeachPlan[]) {
     return AsyncStorage.setItem('teachPlan', JSON.stringify(data))
   }
+
+  async getAnnounceData(): Promise<string[]> {
+    const stringData = await AsyncStorage.getItem('announce');
+    return JSON.parse(stringData);
+  }
+
+  storeAnnounceData(data: string[]) {
+    AsyncStorage.setItem('announce', JSON.stringify(data))
+  }
 }

@@ -13,7 +13,7 @@ import {
 } from '../../data/signs';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ISessionSignsData } from '../../models/sessionPoints';
-import { setAuthorizing, signOut } from '../../redux/reducers/authSlice';
+import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { setFetchedLatestSession, setMarks } from '../../redux/reducers/signsSlice';
 import CardSign from './CardSign';
 import { IGetResult } from '../../models/results';
