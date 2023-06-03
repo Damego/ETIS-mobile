@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { ToastAndroid } from 'react-native';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import PageNavigator from '../../components/PageNavigator';
@@ -18,7 +19,7 @@ import DayArray from './DayArray';
 
 const TimeTable = () => {
   const dispatch = useAppDispatch();
-  const { isAuthorizing } = useAppSelector(state => state.auth);
+  const { isAuthorizing } = useAppSelector((state) => state.auth);
 
   const { fetchedWeeks, data, selectedWeek, currentWeek }: TimeTableState = useAppSelector(
     (state) => state.timeTable
@@ -45,6 +46,12 @@ const TimeTable = () => {
 
     if (result.isLoginPage) {
       dispatch(setAuthorizing(true));
+      return;
+    }
+
+    if (!result.data) {
+      setLoading(false);
+      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
       return;
     }
 

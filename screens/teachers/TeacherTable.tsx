@@ -9,6 +9,7 @@ import { TeacherType } from '../../models/teachers';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import TeacherCard from './TeacherCard';
 import { useAppSelector } from '../../hooks';
+import { ToastAndroid } from 'react-native';
 
 const TeacherTable = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,11 @@ const TeacherTable = () => {
 
     if (result.isLoginPage) {
       dispatch(setAuthorizing(true));
+      return;
+    }
+
+    if (!result.data) {
+      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
       return;
     }
 
