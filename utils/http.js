@@ -1,7 +1,6 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { documentDirectory, downloadAsync } from 'expo-file-system';
-import 'fastestsmallesttextencoderdecoder';
 
 class HTTPClient {
   constructor() {
