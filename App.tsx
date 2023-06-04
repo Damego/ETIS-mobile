@@ -4,9 +4,9 @@ import React, { useEffect } from 'react';
 import 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
 
-import StackNavigator from './navigation/StackNavigator';
-import setupStore from './redux';
-import { loadSettings, loadUserCredentials } from './redux/storageLoader';
+import StackNavigator from './src/navigation/StackNavigator';
+import setupStore from './src/redux';
+import { loadSettings, loadUserCredentials } from './src/redux/storageLoader';
 
 SplashScreen.preventAutoHideAsync();
 
