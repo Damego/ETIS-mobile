@@ -27,9 +27,9 @@ const StackNavigator = () => {
   setBackgroundNavigationBarColorAsync(theme.colors.card);
 
   let component;
-  if (!viewedIntro) component = <Stack.Screen name="Intro" component={Intro} />;
-  else if (!isSignedIn) component = <Stack.Screen name="Authorization" component={AuthPage} />;
-  else component = <Stack.Screen name="Navigator" component={TabNavigator} />;
+  if (!viewedIntro) component = <Stack.Screen name="Интро" component={Intro} />;
+  else if (!isSignedIn) component = <Stack.Screen name="Авторизация" component={AuthPage} />;
+  else component = <Stack.Screen name="ТабНавигатор" component={TabNavigator} />;
 
   return (
     <NavigationContainer theme={theme}>
