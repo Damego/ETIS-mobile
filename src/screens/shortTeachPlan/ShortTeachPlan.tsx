@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { ToastAndroid } from 'react-native';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
+import { cacheTeachPlanData, getTeachPlanData } from '../../data/teachPlan';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { ISessionTeachPlan } from '../../models/teachPlan';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import SessionCard from './SessionCard';
-import { cacheTeachPlanData, getTeachPlanData } from '../../data/teachPlan';
-import { ToastAndroid } from 'react-native';
-import { ISessionTeachPlan } from '../../models/teachPlan';
 
 const ShortTeachPlan = () => {
   const dispatch = useAppDispatch();
@@ -15,7 +15,7 @@ const ShortTeachPlan = () => {
   const [data, setData] = useState<ISessionTeachPlan[]>(null);
 
   const loadData = async (force?: boolean) => {
-    const result = await getTeachPlanData({useCache: true, useCacheFirst: !force});
+    const result = await getTeachPlanData({ useCache: true, useCacheFirst: !force });
 
     if (!result.data) {
       ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);

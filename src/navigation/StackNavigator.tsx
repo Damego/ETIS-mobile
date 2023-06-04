@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { setBackgroundColorAsync as setBackgroundNavigationBarColorAsync } from 'expo-navigation-bar';
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useAppSelector } from '../hooks';
 import { useAppColorScheme } from '../hooks/theme';
@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
   const { isSignedIn } = useAppSelector((state) => state.auth);
-  const {viewedIntro} = useAppSelector(state => state.settings)
+  const { viewedIntro } = useAppSelector((state) => state.settings);
   const scheme = useAppColorScheme();
   let theme;
   if (scheme === 'dark') {
@@ -28,8 +28,8 @@ const StackNavigator = () => {
 
   let component;
   if (!viewedIntro) component = <Stack.Screen name="Intro" component={Intro} />;
-  else if (!isSignedIn) component = <Stack.Screen name="Authorization" component={AuthPage} />
-  else component = <Stack.Screen name="Navigator" component={TabNavigator} />
+  else if (!isSignedIn) component = <Stack.Screen name="Authorization" component={AuthPage} />;
+  else component = <Stack.Screen name="Navigator" component={TabNavigator} />;
 
   return (
     <NavigationContainer theme={theme}>

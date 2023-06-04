@@ -1,7 +1,7 @@
 import { load } from 'cheerio';
 
+import { ISessionMarks } from '../models/sessionMarks';
 import { getTextField } from './utils';
-import {ISessionMarks} from '../models/sessionMarks';
 
 export default function parseSessionMarks(html): ISessionMarks[] {
   const $ = load(html);

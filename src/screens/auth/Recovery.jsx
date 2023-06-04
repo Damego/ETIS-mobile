@@ -6,10 +6,10 @@ import { View } from 'react-native';
 
 import Header from '../../components/Header';
 import ReCaptcha from '../../components/ReCaptcha';
+import { useAppColorScheme } from '../../hooks/theme';
 import { httpClient } from '../../utils';
 import Footer from './AuthFooter';
 import RecoveryForm from './RecoveryForm';
-import { useAppColorScheme } from '../../hooks/theme';
 
 const Recovery = ({ setShowModal }) => {
   const [isLoading, setLoading] = useState();
@@ -17,7 +17,7 @@ const Recovery = ({ setShowModal }) => {
   const [recaptchaToken, setRecaptchaToken] = useState();
   const [disabledRequestButton, setDisabledRequestButton] = useState(false);
 
-  const statusBarStyle = useAppColorScheme() === 'dark' ? 'light' : 'dark'
+  const statusBarStyle = useAppColorScheme() === 'dark' ? 'light' : 'dark';
 
   const makeRequest = async ({ mail }) => {
     if (isLoading || disabledRequestButton) return;

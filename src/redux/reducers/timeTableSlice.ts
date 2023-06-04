@@ -36,4 +36,5 @@ const timeTableSlice = createSlice({
 });
 
 export default timeTableSlice.reducer;
-export const { addFetchedWeek, setData, changeSelectedWeek, setCurrentWeek } = timeTableSlice.actions;
+export const { addFetchedWeek, setData, changeSelectedWeek, setCurrentWeek } =
+  timeTableSlice.actions;

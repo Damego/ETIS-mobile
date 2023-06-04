@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
+import { ToastAndroid } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
 import { cacheTeacherData, getTeacherData } from '../../data/teachers';
+import { useAppSelector } from '../../hooks';
 import { IGetPayload } from '../../models/results';
 import { TeacherType } from '../../models/teachers';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import TeacherCard from './TeacherCard';
-import { useAppSelector } from '../../hooks';
-import { ToastAndroid } from 'react-native';
 
 const TeacherTable = () => {
   const dispatch = useDispatch();
-  const { isAuthorizing } = useAppSelector(state => state.auth);
+  const { isAuthorizing } = useAppSelector((state) => state.auth);
 
   const [data, setData] = useState<TeacherType>(null);
 
@@ -36,7 +36,7 @@ const TeacherTable = () => {
 
     setData(result.data);
     if (result.fetched) {
-      cacheTeacherData(result.data)
+      cacheTeacherData(result.data);
     }
   };
 

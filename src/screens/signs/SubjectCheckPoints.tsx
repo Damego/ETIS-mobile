@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 
 import { useGlobalStyles } from '../../hooks';
 import { ICheckPoint } from '../../models/sessionPoints';
@@ -36,8 +36,11 @@ const SubjectCheckPoints = ({ data }: SubjectCheckPointsProps) => {
     const scoreText: string | number = getCheckPointScore(checkPoint);
     const pointsString = `${checkPointName}: ${scoreText} / ${checkPoint.passScore} / ${checkPoint.maxScore}`;
     // Проверка на вводный урок, отсутствовал ли студент, количество баллов >= проходного, оценка вообще поставлена
-    const score = checkPoint.isIntroductionWork ? checkPoint.points : checkPoint.currentScore
-    const failStyleCondition = (checkPoint.isAbsent || !checkPoint.isIntroductionWork) && score && score < checkPoint.passScore
+    const score = checkPoint.isIntroductionWork ? checkPoint.points : checkPoint.currentScore;
+    const failStyleCondition =
+      (checkPoint.isAbsent || !checkPoint.isIntroductionWork) &&
+      score &&
+      score < checkPoint.passScore;
 
     return (
       <Text

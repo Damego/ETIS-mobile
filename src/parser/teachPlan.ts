@@ -1,6 +1,7 @@
 import { load } from 'cheerio';
-import { getTextField } from './utils';
+
 import { ISessionTeachPlan, ITeachPlanDiscipline } from '../models/teachPlan';
+import { getTextField } from './utils';
 
 export default function parseShortTeachPlan(html) {
   const $ = load(html);

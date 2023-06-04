@@ -1,3 +1,4 @@
+import { getDocumentAsync } from 'expo-document-picker';
 import {
   EncodingType,
   StorageAccessFramework,
@@ -5,7 +6,6 @@ import {
   writeAsStringAsync,
 } from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
-import { getDocumentAsync } from 'expo-document-picker';
 import { PermissionsAndroid } from 'react-native';
 
 import httpClient from './http';

@@ -1,19 +1,21 @@
-import { emptyResult, IGetPayload, IGetResult } from '../models/results';
-import { httpClient, storage } from '../utils';
+import { IGetPayload, IGetResult, emptyResult } from '../models/results';
 import { ISessionTeachPlan } from '../models/teachPlan';
-import { isLoginPage } from '../parser/utils';
 import { parseShortTeachPlan } from '../parser';
+import { isLoginPage } from '../parser/utils';
+import { httpClient, storage } from '../utils';
 
 export const getCachedTeachPlanData = async (): Promise<IGetResult<ISessionTeachPlan[]>> => {
   console.log('[DATA] Use cached teach plan');
 
   return {
     ...emptyResult,
-    data: await storage.getTeachPlan()
-  }
-}
+    data: await storage.getTeachPlan(),
+  };
+};
 
-export const getTeachPlanData = async (payload: IGetPayload): Promise<IGetResult<ISessionTeachPlan[]>> => {
+export const getTeachPlanData = async (
+  payload: IGetPayload
+): Promise<IGetResult<ISessionTeachPlan[]>> => {
   if (payload.useCacheFirst) {
     const result = await getCachedTeachPlanData();
     if (result.data) return result;
@@ -26,7 +28,7 @@ export const getTeachPlanData = async (payload: IGetPayload): Promise<IGetResult
   }
 
   if (isLoginPage(html)) {
-    return {...emptyResult, isLoginPage: true}
+    return { ...emptyResult, isLoginPage: true };
   }
 
   console.log('[DATA] Fetched teach plan data');
@@ -36,11 +38,11 @@ export const getTeachPlanData = async (payload: IGetPayload): Promise<IGetResult
   return {
     data,
     isLoginPage: false,
-    fetched: true
-  }
-}
+    fetched: true,
+  };
+};
 
 export const cacheTeachPlanData = (data: ISessionTeachPlan[]) => {
-  console.log('[DATA] Caching teach plan data...')
-  return storage.storeTeachPlan(data)
-}
+  console.log('[DATA] Caching teach plan data...');
+  return storage.storeTeachPlan(data);
+};

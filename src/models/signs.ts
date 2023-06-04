@@ -1,4 +1,4 @@
-import {IGetPayload} from './results';
+import { IGetPayload } from './results';
 
 export interface IGetSignsPayload extends IGetPayload {
   session: number;

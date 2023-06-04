@@ -1,10 +1,7 @@
 import { load } from 'cheerio';
 
-
-
 import { ITeacher, TeacherType } from '../models/teachers';
 import { getTextField } from './utils';
-
 
 const groupTeachers = (data) => {
   const dataGrouped = {};

@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { useGlobalStyles } from '../hooks';
 import { parseMenu } from '../parser';
 import { setAnnounceCount, setMessageCount, setStudentInfo } from '../redux/reducers/studentSlice';
 import Announce from '../screens/announce/Announce';
@@ -11,7 +12,6 @@ import TimeTablePage from '../screens/timeTable/TimeTable';
 import { httpClient } from '../utils';
 import MessageStackNavigator from './MessageStackNavigator';
 import ServicesStackNavigator from './ServicesStackNavigator';
-import { useGlobalStyles } from '../hooks';
 
 const Tab = createBottomTabNavigator();
 
@@ -28,7 +28,7 @@ const TabNavigator = () => {
 
     const data = parseMenu(html, true);
 
-    dispatch(setStudentInfo(data.studentInfo))
+    dispatch(setStudentInfo(data.studentInfo));
     dispatch(setMessageCount(data.messageCount));
     dispatch(setAnnounceCount(data.announceCount));
   };

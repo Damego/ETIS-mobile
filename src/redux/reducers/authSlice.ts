@@ -36,8 +36,8 @@ const authSlice = createSlice({
       state.userCredentials = action.payload;
     },
     setSaveUserCredentials(state, action: PayloadAction<boolean>) {
-      state.saveUserCredentials = action.payload
-    }
+      state.saveUserCredentials = action.payload;
+    },
   },
 });
 

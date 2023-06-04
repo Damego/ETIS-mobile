@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableOpacity, StyleProp, ViewStyle, TextStyle } from 'react-native';
+import { StyleProp, Text, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
 
 interface ClickableTextProps {
   text: string;

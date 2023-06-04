@@ -9,12 +9,12 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ITimeTableGetProps } from '../../models/timeTable';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import {
+  TimeTableState,
   addFetchedWeek,
   changeSelectedWeek,
   setCurrentWeek,
   setData,
 } from '../../redux/reducers/timeTableSlice';
-import { TimeTableState } from '../../redux/reducers/timeTableSlice';
 import DayArray from './DayArray';
 
 const TimeTable = () => {

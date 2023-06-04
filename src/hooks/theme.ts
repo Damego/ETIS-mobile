@@ -1,12 +1,13 @@
-import { ThemeType } from '../redux/reducers/settingsSlice';
-import { useAppSelector } from './redux';
 import { useColorScheme } from 'react-native';
 
+import { ThemeType } from '../redux/reducers/settingsSlice';
+import { useAppSelector } from './redux';
+
 export const useAppColorScheme = () => {
-  const themeType = useAppSelector(state => state.settings.theme);
+  const themeType = useAppSelector((state) => state.settings.theme);
   const scheme = useColorScheme();
 
   if (themeType !== ThemeType.auto) return themeType;
 
   return ThemeType[scheme];
-}
+};

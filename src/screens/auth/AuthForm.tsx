@@ -2,7 +2,7 @@ import { Checkbox } from 'expo-checkbox';
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
 
-import { Button, LoadingButton } from '../../components/Button';
+import { Button } from '../../components/Button';
 import ClickableText from '../../components/ClickableText';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { setUserCredentials } from '../../redux/reducers/authSlice';
@@ -56,7 +56,7 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
 
   const toggleSaveUserCredentials = (value) => {
     dispatch(setUserCredentials(value));
-  }
+  };
 
   return (
     <View style={[styles.container, globalStyles.border, globalStyles.block]}>
@@ -93,7 +93,11 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
 
       <View style={styles.authPropContainer}>
         <View style={styles.checkboxContainer}>
-          <Checkbox style={styles.checkbox} value={saveUserCredentials} onValueChange={toggleSaveUserCredentials} />
+          <Checkbox
+            style={styles.checkbox}
+            value={saveUserCredentials}
+            onValueChange={toggleSaveUserCredentials}
+          />
           <Text style={globalStyles.textColor}>Запомнить пароль?</Text>
         </View>
 

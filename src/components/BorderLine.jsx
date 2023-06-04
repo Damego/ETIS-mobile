@@ -1,5 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
+
 import { useGlobalStyles } from '../hooks';
 
 const BorderLine = () => {
@@ -12,10 +13,10 @@ const BorderLine = () => {
         borderBottomWidth: 1,
         alignSelf: 'center',
         width: '95%',
-        marginVertical: '2%'
+        marginVertical: '2%',
       }}
     />
   );
-}
+};
 
 export default BorderLine;

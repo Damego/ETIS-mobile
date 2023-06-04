@@ -12,12 +12,12 @@ import {
   getPartialSignsData,
 } from '../../data/signs';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { IGetResult } from '../../models/results';
+import { ISessionMarks } from '../../models/sessionMarks';
 import { ISessionSignsData } from '../../models/sessionPoints';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { setFetchedLatestSession, setMarks } from '../../redux/reducers/signsSlice';
 import CardSign from './CardSign';
-import { IGetResult } from '../../models/results';
-import { ISessionMarks } from '../../models/sessionMarks';
 
 const buildOption = (session: number, sessionName: string) => ({
   label: `${session} ${sessionName}`,
@@ -83,7 +83,7 @@ const Signs = () => {
       return;
     }
     if (!result.data) {
-      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG)
+      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
       setLoading(false);
       return;
     }

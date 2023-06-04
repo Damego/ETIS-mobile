@@ -9,16 +9,16 @@ export interface ILesson {
 
 export interface ITimeTableDay {
   date: string;
-  lessons: ILesson[]
+  lessons: ILesson[];
 }
 
 export interface ITimeTable {
   firstWeek: number;
   selectedWeek: number;
   lastWeek: number;
-  days: ITimeTableDay[]
+  days: ITimeTableDay[];
 }
 
-export interface ITimeTableGetProps extends IGetPayload{
+export interface ITimeTableGetProps extends IGetPayload {
   week?: number;
 }

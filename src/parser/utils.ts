@@ -9,7 +9,7 @@ export const getAsNumber = (str: string, defaultValue: number = null): number | 
   const number = parseFloat(str);
   if (Number.isNaN(number)) return defaultValue;
   return number;
-}
+};
 
 export const isLoginPage = (html) => {
   const $ = cheerio.load(html);

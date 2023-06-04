@@ -1,15 +1,15 @@
-import { emptyResult, IGetPayload, IGetResult } from '../models/results';
-import { httpClient, storage } from '../utils';
+import { IGetPayload, IGetResult, emptyResult } from '../models/results';
 import { parseAnnounce } from '../parser';
+import { httpClient, storage } from '../utils';
 
 export const getCachedAnnounceData = async () => {
   console.log('[DATA] Using cached announce data');
 
   return {
     ...emptyResult,
-    data: await storage.getAnnounceData()
-  }
-}
+    data: await storage.getAnnounceData(),
+  };
+};
 
 export const getAnnounceData = async (payload: IGetPayload): Promise<IGetResult<string[]>> => {
   if (payload.useCacheFirst) {
@@ -21,7 +21,7 @@ export const getAnnounceData = async (payload: IGetPayload): Promise<IGetResult<
 
   if (!html) {
     if (!payload.useCache) return emptyResult;
-    return await getCachedAnnounceData()
+    return await getCachedAnnounceData();
   }
 
   console.log('[DATA] Fetched announce data');
@@ -30,11 +30,11 @@ export const getAnnounceData = async (payload: IGetPayload): Promise<IGetResult<
   return {
     data,
     isLoginPage: false,
-    fetched: true
-  }
-}
+    fetched: true,
+  };
+};
 
 export const cacheAnnounceData = (data: string[]) => {
   console.log('[DATA] Caching announce data');
   storage.storeAnnounceData(data);
-}
+};

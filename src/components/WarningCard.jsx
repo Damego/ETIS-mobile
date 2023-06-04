@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+
 import { useGlobalStyles } from '../hooks';
 
 const styles = StyleSheet.create({
@@ -26,6 +27,6 @@ const WarningCard = ({ text }) => {
       <Text style={styles.text}>{text}</Text>
     </View>
   );
-}
+};
 
 export default WarningCard;

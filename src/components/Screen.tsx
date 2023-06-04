@@ -52,7 +52,7 @@ const Screen = ({
     <View style={{ marginTop: Constants.statusBarHeight, flex: 1 }}>
       {isAuthorizing && <AuthLoadingModal authFunc={authFunc} />}
 
-      <StatusBar style={useAppColorScheme() === "light" ? "dark" : "light"} />
+      <StatusBar style={useAppColorScheme() === 'light' ? 'dark' : 'light'} />
 
       {!scrollHeader && <Header text={headerText} onBackButtonClick={onBackPageClick} />}
       <ScrollView

@@ -1,15 +1,16 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+
 import { ISessionMarks } from '../../models/sessionMarks';
 
 interface SignsState {
   sessionsMarks: ISessionMarks[];
-  fetchedLatestSession: boolean
+  fetchedLatestSession: boolean;
 }
 
 const initialState: SignsState = {
   sessionsMarks: [],
-  fetchedLatestSession: false
-}
+  fetchedLatestSession: false,
+};
 
 const signsSlice = createSlice({
   name: 'settings',
@@ -20,9 +21,9 @@ const signsSlice = createSlice({
     },
     setFetchedLatestSession(state, action: PayloadAction<boolean>) {
       state.fetchedLatestSession = action.payload;
-    }
+    },
   },
 });
 
 export default signsSlice.reducer;
-export const { setMarks, setFetchedLatestSession} = signsSlice.actions;
+export const { setMarks, setFetchedLatestSession } = signsSlice.actions;

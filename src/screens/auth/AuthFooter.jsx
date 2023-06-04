@@ -1,8 +1,8 @@
 import React from 'react';
 import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { PRIVACY_POLICY_URL } from '../../utils';
 import { useGlobalStyles } from '../../hooks';
+import { PRIVACY_POLICY_URL } from '../../utils';
 
 const styles = StyleSheet.create({
   view: {
@@ -30,6 +30,6 @@ const AuthFooter = () => {
       </TouchableOpacity>
     </View>
   );
-}
+};
 
 export default AuthFooter;

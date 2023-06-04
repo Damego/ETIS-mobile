@@ -36,7 +36,7 @@ const AttachedFiles = ({ files }) => {
       ))}
     </View>
   );
-}
+};
 
 function Message({ data: { type, time, content, files } }) {
   const globalStyles = useGlobalStyles();

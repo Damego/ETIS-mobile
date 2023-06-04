@@ -82,7 +82,7 @@ function Menu() {
         <Button
           text="Настройки"
           icon={<AntDesign name="setting" size={iconSize} color={iconColor} />}
-          page='Настройки'
+          page="Настройки"
         />
         <Button
           text="О приложении"

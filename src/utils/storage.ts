@@ -2,11 +2,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 
 import { ISessionSignsData } from '../models/sessionPoints';
+import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
 import { ITimeTable } from '../models/timeTable';
 import { UserCredentials } from '../redux/reducers/authSlice';
 import { ThemeType } from '../redux/reducers/settingsSlice';
-import { ISessionTeachPlan } from '../models/teachPlan';
 
 export default class Storage {
   async bumpReviewRequest() {
@@ -125,7 +125,7 @@ export default class Storage {
   }
 
   storeTeachPlan(data: ISessionTeachPlan[]) {
-    return AsyncStorage.setItem('teachPlan', JSON.stringify(data))
+    return AsyncStorage.setItem('teachPlan', JSON.stringify(data));
   }
 
   async getAnnounceData(): Promise<string[]> {
@@ -134,6 +134,6 @@ export default class Storage {
   }
 
   storeAnnounceData(data: string[]) {
-    AsyncStorage.setItem('announce', JSON.stringify(data))
+    AsyncStorage.setItem('announce', JSON.stringify(data));
   }
 }

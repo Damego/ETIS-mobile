@@ -1,11 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-
-
 import { useGlobalStyles } from '../hooks';
 import Card from './Card';
-
 
 const styles = StyleSheet.create({
   cardHeaderView: {

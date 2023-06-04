@@ -1,6 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
 import { useGlobalStyles } from '../hooks';
 
 const styles = StyleSheet.create({
@@ -24,7 +25,7 @@ const Header = ({ text, onBackButtonClick }) => {
     <View style={styles.headerContainer}>
       {onBackButtonClick ? (
         <TouchableOpacity onPress={onBackButtonClick}>
-          <AntDesign name="arrowleft" size={24}  style={globalStyles.primaryFontColor} />
+          <AntDesign name="arrowleft" size={24} style={globalStyles.primaryFontColor} />
         </TouchableOpacity>
       ) : (
         ''

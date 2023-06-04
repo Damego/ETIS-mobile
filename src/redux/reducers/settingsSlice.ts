@@ -22,13 +22,13 @@ const settingsSlice = createSlice({
   initialState,
   reducers: {
     changeTheme(state, action: PayloadAction<ThemeType>) {
-        state.theme = action.payload;
+      state.theme = action.payload;
     },
     setIntroViewed(state, action: PayloadAction<boolean>) {
       state.viewedIntro = action.payload;
-    }
+    },
   },
 });
 
 export default settingsSlice.reducer;
-export const {changeTheme, setIntroViewed} = settingsSlice.actions;
+export const { changeTheme, setIntroViewed } = settingsSlice.actions;

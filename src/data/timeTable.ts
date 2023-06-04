@@ -1,4 +1,4 @@
-import { emptyResult, IGetResult } from '../models/results';
+import { IGetResult, emptyResult } from '../models/results';
 import { ITimeTable, ITimeTableGetProps } from '../models/timeTable';
 import { parseTimeTable } from '../parser';
 import { isLoginPage } from '../parser/utils';

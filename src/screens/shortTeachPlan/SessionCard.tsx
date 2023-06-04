@@ -1,10 +1,10 @@
 import React from 'react';
 
 import CardHeaderOut from '../../components/CardHeaderOut';
-import Subject from './Discipline';
 import { ISessionTeachPlan } from '../../models/teachPlan';
+import Subject from './Discipline';
 
-const SessionCard = ({ data } : {data: ISessionTeachPlan}) => (
+const SessionCard = ({ data }: { data: ISessionTeachPlan }) => (
   <CardHeaderOut topText={data.stringSession}>
     {data.disciplines.map((discipline, index) => (
       <Subject
