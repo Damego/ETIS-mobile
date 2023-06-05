@@ -5,7 +5,7 @@ import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Button } from '../../components/Button';
 import ClickableText from '../../components/ClickableText';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
-import { setUserCredentials } from '../../redux/reducers/authSlice';
+import { setSaveUserCredentials, setUserCredentials } from '../../redux/reducers/authSlice';
 
 export const styles = StyleSheet.create({
   container: {
@@ -55,7 +55,7 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
   const [password, setPassword] = useState('');
 
   const toggleSaveUserCredentials = (value) => {
-    dispatch(setUserCredentials(value));
+    dispatch(setSaveUserCredentials(value));
   };
 
   return (
