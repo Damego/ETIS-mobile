@@ -9,7 +9,7 @@ import { setAnnounceCount, setMessageCount, setStudentInfo } from '../redux/redu
 import Announce from '../screens/announce/Announce';
 import Signs from '../screens/signs/Signs';
 import TimeTablePage from '../screens/timeTable/TimeTable';
-import { registerFetch } from '../tasks/Signs';
+import { registerFetch } from '../tasks/signs';
 import { httpClient } from '../utils';
 import MessageStackNavigator from './MessageStackNavigator';
 import ServicesStackNavigator from './ServicesStackNavigator';
