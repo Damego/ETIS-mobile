@@ -7,12 +7,14 @@ import { Provider } from 'react-redux';
 import StackNavigator from './navigation/StackNavigator';
 import setupStore from './redux';
 import { loadSettings, loadUserCredentials } from './redux/storageLoader';
+import { defineFetchTask } from './tasks/Signs';
 
 SplashScreen.preventAutoHideAsync();
 
 const store = setupStore();
 store.dispatch(loadSettings());
 store.dispatch(loadUserCredentials());
+defineFetchTask();
 
 const App = () => {
   const [fontsLoaded] = useFonts({
@@ -24,7 +26,7 @@ const App = () => {
 
   useEffect(() => {
     SplashScreen.hideAsync();
-  },[fontsLoaded]);
+  }, [fontsLoaded]);
 
   if (!fontsLoaded) {
     return null;
