@@ -1,11 +1,12 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Switch, Text, View } from 'react-native';
 
 import Card from '../../components/Card';
 import Dropdown from '../../components/Dropdown';
 import Screen from '../../components/Screen';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
-import { ThemeType, changeTheme } from '../../redux/reducers/settingsSlice';
+import { ThemeType, changeTheme, setSignNotification } from '../../redux/reducers/settingsSlice';
+import { unregisterBackgroundFetchAsync } from '../../tasks/signs';
 import { storage } from '../../utils';
 
 const options = [
@@ -27,11 +28,41 @@ const options = [
   },
 ];
 
+const ToggleSignNotification = () => {
+  const dispatch = useAppDispatch();
+  const signNotification = useAppSelector((state) => state.settings.signNotification);
+  const globalStyles = useGlobalStyles();
+  const changeSignNotification = (signNotification: boolean) => {
+    unregisterBackgroundFetchAsync();
+    dispatch(setSignNotification(signNotification));
+    storage.storeSignNotification(signNotification);
+  };
+
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}
+    >
+      <Text style={{ fontSize: 14, fontWeight: '500', ...globalStyles.textColor }}>
+        Проверять новые оценки?
+      </Text>
+      <Switch
+        trackColor={{ false: 'gray', true: 'teal' }}
+        thumbColor="white"
+        onValueChange={(value) => changeSignNotification(value)}
+        value={signNotification}
+      />
+    </View>
+  );
+};
+
 const ToggleThemeSetting = () => {
   const dispatch = useAppDispatch();
   const themeType = useAppSelector((state) => state.settings.theme);
   const globalStyles = useGlobalStyles();
-
   const changeAppTheme = (selectedTheme: ThemeType) => {
     dispatch(changeTheme(selectedTheme));
     storage.storeAppTheme(selectedTheme);
@@ -62,6 +93,9 @@ export default function Settings() {
     <Screen disableRefresh>
       <Card>
         <ToggleThemeSetting />
+      </Card>
+      <Card>
+        <ToggleSignNotification />
       </Card>
     </Screen>
   );

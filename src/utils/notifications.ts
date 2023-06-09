@@ -9,7 +9,7 @@ export const sendNewMarkNotification = (
   newRes: number
 ) => {
   let mark;
-  if (oldRes === 0.0) mark = `${newRes}}`;
+  if (oldRes === 0.0) mark = `${newRes}`;
   else {
     const different = newRes - oldRes;
     mark = `${oldRes} -> ${newRes} (${different > 0 ? '+' : '-'}${Math.abs(different)})`;

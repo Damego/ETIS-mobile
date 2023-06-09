@@ -22,6 +22,7 @@ const TabNavigator = () => {
   const dispatch = useDispatch();
   const messageCount = useSelector((state) => state.student.messageCount);
   const announceCount = useSelector((state) => state.student.announceCount);
+  const sendNotifications = useSelector((state) => state.settings.signNotification);
 
   const loadData = async () => {
     const html = await httpClient.getGroupJournal();
@@ -35,7 +36,9 @@ const TabNavigator = () => {
   };
 
   useEffect(() => {
-    registerFetch();
+    if (sendNotifications) {
+      registerFetch();
+    }
     loadData();
   }, []);
 
