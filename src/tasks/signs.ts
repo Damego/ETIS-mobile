@@ -83,9 +83,10 @@ async function registerBackgroundFetchAsync() {
   });
 }
 
-async function unregisterBackgroundFetchAsync() {
+export async function unregisterBackgroundFetchAsync() {
   return BackgroundFetch.unregisterTaskAsync(BACKGROUND_FETCH_TASK);
 }
+
 export const registerFetch = async () => {
   currentSession = (await getPartialSignsData({ useCache: false })).data.currentSession;
   registerBackgroundFetchAsync().then(() => console.log('[FETCH] Signs fetch task registered'));

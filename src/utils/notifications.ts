@@ -2,6 +2,8 @@ import * as Notifications from 'expo-notifications';
 import { AndroidNotificationPriority } from 'expo-notifications/src/Notifications.types';
 import { Platform } from 'react-native';
 
+import { getPointsWord } from './texts';
+
 export const sendNewMarkNotification = (
   subjectName: string,
   checkPointName: string,
@@ -18,7 +20,7 @@ export const sendNewMarkNotification = (
     content: {
       title: 'Выставлена новая оценка!',
       body: `${subjectName}: ${checkPointName}
-${mark}`,
+${mark} ${getPointsWord(mark)}!`,
     },
     trigger: {
       seconds: 5,
