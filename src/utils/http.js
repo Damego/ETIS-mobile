@@ -177,7 +177,7 @@ class HTTPClient {
   getMessages(page) {
     let payload;
     if (page !== undefined) {
-      payload = {p_page: page}
+      payload = { p_page: page };
     }
     return this.request('/stu.teacher_notes', payload);
   }
