@@ -10,6 +10,10 @@ interface DayData {
   data: ITimeTableDay;
 }
 
+const responses = ['Пар нет', 'Отдых', '💤', '😴', '🎮', '(๑ᵕ⌓ᵕ̤)'];
+
+const getRandomResponse = () => responses[Math.floor(Math.random() * responses.length)];
+
 const EmptyDay = ({ data }: DayData) => {
   const { date } = data;
   const globalStyles = useGlobalStyles();
@@ -17,7 +21,9 @@ const EmptyDay = ({ data }: DayData) => {
   return (
     <CardHeaderOut topText={date}>
       <View style={{ alignItems: 'center' }}>
-        <Text style={{ fontSize: 16, fontWeight: '600', ...globalStyles.textColor }}>Пар нет</Text>
+        <Text style={{ fontSize: 16, fontWeight: '600', ...globalStyles.textColor }}>
+          {getRandomResponse()}
+        </Text>
       </View>
     </CardHeaderOut>
   );
