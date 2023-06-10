@@ -26,7 +26,7 @@ class HTTPClient {
       });
       return response.data;
     } catch (e) {
-      console.warn("[HTTP]", e)
+      console.warn('[HTTP]', e);
       return null;
     }
   }
