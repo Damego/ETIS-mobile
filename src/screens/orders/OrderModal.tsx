@@ -12,10 +12,6 @@ const getStyles = (textColor: string): string => `
   list-style: none;
   color: ${textColor};
 }
-
-table {
-
-}
 `;
 
 export default function OrderModal({ html, closeModal }) {
