@@ -1,8 +1,8 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
-import MessageBlock from '../screens/messages/MessageBlock';
 import MessageHistory from '../screens/messages/MessageHistory';
+import Messages from '../screens/messages/Messages';
 
 const Stack = createStackNavigator();
 
@@ -13,8 +13,8 @@ function MessageStackNavigator() {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Сообщения" component={MessageHistory} />
-      <Stack.Screen name="Блок сообщений" component={MessageBlock} />
+      <Stack.Screen name="Сообщения" component={Messages} />
+      <Stack.Screen name="История" component={MessageHistory} />
     </Stack.Navigator>
   );
 }

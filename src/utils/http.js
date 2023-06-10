@@ -174,8 +174,12 @@ class HTTPClient {
     return this.request('/stu.announce');
   }
 
-  getTeacherNotes() {
-    return this.request('/stu.teacher_notes');
+  getMessages(page) {
+    let payload;
+    if (page !== undefined) {
+      payload = {p_page: page}
+    }
+    return this.request('/stu.teacher_notes', payload);
   }
 
   getBlankPage() {

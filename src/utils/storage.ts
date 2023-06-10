@@ -8,6 +8,7 @@ import { ITimeTable } from '../models/timeTable';
 import { UserCredentials } from '../redux/reducers/authSlice';
 import { ThemeType } from '../redux/reducers/settingsSlice';
 import { IOrder } from '../models/order';
+import { IMessage, MessagesData } from '../models/messages';
 
 export default class Storage {
   async bumpReviewRequest() {
@@ -153,5 +154,14 @@ export default class Storage {
 
   storeOrderHTML(orderID: string, html: string) {
     AsyncStorage.setItem(`order-${orderID}`, html);
+  }
+
+  async getMessages(page: number): Promise<MessagesData> {
+    const stringData = await AsyncStorage.getItem(`messages-${page}`);
+    return JSON.parse(stringData);
+  }
+
+  storeMessages(data: MessagesData) {
+    AsyncStorage.setItem(`messages-${data.page}`, JSON.stringify(data));
   }
 }
