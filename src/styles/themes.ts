@@ -7,6 +7,7 @@ export const LightTheme = {
     text: '#000000',
     block: '#FFFFFF',
     card: '#FFFFFF',
+    shadow: '#000000'
   },
 };
 
@@ -19,6 +20,7 @@ export const DarkTheme = {
     text: '#DDDDDD',
     block: '#222222',
     card: '#222222',
+    shadow: '#FFFFFF'
   },
 };
 export const AmoledTheme = {

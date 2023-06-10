@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 const getGlobalStyles = ({ colors }) =>
   StyleSheet.create({
     shadow: {
-      shadowColor: '#000',
+      shadowColor: colors.shadow,
       shadowOffset: {
         width: 0,
         height: 0,
