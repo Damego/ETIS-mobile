@@ -36,7 +36,7 @@ const Screen = ({
   onBackPageClick,
   startScrollFromBottom,
 }: ScreenProps) => {
-  const { isAuthorizing, authFunc } = useAppSelector((state) => state.auth);
+  const { isAuthorizing } = useAppSelector((state) => state.auth);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const scrollRef = useRef<ScrollView>();
   const route = useRoute();
@@ -50,7 +50,7 @@ const Screen = ({
 
   return (
     <View style={{ marginTop: Constants.statusBarHeight, flex: 1 }}>
-      {isAuthorizing && <AuthLoadingModal authFunc={authFunc} />}
+      {isAuthorizing && <AuthLoadingModal />}
 
       <StatusBar style={useAppColorScheme() === 'light' ? 'dark' : 'light'} />
 
