@@ -68,6 +68,7 @@ export default function Announce() {
         lastPage={pageCount}
         onPageChange={changePage}
       />
+
       {data.filter(filterData).map((message, i) => (
         <AnnounceCard data={message} key={`card-${i}`} />
       ))}

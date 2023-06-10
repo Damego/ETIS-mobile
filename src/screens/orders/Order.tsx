@@ -1,12 +1,11 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import AutoHeightWebView from 'react-native-autoheight-webview';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, ToastAndroid, TouchableOpacity } from 'react-native';
 
-import Card from '../../components/Card';
-import ClickableText from '../../components/ClickableText';
+import CardHeaderIn from '../../components/CardHeaderIn';
+import { getOrderHTML } from '../../data/orders';
 import { useGlobalStyles } from '../../hooks';
 import { IOrder } from '../../models/order';
-import { httpClient } from '../../utils';
+import OrderModal from './OrderModal';
 
 const styles = StyleSheet.create({
   fontW500: {
@@ -17,45 +16,45 @@ const styles = StyleSheet.create({
   },
 });
 
-const getStyles = (textColor: string): string => `
-* {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  color: ${textColor}
-}
-`;
-
-const Order = ({
-  onPress,
-  order,
-  activeOrder,
-}: {
-  onPress(): void;
-  order: IOrder;
-  activeOrder: IOrder;
-}) => {
+const Order = ({ order }: { order: IOrder }) => {
   const globalStyles = useGlobalStyles();
 
-  return (
-    <Card>
-      <ClickableText
-        onPress={onPress}
-        textStyle={[styles.fontS14, styles.fontW500, globalStyles.textColor]}
-        text={`№${order.id} от ${order.date}\n${order.name}`}
-      />
+  const [isOpened, setOpened] = useState<boolean>(false);
+  const [html, setHTML] = useState<string>();
 
-      {activeOrder !== null && activeOrder.id === order.id && (
-        <AutoHeightWebView
-          source={{ uri: order.url }}
-          style={{ alignSelf: 'center', width: '130%' }}
-          viewportContent={'user-scalable=no'}
-          scalesPageToFit={true}
-          customStyle={getStyles(globalStyles.textColor.color)}
-          injectedJavaScript={`document.cookie = ${httpClient.sessionID}`}
-        />
-      )}
-    </Card>
+  useEffect(() => {
+    if (html || !isOpened) return;
+    getOrderHTML(order).then((orderHTML) => setHTML(orderHTML));
+  }, [isOpened]);
+
+  const closeModal = () => setOpened(false);
+
+  const openModal = () => {
+    if (!order.uri) {
+      ToastAndroid.show('Приказ готовится', ToastAndroid.SHORT);
+      return;
+    }
+    setOpened(true);
+  };
+
+  return (
+    <>
+      {isOpened && <OrderModal html={html} closeModal={closeModal} />}
+
+      <TouchableOpacity onPress={openModal}>
+        <CardHeaderIn topText={`№${order.id} от ${order.date}`}>
+          <Text style={[styles.fontS14, styles.fontW500, globalStyles.textColor]}>
+            {order.name}
+          </Text>
+
+          {!order.uri && (
+            <Text style={[styles.fontS14, styles.fontW500, globalStyles.textColor]}>
+              Приказ готовится...
+            </Text>
+          )}
+        </CardHeaderIn>
+      </TouchableOpacity>
+    </>
   );
 };
 

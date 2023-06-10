@@ -1,44 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { ToastAndroid } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
+import { getOrdersData } from '../../data/orders';
 import { IOrder } from '../../models/order';
-import parseOrders from '../../parser/order';
-import { isLoginPage } from '../../parser/utils';
-import { signOut } from '../../redux/reducers/authSlice';
-import { httpClient } from '../../utils';
+import { setAuthorizing } from '../../redux/reducers/authSlice';
 import Order from './Order';
 
 const OrderTable = () => {
   const dispatch = useDispatch();
   const [data, setData] = useState<IOrder[]>(null);
-  const [activeOrder, setActiveOrder] = useState<IOrder>(null);
 
   const loadData = async () => {
-    const html = await httpClient.getOrders();
-    if (!html) {
+    const result = await getOrdersData({ useCache: true, useCacheFirst: false });
+
+    if (result.isLoginPage) {
+      dispatch(setAuthorizing(true));
       return;
     }
 
-    if (isLoginPage(html)) {
-      dispatch(signOut());
-      return;
-    }
-
-    const parsedData = parseOrders(html);
-    setData(parsedData);
-  };
-
-  const showOrder = (order) => {
-    if (activeOrder && order.id == activeOrder.id) {
-      setActiveOrder(null);
-    } else if (order.url) {
-      setActiveOrder(order);
-    } else {
-      ToastAndroid.show('Ссылка недоступна', ToastAndroid.SHORT);
-    }
+    setData(result.data);
   };
 
   useEffect(() => {
@@ -50,12 +32,7 @@ const OrderTable = () => {
   return (
     <Screen onUpdate={loadData}>
       {data.map((order, index) => (
-        <Order
-          key={index}
-          onPress={() => showOrder(order)}
-          order={order}
-          activeOrder={activeOrder}
-        />
+        <Order key={index} order={order} />
       ))}
     </Screen>
   );
