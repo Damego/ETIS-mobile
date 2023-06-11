@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Text, View } from 'react-native';
+import { StyleSheet, Switch, Text, View } from 'react-native';
 
 import Card from '../../components/Card';
 import Dropdown from '../../components/Dropdown';
@@ -28,6 +28,15 @@ const options = [
   },
 ];
 
+const styles = StyleSheet.create({
+  cardView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  header: { fontSize: 20, fontWeight: '500' },
+});
+
 const ToggleSignNotification = () => {
   const dispatch = useAppDispatch();
   const signNotification = useAppSelector((state) => state.settings.signNotification);
@@ -39,14 +48,8 @@ const ToggleSignNotification = () => {
   };
 
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}
-    >
-      <Text style={{ fontSize: 14, fontWeight: '500', ...globalStyles.textColor }}>
+    <View style={styles.cardView}>
+      <Text style={[styles.header, { fontSize: 18, ...globalStyles.textColor }]}>
         Проверять новые оценки?
       </Text>
       <Switch
@@ -69,15 +72,13 @@ const ToggleThemeSetting = () => {
   };
 
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}
-    >
-      <Text style={{ fontSize: 20, fontWeight: '500', ...globalStyles.textColor }}>Тема</Text>
-      <View style={{ width: '60%' }}>
+    <View style={styles.cardView}>
+      <Text style={[styles.header, { ...globalStyles.textColor }]}>Тема</Text>
+      <View
+        style={{
+          width: '60%',
+        }}
+      >
         <Dropdown
           options={options}
           selectedOption={options.find((option) => option.value === themeType)}
@@ -91,7 +92,7 @@ const ToggleThemeSetting = () => {
 export default function Settings() {
   return (
     <Screen disableRefresh>
-      <Card>
+      <Card style={{ zIndex: 1 }}>
         <ToggleThemeSetting />
       </Card>
       <Card>
