@@ -36,6 +36,9 @@ export const getMessagesData = async (payload: IGetMessagesPayload): Promise<IGe
   }
 
   const data = parseMessages(html);
+
+  console.log(`[DATA] Fetched messages for ${data.page} page`)
+
   cacheMessagesData(data);
 
   return {

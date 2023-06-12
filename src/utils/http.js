@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { documentDirectory, downloadAsync } from 'expo-file-system';
+import { toURLSearchParams } from './encoding';
 
 class HTTPClient {
   constructor() {
@@ -180,6 +181,33 @@ class HTTPClient {
       payload = { p_page: page };
     }
     return this.request('/stu.teacher_notes', payload);
+  }
+
+  async replyToMessage(answerID, content) {
+    // stu.send_reply p_anv_id: 1863863 p_msg_txt
+    // stu.repl_doc_write file: (binary) p_ant_id: 73510 p_anr_id: 47734
+
+    const data = {
+      p_anv_id: answerID,
+      p_msg_txt: content,
+    };
+
+    const encoded = toURLSearchParams(data)
+
+    const url = `${this.defaultURL}/stu.send_reply`;
+    console.log(`[HTTP] [POST] ${url} data: ${encoded}`);
+    await axios.post(url, encoded);
+  }
+
+  async attachFileToMessage(messageID, answerMessageID, file) {
+    const data = new FormData();
+    data.append('p_ant_id', messageID);
+    data.append('p_anr_id', answerMessageID);
+
+    data.append('file', {name: file.name, uri: file.uri, type: file.type});
+    await axios.post(`${this.defaultURL}/stu.repl_doc_write`, data, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
   }
 
   getBlankPage() {

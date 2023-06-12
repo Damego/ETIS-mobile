@@ -52,7 +52,7 @@ const Messages = () => {
       />
 
       {data.messages.map((messageBlock) => (
-        <MessagePreview data={messageBlock} key={messageBlock[0].time} />
+        <MessagePreview data={messageBlock} key={messageBlock[0].time} page={data.page}/>
       ))}
     </Screen>
   );

@@ -1,13 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { LogBox, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import CardHeaderOut from '../../components/CardHeaderOut';
 import { useGlobalStyles } from '../../hooks';
 import { parseDate } from '../../parser/utils';
 import { IMessage } from '../../models/messages';
 
-LogBox.ignoreLogs(['Non-serializable values were found in the navigation state']);
 
 const styles = StyleSheet.create({
   textBold: {
@@ -18,7 +17,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const MessagePreview = ({ data }: {data: IMessage[]}) => {
+const MessagePreview = ({ data, page }: {data: IMessage[], page: number}) => {
   const globalStyles = useGlobalStyles();
   const navigation = useNavigation();
   const [mainMessage] = data;
@@ -27,7 +26,7 @@ const MessagePreview = ({ data }: {data: IMessage[]}) => {
 
   return (
     <CardHeaderOut topText={author}>
-      <TouchableOpacity onPress={() => navigation.navigate('История', { data })}>
+      <TouchableOpacity onPress={() => navigation.navigate('История', { data, page })}>
         <Text style={[styles.textBold, styles.font16, globalStyles.textColor]}>{subject}</Text>
         <Text style={globalStyles.textColor}>{theme}</Text>
         <View style={{ alignItems: 'flex-end' }}>
