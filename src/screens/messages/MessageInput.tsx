@@ -17,13 +17,10 @@ import { selectFile } from '../../utils';
 const styles = StyleSheet.create({
   inputView: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
-    backgroundColor: '#FFFFFF',
-    borderTopColor: '#d3d3d3',
+    alignItems: 'center',
     borderTopWidth: 1,
   },
   input: {
-    color: '#000',
     flex: 1,
     padding: '2%',
     fontSize: 16,
@@ -34,13 +31,13 @@ const styles = StyleSheet.create({
   fileContainer: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
     borderRadius: 6,
-    marginBottom: 5,
-    marginHorizontal: 1,
-    height: 30,
+    marginBottom: '3%',
+    marginHorizontal: 4,
     paddingHorizontal: 5,
-    paddingTop: 5,
+    paddingVertical: 5,
+    alignItems: 'center',
+    borderWidth: 1
   },
   fileText: {
     alignSelf: 'flex-end',
@@ -61,10 +58,10 @@ const File = ({ name, onRemove }) => {
   const cutFileName = name.length < 14 ? name : `${name.substring(0, 10)}....${fileFormat}`;
 
   return (
-    <View style={[styles.fileContainer, globalStyles.shadow]}>
-      <Text style={styles.fileText}>{cutFileName}</Text>
+    <View style={[styles.fileContainer, globalStyles.block, { borderColor: globalStyles.border.borderColor }]}>
+      <Text style={[styles.fileText, globalStyles.textColor]}>{cutFileName}</Text>
       <TouchableOpacity style={styles.removeIcon} onPress={() => onRemove(name)}>
-        <AntDesign name="closecircleo" size={20} color="black" />
+        <AntDesign name="closecircleo" size={20} color={globalStyles.textColor.color} />
       </TouchableOpacity>
     </View>
   );
@@ -85,6 +82,7 @@ export const FilesPreview = ({ files, onFileRemove }) => (
 );
 
 const MessageInput = ({ onFileSelect, onSubmit, showLoading }) => {
+  const globalStyles = useGlobalStyles();
   const theme = useTheme();
   const [value, setValue] = useState<string>('');
 
@@ -99,28 +97,39 @@ const MessageInput = ({ onFileSelect, onSubmit, showLoading }) => {
   };
 
   return (
-    <View style={styles.inputView}>
+    <View
+      style={[
+        styles.inputView,
+        globalStyles.block,
+        { borderColor: globalStyles.border.borderColor },
+      ]}
+    >
       <TouchableOpacity style={styles.iconView} onPress={innerSelectFile}>
-        <Feather name="paperclip" size={24} color="black" />
+        <Feather name="paperclip" size={24} color={theme.colors.text} />
       </TouchableOpacity>
 
       <TextInput
-        style={styles.input}
+        style={[styles.input, globalStyles.textColor, globalStyles.block]}
         onChangeText={(text) => setValue(text)}
         value={value}
         placeholder="Сообщение"
         multiline
         selectionColor="#C62E3E"
+        placeholderTextColor={globalStyles.textColor.color}
       />
 
       <TouchableOpacity disabled={!value || showLoading} style={styles.iconView} onPress={submit}>
         {showLoading ? (
-          <ActivityIndicator size="small" color={theme.colors.primary} />
+          <ActivityIndicator
+            size="small"
+            color={theme.colors.primary}
+            style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }}
+          />
         ) : (
           <Ionicons
             name="send"
             size={24}
-            color={value ? theme.colors.primary : theme.colors.border}
+            color={value ? theme.colors.primary : theme.colors.text}
           />
         )}
       </TouchableOpacity>
