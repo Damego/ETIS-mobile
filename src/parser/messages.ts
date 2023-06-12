@@ -1,6 +1,6 @@
 import { load } from 'cheerio';
 
-import { IMessage, IMessageFile, MessagesData, MessageType } from '../models/messages';
+import { IMessage, IMessageFile, IMessagesData, MessageType } from '../models/messages';
 import { getTextField } from './utils';
 
 const getMessageFiles = ($: cheerio.Root, message: cheerio.Cheerio): IMessageFile[] => {
@@ -107,13 +107,13 @@ const parseStartMessage = ($: cheerio.Root, message: cheerio.Cheerio): IMessage 
   };
 };
 
-export default function parseTeacherMessages(html) {
+export default function parseMessages(html) {
   const $ = load(html);
 
   const page = parseInt(getTextField($('.week.current')));
   const lastPage = parseInt(getTextField($('.week').last()));
 
-  const data: MessagesData = {
+  const data: IMessagesData = {
     messages: [],
     page,
     lastPage

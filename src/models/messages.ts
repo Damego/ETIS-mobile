@@ -1,3 +1,5 @@
+import { IGetPayload, IGetResult } from './results';
+
 export enum MessageType {
   message = 'message',
   studentReply = 'studentReply',
@@ -22,8 +24,12 @@ export interface IMessage {
   messageID?: string;
 }
 
-export interface MessagesData {
+export interface IMessagesData {
   messages: IMessage[][];
   page: number;
   lastPage: number;
+}
+
+export interface IGetMessagesPayload extends IGetPayload {
+  page: number;
 }
