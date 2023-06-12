@@ -192,7 +192,7 @@ class HTTPClient {
       p_msg_txt: content,
     };
 
-    const encoded = toURLSearchParams(data)
+    const encoded = toURLSearchParams(data);
 
     const url = `${this.defaultURL}/stu.send_reply`;
     console.log(`[HTTP] [POST] ${url} data: ${encoded}`);
@@ -204,7 +204,7 @@ class HTTPClient {
     data.append('p_ant_id', messageID);
     data.append('p_anr_id', answerMessageID);
 
-    data.append('file', {name: file.name, uri: file.uri, type: file.type});
+    data.append('file', { name: file.name, uri: file.uri, type: file.type });
     await axios.post(`${this.defaultURL}/stu.repl_doc_write`, data, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
