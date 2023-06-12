@@ -1,11 +1,16 @@
 import React from 'react';
-import { StyleSheet, Switch, Text, View } from 'react-native';
+import { StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 
 import Card from '../../components/Card';
 import Dropdown from '../../components/Dropdown';
 import Screen from '../../components/Screen';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
-import { ThemeType, changeTheme, setSignNotification } from '../../redux/reducers/settingsSlice';
+import {
+  ThemeType,
+  changeTheme,
+  setIntroViewed,
+  setSignNotification,
+} from '../../redux/reducers/settingsSlice';
 import { unregisterBackgroundFetchAsync } from '../../tasks/signs';
 import { storage } from '../../utils';
 
@@ -36,6 +41,17 @@ const styles = StyleSheet.create({
   },
   header: { fontSize: 20, fontWeight: '500' },
 });
+
+const ResetIntro = () => {
+  const dispatch = useAppDispatch();
+  const globalStyles = useGlobalStyles();
+
+  return (
+    <TouchableOpacity onPress={() => dispatch(setIntroViewed(false))} activeOpacity={0.9}>
+      <Text style={[styles.header, globalStyles.textColor]}>Сбросить обучение</Text>
+    </TouchableOpacity>
+  );
+};
 
 const ToggleSignNotification = () => {
   const dispatch = useAppDispatch();
@@ -97,6 +113,9 @@ export default function Settings() {
       </Card>
       <Card>
         <ToggleSignNotification />
+      </Card>
+      <Card>
+        <ResetIntro />
       </Card>
     </Screen>
   );
