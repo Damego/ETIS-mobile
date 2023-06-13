@@ -1,9 +1,8 @@
 import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
-import { useGlobalStyles } from '../hooks';
+import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
 import { parseMenu } from '../parser';
 import { setAnnounceCount, setMessageCount, setStudentInfo } from '../redux/reducers/studentSlice';
 import Announce from '../screens/announce/Announce';
@@ -18,9 +17,8 @@ const Tab = createBottomTabNavigator();
 const TabNavigator = () => {
   const globalStyles = useGlobalStyles();
 
-  const dispatch = useDispatch();
-  const messageCount = useSelector((state) => state.student.messageCount);
-  const announceCount = useSelector((state) => state.student.announceCount);
+  const dispatch = useAppDispatch();
+  const { messageCount, announceCount } = useAppSelector((state) => state.student);
 
   const loadData = async () => {
     const html = await httpClient.getGroupJournal();
