@@ -7,10 +7,10 @@ import { useGlobalStyles } from '../hooks';
 import { parseMenu } from '../parser';
 import { setAnnounceCount, setMessageCount, setStudentInfo } from '../redux/reducers/studentSlice';
 import Announce from '../screens/announce/Announce';
+import Messages from '../screens/messages/Messages';
 import Signs from '../screens/signs/Signs';
 import TimeTablePage from '../screens/timeTable/TimeTable';
 import { httpClient } from '../utils';
-import MessageStackNavigator from './MessageStackNavigator';
 import ServicesStackNavigator from './ServicesStackNavigator';
 
 const Tab = createBottomTabNavigator();
@@ -62,8 +62,8 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Сообщения-навигатор"
-        component={MessageStackNavigator}
+        name="Сообщения"
+        component={Messages}
         options={{
           tabBarBadge: messageCount,
           tabBarIcon: ({ size, color }) => <AntDesign name="message1" size={size} color={color} />,
