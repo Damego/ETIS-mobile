@@ -1,9 +1,9 @@
 import ReCaptchaV3 from '@haskkor/react-native-recaptchav3';
-import React, { MutableRefObject, useRef } from 'react';
+import React, { useRef } from 'react';
 import { ActivityIndicator, StyleSheet, Text, ToastAndroid, View } from 'react-native';
 
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
-import { setAuthorizing, signIn } from '../redux/reducers/authSlice';
+import { setAuthorizing, signIn, UserCredentials } from '../redux/reducers/authSlice';
 import { httpClient, storage } from '../utils';
 import ReCaptcha from './ReCaptcha';
 
@@ -23,20 +23,20 @@ const styles = StyleSheet.create({
   },
 });
 
-const makeLogin = async (token, userCredentials, saveUserCredentials): Promise<boolean | null> => {
+const makeLogin = async (token: string, userCredentials: UserCredentials, saveUserCredentials: boolean): Promise<boolean | null> => {
   if (!token) {
     return null;
   }
-  const { errorMessage } = await httpClient.login(
+  const response = await httpClient.login(
     userCredentials.login,
     userCredentials.password,
     token
   );
 
-  if (errorMessage) {
-    if (errorMessage === 'Вы не прошли проверку') return null;
+  if (response && response.error) {
+    if (response.error.message === 'Вы не прошли проверку') return null;
 
-    ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
+    ToastAndroid.show(response.error.message, ToastAndroid.SHORT);
     return false;
   }
 
@@ -49,7 +49,7 @@ const makeLogin = async (token, userCredentials, saveUserCredentials): Promise<b
 const AuthLoadingModal = () => {
   const dispatch = useAppDispatch();
   const { userCredentials, saveUserCredentials } = useAppSelector((state) => state.auth);
-  const recaptchaRef: MutableRefObject<ReCaptchaV3> = useRef();
+  const recaptchaRef = useRef<ReCaptchaV3>();
 
   const globalStyles = useGlobalStyles();
 
