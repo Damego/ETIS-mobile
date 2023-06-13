@@ -11,6 +11,7 @@ import Signs from '../screens/signs/Signs';
 import TimeTablePage from '../screens/timeTable/TimeTable';
 import { httpClient } from '../utils';
 import ServicesStackNavigator from './ServicesStackNavigator';
+import { getStudentData } from '../data/studentInfo';
 
 const Tab = createBottomTabNavigator();
 
@@ -21,10 +22,8 @@ const TabNavigator = () => {
   const { messageCount, announceCount } = useAppSelector((state) => state.student);
 
   const loadData = async () => {
-    const html = await httpClient.getGroupJournal();
-    if (!html) return;
-
-    const data = parseMenu(html, true);
+    const result = await getStudentData({useCache: true});
+    const data = result.data;
 
     dispatch(setStudentInfo(data.studentInfo));
     dispatch(setMessageCount(data.messageCount));

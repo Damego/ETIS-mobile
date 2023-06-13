@@ -9,6 +9,7 @@ import { UserCredentials } from '../redux/reducers/authSlice';
 import { ThemeType } from '../redux/reducers/settingsSlice';
 import { IOrder } from '../models/order';
 import { IMessage, IMessagesData } from '../models/messages';
+import { StudentData } from '../models/student';
 
 export default class Storage {
   async bumpReviewRequest() {
@@ -163,5 +164,14 @@ export default class Storage {
 
   storeMessages(data: IMessagesData) {
     AsyncStorage.setItem(`messages-${data.page}`, JSON.stringify(data));
+  }
+
+  async getStudentData(): Promise<StudentData> {
+    const stringData = await AsyncStorage.getItem('student');
+    return JSON.parse(stringData);
+  }
+
+  storeStudentData(data: StudentData) {
+    AsyncStorage.setItem('student', JSON.stringify(data))
   }
 }

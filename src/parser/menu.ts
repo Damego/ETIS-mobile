@@ -1,11 +1,18 @@
 import { load } from 'cheerio';
 
 import { getTextField } from './utils';
+import { StudentData } from '../models/student';
 
-export default function parseMenu(html, parseGroupJournal = false) {
+export interface MenuParseResult {
+  announceCount: number;
+  messageCount: number;
+  studentInfo: StudentData;
+}
+
+export default function parseMenu(html, parseGroupJournal = false): MenuParseResult {
   const $ = load(html);
 
-  const data = {
+  const data: MenuParseResult = {
     announceCount: null,
     messageCount: null,
     studentInfo: {
@@ -21,11 +28,13 @@ export default function parseMenu(html, parseGroupJournal = false) {
   const rawData = getTextField($('.span12'));
   const [rawName, speciality, form, year] = rawData.split('\n').map((string) => string.trim());
   const [name1, name2, name3] = rawName.split(' ');
+
   data.studentInfo = {
     name: `${name1} ${name2} ${name3}`,
     speciality,
     educationForm: form,
     year,
+    group: null
   };
 
   // Получение группы студента
