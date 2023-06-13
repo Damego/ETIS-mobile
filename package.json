@@ -37,7 +37,6 @@
     "expo-splash-screen": "~0.18.2",
     "expo-status-bar": "~1.4.4",
     "expo-store-review": "^6.2.1",
-    "expo-system-ui": "~2.2.1",
     "iconv-lite": "^0.6.3",
     "moment": "^2.29.4",
     "react": "18.2.0",
