@@ -4,21 +4,20 @@ import { StyleSheet, Text, View } from 'react-native';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import FileTextLink from '../../components/FileTextLink';
 import { useGlobalStyles } from '../../hooks';
+import { IMessage, IMessageFile, MessageType } from '../../models/messages';
+import { parseDate } from '../../parser/utils';
 
 const styles = StyleSheet.create({
   subjectText: {
     fontSize: 16,
     fontWeight: 'bold',
   },
-  view: {
-    margin: '2%',
-  },
   text: {
     fontSize: 16,
   },
 });
 
-const AttachedFiles = ({ files }) => {
+const AttachedFiles = ({ files }: { files: IMessageFile[] }) => {
   const globalStyles = useGlobalStyles();
 
   return (
@@ -27,32 +26,37 @@ const AttachedFiles = ({ files }) => {
       {files.map((file, index) => (
         <FileTextLink
           src={file.uri}
-          fileName={file.fileName}
-          key={`${file.fileName}-${index}`}
+          fileName={file.name}
+          key={`${file.name}-${index}`}
           style={styles.text}
         >
-          {file.fileName}
+          {file.name}
         </FileTextLink>
       ))}
     </View>
   );
 };
 
-function Message({ data: { type, time, content, files } }) {
+function Message({ message }: { message: IMessage }) {
   const globalStyles = useGlobalStyles();
 
-  let cardTopText;
+  const time = parseDate(message.time);
   const formattedTime = time.format('DD.MM.YYYY HH:mm');
-  if (['message', 'teacher_reply'].includes(type)) cardTopText = `Преподаватель (${formattedTime})`;
-  else if (type === 'student_reply') cardTopText = `Вы (${formattedTime})`;
+  const hasFiles = message.files && message.files.length !== 0;
+
+  let cardTopText;
+  if ([MessageType.message, MessageType.teacherReply].includes(message.type))
+    cardTopText = `Преподаватель`;
+  else if (message.type === MessageType.studentReply) cardTopText = `Вы`;
 
   return (
     <CardHeaderOut topText={cardTopText}>
-      <View style={styles.view}>
-        <Text style={[styles.text, globalStyles.textColor]} selectable selectionColor={'#ade1f5'}>
-          {content}
-        </Text>
-        {files && files.length !== 0 ? <AttachedFiles files={files} /> : ''}
+      <Text style={[styles.text, globalStyles.textColor]} selectable selectionColor={'#ade1f5'}>
+        {message.content}
+      </Text>
+      {hasFiles ? <AttachedFiles files={message.files} /> : ''}
+      <View style={{ alignItems: 'flex-end' }}>
+        <Text style={globalStyles.textColor}>{formattedTime}</Text>
       </View>
     </CardHeaderOut>
   );

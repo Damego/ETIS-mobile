@@ -4,7 +4,7 @@ import parseMenu from './menu';
 import parseSessionMarks from './sessionMarks';
 import parseSessionPoints from './sessionPoints';
 import parseShortTeachPlan from './teachPlan';
-import parseTeacherMessages from './teacherMessages';
+import parseMessages from './messages';
 import parseTeachers from './teachers';
 import parseTimeTable from './timeTable';
 
@@ -14,7 +14,7 @@ export {
   parseMenu,
   parseSessionPoints,
   parseSessionMarks,
-  parseTeacherMessages,
+  parseMessages,
   parseTeachers,
   parseShortTeachPlan,
   parseTimeTable,
