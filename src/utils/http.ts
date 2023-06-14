@@ -215,14 +215,14 @@ class HTTPClient {
     - rating: итоговый рейтинг за триместр 
     - diplom: оценки в диплом
     */
-  getSigns(mode: string, trimester: number) {
+  getSigns(mode: string, trimester?: number) {
     const params = { p_mode: mode, p_term: undefined };
 
     if (trimester !== undefined) {
       params.p_term = trimester;
     }
 
-    return this.request('GET', '/stu.signs', { params });
+    return this.request('GET', '/stu.signs', { params, returnResponse: false });
   }
 
   /*
@@ -260,7 +260,7 @@ class HTTPClient {
       p_msg_txt: content,
     };
     const data = toURLSearchParams(rawData);
-    return await this.request('GET', '/stu.send_reply', { data, returnResponse: false });
+    return await this.request('POST', '/stu.send_reply', { data, returnResponse: false });
   }
 
   async attachFileToMessage(messageID: string, answerMessageID: string, file: UploadFile) {
