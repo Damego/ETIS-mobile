@@ -5,6 +5,7 @@ import { IGetSignsPayload } from '../models/signs';
 import { parseSessionMarks, parseSessionPoints } from '../parser';
 import { isLoginPage } from '../parser/utils';
 import { httpClient, storage } from '../utils';
+import { HTTPError } from '../utils/http';
 
 export const composePointsAndMarks = (
   sessionPoints: ISessionSignsData,
@@ -54,16 +55,16 @@ export const getPartialSignsData = async (
     if (result.data) return result;
   }
 
-  const html = await httpClient.getSigns('current', payload.session);
-  if (!html) {
+  const response = await httpClient.getSigns('current', payload.session);
+  if ((response as HTTPError).error || !response) {
     if (!payload.useCache) return emptyResult;
     return await getCachedSignsData(payload.session);
   }
 
-  if (isLoginPage(html)) return { ...emptyResult, isLoginPage: true };
+  if (isLoginPage(response)) return { ...emptyResult, isLoginPage: true };
 
   console.log(`[DATA] Fetched session points for ${payload.session} session`);
-  const data = parseSessionPoints(html);
+  const data = parseSessionPoints(response);
 
   return {
     data,
@@ -78,17 +79,17 @@ export const getMarksData = async (payload: IGetPayload): Promise<IGetResult<ISe
     if (result.data) return result;
   }
 
-  const html = await httpClient.getSigns('session');
-  if (!html) {
+  const response = await httpClient.getSigns('session');
+  if ((response as HTTPError).error || !response) {
     if (!payload.useCache) return emptyResult;
     return await getCachedMarksData();
   }
 
-  if (isLoginPage(html)) return { ...emptyResult, isLoginPage: true };
+  if (isLoginPage(response)) return { ...emptyResult, isLoginPage: true };
 
   console.log(`[DATA] Fetched marks data`);
 
-  const data = parseSessionMarks(html);
+  const data = parseSessionMarks(response);
 
   return {
     data,

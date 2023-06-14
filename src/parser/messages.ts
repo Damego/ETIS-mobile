@@ -107,7 +107,7 @@ const parseStartMessage = ($: cheerio.Root, message: cheerio.Cheerio): IMessage 
   };
 };
 
-export default function parseMessages(html) {
+export default function parseMessages(html: string) {
   const $ = load(html);
 
   const page = parseInt(getTextField($('.week.current')));

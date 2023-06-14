@@ -3,6 +3,7 @@ import { ITimeTable, ITimeTableGetProps } from '../models/timeTable';
 import { parseTimeTable } from '../parser';
 import { isLoginPage } from '../parser/utils';
 import { httpClient, storage } from '../utils';
+import { HTTPError } from '../utils/http';
 
 export const getCachedTimeTable = async (week) => {
   console.log(`[DATA] Use cached timetable for week ${week}`);
@@ -22,25 +23,25 @@ export const getTimeTableData = async ({
     if (result.data) return result;
   }
 
-  let html: string;
+  let response;
   if (week !== null) {
-    html = await httpClient.getTimeTable({ week });
+    response = await httpClient.getTimeTable({ week });
   } else {
-    html = await httpClient.getTimeTable();
+    response = await httpClient.getTimeTable();
   }
 
-  if (!html) {
+  if ((response as HTTPError).error || !response) {
     if (!useCache) return emptyResult;
     return await getCachedTimeTable(week);
   }
 
-  if (isLoginPage(html)) {
+  if (isLoginPage(response)) {
     return { data: null, isLoginPage: true, fetched: false };
   }
 
   console.log(`[DATA] Fetched timetable for week ${week}`);
   return {
-    data: parseTimeTable(html),
+    data: parseTimeTable(response),
     isLoginPage: false,
     fetched: true,
   };

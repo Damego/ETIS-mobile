@@ -3,6 +3,7 @@ import { TeacherType } from '../models/teachers';
 import { parseTeachers } from '../parser';
 import { isLoginPage } from '../parser/utils';
 import { httpClient, storage } from '../utils';
+import { HTTPError } from '../utils/http';
 
 type PromiseTeacherGetResult = Promise<IGetResult<TeacherType>>;
 
@@ -23,15 +24,15 @@ export const getTeacherData = async ({
     if (result.data) return result;
   }
 
-  const html = await httpClient.getTeachers();
-  if (!html) {
+  const response = await httpClient.getTeachers();
+  if ((response as HTTPError).error || !response) {
     if (!useCache) return emptyResult;
     return await getCachedTeacherData();
   }
 
-  if (isLoginPage(html)) return { ...emptyResult, isLoginPage: true };
+  if (isLoginPage(response)) return { ...emptyResult, isLoginPage: true };
 
-  const data = parseTeachers(html);
+  const data = parseTeachers(response);
 
   console.log('[DATA] Fetched teacher data');
   return { data, fetched: true, isLoginPage: false };
