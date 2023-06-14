@@ -32,8 +32,8 @@ class HTTPClient {
   }
 
   async request(
-    endpoint: string,
     method: string,
+    endpoint: string,
     { params, data, returnResponse }: { params?: any; data?: any; returnResponse?: boolean } = {}
   ): Promise<AxiosResponse | HTTPError | any> {
     console.log(
@@ -108,7 +108,7 @@ class HTTPClient {
     data.append('p_recaptcha_ver', '3');
     data.append('p_recaptcha_response', token.trim());
 
-    const response = await this.request(`/stu.login`, 'POST', {
+    const response = await this.request('POST', `/stu.login`, {
       data,
       returnResponse: true,
     });
@@ -137,7 +137,7 @@ class HTTPClient {
     data.append('p_email', email.trim());
     data.append('p_recaptcha_response', token.trim());
 
-    const response = await this.request('/stu_email_pkg.send_r_email', 'POST', { data });
+    const response = await this.request('POST', '/stu_email_pkg.send_r_email', { data });
 
     const $ = cheerio.load(response);
     if ($('#sbmt > span').text() === 'Получить письмо') {
@@ -168,7 +168,7 @@ class HTTPClient {
   }
 
   getTeachPlan() {
-    return this.request('/stu.teach_plan', 'GET');
+    return this.request('GET', '/stu.teach_plan');
   }
 
   /*
@@ -185,7 +185,7 @@ class HTTPClient {
       params.p_term = trimester;
     }
 
-    return this.request('/stu.signs', 'GET', { params });
+    return this.request('GET', '/stu.signs', { params });
   }
 
   /*
@@ -195,15 +195,15 @@ class HTTPClient {
     - 3: летний
    */
   getAbsences(trimester) {
-    return this.request('/stu.absence', 'GET', { params: { p_term: trimester } });
+    return this.request('GET', '/stu.absence', { params: { p_term: trimester } });
   }
 
   getTeachers() {
-    return this.request('/stu.teachers', 'GET');
+    return this.request('GET', '/stu.teachers');
   }
 
   getAnnounce() {
-    return this.request('/stu.announce', 'GET');
+    return this.request('GET', '/stu.announce');
   }
 
   getMessages(page) {
@@ -211,7 +211,7 @@ class HTTPClient {
     if (page !== undefined) {
       payload = { p_page: page };
     }
-    return this.request('/stu.teacher_notes', payload);
+    return this.request('GET', '/stu.teacher_notes', payload);
   }
 
   async replyToMessage(answerID, content) {
@@ -220,7 +220,7 @@ class HTTPClient {
       p_msg_txt: content,
     };
     const data = toURLSearchParams(rawData);
-    return await this.request('/stu.send_reply', 'GET', { data });
+    return await this.request('GET', '/stu.send_reply', { data });
   }
 
   async attachFileToMessage(messageID, answerMessageID, file) {
@@ -229,23 +229,23 @@ class HTTPClient {
     data.append('p_anr_id', answerMessageID);
     data.append('file', { name: file.name, uri: file.uri, type: file.type });
 
-    return await this.request('/stu.repl_doc_write', 'POST', { data });
+    return await this.request('POST', '/stu.repl_doc_write', { data });
   }
 
   getBlankPage() {
-    return this.request('/stu.blank_page', 'GET');
+    return this.request('GET', '/stu.blank_page');
   }
 
   getGroupJournal() {
-    return this.request('/stu_jour.group_tt', 'GET');
+    return this.request('GET', '/stu_jour.group_tt');
   }
 
   getOrders() {
-    return this.request('/stu.orders', 'GET');
+    return this.request('GET', '/stu.orders');
   }
 
   getCertificate() {
-    return this.request('/cert_pkg.stu_certif', 'GET');
+    return this.request('GET', '/cert_pkg.stu_certif');
   }
 }
 
