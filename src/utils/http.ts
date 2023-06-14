@@ -1,21 +1,38 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import * as cheerio from 'cheerio';
 import { documentDirectory, downloadAsync } from 'expo-file-system';
-
-import { toURLSearchParams } from './encoding';
 import { getNetworkStateAsync } from 'expo-network';
+
+import { UploadFile } from '../models/other';
+import { toURLSearchParams } from './encoding';
 
 export enum ErrorCode {
   unknown,
   invalidConnection,
-  authError
+  authError,
 }
 
 export interface HTTPError {
   error: {
     code: ErrorCode;
     message: string;
-  }
+  };
+}
+
+interface Payload {
+  params?: any;
+  data?: any;
+  returnResponse?: boolean;
+}
+interface PayloadWithResponse {
+  params?: any;
+  data?: any;
+  returnResponse?: true;
+}
+interface PayloadWithString {
+  params?: any;
+  data?: any;
+  returnResponse?: false;
 }
 
 class HTTPClient {
@@ -34,12 +51,24 @@ class HTTPClient {
   async request(
     method: string,
     endpoint: string,
-    { params, data, returnResponse }: { params?: any; data?: any; returnResponse?: boolean } = {}
-  ): Promise<AxiosResponse | HTTPError | any> {
+    { params, data, returnResponse }?: PayloadWithResponse
+  ): Promise<AxiosResponse | HTTPError>;
+
+  async request(
+    method: string,
+    endpoint: string,
+    { params, data, returnResponse }?: PayloadWithString
+  ): Promise<string | HTTPError>;
+
+  async request(
+    method: string,
+    endpoint: string,
+    { params, data, returnResponse }: Payload = { returnResponse: false }
+  ): Promise<AxiosResponse | HTTPError | string> {
     console.log(
-      `[HTTP] [${method}] Sending request to '${endpoint}' with params: ${JSON.stringify(params)}; data: ${JSON.stringify(
-        data
-      )}`
+      `[HTTP] [${method}] Sending request to '${endpoint}' with params: ${JSON.stringify(
+        params
+      )}; data: ${JSON.stringify(data)}`
     );
 
     const networkState = await getNetworkStateAsync();
@@ -113,15 +142,17 @@ class HTTPClient {
       returnResponse: true,
     });
 
-    if (response.error) return null;
+    if ((response as HTTPError).error) return null;
 
-    const cookies = response.headers['set-cookie'];
+    const cookies = (response as AxiosResponse).headers['set-cookie'];
 
     if (!cookies) {
-      const $ = cheerio.load(response.data);
+      const $ = cheerio.load((response as AxiosResponse).data);
       const errorMessage = $('.error_message').text();
       if (!errorMessage)
-        return { error: { code: ErrorCode.authError, message: 'Ошибка авторизации. Попробуйте ещё раз.' } };
+        return {
+          error: { code: ErrorCode.authError, message: 'Ошибка авторизации. Попробуйте ещё раз.' },
+        };
       return { error: { code: ErrorCode.unknown, message: errorMessage } };
     }
 
@@ -137,7 +168,12 @@ class HTTPClient {
     data.append('p_email', email.trim());
     data.append('p_recaptcha_response', token.trim());
 
-    const response = await this.request('POST', '/stu_email_pkg.send_r_email', { data });
+    const response = await this.request('POST', '/stu_email_pkg.send_r_email', {
+      data,
+      returnResponse: false,
+    });
+
+    if (response.error) return null;
 
     const $ = cheerio.load(response);
     if ($('#sbmt > span').text() === 'Получить письмо') {
@@ -162,13 +198,14 @@ class HTTPClient {
   getTimeTable({ showConsultations = null, week = null } = {}) {
     const showConsultationsParam = showConsultations ? 'y' : 'n';
 
-    return this.request('/stu.timetable', 'GET', {
+    return this.request('GET', '/stu.timetable', {
       params: { p_cons: showConsultationsParam, p_week: week },
+      returnResponse: false,
     });
   }
 
   getTeachPlan() {
-    return this.request('GET', '/stu.teach_plan');
+    return this.request('GET', '/stu.teach_plan', { returnResponse: false });
   }
 
   /*
@@ -178,7 +215,7 @@ class HTTPClient {
     - rating: итоговый рейтинг за триместр 
     - diplom: оценки в диплом
     */
-  getSigns(mode, trimester) {
+  getSigns(mode: string, trimester: number) {
     const params = { p_mode: mode, p_term: undefined };
 
     if (trimester !== undefined) {
@@ -194,58 +231,61 @@ class HTTPClient {
     - 2: весенний
     - 3: летний
    */
-  getAbsences(trimester) {
-    return this.request('GET', '/stu.absence', { params: { p_term: trimester } });
+  getAbsences(trimester: number) {
+    return this.request('GET', '/stu.absence', {
+      params: { p_term: trimester },
+      returnResponse: false,
+    });
   }
 
   getTeachers() {
-    return this.request('GET', '/stu.teachers');
+    return this.request('GET', '/stu.teachers', { returnResponse: false });
   }
 
   getAnnounce() {
-    return this.request('GET', '/stu.announce');
+    return this.request('GET', '/stu.announce', { returnResponse: false });
   }
 
-  getMessages(page) {
-    let payload;
+  getMessages(page: number) {
+    let params;
     if (page !== undefined) {
-      payload = { p_page: page };
+      params = { p_page: page };
     }
-    return this.request('GET', '/stu.teacher_notes', payload);
+    return this.request('GET', '/stu.teacher_notes', { params, returnResponse: false });
   }
 
-  async replyToMessage(answerID, content) {
+  async replyToMessage(answerID: string, content: string) {
     const rawData = {
       p_anv_id: answerID,
       p_msg_txt: content,
     };
     const data = toURLSearchParams(rawData);
-    return await this.request('GET', '/stu.send_reply', { data });
+    return await this.request('GET', '/stu.send_reply', { data, returnResponse: false });
   }
 
-  async attachFileToMessage(messageID, answerMessageID, file) {
+  async attachFileToMessage(messageID: string, answerMessageID: string, file: UploadFile) {
     const data = new FormData();
     data.append('p_ant_id', messageID);
     data.append('p_anr_id', answerMessageID);
-    data.append('file', { name: file.name, uri: file.uri, type: file.type });
+    data.append('file', file);
 
-    return await this.request('POST', '/stu.repl_doc_write', { data });
+    return await this.request('POST', '/stu.repl_doc_write', { data, returnResponse: false });
   }
 
   getBlankPage() {
-    return this.request('GET', '/stu.blank_page');
+    return this.request('GET', '/stu.blank_page', { returnResponse: false });
   }
 
   getGroupJournal() {
-    return this.request('GET', '/stu_jour.group_tt');
+    return this.request('GET', '/stu_jour.group_tt', { returnResponse: false });
   }
 
   getOrders() {
-    return this.request('GET', '/stu.orders');
+    return this.request('GET', '/stu.orders', { returnResponse: false });
   }
 
   getCertificate() {
-    return this.request('GET', '/cert_pkg.stu_certif');
+    return this.request('GET', '/cert_pkg.stu_certif', { returnResponse: false });
   }
 }
 
