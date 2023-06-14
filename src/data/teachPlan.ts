@@ -28,13 +28,13 @@ export const getTeachPlanData = async (
     return await getCachedTeachPlanData();
   }
 
-  if (isLoginPage(response)) {
+  if (isLoginPage(response as string)) {
     return { ...emptyResult, isLoginPage: true };
   }
 
   console.log('[DATA] Fetched teach plan data');
 
-  const data = parseShortTeachPlan(response);
+  const data = parseShortTeachPlan(response as string);
 
   return {
     data,

@@ -63,10 +63,6 @@ const TimeTable = () => {
 
     if (result.fetched) {
       dispatch(addFetchedWeek(result.data.selectedWeek));
-      await cacheTimeTableData(
-        result.data,
-        currentWeek === undefined ? undefined : result.data.selectedWeek
-      );
     }
   };
 

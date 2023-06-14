@@ -61,10 +61,10 @@ export const getPartialSignsData = async (
     return await getCachedSignsData(payload.session);
   }
 
-  if (isLoginPage(response)) return { ...emptyResult, isLoginPage: true };
+  if (isLoginPage(response as string)) return { ...emptyResult, isLoginPage: true };
 
   console.log(`[DATA] Fetched session points for ${payload.session} session`);
-  const data = parseSessionPoints(response);
+  const data = parseSessionPoints(response as string);
 
   return {
     data,
@@ -85,7 +85,7 @@ export const getMarksData = async (payload: IGetPayload): Promise<IGetResult<ISe
     return await getCachedMarksData();
   }
 
-  if (isLoginPage(response)) return { ...emptyResult, isLoginPage: true };
+  if (isLoginPage(response as string)) return { ...emptyResult, isLoginPage: true };
 
   console.log(`[DATA] Fetched marks data`);
 

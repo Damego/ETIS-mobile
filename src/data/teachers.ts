@@ -30,9 +30,9 @@ export const getTeacherData = async ({
     return await getCachedTeacherData();
   }
 
-  if (isLoginPage(response)) return { ...emptyResult, isLoginPage: true };
+  if (isLoginPage(response as string)) return { ...emptyResult, isLoginPage: true };
 
-  const data = parseTeachers(response);
+  const data = parseTeachers(response as string);
 
   console.log('[DATA] Fetched teacher data');
   return { data, fetched: true, isLoginPage: false };

@@ -5,7 +5,7 @@ import { isLoginPage } from '../parser/utils';
 import { httpClient, storage } from '../utils';
 import { HTTPError } from '../utils/http';
 
-export const getCachedTimeTable = async (week) => {
+export const getCachedTimeTable = async (week?: number) => {
   console.log(`[DATA] Use cached timetable for week ${week}`);
   return {
     data: await storage.getTimeTableData(week),
@@ -40,14 +40,19 @@ export const getTimeTableData = async ({
   }
 
   console.log(`[DATA] Fetched timetable for week ${week}`);
+
+  const data = parseTimeTable(response)
+
+  cacheTimeTableData(data)
+
   return {
-    data: parseTimeTable(response),
+    data,
     isLoginPage: false,
     fetched: true,
   };
 };
 
 export const cacheTimeTableData = async (data: ITimeTable, week?: number) => {
-  console.log(`[DATA] Cached timetable for week ${week}`);
-  await storage.storeTimeTableData(data, week);
+  console.log(`[DATA] Caching timetable for week ${week || data.selectedWeek}`);
+  await storage.storeTimeTableData(data, week || data.selectedWeek, !week);
 };

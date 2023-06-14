@@ -58,7 +58,7 @@ export default class Storage {
     await SecureStore.setItemAsync('hasAcceptedPrivacyPolicy', 'true');
   }
 
-  async getTimeTableData(week: number): Promise<ITimeTable> {
+  async getTimeTableData(week?: number): Promise<ITimeTable> {
     let stringData;
     if (week === undefined) {
       stringData = await AsyncStorage.getItem('timetable-current');
@@ -67,12 +67,15 @@ export default class Storage {
     return JSON.parse(stringData);
   }
 
-  async storeTimeTableData(data: ITimeTable, week?: number) {
+  async storeTimeTableData(data: ITimeTable, week?: number, saveAsCurrent?: boolean) {
     const stringData = JSON.stringify(data);
 
     if (week === undefined) {
       await AsyncStorage.setItem('timetable-current', stringData);
-    } else await AsyncStorage.setItem(`timetable-${week}`, stringData);
+    } else {
+      await AsyncStorage.setItem(`timetable-${week}`, stringData);
+      if (saveAsCurrent) AsyncStorage.setItem('timetable-current', stringData);
+    }
   }
 
   async getTeacherData(): Promise<TeacherType | null> {
