@@ -1,3 +1,6 @@
 export interface IOrder {
-  id, date, name, url : string;
+  id: string;
+  date: string;
+  name: string;
+  uri: string;
 }

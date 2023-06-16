@@ -43,7 +43,6 @@ const Services = () => {
   return (
     <Screen disableRefresh>
       <View>
-        <Text style={[styles.textTitle, globalStyles.textColor]}>Студент</Text>
         <UserInfo data={studentInfo} />
 
         <Text style={[styles.textTitle, globalStyles.textColor]}>Меню</Text>

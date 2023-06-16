@@ -7,6 +7,9 @@ import { TeacherType } from '../models/teachers';
 import { ITimeTable } from '../models/timeTable';
 import { UserCredentials } from '../redux/reducers/authSlice';
 import { ThemeType } from '../redux/reducers/settingsSlice';
+import { IOrder } from '../models/order';
+import { IMessage, IMessagesData } from '../models/messages';
+import { StudentData } from '../models/student';
 
 export default class Storage {
   async bumpReviewRequest() {
@@ -145,5 +148,40 @@ export default class Storage {
 
   storeAnnounceData(data: string[]) {
     AsyncStorage.setItem('announce', JSON.stringify(data));
+  }
+
+  async getOrdersData(): Promise<IOrder[]> {
+    const stringData = await AsyncStorage.getItem('orders');
+    return JSON.parse(stringData);
+  }
+
+  storeOrdersData(data: IOrder[]) {
+    AsyncStorage.setItem('orders', JSON.stringify(data))
+  }
+
+  async getOrderHTML(orderID: string): Promise<string> {
+    return await AsyncStorage.getItem(`order-${orderID}`)
+  }
+
+  storeOrderHTML(orderID: string, html: string) {
+    AsyncStorage.setItem(`order-${orderID}`, html);
+  }
+
+  async getMessages(page: number): Promise<IMessagesData> {
+    const stringData = await AsyncStorage.getItem(`messages-${page}`);
+    return JSON.parse(stringData);
+  }
+
+  storeMessages(data: IMessagesData) {
+    AsyncStorage.setItem(`messages-${data.page}`, JSON.stringify(data));
+  }
+
+  async getStudentData(): Promise<StudentData> {
+    const stringData = await AsyncStorage.getItem('student');
+    return JSON.parse(stringData);
+  }
+
+  storeStudentData(data: StudentData) {
+    AsyncStorage.setItem('student', JSON.stringify(data))
   }
 }

@@ -10,7 +10,7 @@ export default function parseOrders(html) {
 
   $('.ord', html).each((el, orderEl) => {
     const order = $(orderEl).find('.ord-name');
-    const htmlLink = order.find('a').attr('href');
+    const uri = order.find('a').attr('href');
 
     // №DDD от DD.MM.YYYY. {name}
     const rawText = getTextField(order);
@@ -19,7 +19,7 @@ export default function parseOrders(html) {
       id: /№(\d+)/.exec(rawText)[1],
       date: dateName[1],
       name: dateName[2],
-      url: htmlLink ? `https://student.psu.ru/pls/stu_cus_et/${htmlLink}` : null,
+      uri,
     });
   });
 

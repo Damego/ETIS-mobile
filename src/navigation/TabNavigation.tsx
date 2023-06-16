@@ -1,17 +1,15 @@
 import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
-import { useGlobalStyles } from '../hooks';
-import { parseMenu } from '../parser';
+import { getStudentData } from '../data/studentInfo';
+import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
 import { setAnnounceCount, setMessageCount, setStudentInfo } from '../redux/reducers/studentSlice';
 import Announce from '../screens/announce/Announce';
+import Messages from '../screens/messages/Messages';
 import Signs from '../screens/signs/Signs';
 import TimeTablePage from '../screens/timeTable/TimeTable';
 import { registerFetch } from '../tasks/signs';
-import { httpClient } from '../utils';
-import MessageStackNavigator from './MessageStackNavigator';
 import ServicesStackNavigator from './ServicesStackNavigator';
 
 const Tab = createBottomTabNavigator();
@@ -19,16 +17,13 @@ const Tab = createBottomTabNavigator();
 const TabNavigator = () => {
   const globalStyles = useGlobalStyles();
 
-  const dispatch = useDispatch();
-  const messageCount = useSelector((state) => state.student.messageCount);
-  const announceCount = useSelector((state) => state.student.announceCount);
-  const sendNotifications = useSelector((state) => state.settings.signNotification);
+  const dispatch = useAppDispatch();
+  const { messageCount, announceCount } = useAppSelector((state) => state.student);
+  const sendNotifications = useAppSelector((state) => state.settings.signNotification);
 
   const loadData = async () => {
-    const html = await httpClient.getGroupJournal();
-    if (!html) return;
-
-    const data = parseMenu(html, true);
+    const result = await getStudentData({ useCache: true });
+    const data = result.data;
 
     dispatch(setStudentInfo(data.studentInfo));
     dispatch(setMessageCount(data.messageCount));
@@ -67,8 +62,8 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Сообщения-навигатор"
-        component={MessageStackNavigator}
+        name="Сообщения"
+        component={Messages}
         options={{
           tabBarBadge: messageCount,
           tabBarIcon: ({ size, color }) => <AntDesign name="message1" size={size} color={color} />,
