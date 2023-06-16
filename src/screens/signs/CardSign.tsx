@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import CardHeaderIn from '../../components/CardHeaderIn';
 import { useGlobalStyles } from '../../hooks';
 import { ISubject } from '../../models/sessionPoints';
+import { getPointsWord } from '../../utils/texts';
 import SubjectCheckPoints from './SubjectCheckPoints';
 
 const styles = StyleSheet.create({
@@ -41,15 +42,6 @@ const styles = StyleSheet.create({
     color: '#5c9f38',
   },
 });
-
-const getPointsWord = (points) => {
-  let pointsWord = 'балл';
-  const mod10 = points % 10;
-  if ([2, 3, 4].includes(mod10)) pointsWord += 'а';
-  else if ([0, 5, 6, 7, 8, 9].includes(mod10)) pointsWord += 'ов';
-
-  return pointsWord;
-};
 
 const getSubjectPointsStyle = (subject: ISubject, defaultTextColor) => {
   if (subject.checkPoints.length === 0) return defaultTextColor;
