@@ -1,10 +1,12 @@
+import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
-import { StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import { Linking, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 
 import Card from '../../components/Card';
 import Dropdown from '../../components/Dropdown';
 import Screen from '../../components/Screen';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
+import { useAppColorScheme } from '../../hooks/theme';
 import {
   ThemeType,
   changeTheme,
@@ -12,7 +14,7 @@ import {
   setSignNotification,
 } from '../../redux/reducers/settingsSlice';
 import { unregisterBackgroundFetchAsync } from '../../tasks/signs';
-import { storage } from '../../utils';
+import { NOTIFICATION_GUIDE_URL, storage } from '../../utils';
 
 const options = [
   {
@@ -64,17 +66,26 @@ const ToggleSignNotification = () => {
   };
 
   return (
-    <View style={styles.cardView}>
-      <Text style={[styles.header, { fontSize: 18, ...globalStyles.textColor }]}>
-        Проверять новые оценки?
-      </Text>
-      <Switch
-        trackColor={{ false: 'gray', true: 'teal' }}
-        thumbColor="white"
-        onValueChange={(value) => changeSignNotification(value)}
-        value={signNotification}
-      />
-    </View>
+    <>
+      <View style={styles.cardView}>
+        <Text style={[styles.header, { fontSize: 18, ...globalStyles.textColor }]}>
+          Уведомлять об оценках
+        </Text>
+        <TouchableOpacity onPress={() => Linking.openURL(NOTIFICATION_GUIDE_URL)}>
+          <AntDesign // TODO: make as modal w/ blur
+            name="infocirlce"
+            size={24}
+            color={useAppColorScheme() === 'light' ? 'black' : 'white'}
+          />
+        </TouchableOpacity>
+        <Switch
+          trackColor={{ false: 'gray', true: 'teal' }}
+          thumbColor="white"
+          onValueChange={(value) => changeSignNotification(value)}
+          value={signNotification}
+        />
+      </View>
+    </>
   );
 };
 
