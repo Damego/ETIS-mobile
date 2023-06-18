@@ -7,6 +7,7 @@ import { PRIVACY_POLICY_URL } from '../../utils';
 const styles = StyleSheet.create({
   view: {
     alignItems: 'center',
+    paddingTop: '5%',
   },
   infoText: {
     textAlign: 'center',
