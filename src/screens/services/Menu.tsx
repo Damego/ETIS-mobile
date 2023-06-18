@@ -1,9 +1,10 @@
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { useGlobalStyles } from '../../hooks';
+import { GITHUB_URL, TELEGRAM_URL } from '../../utils';
 
 const iconSize = 36;
 const styles = StyleSheet.create({
@@ -77,8 +78,15 @@ function Menu() {
         <Button
           text="Исходный код"
           icon={<AntDesign name="github" size={iconSize} color={iconColor} />}
-          link="https://github.com/damego/ETIS-mobile"
+          link={GITHUB_URL}
         />
+        <Button
+          text="Telegram-паблик"
+          link={TELEGRAM_URL}
+          icon={<FontAwesome5 name="telegram" size={iconSize} color={iconColor} />}
+        />
+      </Row>
+      <Row>
         <Button
           text="Настройки"
           icon={<AntDesign name="setting" size={iconSize} color={iconColor} />}
