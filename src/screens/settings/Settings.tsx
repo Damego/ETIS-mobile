@@ -12,10 +12,10 @@ export default function Settings() {
       <Card style={{ zIndex: 1 }}>
         <ToggleThemeSetting />
       </Card>
-      <Card style={{ zIndex: 1 }}>
+      <Card>
         <ToggleSignNotification />
       </Card>
-      <Card style={{ zIndex: 1 }}>
+      <Card>
         <ResetIntroSetting />
       </Card>
     </Screen>
