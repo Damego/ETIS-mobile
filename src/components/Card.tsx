@@ -12,10 +12,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const Card = ({ children }) => {
+const Card = ({ children, style }) => {
   const globalStyles = useGlobalStyles();
 
-  return <View style={[styles.cardView, globalStyles.border, globalStyles.block]}>{children}</View>;
+  return (
+    <View style={[styles.cardView, globalStyles.border, globalStyles.block, style]}>
+      {children}
+    </View>
+  );
 };
 
 export default Card;

@@ -10,11 +10,13 @@ export enum ThemeType {
 export interface SettingsState {
   theme: ThemeType;
   viewedIntro: boolean;
+  signNotification: boolean;
 }
 
 const initialState: SettingsState = {
   theme: ThemeType.auto,
   viewedIntro: false,
+  signNotification: true,
 };
 
 const settingsSlice = createSlice({
@@ -27,8 +29,11 @@ const settingsSlice = createSlice({
     setIntroViewed(state, action: PayloadAction<boolean>) {
       state.viewedIntro = action.payload;
     },
+    setSignNotification(state, action: PayloadAction<boolean>) {
+      state.signNotification = action.payload;
+    },
   },
 });
 
 export default settingsSlice.reducer;
-export const { changeTheme, setIntroViewed } = settingsSlice.actions;
+export const { changeTheme, setIntroViewed, setSignNotification } = settingsSlice.actions;

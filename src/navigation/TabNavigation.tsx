@@ -2,16 +2,15 @@ import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { useEffect } from 'react';
 
+import { getStudentData } from '../data/studentInfo';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
-import { parseMenu } from '../parser';
 import { setAnnounceCount, setMessageCount, setStudentInfo } from '../redux/reducers/studentSlice';
 import Announce from '../screens/announce/Announce';
 import Messages from '../screens/messages/Messages';
 import Signs from '../screens/signs/Signs';
 import TimeTablePage from '../screens/timeTable/TimeTable';
-import { httpClient } from '../utils';
+import { registerFetch } from '../tasks/signs';
 import ServicesStackNavigator from './ServicesStackNavigator';
-import { getStudentData } from '../data/studentInfo';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,9 +19,10 @@ const TabNavigator = () => {
 
   const dispatch = useAppDispatch();
   const { messageCount, announceCount } = useAppSelector((state) => state.student);
+  const sendNotifications = useAppSelector((state) => state.settings.signNotification);
 
   const loadData = async () => {
-    const result = await getStudentData({useCache: true});
+    const result = await getStudentData({ useCache: true });
     const data = result.data;
 
     dispatch(setStudentInfo(data.studentInfo));
@@ -31,6 +31,9 @@ const TabNavigator = () => {
   };
 
   useEffect(() => {
+    if (sendNotifications) {
+      registerFetch();
+    }
     loadData();
   }, []);
 

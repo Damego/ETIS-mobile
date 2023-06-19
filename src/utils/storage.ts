@@ -117,6 +117,16 @@ export default class Storage {
     return ThemeType[theme];
   }
 
+  storeSignNotification(signNotification: boolean) {
+    return AsyncStorage.setItem('sign-notification', signNotification ? 'true' : 'false');
+  }
+
+  async getSignNotification(): Promise<boolean> {
+    const signNotification = (await AsyncStorage.getItem('sign-notification')) === 'true';
+    if (signNotification === null) return true;
+    return signNotification;
+  }
+
   async hasViewedIntro() {
     return (await AsyncStorage.getItem('viewedIntro')) !== null;
   }
