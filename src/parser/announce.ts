@@ -1,6 +1,6 @@
 import { load } from 'cheerio';
 
-export default function parseAnnounce(html): string[] {
+export default function parseAnnounce(html: string): string[] {
   const $ = load(html);
   const data: string[] = [];
 

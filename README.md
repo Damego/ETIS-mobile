@@ -17,8 +17,7 @@
 
 ## Есть вопрос?
 
-- [Вконтакте](https://vk.com/damego)
-- [Telegram](https://t.me/oDamego)
+- [Telegram канал](https://t.me/etis_mobile)
 - Почта - damego.dev@gmail.com
 
 ## Как скачать?
@@ -30,6 +29,6 @@
 
 ## Я нашёл баг!
 
-Отлично! Открой [Issue](https://github.com/Damego/ETIS-mobile/issues) или отправь письмо на почту damego.dev@gmail.com и опиши свой баг. Мы постараемся исправить его в следующих версиях.
+Отлично! Открой [Issue](https://github.com/Damego/ETIS-mobile/issues), напиши в телеграмме или отправь письмо на почту и опиши свой баг. Мы постараемся исправить его в следующих версиях.
 
 _"Если вам кажется, что код писали говнокодеры, то вам не кажется." - Damego_

@@ -74,7 +74,10 @@ export default function MessageHistory({ route, navigation }) {
     await httpClient.replyToMessage(mainMessage.answerID, text);
     const messageBlock = await loadData();
 
-    if (!messageBlock || files.length === 0) return;
+    if (!messageBlock || files.length === 0) {
+      setUploading(false);
+      return;
+    }
     const message = messageBlock.at(-1);
 
     for (const file of files) {

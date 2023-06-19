@@ -1,4 +1,4 @@
-import { IGetPayload, IGetResult } from './results';
+import { IGetPayload } from './results';
 
 export enum MessageType {
   message = 'message',

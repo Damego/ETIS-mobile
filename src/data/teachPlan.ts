@@ -3,6 +3,7 @@ import { ISessionTeachPlan } from '../models/teachPlan';
 import { parseShortTeachPlan } from '../parser';
 import { isLoginPage } from '../parser/utils';
 import { httpClient, storage } from '../utils';
+import { HTTPError } from '../utils/http';
 
 export const getCachedTeachPlanData = async (): Promise<IGetResult<ISessionTeachPlan[]>> => {
   console.log('[DATA] Use cached teach plan');
@@ -21,19 +22,19 @@ export const getTeachPlanData = async (
     if (result.data) return result;
   }
 
-  const html = await httpClient.getTeachPlan();
-  if (!html) {
+  const response = await httpClient.getTeachPlan();
+  if ((response as HTTPError).error || !response) {
     if (!payload.useCache) return emptyResult;
     return await getCachedTeachPlanData();
   }
 
-  if (isLoginPage(html)) {
+  if (isLoginPage(response as string)) {
     return { ...emptyResult, isLoginPage: true };
   }
 
   console.log('[DATA] Fetched teach plan data');
 
-  const data = parseShortTeachPlan(html);
+  const data = parseShortTeachPlan(response as string);
 
   return {
     data,
