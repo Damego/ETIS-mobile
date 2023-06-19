@@ -14,6 +14,10 @@ export const loadSettings = () => async (dispatch: AppDispatch) => {
 };
 
 export const loadUserCredentials = () => async (dispatch: AppDispatch) => {
-  const payload: UserCredentials = await storage.getAccountData();
+  const userCredentials: UserCredentials = await storage.getAccountData();
+  const payload = {
+    userCredentials,
+    fromStorage: true
+  }
   dispatch(setUserCredentials(payload));
 };

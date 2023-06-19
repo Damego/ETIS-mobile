@@ -142,7 +142,7 @@ class HTTPClient {
       returnResponse: true,
     });
 
-    if ((response as HTTPError).error) return null;
+    if ((response as HTTPError).error) return response;
 
     const cookies = (response as AxiosResponse).headers['set-cookie'];
 

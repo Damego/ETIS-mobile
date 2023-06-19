@@ -6,7 +6,7 @@ import parseMessages from '../parser/messages';
 import { HTTPError } from '../utils/http';
 
 export const getCachedMessagesData = async (page: number): Promise<IGetResult<IMessagesData>> => {
-  console.log(`[HTTP] use cached messages for ${page} page`);
+  console.log(`[DATA] use cached messages for ${page} page`);
 
   return {
     ...emptyResult,

@@ -25,7 +25,7 @@ const AuthScreen = () => {
       return;
     }
 
-    dispatch(setUserCredentials({ login, password }));
+    dispatch(setUserCredentials({ userCredentials: {login, password}, fromStorage: false }));
     dispatch(setAuthorizing(true));
   };
 

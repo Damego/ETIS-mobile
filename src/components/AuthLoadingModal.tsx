@@ -48,7 +48,7 @@ const makeLogin = async (token: string, userCredentials: UserCredentials, saveUs
 
 const AuthLoadingModal = () => {
   const dispatch = useAppDispatch();
-  const { userCredentials, saveUserCredentials } = useAppSelector((state) => state.auth);
+  const { userCredentials, saveUserCredentials, fromStorage } = useAppSelector((state) => state.auth);
   const recaptchaRef = useRef<ReCaptchaV3>();
 
   const globalStyles = useGlobalStyles();
@@ -60,8 +60,16 @@ const AuthLoadingModal = () => {
       return;
     }
     if (success === true) {
-      dispatch(signIn());
+      dispatch(signIn({}));
     }
+
+    // fromStorage Для проверки, были ли загружены данные из хранилища или нет
+    // Возможно, что если етис недоступен и пользователь вышел из аккаунта, то нам не нужно заходить в оффлайн режим
+    if (fromStorage) {
+      console.log("[AUTH] Signed in as offline");
+      dispatch(signIn({isOffline: true}));
+    }
+
     dispatch(setAuthorizing(false));
   };
 
