@@ -8,10 +8,12 @@ import { IOrder } from '../../models/order';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import Order from './Order';
 import { ToastAndroid } from 'react-native';
+import { useAppSelector } from '../../hooks';
 
 const OrderTable = () => {
   const dispatch = useDispatch();
   const [data, setData] = useState<IOrder[]>(null);
+  const { isAuthorizing } = useAppSelector((state) => state.auth);
 
   const loadData = async () => {
     const result = await getOrdersData({ useCache: true, useCacheFirst: false });
@@ -30,8 +32,8 @@ const OrderTable = () => {
   };
 
   useEffect(() => {
-    loadData();
-  }, []);
+    if (!isAuthorizing) loadData();
+  }, [isAuthorizing]);
 
   if (!data) return <LoadingScreen />;
 
