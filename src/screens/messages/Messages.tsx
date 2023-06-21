@@ -9,6 +9,7 @@ import { setAuthorizing } from '../../redux/reducers/authSlice';
 import MessagePreview from './MessagePreview';
 import { getMessagesData } from '../../data/messages';
 import { ToastAndroid } from 'react-native';
+import { setMessageCount } from '../../redux/reducers/studentSlice';
 
 const Messages = () => {
   const dispatch = useAppDispatch();
@@ -45,6 +46,10 @@ const Messages = () => {
   useEffect(() => {
     if (!isAuthorizing) loadData({});
   }, [isAuthorizing]);
+
+  useEffect(() => {
+    dispatch(setMessageCount(null));
+  }, []);
 
   if (!data) return <LoadingScreen />;
 
