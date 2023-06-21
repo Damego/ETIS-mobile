@@ -6,6 +6,8 @@ import { setAuthorizing, setUserCredentials } from '../../redux/reducers/authSli
 import Footer from './AuthFooter';
 import Form from './AuthForm';
 import Recovery from './Recovery';
+import { storage } from '../../utils';
+import showPrivacyPolicy from '../../utils/privacyPolicy';
 
 const AuthScreen = () => {
   const dispatch = useAppDispatch();
@@ -19,7 +21,12 @@ const AuthScreen = () => {
     if (userCredentials) dispatch(setAuthorizing(true));
   }, [userCredentials]);
 
-  const onFormSubmit = (login: string, password: string) => {
+  const onFormSubmit = async (login: string, password: string) => {
+    if (!(await storage.hasAcceptedPrivacyPolicy())) {
+      showPrivacyPolicy()
+      return;
+    }
+
     if (!login || !password) {
       setMessage('Вы не ввели логин или пароль');
       return;
