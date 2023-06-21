@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { useGlobalStyles } from '../hooks';
 
@@ -12,7 +12,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const Card = ({ children, style }) => {
+const Card = ({ children, style }: {
+  children: React.ReactNode;
+  style?: StyleProp<ViewStyle>
+}) => {
   const globalStyles = useGlobalStyles();
 
   return (
