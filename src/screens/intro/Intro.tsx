@@ -3,6 +3,7 @@ import React from 'react';
 import { Dimensions, Image, ListRenderItemInfo, StyleSheet, Text, View } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { ImageRequireSource } from 'react-native/Libraries/Image/ImageSource';
+import { StatusBar } from 'expo-status-bar';
 
 import { useAppDispatch } from '../../hooks';
 import { setIntroViewed } from '../../redux/reducers/settingsSlice';
@@ -113,6 +114,8 @@ const Intro = () => {
 
   return (
     <View style={{ flex: 1 }}>
+      <StatusBar translucent={true} />
+
       <AppIntroSlider
         nextLabel={'Дальше'}
         onDone={onIntroDone}
