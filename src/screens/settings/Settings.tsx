@@ -1,120 +1,10 @@
-import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
-import { Linking, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 
 import Card from '../../components/Card';
-import Dropdown from '../../components/Dropdown';
 import Screen from '../../components/Screen';
-import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
-import { useAppColorScheme } from '../../hooks/theme';
-import {
-  ThemeType,
-  changeTheme,
-  setIntroViewed,
-  setSignNotification,
-} from '../../redux/reducers/settingsSlice';
-import { unregisterBackgroundFetchAsync } from '../../tasks/signs';
-import { NOTIFICATION_GUIDE_URL, storage } from '../../utils';
-
-const options = [
-  {
-    label: 'Автоматическая',
-    value: ThemeType.auto,
-  },
-  {
-    label: 'Светлая',
-    value: ThemeType.light,
-  },
-  {
-    label: 'Тёмная',
-    value: ThemeType.dark,
-  },
-  {
-    label: 'Amoled',
-    value: ThemeType.amoled,
-  },
-];
-
-const styles = StyleSheet.create({
-  cardView: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  header: { fontSize: 20, fontWeight: '500' },
-});
-
-const ResetIntro = () => {
-  const dispatch = useAppDispatch();
-  const globalStyles = useGlobalStyles();
-
-  return (
-    <TouchableOpacity onPress={() => dispatch(setIntroViewed(false))} activeOpacity={0.9}>
-      <Text style={[styles.header, globalStyles.textColor]}>Сбросить обучение</Text>
-    </TouchableOpacity>
-  );
-};
-
-const ToggleSignNotification = () => {
-  const dispatch = useAppDispatch();
-  const signNotification = useAppSelector((state) => state.settings.signNotification);
-  const globalStyles = useGlobalStyles();
-  const changeSignNotification = (signNotification: boolean) => {
-    unregisterBackgroundFetchAsync();
-    dispatch(setSignNotification(signNotification));
-    storage.storeSignNotification(signNotification);
-  };
-
-  return (
-    <>
-      <View style={styles.cardView}>
-        <Text style={[styles.header, { fontSize: 18, ...globalStyles.textColor }]}>
-          Уведомлять об оценках
-        </Text>
-        <TouchableOpacity onPress={() => Linking.openURL(NOTIFICATION_GUIDE_URL)}>
-          <AntDesign // TODO: make as modal w/ blur
-            name="infocirlce"
-            size={24}
-            color={useAppColorScheme() === 'light' ? 'black' : 'white'}
-          />
-        </TouchableOpacity>
-        <Switch
-          trackColor={{ false: 'gray', true: 'teal' }}
-          thumbColor="white"
-          onValueChange={(value) => changeSignNotification(value)}
-          value={signNotification}
-        />
-      </View>
-    </>
-  );
-};
-
-const ToggleThemeSetting = () => {
-  const dispatch = useAppDispatch();
-  const themeType = useAppSelector((state) => state.settings.theme);
-  const globalStyles = useGlobalStyles();
-  const changeAppTheme = (selectedTheme: ThemeType) => {
-    dispatch(changeTheme(selectedTheme));
-    storage.storeAppTheme(selectedTheme);
-  };
-
-  return (
-    <View style={styles.cardView}>
-      <Text style={[styles.header, { ...globalStyles.textColor }]}>Тема</Text>
-      <View
-        style={{
-          width: '60%',
-        }}
-      >
-        <Dropdown
-          options={options}
-          selectedOption={options.find((option) => option.value === themeType)}
-          onSelect={changeAppTheme}
-        />
-      </View>
-    </View>
-  );
-};
+import ResetIntroSetting from './ResetIntroSetting';
+import ToggleSignNotification from './ToggleSignNotification';
+import ToggleThemeSetting from './ToggleThemeSetting';
 
 export default function Settings() {
   return (
@@ -126,7 +16,7 @@ export default function Settings() {
         <ToggleSignNotification />
       </Card>
       <Card>
-        <ResetIntro />
+        <ResetIntroSetting />
       </Card>
     </Screen>
   );

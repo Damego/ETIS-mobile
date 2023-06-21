@@ -11,7 +11,7 @@ export const getAsNumber = (str: string, defaultValue: number = null): number | 
   return number;
 };
 
-export const isLoginPage = (html) => {
+export const isLoginPage = (html: string) => {
   const $ = cheerio.load(html);
   return !!$('.login').html();
 };

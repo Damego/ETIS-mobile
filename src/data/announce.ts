@@ -1,6 +1,8 @@
 import { IGetPayload, IGetResult, emptyResult } from '../models/results';
 import { parseAnnounce } from '../parser';
+import { isLoginPage } from '../parser/utils';
 import { httpClient, storage } from '../utils';
+import { HTTPError } from '../utils/http';
 
 export const getCachedAnnounceData = async () => {
   console.log('[DATA] Using cached announce data');
@@ -17,16 +19,20 @@ export const getAnnounceData = async (payload: IGetPayload): Promise<IGetResult<
     if (result.data) return result;
   }
 
-  const html = await httpClient.getAnnounce();
+  const response = await httpClient.getAnnounce();
 
-  if (!html) {
+  if ((response as HTTPError).error || !response) {
     if (!payload.useCache) return emptyResult;
     return await getCachedAnnounceData();
   }
 
+  if (isLoginPage(response as string)) {
+    return { ...emptyResult, isLoginPage: true };
+  }
+
   console.log('[DATA] Fetched announce data');
 
-  const data = parseAnnounce(html);
+  const data = parseAnnounce(response as string);
   return {
     data,
     isLoginPage: false,

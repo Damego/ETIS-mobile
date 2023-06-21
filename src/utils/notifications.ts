@@ -13,7 +13,9 @@ export const sendNewMarkNotification = (
   let mark;
   if (oldRes === 0.0) mark = `${newRes}`;
   else {
-    const different = newRes - oldRes;
+    let different = newRes - oldRes;
+    if (different % 1 !== 0) different = parseFloat(different.toFixed(1));
+
     mark = `${oldRes} -> ${newRes} (${different > 0 ? '+' : '-'}${Math.abs(different)})`;
   }
   Notifications.scheduleNotificationAsync({
