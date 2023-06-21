@@ -3,6 +3,7 @@ import React from 'react';
 import { Dimensions, Image, ListRenderItemInfo, StyleSheet, Text, View } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { ImageRequireSource } from 'react-native/Libraries/Image/ImageSource';
+import { StatusBar } from 'expo-status-bar';
 
 import { useAppDispatch } from '../../hooks';
 import { setIntroViewed } from '../../redux/reducers/settingsSlice';
@@ -51,36 +52,36 @@ interface ISlide {
 const slides: ISlide[] = [
   {
     key: 'welcome',
-    title: 'Добро пожаловать в ETIS Mobile!',
-    text: 'Это как обычный ЕТИС, но лучше!',
+    title: 'Добро пожаловать в ЕТИС мобайл',
+    text: 'Лучшая версия ЕТИСа на вашем устройстве!',
     colors: ['#4389A2', '#5C258D'],
     source: require('../../../assets/intro/welcome.png'),
   },
   {
     key: 'offline',
-    title: 'Оставайся на связи даже оффлайн!',
-    text: 'Даже при отсутствии интернета Вы сможете узнать своё расписание!',
+    title: 'Оффлайн режим',
+    text: 'Нет интернета? Упал ЕТИС? Ты сможешь смотреть расписание и оценки благодаря оффлайн режиму!',
     colors: ['#5C258D', '#832161'],
     source: require('../../../assets/intro/shine.gif'),
   },
   {
     key: 'secure',
-    title: 'Мы не передаем ваши данные!',
-    text: 'Приложение общается исключительно с серверами ЕТИС ПГНИУ, а все данные хранятся локально',
+    title: 'Ваши данные в безопасности',
+    text: 'Приложение работает только с сайтом ЕТИСа, а все ваши данные обрабатываются и хранятся исключительно на вашем устройстве!',
     colors: ['#832161', '#0096c7'],
     source: require('../../../assets/intro/search.png'),
   },
   {
     key: 'oss',
-    title: 'ETIS Mobile открыт всем!',
-    text: 'Мы свободно распространяем как приложение, так и его исходный код! Ссылка находится в меню сервисов',
+    title: 'Открытый исходный код',
+    text: 'Мы свободно распространяем как приложение, так и его исходный код! Любой желающий может его изучить и даже помочь нам с разработкой :)',
     colors: ['#0096c7', '#9b72cf'],
     source: require('../../../assets/intro/matrix.gif'),
   },
   {
     key: 'lets',
     title: 'Начинай скорее!',
-    text: 'Не забудьте поделиться ссылкой, но, помните, приложение не является официальным клиентом',
+    text: 'Не забудьте поделиться ссылкой с одногрупниками!',
     colors: ['#9b72cf', '#cc2b5e'],
     source: require('../../../assets/intro/smile.png'),
   },
@@ -113,6 +114,8 @@ const Intro = () => {
 
   return (
     <View style={{ flex: 1 }}>
+      <StatusBar translucent={true} />
+
       <AppIntroSlider
         nextLabel={'Дальше'}
         onDone={onIntroDone}

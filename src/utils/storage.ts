@@ -8,7 +8,7 @@ import { ITimeTable } from '../models/timeTable';
 import { UserCredentials } from '../redux/reducers/authSlice';
 import { ThemeType } from '../redux/reducers/settingsSlice';
 import { IOrder } from '../models/order';
-import { IMessage, IMessagesData } from '../models/messages';
+import { IMessagesData } from '../models/messages';
 import { StudentData } from '../models/student';
 
 export default class Storage {
