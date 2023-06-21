@@ -8,6 +8,7 @@ import { IMessagesData } from '../../models/messages';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import MessagePreview from './MessagePreview';
 import { getMessagesData } from '../../data/messages';
+import { ToastAndroid } from 'react-native';
 
 const Messages = () => {
   const dispatch = useAppDispatch();
@@ -26,6 +27,11 @@ const Messages = () => {
 
     if (result.isLoginPage) {
       dispatch(setAuthorizing(true));
+      return;
+    }
+
+    if (!result.data) {
+      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
       return;
     }
 

@@ -7,6 +7,7 @@ import { getOrdersData } from '../../data/orders';
 import { IOrder } from '../../models/order';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import Order from './Order';
+import { ToastAndroid } from 'react-native';
 
 const OrderTable = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,11 @@ const OrderTable = () => {
 
     if (result.isLoginPage) {
       dispatch(setAuthorizing(true));
+      return;
+    }
+
+    if (!result.data) {
+      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
       return;
     }
 
