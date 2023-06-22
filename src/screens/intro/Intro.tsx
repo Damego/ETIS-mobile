@@ -1,15 +1,14 @@
 import { LinearGradient } from 'expo-linear-gradient';
+import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { Dimensions, Image, ListRenderItemInfo, StyleSheet, Text, View } from 'react-native';
+import { Image, ListRenderItemInfo, StyleSheet, Text, View } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { ImageRequireSource } from 'react-native/Libraries/Image/ImageSource';
-import { StatusBar } from 'expo-status-bar';
 
 import { useAppDispatch } from '../../hooks';
 import { setIntroViewed } from '../../redux/reducers/settingsSlice';
 import { storage } from '../../utils';
-
-const { fontScale } = Dimensions.get('window');
+import { fontSize } from '../../utils/texts';
 
 const styles = StyleSheet.create({
   mainContent: {
@@ -23,16 +22,16 @@ const styles = StyleSheet.create({
     height: 220,
   },
   text: {
+    ...fontSize.small,
     fontFamily: 'Nunito-SemiBold',
     color: '#FFFFFFCC',
     backgroundColor: 'transparent',
     textAlign: 'center',
-    fontSize: 15 * fontScale,
     paddingHorizontal: 16,
   },
   title: {
     fontFamily: 'Nunito-Bold',
-    fontSize: 20 * fontScale,
+    ...fontSize.large,
     color: 'white',
     backgroundColor: 'transparent',
     textAlign: 'center',

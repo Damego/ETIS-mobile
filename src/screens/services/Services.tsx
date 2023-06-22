@@ -8,17 +8,18 @@ import Screen from '../../components/Screen';
 import { useGlobalStyles } from '../../hooks';
 import { signOut } from '../../redux/reducers/authSlice';
 import { storage } from '../../utils';
+import { fontSize } from '../../utils/texts';
 import Menu from './Menu';
 import UserInfo from './UserInfo';
 
 const styles = StyleSheet.create({
   exitView: { position: 'absolute', bottom: '2%', left: 0, right: 0, alignItems: 'center' },
   exitText: {
-    fontSize: 16,
+    ...fontSize.medium,
     fontWeight: 'bold',
   },
   textTitle: {
-    fontSize: 20,
+    ...fontSize.large,
     fontWeight: '600',
     marginBottom: '2%',
   },

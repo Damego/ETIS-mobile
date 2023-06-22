@@ -4,6 +4,7 @@ import { Image, Text, TextInput, View } from 'react-native';
 import { Button, LoadingButton } from '../../components/Button';
 import ClickableText from '../../components/ClickableText';
 import { useGlobalStyles } from '../../hooks';
+import { fontSize } from '../../utils/texts';
 import { styles } from './AuthForm';
 
 const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequestButton }) => {
@@ -43,7 +44,7 @@ const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequ
       )}
 
       <ClickableText
-        textStyle={{ fontSize: 20, ...globalStyles.textColor }}
+        textStyle={[fontSize.large, globalStyles.textColor]}
         viewStyle={{ marginTop: '15%' }}
         text="Назад"
         onPress={() => setShowModal(false)}

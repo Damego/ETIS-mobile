@@ -5,6 +5,7 @@ import Dropdown from '../../components/Dropdown';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { ThemeType, changeTheme } from '../../redux/reducers/settingsSlice';
 import { storage } from '../../utils';
+import { fontSize } from '../../utils/texts';
 
 const options = [
   {
@@ -44,7 +45,7 @@ const ToggleThemeSetting = () => {
 
   return (
     <View style={styles.cardView}>
-      <Text style={{ fontSize: 18, fontWeight: '500', ...globalStyles.textColor }}>Тема</Text>
+      <Text style={{ ...fontSize.medium, fontWeight: '500', ...globalStyles.textColor }}>Тема</Text>
       <View
         style={{
           width: '60%',

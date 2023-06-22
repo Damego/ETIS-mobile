@@ -3,15 +3,14 @@ import { StyleSheet, Text } from 'react-native';
 
 import { useGlobalStyles } from '../../hooks';
 import { ICheckPoint } from '../../models/sessionPoints';
+import { fontSize } from '../../utils/texts';
 
 const styles = StyleSheet.create({
   markNeutral: {
-    fontSize: 16,
     fontWeight: '600',
   },
   markFail: {
     color: '#CE2539',
-    fontSize: 16,
     fontWeight: '600',
   },
 });
@@ -44,7 +43,11 @@ const SubjectCheckPoints = ({ data }: SubjectCheckPointsProps) => {
 
     return (
       <Text
-        style={failStyleCondition ? styles.markFail : [styles.markNeutral, globalStyles.textColor]}
+        style={
+          failStyleCondition
+            ? [fontSize.medium, styles.markFail]
+            : [fontSize.medium, styles.markNeutral, globalStyles.textColor]
+        }
         key={checkPoint.theme}
       >
         {pointsString}

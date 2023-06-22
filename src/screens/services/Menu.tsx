@@ -5,6 +5,7 @@ import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 import { useGlobalStyles } from '../../hooks';
 import { GITHUB_URL, TELEGRAM_URL } from '../../utils';
+import { fontSize } from '../../utils/texts';
 
 const iconSize = 36;
 const styles = StyleSheet.create({
@@ -18,9 +19,6 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  buttonText: {
-    fontSize: 12,
   },
   rowView: {
     marginVertical: '1%',
@@ -42,7 +40,7 @@ function Button({ icon, text, page, link }) {
   return (
     <TouchableOpacity style={styles.buttonView} onPress={changePage} activeOpacity={0.9}>
       <View style={[styles.buttonContainer, globalStyles.border, globalStyles.block]}>{icon}</View>
-      <Text style={[styles.buttonText, globalStyles.textColor]}>{text}</Text>
+      <Text style={[fontSize.mini, globalStyles.textColor]}>{text}</Text>
     </TouchableOpacity>
   );
 }

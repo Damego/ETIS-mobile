@@ -3,6 +3,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { useGlobalStyles } from '../hooks';
+import { fontSize } from '../utils/texts';
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -12,7 +13,6 @@ const styles = StyleSheet.create({
     marginVertical: '2%',
   },
   headerText: {
-    fontSize: 26,
     fontWeight: '700',
     marginLeft: '5%',
   },
@@ -30,7 +30,9 @@ const Header = ({ text, onBackButtonClick }) => {
       ) : (
         ''
       )}
-      <Text style={[styles.headerText, globalStyles.primaryFontColor]}>{text}</Text>
+      <Text style={[fontSize.xlarge, styles.headerText, globalStyles.primaryFontColor]}>
+        {text}
+      </Text>
     </View>
   );
 };

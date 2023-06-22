@@ -6,6 +6,7 @@ import { Button } from '../../components/Button';
 import ClickableText from '../../components/ClickableText';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { setSaveUserCredentials } from '../../redux/reducers/authSlice';
+import { fontSize } from '../../utils/texts';
 
 export const styles = StyleSheet.create({
   container: {
@@ -27,7 +28,7 @@ export const styles = StyleSheet.create({
     marginRight: '2%',
   },
   input: {
-    fontSize: 20,
+    ...fontSize.large,
     paddingLeft: 5,
     height: '12%',
     marginVertical: '1%',
@@ -42,7 +43,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   forgotButton: {
-    fontSize: 14,
+    ...fontSize.small,
     color: '#427ADE',
   },
 });
@@ -99,7 +100,7 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
             value={saveUserCredentials}
             onValueChange={toggleSaveUserCredentials}
           />
-          <Text style={globalStyles.textColor}>Запомнить пароль?</Text>
+          <Text style={[fontSize.small, globalStyles.textColor]}>Запомнить пароль?</Text>
         </View>
 
         <ClickableText

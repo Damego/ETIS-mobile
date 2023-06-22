@@ -4,6 +4,7 @@ import { Text, View } from 'react-native';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import { useGlobalStyles } from '../../hooks';
 import { ITimeTableDay } from '../../models/timeTable';
+import { fontSize } from '../../utils/texts';
 import Lesson from './Lesson';
 
 interface DayData {
@@ -21,7 +22,7 @@ const EmptyDay = ({ data }: DayData) => {
   return (
     <CardHeaderOut topText={date}>
       <View style={{ alignItems: 'center' }}>
-        <Text style={{ fontSize: 16, fontWeight: '600', ...globalStyles.textColor }}>
+        <Text style={{ ...fontSize.medium, fontWeight: '600', ...globalStyles.textColor }}>
           {getRandomResponse()}
         </Text>
       </View>

@@ -2,6 +2,7 @@ import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { useGlobalStyles } from '../hooks';
+import { fontSize } from '../utils/texts';
 
 export const styles = StyleSheet.create({
   container: {
@@ -14,9 +15,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
+    ...fontSize.xlarge,
     color: '#FFFFFF',
     fontWeight: '500',
-    fontSize: 25,
   },
 });
 

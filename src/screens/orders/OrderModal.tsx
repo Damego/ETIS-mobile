@@ -4,6 +4,7 @@ import AutoHeightWebView from 'react-native-autoheight-webview';
 
 import ClickableText from '../../components/ClickableText';
 import { useGlobalStyles } from '../../hooks';
+import { fontSize } from '../../utils/texts';
 
 const getStyles = (textColor: string): string => `
 * {
@@ -42,7 +43,7 @@ export default function OrderModal({ html, closeModal }) {
         <ClickableText
           text={'Закрыть'}
           onPress={closeModal}
-          textStyle={[{ fontSize: 20 }, globalStyles.textColor]}
+          textStyle={[fontSize.large, globalStyles.textColor]}
           viewStyle={{ marginBottom: '2%' }}
         />
       </View>

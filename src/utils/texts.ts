@@ -6,3 +6,27 @@ export const getPointsWord = (points) => {
 
   return pointsWord;
 };
+
+export const fontSize = {
+  micro: {
+    fontSize: 8,
+  },
+  mini: {
+    fontSize: 12,
+  },
+  small: {
+    fontSize: 14,
+  },
+  medium: {
+    fontSize: 16,
+  },
+  large: {
+    fontSize: 20,
+  },
+  xlarge: {
+    fontSize: 26,
+  },
+  xxlarge: {
+    fontSize: 36,
+  },
+};

@@ -5,6 +5,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import BorderLine from '../../components/BorderLine';
 import { useGlobalStyles } from '../../hooks';
 import { ITeachPlanDiscipline } from '../../models/teachPlan';
+import { fontSize } from '../../utils/texts';
 
 const styles = StyleSheet.create({
   subjectDropdownView: {
@@ -16,17 +17,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   subjectNameText: {
-    fontSize: 16,
     fontWeight: '500',
-  },
-  subjectReportingText: {
-    fontSize: 16,
   },
   boldText: {
     fontWeight: 'bold',
-  },
-  font15: {
-    fontSize: 15,
   },
 });
 
@@ -40,7 +34,7 @@ const DisciplineWorkHours = ({
   totalWorkHours: number;
 }) => {
   const globalStyles = useGlobalStyles();
-  const textStyles = [styles.font15, globalStyles.textColor];
+  const textStyles = [fontSize.medium, globalStyles.textColor];
 
   return (
     <>
@@ -77,8 +71,10 @@ const Subject = ({
         activeOpacity={0.45}
       >
         <View style={[styles.subjectTitleView]}>
-          <Text style={[styles.subjectNameText, globalStyles.textColor]}>{data.name}</Text>
-          <Text style={[styles.subjectReportingText, globalStyles.textColor]}>
+          <Text style={[fontSize.medium, styles.subjectNameText, globalStyles.textColor]}>
+            {data.name}
+          </Text>
+          <Text style={[fontSize.medium, globalStyles.textColor]}>
             Отчётность: {data.reporting}
           </Text>
         </View>

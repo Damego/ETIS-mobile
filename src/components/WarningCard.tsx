@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { useGlobalStyles } from '../hooks';
+import { fontSize } from '../utils/texts';
 
 const styles = StyleSheet.create({
   cardView: {
@@ -14,7 +15,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   text: {
-    fontSize: 18,
     fontWeight: 'bold',
   },
 });
@@ -24,7 +24,7 @@ const WarningCard = ({ text }) => {
 
   return (
     <View style={[styles.cardView, globalStyles.shadow]}>
-      <Text style={styles.text}>{text}</Text>
+      <Text style={[fontSize.medium, styles.text]}>{text}</Text>
     </View>
   );
 };
