@@ -5,7 +5,7 @@ import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Button } from '../../components/Button';
 import ClickableText from '../../components/ClickableText';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
-import { setSaveUserCredentials, setUserCredentials } from '../../redux/reducers/authSlice';
+import { setSaveUserCredentials } from '../../redux/reducers/authSlice';
 
 export const styles = StyleSheet.create({
   container: {
@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   checkbox: {
-    marginRight: 6,
+    marginRight: '2%',
   },
   input: {
     fontSize: 20,
@@ -37,12 +37,13 @@ export const styles = StyleSheet.create({
   authPropContainer: {
     marginTop: '4%',
     flexDirection: 'row',
-    width: '95%',
-    justifyContent: 'space-around',
+    width: '90%',
+    paddingHorizontal: 5,
+    justifyContent: 'space-between',
   },
   forgotButton: {
-    color: '#427ADE',
     fontSize: 14,
+    color: '#427ADE',
   },
 });
 
