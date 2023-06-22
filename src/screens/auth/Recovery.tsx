@@ -17,7 +17,7 @@ const Recovery = ({ setShowModal }) => {
   const [recaptchaToken, setRecaptchaToken] = useState();
   const [disabledRequestButton, setDisabledRequestButton] = useState(false);
 
-  const statusBarStyle = useAppColorScheme() === 'dark' ? 'light' : 'dark';
+  const statusBarStyle = useAppColorScheme() === 'dark' ? 'dark' : 'light';
 
   const makeRequest = async ({ mail }) => {
     if (isLoading || disabledRequestButton) return;
