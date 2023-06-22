@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { useGlobalStyles } from '../../hooks';
 import { ILesson } from '../../models/timeTable';
+import { fontSize } from '../../utils/texts';
 
 const styles = StyleSheet.create({
   lessonContainer: {
@@ -14,14 +15,10 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     alignItems: 'center',
   },
-  lessonPairText: {
-    fontSize: 13,
-  },
   lessonInfoView: {
     flex: 1,
   },
   lessonInfoText: {
-    fontSize: 16,
     fontWeight: '500',
   },
 });
@@ -39,11 +36,13 @@ const Lesson = ({ data }: ILessonProps) => {
   return (
     <View style={styles.lessonContainer}>
       <View style={styles.lessonTimeView}>
-        <Text style={[styles.lessonPairText, globalStyles.textColor]}>{lessonNum}</Text>
+        <Text style={[fontSize.mini, globalStyles.textColor]}>{lessonNum}</Text>
         <Text style={globalStyles.textColor}>{time}</Text>
       </View>
       <View style={styles.lessonInfoView}>
-        <Text style={[styles.lessonInfoText, globalStyles.textColor]}>{subject}</Text>
+        <Text style={[fontSize.medium, styles.lessonInfoText, globalStyles.textColor]}>
+          {subject}
+        </Text>
         <Text style={globalStyles.textColor}>{audience}</Text>
       </View>
     </View>

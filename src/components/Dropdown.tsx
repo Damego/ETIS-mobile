@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { useGlobalStyles } from '../hooks';
+import { fontSize } from '../utils/texts';
 
 const styles = StyleSheet.create({
   dropdownView: {
@@ -18,7 +19,6 @@ const styles = StyleSheet.create({
   },
   selectText: {
     textAlign: 'center',
-    fontSize: 16,
     fontWeight: '600',
   },
   menuView: {
@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
     paddingVertical: '3%',
   },
   optionText: {
-    fontSize: 16,
     fontWeight: '500',
   },
 });
@@ -42,7 +41,7 @@ const SelectOption = ({ label }) => {
 
   return (
     <View style={styles.optionView}>
-      <Text style={[styles.optionText, globalStyles.textColor]}>{label}</Text>
+      <Text style={[fontSize.medium, styles.optionText, globalStyles.textColor]}>{label}</Text>
     </View>
   );
 };
@@ -74,7 +73,9 @@ function Select({ selectedOption, isOpened, toggleOpened }) {
       onPress={toggleOpened}
       activeOpacity={0.9}
     >
-      <Text style={[styles.selectText, globalStyles.textColor]}>{selectedOption}</Text>
+      <Text style={[fontSize.medium, styles.selectText, globalStyles.textColor]}>
+        {selectedOption}
+      </Text>
       <AntDesign
         name={isOpened ? 'caretup' : 'caretdown'}
         size={14}

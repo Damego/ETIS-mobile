@@ -15,6 +15,7 @@ import { useGlobalStyles } from '../../hooks';
 import { selectFile } from '../../utils';
 import { UploadFile } from '../../models/other';
 import { HTTPError } from '../../utils/http';
+import { fontSize } from '../../utils/texts';
 
 const styles = StyleSheet.create({
   inputView: {
@@ -25,7 +26,6 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     padding: '2%',
-    fontSize: 16,
   },
   iconView: {
     margin: '2%',
@@ -39,11 +39,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingVertical: 5,
     alignItems: 'center',
-    borderWidth: 1
+    borderWidth: 1,
   },
   fileText: {
+    ...fontSize.small,
     alignSelf: 'flex-end',
-    fontSize: 14,
     fontWeight: '500',
   },
   wrapperContainer: {},
@@ -60,7 +60,13 @@ const File = ({ name, onRemove }) => {
   const cutFileName = name.length < 14 ? name : `${name.substring(0, 10)}....${fileFormat}`;
 
   return (
-    <View style={[styles.fileContainer, globalStyles.block, { borderColor: globalStyles.border.borderColor }]}>
+    <View
+      style={[
+        styles.fileContainer,
+        globalStyles.block,
+        { borderColor: globalStyles.border.borderColor },
+      ]}
+    >
       <Text style={[styles.fileText, globalStyles.textColor]}>{cutFileName}</Text>
       <TouchableOpacity style={styles.removeIcon} onPress={() => onRemove(name)}>
         <AntDesign name="closecircleo" size={20} color={globalStyles.textColor.color} />
@@ -117,7 +123,7 @@ const MessageInput = ({ onFileSelect, onSubmit, showLoading }: {
       </TouchableOpacity>
 
       <TextInput
-        style={[styles.input, globalStyles.textColor, globalStyles.block]}
+        style={[fontSize.medium, styles.input, globalStyles.textColor, globalStyles.block]}
         onChangeText={(text) => setValue(text)}
         value={value}
         placeholder="Сообщение"

@@ -18,7 +18,6 @@ store.dispatch(loadUserCredentials());
 
 defineFetchTask();
 setNotificationHandler();
-
 const App = () => {
   const [fontsLoaded] = useFonts({
     'Nunito-SemiBold': require('../assets/fonts/Nunito-SemiBold.ttf'),

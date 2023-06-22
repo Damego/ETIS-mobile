@@ -6,11 +6,20 @@ interface ClickableTextProps {
   textStyle?: StyleProp<TextStyle>;
   viewStyle?: StyleProp<ViewStyle>;
   onPress(): void;
+  adjustsFontSizeToFit?: boolean;
 }
 
-const ClickableText = ({ text, textStyle, viewStyle, onPress }: ClickableTextProps) => (
+const ClickableText = ({
+  text,
+  textStyle,
+  viewStyle,
+  onPress,
+  adjustsFontSizeToFit,
+}: ClickableTextProps) => (
   <TouchableOpacity style={viewStyle} onPress={onPress}>
-    <Text style={textStyle}>{text}</Text>
+    <Text adjustsFontSizeToFit={adjustsFontSizeToFit} style={textStyle}>
+      {text}
+    </Text>
   </TouchableOpacity>
 );
 

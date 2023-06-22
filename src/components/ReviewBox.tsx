@@ -3,6 +3,7 @@ import React from 'react';
 import { Alert, Button, Linking, Text, View } from 'react-native';
 
 import { useGlobalStyles } from '../hooks';
+import { fontSize } from '../utils/texts';
 
 const ReviewBox = ({ setReviewed, setViewed }) => {
   const globalStyles = useGlobalStyles();
@@ -13,7 +14,7 @@ const ReviewBox = ({ setReviewed, setViewed }) => {
       return;
     }
 
-    let link = `${StoreReview.storeUrl()}&showAllReviews=true`;
+    const link = `${StoreReview.storeUrl()}&showAllReviews=true`;
     if (await Linking.canOpenURL(link)) {
       await Linking.openURL(link);
       setReviewed();
@@ -37,10 +38,10 @@ const ReviewBox = ({ setReviewed, setViewed }) => {
     >
       <Text
         style={[
+          fontSize.large,
           globalStyles.textColor,
           {
             fontWeight: '600',
-            fontSize: 20,
           },
         ]}
       >

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { useGlobalStyles } from '../hooks';
+import { fontSize } from '../utils/texts';
 import ClickableText from './ClickableText';
 
 const styles = StyleSheet.create({
@@ -19,14 +20,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  clickableText: {
-    fontSize: 20,
-  },
   activeButtonView: {
     borderRadius: 10,
   },
   activeButtonText: {
-    fontSize: 20,
     color: '#FFFFFF',
   },
 });
@@ -48,7 +45,7 @@ const ActiveButton = ({ number }) => {
 
   return (
     <View style={[styles.button, styles.activeButtonView, globalStyles.primaryBackgroundColor]}>
-      <Text style={styles.activeButtonText}>{number}</Text>
+      <Text style={[fontSize.large, styles.activeButtonText]}>{number}</Text>
     </View>
   );
 };
@@ -119,7 +116,7 @@ const PageNavigator = ({ firstPage, currentPage, lastPage, onPageChange }) => {
         currentPage !== number ? (
           <ClickableText
             viewStyle={[styles.button]}
-            textStyle={[styles.clickableText, globalStyles.textColor]}
+            textStyle={[fontSize.large, globalStyles.textColor]}
             text={number}
             onPress={() => onPageChange(number)}
             key={number}

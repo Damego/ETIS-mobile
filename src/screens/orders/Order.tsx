@@ -5,14 +5,12 @@ import CardHeaderIn from '../../components/CardHeaderIn';
 import { getOrderHTML } from '../../data/orders';
 import { useGlobalStyles } from '../../hooks';
 import { IOrder } from '../../models/order';
+import { fontSize } from '../../utils/texts';
 import OrderModal from './OrderModal';
 
 const styles = StyleSheet.create({
   fontW500: {
     fontWeight: '500',
-  },
-  fontS14: {
-    fontSize: 14,
   },
 });
 
@@ -43,12 +41,12 @@ const Order = ({ order }: { order: IOrder }) => {
 
       <TouchableOpacity onPress={openModal}>
         <CardHeaderIn topText={`№${order.id} от ${order.date}`}>
-          <Text style={[styles.fontS14, styles.fontW500, globalStyles.textColor]}>
+          <Text style={[fontSize.small, styles.fontW500, globalStyles.textColor]}>
             {order.name}
           </Text>
 
           {!order.uri && (
-            <Text style={[styles.fontS14, styles.fontW500, globalStyles.textColor]}>
+            <Text style={[fontSize.small, styles.fontW500, globalStyles.textColor]}>
               Приказ готовится...
             </Text>
           )}

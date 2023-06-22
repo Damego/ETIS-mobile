@@ -1,11 +1,13 @@
-import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
-import { unregisterBackgroundFetchAsync } from '../../tasks/signs';
-import { setSignNotification } from '../../redux/reducers/settingsSlice';
-import { NOTIFICATION_GUIDE_URL, storage } from '../../utils';
-import { Linking, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import { useAppColorScheme } from '../../hooks/theme';
 import React from 'react';
+import { Linking, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+
+import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
+import { useAppColorScheme } from '../../hooks/theme';
+import { setSignNotification } from '../../redux/reducers/settingsSlice';
+import { unregisterBackgroundFetchAsync } from '../../tasks/signs';
+import { NOTIFICATION_GUIDE_URL, storage } from '../../utils';
+import { fontSize } from '../../utils/texts';
 
 const styles = StyleSheet.create({
   cardView: {
@@ -13,7 +15,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  header: { fontSize: 20, fontWeight: '500' },
+  header: { fontWeight: '500' },
 });
 
 const ToggleSignNotification = () => {
@@ -29,7 +31,7 @@ const ToggleSignNotification = () => {
   return (
     <>
       <View style={styles.cardView}>
-        <Text style={[styles.header, { fontSize: 18, ...globalStyles.textColor }]}>
+        <Text style={[styles.header, fontSize.large, { ...globalStyles.textColor }]}>
           Уведомлять об оценках
         </Text>
         <TouchableOpacity onPress={() => Linking.openURL(NOTIFICATION_GUIDE_URL)}>

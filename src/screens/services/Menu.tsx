@@ -1,9 +1,11 @@
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { useGlobalStyles } from '../../hooks';
+import { GITHUB_URL, TELEGRAM_URL } from '../../utils';
+import { fontSize } from '../../utils/texts';
 
 const iconSize = 36;
 const styles = StyleSheet.create({
@@ -17,9 +19,6 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  buttonText: {
-    fontSize: 12,
   },
   rowView: {
     marginVertical: '1%',
@@ -41,7 +40,7 @@ function Button({ icon, text, page, link }) {
   return (
     <TouchableOpacity style={styles.buttonView} onPress={changePage} activeOpacity={0.9}>
       <View style={[styles.buttonContainer, globalStyles.border, globalStyles.block]}>{icon}</View>
-      <Text style={[styles.buttonText, globalStyles.textColor]}>{text}</Text>
+      <Text style={[fontSize.mini, globalStyles.textColor]}>{text}</Text>
     </TouchableOpacity>
   );
 }
@@ -77,8 +76,15 @@ function Menu() {
         <Button
           text="Исходный код"
           icon={<AntDesign name="github" size={iconSize} color={iconColor} />}
-          link="https://github.com/damego/ETIS-mobile"
+          link={GITHUB_URL}
         />
+        <Button
+          text="Telegram-паблик"
+          link={TELEGRAM_URL}
+          icon={<FontAwesome5 name="telegram" size={iconSize} color={iconColor} />}
+        />
+      </Row>
+      <Row>
         <Button
           text="Настройки"
           icon={<AntDesign name="setting" size={iconSize} color={iconColor} />}
