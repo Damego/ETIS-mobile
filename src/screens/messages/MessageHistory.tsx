@@ -9,6 +9,7 @@ import MessageInput, { FilesPreview } from './MessageInput';
 import { getMessagesData } from '../../data/messages';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { useAppDispatch } from '../../hooks';
+import { ToastAndroid } from 'react-native';
 
 export default function MessageHistory({ route, navigation }) {
   const dispatch = useAppDispatch();
@@ -71,7 +72,14 @@ export default function MessageHistory({ route, navigation }) {
 
   const onSubmit = async (text: string) => {
     setUploading(true)
-    await httpClient.replyToMessage(mainMessage.answerID, text);
+    const response = await httpClient.replyToMessage(mainMessage.answerID, text);
+
+    if (response.error) {
+      setUploading(false);
+      ToastAndroid.show(response.error.message, ToastAndroid.SHORT);
+      return response;
+    }
+
     const messageBlock = await loadData();
 
     if (!messageBlock || files.length === 0) {
