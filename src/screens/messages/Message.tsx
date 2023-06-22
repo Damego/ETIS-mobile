@@ -6,14 +6,12 @@ import FileTextLink from '../../components/FileTextLink';
 import { useGlobalStyles } from '../../hooks';
 import { IMessage, IMessageFile, MessageType } from '../../models/messages';
 import { parseDate } from '../../parser/utils';
+import { fontSize } from '../../utils/texts';
 
 const styles = StyleSheet.create({
   subjectText: {
-    fontSize: 16,
+    ...fontSize.medium,
     fontWeight: 'bold',
-  },
-  text: {
-    fontSize: 16,
   },
 });
 
@@ -28,7 +26,7 @@ const AttachedFiles = ({ files }: { files: IMessageFile[] }) => {
           src={file.uri}
           fileName={file.name}
           key={`${file.name}-${index}`}
-          style={styles.text}
+          style={fontSize.medium}
         >
           {file.name}
         </FileTextLink>

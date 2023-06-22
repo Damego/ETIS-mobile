@@ -10,6 +10,7 @@ import {
 
 import { useGlobalStyles } from '../../hooks';
 import { ITeacher } from '../../models/teachers';
+import { fontSize } from '../../utils/texts';
 
 const styles = StyleSheet.create({
   container: {
@@ -19,13 +20,7 @@ const styles = StyleSheet.create({
   fontW500: {
     fontWeight: '500',
   },
-  fontS16: {
-    fontSize: 16,
-  },
   subjectInfoView: {},
-  subjectInfoText: {
-    fontSize: 14,
-  },
   photoContainer: {},
   photoStyle: {
     width: 100,
@@ -48,12 +43,14 @@ const Teacher = ({ data }: TeacherProps) => {
     <View style={styles.container}>
       <View style={styles.teacherInfo}>
         <View style={styles.teacherNameView}>
-          <Text style={[styles.fontS16, styles.fontW500, globalStyles.textColor]}>{data.name}</Text>
-          <Text style={[styles.fontS16, globalStyles.textColor]}>{data.subjectType}</Text>
+          <Text style={[fontSize.medium, styles.fontW500, globalStyles.textColor]}>
+            {data.name}
+          </Text>
+          <Text style={[fontSize.medium, globalStyles.textColor]}>{data.subjectType}</Text>
         </View>
 
         <View style={styles.subjectInfoView}>
-          <Text style={[styles.subjectInfoText, globalStyles.textColor]}>{data.cathedra}</Text>
+          <Text style={[fontSize.small, globalStyles.textColor]}>{data.cathedra}</Text>
         </View>
       </View>
 

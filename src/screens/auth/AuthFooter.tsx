@@ -3,6 +3,7 @@ import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 import { useGlobalStyles } from '../../hooks';
 import { PRIVACY_POLICY_URL, TELEGRAM_URL } from '../../utils';
+import { fontSize } from '../../utils/texts';
 
 const styles = StyleSheet.create({
   view: {
@@ -13,13 +14,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   privacyPolicyText: {
+    ...fontSize.small,
     fontWeight: 'bold',
     color: '#C62E3E',
   },
   telegramText: {
     fontWeight: 'bold',
     color: '#2e7ac6',
-    fontSize: 16,
+    ...fontSize.medium,
   },
 });
 

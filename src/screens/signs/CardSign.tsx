@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import CardHeaderIn from '../../components/CardHeaderIn';
 import { useGlobalStyles } from '../../hooks';
 import { ISubject } from '../../models/sessionPoints';
-import { getPointsWord } from '../../utils/texts';
+import { fontSize, getPointsWord } from '../../utils/texts';
 import SubjectCheckPoints from './SubjectCheckPoints';
 
 const styles = StyleSheet.create({
@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
     width: '25%',
   },
   markNumberText: {
-    fontSize: 36,
     fontWeight: '600',
   },
   markView: {
@@ -26,7 +25,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   markWordText: {
-    fontSize: 16,
     fontWeight: '600',
   },
   colorMark2: {
@@ -81,14 +79,20 @@ const CardSign = ({ subject }: CardSignProps) => {
         </View>
 
         <View style={styles.totalPoints}>
-          <Text style={[styles.markNumberText, textStyle]}>{subject.totalPoints}</Text>
-          <Text style={[styles.markWordText, globalStyles.textColor]}>{pointsWord}</Text>
+          <Text style={[fontSize.xxlarge, styles.markNumberText, textStyle]}>
+            {subject.totalPoints}
+          </Text>
+          <Text style={[fontSize.medium, styles.markWordText, globalStyles.textColor]}>
+            {pointsWord}
+          </Text>
         </View>
       </View>
 
       {subject.mark !== null && (
         <View style={styles.markView}>
-          <Text style={[styles.markWordText, globalStyles.textColor]}>Оценка: {subject.mark}</Text>
+          <Text style={[fontSize.medium, styles.markWordText, globalStyles.textColor]}>
+            Оценка: {subject.mark}
+          </Text>
         </View>
       )}
     </CardHeaderIn>

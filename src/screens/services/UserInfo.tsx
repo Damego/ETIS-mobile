@@ -3,11 +3,9 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import CardHeaderIn from '../../components/CardHeaderIn';
 import { useGlobalStyles } from '../../hooks';
+import { fontSize } from '../../utils/texts';
 
 const styles = StyleSheet.create({
-  text: {
-    fontSize: 16,
-  },
   boldText: {
     fontWeight: 'bold',
   },
@@ -15,7 +13,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   textTitle: {
-    fontSize: 20,
+    ...fontSize.large,
     fontWeight: '600',
     marginBottom: '2%',
   },
@@ -27,8 +25,8 @@ function UserInfo({ data }) {
   if (!data) return;
 
   const { name, speciality, educationForm, year, group } = data;
-  const nameTextStyle = [styles.text, styles.boldText, globalStyles.textColor];
-  const textStyle = [styles.text, globalStyles.textColor];
+  const nameTextStyle = [fontSize.medium, styles.boldText, globalStyles.textColor];
+  const textStyle = [fontSize.medium, globalStyles.textColor];
 
   return (
     <>

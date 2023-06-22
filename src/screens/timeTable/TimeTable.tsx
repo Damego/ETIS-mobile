@@ -4,7 +4,7 @@ import { ToastAndroid } from 'react-native';
 import LoadingScreen from '../../components/LoadingScreen';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
-import { cacheTimeTableData, getTimeTableData } from '../../data/timeTable';
+import { getTimeTableData } from '../../data/timeTable';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ITimeTableGetProps } from '../../models/timeTable';
 import { setAuthorizing } from '../../redux/reducers/authSlice';

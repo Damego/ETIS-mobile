@@ -2,29 +2,31 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { useGlobalStyles } from '../hooks';
+import { fontSize } from '../utils/texts';
 import Card from './Card';
 
 const styles = StyleSheet.create({
   cardHeaderView: {
-    marginBottom: '2%',
+    marginBottom: '4%',
   },
   cardHeaderText: {
-    fontSize: 16,
     fontWeight: '600',
   },
 });
 
-const CardHeaderOut = ({ topText, children }) => {
+const CardHeaderIn = ({ topText, children }) => {
   const globalStyles = useGlobalStyles();
 
   return (
-    <>
+    <Card>
       <View style={styles.cardHeaderView}>
-        <Text style={[styles.cardHeaderText, globalStyles.textColor]}>{topText}</Text>
+        <Text style={[fontSize.medium, styles.cardHeaderText, globalStyles.textColor]}>
+          {topText}
+        </Text>
       </View>
-      <Card>{children}</Card>
-    </>
+      {children}
+    </Card>
   );
 };
 
-export default CardHeaderOut;
+export default CardHeaderIn;

@@ -4,11 +4,9 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import Screen from '../../components/Screen';
 import { useGlobalStyles } from '../../hooks';
+import { fontSize } from '../../utils/texts';
 
 const styles = StyleSheet.create({
-  text: {
-    fontSize: 18,
-  },
   view: {
     alignItems: 'center',
     position: 'absolute',
@@ -20,7 +18,7 @@ const styles = StyleSheet.create({
 
 const About = () => {
   const globalStyles = useGlobalStyles();
-  const textStyles = [styles.text, globalStyles.textColor];
+  const textStyles = [fontSize.medium, globalStyles.textColor];
 
   return (
     <Screen disableRefresh>
