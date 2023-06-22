@@ -5,7 +5,7 @@ import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Button } from '../../components/Button';
 import ClickableText from '../../components/ClickableText';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
-import { setSaveUserCredentials, setUserCredentials } from '../../redux/reducers/authSlice';
+import { setSaveUserCredentials } from '../../redux/reducers/authSlice';
 
 export const styles = StyleSheet.create({
   container: {

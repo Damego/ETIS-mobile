@@ -48,6 +48,11 @@ class HTTPClient {
     });
   }
 
+  async isInternetReachable() {
+    const networkState = await getNetworkStateAsync();
+    return networkState.isInternetReachable;
+  }
+
   async request(
     method: string,
     endpoint: string,
@@ -71,8 +76,7 @@ class HTTPClient {
       )}; data: ${JSON.stringify(data)}`
     );
 
-    const networkState = await getNetworkStateAsync();
-    if (!networkState.isInternetReachable) {
+    if (!(await this.isInternetReachable())) {
       console.warn('[HTTP] Internet is not reachable. Cancelling current request');
       return {
         error: {
