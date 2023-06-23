@@ -40,7 +40,7 @@ const Order = ({ order }: { order: IOrder }) => {
       {isOpened && <OrderModal html={html} closeModal={closeModal} />}
 
       <TouchableOpacity onPress={openModal}>
-        <CardHeaderIn topText={`№${order.id} от ${order.date}`}>
+        <CardHeaderIn topText={`№${order.id ?? '-'} от ${order.date}`}>
           <Text style={[fontSize.small, styles.fontW500, globalStyles.textColor]}>
             {order.name}
           </Text>
