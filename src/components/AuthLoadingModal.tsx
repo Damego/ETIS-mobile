@@ -80,17 +80,23 @@ const AuthLoadingModal = () => {
     (state) => state.auth
   );
   const [showOfflineButton, setShowOfflineButton] = useState<boolean>(false);
+  const [messageStatus, setMessageStatus] = useState<string>();
+  const [authAttempt, setAuthAttempt] = useState<number>(1);
 
   const recaptchaRef = useRef<ReCaptchaV3>();
 
   const globalStyles = useGlobalStyles();
 
   const onReceiveToken = async (token: string) => {
+    setMessageStatus(authAttempt === 1 ? 'Авторизация...' : `Авторизация (${authAttempt})...`);
+    setAuthAttempt(authAttempt + 1);
+
     const response = await makeLogin(token, userCredentials, saveUserCredentials);
     if (
       response === LoginResponseType.missingToken ||
       response === LoginResponseType.invalidToken
     ) {
+      setMessageStatus(`Получение токена (${authAttempt})...`);
       recaptchaRef.current.refreshToken();
       return;
     }
@@ -113,15 +119,22 @@ const AuthLoadingModal = () => {
   };
 
   useEffect(() => {
-    httpClient.isInternetReachable().then(res => {
-      if (!res) signInOffline();
-    });
+    setMessageStatus("Получение токена...");
+
+    // Вход в оффлайн режим слишком резкий, поэтому ставим таймер 1 сек.
+    // TODO: В идеале, сразу после Splash включать оффлайн режим
+
+    setTimeout(() => {
+      httpClient.isInternetReachable().then(res => {
+        if (!res) signInOffline();
+      });
+    }, 1000)
 
     // Если интернет есть, но он очень медленный
     setTimeout(() => {
       if (!isAuthorizing) return;
       setShowOfflineButton(true);
-    }, 5000);
+    }, 6000);
   }, []);
 
   const signInOffline = () => {
@@ -145,7 +158,7 @@ const AuthLoadingModal = () => {
       >
         <View style={{ alignItems: 'center' }}>
           <ActivityIndicator size="large" color={globalStyles.primaryFontColor.color} />
-          <Text style={globalStyles.textColor}>Авторизация...</Text>
+          <Text style={globalStyles.textColor}>{messageStatus}</Text>
 
           {showOfflineButton && (
             <View style={{ marginTop: '15%' }}>
