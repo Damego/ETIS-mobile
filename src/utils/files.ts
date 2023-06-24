@@ -1,4 +1,4 @@
-import { getDocumentAsync } from 'expo-document-picker';
+import { DocumentResult, getDocumentAsync } from 'expo-document-picker';
 import {
   EncodingType,
   StorageAccessFramework,
@@ -9,7 +9,6 @@ import { shareAsync } from 'expo-sharing';
 import { PermissionsAndroid } from 'react-native';
 
 import httpClient from './http';
-import { UploadFile } from '../models/other';
 
 const downloadFile = (url, fileName) => httpClient.downloadFile(url, fileName);
 
@@ -38,7 +37,7 @@ const requestReadStoragePermission = async () => {
   return granted === PermissionsAndroid.RESULTS.GRANTED;
 };
 
-const selectFile = async (): Promise<UploadFile> => {
+const selectFile = async (): Promise<DocumentResult> => {
   const hasPerms = await checkReadStoragePermission();
   if (!hasPerms) {
     const result = await requestReadStoragePermission();
@@ -48,11 +47,7 @@ const selectFile = async (): Promise<UploadFile> => {
   const documentResult = await getDocumentAsync();
   if (documentResult.type === 'cancel') return;
 
-  return {
-    name: documentResult.name,
-    type: documentResult.mimeType,
-    uri: documentResult.uri
-  }
+  return documentResult;
 };
 
 export { downloadFile, saveFile, selectFile };

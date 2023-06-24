@@ -6,7 +6,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
+  TextInput, ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -99,8 +99,25 @@ const MessageInput = ({ onFileSelect, onSubmit, showLoading }: {
   const [value, setValue] = useState<string>('');
 
   const innerSelectFile = async () => {
-    const fileResult = await selectFile();
-    if (fileResult) onFileSelect(fileResult);
+    const result = await selectFile();
+
+    if (!result) {
+      ToastAndroid.show('Невозможно выбрать файл!', ToastAndroid.SHORT);
+      return;
+    }
+
+    if (result.size > 2 * 1024 * 1024) {
+      ToastAndroid.show('Файл должен быть менее 2 МБ!', ToastAndroid.SHORT);
+      return;
+    }
+
+    const file = {
+      name: result.name,
+      type: result.mimeType,
+      uri: result.uri
+    }
+
+    onFileSelect(file);
   };
 
   const submit = async () => {
