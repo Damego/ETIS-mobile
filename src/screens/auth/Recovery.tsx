@@ -6,6 +6,7 @@ import { View } from 'react-native';
 
 import Header from '../../components/Header';
 import ReCaptcha from '../../components/ReCaptcha';
+import Screen from '../../components/Screen';
 import { useAppColorScheme } from '../../hooks/theme';
 import { httpClient } from '../../utils';
 import Footer from './AuthFooter';
@@ -53,24 +54,18 @@ const Recovery = ({ setShowModal }) => {
   };
 
   return (
-    <>
-      <View style={{ marginTop: Constants.statusBarHeight }}>
-        <StatusBar style={statusBarStyle} />
+    <Screen headerText={'Восстановление доступа'}>
+      {!recaptchaToken && <ReCaptcha onReceiveToken={onReceiveRecaptchaToken} />}
 
-        {!recaptchaToken && <ReCaptcha onReceiveToken={onReceiveRecaptchaToken} />}
-
-        <Header text="Восстановление доступа" />
-
-        <RecoveryForm
-          onSubmit={(mail) => makeRequest({ mail })}
-          isLoading={isLoading}
-          message={message}
-          setShowModal={setShowModal}
-          disabledRequestButton={disabledRequestButton}
-        />
-      </View>
+      <RecoveryForm
+        onSubmit={(mail) => makeRequest({ mail })}
+        isLoading={isLoading}
+        message={message}
+        setShowModal={setShowModal}
+        disabledRequestButton={disabledRequestButton}
+      />
       <Footer />
-    </>
+    </Screen>
   );
 };
 
