@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Button, StyleSheet, Text, ToastAndroid, View } from 'react-native';
 
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
-import { UserCredentials, setAuthorizing, signIn } from '../redux/reducers/authSlice';
+import { UserCredentials, setAuthorizing, signIn, signOut } from '../redux/reducers/authSlice';
 import { httpClient, storage } from '../utils';
 import ReCaptcha from './ReCaptcha';
 
@@ -92,6 +92,7 @@ const AuthLoadingModal = () => {
     setAuthAttempt(authAttempt + 1);
 
     const response = await makeLogin(token, userCredentials, saveUserCredentials);
+
     if (
       response === LoginResponseType.missingToken ||
       response === LoginResponseType.invalidToken
@@ -100,11 +101,19 @@ const AuthLoadingModal = () => {
       recaptchaRef.current.refreshToken();
       return;
     }
-    if (response === LoginResponseType.success) {
+
+    if (response === LoginResponseType.rateLimited) {
+      dispatch(signOut({}));
+    }
+    else if (response === LoginResponseType.invalidUserCredentials) {
+      // Данные устарели, поэтому их стоит удалить
+      dispatch(signOut({cleanUserCredentials: true}));
+    }
+    else if (response === LoginResponseType.success) {
       dispatch(signIn({}));
     }
 
-    if (response === LoginResponseType.failed) {
+    else if (response === LoginResponseType.failed) {
       // fromStorage Для проверки, были ли загружены данные из хранилища или нет (т.е. пользователь ввёл данные в форме)
       // Возможно, что пользователь вышел из аккаунта или неудачная попытка ввода данных,
       // то нам не нужно заходить в оффлайн режим в этих случаях
@@ -119,16 +128,16 @@ const AuthLoadingModal = () => {
   };
 
   useEffect(() => {
-    setMessageStatus("Получение токена...");
+    setMessageStatus('Получение токена...');
 
     // Вход в оффлайн режим слишком резкий, поэтому ставим таймер 1 сек.
     // TODO: В идеале, сразу после Splash включать оффлайн режим
 
     setTimeout(() => {
-      httpClient.isInternetReachable().then(res => {
+      httpClient.isInternetReachable().then((res) => {
         if (!res) signInOffline();
       });
-    }, 1000)
+    }, 1000);
 
     // Если интернет есть, но он очень медленный
     setTimeout(() => {
