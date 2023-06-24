@@ -107,7 +107,7 @@ const MessageInput = ({ onFileSelect, onSubmit, showLoading }: {
     }
 
     if (result.size > 2 * 1024 * 1024) {
-      ToastAndroid.show('Файл должен быть менее 2 МБ!', ToastAndroid.SHORT);
+      ToastAndroid.show('Файл должен быть не более 2 МБ!', ToastAndroid.SHORT);
       return;
     }
 
