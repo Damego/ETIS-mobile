@@ -14,6 +14,10 @@ export interface SignInPayload {
   isOffline?: boolean;
 }
 
+export interface SignOutPayload {
+  cleanUserCredentials?: boolean
+}
+
 interface AuthState {
   isSignedIn: boolean;
   isAuthorizing: boolean;
@@ -21,6 +25,7 @@ interface AuthState {
   saveUserCredentials: boolean;
   fromStorage: boolean;
   isOfflineMode: boolean;
+  isSignedOut: boolean;
 }
 
 const initialState: AuthState = {
@@ -29,6 +34,7 @@ const initialState: AuthState = {
   saveUserCredentials: true,
   fromStorage: false,
   isOfflineMode: false,
+  isSignedOut: false
 };
 
 const authSlice = createSlice({
@@ -37,13 +43,15 @@ const authSlice = createSlice({
   reducers: {
     signIn(state, action: PayloadAction<SignInPayload>) {
       state.isSignedIn = true;
+      state.isSignedOut = false;
       if (action && action.payload.isOffline !== undefined) {
         state.isOfflineMode = action.payload.isOffline;
       }
     },
-    signOut(state) {
+    signOut(state, action: PayloadAction<SignOutPayload>) {
       state.isSignedIn = false;
-      state.userCredentials = undefined;
+      state.isSignedOut = true;
+      if (action.payload.cleanUserCredentials) state.userCredentials = undefined;
     },
     setAuthorizing(state, action: PayloadAction<boolean>) {
       state.isAuthorizing = action.payload;

@@ -21,7 +21,11 @@ export const styles = StyleSheet.create({
   },
 });
 
-const Button = ({ text, onPress, disabled }) => {
+const Button = ({ text, onPress, disabled }: {
+  text: string;
+  onPress(): void;
+  disabled?: boolean;
+}) => {
   const globalStyles = useGlobalStyles();
 
   return (

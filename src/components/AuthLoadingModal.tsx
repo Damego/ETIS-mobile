@@ -1,9 +1,9 @@
 import ReCaptchaV3 from '@haskkor/react-native-recaptchav3';
-import React, { useRef } from 'react';
-import { ActivityIndicator, StyleSheet, Text, ToastAndroid, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, Button, StyleSheet, Text, ToastAndroid, View } from 'react-native';
 
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
-import { UserCredentials, setAuthorizing, signIn } from '../redux/reducers/authSlice';
+import { UserCredentials, setAuthorizing, signIn, signOut } from '../redux/reducers/authSlice';
 import { httpClient, storage } from '../utils';
 import ReCaptcha from './ReCaptcha';
 
@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   modalContainer: {
-    padding: '15%',
+    height: '25%',
+    width: '60%',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -28,7 +29,9 @@ enum LoginResponseType {
   invalidToken,
   success,
   failed,
-  privacyPolicyNotAccepted
+  privacyPolicyNotAccepted,
+  invalidUserCredentials,
+  rateLimited,
 }
 
 const makeLogin = async (
@@ -39,14 +42,29 @@ const makeLogin = async (
   if (!token) {
     return LoginResponseType.missingToken;
   }
-  if (!(await storage.hasAcceptedPrivacyPolicy())) return LoginResponseType.privacyPolicyNotAccepted;
+  if (!(await storage.hasAcceptedPrivacyPolicy()))
+    return LoginResponseType.privacyPolicyNotAccepted;
 
   const response = await httpClient.login(userCredentials.login, userCredentials.password, token);
 
   if (response && response.error) {
-    if (response.error.message === 'Вы не прошли проверку') return LoginResponseType.invalidToken;
+    // У нас нет других вариантов проверять тип ошибки
+    const message: string = response.error.message.toLowerCase();
+
+    if (message.includes('проверк')) return LoginResponseType.invalidToken;
+
+    if (message.includes('лимит')) {
+      ToastAndroid.show(
+        'Был превышен лимит (5) неудачных попыток. Повторите через 10 минут!',
+        ToastAndroid.SHORT
+      );
+      return LoginResponseType.rateLimited;
+    }
 
     ToastAndroid.show(response.error.message, ToastAndroid.SHORT);
+
+    if (message.includes('неверное')) return LoginResponseType.invalidUserCredentials;
+
     return LoginResponseType.failed;
   }
 
@@ -58,25 +76,44 @@ const makeLogin = async (
 
 const AuthLoadingModal = () => {
   const dispatch = useAppDispatch();
-  const { userCredentials, saveUserCredentials, fromStorage } = useAppSelector(
+  const { userCredentials, saveUserCredentials, fromStorage, isAuthorizing } = useAppSelector(
     (state) => state.auth
   );
+  const [showOfflineButton, setShowOfflineButton] = useState<boolean>(false);
+  const [messageStatus, setMessageStatus] = useState<string>();
+  const [authAttempt, setAuthAttempt] = useState<number>(1);
+
   const recaptchaRef = useRef<ReCaptchaV3>();
 
   const globalStyles = useGlobalStyles();
 
   const onReceiveToken = async (token: string) => {
-    const success = await makeLogin(token, userCredentials, saveUserCredentials);
-    if (success === LoginResponseType.missingToken || success === LoginResponseType.invalidToken) {
+    setMessageStatus(authAttempt === 1 ? 'Авторизация...' : `Авторизация (${authAttempt})...`);
+    setAuthAttempt(authAttempt + 1);
+
+    const response = await makeLogin(token, userCredentials, saveUserCredentials);
+
+    if (
+      response === LoginResponseType.missingToken ||
+      response === LoginResponseType.invalidToken
+    ) {
+      setMessageStatus(`Получение токена (${authAttempt})...`);
       recaptchaRef.current.refreshToken();
       return;
     }
-    if (success === LoginResponseType.privacyPolicyNotAccepted) return;
 
-    if (success === LoginResponseType.success) {
+    if (response === LoginResponseType.rateLimited) {
+      dispatch(signOut({}));
+    }
+    else if (response === LoginResponseType.invalidUserCredentials) {
+      // Данные устарели, поэтому их стоит удалить
+      dispatch(signOut({cleanUserCredentials: true}));
+    }
+    else if (response === LoginResponseType.success) {
       dispatch(signIn({}));
     }
-    if (success === LoginResponseType.failed) {
+
+    else if (response === LoginResponseType.failed) {
       // fromStorage Для проверки, были ли загружены данные из хранилища или нет (т.е. пользователь ввёл данные в форме)
       // Возможно, что пользователь вышел из аккаунта или неудачная попытка ввода данных,
       // то нам не нужно заходить в оффлайн режим в этих случаях
@@ -84,17 +121,42 @@ const AuthLoadingModal = () => {
 
       // Есть небольшая уязвимость, если пользователь сменит пароль, то приложение всё равно войдёт в оффлайн режим
       // при недоступности етиса или интернета
-      if (fromStorage) {
-        console.log('[AUTH] Signed in as offline');
-        dispatch(signIn({ isOffline: true }));
-      }
+      signInOffline();
     }
 
     dispatch(setAuthorizing(false));
   };
 
+  useEffect(() => {
+    setMessageStatus('Получение токена...');
+
+    // Вход в оффлайн режим слишком резкий, поэтому ставим таймер 1 сек.
+    // TODO: В идеале, сразу после Splash включать оффлайн режим
+
+    setTimeout(() => {
+      httpClient.isInternetReachable().then((res) => {
+        if (!res) signInOffline();
+      });
+    }, 1000);
+
+    // Если интернет есть, но он очень медленный
+    setTimeout(() => {
+      if (!isAuthorizing) return;
+      setShowOfflineButton(true);
+    }, 6000);
+  }, []);
+
+  const signInOffline = () => {
+    if (fromStorage) {
+      console.log('[AUTH] Signed in as offline');
+      dispatch(signIn({ isOffline: true }));
+      dispatch(setAuthorizing(false));
+    }
+  };
+
   return (
     <View style={styles.modalWrapper}>
+      <ReCaptcha onReceiveToken={onReceiveToken} captchaRef={recaptchaRef} />
       <View
         style={[
           styles.modalContainer,
@@ -103,9 +165,20 @@ const AuthLoadingModal = () => {
           globalStyles.shadow,
         ]}
       >
-        <ReCaptcha onReceiveToken={onReceiveToken} captchaRef={recaptchaRef} />
-        <ActivityIndicator size="large" color={globalStyles.primaryFontColor.color} />
-        <Text style={globalStyles.textColor}>Авторизация...</Text>
+        <View style={{ alignItems: 'center' }}>
+          <ActivityIndicator size="large" color={globalStyles.primaryFontColor.color} />
+          <Text style={globalStyles.textColor}>{messageStatus}</Text>
+
+          {showOfflineButton && (
+            <View style={{ marginTop: '15%' }}>
+              <Button
+                title="Оффлайн режим"
+                onPress={signInOffline}
+                color={globalStyles.primaryFontColor.color}
+              />
+            </View>
+          )}
+        </View>
       </View>
     </View>
   );

@@ -9,6 +9,7 @@ import { shareAsync } from 'expo-sharing';
 import { PermissionsAndroid } from 'react-native';
 
 import httpClient from './http';
+import { UploadFile } from '../models/other';
 
 const downloadFile = (url, fileName) => httpClient.downloadFile(url, fileName);
 
@@ -37,7 +38,7 @@ const requestReadStoragePermission = async () => {
   return granted === PermissionsAndroid.RESULTS.GRANTED;
 };
 
-const selectFile = async () => {
+const selectFile = async (): Promise<UploadFile> => {
   const hasPerms = await checkReadStoragePermission();
   if (!hasPerms) {
     const result = await requestReadStoragePermission();
@@ -46,7 +47,12 @@ const selectFile = async () => {
 
   const documentResult = await getDocumentAsync();
   if (documentResult.type === 'cancel') return;
-  return documentResult;
+
+  return {
+    name: documentResult.name,
+    type: documentResult.mimeType,
+    uri: documentResult.uri
+  }
 };
 
 export { downloadFile, saveFile, selectFile };

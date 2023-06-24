@@ -13,6 +13,8 @@ import {
 
 import { useGlobalStyles } from '../../hooks';
 import { selectFile } from '../../utils';
+import { UploadFile } from '../../models/other';
+import { HTTPError } from '../../utils/http';
 import { fontSize } from '../../utils/texts';
 
 const styles = StyleSheet.create({
@@ -87,7 +89,11 @@ export const FilesPreview = ({ files, onFileRemove }) => (
   </View>
 );
 
-const MessageInput = ({ onFileSelect, onSubmit, showLoading }) => {
+const MessageInput = ({ onFileSelect, onSubmit, showLoading }: {
+  onFileSelect(file: UploadFile): void;
+  onSubmit(text: string): Promise<string | HTTPError>;
+  showLoading: boolean;
+}) => {
   const globalStyles = useGlobalStyles();
   const theme = useTheme();
   const [value, setValue] = useState<string>('');
@@ -97,9 +103,11 @@ const MessageInput = ({ onFileSelect, onSubmit, showLoading }) => {
     if (fileResult) onFileSelect(fileResult);
   };
 
-  const submit = () => {
-    onSubmit(value);
-    setValue('');
+  const submit = async () => {
+    const res = await onSubmit(value);
+    if (!res || !res.error) {
+      setValue('');
+    }
   };
 
   return (
