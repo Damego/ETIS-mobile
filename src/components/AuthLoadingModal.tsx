@@ -1,11 +1,11 @@
-import ReCaptchaV3 from '@haskkor/react-native-recaptchav3';
 import React, { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Button, StyleSheet, Text, ToastAndroid, View } from 'react-native';
+import { RecaptchaHandles } from 'react-native-recaptcha-that-works';
 
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
 import { UserCredentials, setAuthorizing, signIn, signOut } from '../redux/reducers/authSlice';
 import { httpClient, storage } from '../utils';
-import ReCaptcha from './ReCaptcha';
+import CustomReCaptcha from './ReCaptcha';
 
 const styles = StyleSheet.create({
   modalWrapper: {
@@ -37,7 +37,8 @@ enum LoginResponseType {
 const makeLogin = async (
   token: string,
   userCredentials: UserCredentials,
-  saveUserCredentials: boolean
+  saveUserCredentials: boolean,
+  isInvisibleRecaptcha: boolean
 ): Promise<LoginResponseType> => {
   if (!token) {
     return LoginResponseType.missingToken;
@@ -45,7 +46,13 @@ const makeLogin = async (
   if (!(await storage.hasAcceptedPrivacyPolicy()))
     return LoginResponseType.privacyPolicyNotAccepted;
 
-  const response = await httpClient.login(userCredentials.login, userCredentials.password, token);
+  const response = await httpClient.login(
+    userCredentials.login,
+    userCredentials.password,
+    token,
+    isInvisibleRecaptcha
+  );
+  console.log(response);
 
   if (response && response.error) {
     // У нас нет других вариантов проверять тип ошибки
@@ -81,39 +88,37 @@ const AuthLoadingModal = () => {
   );
   const [showOfflineButton, setShowOfflineButton] = useState<boolean>(false);
   const [messageStatus, setMessageStatus] = useState<string>();
-  const [authAttempt, setAuthAttempt] = useState<number>(1);
-
-  const recaptchaRef = useRef<ReCaptchaV3>();
+  const [isInvisibleRecaptcha, setIsInvisibleRecaptcha] = useState<boolean>(true);
 
   const globalStyles = useGlobalStyles();
 
   const onReceiveToken = async (token: string) => {
-    setMessageStatus(authAttempt === 1 ? 'Авторизация...' : `Авторизация (${authAttempt})...`);
-    setAuthAttempt(authAttempt + 1);
+    setMessageStatus('Авторизация...');
 
-    const response = await makeLogin(token, userCredentials, saveUserCredentials);
+    const response = await makeLogin(
+      token,
+      userCredentials,
+      saveUserCredentials,
+      isInvisibleRecaptcha
+    );
 
     if (
       response === LoginResponseType.missingToken ||
       response === LoginResponseType.invalidToken
     ) {
-      setMessageStatus(`Получение токена (${authAttempt})...`);
-      recaptchaRef.current.refreshToken();
+      setMessageStatus(`Получение токена...`);
+      setIsInvisibleRecaptcha(false);
       return;
     }
 
     if (response === LoginResponseType.rateLimited) {
       dispatch(signOut({}));
-    }
-    else if (response === LoginResponseType.invalidUserCredentials) {
+    } else if (response === LoginResponseType.invalidUserCredentials) {
       // Данные устарели, поэтому их стоит удалить
-      dispatch(signOut({cleanUserCredentials: true}));
-    }
-    else if (response === LoginResponseType.success) {
+      dispatch(signOut({ cleanUserCredentials: true }));
+    } else if (response === LoginResponseType.success) {
       dispatch(signIn({}));
-    }
-
-    else if (response === LoginResponseType.failed) {
+    } else if (response === LoginResponseType.failed) {
       // fromStorage Для проверки, были ли загружены данные из хранилища или нет (т.е. пользователь ввёл данные в форме)
       // Возможно, что пользователь вышел из аккаунта или неудачная попытка ввода данных,
       // то нам не нужно заходить в оффлайн режим в этих случаях
@@ -127,8 +132,13 @@ const AuthLoadingModal = () => {
     dispatch(setAuthorizing(false));
   };
 
+  const onRecaptchaModalClose = () => {
+    if (!isInvisibleRecaptcha) dispatch(setAuthorizing(false));
+  }
+
   useEffect(() => {
     setMessageStatus('Получение токена...');
+
 
     // Вход в оффлайн режим слишком резкий, поэтому ставим таймер 1 сек.
     // TODO: В идеале, сразу после Splash включать оффлайн режим
@@ -156,7 +166,11 @@ const AuthLoadingModal = () => {
 
   return (
     <View style={styles.modalWrapper}>
-      <ReCaptcha onReceiveToken={onReceiveToken} captchaRef={recaptchaRef} />
+      <CustomReCaptcha
+        onReceiveToken={onReceiveToken}
+        size={isInvisibleRecaptcha ? 'invisible' : 'normal'}
+        onClose={onRecaptchaModalClose}
+      />
       <View
         style={[
           styles.modalContainer,

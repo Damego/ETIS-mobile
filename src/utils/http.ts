@@ -130,15 +130,16 @@ class HTTPClient {
    *
    * @param {string} username Электронная почта
    * @param {string} password Пароль
-   * @param {string} token Токен ReCaptcha v3
+   * @param {string} token Токен ReCaptcha
+   * @param {boolean} isInvisibleRecaptcha Является ли рекапча невидимой
    * @returns
    */
-  async login(username: string, password: string, token: string): Promise<HTTPError | null> {
+  async login(username: string, password: string, token: string, isInvisibleRecaptcha: boolean): Promise<HTTPError | null> {
     const data = new FormData();
     data.append('p_redirect', '/stu.timetable');
     data.append('p_username', username.trim());
     data.append('p_password', password.trim());
-    data.append('p_recaptcha_ver', '3');
+    data.append('p_recaptcha_ver', isInvisibleRecaptcha ? '3' : '2');
     data.append('p_recaptcha_response', token.trim());
 
     const response = await this.request('POST', `/stu.login`, {
