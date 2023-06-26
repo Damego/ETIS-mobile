@@ -104,6 +104,8 @@ const PageNavigator = ({ firstPage, currentPage, lastPage, onPageChange }) => {
     changeButtons(getNewButtonArray(...pageNums));
   }, [pageNums]);
 
+  if (firstPage == 1 && currentPage === 1 && lastPage === 1) return;
+
   return (
     <View style={styles.containerView}>
       {buttons.at(0) !== firstPage ? (
