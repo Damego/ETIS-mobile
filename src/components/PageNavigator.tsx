@@ -52,7 +52,7 @@ const ActiveButton = ({ number }) => {
 
 const HiddenView = () => <View style={styles.button}></View>;
 
-const calculateLimits = (firstPage, currentPage, lastPage) => {
+const calculateLimits = (firstPage: number, currentPage: number, lastPage: number) => {
   const limits = 3;
   if (lastPage - firstPage <= limits * 2) {
     return { leftLimit: firstPage, rightLimit: lastPage };
@@ -104,7 +104,12 @@ const PageNavigator = ({ firstPage, currentPage, lastPage, onPageChange }) => {
     changeButtons(getNewButtonArray(...pageNums));
   }, [pageNums]);
 
-  if (firstPage == 1 && currentPage === 1 && lastPage === 1) return;
+  if (
+    Number.isNaN(currentPage) ||
+    Number.isNaN(lastPage) ||
+    (firstPage == 1 && currentPage === 1 && lastPage === 1)
+  )
+    return;
 
   return (
     <View style={styles.containerView}>

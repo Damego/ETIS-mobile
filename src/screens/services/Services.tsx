@@ -38,7 +38,7 @@ const Services = () => {
 
   const doSignOut = async () => {
     await storage.deleteAccountData();
-    dispatch(signOut({cleanUserCredentials: true}));
+    dispatch(signOut({ cleanUserCredentials: true }));
   };
 
   return (
