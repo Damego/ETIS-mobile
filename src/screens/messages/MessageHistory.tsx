@@ -10,6 +10,7 @@ import { getMessagesData } from '../../data/messages';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { useAppDispatch } from '../../hooks';
 import { ToastAndroid } from 'react-native';
+import { UploadFile } from '../../models/other';
 
 export default function MessageHistory({ route, navigation }) {
   const dispatch = useAppDispatch();
@@ -22,7 +23,7 @@ export default function MessageHistory({ route, navigation }) {
   const [name1, name2, name3] = author.split(' ');
   const shortAuthor = `${name1} ${name2.charAt(0)}. ${name3.charAt(0)}.`;
 
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState<UploadFile[]>([]);
 
   const loadData = async () => {
     const result = await getMessagesData({
@@ -53,17 +54,10 @@ export default function MessageHistory({ route, navigation }) {
     return 0;
   };
 
-  const onFileSelect = (fileData) => {
+  const onFileSelect = (fileData: UploadFile) => {
     if (files.map((file) => file.name).includes(fileData.name)) return;
 
-    const file = {
-      name: fileData.name,
-      size: fileData.size,
-      uri: fileData.uri,
-      type: fileData.mimeType,
-    };
-
-    setFiles([...files, file]);
+    setFiles([...files, fileData]);
   };
 
   const onFileRemove = (fileName) => {
