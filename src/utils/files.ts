@@ -5,7 +5,6 @@ import {
   readAsStringAsync,
   writeAsStringAsync,
 } from 'expo-file-system';
-import { shareAsync } from 'expo-sharing';
 import { PermissionsAndroid } from 'react-native';
 
 import httpClient from './http';
@@ -23,7 +22,6 @@ const saveFile = async (fileData, fileName) => {
     );
     await writeAsStringAsync(newFileUrl, base64, { encoding: EncodingType.Base64 });
   }
-  await shareAsync(fileData.uri);
 };
 
 const checkReadStoragePermission = () => {

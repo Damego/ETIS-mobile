@@ -1,3 +1,4 @@
+import { shareAsync } from 'expo-sharing';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
@@ -13,7 +14,15 @@ const defaultStyle = StyleSheet.create({
 const FileTextLink = ({ src, fileName, style, children }) => {
   const downloadAndSave = async () => {
     const fileData = await downloadFile(src, fileName);
-    await saveFile(fileData, fileName);
+
+    try {
+      await saveFile(fileData, fileName);
+      throw "test";
+    } catch (e) {
+      console.log(e);
+      console.trace();
+    }
+    await shareAsync(fileData.uri);
   };
 
   return (
