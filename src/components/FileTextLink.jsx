@@ -1,8 +1,10 @@
+import * as Notifications from 'expo-notifications';
 import { shareAsync } from 'expo-sharing';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 import { downloadFile, saveFile } from '../utils';
+import { getPointsWord } from '../utils/texts';
 
 const defaultStyle = StyleSheet.create({
   text: {
@@ -17,7 +19,13 @@ const FileTextLink = ({ src, fileName, style, children }) => {
 
     try {
       await saveFile(fileData, fileName);
-      throw "test";
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: 'Файл скачан',
+          body: `Успешно загружен файл ${fileName}`,
+        },
+        trigger: null,
+      });
     } catch (e) {
       console.log(e);
       console.trace();
