@@ -1,10 +1,13 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import * as cheerio from 'cheerio';
+import CyrillicToTranslit from 'cyrillic-to-translit-js';
 import { documentDirectory, downloadAsync } from 'expo-file-system';
 import { getNetworkStateAsync } from 'expo-network';
 
 import { UploadFile } from '../models/other';
 import { toURLSearchParams } from './encoding';
+
+const cyrillicToTranslit = new CyrillicToTranslit();
 
 export enum ErrorCode {
   unknown,
@@ -114,7 +117,7 @@ class HTTPClient {
     }
   }
 
-  downloadFile(uri, fileName) {
+  downloadFile(uri: string, fileName: string) {
     const url = `${this.defaultURL}/${uri}`;
 
     console.log(`[HTTP] Downloading a file from ${url}`);
@@ -134,7 +137,12 @@ class HTTPClient {
    * @param {boolean} isInvisibleRecaptcha Является ли рекапча невидимой
    * @returns
    */
-  async login(username: string, password: string, token: string, isInvisibleRecaptcha: boolean): Promise<HTTPError | null> {
+  async login(
+    username: string,
+    password: string,
+    token: string,
+    isInvisibleRecaptcha: boolean
+  ): Promise<HTTPError | null> {
     const data = new FormData();
     data.append('p_redirect', '/stu.timetable');
     data.append('p_username', username.trim());
@@ -269,6 +277,8 @@ class HTTPClient {
   }
 
   async attachFileToMessage(messageID: string, answerMessageID: string, file: UploadFile) {
+    file.name = cyrillicToTranslit.transform(file.name);
+
     const data = new FormData();
     data.append('p_ant_id', messageID);
     data.append('p_anr_id', answerMessageID);
