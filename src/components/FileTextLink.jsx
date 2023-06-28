@@ -1,7 +1,7 @@
 import * as Notifications from 'expo-notifications';
 import { shareAsync } from 'expo-sharing';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, ToastAndroid, TouchableOpacity } from 'react-native';
 
 import { downloadFile, saveFile } from '../utils';
 import { getPointsWord } from '../utils/texts';
@@ -27,8 +27,8 @@ const FileTextLink = ({ src, fileName, style, children }) => {
         trigger: null,
       });
     } catch (e) {
+      ToastAndroid.show("Невозможно скачать файл в указанную папку", ToastAndroid.SHORT);
       console.log(e);
-      console.trace();
     }
     await shareAsync(fileData.uri);
   };
