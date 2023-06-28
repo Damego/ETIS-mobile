@@ -42,10 +42,7 @@ const selectFile = async (): Promise<DocumentResult> => {
     if (!result) return;
   }
 
-  const documentResult = await getDocumentAsync();
-  if (documentResult.type === 'cancel') return;
-
-  return documentResult;
+  return await getDocumentAsync();
 };
 
 export { downloadFile, saveFile, selectFile };
