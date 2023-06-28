@@ -27,7 +27,8 @@
       },
       "package": "com.damego.etismobile",
       "playStoreUrl": "https://play.google.com/store/apps/details?id=com.damego.etismobile",
-      "userInterfaceStyle": "automatic"
+      "userInterfaceStyle": "automatic",
+      "permissions": ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
