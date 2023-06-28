@@ -1,11 +1,9 @@
-import { DocumentResult, getDocumentAsync } from 'expo-document-picker';
 import {
   EncodingType,
   StorageAccessFramework,
   readAsStringAsync,
   writeAsStringAsync,
 } from 'expo-file-system';
-import { PermissionsAndroid } from 'react-native';
 
 import httpClient from './http';
 
@@ -24,25 +22,5 @@ const saveFile = async (fileData, fileName) => {
   }
 };
 
-const checkReadStoragePermission = () => {
-  return PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE);
-};
 
-const requestReadStoragePermission = async () => {
-  const granted = await PermissionsAndroid.request(
-    PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
-  );
-  return granted === PermissionsAndroid.RESULTS.GRANTED;
-};
-
-const selectFile = async (): Promise<DocumentResult> => {
-  const hasPerms = await checkReadStoragePermission();
-  if (!hasPerms) {
-    const result = await requestReadStoragePermission();
-    if (!result) return;
-  }
-
-  return await getDocumentAsync();
-};
-
-export { downloadFile, saveFile, selectFile };
+export { downloadFile, saveFile };

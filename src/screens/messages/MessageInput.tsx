@@ -16,6 +16,7 @@ import { selectFile } from '../../utils';
 import { UploadFile } from '../../models/other';
 import { HTTPError } from '../../utils/http';
 import { fontSize } from '../../utils/texts';
+import { getDocumentAsync } from 'expo-document-picker';
 
 const styles = StyleSheet.create({
   inputView: {
@@ -99,7 +100,7 @@ const MessageInput = ({ onFileSelect, onSubmit, showLoading }: {
   const [value, setValue] = useState<string>('');
 
   const innerSelectFile = async () => {
-    const result = await selectFile();
+    const result = await getDocumentAsync();
 
     if (!result) {
       ToastAndroid.show('Невозможно выбрать файл!', ToastAndroid.SHORT);
