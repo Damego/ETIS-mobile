@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { ToastAndroid } from 'react-native';
 
 import Screen from '../../components/Screen';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setAuthorizing, setUserCredentials } from '../../redux/reducers/authSlice';
-import { storage } from '../../utils';
+import { httpClient, storage } from '../../utils';
 import showPrivacyPolicy from '../../utils/privacyPolicy';
 import Footer from './AuthFooter';
 import Form from './AuthForm';
@@ -33,6 +34,11 @@ const AuthScreen = () => {
 
     if (!login || !password) {
       setMessage('Вы не ввели логин или пароль');
+      return;
+    }
+
+    if (!(await httpClient.isInternetReachable())) {
+      ToastAndroid.show('Нет интернет соединения!', ToastAndroid.SHORT);
       return;
     }
 
