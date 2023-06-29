@@ -27,6 +27,7 @@
         "no-console": "off",
         "global-require": "off",
         "class-methods-use-this": "off",
-        "prefer-const": "off"
+        "prefer-const": "off",
+        "no-param-reassign": "off"
     }
 }
