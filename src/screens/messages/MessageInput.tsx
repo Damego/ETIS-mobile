@@ -1,22 +1,22 @@
 import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
+import { getDocumentAsync } from 'expo-document-picker';
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
   ScrollView,
   StyleSheet,
   Text,
-  TextInput, ToastAndroid,
+  TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
 
 import { useGlobalStyles } from '../../hooks';
-import { selectFile } from '../../utils';
 import { UploadFile } from '../../models/other';
 import { HTTPError } from '../../utils/http';
 import { fontSize } from '../../utils/texts';
-import { getDocumentAsync } from 'expo-document-picker';
 
 const styles = StyleSheet.create({
   inputView: {
@@ -26,7 +26,8 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    padding: '2%',
+    paddingHorizontal: '2%',
+    height: 50,
   },
   iconView: {
     margin: '2%',
@@ -43,7 +44,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   fileText: {
-    ...fontSize.small,
     alignSelf: 'flex-end',
     fontWeight: '500',
   },
@@ -68,7 +68,7 @@ const File = ({ name, onRemove }) => {
         { borderColor: globalStyles.border.borderColor },
       ]}
     >
-      <Text style={[styles.fileText, globalStyles.textColor]}>{cutFileName}</Text>
+      <Text style={[styles.fileText, fontSize.small, globalStyles.textColor]}>{cutFileName}</Text>
       <TouchableOpacity style={styles.removeIcon} onPress={() => onRemove(name)}>
         <AntDesign name="closecircleo" size={20} color={globalStyles.textColor.color} />
       </TouchableOpacity>
@@ -90,7 +90,11 @@ export const FilesPreview = ({ files, onFileRemove }) => (
   </View>
 );
 
-const MessageInput = ({ onFileSelect, onSubmit, showLoading }: {
+const MessageInput = ({
+  onFileSelect,
+  onSubmit,
+  showLoading,
+}: {
   onFileSelect(file: UploadFile): void;
   onSubmit(text: string): Promise<string | HTTPError>;
   showLoading: boolean;
@@ -119,8 +123,8 @@ const MessageInput = ({ onFileSelect, onSubmit, showLoading }: {
     const file = {
       name: result.name,
       type: result.mimeType,
-      uri: result.uri
-    }
+      uri: result.uri,
+    };
 
     onFileSelect(file);
   };
