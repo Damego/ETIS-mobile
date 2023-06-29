@@ -1,9 +1,11 @@
 import Constants from 'expo-constants';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Linking, StyleSheet, Text, View } from 'react-native';
 
+import ClickableText from '../../components/ClickableText';
 import Screen from '../../components/Screen';
 import { useGlobalStyles } from '../../hooks';
+import { PRIVACY_POLICY_URL } from '../../utils';
 import { fontSize } from '../../utils/texts';
 
 const styles = StyleSheet.create({
@@ -37,6 +39,11 @@ const About = () => {
       </Text>
 
       <View style={styles.view}>
+        <ClickableText
+          textStyle={[textStyles, globalStyles.primaryFontColor, { fontWeight: '500' }]}
+          text={'Политика конфиденциальности'}
+          onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}
+        />
         <Text style={textStyles}>Версия приложения: {Constants.manifest.version}</Text>
       </View>
     </Screen>
