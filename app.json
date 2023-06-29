@@ -7,6 +7,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "backgroundColor": "#CE2539",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -27,7 +28,7 @@
       },
       "package": "com.damego.etismobile",
       "playStoreUrl": "https://play.google.com/store/apps/details?id=com.damego.etismobile",
-      "userInterfaceStyle": "automatic",
+      "userInterfaceStyle": "automatic"
     },
     "web": {
       "favicon": "./assets/favicon.png"

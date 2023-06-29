@@ -6,18 +6,18 @@ import { Provider } from 'react-redux';
 
 import StackNavigator from './navigation/StackNavigator';
 import setupStore from './redux';
-import { loadSettings, loadUserCredentials } from './redux/storageLoader';
+import { loadStorage } from './redux/storageLoader';
 import { defineFetchTask } from './tasks/signs';
 import { registerForPushNotificationsAsync, setNotificationHandler } from './utils/notifications';
 
 SplashScreen.preventAutoHideAsync();
 
 const store = setupStore();
-store.dispatch(loadSettings());
-store.dispatch(loadUserCredentials());
+store.dispatch(loadStorage())
 
 defineFetchTask();
 setNotificationHandler();
+
 const App = () => {
   const [fontsLoaded] = useFonts({
     'Nunito-SemiBold': require('../assets/fonts/Nunito-SemiBold.ttf'),
@@ -27,9 +27,8 @@ const App = () => {
   });
 
   useEffect(() => {
-    SplashScreen.hideAsync();
     registerForPushNotificationsAsync();
-  }, [fontsLoaded]);
+  }, []);
 
   if (!fontsLoaded) {
     return null;

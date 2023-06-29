@@ -1,6 +1,6 @@
 import { storage } from '../utils';
 import { UserCredentials, setUserCredentials } from './reducers/authSlice';
-import { changeTheme, setIntroViewed, setSignNotification } from './reducers/settingsSlice';
+import { changeTheme, setAppReady, setIntroViewed, setSignNotification } from './reducers/settingsSlice';
 import { AppDispatch } from './store';
 
 export const loadSettings = () => async (dispatch: AppDispatch) => {
@@ -23,3 +23,9 @@ export const loadUserCredentials = () => async (dispatch: AppDispatch) => {
   }
   dispatch(setUserCredentials(payload));
 };
+
+export const loadStorage = () => async (dispatch: AppDispatch) => {
+  await Promise.all([loadSettings()(dispatch), loadUserCredentials()(dispatch)]);
+
+  dispatch(setAppReady(true));
+}

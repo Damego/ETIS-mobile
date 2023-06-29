@@ -11,12 +11,14 @@ export interface SettingsState {
   theme: ThemeType;
   viewedIntro: boolean;
   signNotification: boolean;
+  appIsReady: boolean;
 }
 
 const initialState: SettingsState = {
   theme: ThemeType.auto,
   viewedIntro: false,
   signNotification: true,
+  appIsReady: false
 };
 
 const settingsSlice = createSlice({
@@ -32,8 +34,11 @@ const settingsSlice = createSlice({
     setSignNotification(state, action: PayloadAction<boolean>) {
       state.signNotification = action.payload;
     },
+    setAppReady(state, action: PayloadAction<boolean>) {
+      state.appIsReady = action.payload;
+    }
   },
 });
 
 export default settingsSlice.reducer;
-export const { changeTheme, setIntroViewed, setSignNotification } = settingsSlice.actions;
+export const { changeTheme, setIntroViewed, setSignNotification, setAppReady } = settingsSlice.actions;

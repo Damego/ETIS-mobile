@@ -12,12 +12,13 @@ import { AmoledTheme, DarkTheme, LightTheme } from '../styles/themes';
 import { storage } from '../utils';
 import TabNavigator from './TabNavigation';
 import showPrivacyPolicy from '../utils/privacyPolicy';
+import * as SplashScreen from 'expo-splash-screen';
 
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
   const { isSignedIn } = useAppSelector((state) => state.auth);
-  const { viewedIntro } = useAppSelector((state) => state.settings);
+  const { viewedIntro, appIsReady } = useAppSelector((state) => state.settings);
   const scheme = useAppColorScheme();
   let theme;
   if (scheme === 'dark') {
@@ -37,6 +38,10 @@ const StackNavigator = () => {
     };
     wrapper();
   }, []);
+
+  useEffect(() => {
+    if (appIsReady) SplashScreen.hideAsync();
+  }, [appIsReady])
 
   let component;
   if (!viewedIntro) component = <Stack.Screen name="Интро" component={Intro} />;
