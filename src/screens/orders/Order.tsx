@@ -20,11 +20,6 @@ const Order = ({ order }: { order: IOrder }) => {
   const [isOpened, setOpened] = useState<boolean>(false);
   const [html, setHTML] = useState<string>();
 
-  useEffect(() => {
-    if (html || !isOpened) return;
-    getOrderHTML(order).then((orderHTML) => setHTML(orderHTML));
-  }, [isOpened]);
-
   const closeModal = () => setOpened(false);
 
   const openModal = () => {
@@ -32,6 +27,13 @@ const Order = ({ order }: { order: IOrder }) => {
       ToastAndroid.show('Приказ готовится', ToastAndroid.SHORT);
       return;
     }
+    getOrderHTML(order).then((orderHTML) => {
+      if (!orderHTML) {
+        ToastAndroid.show("Приказ не загружен!", ToastAndroid.SHORT);
+        return;
+      }
+      setHTML(orderHTML);
+    });
     setOpened(true);
   };
 

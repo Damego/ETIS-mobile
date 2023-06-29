@@ -45,7 +45,7 @@ export const cacheOrdersData = (data: IOrder[]) => {
   storage.storeOrdersData(data);
 };
 
-export const getOrderHTML = async (order: IOrder) => {
+export const getOrderHTML = async (order: IOrder): Promise<string> => {
   const cached = await storage.getOrderHTML(order.id);
   if (cached) {
     console.log('[DATA] Use cached order html');
@@ -53,6 +53,7 @@ export const getOrderHTML = async (order: IOrder) => {
   }
 
   const fetched = await httpClient.request('GET', `/${order.uri}`, { returnResponse: false });
+  if ((fetched as HTTPError).error) return;
 
   console.log('[DATA] fetched order html');
 
@@ -60,5 +61,5 @@ export const getOrderHTML = async (order: IOrder) => {
 
   console.log('[DATA] cached order html');
 
-  return fetched;
+  return fetched as string;
 };
