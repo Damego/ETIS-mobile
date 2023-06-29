@@ -58,7 +58,7 @@ export default function Announce() {
     setCurrentPageNum(pageNum);
   };
 
-  if (!data) return <LoadingScreen />;
+  if (!data) return <LoadingScreen onRefresh={loadData} />;
 
   return (
     <Screen onUpdate={() => loadData(true)}>

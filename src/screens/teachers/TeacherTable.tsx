@@ -44,7 +44,7 @@ const TeacherTable = () => {
     if (!isAuthorizing) loadData();
   }, [isAuthorizing]);
 
-  if (!data) return <LoadingScreen />;
+  if (!data) return <LoadingScreen onRefresh={loadData} />;
 
   return (
     <Screen onUpdate={loadData}>

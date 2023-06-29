@@ -51,7 +51,7 @@ const Messages = () => {
     dispatch(setMessageCount(null));
   }, []);
 
-  if (!data) return <LoadingScreen />;
+  if (!data) return <LoadingScreen onRefresh={() => loadData({})} />;
 
   return (
     <Screen onUpdate={() => loadData({ force: true })}>

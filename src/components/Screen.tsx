@@ -21,7 +21,6 @@ interface ScreenProps {
   headerText?: string;
   scrollHeader?: boolean;
   onUpdate?(arg?: any): Promise<void>;
-  disableRefresh?: boolean;
   children: ReactElement | ReactElement[];
   onBackPageClick?(): void | Promise<void>;
   startScrollFromBottom?: boolean;
@@ -31,7 +30,6 @@ const Screen = ({
   headerText,
   scrollHeader = true,
   onUpdate,
-  disableRefresh,
   children,
   onBackPageClick,
   startScrollFromBottom,
@@ -62,7 +60,7 @@ const Screen = ({
         showsVerticalScrollIndicator={false}
         overScrollMode="never"
         refreshControl={
-          !disableRefresh ? <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> : null
+          onUpdate ? <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> : null
         }
         onContentSizeChange={
           startScrollFromBottom ? () => scrollRef.current.scrollToEnd() : undefined

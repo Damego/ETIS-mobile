@@ -122,7 +122,7 @@ const Signs = () => {
     if (!isAuthorizing) loadData({});
   }, [isAuthorizing]);
 
-  if (!data || !optionData || isLoading) return <LoadingScreen />;
+  if (!data || !optionData || isLoading) return <LoadingScreen onRefresh={() => loadData({})} />;
 
   return (
     <Screen onUpdate={() => loadData({ force: true })}>

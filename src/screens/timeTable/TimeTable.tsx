@@ -70,7 +70,7 @@ const TimeTable = () => {
     if (!isAuthorizing) loadData();
   }, [selectedWeek, isAuthorizing]);
 
-  if (!data || isLoading) return <LoadingScreen />;
+  if (!data || isLoading) return <LoadingScreen onRefresh={loadData} />;
 
   return (
     <Screen onUpdate={() => loadData(true)}>
