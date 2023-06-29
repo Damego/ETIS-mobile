@@ -23,7 +23,7 @@ const About = () => {
   const textStyles = [fontSize.medium, globalStyles.textColor];
 
   return (
-    <Screen disableRefresh>
+    <Screen>
       <Text style={textStyles}>
         ЕТИС мобайл - это неофициальное мобильное приложение для ЕТИС ПГНИУ. Приложение позволяет в
         удобном режиме пользоваться ЕТИС используя ваш смартфон.
@@ -40,7 +40,7 @@ const About = () => {
 
       <View style={styles.view}>
         <ClickableText
-          textStyle={[textStyles, globalStyles.primaryFontColor, { fontWeight: '500' }]}
+          textStyle={[fontSize.medium, globalStyles.primaryFontColor, { fontWeight: '500' }]}
           text={'Политика конфиденциальности'}
           onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}
         />

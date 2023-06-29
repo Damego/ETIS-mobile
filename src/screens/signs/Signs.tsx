@@ -45,12 +45,6 @@ interface loadDataPayload {
   force?: boolean;
 }
 
-const SubjectList = ({ data }: ISubjectListProps): JSX.Element[] => {
-  if (!data) return;
-
-  return data.subjects.map((subject) => <CardSign subject={subject} key={subject.name} />);
-};
-
 const Signs = () => {
   const dispatch = useAppDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
@@ -134,7 +128,9 @@ const Signs = () => {
         />
       </View>
 
-      <SubjectList data={data} />
+      {data.subjects.map((subject) => (
+        <CardSign subject={subject} key={subject.name} />
+      ))}
     </Screen>
   );
 };

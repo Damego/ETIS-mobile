@@ -51,6 +51,10 @@ class HTTPClient {
     });
   }
 
+  getSessionID() {
+    return this.sessionID;
+  }
+
   async isInternetReachable() {
     const networkState = await getNetworkStateAsync();
     return networkState.isInternetReachable;
@@ -282,6 +286,8 @@ class HTTPClient {
     const data = new FormData();
     data.append('p_ant_id', messageID);
     data.append('p_anr_id', answerMessageID);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     data.append('file', file);
 
     return await this.request('POST', '/stu.repl_doc_write', { data, returnResponse: false });

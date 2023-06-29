@@ -131,7 +131,7 @@ const MessageInput = ({
 
   const submit = async () => {
     const res = await onSubmit(value);
-    if (!res || !res.error) {
+    if (!res || !(res as HTTPError).error) {
       setValue('');
     }
   };

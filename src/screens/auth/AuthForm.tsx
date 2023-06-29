@@ -89,7 +89,6 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
         secureTextEntry
         autoComplete="password"
         selectionColor="#C62E3E"
-        autoCompleteType="password"
         onSubmitEditing={() => onSubmit(login, password)}
       />
 

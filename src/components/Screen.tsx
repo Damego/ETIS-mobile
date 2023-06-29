@@ -21,7 +21,7 @@ interface ScreenProps {
   headerText?: string;
   scrollHeader?: boolean;
   onUpdate?(arg?: any): Promise<void>;
-  children: ReactElement | ReactElement[];
+  children: React.ReactNode;
   onBackPageClick?(): void | Promise<void>;
   startScrollFromBottom?: boolean;
 }
