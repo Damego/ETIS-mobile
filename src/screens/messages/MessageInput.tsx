@@ -158,7 +158,7 @@ const MessageInput = ({
         placeholderTextColor={globalStyles.textColor.color}
       />
 
-      <TouchableOpacity disabled={!value || showLoading} style={styles.iconView} onPress={submit}>
+      <TouchableOpacity disabled={!value.trim() || showLoading} style={styles.iconView} onPress={submit}>
         {showLoading ? (
           <ActivityIndicator
             size="small"
