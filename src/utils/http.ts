@@ -7,7 +7,7 @@ import { getNetworkStateAsync } from 'expo-network';
 import { UploadFile } from '../models/other';
 import { toURLSearchParams } from './encoding';
 
-const cyrillicToTranslit = new CyrillicToTranslit();
+const cyrillicToTranslit = CyrillicToTranslit();
 
 export enum ErrorCode {
   unknown,
@@ -23,18 +23,18 @@ export interface HTTPError {
 }
 
 interface Payload {
-  params?: any;
-  data?: any;
+  params?: unknown;
+  data?: unknown;
   returnResponse?: boolean;
 }
 interface PayloadWithResponse {
-  params?: any;
-  data?: any;
+  params?: unknown;
+  data?: unknown;
   returnResponse?: true;
 }
 interface PayloadWithString {
-  params?: any;
-  data?: any;
+  params?: unknown;
+  data?: unknown;
   returnResponse?: false;
 }
 
@@ -155,7 +155,7 @@ class HTTPClient {
       returnResponse: true,
     });
 
-    if ((response as HTTPError).error) return response;
+    if ((response as HTTPError).error) return response as HTTPError;
 
     const cookies = (response as AxiosResponse).headers['set-cookie'];
 
@@ -186,9 +186,9 @@ class HTTPClient {
       returnResponse: false,
     });
 
-    if (response.error) return null;
+    if ((response as HTTPError).error) return null;
 
-    const $ = cheerio.load(response);
+    const $ = cheerio.load(response as string);
     if ($('#sbmt > span').text() === 'Получить письмо') {
       return {
         error: {
