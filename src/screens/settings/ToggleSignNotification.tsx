@@ -31,7 +31,7 @@ const ToggleSignNotification = () => {
   return (
     <>
       <View style={styles.cardView}>
-        <Text style={[styles.header, fontSize.large, { ...globalStyles.textColor }]}>
+        <Text style={[styles.header, fontSize.medium, globalStyles.textColor ]}>
           Уведомлять об оценках
         </Text>
         <TouchableOpacity onPress={() => Linking.openURL(NOTIFICATION_GUIDE_URL)}>

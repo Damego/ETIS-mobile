@@ -52,7 +52,6 @@ const makeLogin = async (
     token,
     isInvisibleRecaptcha
   );
-  console.log(response);
 
   if (response && response.error) {
     // У нас нет других вариантов проверять тип ошибки

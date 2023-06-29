@@ -11,7 +11,7 @@ const ResetIntroSetting = () => {
 
   return (
     <TouchableOpacity onPress={() => dispatch(setIntroViewed(false))} activeOpacity={0.9}>
-      <Text style={{ ...fontSize.medium, fontWeight: '500', ...globalStyles.textColor }}>
+      <Text style={[fontSize.medium, { fontWeight: '500' }, globalStyles.textColor ]}>
         Сбросить обучение
       </Text>
     </TouchableOpacity>
