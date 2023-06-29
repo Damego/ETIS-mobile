@@ -2,7 +2,7 @@
   "expo": {
     "name": "ЕТИС мобайл",
     "slug": "etis-mobile",
-    "version": "1.0.0-beta.5",
+    "version": "1.0.0-beta.6",
     "owner": "damego",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,7 +21,7 @@
       "supportsTablet": true
     },
     "android": {
-      "versionCode": 10000005,
+      "versionCode": 10000006,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
