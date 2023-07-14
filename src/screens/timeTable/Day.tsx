@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
+import BorderLine from '../../components/BorderLine';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import { useGlobalStyles } from '../../hooks';
 import { ITimeTableDay } from '../../models/timeTable';
@@ -35,8 +36,11 @@ const Day = ({ data }: DayData) => {
 
   return (
     <CardHeaderOut topText={date}>
-      {lessons.map((lesson) => (
-        <Lesson key={date + lesson.time + lesson.subject} data={lesson} />
+      {lessons.map((lesson, index) => (
+        <View key={date + lesson.time + lesson.subject}>
+          <Lesson data={lesson} />
+          {index !== lessons.length - 1 ? <BorderLine /> : <></>}
+        </View>
       ))}
     </CardHeaderOut>
   );
