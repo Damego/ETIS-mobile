@@ -27,24 +27,18 @@ interface SubjectCheckPointsProps {
   data: ICheckPoint[];
 }
 
-const SubjectCheckPoints = ({ data }: SubjectCheckPointsProps) => {
+const SubjectCheckPoints = ({ data }: SubjectCheckPointsProps): React.ReactNode => {
   const globalStyles = useGlobalStyles();
 
   return data.map((checkPoint, index) => {
     const checkPointName = `КТ ${index + 1}`;
     const scoreText: string | number = getCheckPointScore(checkPoint);
     const pointsString = `${checkPointName}: ${scoreText} / ${checkPoint.passScore} / ${checkPoint.maxScore}`;
-    // Проверка на вводный урок, отсутствовал ли студент, количество баллов >= проходного, оценка вообще поставлена
-    const score = checkPoint.isIntroductionWork ? checkPoint.points : checkPoint.currentScore;
-    const failStyleCondition =
-      (checkPoint.isAbsent || !checkPoint.isIntroductionWork) &&
-      score &&
-      score < checkPoint.passScore;
 
     return (
       <Text
         style={
-          failStyleCondition
+          checkPoint.failed
             ? [fontSize.medium, styles.markFail]
             : [fontSize.medium, styles.markNeutral, globalStyles.textColor]
         }

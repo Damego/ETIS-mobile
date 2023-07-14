@@ -45,17 +45,19 @@ const getSubjectPointsStyle = (subject: ISubject, defaultTextColor) => {
   if (subject.checkPoints.length === 0) return defaultTextColor;
 
   let textStyle;
-  subject.checkPoints.forEach((checkPoint) => {
+  subject.checkPoints.every((checkPoint) => {
     if (!checkPoint.isIntroductionWork) {
-      const score = checkPoint.isIntroductionWork ? checkPoint.points : checkPoint.currentScore;
-      if (checkPoint.isAbsent || (checkPoint.hasPoints && score < checkPoint.passScore))
+      if (checkPoint.failed) {
         textStyle = styles.colorMark2;
-      else if (!checkPoint.hasPoints && !checkPoint.isAbsent) textStyle = defaultTextColor;
+        return false;
+      }
     }
+    return true;
   });
 
   if (textStyle) return textStyle;
 
+  if (subject.totalPoints === 0) return defaultTextColor;
   if (subject.totalPoints < 61) return styles.colorMark3;
   if (subject.totalPoints < 81) return styles.colorMark4;
   return styles.colorMark5;

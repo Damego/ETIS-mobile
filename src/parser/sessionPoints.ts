@@ -23,11 +23,12 @@ export default function parseSessionPoints(html): ISessionSignsData {
         return;
       }
 
-      const td = tr.find('td');
+      const failed = !!tr.attr("style")
+      const tds = tr.find('td');
       const fields = [];
 
       for (let j = 0; j < 9; j += 1) {
-        fields.push(getTextField(td.eq(j)));
+        fields.push(getTextField(tds.eq(j)));
       }
       const [
         theme,
@@ -58,6 +59,7 @@ export default function parseSessionPoints(html): ISessionSignsData {
         date,
         teacher,
         hasPoints,
+        failed
       });
     });
 

@@ -11,6 +11,7 @@ export interface ICheckPoint {
   isAbsent: boolean;
   isIntroductionWork: boolean;
   hasPoints: boolean;
+  failed: boolean;
 }
 
 export interface ISubject {
