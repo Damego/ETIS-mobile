@@ -133,11 +133,10 @@ const AuthLoadingModal = () => {
 
   const onRecaptchaModalClose = () => {
     if (!isInvisibleRecaptcha) dispatch(setAuthorizing(false));
-  }
+  };
 
   useEffect(() => {
     setMessageStatus('Получение токена...');
-
 
     // Вход в оффлайн режим слишком резкий, поэтому ставим таймер 1 сек.
     // TODO: В идеале, сразу после Splash включать оффлайн режим
@@ -165,11 +164,6 @@ const AuthLoadingModal = () => {
 
   return (
     <View style={styles.modalWrapper}>
-      <CustomReCaptcha
-        onReceiveToken={onReceiveToken}
-        size={isInvisibleRecaptcha ? 'invisible' : 'normal'}
-        onClose={onRecaptchaModalClose}
-      />
       <View
         style={[
           styles.modalContainer,
@@ -181,6 +175,12 @@ const AuthLoadingModal = () => {
         <View style={{ alignItems: 'center' }}>
           <ActivityIndicator size="large" color={globalStyles.primaryFontColor.color} />
           <Text style={globalStyles.textColor}>{messageStatus}</Text>
+
+          <CustomReCaptcha
+            onReceiveToken={onReceiveToken}
+            size={isInvisibleRecaptcha ? 'invisible' : 'normal'}
+            onClose={onRecaptchaModalClose}
+          />
 
           {showOfflineButton && (
             <View style={{ marginTop: '15%' }}>
