@@ -5,6 +5,7 @@ import Screen from '../../components/Screen';
 import ResetIntroSetting from './ResetIntroSetting';
 import ToggleSignNotification from './ToggleSignNotification';
 import ToggleThemeSetting from './ToggleThemeSetting';
+import AboutAppButton from './AboutApp';
 
 export default function Settings() {
   return (
@@ -17,6 +18,9 @@ export default function Settings() {
       </Card>
       <Card>
         <ResetIntroSetting />
+      </Card>
+      <Card>
+        <AboutAppButton />
       </Card>
     </Screen>
   );

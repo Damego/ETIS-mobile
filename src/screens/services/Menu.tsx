@@ -89,13 +89,6 @@ function Menu() {
           icon={<FontAwesome5 name="telegram" size={iconSize} color={iconColor} />}
         />
       </Row>
-      <Row>
-        <Button
-          text="О приложении"
-          icon={<AntDesign name="infocirlceo" size={iconSize} color={iconColor} />}
-          page="О приложении"
-        />
-      </Row>
     </View>
   );
 }
