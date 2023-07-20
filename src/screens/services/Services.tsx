@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import ClickableText from '../../components/ClickableText';
 import ReviewBox from '../../components/ReviewBox';
 import Screen from '../../components/Screen';
-import { useGlobalStyles } from '../../hooks';
+import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { signOut } from '../../redux/reducers/authSlice';
 import { storage } from '../../utils';
 import { fontSize } from '../../utils/texts';
 import Menu from './Menu';
 import UserInfo from './UserInfo';
+import { AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   exitView: { position: 'absolute', bottom: '2%', left: 0, right: 0, alignItems: 'center' },
@@ -25,11 +26,21 @@ const styles = StyleSheet.create({
   },
 });
 
+const SettingButton = () => {
+  const navigation = useNavigation();
+
+  return (
+    <TouchableOpacity onPress={() => {navigation.navigate("Настройки")}} style={{justifyContent: 'center'}}>
+      <AntDesign name="setting" size={28} color={'#C62E3E'} />
+    </TouchableOpacity>
+  )
+}
+
 const Services = () => {
   const globalStyles = useGlobalStyles();
 
-  const dispatch = useDispatch();
-  const studentInfo = useSelector((state) => state.student.info);
+  const dispatch = useAppDispatch();
+  const studentInfo = useAppSelector((state) => state.student.info);
   const [showReviewModal, setShowReviewModal] = useState(false);
 
   useEffect(() => {
@@ -42,7 +53,7 @@ const Services = () => {
   };
 
   return (
-    <Screen disableRefresh>
+    <Screen headerTitleComponent={<SettingButton />}>
       <View>
         <UserInfo data={studentInfo} />
 

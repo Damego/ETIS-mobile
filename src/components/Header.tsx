@@ -9,16 +9,27 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: '5%',
     marginVertical: '2%',
   },
   headerText: {
     fontWeight: '700',
     marginLeft: '5%',
   },
+  titleContainer: {
+    width: '100%',
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    paddingHorizontal: '5%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
 });
 
-const Header = ({ text, onBackButtonClick }) => {
+const Header = ({ text, onBackButtonClick, titleComponent }: {
+  text: string;
+  onBackButtonClick?(): void;
+  titleComponent?: React.ReactNode;
+}) => {
   const globalStyles = useGlobalStyles();
 
   return (
@@ -28,11 +39,14 @@ const Header = ({ text, onBackButtonClick }) => {
           <AntDesign name="arrowleft" size={24} style={globalStyles.primaryFontColor} />
         </TouchableOpacity>
       ) : (
-        ''
+        <></>
       )}
-      <Text style={[fontSize.xlarge, styles.headerText, globalStyles.primaryFontColor]}>
-        {text}
-      </Text>
+      <View style={styles.titleContainer}>
+        <Text style={[fontSize.xlarge, styles.headerText, globalStyles.primaryFontColor]}>
+          {text}
+        </Text>
+        {titleComponent}
+      </View>
     </View>
   );
 };

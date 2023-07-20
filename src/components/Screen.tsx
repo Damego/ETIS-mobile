@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
 
 interface ScreenProps {
   headerText?: string;
+  headerTitleComponent?: React.ReactNode;
   scrollHeader?: boolean;
   onUpdate?(arg?: any): Promise<void>;
   children: React.ReactNode;
@@ -28,6 +29,7 @@ interface ScreenProps {
 
 const Screen = ({
   headerText,
+  headerTitleComponent,
   scrollHeader = true,
   onUpdate,
   children,
@@ -46,13 +48,21 @@ const Screen = ({
     setRefreshing(false);
   };
 
+  const headerComponent = (
+    <Header
+      text={headerText}
+      onBackButtonClick={onBackPageClick}
+      titleComponent={headerTitleComponent}
+    />
+  );
+
   return (
     <View style={{ marginTop: Constants.statusBarHeight, flex: 1 }}>
       {isAuthorizing && <AuthLoadingModal />}
 
       <StatusBar style={useAppColorScheme() === 'light' ? 'dark' : 'light'} />
 
-      {!scrollHeader && <Header text={headerText} onBackButtonClick={onBackPageClick} />}
+      {!scrollHeader && headerComponent}
       <ScrollView
         ref={startScrollFromBottom ? scrollRef : undefined}
         contentContainerStyle={{ flexGrow: 1 }}
@@ -67,7 +77,7 @@ const Screen = ({
         }
       >
         <View style={styles.screen}>
-          {scrollHeader && <Header text={headerText} onBackButtonClick={onBackPageClick} />}
+          {scrollHeader && headerComponent}
           {children}
         </View>
       </ScrollView>
