@@ -38,7 +38,7 @@ const AuthFooter = () => {
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => Linking.openURL(TELEGRAM_URL)}>
-        <Text style={styles.telegramText}>Telegram-паблик</Text>
+        <Text style={styles.telegramText}>Telegram канал</Text>
       </TouchableOpacity>
     </View>
   );

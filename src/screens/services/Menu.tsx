@@ -84,7 +84,7 @@ function Menu() {
           link={GITHUB_URL}
         />
         <Button
-          text="Telegram-паблик"
+          text="Telegram канал"
           link={TELEGRAM_URL}
           icon={<FontAwesome5 name="telegram" size={iconSize} color={iconColor} />}
         />
