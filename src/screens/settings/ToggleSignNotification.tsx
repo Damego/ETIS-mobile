@@ -29,26 +29,24 @@ const ToggleSignNotification = () => {
   };
 
   return (
-    <>
-      <View style={styles.cardView}>
-        <Text style={[styles.header, fontSize.medium, globalStyles.textColor ]}>
-          Уведомлять об оценках
-        </Text>
-        <TouchableOpacity onPress={() => Linking.openURL(NOTIFICATION_GUIDE_URL)}>
-          <AntDesign // TODO: make as modal w/ blur
-            name="infocirlce"
-            size={24}
-            color={useAppColorScheme() === 'light' ? 'black' : 'white'}
-          />
-        </TouchableOpacity>
-        <Switch
-          trackColor={{ false: 'gray', true: 'teal' }}
-          thumbColor="white"
-          onValueChange={(value) => changeSignNotification(value)}
-          value={signNotification}
+    <View style={styles.cardView}>
+      <Text style={[styles.header, fontSize.medium, globalStyles.textColor ]}>
+        Уведомлять об оценках
+      </Text>
+      <TouchableOpacity onPress={() => Linking.openURL(NOTIFICATION_GUIDE_URL)}>
+        <AntDesign // TODO: make as modal w/ blur
+          name="infocirlce"
+          size={24}
+          color={useAppColorScheme() === 'light' ? 'black' : 'white'}
         />
-      </View>
-    </>
+      </TouchableOpacity>
+      <Switch
+        trackColor={{ false: 'gray', true: 'teal' }}
+        thumbColor="white"
+        onValueChange={(value) => changeSignNotification(value)}
+        value={signNotification}
+      />
+    </View>
   );
 };
 

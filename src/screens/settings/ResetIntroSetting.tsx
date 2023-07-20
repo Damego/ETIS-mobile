@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
 
+import ClickableText from '../../components/ClickableText';
 import { useAppDispatch, useGlobalStyles } from '../../hooks';
 import { setIntroViewed } from '../../redux/reducers/settingsSlice';
 import { fontSize } from '../../utils/texts';
@@ -10,11 +10,11 @@ const ResetIntroSetting = () => {
   const globalStyles = useGlobalStyles();
 
   return (
-    <TouchableOpacity onPress={() => dispatch(setIntroViewed(false))} activeOpacity={0.9}>
-      <Text style={[fontSize.medium, { fontWeight: '500' }, globalStyles.textColor ]}>
-        Сбросить обучение
-      </Text>
-    </TouchableOpacity>
+    <ClickableText
+      text={'Сбросить обучение'}
+      onPress={() => dispatch(setIntroViewed(false))}
+      textStyle={[fontSize.medium, { fontWeight: '500' }, globalStyles.textColor]}
+    />
   );
 };
 
