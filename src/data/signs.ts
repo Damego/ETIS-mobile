@@ -5,7 +5,6 @@ import { IGetSignsPayload } from '../models/signs';
 import { parseSessionMarks, parseSessionPoints } from '../parser';
 import { isLoginPage } from '../parser/utils';
 import { httpClient, storage } from '../utils';
-import { HTTPError } from '../utils/http';
 
 export const composePointsAndMarks = (
   sessionPoints: ISessionSignsData,

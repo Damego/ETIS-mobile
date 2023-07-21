@@ -112,7 +112,9 @@ class HTTPClient {
         params,
         data,
       });
-      return returnResponse ? response : response.data;
+      return {
+        data: returnResponse ? response : response.data
+      };
     } catch (e) {
       console.warn('[HTTP]', e);
       return {
@@ -164,10 +166,10 @@ class HTTPClient {
 
     if (response.error) return response;
 
-    const cookies = (response as AxiosResponse).headers['set-cookie'];
+    const cookies = response.data.headers['set-cookie'];
 
     if (!cookies) {
-      const $ = cheerio.load((response as AxiosResponse).data);
+      const $ = cheerio.load((response.data).data);
       const errorMessage = $('.error_message').text();
       if (!errorMessage)
         return {
@@ -197,7 +199,7 @@ class HTTPClient {
 
     if (response.error) return null;
 
-    const $ = cheerio.load(response as string);
+    const $ = cheerio.load(response.data);
     if ($('#sbmt > span').text() === 'Получить письмо') {
       return {
         error: {
