@@ -9,7 +9,7 @@ export interface MenuParseResult {
   studentInfo: StudentData;
 }
 
-export default function parseMenu(html, parseGroupJournal = false): MenuParseResult {
+export default function parseMenu(html: string, parseGroupJournal = false): MenuParseResult {
   const $ = load(html);
 
   const data: MenuParseResult = {

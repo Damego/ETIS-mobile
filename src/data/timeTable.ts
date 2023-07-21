@@ -30,18 +30,18 @@ export const getTimeTableData = async ({
     response = await httpClient.getTimeTable();
   }
 
-  if ((response as HTTPError).error || !response) {
+  if (response.error || !response) {
     if (!useCache) return emptyResult;
     return await getCachedTimeTable(week);
   }
 
-  if (isLoginPage(response)) {
+  if (isLoginPage(response.data)) {
     return { data: null, isLoginPage: true, fetched: false };
   }
 
   console.log(`[DATA] Fetched timetable for week ${week}`);
 
-  const data = parseTimeTable(response)
+  const data = parseTimeTable(response.data)
 
   cacheTimeTableData(data)
 

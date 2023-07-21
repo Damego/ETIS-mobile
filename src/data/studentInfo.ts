@@ -30,14 +30,14 @@ export const getStudentData = async (payload: IGetPayload): Promise<IGetResult<M
   // но страница с посещаюмостью содержит группу, в которой находится студент
   const response = await httpClient.getGroupJournal();
 
-  if ((response as HTTPError).error || !response) {
+  if (response.error || !response) {
     if (!payload.useCache) return emptyResult;
     return await getCachedStudentData();
   }
 
   console.log('[DATA] Fetched student data');
 
-  const data = parseMenu(response, true);
+  const data = parseMenu(response.data, true);
 
   cacheStudentData(data.studentInfo);
 

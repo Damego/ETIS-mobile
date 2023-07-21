@@ -25,14 +25,14 @@ export const getTeacherData = async ({
   }
 
   const response = await httpClient.getTeachers();
-  if ((response as HTTPError).error || !response) {
+  if (response.error || !response) {
     if (!useCache) return emptyResult;
     return await getCachedTeacherData();
   }
 
-  if (isLoginPage(response as string)) return { ...emptyResult, isLoginPage: true };
+  if (isLoginPage(response.data)) return { ...emptyResult, isLoginPage: true };
 
-  const data = parseTeachers(response as string);
+  const data = parseTeachers(response.data);
 
   console.log('[DATA] Fetched teacher data');
   return { data, fetched: true, isLoginPage: false };

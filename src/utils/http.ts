@@ -16,10 +16,8 @@ export enum ErrorCode {
 }
 
 export interface HTTPError {
-  error: {
-    code: ErrorCode;
-    message: string;
-  };
+  code: ErrorCode;
+  message: string;
 }
 
 interface Payload {
@@ -36,6 +34,11 @@ interface PayloadWithString {
   params?: unknown;
   data?: unknown;
   returnResponse?: false;
+}
+
+interface Response<T> {
+  data?: T;
+  error?: HTTPError
 }
 
 class HTTPClient {
@@ -64,19 +67,19 @@ class HTTPClient {
     method: string,
     endpoint: string,
     { params, data, returnResponse }?: PayloadWithResponse
-  ): Promise<AxiosResponse | HTTPError>;
+  ): Promise<Response<AxiosResponse>>;
 
   async request(
     method: string,
     endpoint: string,
     { params, data, returnResponse }?: PayloadWithString
-  ): Promise<string | HTTPError>;
+  ): Promise<Response<string>>;
 
   async request(
     method: string,
     endpoint: string,
     { params, data, returnResponse }: Payload = { returnResponse: false }
-  ): Promise<AxiosResponse | HTTPError | string> {
+  ): Promise<Response<string | AxiosResponse>> {
     console.log(
       `[HTTP] [${method}] Sending request to '${endpoint}' with params: ${JSON.stringify(
         params
@@ -146,7 +149,7 @@ class HTTPClient {
     password: string,
     token: string,
     isInvisibleRecaptcha: boolean
-  ): Promise<HTTPError | null> {
+  ): Promise<Response<null>> {
     const data = new FormData();
     data.append('p_redirect', '/stu.timetable');
     data.append('p_username', username.trim());
@@ -159,7 +162,7 @@ class HTTPClient {
       returnResponse: true,
     });
 
-    if ((response as HTTPError).error) return response as HTTPError;
+    if (response.error) return response;
 
     const cookies = (response as AxiosResponse).headers['set-cookie'];
 
@@ -177,9 +180,11 @@ class HTTPClient {
     this.sessionID = sessionID;
 
     console.log(`[HTTP] Authorized with ${sessionID}`);
+
+    return null;
   }
 
-  async sendRecoveryMail(email: string, token: string) {
+  async sendRecoveryMail(email: string, token: string): Promise<Response<null>> {
     const data = new FormData();
     data.append('p_step', '1');
     data.append('p_email', email.trim());
@@ -190,7 +195,7 @@ class HTTPClient {
       returnResponse: false,
     });
 
-    if ((response as HTTPError).error) return null;
+    if (response.error) return null;
 
     const $ = cheerio.load(response as string);
     if ($('#sbmt > span').text() === 'Получить письмо') {

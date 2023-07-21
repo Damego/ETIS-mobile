@@ -23,18 +23,18 @@ export const getTeachPlanData = async (
   }
 
   const response = await httpClient.getTeachPlan();
-  if ((response as HTTPError).error || !response) {
+  if (response.error || !response) {
     if (!payload.useCache) return emptyResult;
     return await getCachedTeachPlanData();
   }
 
-  if (isLoginPage(response as string)) {
+  if (isLoginPage(response.data)) {
     return { ...emptyResult, isLoginPage: true };
   }
 
   console.log('[DATA] Fetched teach plan data');
 
-  const data = parseShortTeachPlan(response as string);
+  const data = parseShortTeachPlan(response.data);
 
   return {
     data,

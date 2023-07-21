@@ -3,7 +3,6 @@ import { emptyResult, IGetResult } from '../models/results';
 import { httpClient, storage } from '../utils';
 import { isLoginPage } from '../parser/utils';
 import parseMessages from '../parser/messages';
-import { HTTPError } from '../utils/http';
 
 export const getCachedMessagesData = async (page: number): Promise<IGetResult<IMessagesData>> => {
   console.log(`[DATA] use cached messages for ${page} page`);
@@ -22,21 +21,21 @@ export const getMessagesData = async (payload: IGetMessagesPayload): Promise<IGe
 
   const response = await httpClient.getMessages(payload.page);
 
-  if ((response as HTTPError).error || !response) {
+  if (response.error || !response) {
     if (payload.useCache) {
       return await getCachedMessagesData(payload.page);
     }
     return emptyResult;
   }
 
-  if (isLoginPage(response as string)) {
+  if (isLoginPage(response.data)) {
     return {
       ...emptyResult,
       isLoginPage: true
     }
   }
 
-  const data = parseMessages(response as string);
+  const data = parseMessages(response.data);
 
   console.log(`[DATA] Fetched messages for ${data.page} page`)
 

@@ -21,18 +21,18 @@ export const getAnnounceData = async (payload: IGetPayload): Promise<IGetResult<
 
   const response = await httpClient.getAnnounce();
 
-  if ((response as HTTPError).error || !response) {
+  if (response.error || !response) {
     if (!payload.useCache) return emptyResult;
     return await getCachedAnnounceData();
   }
 
-  if (isLoginPage(response as string)) {
+  if (isLoginPage(response.data)) {
     return { ...emptyResult, isLoginPage: true };
   }
 
   console.log('[DATA] Fetched announce data');
 
-  const data = parseAnnounce(response as string);
+  const data = parseAnnounce(response.data);
   return {
     data,
     isLoginPage: false,

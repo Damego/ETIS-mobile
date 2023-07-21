@@ -3,7 +3,6 @@ import { IGetPayload, IGetResult, emptyResult } from '../models/results';
 import parseOrders from '../parser/order';
 import { isLoginPage } from '../parser/utils';
 import { httpClient, storage } from '../utils';
-import { HTTPError } from '../utils/http';
 
 export const getCachedOrders = async (): Promise<IGetResult<IOrder[]>> => {
   console.log('[DATA] Use cached orders data');
@@ -21,14 +20,14 @@ export const getOrdersData = async (payload: IGetPayload): Promise<IGetResult<IO
 
   const response = await httpClient.getOrders();
 
-  if ((response as HTTPError).error || !response) {
+  if (response.error || !response) {
     if (payload.useCache) return await getCachedOrders();
     return emptyResult;
   }
 
-  if (isLoginPage(response as string)) return { ...emptyResult, isLoginPage: true };
+  if (isLoginPage(response.data)) return { ...emptyResult, isLoginPage: true };
 
-  const data = parseOrders(response as string);
+  const data = parseOrders(response.data);
   console.log('[DATA] Fetched orders data');
   cacheOrdersData(data);
 
@@ -53,11 +52,11 @@ export const getOrderHTML = async (order: IOrder): Promise<string> => {
   }
 
   const fetched = await httpClient.request('GET', `/${order.uri}`, { returnResponse: false });
-  if ((fetched as HTTPError).error) return;
+  if (fetched.error) return;
 
   console.log('[DATA] fetched order html');
 
-  storage.storeOrderHTML(order.id, fetched as string);
+  storage.storeOrderHTML(order.id, fetched.data);
 
   console.log('[DATA] cached order html');
 
