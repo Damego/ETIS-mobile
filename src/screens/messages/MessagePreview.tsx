@@ -23,7 +23,7 @@ const MessagePreview = ({ data, page }: { data: IMessage[]; page: number }) => {
 
   return (
     <CardHeaderOut topText={author}>
-      <TouchableOpacity onPress={() => navigation.navigate('История', { data, page })}>
+      <TouchableOpacity onPress={() => navigation.navigate('History', { data, page })}>
         <Text style={[styles.textBold, fontSize.medium, globalStyles.textColor]}>{subject}</Text>
         <Text style={globalStyles.textColor}>{theme}</Text>
         <View style={{ alignItems: 'flex-end' }}>

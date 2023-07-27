@@ -19,13 +19,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const SettingButton = () => {
+export const SettingButton = () => {
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate('Настройки');
+        navigation.navigate('Settings');
       }}
       style={{ justifyContent: 'center' }}
     >
@@ -45,7 +45,7 @@ const Services = () => {
   }, []);
 
   return (
-    <Screen headerTitleComponent={<SettingButton />}>
+    <Screen>
       <View>
         <UserInfo data={studentInfo} />
 
