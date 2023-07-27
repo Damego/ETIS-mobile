@@ -4,6 +4,7 @@ import { ToastAndroid, View } from 'react-native';
 import Dropdown from '../../components/Dropdown';
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
+import SessionDropdown from '../../components/SessionDropdown';
 import {
   cacheMarksData,
   cacheSignsData,
@@ -19,27 +20,6 @@ import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { setFetchedLatestSession, setMarks } from '../../redux/reducers/signsSlice';
 import CardSign from './CardSign';
 
-const buildOption = (session: number, sessionName: string) => ({
-  label: `${session} ${sessionName}`,
-  value: session,
-});
-
-function buildTrimesterOptions(currentSession: number, latestSession: number, sessionName: string) {
-  const options = [];
-  for (let index = latestSession; index > 0; index -= 1) {
-    if (index !== currentSession) options.push(buildOption(index, sessionName));
-  }
-
-  return {
-    current: buildOption(currentSession, sessionName),
-    options,
-  };
-}
-
-interface ISubjectListProps {
-  data: ISessionSignsData;
-}
-
 interface loadDataPayload {
   session?: number;
   force?: boolean;
@@ -52,7 +32,6 @@ const Signs = () => {
   const [isLoading, setLoading] = useState<boolean>(false);
   const { sessionsMarks, fetchedLatestSession } = useAppSelector((state) => state.signs);
   const [data, setData] = useState<ISessionSignsData>(null);
-  const [optionData, setOptionData] = useState(null);
 
   const loadData = async ({ session, force }: loadDataPayload) => {
     // We use dropdown to fetch new data, and we need to show loading state while data is fetching
@@ -101,9 +80,6 @@ const Signs = () => {
       sessionsMarks.length !== 0 ? sessionsMarks : marksResult.data
     );
 
-    setOptionData(
-      buildTrimesterOptions(fullData.currentSession, fullData.latestSession, fullData.sessionName)
-    );
     setData(fullData);
     if (data) setLoading(false);
 
@@ -116,15 +92,16 @@ const Signs = () => {
     if (!isAuthorizing) loadData({});
   }, [isAuthorizing]);
 
-  if (!data || !optionData || isLoading) return <LoadingScreen onRefresh={() => loadData({})} />;
+  if (!data || isLoading) return <LoadingScreen onRefresh={() => loadData({})} />;
 
   return (
     <Screen onUpdate={() => loadData({ force: true })}>
       <View style={{ marginLeft: 'auto', marginRight: 0, paddingBottom: '2%', zIndex: 1 }}>
-        <Dropdown
+        <SessionDropdown
+          currentSession={data.currentSession}
+          latestSession={data.latestSession}
+          sessionName={data.sessionName}
           onSelect={(session) => loadData({ session })}
-          selectedOption={optionData.current}
-          options={optionData.options}
         />
       </View>
 
