@@ -44,13 +44,12 @@ const TabNavigator = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: true,
-
+        ...headerParams(theme),
 
         tabBarActiveTintColor: globalStyles.primaryFontColor.color,
         tabBarShowLabel: false,
         tabBarBadgeStyle: globalStyles.primaryBackgroundColor,
         tabBarHideOnKeyboard: true,
-        ...headerParams(theme),
       }}
     >
       <Tab.Screen
@@ -65,6 +64,7 @@ const TabNavigator = () => {
         name="SignsNavigator"
         component={SignsTopTabNavigator}
         options={{
+          title: "Оценки",
           tabBarIcon: ({ size, color }) => <AntDesign name="barschart" size={size} color={color} />,
         }}
       />
