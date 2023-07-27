@@ -30,7 +30,7 @@ export const getStudentData = async (payload: IGetPayload): Promise<IGetResult<M
   // но страница с посещаюмостью содержит группу, в которой находится студент
   const response = await httpClient.getGroupJournal();
 
-  if (response.error || !response) {
+  if (!response || response.error) {
     if (!payload.useCache) return emptyResult;
     return await getCachedStudentData();
   }

@@ -30,7 +30,7 @@ export const getTimeTableData = async ({
     response = await httpClient.getTimeTable();
   }
 
-  if (response.error || !response) {
+  if (!response || response.error) {
     if (!useCache) return emptyResult;
     return await getCachedTimeTable(week);
   }

@@ -36,7 +36,7 @@ interface PayloadWithString {
   returnResponse?: false;
 }
 
-interface Response<T> {
+export interface Response<T> {
   data?: T;
   error?: HTTPError
 }
@@ -151,7 +151,7 @@ class HTTPClient {
     password: string,
     token: string,
     isInvisibleRecaptcha: boolean
-  ): Promise<Response<null>> {
+  ): Promise<Response<AxiosResponse | null>> {
     const data = new FormData();
     data.append('p_redirect', '/stu.timetable');
     data.append('p_username', username.trim());

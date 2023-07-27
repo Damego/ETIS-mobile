@@ -15,7 +15,7 @@ import {
 
 import { useGlobalStyles } from '../../hooks';
 import { UploadFile } from '../../models/other';
-import { HTTPError } from '../../utils/http';
+import { Response } from '../../utils/http';
 import { fontSize } from '../../utils/texts';
 
 const styles = StyleSheet.create({
@@ -96,7 +96,7 @@ const MessageInput = ({
   showLoading,
 }: {
   onFileSelect(file: UploadFile): void;
-  onSubmit(text: string): Promise<string | HTTPError>;
+  onSubmit(text: string): Promise<Response<string>>;
   showLoading: boolean;
 }) => {
   const globalStyles = useGlobalStyles();
@@ -131,7 +131,7 @@ const MessageInput = ({
 
   const submit = async () => {
     const res = await onSubmit(value);
-    if (!res || !(res as HTTPError).error) {
+    if (!res || !res.error) {
       setValue('');
     }
   };
@@ -158,7 +158,11 @@ const MessageInput = ({
         placeholderTextColor={globalStyles.textColor.color}
       />
 
-      <TouchableOpacity disabled={!value.trim() || showLoading} style={styles.iconView} onPress={submit}>
+      <TouchableOpacity
+        disabled={!value.trim() || showLoading}
+        style={styles.iconView}
+        onPress={submit}
+      >
         {showLoading ? (
           <ActivityIndicator
             size="small"
