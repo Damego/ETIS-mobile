@@ -1,5 +1,5 @@
 import { IOrder } from '../models/order';
-import { IGetPayload, IGetResult, emptyResult } from '../models/results';
+import { emptyResult, IGetPayload, IGetResult } from '../models/results';
 import parseOrders from '../parser/order';
 import { isLoginPage } from '../parser/utils';
 import { httpClient, storage } from '../utils';
@@ -61,5 +61,5 @@ export const getOrderHTML = async (order: IOrder): Promise<string> => {
 
   console.log('[DATA] cached order html');
 
-  return fetched as string;
+  return fetched.data as string;
 };
