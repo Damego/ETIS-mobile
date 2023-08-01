@@ -96,7 +96,15 @@ const Signs = () => {
 
   return (
     <Screen onUpdate={() => loadData({ force: true })}>
-      <View style={{ marginLeft: 'auto', marginRight: 0, paddingBottom: '2%', zIndex: 1 }}>
+      <View
+        style={{
+          marginTop: '2%',
+          marginLeft: 'auto',
+          marginRight: 0,
+          paddingBottom: '2%',
+          zIndex: 1,
+        }}
+      >
         <SessionDropdown
           currentSession={data.currentSession}
           latestSession={data.latestSession}
