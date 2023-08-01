@@ -23,7 +23,7 @@ export default function SessionDropdown({ currentSession, latestSession, session
   currentSession: number;
   latestSession: number;
   sessionName: string;
-  onSelect(...args): unknown
+  onSelect(session: number): unknown
 }) {
   const options = buildSessionOptions(currentSession, latestSession, sessionName);
 
