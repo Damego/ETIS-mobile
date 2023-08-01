@@ -25,7 +25,7 @@ export const getRatingData = async (payload: IGetRatingPayload): Promise<IGetRes
     if (result.data) return result;
   }
 
-  const response = await httpClient.getSigns('rating');
+  const response = await httpClient.getSigns('rating', payload.session);
   if (response.error || !response) {
     if (!payload.useCache) return emptyResult;
     return await getCachedRatingData(payload.session);
@@ -33,10 +33,11 @@ export const getRatingData = async (payload: IGetRatingPayload): Promise<IGetRes
 
   if (isLoginPage(response.data)) return { ...emptyResult, isLoginPage: true };
 
-  console.log(`[DATA] Fetched rating data`);
-
   const data = parseRating(response.data);
 
+  console.log(`[DATA] Fetched rating data for ${data.session.current} session`);
+
+  console.log(`[DATA] Caching rating data for ${data.session.current} session...`)
   storage.storeRatingData(data);
 
   return {
