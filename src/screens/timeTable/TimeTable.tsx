@@ -4,22 +4,23 @@ import { ToastAndroid } from 'react-native';
 import LoadingScreen from '../../components/LoadingScreen';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
-import { getTimeTableData } from '../../data/timeTable';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { ITimeTableGetProps } from '../../models/timeTable';
-import { setAuthorizing } from '../../redux/reducers/authSlice';
 import {
-  TimeTableState,
   addFetchedWeek,
   changeSelectedWeek,
   setCurrentWeek,
   setData,
+  TimeTableState,
 } from '../../redux/reducers/timeTableSlice';
 import DayArray from './DayArray';
+import { getWrappedClient } from '../../data/client';
+import { GetTimeTablePayload } from '../../data/types';
+import { GetResultType } from '../../models/results';
 
 const TimeTable = () => {
   const dispatch = useAppDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
+  const client = getWrappedClient();
 
   const { fetchedWeeks, data, selectedWeek, currentWeek }: TimeTableState = useAppSelector(
     (state) => state.timeTable
@@ -37,17 +38,12 @@ const TimeTable = () => {
     const useCacheFirst =
       ((data && selectedWeek < currentWeek) || fetchedWeeks.includes(selectedWeek)) && !forceFetch;
 
-    const payload: ITimeTableGetProps = {
+    const payload: GetTimeTablePayload = {
+      forceFetch: false,
       week: selectedWeek,
-      useCacheFirst,
-      useCache: true, // Если не получится получить данные, будем использовать кэшированные данные
+      forceCache: useCacheFirst, // Если не получится получить данные, будем использовать кэшированные данные
     };
-    const result = await getTimeTableData(payload);
-
-    if (result.isLoginPage) {
-      dispatch(setAuthorizing(true));
-      return;
-    }
+    const result = await client.getTimeTableData(payload);
 
     if (!result.data) {
       setLoading(false);
@@ -61,7 +57,7 @@ const TimeTable = () => {
     dispatch(setData(result.data));
     setLoading(false);
 
-    if (result.fetched) {
+    if (result.type === GetResultType.fetched) {
       dispatch(addFetchedWeek(result.data.selectedWeek));
     }
   };

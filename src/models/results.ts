@@ -1,16 +1,26 @@
+export enum GetResultType {
+  fetched,
+  cached,
+  error,
+  failed
+}
+
 export interface IGetResult<T> {
-  data?: T;
-  isLoginPage?: boolean;
-  fetched?: boolean;
+  type: GetResultType;
+  data: T | null;
 }
 
-export interface IGetPayload {
-  useCache?: boolean;
-  useCacheFirst?: boolean;
+export interface GetPayload {
+  forceFetch: boolean;
+  forceCache: boolean;
 }
 
-export const emptyResult: IGetResult<null> = {
+export const errorResult: IGetResult<null> = {
   data: null,
-  isLoginPage: false,
-  fetched: false
+  type: GetResultType.error,
+}
+
+export const failedResult: IGetResult<null> = {
+  data: null,
+  type: GetResultType.failed,
 }

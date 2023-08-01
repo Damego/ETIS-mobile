@@ -4,11 +4,10 @@ import { ToastAndroid } from 'react-native';
 import LoadingScreen from '../../components/LoadingScreen';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
-import { cacheAnnounceData, getAnnounceData } from '../../data/announce';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { setAnnounceCount } from '../../redux/reducers/studentSlice';
 import AnnounceCard from './AnnounceCard';
+import { getWrappedClient } from '../../data/client';
 
 export default function Announce() {
   const dispatch = useAppDispatch();
@@ -18,17 +17,13 @@ export default function Announce() {
   const [data, setData] = useState<string[]>();
   const [pageCount, setPageCount] = useState<number>();
   const [currentPageNum, setCurrentPageNum] = useState<number>(1);
+  const client = getWrappedClient();
 
   const loadData = async (force?: boolean) => {
-    const result = await getAnnounceData({
-      useCache: true,
-      useCacheFirst: !force && announceCount === null,
+    const result = await client.getAnnounceData({
+      forceFetch: true,
+      forceCache: !force && announceCount === null,
     });
-
-    if (result.isLoginPage) {
-      dispatch(setAuthorizing(true));
-      return;
-    }
 
     if (!result.data) {
       ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
@@ -37,10 +32,6 @@ export default function Announce() {
 
     setPageCount(Math.ceil(result.data.length / 5));
     setData(result.data);
-
-    if (result.fetched) {
-      cacheAnnounceData(result.data);
-    }
   };
 
   useEffect(() => {
