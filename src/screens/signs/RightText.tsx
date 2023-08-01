@@ -25,7 +25,6 @@ export default function RightText({
   bottomText: React.ReactNode;
 }) {
   const globalStyles = useGlobalStyles();
-  console.log(topText, bottomText)
 
   return (
     <View style={styles.container}>
