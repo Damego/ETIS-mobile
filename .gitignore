@@ -108,3 +108,6 @@ dist
 
 .idea
 test.js
+test.ts
+test.jsx
+test.tsx
