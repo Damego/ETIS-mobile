@@ -4,7 +4,7 @@ import { IRating } from '../models/rating';
 import parseSessionData from './session';
 import { getTextField } from './utils';
 
-const numberRegex = /[0-9]+/;
+const numberRegex = /[0-9]+/gm;
 
 export default function parseRating(html: string) {
   const $ = load(html);
@@ -24,7 +24,7 @@ export default function parseRating(html: string) {
 
     const groupName = getTextField(tds.eq(0));
     const rawRating = getTextField(tds.eq(1));
-    const [top, total] = numberRegex.exec(rawRating);
+    const [top, total] = rawRating.match(numberRegex);
 
     const overall = {
       top: parseInt(top),
@@ -39,12 +39,12 @@ export default function parseRating(html: string) {
 
       const innerTds = $$('td', innerElement);
 
-      const pre = [];
+      const pre: string[] = [];
       for (let i = 0; i < 5; i++) {
         pre.push(getTextField(innerTds.eq(i)));
       }
       const [discipline, controlPoints, passedControlPoints, points, rawRating] = pre;
-      const [top, total] = numberRegex.exec(rawRating);
+      const [top, total] = rawRating.match(numberRegex);
 
       disciplineRanking.push({
         discipline,
