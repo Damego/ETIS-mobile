@@ -1,6 +1,6 @@
 import { load } from 'cheerio';
 
-import { IRating } from '../models/rating';
+import {IRating, OverallRating} from '../models/rating';
 import parseSessionData from './session';
 import { getTextField } from './utils';
 
@@ -24,12 +24,16 @@ export default function parseRating(html: string) {
 
     const groupName = getTextField(tds.eq(0));
     const rawRating = getTextField(tds.eq(1));
-    const [top, total] = rawRating.match(numberRegex);
 
-    const overall = {
-      top: parseInt(top),
-      total: parseInt(total),
-    };
+    let overall: OverallRating;
+    if (rawRating) {
+      const [top, total] = rawRating.match(numberRegex);
+
+      overall = {
+        top: parseInt(top),
+        total: parseInt(total),
+      };
+    }
 
     const disciplineRanking = [];
 
