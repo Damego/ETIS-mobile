@@ -28,7 +28,7 @@ export default function RightText({
 
   return (
     <View style={styles.container}>
-      <Text style={[fontSize.xxlarge, styles.topText]}>{topText}</Text>
+      <Text style={[fontSize.xxlarge, styles.topText, globalStyles.textColor]}>{topText}</Text>
       <Text style={[fontSize.medium, styles.bottomText, globalStyles.textColor]}>{bottomText}</Text>
     </View>
   );
