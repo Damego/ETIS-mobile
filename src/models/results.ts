@@ -2,7 +2,7 @@ export enum GetResultType {
   fetched,
   cached,
   error,
-  failed
+  failed,
 }
 
 export interface IGetResult<T> {
@@ -10,7 +10,7 @@ export interface IGetResult<T> {
   data: T | null;
 }
 
-export interface GetPayload {
+export interface IGetPayload {
   forceFetch: boolean;
   forceCache: boolean;
 }
@@ -18,9 +18,9 @@ export interface GetPayload {
 export const errorResult: IGetResult<null> = {
   data: null,
   type: GetResultType.error,
-}
+};
 
 export const failedResult: IGetResult<null> = {
   data: null,
   type: GetResultType.failed,
-}
+};

@@ -1,4 +1,4 @@
-import { GetPayload } from './results';
+import { IGetPayload } from './results';
 
 export interface ILesson {
   audience: string;
@@ -19,6 +19,6 @@ export interface ITimeTable {
   days: ITimeTableDay[];
 }
 
-export interface ITimeTableGetProps extends GetPayload {
+export interface ITimeTableGetProps extends IGetPayload {
   week?: number;
 }

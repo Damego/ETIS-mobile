@@ -68,13 +68,13 @@ export default class Storage {
     return JSON.parse(stringData);
   }
 
-  async storeTimeTableData(data: ITimeTable, week?: number, saveAsCurrent?: boolean) {
+  storeTimeTableData(data: ITimeTable, week?: number, saveAsCurrent?: boolean) {
     const stringData = JSON.stringify(data);
 
     if (week === undefined) {
-      await AsyncStorage.setItem('timetable-current', stringData);
+      AsyncStorage.setItem('timetable-current', stringData);
     } else {
-      await AsyncStorage.setItem(`timetable-${week}`, stringData);
+      AsyncStorage.setItem(`timetable-${week}`, stringData);
       if (saveAsCurrent) AsyncStorage.setItem('timetable-current', stringData);
     }
   }
@@ -104,7 +104,7 @@ export default class Storage {
     return JSON.parse(stringData);
   }
 
-  async storeMarksData(data) {
+  storeMarksData(data) {
     return AsyncStorage.setItem(`marks`, JSON.stringify(data));
   }
 
@@ -160,11 +160,11 @@ export default class Storage {
   }
 
   storeOrdersData(data: IOrder[]) {
-    AsyncStorage.setItem('orders', JSON.stringify(data))
+    AsyncStorage.setItem('orders', JSON.stringify(data));
   }
 
   async getOrderHTML(orderID: string): Promise<string> {
-    return await AsyncStorage.getItem(`order-${orderID}`)
+    return await AsyncStorage.getItem(`order-${orderID}`);
   }
 
   storeOrderHTML(orderID: string, html: string) {
@@ -186,7 +186,7 @@ export default class Storage {
   }
 
   storeStudentData(data: StudentData) {
-    AsyncStorage.setItem('student', JSON.stringify(data))
+    AsyncStorage.setItem('student', JSON.stringify(data));
   }
 
   async getRatingData(session: number) {
