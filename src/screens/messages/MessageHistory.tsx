@@ -1,16 +1,16 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { ToastAndroid } from 'react-native';
 
 import Screen from '../../components/Screen';
+import { getMessagesData } from '../../data/messages';
+import { useAppDispatch } from '../../hooks';
 import { IMessage } from '../../models/messages';
+import { UploadFile } from '../../models/other';
 import { parseDate } from '../../parser/utils';
+import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { httpClient } from '../../utils';
 import Message from './Message';
 import MessageInput, { FilesPreview } from './MessageInput';
-import { getMessagesData } from '../../data/messages';
-import { setAuthorizing } from '../../redux/reducers/authSlice';
-import { useAppDispatch } from '../../hooks';
-import { ToastAndroid } from 'react-native';
-import { UploadFile } from '../../models/other';
 
 export default function MessageHistory({ route, navigation }) {
   const dispatch = useAppDispatch();
@@ -29,7 +29,7 @@ export default function MessageHistory({ route, navigation }) {
     const result = await getMessagesData({
       page: pageRef.current,
       useCache: true,
-      useCacheFirst: false
+      useCacheFirst: false,
     });
 
     if (result.isLoginPage) {
@@ -65,7 +65,7 @@ export default function MessageHistory({ route, navigation }) {
   };
 
   const onSubmit = async (text: string) => {
-    setUploading(true)
+    setUploading(true);
     const response = await httpClient.replyToMessage(mainMessage.answerID, text);
 
     if (response.error) {
@@ -88,28 +88,22 @@ export default function MessageHistory({ route, navigation }) {
 
     loadData();
     setFiles([]);
-    setUploading(false)
+    setUploading(false);
   };
+
+  useEffect(() => {
+    navigation.setOptions({ title: shortAuthor });
+  }, []);
 
   return (
     <>
-      <Screen
-        headerText={shortAuthor}
-        scrollHeader={false}
-        onBackPageClick={() => navigation.navigate('Сообщения')}
-        startScrollFromBottom
-        disableRefresh
-      >
+      <Screen startScrollFromBottom>
         {data.sort(compareMessages).map((message, index) => (
           <Message message={message} key={`${message.time}-${index}`} />
         ))}
       </Screen>
       {files.length !== 0 && <FilesPreview files={files} onFileRemove={onFileRemove} />}
-      <MessageInput
-        onFileSelect={onFileSelect}
-        onSubmit={onSubmit}
-        showLoading={isUploading}
-      />
+      <MessageInput onFileSelect={onFileSelect} onSubmit={onSubmit} showLoading={isUploading} />
     </>
   );
 }

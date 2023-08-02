@@ -64,17 +64,17 @@ function Menu() {
         <Button
           text="Учебный план"
           icon={<AntDesign name="profile" size={iconSize} color={iconColor} />}
-          page="Учебный план"
+          page="TeachPlan"
         />
         <Button
           text="Преподаватели"
           icon={<AntDesign name="team" size={iconSize} color={iconColor} />}
-          page="Преподаватели"
+          page="Teachers"
         />
         <Button
           text="Приказы"
           icon={<AntDesign name="filetext1" size={iconSize} color={iconColor} />}
-          page="Приказы"
+          page="Orders"
         />
       </Row>
       <Row>

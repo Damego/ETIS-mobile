@@ -12,7 +12,7 @@ const AboutAppButton = () => {
   return (
     <ClickableText
       text={'О приложении'}
-      onPress={() => navigation.navigate('О приложении')}
+      onPress={() => navigation.navigate('AboutApp')}
       textStyle={[fontSize.medium, { fontWeight: '500' }, globalStyles.textColor]}
     />
   );

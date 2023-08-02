@@ -1,3 +1,16 @@
+export interface ITheme {
+  dark: boolean;
+  colors: {
+    background: string;
+    primary: string;
+    border: string;
+    text: string;
+    block: string;
+    card: string;
+    shadow: string;
+  }
+}
+
 export const LightTheme = {
   dark: false,
   colors: {

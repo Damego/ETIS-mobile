@@ -10,6 +10,7 @@ import { ThemeType } from '../redux/reducers/settingsSlice';
 import { IOrder } from '../models/order';
 import { IMessagesData } from '../models/messages';
 import { StudentData } from '../models/student';
+import { IRating } from '../models/rating';
 
 export default class Storage {
   async bumpReviewRequest() {
@@ -88,14 +89,14 @@ export default class Storage {
   }
 
   async getSignsData(session: number): Promise<ISessionSignsData> {
-    const stringData = await AsyncStorage.getItem(`session-${session}`);
+    const stringData = await AsyncStorage.getItem(`signs-${session}`);
     return JSON.parse(stringData);
   }
 
   storeSignsData(data: ISessionSignsData, storeForUndefined?: boolean) {
     const stringData = JSON.stringify(data);
-    AsyncStorage.setItem(`session-${data.currentSession}`, stringData);
-    if (storeForUndefined) AsyncStorage.setItem(`session-undefined`, stringData);
+    AsyncStorage.setItem(`signs-${data.currentSession}`, stringData);
+    if (storeForUndefined) AsyncStorage.setItem(`signs-undefined`, stringData);
   }
 
   async getMarksData() {
@@ -186,5 +187,14 @@ export default class Storage {
 
   storeStudentData(data: StudentData) {
     AsyncStorage.setItem('student', JSON.stringify(data))
+  }
+
+  async getRatingData(session: number) {
+    const stringData = await AsyncStorage.getItem(`rating-${session}`);
+    return JSON.parse(stringData);
+  }
+
+  storeRatingData(data: IRating) {
+    AsyncStorage.setItem(`rating-${data.session.current}`, JSON.stringify(data));
   }
 }
