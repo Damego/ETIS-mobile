@@ -33,8 +33,8 @@ const Order = ({ order }: { order: IOrder }) => {
         return;
       }
       setHTML(orderHTML);
+      setOpened(true);
     });
-    setOpened(true);
   };
 
   return (
