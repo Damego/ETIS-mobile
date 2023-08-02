@@ -1,15 +1,16 @@
 import { ISession } from './session';
+import { IGetPayload } from './results';
 
 export interface OverallRating {
   top: number;
   total: number;
 }
 
-export interface IDisciplineRanking extends OverallRating{
+export interface IDisciplineRanking extends OverallRating {
   discipline: string;
-  controlPoints: number
-  passedControlPoints: number
-  points: number
+  controlPoints: number;
+  passedControlPoints: number;
+  points: number;
 }
 
 export interface IGroup {
@@ -21,4 +22,8 @@ export interface IGroup {
 export interface IRating {
   session: ISession;
   groups: IGroup[];
+}
+
+export interface IGetRatingPayload extends IGetPayload {
+  session: number;
 }

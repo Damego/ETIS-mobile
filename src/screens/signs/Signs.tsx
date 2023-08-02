@@ -1,24 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { ToastAndroid, View } from 'react-native';
-
-import Dropdown from '../../components/Dropdown';
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
 import SessionDropdown from '../../components/SessionDropdown';
-import {
-  cacheMarksData,
-  cacheSignsData,
-  composePointsAndMarks,
-  getMarksData,
-  getPartialSignsData,
-} from '../../data/signs';
+import { composePointsAndMarks } from '../../data/signs';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { IGetResult } from '../../models/results';
+import { GetResultType, IGetResult, RequestType } from '../../models/results';
 import { ISessionMarks } from '../../models/sessionMarks';
 import { ISessionSignsData } from '../../models/sessionPoints';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { setFetchedLatestSession, setMarks } from '../../redux/reducers/signsSlice';
 import CardSign from './CardSign';
+import { getWrappedClient } from '../../data/client';
 
 interface loadDataPayload {
   session?: number;
@@ -32,6 +25,7 @@ const Signs = () => {
   const [isLoading, setLoading] = useState<boolean>(false);
   const { sessionsMarks, fetchedLatestSession } = useAppSelector((state) => state.signs);
   const [data, setData] = useState<ISessionSignsData>(null);
+  const client = getWrappedClient();
 
   const loadData = async ({ session, force }: loadDataPayload) => {
     // We use dropdown to fetch new data, and we need to show loading state while data is fetching
@@ -41,17 +35,17 @@ const Signs = () => {
     if (session !== undefined) newSession = session;
     else if (data) newSession = data.currentSession;
 
-    const result = await getPartialSignsData({
-      useCache: true,
-      useCacheFirst:
-        !force &&
-        data &&
-        (newSession < data.latestSession ||
-          (newSession === data.latestSession && fetchedLatestSession)),
+    const useCacheFirst =
+      !force &&
+      data &&
+      (newSession < data.latestSession ||
+        (newSession === data.latestSession && fetchedLatestSession));
+    const result = await client.getSessionSignsData({
+      requestType: useCacheFirst ? RequestType.tryCache : RequestType.tryFetch,
       session: newSession,
     });
 
-    if (result.isLoginPage) {
+    if (result.type == GetResultType.loginPage) {
       dispatch(setAuthorizing(true));
       return;
     }
@@ -68,10 +62,9 @@ const Signs = () => {
 
     let marksResult: IGetResult<ISessionMarks[]>;
     if (sessionsMarks.length === 0) {
-      marksResult = await getMarksData({ useCache: true });
+      marksResult = await client.getSessionMarksData({ requestType: RequestType.forceCache });
       if (marksResult.data) {
         dispatch(setMarks(marksResult.data));
-        cacheMarksData(marksResult.data);
       }
     }
 
@@ -82,10 +75,6 @@ const Signs = () => {
 
     setData(fullData);
     if (data) setLoading(false);
-
-    if (result.fetched) {
-      cacheSignsData(result.data, !data);
-    }
   };
 
   useEffect(() => {

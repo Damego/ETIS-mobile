@@ -3,22 +3,24 @@ import { useDispatch } from 'react-redux';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
-import { getOrdersData } from '../../data/orders';
 import { IOrder } from '../../models/order';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import Order from './Order';
 import { ToastAndroid } from 'react-native';
 import { useAppSelector } from '../../hooks';
+import { getWrappedClient } from '../../data/client';
+import { GetResultType, RequestType } from '../../models/results';
 
 const OrderTable = () => {
   const dispatch = useDispatch();
   const [data, setData] = useState<IOrder[]>(null);
   const { isAuthorizing } = useAppSelector((state) => state.auth);
+  const client = getWrappedClient();
 
   const loadData = async () => {
-    const result = await getOrdersData({ useCache: true, useCacheFirst: false });
+    const result = await client.getOrdersData({ requestType: RequestType.tryFetch });
 
-    if (result.isLoginPage) {
+    if (result.type === GetResultType.loginPage) {
       dispatch(setAuthorizing(true));
       return;
     }

@@ -8,14 +8,14 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import {
   addFetchedWeek,
   changeSelectedWeek,
-  setCurrentWeek,
   setData,
   TimeTableState,
 } from '../../redux/reducers/timeTableSlice';
 import DayArray from './DayArray';
 import { getWrappedClient } from '../../data/client';
-import { GetTimeTablePayload } from '../../data/types';
-import { GetResultType } from '../../models/results';
+import { GetResultType, RequestType } from '../../models/results';
+import { setAuthorizing } from '../../redux/reducers/authSlice';
+import { ITimeTableGetProps } from '../../models/timeTable';
 
 const TimeTable = () => {
   const dispatch = useAppDispatch();
@@ -38,12 +38,16 @@ const TimeTable = () => {
     const useCacheFirst =
       ((data && selectedWeek < currentWeek) || fetchedWeeks.includes(selectedWeek)) && !forceFetch;
 
-    const payload: GetTimeTablePayload = {
-      forceFetch: false,
+    const payload: ITimeTableGetProps = {
       week: selectedWeek,
-      forceCache: useCacheFirst, // Если не получится получить данные, будем использовать кэшированные данные
+      requestType: useCacheFirst ? RequestType.tryCache : RequestType.tryFetch, // Если не получится получить данные, будем использовать кэшированные данные
     };
     const result = await client.getTimeTableData(payload);
+
+    if (result.type === GetResultType.loginPage) {
+      dispatch(setAuthorizing(true));
+      return;
+    }
 
     if (!result.data) {
       setLoading(false);
@@ -52,7 +56,7 @@ const TimeTable = () => {
     }
 
     // Очевидно, что это будет текущей неделей
-    if (!data) dispatch(setCurrentWeek(result.data.selectedWeek));
+    // if (!data) dispatch(setCurrentWeek(result.data.selectedWeek));
 
     dispatch(setData(result.data));
     setLoading(false);

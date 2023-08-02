@@ -42,6 +42,7 @@ const differenceSigns = (marks1: ISubject[], marks2: ISubject[]) => {
     .filter((s) => s.length !== 0)
     .flat();
 };
+// TODO: notification redo as Client
 export const defineFetchTask = () =>
   TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
     const [cachedResult, onlineResult] = await Promise.all([

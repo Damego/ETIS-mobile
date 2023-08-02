@@ -1,21 +1,27 @@
 import React, { useRef, useState } from 'react';
-import { getRatingData } from '../../data/rating';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { Text, ToastAndroid } from 'react-native';
 import { useAppDispatch } from '../../hooks';
 import { IRating } from '../../models/rating';
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
+import { getWrappedClient } from '../../data/client';
+import { GetResultType, RequestType } from '../../models/results';
 
 export default function RatingPage() {
-  const [data, setData] = useState<IRating>()
+  const [data, setData] = useState<IRating>();
   const fetchedFirstTime = useRef<boolean>(false);
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
+  const client = getWrappedClient();
 
-  const loadData = async ({session, force}: {session: number, force: boolean}) => {
-    const result = await getRatingData({useCache: true, useCacheFirst: !force && fetchedFirstTime.current, session});
+  const loadData = async ({ session, force }: { session: number; force: boolean }) => {
+    const useCacheFirst = !force && fetchedFirstTime.current;
+    const result = await client.getRatingData({
+      requestType: useCacheFirst ? RequestType.tryCache : RequestType.tryFetch,
+      session,
+    });
 
-    if (result.isLoginPage) {
+    if (result.type === GetResultType.loginPage) {
       dispatch(setAuthorizing(true));
       return;
     }
@@ -25,15 +31,15 @@ export default function RatingPage() {
     }
 
     setData(result.data);
-  }
+  };
 
   if (!data) {
-    return <LoadingScreen />
+    return <LoadingScreen />;
   }
 
   return (
     <Screen>
       <Text>Тест</Text>
     </Screen>
-  )
+  );
 }
