@@ -7,15 +7,13 @@ export default class MappedCache<Key extends string | number | symbol, Value> {
   constructor(key: string) {
     this.key = key;
     this.data = new Map();
-
-    this.init();
   }
 
-  private async stringify() {
+  async stringify() {
     await AsyncStorage.setItem(this.key, JSON.stringify(this.data));
   }
 
-  private async init() {
+  async init() {
     const stringData = await AsyncStorage.getItem(this.key);
     this.data = JSON.parse(stringData);
   }
@@ -26,12 +24,10 @@ export default class MappedCache<Key extends string | number | symbol, Value> {
 
   async place(key: Key, value: Value) {
     this.data.set(key, value);
-    await this.stringify();
   }
 
   async delete(key: Key) {
     this.data.delete(key);
-    await this.stringify();
   }
 
   async clear() {

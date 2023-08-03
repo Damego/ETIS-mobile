@@ -7,8 +7,6 @@ export default class FieldCache<Value> {
   constructor(key) {
     this.key = key;
     this.data = null;
-
-    this.init();
   }
 
   async stringify() {
