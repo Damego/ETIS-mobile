@@ -18,7 +18,7 @@ export interface IGroup {
   disciplines: IDisciplineRanking[];
 }
 
-export interface IRating {
+export interface ISessionRating {
   session: ISession;
   groups: IGroup[];
 }

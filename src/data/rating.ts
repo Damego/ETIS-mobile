@@ -1,6 +1,6 @@
 import { emptyResult, IGetPayload, IGetResult } from '../models/results';
 import { httpClient, storage } from '../utils';
-import { IRating } from '../models/rating';
+import { ISessionRating } from '../models/rating';
 import { isLoginPage } from '../parser/utils';
 import parseRating from '../parser/rating';
 
@@ -17,7 +17,7 @@ export const getCachedRatingData = async (session: number) => {
   }
 }
 
-export const getRatingData = async (payload: IGetRatingPayload): Promise<IGetResult<IRating>> => {
+export const getRatingData = async (payload: IGetRatingPayload): Promise<IGetResult<ISessionRating>> => {
   console.log(`[DATA] Getting rating data for ${payload.session} session...`);
 
   if (payload.useCacheFirst) {
