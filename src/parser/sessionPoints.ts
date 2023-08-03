@@ -1,11 +1,11 @@
 import { load } from 'cheerio';
 
-import { ICheckPoint, ISessionSignsData } from '../models/sessionPoints';
+import { ICheckPoint, ISessionPoints } from '../models/sessionPoints';
 import { getAsNumber, getTextField } from './utils';
 
-export default function parseSessionPoints(html): ISessionSignsData {
+export default function parseSessionPoints(html): ISessionPoints {
   const $ = load(html);
-  const data: ISessionSignsData = {
+  const data: ISessionPoints = {
     subjects: [],
     currentSession: null,
     latestSession: null,

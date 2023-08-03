@@ -15,7 +15,7 @@ import {
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { IGetResult } from '../../models/results';
 import { ISessionMarks } from '../../models/sessionMarks';
-import { ISessionSignsData } from '../../models/sessionPoints';
+import { ISessionPoints } from '../../models/sessionPoints';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { setFetchedLatestSession, setMarks } from '../../redux/reducers/signsSlice';
 import CardSign from './CardSign';
@@ -31,7 +31,7 @@ const Signs = () => {
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const { sessionsMarks, fetchedLatestSession } = useAppSelector((state) => state.signs);
-  const [data, setData] = useState<ISessionSignsData>(null);
+  const [data, setData] = useState<ISessionPoints>(null);
 
   const loadData = async ({ session, force }: loadDataPayload) => {
     // We use dropdown to fetch new data, and we need to show loading state while data is fetching

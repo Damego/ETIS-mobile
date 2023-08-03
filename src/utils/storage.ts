@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 
-import { ISessionSignsData } from '../models/sessionPoints';
+import { ISessionPoints } from '../models/sessionPoints';
 import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
 import { ITimeTable } from '../models/timeTable';
@@ -108,12 +108,12 @@ export default class Storage {
     return AsyncStorage.setItem('teachers', JSON.stringify(data));
   }
 
-  async getSignsData(session: number): Promise<ISessionSignsData> {
+  async getSignsData(session: number): Promise<ISessionPoints> {
     const stringData = await AsyncStorage.getItem(`signs-${session}`);
     return JSON.parse(stringData);
   }
 
-  storeSignsData(data: ISessionSignsData, storeForUndefined?: boolean) {
+  storeSignsData(data: ISessionPoints, storeForUndefined?: boolean) {
     const stringData = JSON.stringify(data);
     AsyncStorage.setItem(`signs-${data.currentSession}`, stringData);
     if (storeForUndefined) AsyncStorage.setItem(`signs-undefined`, stringData);

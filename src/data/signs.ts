@@ -1,13 +1,13 @@
 import { IGetPayload, IGetResult, emptyResult } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
-import { ISessionSignsData } from '../models/sessionPoints';
+import { ISessionPoints } from '../models/sessionPoints';
 import { IGetSignsPayload } from '../models/signs';
 import { parseSessionMarks, parseSessionPoints } from '../parser';
 import { isLoginPage } from '../parser/utils';
 import { httpClient, storage } from '../utils';
 
 export const composePointsAndMarks = (
-  sessionPoints: ISessionSignsData,
+  sessionPoints: ISessionPoints,
   allSessionMarks: ISessionMarks[]
 ) => {
   if (!allSessionMarks || allSessionMarks.length === 0) return sessionPoints;
@@ -30,7 +30,7 @@ export const composePointsAndMarks = (
 
 export const getCachedSignsData = async (
   session: number
-): Promise<IGetResult<ISessionSignsData>> => {
+): Promise<IGetResult<ISessionPoints>> => {
   console.log(`[DATA] Use cached signs data for ${session} session`);
   return {
     ...emptyResult,
@@ -48,7 +48,7 @@ export const getCachedMarksData = async (): Promise<IGetResult<ISessionMarks[]>>
 
 export const getPartialSignsData = async (
   payload: IGetSignsPayload
-): Promise<IGetResult<ISessionSignsData>> => {
+): Promise<IGetResult<ISessionPoints>> => {
   if (payload.useCacheFirst) {
     const result = await getCachedSignsData(payload.session);
     if (result.data) return result;
@@ -97,7 +97,7 @@ export const getMarksData = async (payload: IGetPayload): Promise<IGetResult<ISe
   };
 };
 
-export const cacheSignsData = (data: ISessionSignsData, storeForUndefined?: boolean) => {
+export const cacheSignsData = (data: ISessionPoints, storeForUndefined?: boolean) => {
   console.log(`[DATA] caching signs data for ${data.currentSession} session`);
   storage.storeSignsData(data, storeForUndefined);
 };
