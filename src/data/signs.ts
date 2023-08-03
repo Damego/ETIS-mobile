@@ -13,7 +13,7 @@ export const composePointsAndMarks = (
   if (!allSessionMarks || allSessionMarks.length === 0) return sessionPoints;
 
   const sessionMarks = allSessionMarks.find(
-    (sessionData) => sessionData.fullSessionNumber === sessionPoints.currentSession
+    (sessionData) => sessionData.session === sessionPoints.currentSession
   );
 
   if (sessionMarks) {
