@@ -247,48 +247,52 @@ export default class SmartCache {
 
   // Internal Region
 
+  getAppConfig() {
+    return this.internal.get();
+  }
+
   getTheme() {
-    const data = this.internal.get();
+    const data = this.getAppConfig();
     return data.theme;
   }
 
   async placeTheme(theme: ThemeType) {
-    const data = this.internal.get();
+    const data = this.getAppConfig();
     data.theme = theme;
     this.internal.place(data);
     await this.internal.save();
   }
 
   getSignNotification() {
-    const data = this.internal.get();
+    const data = this.getAppConfig();
     return data.signNotificationEnabled;
   }
 
   async placeSignNotification(enabled: boolean) {
-    const data = this.internal.get();
+    const data = this.getAppConfig();
     data.signNotificationEnabled = enabled;
     this.internal.place(data);
     await this.internal.save();
   }
 
   getIntroViewed() {
-    const data = this.internal.get();
+    const data = this.getAppConfig();
     return data.introViewed;
   }
 
   async placeIntroViewed(status: boolean) {
-    const data = this.internal.get();
+    const data = this.getAppConfig();
     data.introViewed = status;
     this.internal.place(data);
     await this.internal.save();
   }
 
   getReviewStep() {
-    return this.internal.get().reviewStep;
+    return this.getAppConfig().reviewStep;
   }
 
   async setReviewStep(step: 'pending' | 'stop') {
-    this.internal.get().reviewStep = step;
+    this.getAppConfig().reviewStep = step;
 
     await this.internal.save();
   }
@@ -305,11 +309,11 @@ export default class SmartCache {
   }
 
   hasAcceptedPrivacyPolicy() {
-    return this.internal.get().privacyPolicyAccepted;
+    return this.getAppConfig().privacyPolicyAccepted;
   }
 
   async setPrivacyPolicyStatus(status: boolean) {
-    this.internal.get().privacyPolicyAccepted = status;
+    this.getAppConfig().privacyPolicyAccepted = status;
 
     await this.internal.save();
   }
