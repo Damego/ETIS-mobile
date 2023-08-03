@@ -79,6 +79,26 @@ export default class Storage {
     }
   }
 
+  // Something new
+
+  /*
+  async getTimeTableData(week?: number): Promise<ITimeTable> {
+    const stringData = await AsyncStorage.getItem(this.keys.TIMETABLE);
+    const all = JSON.parse(stringData);
+    const data = all[week];
+
+    return data;
+  }
+
+  async storeTimeTableData(data: ITimeTable) {
+    const currentStringData = await AsyncStorage.getItem(this.keys.TIMETABLE);
+    const all = JSON.parse(currentStringData);
+    all[data.selectedWeek] = data;
+    const stringData = JSON.stringify(all);
+    await AsyncStorage.setItem(this.keys.TIMETABLE, stringData)
+  }
+   */
+
   async getTeacherData(): Promise<TeacherType | null> {
     const stringData = await AsyncStorage.getItem('teachers');
     return JSON.parse(stringData);
