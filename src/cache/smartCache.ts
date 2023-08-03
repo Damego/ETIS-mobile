@@ -1,10 +1,10 @@
-import { ITimeTable } from '../src/models/timeTable';
+import { ITimeTable } from '../models/timeTable';
 import MappedCache from './mappedCache';
 import FieldCache from './fieldCache';
-import { ISessionTeachPlan } from '../src/models/teachPlan';
-import { ISessionMarks } from '../src/models/sessionMarks';
-import { ISessionPoints } from '../src/models/sessionPoints';
-import { ISessionRating } from '../src/models/rating';
+import { ISessionTeachPlan } from '../models/teachPlan';
+import { ISessionMarks } from '../models/sessionMarks';
+import { ISessionPoints } from '../models/sessionPoints';
+import { ISessionRating } from '../models/rating';
 
 export default class SmartCache {
   private keys = {
@@ -44,44 +44,44 @@ export default class SmartCache {
 
   // Announce Region
 
-  async getAnnounce() {
-    return await this.announce.get();
+  getAnnounce() {
+    return this.announce.get();
   }
 
   async placeAnnounce(data: string[]) {
-    await this.announce.place(data);
-    await this.announce.stringify();
+    this.announce.place(data);
+    await this.announce.save();
   }
 
   // End Announce Region
 
   // TimeTable region
 
-  async getTimeTable(week: number) {
-    return await this.timeTable.get(week);
+  getTimeTable(week: number) {
+    return this.timeTable.get(week);
   }
 
   async placeTimeTable(data: ITimeTable) {
-    await this.timeTable.place(data.selectedWeek, data);
-    await this.timeTable.stringify();
+    this.timeTable.place(data.selectedWeek, data);
+    await this.timeTable.save();
   }
 
   async deleteTimeTable(week: number) {
-    await this.timeTable.delete(week);
-    await this.timeTable.stringify();
+    this.timeTable.delete(week);
+    await this.timeTable.save();
   }
 
   // End TimeTable region
 
   // TeachPlan Region
 
-  async getTeachPlan() {
-    return await this.teachPlan.get();
+  getTeachPlan() {
+    return this.teachPlan.get();
   }
 
   async placeTeachPlan(teachPlan: ISessionTeachPlan[]) {
-    await this.teachPlan.place(teachPlan);
-    await this.teachPlan.stringify();
+    this.teachPlan.place(teachPlan);
+    await this.teachPlan.save();
   }
 
   // End TeachPlan Region
@@ -90,8 +90,8 @@ export default class SmartCache {
 
   // // Marks Region
 
-  async getSessionMarks(session: number) {
-    return await this.signsMarks.get(session);
+  getSessionMarks(session: number) {
+    return this.signsMarks.get(session);
   }
 
   async placeSessionMarks(data: ISessionMarks[]) {
@@ -99,32 +99,33 @@ export default class SmartCache {
       this.signsMarks.place(d.fullSessionNumber, d);
     });
 
-    await this.signsMarks.stringify();
+    await this.signsMarks.save();
   }
 
   // // End Marks Region
 
   // // Points Region
 
-  async getSessionPoints(session: number) {
-    return await this.signsPoints.get(session);
+  getSessionPoints(session: number) {
+    return this.signsPoints.get(session);
   }
 
   async placeSessionPoints(data: ISessionPoints) {
-    await this.signsPoints.place(data.currentSession, data);
-    await this.signsPoints.stringify();
+    this.signsPoints.place(data.currentSession, data);
+    await this.signsPoints.save();
   }
 
   // // End Points Region
 
   // // Rating Region
 
-  async getSessionRating(session: number) {
-    return await this.signsRating.get(session);
+  getSessionRating(session: number) {
+    return this.signsRating.get(session);
   }
 
   async placeSessionRating(data: ISessionRating) {
-    await this.signsRating.place(data.session.current, data);
+    this.signsRating.place(data.session.current, data);
+    await this.signsRating.save();
   }
 
   // // End Rating Region

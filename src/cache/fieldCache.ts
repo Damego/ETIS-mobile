@@ -1,28 +1,31 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class FieldCache<Value> {
-  private readonly key;
+  private readonly key: string;
   private data: Value;
 
-  constructor(key) {
+  constructor(key: string) {
     this.key = key;
     this.data = null;
   }
 
-  async stringify() {
+  async save() {
     await AsyncStorage.setItem(this.key, JSON.stringify(this.data));
   }
+
   async init() {
     const stringData = await AsyncStorage.getItem(this.key);
     this.data = JSON.parse(stringData);
   }
-  async get() {
+
+  get() {
     return this.data;
   }
-  async place(value: Value) {
+
+  place(value: Value) {
     this.data = value;
-    await this.stringify();
   }
+
   async delete() {
     this.data = null;
     await AsyncStorage.removeItem(this.key);

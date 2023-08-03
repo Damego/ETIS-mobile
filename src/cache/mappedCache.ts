@@ -9,7 +9,7 @@ export default class MappedCache<Key extends string | number | symbol, Value> {
     this.data = new Map();
   }
 
-  async stringify() {
+  async save() {
     await AsyncStorage.setItem(this.key, JSON.stringify(this.data));
   }
 
@@ -18,15 +18,15 @@ export default class MappedCache<Key extends string | number | symbol, Value> {
     this.data = JSON.parse(stringData);
   }
 
-  async get(key: Key): Promise<Value> {
+  get(key: Key): Value {
     return this.data.get(key);
   }
 
-  async place(key: Key, value: Value) {
+  place(key: Key, value: Value) {
     this.data.set(key, value);
   }
 
-  async delete(key: Key) {
+  delete(key: Key) {
     this.data.delete(key);
   }
 
