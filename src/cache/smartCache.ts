@@ -15,6 +15,8 @@ interface AppData {
   theme: ThemeType;
   signNotificationEnabled: boolean;
   introViewed: boolean;
+  reviewStep: "pending" | "stop" | null;
+  privacyPolicyAccepted: boolean;
 }
 
 export default class SmartCache {
@@ -45,6 +47,8 @@ export default class SmartCache {
   private signsMarks: MappedCache<number, ISessionMarks>;
   private signsPoints: MappedCache<number, ISessionPoints>;
   private signsRating: MappedCache<number, ISessionRating>;
+
+  // TODO: Teachers, Orders, Student, Messages
 
   private user: SecuredFieldCache<UserCredentials>;
   private internal: FieldCache<AppData>;
@@ -171,14 +175,67 @@ export default class SmartCache {
     return data.theme;
   }
 
+  async placeTheme(theme: ThemeType) {
+    const data = this.internal.get();
+    data.theme = theme;
+    this.internal.place(data);
+    await this.internal.save();
+  }
+
   getSignNotification() {
     const data = this.internal.get();
     return data.signNotificationEnabled;
   }
 
+  async placeSignNotification(enabled: boolean) {
+    const data = this.internal.get();
+    data.signNotificationEnabled = enabled;
+    this.internal.place(data);
+    await this.internal.save();
+  }
+
   getIntroViewed() {
     const data = this.internal.get();
     return data.introViewed;
+  }
+
+  async placeIntroViewed(status: boolean) {
+    const data = this.internal.get();
+    data.introViewed = status;
+    this.internal.place(data);
+    await this.internal.save();
+  }
+
+  getReviewStep() {
+    return this.internal.get().reviewStep;
+  }
+
+  async setReviewStep(step: "pending" | "stop") {
+    this.internal.get().reviewStep = step;
+
+    await this.internal.save();
+  }
+
+  async bumpReviewRequest() {
+    const step = this.getReviewStep();
+
+    if (!step) {
+      await this.setReviewStep("pending");
+      return false;
+    }
+    else if (step === "pending") {
+      return true;
+    }
+  }
+
+  hasAcceptedPrivacyPolicy() {
+    return this.internal.get().privacyPolicyAccepted;
+  }
+
+  async setPrivacyPolicyStatus(status: boolean) {
+    this.internal.get().privacyPolicyAccepted = status;
+
+    await this.internal.save();
   }
 
   // End Internal Region
