@@ -5,6 +5,17 @@ import { ISessionTeachPlan } from '../models/teachPlan';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
 import { ISessionRating } from '../models/rating';
+import SecuredFieldCache from './securedFieldCache';
+import { UserCredentials } from '../redux/reducers/authSlice';
+import { ThemeType } from '../redux/reducers/settingsSlice';
+
+// TODO: Move it to somewhere
+
+interface AppData {
+  theme: ThemeType;
+  signNotificationEnabled: boolean;
+  introViewed: boolean;
+}
 
 export default class SmartCache {
   private keys = {
@@ -21,9 +32,11 @@ export default class SmartCache {
     TIMETABLE: 'TIMETABLE',
 
     // Internal keys
-    THEME: 'THEME',
-    SIGN_NOTIFICATION: 'SIGN_NOTIFICATION',
-    VIEWED_INTRO: 'VIEWED_INTRO',
+    USER: 'USER',
+    INTERNAL: 'INTERNAL',
+    // THEME: 'THEME',
+    // SIGN_NOTIFICATION: 'SIGN_NOTIFICATION',
+    // VIEWED_INTRO: 'VIEWED_INTRO',
   };
 
   private announce: FieldCache<string[]>;
@@ -33,6 +46,9 @@ export default class SmartCache {
   private signsPoints: MappedCache<number, ISessionPoints>;
   private signsRating: MappedCache<number, ISessionRating>;
 
+  private user: SecuredFieldCache<UserCredentials>;
+  private internal: FieldCache<AppData>;
+
   constructor() {
     this.announce = new FieldCache(this.keys.ANNOUNCES);
     this.timeTable = new MappedCache(this.keys.TIMETABLE);
@@ -40,6 +56,9 @@ export default class SmartCache {
     this.signsMarks = new MappedCache(this.keys.SIGNS_MARKS);
     this.signsPoints = new MappedCache(this.keys.SIGNS_POINTS);
     this.signsRating = new MappedCache(this.keys.SIGNS_RATING);
+
+    this.user = new SecuredFieldCache<UserCredentials>(this.keys.USER);
+    this.internal = new FieldCache<AppData>(this.keys.INTERNAL);
   }
 
   // Announce Region
@@ -131,4 +150,36 @@ export default class SmartCache {
   // // End Rating Region
 
   // End Signs Region
+
+  // Secure Region
+
+  getUserCredentials() {
+    return this.user.get();
+  }
+
+  async placeUserCredentials(data: UserCredentials) {
+    this.user.place(data);
+    await this.user.save();
+  }
+
+  // End Secure Region
+
+  // Internal Region
+
+  getTheme() {
+    const data = this.internal.get();
+    return data.theme;
+  }
+
+  getSignNotification() {
+    const data = this.internal.get();
+    return data.signNotificationEnabled;
+  }
+
+  getIntroViewed() {
+    const data = this.internal.get();
+    return data.introViewed;
+  }
+
+  // End Internal Region
 }
