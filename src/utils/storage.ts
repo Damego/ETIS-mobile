@@ -160,7 +160,7 @@ export default class Storage {
   }
 
   storeOrdersData(data: IOrder[]) {
-    AsyncStorage.setItem('orders', JSON.stringify(data));
+    return AsyncStorage.setItem('orders', JSON.stringify(data));
   }
 
   async getOrderHTML(orderID: string): Promise<string> {
@@ -168,7 +168,7 @@ export default class Storage {
   }
 
   storeOrderHTML(orderID: string, html: string) {
-    AsyncStorage.setItem(`order-${orderID}`, html);
+    return AsyncStorage.setItem(`order-${orderID}`, html);
   }
 
   async getMessages(page: number): Promise<IMessagesData> {
@@ -177,7 +177,7 @@ export default class Storage {
   }
 
   storeMessages(data: IMessagesData) {
-    AsyncStorage.setItem(`messages-${data.page}`, JSON.stringify(data));
+    return AsyncStorage.setItem(`messages-${data.page}`, JSON.stringify(data));
   }
 
   async getStudentData(): Promise<StudentData> {
@@ -186,7 +186,7 @@ export default class Storage {
   }
 
   storeStudentData(data: StudentData) {
-    AsyncStorage.setItem('student', JSON.stringify(data));
+    return AsyncStorage.setItem('student', JSON.stringify(data));
   }
 
   async getRatingData(session: number) {
@@ -195,6 +195,6 @@ export default class Storage {
   }
 
   storeRatingData(data: IRating) {
-    AsyncStorage.setItem(`rating-${data.session.current}`, JSON.stringify(data));
+    return AsyncStorage.setItem(`rating-${data.session.current}`, JSON.stringify(data));
   }
 }

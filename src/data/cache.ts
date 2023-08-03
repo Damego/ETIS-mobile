@@ -6,6 +6,10 @@ import { IOrder } from '../models/order';
 import { IRating } from '../models/rating';
 import { ISessionSignsData } from '../models/sessionPoints';
 import { ISessionMarks } from '../models/sessionMarks';
+import { MenuParseResult } from '../parser/menu';
+import { StudentData } from '../models/student';
+import { TeacherType } from '../models/teachers';
+import { ISessionTeachPlan } from '../models/teachPlan';
 
 export default class Cache {
   async getAnnounceData() {
@@ -81,6 +85,42 @@ export default class Cache {
   placeMarksData(data: ISessionMarks[]) {
     console.log(`[CACHE] caching marks data`);
     storage.storeMarksData(data);
+  }
+
+  async getStudentData(): Promise<IGetResult<MenuParseResult>> {
+    console.log('[CACHE] Using cached student data');
+
+    const data: MenuParseResult = {
+      announceCount: null,
+      messageCount: null,
+      studentInfo: await storage.getStudentData(),
+    };
+    return this.toResult(data);
+  }
+
+  placeStudentData(data: StudentData) {
+    console.log('[CACHE] Caching student data');
+    storage.storeStudentData(data);
+  }
+
+  async getTeacherData(): Promise<IGetResult<TeacherType>> {
+    console.log('[CACHE] Using cached teacher data');
+    return this.toResult(await storage.getTeacherData());
+  }
+
+  placeTeacherData(data: TeacherType) {
+    console.log('[CACHE] Caching teacher data');
+    storage.storeTeacherData(data);
+  }
+
+  async getTeachPlanData(): Promise<IGetResult<ISessionTeachPlan[]>> {
+    console.log('[CACHE] Using cached teach plan data');
+    return this.toResult(await storage.getTeachPlan());
+  }
+
+  placeTeachPlanData(data: ISessionTeachPlan[]) {
+    console.log('[CACHE] Caching teach plan data');
+    storage.storeTeachPlan(data);
   }
 
   private toResult<T>(data: T): IGetResult<T> {

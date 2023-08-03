@@ -3,34 +3,34 @@ import { ToastAndroid } from 'react-native';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
-import { cacheTeachPlanData, getTeachPlanData } from '../../data/teachPlan';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ISessionTeachPlan } from '../../models/teachPlan';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import SessionCard from './SessionCard';
+import { getWrappedClient } from '../../data/client';
+import { GetResultType, RequestType } from '../../models/results';
 
 const ShortTeachPlan = () => {
   const dispatch = useAppDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
   const [data, setData] = useState<ISessionTeachPlan[]>(null);
-
+  const client = getWrappedClient();
   const loadData = async (force?: boolean) => {
-    const result = await getTeachPlanData({ useCache: true, useCacheFirst: !force });
+    const result = await client.getTeachPlanData({
+      requestType: force ? RequestType.tryFetch : RequestType.tryCache,
+    });
 
     if (!result.data) {
       ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
       return;
     }
 
-    if (result.isLoginPage) {
+    if (result.type === GetResultType.loginPage) {
       dispatch(setAuthorizing(true));
       return;
     }
 
     setData(result.data);
-    if (result.fetched) {
-      cacheTeachPlanData(result.data);
-    }
   };
 
   useEffect(() => {

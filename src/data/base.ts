@@ -16,6 +16,9 @@ import { IGetRatingPayload, IRating } from '../models/rating';
 import { ISessionSignsData } from '../models/sessionPoints';
 import { ISessionMarks } from '../models/sessionMarks';
 import { IGetSignsPayload } from '../models/signs';
+import { MenuParseResult } from '../parser/menu';
+import { TeacherType } from '../models/teachers';
+import { ISessionTeachPlan } from '../models/teachPlan';
 
 export interface BaseClient {
   getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>>;
@@ -25,6 +28,9 @@ export interface BaseClient {
   getRatingData(payload: IGetRatingPayload): Promise<IGetResult<IRating>>;
   getSessionSignsData(payload: IGetSignsPayload): Promise<IGetResult<ISessionSignsData>>;
   getSessionMarksData(payload: IGetPayload): Promise<IGetResult<ISessionMarks[]>>;
+  getStudentInfoData(payload: IGetPayload): Promise<IGetResult<MenuParseResult>>;
+  getTeacherData(payload: IGetPayload): Promise<IGetResult<TeacherType>>;
+  getTeachPlanData(payload: IGetPayload): Promise<IGetResult<ISessionTeachPlan[]>>;
 }
 
 export class BasicClient<P extends IGetPayload, T> {
