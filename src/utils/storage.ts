@@ -10,7 +10,7 @@ import { ThemeType } from '../redux/reducers/settingsSlice';
 import { IOrder } from '../models/order';
 import { IMessagesData } from '../models/messages';
 import { StudentData } from '../models/student';
-import { IRating } from '../models/rating';
+import { ISessionRating } from '../models/rating';
 
 export default class Storage {
   async bumpReviewRequest() {
@@ -194,7 +194,7 @@ export default class Storage {
     return JSON.parse(stringData);
   }
 
-  storeRatingData(data: IRating) {
+  storeRatingData(data: ISessionRating) {
     AsyncStorage.setItem(`rating-${data.session.current}`, JSON.stringify(data));
   }
 }

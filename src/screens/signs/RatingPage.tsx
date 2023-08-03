@@ -8,7 +8,7 @@ import Screen from '../../components/Screen';
 import SessionDropdown from '../../components/SessionDropdown';
 import { getRatingData } from '../../data/rating';
 import { useAppDispatch, useGlobalStyles } from '../../hooks';
-import { IGroup, IRating } from '../../models/rating';
+import { IGroup, ISessionRating } from '../../models/rating';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { fontSize } from '../../utils/texts';
 import RightText from './RightText';
@@ -49,7 +49,7 @@ const Group = ({ group }: { group: IGroup }) => {
 };
 
 export default function RatingPage() {
-  const [data, setData] = useState<IRating>();
+  const [data, setData] = useState<ISessionRating>();
   const fetchedFirstTime = useRef<boolean>(false);
   const dispatch = useAppDispatch();
 

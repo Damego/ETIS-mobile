@@ -1,6 +1,6 @@
 import { load } from 'cheerio';
 
-import {IRating, OverallRating} from '../models/rating';
+import {ISessionRating, OverallRating} from '../models/rating';
 import parseSessionData from './session';
 import { getTextField } from './utils';
 
@@ -9,7 +9,7 @@ const numberRegex = /[0-9]+/gm;
 export default function parseRating(html: string) {
   const $ = load(html);
 
-  const data: IRating = {
+  const data: ISessionRating = {
     session: parseSessionData($),
     groups: [],
   };
