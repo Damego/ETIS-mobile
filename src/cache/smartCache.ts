@@ -76,7 +76,7 @@ export default class SmartCache {
     this.student = new FieldCache<StudentData>(this.keys.STUDENT);
 
     this.user = new SecuredFieldCache<UserCredentials>(this.keys.USER);
-    this.app = new FieldCache<AppConfig>(this.keys.CONFIG);
+    this.app = new FieldCache<AppConfig>(this.keys.APP);
   }
 
   // Announce Region
