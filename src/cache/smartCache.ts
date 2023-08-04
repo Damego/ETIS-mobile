@@ -8,7 +8,7 @@ import { ISessionPoints } from '../models/sessionPoints';
 import { ISessionRating } from '../models/rating';
 import SecuredFieldCache from './securedFieldCache';
 import { ThemeType } from '../redux/reducers/settingsSlice';
-import { ITeacher, TeacherType } from '../models/teachers';
+import { TeacherType } from '../models/teachers';
 import { IOrder } from '../models/order';
 import { IMessagesData } from '../models/messages';
 import { StudentData } from '../models/student';
@@ -40,7 +40,7 @@ export default class SmartCache {
 
     // Internal keys
     USER: 'USER',
-    CONFIG: 'CONFIG',
+    APP: 'APP',
   };
 
   private announce: FieldCache<string[]>;
@@ -58,7 +58,7 @@ export default class SmartCache {
   private student: FieldCache<StudentData>;
 
   private user: SecuredFieldCache<UserCredentials>;
-  private internal: FieldCache<AppConfig>;
+  private app: FieldCache<AppConfig>;
 
   constructor() {
     this.announce = new FieldCache(this.keys.ANNOUNCES);
@@ -76,7 +76,7 @@ export default class SmartCache {
     this.student = new FieldCache<StudentData>(this.keys.STUDENT);
 
     this.user = new SecuredFieldCache<UserCredentials>(this.keys.USER);
-    this.internal = new FieldCache<AppConfig>(this.keys.CONFIG);
+    this.app = new FieldCache<AppConfig>(this.keys.CONFIG);
   }
 
   // Announce Region
@@ -248,7 +248,7 @@ export default class SmartCache {
   // Internal Region
 
   getAppConfig() {
-    return this.internal.get();
+    return this.app.get();
   }
 
   getTheme() {
@@ -259,8 +259,8 @@ export default class SmartCache {
   async placeTheme(theme: ThemeType) {
     const data = this.getAppConfig();
     data.theme = theme;
-    this.internal.place(data);
-    await this.internal.save();
+    this.app.place(data);
+    await this.app.save();
   }
 
   getSignNotification() {
@@ -271,8 +271,8 @@ export default class SmartCache {
   async placeSignNotification(enabled: boolean) {
     const data = this.getAppConfig();
     data.signNotificationEnabled = enabled;
-    this.internal.place(data);
-    await this.internal.save();
+    this.app.place(data);
+    await this.app.save();
   }
 
   getIntroViewed() {
@@ -283,8 +283,8 @@ export default class SmartCache {
   async placeIntroViewed(status: boolean) {
     const data = this.getAppConfig();
     data.introViewed = status;
-    this.internal.place(data);
-    await this.internal.save();
+    this.app.place(data);
+    await this.app.save();
   }
 
   getReviewStep() {
@@ -294,7 +294,7 @@ export default class SmartCache {
   async setReviewStep(step: 'pending' | 'stop') {
     this.getAppConfig().reviewStep = step;
 
-    await this.internal.save();
+    await this.app.save();
   }
 
   async bumpReviewRequest() {
@@ -315,8 +315,26 @@ export default class SmartCache {
   async setPrivacyPolicyStatus(status: boolean) {
     this.getAppConfig().privacyPolicyAccepted = status;
 
-    await this.internal.save();
+    await this.app.save();
   }
 
   // End Internal Region
+
+  // Helper methods
+
+  async clear() {
+    await this.announce.delete();
+    await this.messages.clear();
+    await this.orders.list.delete();
+    await this.orders.info.clear();
+    await this.timeTable.clear();
+    await this.teachers.delete();
+    await this.teachPlan.delete();
+    await this.signsMarks.clear();
+    await this.signsPoints.clear();
+    await this.signsRating.clear();
+    await this.student.delete();
+    await this.user.delete();
+    // await this.app.delete();
+  }
 }
