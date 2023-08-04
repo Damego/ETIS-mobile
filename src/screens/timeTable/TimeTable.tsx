@@ -6,16 +6,17 @@ import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
 import { getTimeTableData } from '../../data/timeTable';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { ITimeTableGetProps } from '../../models/timeTable';
+import { ITimeTableGetProps, WeekTypes } from '../../models/timeTable';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import {
-  TimeTableState,
   addFetchedWeek,
   changeSelectedWeek,
   setCurrentWeek,
   setData,
+  TimeTableState,
 } from '../../redux/reducers/timeTableSlice';
 import DayArray from './DayArray';
+import HolidayView from "./HolidayView";
 
 const TimeTable = () => {
   const dispatch = useAppDispatch();
@@ -56,13 +57,13 @@ const TimeTable = () => {
     }
 
     // Очевидно, что это будет текущей неделей
-    if (!data) dispatch(setCurrentWeek(result.data.selectedWeek));
+    if (!data) dispatch(setCurrentWeek(result.data.weekInfo.selected));
 
     dispatch(setData(result.data));
     setLoading(false);
 
     if (result.fetched) {
-      dispatch(addFetchedWeek(result.data.selectedWeek));
+      dispatch(addFetchedWeek(result.data.weekInfo.selected));
     }
   };
 
@@ -75,13 +76,13 @@ const TimeTable = () => {
   return (
     <Screen onUpdate={() => loadData(true)}>
       <PageNavigator
-        firstPage={data.firstWeek}
-        lastPage={data.lastWeek}
-        currentPage={data.selectedWeek}
+        firstPage={data.weekInfo.first}
+        lastPage={data.weekInfo.last}
+        currentPage={data.weekInfo.selected}
         onPageChange={(week) => dispatch(changeSelectedWeek(week))}
       />
 
-      <DayArray data={data.days} />
+      {data.weekInfo.type === WeekTypes.common ? <DayArray data={data.days} /> : <HolidayView />}
     </Screen>
   );
 };

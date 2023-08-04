@@ -53,6 +53,6 @@ export const getTimeTableData = async ({
 };
 
 export const cacheTimeTableData = async (data: ITimeTable, week?: number) => {
-  console.log(`[DATA] Caching timetable for week ${week || data.selectedWeek}`);
-  await storage.storeTimeTableData(data, week || data.selectedWeek, !week);
+  console.log(`[DATA] Caching timetable for week ${week || data.weekInfo.selected}`);
+  await storage.storeTimeTableData(data, week || data.weekInfo.selected, !week);
 };

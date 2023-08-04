@@ -1,5 +1,18 @@
 import { IGetPayload } from './results';
 
+export enum WeekTypes {
+  // TODO: Add more types
+  common,
+  holiday,
+}
+
+export interface WeekInfo {
+  first: number;
+  selected: number;
+  last: number;
+  type: WeekTypes;
+}
+
 export interface ILesson {
   audience: string;
   subject: string;
@@ -13,9 +26,7 @@ export interface ITimeTableDay {
 }
 
 export interface ITimeTable {
-  firstWeek: number;
-  selectedWeek: number;
-  lastWeek: number;
+  weekInfo: WeekInfo;
   days: ITimeTableDay[];
 }
 

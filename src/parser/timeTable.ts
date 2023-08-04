@@ -1,16 +1,22 @@
 import { load } from 'cheerio';
 
-import { ILesson, ITimeTable } from '../models/timeTable';
+import { ILesson, ITimeTable, WeekInfo, WeekTypes } from '../models/timeTable';
 import { getTextField } from './utils';
 
 export default function parseTimeTable(html) {
   const $ = load(html);
   const week = $('.week');
+  const currentWeek = $('.week.current');
+
+  const weekInfo: WeekInfo = {
+    first: parseInt(week.first().text()),
+    selected: parseInt(currentWeek.text()),
+    last: parseInt(week.last().text()),
+    type: currentWeek.hasClass('holiday') ? WeekTypes.holiday : WeekTypes.common,
+  };
 
   const data: ITimeTable = {
-    firstWeek: parseInt(week.first().text()),
-    selectedWeek: parseInt($('.week.current').text()),
-    lastWeek: parseInt(week.last().text()),
+    weekInfo,
     days: [],
   };
 
