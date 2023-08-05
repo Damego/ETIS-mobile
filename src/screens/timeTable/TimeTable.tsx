@@ -5,8 +5,8 @@ import LoadingScreen from '../../components/LoadingScreen';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
 import { getTimeTableData } from '../../data/timeTable';
-import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ITimeTableGetProps, WeekTypes } from '../../models/timeTable';
+import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import {
   addFetchedWeek,
@@ -19,6 +19,7 @@ import DayArray from './DayArray';
 import HolidayView from "./HolidayView";
 
 const TimeTable = () => {
+  const globalStyles = useGlobalStyles();
   const dispatch = useAppDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
 
@@ -80,6 +81,15 @@ const TimeTable = () => {
         lastPage={data.weekInfo.last}
         currentPage={data.weekInfo.selected}
         onPageChange={(week) => dispatch(changeSelectedWeek(week))}
+        pageStyles={{
+          [currentWeek]: {
+            view: {
+              borderWidth: 2,
+              borderRadius: globalStyles.border.borderRadius,
+              borderColor: globalStyles.primaryFontColor.color,
+            },
+          },
+        }}
       />
 
       {data.weekInfo.type === WeekTypes.common ? <DayArray data={data.days} /> : <HolidayView />}
