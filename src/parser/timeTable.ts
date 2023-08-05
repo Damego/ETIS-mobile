@@ -3,6 +3,22 @@ import { load } from 'cheerio';
 import { ILesson, ITimeTable, WeekInfo, WeekTypes } from '../models/timeTable';
 import { getTextField } from './utils';
 
+const getWeekType = (week: cheerio.Cheerio): WeekTypes => {
+  if (week.hasClass("holiday")) {
+    return WeekTypes.holiday;
+  }
+  if (week.hasClass("session")) {
+    return WeekTypes.session;
+  }
+  if (week.hasClass("pract")) {
+    return WeekTypes.practice;
+  }
+  if (week.attr("title").includes("факультатив")) {
+    return WeekTypes.elective;
+  }
+  return WeekTypes.common;
+}
+
 export default function parseTimeTable(html) {
   const $ = load(html);
   const week = $('.week');
@@ -12,7 +28,7 @@ export default function parseTimeTable(html) {
     first: parseInt(week.first().text()),
     selected: parseInt(currentWeek.text()),
     last: parseInt(week.last().text()),
-    type: currentWeek.hasClass('holiday') ? WeekTypes.holiday : WeekTypes.common,
+    type: getWeekType(currentWeek)
   };
 
   const data: ITimeTable = {

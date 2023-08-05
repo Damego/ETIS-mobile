@@ -1,9 +1,11 @@
 import { IGetPayload } from './results';
 
 export enum WeekTypes {
-  // TODO: Add more types
   common,
+  session,
   holiday,
+  practice,
+  elective
 }
 
 export interface WeekInfo {
