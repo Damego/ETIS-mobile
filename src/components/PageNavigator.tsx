@@ -136,8 +136,8 @@ const PageNavigator = ({
       {buttons.map((number) =>
         currentPage !== number ? (
           <ClickableText
-            viewStyle={[styles.button, pageStyles[number].view]}
-            textStyle={[fontSize.large, pageStyles[number].text, globalStyles.textColor]}
+            viewStyle={[styles.button, pageStyles[number]?.view]}
+            textStyle={[fontSize.large, pageStyles[number]?.text, globalStyles.textColor]}
             text={number}
             onPress={() => onPageChange(number)}
             key={number}
