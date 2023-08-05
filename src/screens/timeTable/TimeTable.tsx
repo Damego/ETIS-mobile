@@ -19,7 +19,7 @@ import DayArray from './DayArray';
 import { useAppTheme } from '../../hooks/theme';
 
 const TimeTable = () => {
-  const theme = useAppTheme();
+  const globalStyles = useGlobalStyles();
   const dispatch = useAppDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
 
@@ -82,7 +82,13 @@ const TimeTable = () => {
         currentPage={data.selectedWeek}
         onPageChange={(week) => dispatch(changeSelectedWeek(week))}
         pageStyles={{
-          [currentWeek]: { view: { borderWidth: 1, borderColor: theme.colors.primary } },
+          [currentWeek]: {
+            view: {
+              borderWidth: 2,
+              borderRadius: globalStyles.border.borderRadius,
+              borderColor: globalStyles.primaryFontColor.color,
+            },
+          },
         }}
       />
 
