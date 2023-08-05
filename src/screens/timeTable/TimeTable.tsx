@@ -16,7 +16,6 @@ import {
   setData,
 } from '../../redux/reducers/timeTableSlice';
 import DayArray from './DayArray';
-import { useAppTheme } from '../../hooks/theme';
 
 const TimeTable = () => {
   const globalStyles = useGlobalStyles();
