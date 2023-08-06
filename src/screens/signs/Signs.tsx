@@ -7,7 +7,7 @@ import { composePointsAndMarks } from '../../data/signs';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { GetResultType, IGetResult, RequestType } from '../../models/results';
 import { ISessionMarks } from '../../models/sessionMarks';
-import { ISessionSignsData } from '../../models/sessionPoints';
+import { ISessionPoints } from '../../models/sessionPoints';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { setFetchedLatestSession, setMarks } from '../../redux/reducers/signsSlice';
 import CardSign from './CardSign';
@@ -24,7 +24,7 @@ const Signs = () => {
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const { sessionsMarks, fetchedLatestSession } = useAppSelector((state) => state.signs);
-  const [data, setData] = useState<ISessionSignsData>(null);
+  const [data, setData] = useState<ISessionPoints>(null);
   const client = getWrappedClient();
 
   const loadData = async ({ session, force }: loadDataPayload) => {
@@ -85,7 +85,15 @@ const Signs = () => {
 
   return (
     <Screen onUpdate={() => loadData({ force: true })}>
-      <View style={{ marginLeft: 'auto', marginRight: 0, paddingBottom: '2%', zIndex: 1 }}>
+      <View
+        style={{
+          marginTop: '2%',
+          marginLeft: 'auto',
+          marginRight: 0,
+          paddingBottom: '2%',
+          zIndex: 1,
+        }}
+      >
         <SessionDropdown
           currentSession={data.currentSession}
           latestSession={data.latestSession}

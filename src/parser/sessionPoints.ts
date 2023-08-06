@@ -1,11 +1,11 @@
 import { load } from 'cheerio';
 
-import { ICheckPoint, ISessionSignsData } from '../models/sessionPoints';
+import { ICheckPoint, ISessionPoints } from '../models/sessionPoints';
 import { getAsNumber, getTextField } from './utils';
 
-export default function parseSessionPoints(html): ISessionSignsData {
+export default function parseSessionPoints(html): ISessionPoints {
   const $ = load(html);
-  const data: ISessionSignsData = {
+  const data: ISessionPoints = {
     subjects: [],
     currentSession: null,
     latestSession: null,
@@ -23,7 +23,7 @@ export default function parseSessionPoints(html): ISessionSignsData {
         return;
       }
 
-      const failed = !!tr.attr("style")
+      const failed = !!tr.attr('style');
       const tds = tr.find('td');
       const fields = [];
 
@@ -59,7 +59,7 @@ export default function parseSessionPoints(html): ISessionSignsData {
         date,
         teacher,
         hasPoints,
-        failed
+        failed,
       });
     });
 

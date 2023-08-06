@@ -20,14 +20,14 @@ import { IGetMessagesPayload, IMessagesData } from '../models/messages';
 import { Response } from '../utils/http';
 import { IOrder } from '../models/order';
 import parseOrders from '../parser/order';
-import { IGetRatingPayload, IRating } from '../models/rating';
+import { IGetRatingPayload, ISessionRating } from '../models/rating';
 import parseRating from '../parser/rating';
-import { ISessionSignsData } from '../models/sessionPoints';
 import { IGetSignsPayload } from '../models/signs';
 import { ISessionMarks } from '../models/sessionMarks';
 import { MenuParseResult } from '../parser/menu';
 import { TeacherType } from '../models/teachers';
 import { ISessionTeachPlan } from '../models/teachPlan';
+import { ISessionPoints } from '../models/sessionPoints';
 
 export const getWrappedClient: () => BaseClient = () => {
   const { isDemo } = useAppSelector((state) => state.auth);
@@ -46,13 +46,13 @@ class TimeTableClient extends BasicClient<ITimeTableGetProps, ITimeTable> {
 }
 class MessageClient extends BasicClient<IGetMessagesPayload, IMessagesData> {}
 class OrderClient extends BasicClient<IGetPayload, IOrder[]> {}
-class RatingClient extends BasicClient<IGetRatingPayload, IRating> {}
-class SignsClient extends BasicClient<IGetSignsPayload, ISessionSignsData> {}
+class RatingClient extends BasicClient<IGetRatingPayload, ISessionRating> {}
+class SignsClient extends BasicClient<IGetSignsPayload, ISessionPoints> {}
 class MarksClient extends BasicClient<IGetPayload, ISessionMarks[]> {}
 class StudentClient extends BasicClient<IGetPayload, MenuParseResult> {}
 class TeachersClient extends BasicClient<IGetPayload, TeacherType> {}
 class TeachPlanClient extends BasicClient<IGetPayload, ISessionTeachPlan[]> {}
-
+class PartialSignClient extends BasicClient<IGetSignsPayload, ISessionPoints> {}
 export default class Client implements BaseClient {
   private readonly cache: Cache;
   private announceClient: AnnounceClient;
@@ -65,6 +65,7 @@ export default class Client implements BaseClient {
   private studentClient: StudentClient;
   private teacherClient: TeachersClient;
   private teachPlanClient: TeachPlanClient;
+  private partialSignClient: PartialSignClient;
 
   constructor() {
     this.cache = new Cache();
@@ -128,6 +129,12 @@ export default class Client implements BaseClient {
       parseShortTeachPlan,
       this.cache.placeTeachPlanData
     );
+    this.partialSignClient = new PartialSignClient(
+      ({ session }) => this.cache.getSignsData(session),
+      ({ session }) => httpClient.getSigns('current', session),
+      parseSessionPoints,
+      this.cache.placeSignsData
+    );
   }
   async getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>> {
     return this.announceClient.getData(payload);
@@ -145,10 +152,10 @@ export default class Client implements BaseClient {
     return this.orderClient.getData(payload);
   }
 
-  async getRatingData(payload: IGetRatingPayload): Promise<IGetResult<IRating>> {
+  async getRatingData(payload: IGetRatingPayload): Promise<IGetResult<ISessionRating>> {
     return this.ratingClient.getData(payload);
   }
-  async getSessionSignsData(payload: IGetSignsPayload): Promise<IGetResult<ISessionSignsData>> {
+  async getSessionSignsData(payload: IGetSignsPayload): Promise<IGetResult<ISessionPoints>> {
     return this.signsClient.getData(payload);
   }
   async getSessionMarksData(payload: IGetPayload): Promise<IGetResult<ISessionMarks[]>> {
@@ -162,5 +169,8 @@ export default class Client implements BaseClient {
   }
   async getTeachPlanData(payload: IGetPayload): Promise<IGetResult<ISessionTeachPlan[]>> {
     return this.teachPlanClient.getData(payload);
+  }
+  async getPartialSignData(payload: IGetSignsPayload): Promise<IGetResult<ISessionPoints>> {
+    return this.partialSignClient.getData(payload);
   }
 }

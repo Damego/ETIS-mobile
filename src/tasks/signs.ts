@@ -1,14 +1,15 @@
 import * as BackgroundFetch from 'expo-background-fetch';
 import * as TaskManager from 'expo-task-manager';
 
-import { getPartialSignsData } from '../data/signs';
 import { ICheckPoint, ISubject } from '../models/sessionPoints';
 import { sendNewMarkNotification } from '../utils/notifications';
 import { GetResultType, RequestType } from '../models/results';
+import Client from '../data/client';
+import { BaseClient } from '../data/base';
 
 const BACKGROUND_FETCH_TASK = 'signs-fetch';
-let currentSession;
-
+let currentSession: number;
+let client: BaseClient;
 interface IDifferentCheckPoint {
   oldResult: ICheckPoint;
   newResult: ICheckPoint;
@@ -47,8 +48,14 @@ const differenceSigns = (marks1: ISubject[], marks2: ISubject[]) => {
 export const defineFetchTask = () =>
   TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
     const [cachedResult, onlineResult] = await Promise.all([
-      await getPartialSignsData({ session: currentSession, requestType: RequestType.forceCache }),
-      await getPartialSignsData({ session: currentSession, requestType: RequestType.forceFetch }),
+      await client.getPartialSignData({
+        session: currentSession,
+        requestType: RequestType.forceCache,
+      }),
+      await client.getPartialSignData({
+        session: currentSession,
+        requestType: RequestType.forceFetch,
+      }),
     ]);
     let result;
 
@@ -93,7 +100,8 @@ export async function unregisterBackgroundFetchAsync() {
 }
 
 export const registerFetch = async () => {
-  currentSession = (await getPartialSignsData({ requestType: RequestType.forceFetch })).data
+  client = new Client();
+  currentSession = (await client.getPartialSignData({ requestType: RequestType.forceFetch })).data
     .currentSession;
   registerBackgroundFetchAsync().then(() => console.log('[FETCH] Signs fetch task registered'));
 };

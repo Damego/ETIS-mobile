@@ -3,12 +3,13 @@ import { BaseClient } from './base';
 import { ITimeTable, ITimeTableGetProps } from '../models/timeTable';
 import { IMessagesData, MessageType } from '../models/messages';
 import { IOrder } from '../models/order';
-import { IRating } from '../models/rating';
 import { ISessionMarks } from '../models/sessionMarks';
-import { ISessionSignsData } from '../models/sessionPoints';
 import { MenuParseResult } from '../parser/menu';
 import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
+import { ISessionRating } from '../models/rating';
+import { ISessionPoints } from '../models/sessionPoints';
+import { IGetSignsPayload } from '../models/signs';
 
 export default class DemoClient implements BaseClient {
   toResult<T>(data: T): IGetResult<T> {
@@ -130,8 +131,8 @@ export default class DemoClient implements BaseClient {
     return this.toResult(data);
   }
 
-  async getRatingData(): Promise<IGetResult<IRating>> {
-    const data: IRating = {
+  async getRatingData(): Promise<IGetResult<ISessionRating>> {
+    const data: ISessionRating = {
       session: {
         current: 1,
         latest: 1,
@@ -162,7 +163,6 @@ export default class DemoClient implements BaseClient {
       {
         session: 1,
         course: 1,
-        fullSessionNumber: 1,
         endDate: '30 декабря',
         disciplines: [
           {
@@ -183,8 +183,8 @@ export default class DemoClient implements BaseClient {
     return this.toResult(data);
   }
 
-  async getSessionSignsData(): Promise<IGetResult<ISessionSignsData>> {
-    const data: ISessionSignsData = {
+  async getSessionSignsData(): Promise<IGetResult<ISessionPoints>> {
+    const data: ISessionPoints = {
       subjects: [
         {
           checkPoints: [
@@ -515,5 +515,9 @@ export default class DemoClient implements BaseClient {
       ],
     ];
     return this.toResult(data);
+  }
+
+  async getPartialSignData(payload: IGetSignsPayload): Promise<IGetResult<ISessionPoints>> {
+    return null;
   }
 }

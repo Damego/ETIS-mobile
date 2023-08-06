@@ -21,7 +21,7 @@ export interface ISubject {
   mark?: string;
 }
 
-export interface ISessionSignsData {
+export interface ISessionPoints {
   subjects: ISubject[];
   currentSession: number;
   latestSession: number;

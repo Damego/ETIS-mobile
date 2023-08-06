@@ -4,10 +4,11 @@ import { ToastAndroid } from 'react-native';
 import LoadingScreen from '../../components/LoadingScreen';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import {
   addFetchedWeek,
   changeSelectedWeek,
+  setCurrentWeek,
   setData,
   TimeTableState,
 } from '../../redux/reducers/timeTableSlice';
@@ -18,6 +19,7 @@ import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { ITimeTableGetProps } from '../../models/timeTable';
 
 const TimeTable = () => {
+  const globalStyles = useGlobalStyles();
   const dispatch = useAppDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
   const client = getWrappedClient();
@@ -56,7 +58,7 @@ const TimeTable = () => {
     }
 
     // Очевидно, что это будет текущей неделей
-    // if (!data) dispatch(setCurrentWeek(result.data.selectedWeek));
+    if (!data) dispatch(setCurrentWeek(result.data.selectedWeek));
 
     dispatch(setData(result.data));
     setLoading(false);
@@ -79,6 +81,15 @@ const TimeTable = () => {
         lastPage={data.lastWeek}
         currentPage={data.selectedWeek}
         onPageChange={(week) => dispatch(changeSelectedWeek(week))}
+        pageStyles={{
+          [currentWeek]: {
+            view: {
+              borderWidth: 2,
+              borderRadius: globalStyles.border.borderRadius,
+              borderColor: globalStyles.primaryFontColor.color,
+            },
+          },
+        }}
       />
 
       <DayArray data={data.days} />

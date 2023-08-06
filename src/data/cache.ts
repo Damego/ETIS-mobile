@@ -3,13 +3,13 @@ import { storage } from '../utils';
 import { ITimeTable } from '../models/timeTable';
 import { IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
-import { IRating } from '../models/rating';
-import { ISessionSignsData } from '../models/sessionPoints';
 import { ISessionMarks } from '../models/sessionMarks';
 import { MenuParseResult } from '../parser/menu';
 import { StudentData } from '../models/student';
 import { TeacherType } from '../models/teachers';
 import { ISessionTeachPlan } from '../models/teachPlan';
+import { ISessionRating } from '../models/rating';
+import { ISessionPoints } from '../models/sessionPoints';
 
 const toResult = <T>(data: T): IGetResult<T> => ({
   type: GetResultType.cached,
@@ -66,7 +66,7 @@ export default class Cache {
     return toResult(await storage.getRatingData(session));
   }
 
-  placeRatingData(data: IRating) {
+  placeRatingData(data: ISessionRating) {
     console.log('[CACHE] Caching rating data...');
     storage.storeRatingData(data);
   }
@@ -76,7 +76,7 @@ export default class Cache {
     return toResult(await storage.getSignsData(session));
   }
 
-  placeSignsData(data: ISessionSignsData, storeForUndefined?: boolean) {
+  placeSignsData(data: ISessionPoints, storeForUndefined?: boolean) {
     console.log(`[CACHE] caching signs data for ${data.currentSession} session`);
     storage.storeSignsData(data, storeForUndefined);
   }
@@ -99,7 +99,7 @@ export default class Cache {
       messageCount: null,
       studentInfo: await storage.getStudentData(),
     };
-    return toResult(data);
+    return toResult(data.studentInfo ? data : null);
   }
 
   placeStudentData(data: StudentData) {

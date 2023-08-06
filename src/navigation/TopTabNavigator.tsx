@@ -12,6 +12,7 @@ export default function SignsTopTabNavigator() {
   return (
     <Tab.Navigator
       screenOptions={{
+        lazy: true,
         tabBarStyle: {
           backgroundColor: theme.colors.background,
           elevation: 0,

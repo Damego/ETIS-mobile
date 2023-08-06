@@ -12,25 +12,26 @@ import { IGetMessagesPayload, IMessagesData } from '../models/messages';
 import { Response } from '../utils/http';
 import { isLoginPage } from '../parser/utils';
 import { IOrder } from '../models/order';
-import { IGetRatingPayload, IRating } from '../models/rating';
-import { ISessionSignsData } from '../models/sessionPoints';
+import { IGetRatingPayload, ISessionRating } from '../models/rating';
 import { ISessionMarks } from '../models/sessionMarks';
 import { IGetSignsPayload } from '../models/signs';
 import { MenuParseResult } from '../parser/menu';
 import { TeacherType } from '../models/teachers';
 import { ISessionTeachPlan } from '../models/teachPlan';
+import { ISessionPoints } from '../models/sessionPoints';
 
 export interface BaseClient {
   getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>>;
   getTimeTableData(payload: ITimeTableGetProps): Promise<IGetResult<ITimeTable>>;
   getMessagesData(payload: IGetMessagesPayload): Promise<IGetResult<IMessagesData>>;
   getOrdersData(payload: IGetPayload): Promise<IGetResult<IOrder[]>>;
-  getRatingData(payload: IGetRatingPayload): Promise<IGetResult<IRating>>;
-  getSessionSignsData(payload: IGetSignsPayload): Promise<IGetResult<ISessionSignsData>>;
+  getRatingData(payload: IGetRatingPayload): Promise<IGetResult<ISessionRating>>;
+  getSessionSignsData(payload: IGetSignsPayload): Promise<IGetResult<ISessionPoints>>;
   getSessionMarksData(payload: IGetPayload): Promise<IGetResult<ISessionMarks[]>>;
   getStudentInfoData(payload: IGetPayload): Promise<IGetResult<MenuParseResult>>;
   getTeacherData(payload: IGetPayload): Promise<IGetResult<TeacherType>>;
   getTeachPlanData(payload: IGetPayload): Promise<IGetResult<ISessionTeachPlan[]>>;
+  getPartialSignData(payload: IGetSignsPayload): Promise<IGetResult<ISessionPoints>>;
 }
 
 export class BasicClient<P extends IGetPayload, T> {

@@ -15,11 +15,11 @@ export interface IDisciplineRanking extends OverallRating {
 
 export interface IGroup {
   name: string;
-  overall: OverallRating;
+  overall?: OverallRating;
   disciplines: IDisciplineRanking[];
 }
 
-export interface IRating {
+export interface ISessionRating {
   session: ISession;
   groups: IGroup[];
 }
