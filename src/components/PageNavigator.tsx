@@ -95,7 +95,7 @@ const PageNavigator = ({
   currentPage,
   lastPage,
   onPageChange,
-  pageStyles,
+  pageStyles = {}
 }: {
   firstPage: number;
   currentPage: number;
