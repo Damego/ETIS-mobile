@@ -1,9 +1,7 @@
 import { load } from 'cheerio';
-import { isLoginPage } from './utils';
 
 export default function parseAnnounce(html: string): string[] | null {
   const $ = load(html);
-  if (isLoginPage($.html())) return null;
 
   const data: string[] = [];
 

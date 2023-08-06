@@ -8,7 +8,8 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setAnnounceCount } from '../../redux/reducers/studentSlice';
 import AnnounceCard from './AnnounceCard';
 import { getWrappedClient } from '../../data/client';
-import { RequestType } from '../../models/results';
+import { GetResultType, RequestType } from '../../models/results';
+import { setAuthorizing } from '../../redux/reducers/authSlice';
 
 export default function Announce() {
   const dispatch = useAppDispatch();
@@ -24,6 +25,11 @@ export default function Announce() {
     const result = await client.getAnnounceData({
       requestType: !force && announceCount === null ? RequestType.tryCache : RequestType.tryFetch,
     });
+
+    if (result.type === GetResultType.loginPage) {
+      dispatch(setAuthorizing(true));
+      return;
+    }
 
     if (!result.data) {
       ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);

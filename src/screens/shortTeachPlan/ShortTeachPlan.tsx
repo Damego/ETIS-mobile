@@ -20,13 +20,13 @@ const ShortTeachPlan = () => {
       requestType: force ? RequestType.tryFetch : RequestType.tryCache,
     });
 
-    if (!result.data) {
-      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
+    if (result.type === GetResultType.loginPage) {
+      dispatch(setAuthorizing(true));
       return;
     }
 
-    if (result.type === GetResultType.loginPage) {
-      dispatch(setAuthorizing(true));
+    if (!result.data) {
+      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
       return;
     }
 

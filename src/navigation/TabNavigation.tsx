@@ -12,7 +12,8 @@ import ServicesStackNavigator from './ServicesStackNavigator';
 import SignsTopTabNavigator from './TopTabNavigator';
 import { headerParams } from './header';
 import { getWrappedClient } from '../data/client';
-import { RequestType } from '../models/results';
+import { GetResultType, RequestType } from '../models/results';
+import { setAuthorizing } from '../redux/reducers/authSlice';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,6 +28,11 @@ const TabNavigator = () => {
   const isDemo = useAppSelector((state) => state.auth.isDemo);
   const loadData = async () => {
     const result = await client.getStudentInfoData({ requestType: RequestType.tryCache });
+    if (result.type === GetResultType.loginPage) {
+      dispatch(setAuthorizing(true));
+      return;
+    }
+
     const data = result.data;
 
     dispatch(setStudentInfo(data.studentInfo));

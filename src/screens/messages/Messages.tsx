@@ -9,6 +9,8 @@ import { IMessagesData } from '../../models/messages';
 import { setMessageCount } from '../../redux/reducers/studentSlice';
 import MessagePreview from './MessagePreview';
 import { getWrappedClient } from '../../data/client';
+import { GetResultType, RequestType } from '../../models/results';
+import { setAuthorizing } from '../../redux/reducers/authSlice';
 
 const Messages = () => {
   const dispatch = useAppDispatch();
@@ -21,9 +23,14 @@ const Messages = () => {
 
     const result = await client.getMessagesData({
       page,
-      forceFetch: false,
-      forceCache: !force && fetchedPages.current.includes(page),
+      requestType:
+        !force && fetchedPages.current.includes(page) ? RequestType.tryCache : RequestType.tryFetch,
     });
+
+    if (result.type === GetResultType.loginPage) {
+      dispatch(setAuthorizing(true));
+      return;
+    }
 
     if (!result.data) {
       ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);

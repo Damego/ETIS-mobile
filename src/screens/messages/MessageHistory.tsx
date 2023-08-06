@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ToastAndroid } from 'react-native';
 
 import Screen from '../../components/Screen';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { IMessage } from '../../models/messages';
 import { UploadFile } from '../../models/other';
 import { parseDate } from '../../parser/utils';
@@ -10,13 +10,15 @@ import { httpClient } from '../../utils';
 import Message from './Message';
 import MessageInput, { FilesPreview } from './MessageInput';
 import { getWrappedClient } from '../../data/client';
-import { RequestType } from '../../models/results';
+import { GetResultType, RequestType } from '../../models/results';
+import { setAuthorizing } from '../../redux/reducers/authSlice';
 
 export default function MessageHistory({ route, navigation }) {
   const [data, setData] = useState<IMessage[]>(route.params.data);
   const pageRef = useRef<number>(route.params.page);
   const [isUploading, setUploading] = useState<boolean>(false);
   const isDemo = useAppSelector((state) => state.auth.isDemo);
+  const dispatch = useAppDispatch();
 
   const [mainMessage] = data;
   const { author } = mainMessage;
@@ -30,6 +32,11 @@ export default function MessageHistory({ route, navigation }) {
       page: pageRef.current,
       requestType: RequestType.tryFetch,
     });
+
+    if (result.type === GetResultType.loginPage) {
+      dispatch(setAuthorizing(true));
+      return;
+    }
 
     for (const messageBlock of result.data.messages) {
       const [mainMsg] = messageBlock;
