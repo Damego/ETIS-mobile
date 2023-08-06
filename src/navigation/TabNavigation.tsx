@@ -24,6 +24,7 @@ const TabNavigator = () => {
   const { messageCount, announceCount } = useAppSelector((state) => state.student);
   const sendNotifications = useAppSelector((state) => state.settings.signNotification);
   const client = getWrappedClient();
+  const isDemo = useAppSelector((state) => state.auth.isDemo);
   const loadData = async () => {
     const result = await client.getStudentInfoData({ requestType: RequestType.tryCache });
     const data = result.data;
@@ -34,7 +35,7 @@ const TabNavigator = () => {
   };
 
   useEffect(() => {
-    if (sendNotifications) {
+    if (sendNotifications && !isDemo) {
       registerFetch();
     }
     loadData();
