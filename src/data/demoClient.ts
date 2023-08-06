@@ -456,8 +456,64 @@ export default class DemoClient implements BaseClient {
     return this.toResult(data);
   }
 
-  async getTeacherData(payload: IGetPayload): Promise<IGetResult<TeacherType>> {
-    const data: TeacherType = []; // TODO: add data
+  async getTeacherData(): Promise<IGetResult<TeacherType>> {
+    const data: TeacherType = [
+      [
+        'Математический анализ',
+        [
+          {
+            photo: 'img_peo_pkg.get_d_img',
+            name: 'Иванов Иван Петрович',
+            cathedra: 'Кафедра фундаментальной математики',
+            subjectUntyped: 'Математический анализ',
+            subjectType: 'лек, практ',
+            photoTitle: 'Фотография загружена 01.01.2000',
+          },
+          {
+            photo: 'img_peo_pkg.get_d_img',
+            name: 'Иванов Петр Иванович',
+            cathedra: 'Кафедра фундаментальной математики',
+            subjectUntyped: 'Математический анализ',
+            subjectType: 'экзамен',
+            photoTitle: 'Фотография загружена 01.01.2000',
+          },
+        ],
+      ],
+      [
+        'Комплексный анализ',
+        [
+          {
+            photo: 'img_peo_pkg.get_d_img',
+            name: 'Иванов Иван Петрович',
+            cathedra: 'Кафедра фундаментальной математики',
+            subjectUntyped: 'Комплексный анализ',
+            subjectType: 'практ',
+            photoTitle: 'Фотография загружена 01.01.2000',
+          },
+          {
+            photo: 'img_peo_pkg.get_d_img',
+            name: 'Иванов Петр Иванович',
+            cathedra: 'Кафедра фундаментальной математики',
+            subjectUntyped: 'Комплексный анализ',
+            subjectType: 'лек, зачет',
+            photoTitle: 'Фотография загружена 01.01.2000',
+          },
+        ],
+      ],
+      [
+        'Функциональный анализ',
+        [
+          {
+            photo: 'img_peo_pkg.get_d_img',
+            name: 'Иванов Иван Петрович',
+            cathedra: 'Кафедра фундаментальной математики',
+            subjectUntyped: 'Комплексный анализ',
+            subjectType: 'лек, практ, зачет',
+            photoTitle: 'Фотография загружена 01.01.2000',
+          },
+        ],
+      ],
+    ];
     return this.toResult(data);
   }
 }
