@@ -11,6 +11,7 @@ import { IOrder } from '../models/order';
 import { IMessagesData } from '../models/messages';
 import { StudentData } from '../models/student';
 import { ISessionRating } from '../models/rating';
+import {ICalendarSchedule} from "../models/calendarSchedule";
 
 export default class Storage {
   async bumpReviewRequest() {
@@ -143,6 +144,15 @@ export default class Storage {
 
   storeTeachPlan(data: ISessionTeachPlan[]) {
     return AsyncStorage.setItem('teachPlan', JSON.stringify(data));
+  }
+
+  async getCalendarSchedule(): Promise<ICalendarSchedule> {
+    const stringData = await AsyncStorage.getItem("CALENDAR_SCHEDULE");
+    return JSON.parse(stringData);
+  }
+
+  storeCalendarSchedule(data: ICalendarSchedule) {
+    AsyncStorage.setItem("CALENDAR_SCHEDULE", JSON.stringify(data));
   }
 
   async getAnnounceData(): Promise<string[]> {

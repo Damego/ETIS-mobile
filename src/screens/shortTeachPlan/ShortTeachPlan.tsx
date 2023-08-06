@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ISessionTeachPlan } from '../../models/teachPlan';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import SessionCard from './SessionCard';
+import CalendarSchedule from "./CalendarSchedule";
 
 const ShortTeachPlan = () => {
   const dispatch = useAppDispatch();
@@ -41,6 +42,8 @@ const ShortTeachPlan = () => {
 
   return (
     <Screen onUpdate={() => loadData(true)}>
+      <CalendarSchedule />
+
       {data.map((session) => (
         <SessionCard data={session} key={session.stringSession} />
       ))}
