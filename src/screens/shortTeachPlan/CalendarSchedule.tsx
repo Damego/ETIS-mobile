@@ -23,6 +23,7 @@ const SessionSchedule = ({ session }: { session: ISessionSchedule }) => {
           alignContent: 'center',
         }}
         onPress={() => setOpened(!isOpened)}
+        activeOpacity={0.45}
       >
         <Text
           style={[
@@ -45,6 +46,26 @@ const SessionSchedule = ({ session }: { session: ISessionSchedule }) => {
   );
 };
 
+const CalendarScheduleMenu = ({ data }: { data?: ICalendarSchedule }) => {
+  const globalStyles = useGlobalStyles();
+
+  return (
+    <View>
+      <BorderLine />
+      {data ? (
+        data.sessions.map((session, index) => (
+          <View key={session.title}>
+            <SessionSchedule session={session} />
+            {index !== data.sessions.length - 1 && <BorderLine />}
+          </View>
+        ))
+      ) : (
+        <ActivityIndicator size="large" color={globalStyles.primaryFontColor.color} />
+      )}
+    </View>
+  );
+};
+
 export default function CalendarSchedule() {
   const globalStyles = useGlobalStyles();
   const [isOpened, setOpened] = useState(false);
@@ -56,7 +77,7 @@ export default function CalendarSchedule() {
 
     const result = await getCalendarSchedule({
       useCache: true,
-      useCacheFirst: false, // TODO: ...
+      useCacheFirst: false, // TODO: Когда нужно фетчить?
     });
 
     if (!result.data) {
@@ -73,12 +94,10 @@ export default function CalendarSchedule() {
   };
 
   const handlePress = () => {
-    if (!isOpened) {
-      setOpened(true);
-      if (!data) loadData();
-    } else {
-      setOpened(false);
-    }
+    if (isOpened) return setOpened(false);
+
+    setOpened(true);
+    if (!data) loadData();
   };
 
   return (
@@ -87,6 +106,7 @@ export default function CalendarSchedule() {
         {
           paddingVertical: '2%',
           paddingHorizontal: '2%',
+          marginBottom: '2%',
         },
         globalStyles.block,
         globalStyles.border,
@@ -95,26 +115,20 @@ export default function CalendarSchedule() {
       <TouchableOpacity
         onPress={handlePress}
         style={{
+          paddingVertical: '2%',
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
         }}
+        activeOpacity={0.45}
       >
-        <Text style={[{ fontWeight: '600' }, fontSize.medium]}>Календарный учебный график</Text>
+        <Text style={[{ fontWeight: '600' }, fontSize.medium, globalStyles.textColor]}>
+          Календарный учебный график
+        </Text>
         <AntDesign name={isOpened ? 'up' : 'down'} size={18} color={globalStyles.textColor.color} />
       </TouchableOpacity>
 
-      {isOpened && !data && (
-        <ActivityIndicator size="large" color={globalStyles.primaryFontColor.color} />
-      )}
-      {isOpened &&
-        data &&
-        data.sessions.map((session, index) => (
-          <View key={session.title}>
-            <SessionSchedule session={session} />
-            {index !== data.sessions.length - 1 && <BorderLine />}
-          </View>
-        ))}
+      {isOpened && <CalendarScheduleMenu data={data} />}
     </View>
   );
 }
