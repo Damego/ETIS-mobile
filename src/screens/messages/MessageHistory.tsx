@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ToastAndroid } from 'react-native';
 
 import Screen from '../../components/Screen';
-import { useAppDispatch } from '../../hooks';
+import { useAppSelector } from '../../hooks';
 import { IMessage } from '../../models/messages';
 import { UploadFile } from '../../models/other';
 import { parseDate } from '../../parser/utils';
@@ -10,12 +10,13 @@ import { httpClient } from '../../utils';
 import Message from './Message';
 import MessageInput, { FilesPreview } from './MessageInput';
 import { getWrappedClient } from '../../data/client';
+import { RequestType } from '../../models/results';
 
 export default function MessageHistory({ route, navigation }) {
-  const dispatch = useAppDispatch();
   const [data, setData] = useState<IMessage[]>(route.params.data);
   const pageRef = useRef<number>(route.params.page);
   const [isUploading, setUploading] = useState<boolean>(false);
+  const isDemo = useAppSelector((state) => state.auth.isDemo);
 
   const [mainMessage] = data;
   const { author } = mainMessage;
@@ -27,8 +28,7 @@ export default function MessageHistory({ route, navigation }) {
   const loadData = async () => {
     const result = await client.getMessagesData({
       page: pageRef.current,
-      forceFetch: true,
-      forceCache: false,
+      requestType: RequestType.tryFetch,
     });
 
     for (const messageBlock of result.data.messages) {
@@ -97,7 +97,12 @@ export default function MessageHistory({ route, navigation }) {
         ))}
       </Screen>
       {files.length !== 0 && <FilesPreview files={files} onFileRemove={onFileRemove} />}
-      <MessageInput onFileSelect={onFileSelect} onSubmit={onSubmit} showLoading={isUploading} />
+      <MessageInput
+        onFileSelect={onFileSelect}
+        onSubmit={onSubmit}
+        showLoading={isUploading}
+        disabled={isDemo}
+      />
     </>
   );
 }
