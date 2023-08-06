@@ -9,7 +9,6 @@ import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
 import { ISessionRating } from '../models/rating';
 import { ISessionPoints } from '../models/sessionPoints';
-import { IGetSignsPayload } from '../models/signs';
 
 export default class DemoClient implements BaseClient {
   toResult<T>(data: T): IGetResult<T> {
@@ -515,9 +514,5 @@ export default class DemoClient implements BaseClient {
       ],
     ];
     return this.toResult(data);
-  }
-
-  async getPartialSignData(payload: IGetSignsPayload): Promise<IGetResult<ISessionPoints>> {
-    return null;
   }
 }

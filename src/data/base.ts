@@ -31,7 +31,6 @@ export interface BaseClient {
   getStudentInfoData(payload: IGetPayload): Promise<IGetResult<MenuParseResult>>;
   getTeacherData(payload: IGetPayload): Promise<IGetResult<TeacherType>>;
   getTeachPlanData(payload: IGetPayload): Promise<IGetResult<ISessionTeachPlan[]>>;
-  getPartialSignData(payload: IGetSignsPayload): Promise<IGetResult<ISessionPoints>>;
 }
 
 export class BasicClient<P extends IGetPayload, T> {

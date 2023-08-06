@@ -52,7 +52,6 @@ class MarksClient extends BasicClient<IGetPayload, ISessionMarks[]> {}
 class StudentClient extends BasicClient<IGetPayload, MenuParseResult> {}
 class TeachersClient extends BasicClient<IGetPayload, TeacherType> {}
 class TeachPlanClient extends BasicClient<IGetPayload, ISessionTeachPlan[]> {}
-class PartialSignClient extends BasicClient<IGetSignsPayload, ISessionPoints> {}
 export default class Client implements BaseClient {
   private readonly cache: Cache;
   private announceClient: AnnounceClient;
@@ -65,7 +64,6 @@ export default class Client implements BaseClient {
   private studentClient: StudentClient;
   private teacherClient: TeachersClient;
   private teachPlanClient: TeachPlanClient;
-  private partialSignClient: PartialSignClient;
 
   constructor() {
     this.cache = new Cache();
@@ -129,12 +127,6 @@ export default class Client implements BaseClient {
       parseShortTeachPlan,
       this.cache.placeTeachPlanData
     );
-    this.partialSignClient = new PartialSignClient(
-      ({ session }) => this.cache.getSignsData(session),
-      ({ session }) => httpClient.getSigns('current', session),
-      parseSessionPoints,
-      this.cache.placeSignsData
-    );
   }
   async getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>> {
     return this.announceClient.getData(payload);
@@ -169,8 +161,5 @@ export default class Client implements BaseClient {
   }
   async getTeachPlanData(payload: IGetPayload): Promise<IGetResult<ISessionTeachPlan[]>> {
     return this.teachPlanClient.getData(payload);
-  }
-  async getPartialSignData(payload: IGetSignsPayload): Promise<IGetResult<ISessionPoints>> {
-    return this.partialSignClient.getData(payload);
   }
 }
