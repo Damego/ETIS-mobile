@@ -75,7 +75,7 @@ export default class Client implements BaseClient {
     );
     this.timeTableClient = new TimeTableClient(
       ({ week }) => this.cache.getTimeTableData(week),
-      () => httpClient.getTimeTable(),
+      ({ week }) => httpClient.getTimeTable({ week }),
       parseTimeTable,
       this.cache.placeTimeTableData
     );
