@@ -87,7 +87,7 @@ export class BasicClient<P extends IGetPayload, T> {
   async getData(payload: P): Promise<IGetResult<T>> {
     console.log(`[DATA] Try retrieve ${this.name}`);
     const cached: IGetResult<T> = await this.tryCached(payload);
-    if (cached) {
+    if (cached?.data) {
       console.log(`[DATA] Retrieved ${this.name} from cache`);
       return cached;
     }

@@ -11,6 +11,7 @@ import { IOrder } from '../models/order';
 import { IMessagesData } from '../models/messages';
 import { StudentData } from '../models/student';
 import { IRating } from '../models/rating';
+import { ISessionMarks } from '../models/sessionMarks';
 
 export default class Storage {
   async bumpReviewRequest() {
@@ -99,7 +100,7 @@ export default class Storage {
     if (storeForUndefined) AsyncStorage.setItem(`signs-undefined`, stringData);
   }
 
-  async getMarksData() {
+  async getMarksData(): Promise<ISessionMarks[]> {
     const stringData = await AsyncStorage.getItem(`marks`);
     return JSON.parse(stringData);
   }

@@ -62,7 +62,7 @@ const Signs = () => {
 
     let marksResult: IGetResult<ISessionMarks[]>;
     if (sessionsMarks.length === 0) {
-      marksResult = await client.getSessionMarksData({ requestType: RequestType.forceCache });
+      marksResult = await client.getSessionMarksData({ requestType: RequestType.tryFetch });
       if (marksResult.data) {
         dispatch(setMarks(marksResult.data));
       }

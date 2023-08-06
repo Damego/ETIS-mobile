@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setAnnounceCount } from '../../redux/reducers/studentSlice';
 import AnnounceCard from './AnnounceCard';
 import { getWrappedClient } from '../../data/client';
+import { RequestType } from '../../models/results';
 
 export default function Announce() {
   const dispatch = useAppDispatch();
@@ -21,8 +22,7 @@ export default function Announce() {
 
   const loadData = async (force?: boolean) => {
     const result = await client.getAnnounceData({
-      forceFetch: true,
-      forceCache: !force && announceCount === null,
+      requestType: !force && announceCount === null ? RequestType.tryCache : RequestType.tryFetch,
     });
 
     if (!result.data) {

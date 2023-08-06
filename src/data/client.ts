@@ -54,7 +54,7 @@ class TeachersClient extends BasicClient<IGetPayload, TeacherType> {}
 class TeachPlanClient extends BasicClient<IGetPayload, ISessionTeachPlan[]> {}
 
 export default class Client implements BaseClient {
-  private cache: Cache;
+  private readonly cache: Cache;
   private announceClient: AnnounceClient;
   private timeTableClient: TimeTableClient;
   private messageClient: MessageClient;
@@ -70,7 +70,7 @@ export default class Client implements BaseClient {
     this.cache = new Cache();
     this.announceClient = new AnnounceClient(
       this.cache.getAnnounceData,
-      () => httpClient.getAnnounce(), // need bind http client order to httpClient is class
+      () => httpClient.getAnnounce(),
       parseAnnounce,
       this.cache.placeAnnounceData
     );
@@ -118,7 +118,7 @@ export default class Client implements BaseClient {
     );
     this.teacherClient = new TeachersClient(
       this.cache.getTeacherData,
-      () => httpClient.getGroupJournal(),
+      () => httpClient.getTeachers(),
       parseTeachers,
       this.cache.placeTeacherData
     );
