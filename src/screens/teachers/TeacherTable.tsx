@@ -4,27 +4,27 @@ import { useDispatch } from 'react-redux';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
-import { cacheTeacherData, getTeacherData } from '../../data/teachers';
 import { useAppSelector } from '../../hooks';
-import { IGetPayload } from '../../models/results';
+import { GetResultType, IGetPayload, RequestType } from '../../models/results';
 import { TeacherType } from '../../models/teachers';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import TeacherCard from './TeacherCard';
+import { getWrappedClient } from '../../data/client';
 
 const TeacherTable = () => {
   const dispatch = useDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
 
   const [data, setData] = useState<TeacherType>(null);
+  const client = getWrappedClient();
 
   const loadData = async () => {
     const payload: IGetPayload = {
-      useCache: true,
-      useCacheFirst: false,
+      requestType: RequestType.tryFetch,
     };
-    const result = await getTeacherData(payload);
+    const result = await client.getTeacherData(payload);
 
-    if (result.isLoginPage) {
+    if (result.type === GetResultType.loginPage) {
       dispatch(setAuthorizing(true));
       return;
     }
@@ -35,9 +35,6 @@ const TeacherTable = () => {
     }
 
     setData(result.data);
-    if (result.fetched) {
-      cacheTeacherData(result.data);
-    }
   };
 
   useEffect(() => {

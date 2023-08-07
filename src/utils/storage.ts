@@ -10,6 +10,7 @@ import { ThemeType } from '../redux/reducers/settingsSlice';
 import { IOrder } from '../models/order';
 import { IMessagesData } from '../models/messages';
 import { StudentData } from '../models/student';
+import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionRating } from '../models/rating';
 
 export default class Storage {
@@ -68,13 +69,13 @@ export default class Storage {
     return JSON.parse(stringData);
   }
 
-  async storeTimeTableData(data: ITimeTable, week?: number, saveAsCurrent?: boolean) {
+  storeTimeTableData(data: ITimeTable, week?: number, saveAsCurrent?: boolean) {
     const stringData = JSON.stringify(data);
 
     if (week === undefined) {
-      await AsyncStorage.setItem('timetable-current', stringData);
+      AsyncStorage.setItem('timetable-current', stringData);
     } else {
-      await AsyncStorage.setItem(`timetable-${week}`, stringData);
+      AsyncStorage.setItem(`timetable-${week}`, stringData);
       if (saveAsCurrent) AsyncStorage.setItem('timetable-current', stringData);
     }
   }
@@ -119,12 +120,12 @@ export default class Storage {
     if (storeForUndefined) AsyncStorage.setItem(`signs-undefined`, stringData);
   }
 
-  async getMarksData() {
+  async getMarksData(): Promise<ISessionMarks[]> {
     const stringData = await AsyncStorage.getItem(`marks`);
     return JSON.parse(stringData);
   }
 
-  async storeMarksData(data) {
+  storeMarksData(data) {
     return AsyncStorage.setItem(`marks`, JSON.stringify(data));
   }
 
@@ -180,15 +181,15 @@ export default class Storage {
   }
 
   storeOrdersData(data: IOrder[]) {
-    AsyncStorage.setItem('orders', JSON.stringify(data))
+    return AsyncStorage.setItem('orders', JSON.stringify(data));
   }
 
   async getOrderHTML(orderID: string): Promise<string> {
-    return await AsyncStorage.getItem(`order-${orderID}`)
+    return await AsyncStorage.getItem(`order-${orderID}`);
   }
 
   storeOrderHTML(orderID: string, html: string) {
-    AsyncStorage.setItem(`order-${orderID}`, html);
+    return AsyncStorage.setItem(`order-${orderID}`, html);
   }
 
   async getMessages(page: number): Promise<IMessagesData> {
@@ -197,7 +198,7 @@ export default class Storage {
   }
 
   storeMessages(data: IMessagesData) {
-    AsyncStorage.setItem(`messages-${data.page}`, JSON.stringify(data));
+    return AsyncStorage.setItem(`messages-${data.page}`, JSON.stringify(data));
   }
 
   async getStudentData(): Promise<StudentData> {
@@ -206,7 +207,7 @@ export default class Storage {
   }
 
   storeStudentData(data: StudentData) {
-    AsyncStorage.setItem('student', JSON.stringify(data))
+    return AsyncStorage.setItem('student', JSON.stringify(data));
   }
 
   async getRatingData(session: number) {
@@ -215,6 +216,6 @@ export default class Storage {
   }
 
   storeRatingData(data: ISessionRating) {
-    AsyncStorage.setItem(`rating-${data.session.current}`, JSON.stringify(data));
+    return AsyncStorage.setItem(`rating-${data.session.current}`, JSON.stringify(data));
   }
 }

@@ -6,6 +6,7 @@ import { useAppDispatch, useGlobalStyles } from '../../hooks';
 import { signOut } from '../../redux/reducers/authSlice';
 import { storage } from '../../utils';
 import { fontSize } from '../../utils/texts';
+import { unregisterBackgroundFetchAsync } from '../../tasks/signs';
 
 const SignOut = () => {
   const dispatch = useAppDispatch();
@@ -14,6 +15,11 @@ const SignOut = () => {
   const doSignOut = async () => {
     await storage.deleteAccountData();
     dispatch(signOut({ cleanUserCredentials: true }));
+    try {
+      unregisterBackgroundFetchAsync();
+    } catch (error) {
+      /* empty */
+    }
   };
 
   const confirmSignOut = () => {

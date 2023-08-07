@@ -4,22 +4,25 @@ import { ToastAndroid } from 'react-native';
 import LoadingScreen from '../../components/LoadingScreen';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
-import { getTimeTableData } from '../../data/timeTable';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { ITimeTableGetProps } from '../../models/timeTable';
-import { setAuthorizing } from '../../redux/reducers/authSlice';
+import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import {
-  TimeTableState,
   addFetchedWeek,
   changeSelectedWeek,
   setCurrentWeek,
   setData,
+  TimeTableState,
 } from '../../redux/reducers/timeTableSlice';
 import DayArray from './DayArray';
+import { getWrappedClient } from '../../data/client';
+import { GetResultType, RequestType } from '../../models/results';
+import { setAuthorizing } from '../../redux/reducers/authSlice';
+import { ITimeTableGetProps } from '../../models/timeTable';
 
 const TimeTable = () => {
+  const globalStyles = useGlobalStyles();
   const dispatch = useAppDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
+  const client = getWrappedClient();
 
   const { fetchedWeeks, data, selectedWeek, currentWeek }: TimeTableState = useAppSelector(
     (state) => state.timeTable
@@ -39,12 +42,11 @@ const TimeTable = () => {
 
     const payload: ITimeTableGetProps = {
       week: selectedWeek,
-      useCacheFirst,
-      useCache: true, // Если не получится получить данные, будем использовать кэшированные данные
+      requestType: useCacheFirst ? RequestType.tryCache : RequestType.tryFetch, // Если не получится получить данные, будем использовать кэшированные данные
     };
-    const result = await getTimeTableData(payload);
+    const result = await client.getTimeTableData(payload);
 
-    if (result.isLoginPage) {
+    if (result.type === GetResultType.loginPage) {
       dispatch(setAuthorizing(true));
       return;
     }
@@ -61,7 +63,7 @@ const TimeTable = () => {
     dispatch(setData(result.data));
     setLoading(false);
 
-    if (result.fetched) {
+    if (result.type === GetResultType.fetched) {
       dispatch(addFetchedWeek(result.data.selectedWeek));
     }
   };
@@ -79,6 +81,15 @@ const TimeTable = () => {
         lastPage={data.lastWeek}
         currentPage={data.selectedWeek}
         onPageChange={(week) => dispatch(changeSelectedWeek(week))}
+        pageStyles={{
+          [currentWeek]: {
+            view: {
+              borderWidth: 2,
+              borderRadius: globalStyles.border.borderRadius,
+              borderColor: globalStyles.primaryFontColor.color,
+            },
+          },
+        }}
       />
 
       <DayArray data={data.days} />

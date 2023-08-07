@@ -6,12 +6,13 @@ import CardHeaderOut from '../../components/CardHeaderOut';
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
 import SessionDropdown from '../../components/SessionDropdown';
-import { getRatingData } from '../../data/rating';
 import { useAppDispatch, useGlobalStyles } from '../../hooks';
 import { IGroup, ISessionRating } from '../../models/rating';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { fontSize } from '../../utils/texts';
 import RightText from './RightText';
+import { getWrappedClient } from '../../data/client';
+import { GetResultType, RequestType } from '../../models/results';
 
 const Group = ({ group }: { group: IGroup }) => {
   const globalStyles = useGlobalStyles();
@@ -52,15 +53,14 @@ export default function RatingPage() {
   const [data, setData] = useState<ISessionRating>();
   const fetchedFirstTime = useRef<boolean>(false);
   const dispatch = useAppDispatch();
-
+  const client = getWrappedClient();
   const loadData = async ({ session, force }: { session?: number; force: boolean }) => {
-    const result = await getRatingData({
-      useCache: true,
-      useCacheFirst: !force && fetchedFirstTime.current,
+    const result = await client.getRatingData({
+      requestType: !force && fetchedFirstTime.current ? RequestType.tryCache : RequestType.tryFetch,
       session,
     });
 
-    if (result.isLoginPage) {
+    if (result.type === GetResultType.loginPage) {
       dispatch(setAuthorizing(true));
       return;
     }

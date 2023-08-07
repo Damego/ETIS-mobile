@@ -31,7 +31,6 @@ export default function parseSessionMarks(html): ISessionMarks[] {
       data[sessionIndex] = {
         session: sessionNumber,
         course: courseNumber,
-        fullSessionNumber: courseNumber * sessionNumber,
         endDate,
         disciplines: [],
       };

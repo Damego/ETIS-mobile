@@ -19,11 +19,16 @@ function buildSessionOptions(currentSession: number, latestSession: number, sess
   };
 }
 
-export default function SessionDropdown({ currentSession, latestSession, sessionName, onSelect }: {
+export default function SessionDropdown({
+  currentSession,
+  latestSession,
+  sessionName,
+  onSelect,
+}: {
   currentSession: number;
   latestSession: number;
   sessionName: string;
-  onSelect(session: number): unknown
+  onSelect(session: number): unknown;
 }) {
   const options = buildSessionOptions(currentSession, latestSession, sessionName);
 

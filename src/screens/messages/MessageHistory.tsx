@@ -2,21 +2,23 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ToastAndroid } from 'react-native';
 
 import Screen from '../../components/Screen';
-import { getMessagesData } from '../../data/messages';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { IMessage } from '../../models/messages';
 import { UploadFile } from '../../models/other';
 import { parseDate } from '../../parser/utils';
-import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { httpClient } from '../../utils';
 import Message from './Message';
 import MessageInput, { FilesPreview } from './MessageInput';
+import { getWrappedClient } from '../../data/client';
+import { GetResultType, RequestType } from '../../models/results';
+import { setAuthorizing } from '../../redux/reducers/authSlice';
 
 export default function MessageHistory({ route, navigation }) {
-  const dispatch = useAppDispatch();
   const [data, setData] = useState<IMessage[]>(route.params.data);
   const pageRef = useRef<number>(route.params.page);
   const [isUploading, setUploading] = useState<boolean>(false);
+  const isDemo = useAppSelector((state) => state.auth.isDemo);
+  const dispatch = useAppDispatch();
 
   const [mainMessage] = data;
   const { author } = mainMessage;
@@ -24,15 +26,14 @@ export default function MessageHistory({ route, navigation }) {
   const shortAuthor = `${name1} ${name2.charAt(0)}. ${name3.charAt(0)}.`;
 
   const [files, setFiles] = useState<UploadFile[]>([]);
-
+  const client = getWrappedClient();
   const loadData = async () => {
-    const result = await getMessagesData({
+    const result = await client.getMessagesData({
       page: pageRef.current,
-      useCache: true,
-      useCacheFirst: false,
+      requestType: RequestType.tryFetch,
     });
 
-    if (result.isLoginPage) {
+    if (result.type === GetResultType.loginPage) {
       dispatch(setAuthorizing(true));
       return;
     }
@@ -65,7 +66,7 @@ export default function MessageHistory({ route, navigation }) {
   };
 
   const onSubmit = async (text: string) => {
-    setUploading(true);
+    setUploading(true); // TODO: block replying on demo account
     const response = await httpClient.replyToMessage(mainMessage.answerID, text);
 
     if (response.error) {
@@ -103,7 +104,12 @@ export default function MessageHistory({ route, navigation }) {
         ))}
       </Screen>
       {files.length !== 0 && <FilesPreview files={files} onFileRemove={onFileRemove} />}
-      <MessageInput onFileSelect={onFileSelect} onSubmit={onSubmit} showLoading={isUploading} />
+      <MessageInput
+        onFileSelect={onFileSelect}
+        onSubmit={onSubmit}
+        showLoading={isUploading}
+        disabled={isDemo}
+      />
     </>
   );
 }
