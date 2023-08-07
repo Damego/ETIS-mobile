@@ -35,15 +35,7 @@ export const getWrappedClient: () => BaseClient = () => {
 };
 
 class AnnounceClient extends BasicClient<IGetPayload, string[]> {}
-class TimeTableClient extends BasicClient<ITimeTableGetProps, ITimeTable> {
-  async tryFetch(payload: ITimeTableGetProps): Promise<Response<string>> {
-    if (payload.week !== null) {
-      return await httpClient.getTimeTable({ week: payload.week });
-    } else {
-      return await httpClient.getTimeTable();
-    }
-  }
-}
+class TimeTableClient extends BasicClient<ITimeTableGetProps, ITimeTable> {}
 class MessageClient extends BasicClient<IGetMessagesPayload, IMessagesData> {}
 class OrderClient extends BasicClient<IGetPayload, IOrder[]> {}
 class RatingClient extends BasicClient<IGetRatingPayload, ISessionRating> {}
