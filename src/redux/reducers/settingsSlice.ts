@@ -7,6 +7,14 @@ export enum ThemeType {
   amoled = 'amoled',
 }
 
+export interface AppConfig {
+  theme: ThemeType;
+  signNotificationEnabled: boolean;
+  introViewed: boolean;
+  reviewStep: 'pending' | 'stop' | null;
+  privacyPolicyAccepted: boolean;
+}
+
 export interface SettingsState {
   theme: ThemeType;
   viewedIntro: boolean;

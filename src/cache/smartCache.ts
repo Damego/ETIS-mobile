@@ -11,17 +11,8 @@ import { ThemeType } from '../redux/reducers/settingsSlice';
 import { TeacherType } from '../models/teachers';
 import { IOrder } from '../models/order';
 import { IMessagesData } from '../models/messages';
-
-// TODO: Move it to somewhere
-
-interface AppConfig {
-  theme: ThemeType;
-  signNotificationEnabled: boolean;
-  introViewed: boolean;
-  reviewStep: 'pending' | 'stop' | null;
-  privacyPolicyAccepted: boolean;
-}
 import { StudentInfo } from '../parser/menu';
+import {AppConfig} from '../redux/reducers/settingsSlice';
 
 export default class SmartCache {
   private keys = {
