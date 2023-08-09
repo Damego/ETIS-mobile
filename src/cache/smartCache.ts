@@ -1,18 +1,18 @@
-import { ITimeTable } from '../models/timeTable';
-import MappedCache from './mappedCache';
-import FieldCache from './fieldCache';
-import { UserCredentials } from '../redux/reducers/authSlice';
-import { ISessionTeachPlan } from '../models/teachPlan';
+import { IMessagesData } from '../models/messages';
+import { IOrder } from '../models/order';
+import { ISessionRating } from '../models/rating';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
-import { ISessionRating } from '../models/rating';
-import SecuredFieldCache from './securedFieldCache';
-import { ThemeType } from '../redux/reducers/settingsSlice';
+import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
-import { IOrder } from '../models/order';
-import { IMessagesData } from '../models/messages';
+import { ITimeTable } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
-import {AppConfig} from '../redux/reducers/settingsSlice';
+import { UserCredentials } from '../redux/reducers/authSlice';
+import { ThemeType } from '../redux/reducers/settingsSlice';
+import { AppConfig } from '../redux/reducers/settingsSlice';
+import FieldCache from './fieldCache';
+import MappedCache from './mappedCache';
+import SecuredFieldCache from './securedFieldCache';
 
 export default class SmartCache {
   private keys = {
