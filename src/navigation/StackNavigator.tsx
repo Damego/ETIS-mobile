@@ -4,12 +4,12 @@ import { setBackgroundColorAsync as setBackgroundNavigationBarColorAsync } from 
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect } from 'react';
 
+import { cache } from '../cache/smartCache';
 import { useAppSelector } from '../hooks';
 import { useAppTheme } from '../hooks/theme';
 import AuthPage from '../screens/auth/Auth';
 import Intro from '../screens/intro/Intro';
 import MessageHistory from '../screens/messages/MessageHistory';
-import { storage } from '../utils';
 import showPrivacyPolicy from '../utils/privacyPolicy';
 import TabNavigator from './TabNavigation';
 import { headerParams } from './header';
@@ -25,7 +25,7 @@ const StackNavigator = () => {
 
   useEffect(() => {
     const wrapper = async () => {
-      if (!(await storage.hasAcceptedPrivacyPolicy())) {
+      if (!(await cache.hasAcceptedPrivacyPolicy())) {
         showPrivacyPolicy();
       }
     };

@@ -7,13 +7,14 @@ import { signOut } from '../../redux/reducers/authSlice';
 import { storage } from '../../utils';
 import { fontSize } from '../../utils/texts';
 import { unregisterBackgroundFetchAsync } from '../../tasks/signs';
+import { cache } from '../../cache/smartCache';
 
 const SignOut = () => {
   const dispatch = useAppDispatch();
   const globalStyles = useGlobalStyles();
 
   const doSignOut = async () => {
-    await storage.deleteAccountData();
+    await cache.deleteUserCredentials();
     dispatch(signOut({ cleanUserCredentials: true }));
     try {
       unregisterBackgroundFetchAsync();

@@ -35,7 +35,7 @@ const TabNavigator = () => {
 
     const data = result.data;
 
-    dispatch(setStudentInfo(data.studentInfo));
+    dispatch(setStudentInfo(data.student));
     dispatch(setMessageCount(data.messageCount));
     dispatch(setAnnounceCount(data.announceCount));
   };

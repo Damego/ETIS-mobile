@@ -33,6 +33,17 @@ const settingsSlice = createSlice({
   name: 'settings',
   initialState,
   reducers: {
+    setConfig(state, action: PayloadAction<AppConfig>) {
+      const config = action.payload;
+      if (config.theme !== undefined) state.theme = config.theme;
+      else state.theme = ThemeType.auto;
+
+      if (config.signNotificationEnabled !== undefined) state.signNotification = config.signNotificationEnabled;
+      else state.signNotification = false;
+
+      if (config.introViewed !== undefined) state.viewedIntro = config.introViewed;
+      else state.viewedIntro = false;
+    },
     changeTheme(state, action: PayloadAction<ThemeType>) {
       state.theme = action.payload;
     },
@@ -49,4 +60,4 @@ const settingsSlice = createSlice({
 });
 
 export default settingsSlice.reducer;
-export const { changeTheme, setIntroViewed, setSignNotification, setAppReady } = settingsSlice.actions;
+export const { setConfig, changeTheme, setIntroViewed, setSignNotification, setAppReady } = settingsSlice.actions;
