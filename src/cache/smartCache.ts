@@ -11,7 +11,6 @@ import { ThemeType } from '../redux/reducers/settingsSlice';
 import { TeacherType } from '../models/teachers';
 import { IOrder } from '../models/order';
 import { IMessagesData } from '../models/messages';
-import { StudentData } from '../models/student';
 
 // TODO: Move it to somewhere
 
@@ -22,6 +21,7 @@ interface AppConfig {
   reviewStep: 'pending' | 'stop' | null;
   privacyPolicyAccepted: boolean;
 }
+import { StudentInfo } from '../parser/menu';
 
 export default class SmartCache {
   private keys = {
@@ -43,37 +43,37 @@ export default class SmartCache {
     APP: 'APP',
   };
 
-  private announce: FieldCache<string[]>;
-  private messages: MappedCache<number, IMessagesData>;
-  private orders: {
+  announce: FieldCache<string[]>;
+  messages: MappedCache<number, IMessagesData>;
+  orders: {
     list: FieldCache<IOrder[]>;
     info: MappedCache<string, string>;
   };
-  private timeTable: MappedCache<number, ITimeTable>;
-  private teachers: FieldCache<TeacherType>;
-  private teachPlan: FieldCache<ISessionTeachPlan[]>;
-  private signsMarks: MappedCache<number, ISessionMarks>;
-  private signsPoints: MappedCache<number, ISessionPoints>;
-  private signsRating: MappedCache<number, ISessionRating>;
-  private student: FieldCache<StudentData>;
+  timeTable: MappedCache<number, ITimeTable>;
+  teachers: FieldCache<TeacherType>;
+  teachPlan: FieldCache<ISessionTeachPlan[]>;
+  signsMarks: MappedCache<number, ISessionMarks>;
+  signsPoints: MappedCache<number, ISessionPoints>;
+  signsRating: MappedCache<number, ISessionRating>;
+  student: FieldCache<StudentInfo>;
 
-  private user: SecuredFieldCache<UserCredentials>;
-  private app: FieldCache<AppConfig>;
+  user: SecuredFieldCache<UserCredentials>;
+  app: FieldCache<AppConfig>;
 
   constructor() {
-    this.announce = new FieldCache(this.keys.ANNOUNCES);
+    this.announce = new FieldCache(this.keys.ANNOUNCES, []);
     this.messages = new MappedCache<number, IMessagesData>(this.keys.MESSAGES);
     this.orders = {
-      list: new FieldCache<IOrder[]>(this.keys.ORDERS),
+      list: new FieldCache<IOrder[]>(this.keys.ORDERS, []),
       info: new MappedCache<string, string>(this.keys.ORDERS_INFO),
     };
     this.timeTable = new MappedCache(this.keys.TIMETABLE);
     this.teachers = new FieldCache<TeacherType>(this.keys.TEACHERS);
-    this.teachPlan = new FieldCache(this.keys.TEACH_PLAN);
+    this.teachPlan = new FieldCache(this.keys.TEACH_PLAN, []);
     this.signsMarks = new MappedCache(this.keys.SIGNS_MARKS);
     this.signsPoints = new MappedCache(this.keys.SIGNS_POINTS);
     this.signsRating = new MappedCache(this.keys.SIGNS_RATING);
-    this.student = new FieldCache<StudentData>(this.keys.STUDENT);
+    this.student = new FieldCache<StudentInfo>(this.keys.STUDENT);
 
     this.user = new SecuredFieldCache<UserCredentials>(this.keys.USER);
     this.app = new FieldCache<AppConfig>(this.keys.APP);
@@ -81,7 +81,8 @@ export default class SmartCache {
 
   // Announce Region
 
-  getAnnounce() {
+  async getAnnounce() {
+    if (!this.announce.isReady()) await this.announce.init();
     return this.announce.get();
   }
 
@@ -94,7 +95,8 @@ export default class SmartCache {
 
   // Messages Region
 
-  getMessages(page: number) {
+  async getMessages(page: number) {
+    if (!this.messages.isReady()) await this.messages.init();
     return this.messages.get(page);
   }
 
@@ -108,7 +110,8 @@ export default class SmartCache {
 
   // Orders Region
 
-  getOrders() {
+  async getOrders() {
+    if (!this.orders.list.isReady()) await this.orders.list.init();
     return this.orders.list.get();
   }
 
@@ -117,7 +120,8 @@ export default class SmartCache {
     await this.orders.list.save();
   }
 
-  getOrder(orderID: string) {
+  async getOrder(orderID: string) {
+    if (!this.orders.info.isReady()) await this.orders.info.init();
     return this.orders.info.get(orderID);
   }
 
@@ -130,7 +134,8 @@ export default class SmartCache {
 
   // TimeTable region
 
-  getTimeTable(week: number) {
+  async getTimeTable(week: number) {
+    if (!this.timeTable.isReady()) await this.timeTable.init();
     return this.timeTable.get(week);
   }
 
@@ -148,7 +153,8 @@ export default class SmartCache {
 
   // Teachers Region
 
-  getTeachers() {
+  async getTeachers() {
+    if (!this.teachers.isReady()) await this.teachers.init();
     return this.teachers.get();
   }
 
@@ -161,7 +167,8 @@ export default class SmartCache {
 
   // TeachPlan Region
 
-  getTeachPlan() {
+  async getTeachPlan() {
+    if (!this.teachPlan.isReady()) await this.teachPlan.init();
     return this.teachPlan.get();
   }
 
@@ -176,13 +183,19 @@ export default class SmartCache {
 
   // // Marks Region
 
-  getSessionMarks(session: number) {
+  async getSessionMarks(session: number) {
+    if (!this.signsMarks.isReady()) await this.signsMarks.init();
     return this.signsMarks.get(session);
+  }
+
+  async getAllSessionMarks() {
+    if (!this.signsMarks.isReady()) await this.signsMarks.init();
+    return this.signsMarks.values();
   }
 
   async placeSessionMarks(data: ISessionMarks[]) {
     data.every((d) => {
-      this.signsMarks.place(d.fullSessionNumber, d);
+      this.signsMarks.place(d.session, d);
     });
 
     await this.signsMarks.save();
@@ -192,7 +205,8 @@ export default class SmartCache {
 
   // // Points Region
 
-  getSessionPoints(session: number) {
+  async getSessionPoints(session: number) {
+    if (!this.signsPoints.isReady()) await this.signsPoints.init();
     return this.signsPoints.get(session);
   }
 
@@ -205,7 +219,8 @@ export default class SmartCache {
 
   // // Rating Region
 
-  getSessionRating(session: number) {
+  async getSessionRating(session: number) {
+    if (!this.signsRating.isReady()) await this.signsRating.init();
     return this.signsRating.get(session);
   }
 
@@ -220,11 +235,12 @@ export default class SmartCache {
 
   // Student Region
 
-  getStudent() {
+  async getStudent() {
+    if (!this.student.isReady()) await this.student.init();
     return this.student.get();
   }
 
-  async placeStudent(data: StudentData) {
+  async placeStudent(data: StudentInfo) {
     this.student.place(data);
 
     await this.student.save();
@@ -234,7 +250,8 @@ export default class SmartCache {
 
   // Secure Region
 
-  getUserCredentials() {
+  async getUserCredentials() {
+    if (!this.user.isReady()) await this.user.init();
     return this.user.get();
   }
 
@@ -243,62 +260,68 @@ export default class SmartCache {
     await this.user.save();
   }
 
+  async deleteUserCredentials() {
+    await this.user.delete();
+  }
+
   // End Secure Region
 
   // Internal Region
 
-  getAppConfig() {
+  async getAppConfig() {
+    if (!this.app.isReady()) await this.app.init();
     return this.app.get();
   }
 
-  getTheme() {
-    const data = this.getAppConfig();
+  async get() {
+    const data = await this.getAppConfig();
     return data.theme;
   }
 
   async placeTheme(theme: ThemeType) {
-    const data = this.getAppConfig();
+    const data = await this.getAppConfig();
     data.theme = theme;
     this.app.place(data);
     await this.app.save();
   }
 
-  getSignNotification() {
-    const data = this.getAppConfig();
+  async getSignNotification() {
+    const data = await this.getAppConfig();
     return data.signNotificationEnabled;
   }
 
   async placeSignNotification(enabled: boolean) {
-    const data = this.getAppConfig();
+    const data = await this.getAppConfig();
     data.signNotificationEnabled = enabled;
     this.app.place(data);
     await this.app.save();
   }
 
-  getIntroViewed() {
-    const data = this.getAppConfig();
+  async getIntroViewed() {
+    const data = await this.getAppConfig();
     return data.introViewed;
   }
 
   async placeIntroViewed(status: boolean) {
-    const data = this.getAppConfig();
+    const data = await this.getAppConfig();
     data.introViewed = status;
     this.app.place(data);
     await this.app.save();
   }
 
-  getReviewStep() {
-    return this.getAppConfig().reviewStep;
+  async getReviewStep() {
+    return (await this.getAppConfig()).reviewStep;
   }
 
   async setReviewStep(step: 'pending' | 'stop') {
-    this.getAppConfig().reviewStep = step;
+    const config = await this.getAppConfig();
+    config.reviewStep = step;
 
     await this.app.save();
   }
 
   async bumpReviewRequest() {
-    const step = this.getReviewStep();
+    const step = await this.getReviewStep();
 
     if (!step) {
       await this.setReviewStep('pending');
@@ -308,12 +331,14 @@ export default class SmartCache {
     }
   }
 
-  hasAcceptedPrivacyPolicy() {
-    return this.getAppConfig().privacyPolicyAccepted;
+  async hasAcceptedPrivacyPolicy() {
+    const config = await this.getAppConfig();
+    return config.privacyPolicyAccepted;
   }
 
   async setPrivacyPolicyStatus(status: boolean) {
-    this.getAppConfig().privacyPolicyAccepted = status;
+    const config = await this.getAppConfig();
+    config.privacyPolicyAccepted = status;
 
     await this.app.save();
   }
@@ -338,3 +363,5 @@ export default class SmartCache {
     // await this.app.delete();
   }
 }
+
+export const cache = new SmartCache();
