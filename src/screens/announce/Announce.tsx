@@ -4,12 +4,12 @@ import { ToastAndroid } from 'react-native';
 import LoadingScreen from '../../components/LoadingScreen';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setAnnounceCount } from '../../redux/reducers/studentSlice';
-import AnnounceCard from './AnnounceCard';
 import { getWrappedClient } from '../../data/client';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { GetResultType, RequestType } from '../../models/results';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
+import { setAnnounceCount } from '../../redux/reducers/studentSlice';
+import AnnounceCard from './AnnounceCard';
 
 export default function Announce() {
   const dispatch = useAppDispatch();
