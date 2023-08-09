@@ -140,6 +140,10 @@ export default class SmartCache {
     await this.timeTable.save();
   }
 
+  hasTimeTableWeek(week: number) {
+    return this.timeTable.isReady() && this.timeTable.get(week) !== undefined;
+  }
+
   // End TimeTable region
 
   // Teachers Region

@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { ToastAndroid } from 'react-native';
 
+import { cache } from '../../cache/smartCache';
 import LoadingScreen from '../../components/LoadingScreen';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
+import { getWrappedClient } from '../../data/client';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
+import { GetResultType, RequestType } from '../../models/results';
+import { ITimeTableGetProps } from '../../models/timeTable';
+import { setAuthorizing } from '../../redux/reducers/authSlice';
 import {
-  addFetchedWeek,
+  TimeTableState,
   changeSelectedWeek,
   setCurrentWeek,
   setData,
-  TimeTableState,
 } from '../../redux/reducers/timeTableSlice';
 import DayArray from './DayArray';
-import { getWrappedClient } from '../../data/client';
-import { GetResultType, RequestType } from '../../models/results';
-import { setAuthorizing } from '../../redux/reducers/authSlice';
-import { ITimeTableGetProps } from '../../models/timeTable';
 
 const TimeTable = () => {
   const globalStyles = useGlobalStyles();
@@ -24,7 +24,7 @@ const TimeTable = () => {
   const { isAuthorizing } = useAppSelector((state) => state.auth);
   const client = getWrappedClient();
 
-  const { fetchedWeeks, data, selectedWeek, currentWeek }: TimeTableState = useAppSelector(
+  const { data, selectedWeek, currentWeek }: TimeTableState = useAppSelector(
     (state) => state.timeTable
   );
   const [isLoading, setLoading] = useState<boolean>(false);
@@ -32,17 +32,12 @@ const TimeTable = () => {
   const loadData = async (forceFetch?: boolean) => {
     setLoading(true);
 
-    /*
-    Идея в том, чтобы использовать кэш для предыдущих недель,
-    так как они больше не обновлятся в ЕТИС
-    и хранить кэшированные номера недель в стейте, чтобы не грузить их по новой
-    */
-    const useCacheFirst =
-      ((data && selectedWeek < currentWeek) || fetchedWeeks.includes(selectedWeek)) && !forceFetch;
+    const useCached =
+      ((data && selectedWeek < currentWeek) || cache.hasTimeTableWeek(selectedWeek)) && !forceFetch;
 
     const payload: ITimeTableGetProps = {
       week: selectedWeek,
-      requestType: useCacheFirst ? RequestType.tryCache : RequestType.tryFetch, // Если не получится получить данные, будем использовать кэшированные данные
+      requestType: useCached ? RequestType.tryCache : RequestType.tryFetch, // Если не получится получить данные, будем использовать кэшированные данные
     };
     const result = await client.getTimeTableData(payload);
 
@@ -62,10 +57,6 @@ const TimeTable = () => {
 
     dispatch(setData(result.data));
     setLoading(false);
-
-    if (result.type === GetResultType.fetched) {
-      dispatch(addFetchedWeek(result.data.selectedWeek));
-    }
   };
 
   useEffect(() => {
