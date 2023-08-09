@@ -1,12 +1,20 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default class MappedCache<Key extends string | number | symbol, Value> {
+type Dict<KT extends string | number | symbol, VT> = { [key in KT]: VT };
+
+export default class MappedCache<KT extends string | number | symbol, VT> {
   private readonly key: string;
-  private data: Map<Key, Value>;
+  private data: Dict<KT, VT>;
+  private ready: boolean;
 
   constructor(key: string) {
     this.key = key;
-    this.data = new Map();
+    this.data = {} as Dict<KT, VT>;
+    this.ready = false;
+  }
+
+  isReady() {
+    return this.ready;
   }
 
   async save() {
@@ -14,25 +22,34 @@ export default class MappedCache<Key extends string | number | symbol, Value> {
   }
 
   async init() {
+    if (this.isReady()) return;
+
     const stringData = await AsyncStorage.getItem(this.key);
     this.data = JSON.parse(stringData);
+    this.ready = true;
+
+    console.log(`[CACHE] ${this.key.toLowerCase()} is ready to work`)
   }
 
-  get(key: Key): Value {
-    return this.data.get(key);
+  get(key: KT): VT {
+    return this.data[key];
   }
 
-  place(key: Key, value: Value) {
-    this.data.set(key, value);
+  place(key: KT, value: VT) {
+    this.data[key] = value;
   }
 
-  delete(key: Key) {
-    this.data.delete(key);
+  delete(key: KT) {
+    delete this.data[key];
   }
 
   async clear() {
-    this.data.clear();
+    this.data = null;
 
     await AsyncStorage.removeItem(this.key);
+  }
+
+  values(): VT[] {
+    return Object.values(this.data);
   }
 }
