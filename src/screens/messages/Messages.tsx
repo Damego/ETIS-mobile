@@ -4,13 +4,13 @@ import { ToastAndroid } from 'react-native';
 import LoadingScreen from '../../components/LoadingScreen';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
+import { getWrappedClient } from '../../data/client';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { IMessagesData } from '../../models/messages';
-import { setMessageCount } from '../../redux/reducers/studentSlice';
-import MessagePreview from './MessagePreview';
-import { getWrappedClient } from '../../data/client';
 import { GetResultType, RequestType } from '../../models/results';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
+import { setMessageCount } from '../../redux/reducers/studentSlice';
+import MessagePreview from './MessagePreview';
 
 const Messages = () => {
   const dispatch = useAppDispatch();
@@ -18,6 +18,7 @@ const Messages = () => {
   const [data, setData] = useState<IMessagesData>();
   const fetchedPages = useRef<number[]>([]);
   const client = getWrappedClient();
+
   const loadData = async ({ page, force }: { page?: number; force?: boolean }) => {
     if (page === undefined) page = 1;
 
@@ -52,7 +53,7 @@ const Messages = () => {
     dispatch(setMessageCount(null));
   }, []);
 
-  if (!data) return <LoadingScreen onRefresh={() => loadData({})} />;
+  if (!data) return <LoadingScreen onRefresh={() => loadData({ page: data.page })} />;
 
   return (
     <Screen onUpdate={() => loadData({ force: true })}>
