@@ -44,7 +44,7 @@ const About = () => {
           text={'Политика конфиденциальности'}
           onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}
         />
-        <Text style={textStyles}>Версия приложения: {Constants.manifest.version}</Text>
+        <Text style={textStyles}>Версия приложения: {Constants.expoConfig.version}</Text>
       </View>
     </Screen>
   );
