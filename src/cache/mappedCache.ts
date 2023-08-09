@@ -25,7 +25,7 @@ export default class MappedCache<KT extends string | number | symbol, VT> {
     if (this.isReady()) return;
 
     const stringData = await AsyncStorage.getItem(this.key);
-    this.data = JSON.parse(stringData);
+    this.data = JSON.parse(stringData) || {};
     this.ready = true;
 
     console.log(`[CACHE] ${this.key.toLowerCase()} is ready to work`)
@@ -44,7 +44,7 @@ export default class MappedCache<KT extends string | number | symbol, VT> {
   }
 
   async clear() {
-    this.data = null;
+    this.data = {} as Dict<KT, VT>;
 
     await AsyncStorage.removeItem(this.key);
   }
