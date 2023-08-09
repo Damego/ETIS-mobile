@@ -83,12 +83,12 @@ export default class Client implements BaseClient {
     );
     this.ratingClient = new RatingClient(
       ({ session }) => cache.getSessionRating(session),
-      () => httpClient.getSigns('rating'),
+      ({ session }) => httpClient.getSigns('rating', session),
       parseRating,
       (data) => cache.placeSessionRating(data)
     );
     this.signsClient = new SignsClient(
-      (session) => cache.getSessionPoints(session),
+      ({ session }) => cache.getSessionPoints(session),
       ({ session }) => httpClient.getSigns('current', session),
       parseSessionPoints,
       (data) => cache.placeSessionPoints(data)
