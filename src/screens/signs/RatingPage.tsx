@@ -51,10 +51,13 @@ const Group = ({ group }: { group: IGroup }) => {
 
 export default function RatingPage() {
   const [data, setData] = useState<ISessionRating>();
+  const [isLoading, setLoading] = useState(false);
   const fetchedFirstTime = useRef<boolean>(false);
   const dispatch = useAppDispatch();
   const client = getWrappedClient();
+
   const loadData = async ({ session, force }: { session?: number; force: boolean }) => {
+    setLoading(true);
     const result = await client.getRatingData({
       requestType: !force && fetchedFirstTime.current ? RequestType.tryCache : RequestType.tryFetch,
       session,
@@ -73,13 +76,14 @@ export default function RatingPage() {
     if (!fetchedFirstTime.current) {
       fetchedFirstTime.current = true;
     }
+    setLoading(false);
   };
 
   useEffect(() => {
     loadData({ force: false });
   }, []);
 
-  if (!data) {
+  if (!data || isLoading) {
     return <LoadingScreen />;
   }
 
