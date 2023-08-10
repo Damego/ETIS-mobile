@@ -4,13 +4,11 @@ import { ITimeTable } from '../../models/timeTable';
 
 export interface TimeTableState {
   data?: ITimeTable;
-  selectedWeek?: number;
   currentWeek?: number;
 }
 
 const initialState: TimeTableState = {
   data: undefined,
-  selectedWeek: undefined,
   currentWeek: undefined,
 };
 
@@ -21,9 +19,6 @@ const timeTableSlice = createSlice({
     setData(state, action: PayloadAction<ITimeTable>) {
       state.data = action.payload;
     },
-    changeSelectedWeek(state, action: PayloadAction<number>) {
-      state.selectedWeek = action.payload;
-    },
     setCurrentWeek(state, action: PayloadAction<number>) {
       state.currentWeek = action.payload;
     },
@@ -31,5 +26,5 @@ const timeTableSlice = createSlice({
 });
 
 export default timeTableSlice.reducer;
-export const { setData, changeSelectedWeek, setCurrentWeek } =
+export const { setData, setCurrentWeek } =
   timeTableSlice.actions;

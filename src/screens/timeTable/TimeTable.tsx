@@ -12,7 +12,6 @@ import { ITimeTableGetProps } from '../../models/timeTable';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import {
   TimeTableState,
-  changeSelectedWeek,
   setCurrentWeek,
   setData,
 } from '../../redux/reducers/timeTableSlice';
@@ -24,19 +23,19 @@ const TimeTable = () => {
   const { isAuthorizing } = useAppSelector((state) => state.auth);
   const client = getWrappedClient();
 
-  const { data, selectedWeek, currentWeek }: TimeTableState = useAppSelector(
+  const { data, currentWeek }: TimeTableState = useAppSelector(
     (state) => state.timeTable
   );
   const [isLoading, setLoading] = useState<boolean>(false);
 
-  const loadData = async (forceFetch?: boolean) => {
+  const loadData = async ({week, force}: {week?: number, force?: boolean}) => {
     setLoading(true);
 
     const useCached =
-      ((data && selectedWeek < currentWeek) || cache.hasTimeTableWeek(selectedWeek)) && !forceFetch;
+      ((data && week < currentWeek) || cache.hasTimeTableWeek(week)) && !force;
 
     const payload: ITimeTableGetProps = {
-      week: selectedWeek,
+      week: week,
       requestType: useCached ? RequestType.tryCache : RequestType.tryFetch, // Если не получится получить данные, будем использовать кэшированные данные
     };
     const result = await client.getTimeTableData(payload);
@@ -60,18 +59,18 @@ const TimeTable = () => {
   };
 
   useEffect(() => {
-    if (!isAuthorizing) loadData();
-  }, [selectedWeek, isAuthorizing]);
+    if (!isAuthorizing) loadData({});
+  }, [isAuthorizing]);
 
-  if (!data || isLoading) return <LoadingScreen onRefresh={loadData} />;
+  if (!data || isLoading) return <LoadingScreen onRefresh={() => loadData({force: true})} />;
 
   return (
-    <Screen onUpdate={() => loadData(true)}>
+    <Screen onUpdate={() => loadData({ force: true })}>
       <PageNavigator
         firstPage={data.firstWeek}
         lastPage={data.lastWeek}
         currentPage={data.selectedWeek}
-        onPageChange={(week) => dispatch(changeSelectedWeek(week))}
+        onPageChange={(week) => loadData({week})}
         pageStyles={{
           [currentWeek]: {
             view: {
