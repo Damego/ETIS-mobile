@@ -34,15 +34,15 @@ export interface BaseClient {
 }
 
 export class BasicClient<P extends IGetPayload, T> {
-  cacheMethod: (payload?: any) => Promise<T>;
-  httpMethod: (payload?: any) => Promise<Response<string>>;
+  cacheMethod: (payload?: P) => Promise<T>;
+  httpMethod: (payload?: P) => Promise<Response<string>>;
   parseMethod: (data: string) => T;
   placeMethod: (data: T) => void;
   name: string;
 
   constructor(
-    cacheMethod: (payload?: any) => Promise<T>,
-    httpMethod: (payload?: any) => Promise<Response<string>>,
+    cacheMethod: (payload?: P) => Promise<T>,
+    httpMethod: (payload?: P) => Promise<Response<string>>,
     parseMethod: (data: string) => T,
     placeMethod: (data: T) => void
   ) {
