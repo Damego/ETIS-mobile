@@ -4,9 +4,10 @@ import { ToastAndroid } from 'react-native';
 import LoadingScreen from '../../components/LoadingScreen';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
-import { getMessagesData } from '../../data/messages';
+import { getWrappedClient } from '../../data/client';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { IMessagesData } from '../../models/messages';
+import { GetResultType, RequestType } from '../../models/results';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { setMessageCount } from '../../redux/reducers/studentSlice';
 import MessagePreview from './MessagePreview';
@@ -14,19 +15,21 @@ import MessagePreview from './MessagePreview';
 const Messages = () => {
   const dispatch = useAppDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
+  const { messageCount } = useAppSelector((state) => state.student);
   const [data, setData] = useState<IMessagesData>();
   const fetchedPages = useRef<number[]>([]);
+  const client = getWrappedClient();
 
   const loadData = async ({ page, force }: { page?: number; force?: boolean }) => {
     if (page === undefined) page = 1;
 
-    const result = await getMessagesData({
+    const result = await client.getMessagesData({
       page,
-      useCache: true,
-      useCacheFirst: !force && fetchedPages.current.includes(page),
+      requestType:
+        !force && !messageCount || fetchedPages.current.includes(page) ? RequestType.tryCache : RequestType.tryFetch,
     });
 
-    if (result.isLoginPage) {
+    if (result.type === GetResultType.loginPage) {
       dispatch(setAuthorizing(true));
       return;
     }
@@ -51,7 +54,7 @@ const Messages = () => {
     dispatch(setMessageCount(null));
   }, []);
 
-  if (!data) return <LoadingScreen onRefresh={() => loadData({})} />;
+  if (!data) return <LoadingScreen onRefresh={() => loadData({ page: data.page })} />;
 
   return (
     <Screen onUpdate={() => loadData({ force: true })}>

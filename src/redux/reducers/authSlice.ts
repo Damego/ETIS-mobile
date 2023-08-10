@@ -1,13 +1,13 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface UserCredentials {
   login: string;
   password: string;
 }
 
-export interface setUserCredentialsPayload {
+export interface SetUserCredentialsPayload {
   userCredentials: UserCredentials;
-  fromStorage: boolean
+  fromStorage: boolean;
 }
 
 export interface SignInPayload {
@@ -15,7 +15,7 @@ export interface SignInPayload {
 }
 
 export interface SignOutPayload {
-  cleanUserCredentials?: boolean
+  cleanUserCredentials?: boolean;
 }
 
 interface AuthState {
@@ -26,6 +26,7 @@ interface AuthState {
   fromStorage: boolean;
   isOfflineMode: boolean;
   isSignedOut: boolean;
+  isDemo: boolean;
 }
 
 const initialState: AuthState = {
@@ -34,7 +35,8 @@ const initialState: AuthState = {
   saveUserCredentials: true,
   fromStorage: false,
   isOfflineMode: false,
-  isSignedOut: false
+  isSignedOut: false,
+  isDemo: false,
 };
 
 const authSlice = createSlice({
@@ -56,15 +58,27 @@ const authSlice = createSlice({
     setAuthorizing(state, action: PayloadAction<boolean>) {
       state.isAuthorizing = action.payload;
     },
-    setUserCredentials(state, action: PayloadAction<setUserCredentialsPayload>) {
+    setUserCredentials(state, action: PayloadAction<SetUserCredentialsPayload>) {
       state.userCredentials = action.payload.userCredentials;
       state.fromStorage = action.payload.fromStorage;
     },
     setSaveUserCredentials(state, action: PayloadAction<boolean>) {
       state.saveUserCredentials = action.payload;
     },
+    signInDemo(state, action: PayloadAction<boolean>) {
+      state.isSignedIn = true;
+      state.isSignedOut = false;
+      state.isDemo = action.payload;
+    },
   },
 });
 
 export default authSlice.reducer;
-export const { signIn, signOut, setAuthorizing, setUserCredentials, setSaveUserCredentials } = authSlice.actions;
+export const {
+  signIn,
+  signOut,
+  setAuthorizing,
+  setUserCredentials,
+  setSaveUserCredentials,
+  signInDemo,
+} = authSlice.actions;

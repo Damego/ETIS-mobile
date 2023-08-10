@@ -1,6 +1,6 @@
 import { load } from 'cheerio';
 
-import {ISessionRating, OverallRating} from '../models/rating';
+import { ISessionRating, OverallRating } from '../models/rating';
 import parseSessionData from './session';
 import { getTextField } from './utils';
 

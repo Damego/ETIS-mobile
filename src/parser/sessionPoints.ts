@@ -23,7 +23,7 @@ export default function parseSessionPoints(html): ISessionPoints {
         return;
       }
 
-      const failed = !!tr.attr("style")
+      const failed = !!tr.attr('style');
       const tds = tr.find('td');
       const fields = [];
 
@@ -59,7 +59,7 @@ export default function parseSessionPoints(html): ISessionPoints {
         date,
         teacher,
         hasPoints,
-        failed
+        failed,
       });
     });
 

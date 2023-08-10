@@ -94,10 +94,12 @@ const MessageInput = ({
   onFileSelect,
   onSubmit,
   showLoading,
+  disabled,
 }: {
   onFileSelect(file: UploadFile): void;
   onSubmit(text: string): Promise<Response<string>>;
   showLoading: boolean;
+  disabled: boolean;
 }) => {
   const globalStyles = useGlobalStyles();
   const theme = useTheme();
@@ -156,10 +158,11 @@ const MessageInput = ({
         multiline
         selectionColor="#C62E3E"
         placeholderTextColor={globalStyles.textColor.color}
+        editable={!disabled}
       />
 
       <TouchableOpacity
-        disabled={!value.trim() || showLoading}
+        disabled={disabled && (!value.trim() || showLoading)}
         style={styles.iconView}
         onPress={submit}
       >

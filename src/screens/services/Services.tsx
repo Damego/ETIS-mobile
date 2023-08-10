@@ -3,10 +3,10 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+import { cache } from '../../cache/smartCache';
 import ReviewBox from '../../components/ReviewBox';
 import Screen from '../../components/Screen';
 import { useAppSelector, useGlobalStyles } from '../../hooks';
-import { storage } from '../../utils';
 import { fontSize } from '../../utils/texts';
 import Menu from './Menu';
 import UserInfo from './UserInfo';
@@ -41,7 +41,7 @@ const Services = () => {
   const [showReviewModal, setShowReviewModal] = useState(false);
 
   useEffect(() => {
-    storage.bumpReviewRequest().then((res) => setShowReviewModal(res));
+    cache.bumpReviewRequest().then((res) => setShowReviewModal(res));
   }, []);
 
   return (
@@ -56,7 +56,7 @@ const Services = () => {
           <ReviewBox
             setReviewed={() => {
               setShowReviewModal(false);
-              storage.setReviewSubmitted();
+              cache.setReviewStep('stop');
             }}
             setViewed={() => setShowReviewModal(false)}
           />

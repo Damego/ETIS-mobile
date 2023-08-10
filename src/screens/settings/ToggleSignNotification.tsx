@@ -5,9 +5,10 @@ import { Linking, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { useAppColorScheme } from '../../hooks/theme';
 import { setSignNotification } from '../../redux/reducers/settingsSlice';
-import { unregisterBackgroundFetchAsync } from '../../tasks/signs';
+import { registerFetch, unregisterBackgroundFetchAsync } from '../../tasks/signs';
 import { NOTIFICATION_GUIDE_URL, storage } from '../../utils';
 import { fontSize } from '../../utils/texts';
+import { cache } from '../../cache/smartCache';
 
 const styles = StyleSheet.create({
   cardView: {
@@ -22,15 +23,20 @@ const ToggleSignNotification = () => {
   const dispatch = useAppDispatch();
   const signNotification = useAppSelector((state) => state.settings.signNotification);
   const globalStyles = useGlobalStyles();
+  const isDemo = useAppSelector((state) => state.auth.isDemo);
   const changeSignNotification = (signNotification: boolean) => {
-    unregisterBackgroundFetchAsync();
+    if (signNotification && !isDemo) {
+      registerFetch();
+    } else {
+      unregisterBackgroundFetchAsync();
+    }
     dispatch(setSignNotification(signNotification));
-    storage.storeSignNotification(signNotification);
+    cache.placeSignNotification(signNotification);
   };
 
   return (
     <View style={styles.cardView}>
-      <Text style={[styles.header, fontSize.medium, globalStyles.textColor ]}>
+      <Text style={[styles.header, fontSize.medium, globalStyles.textColor]}>
         Уведомлять об оценках
       </Text>
       <TouchableOpacity onPress={() => Linking.openURL(NOTIFICATION_GUIDE_URL)}>

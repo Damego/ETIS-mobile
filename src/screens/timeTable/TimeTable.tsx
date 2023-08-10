@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { ToastAndroid } from 'react-native';
 
+import { cache } from '../../cache/smartCache';
 import LoadingScreen from '../../components/LoadingScreen';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
-import { getTimeTableData } from '../../data/timeTable';
+import { getWrappedClient } from '../../data/client';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
+import { GetResultType, RequestType } from '../../models/results';
 import { ITimeTableGetProps } from '../../models/timeTable';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import {
   TimeTableState,
-  addFetchedWeek,
-  changeSelectedWeek,
   setCurrentWeek,
   setData,
 } from '../../redux/reducers/timeTableSlice';
@@ -21,31 +21,26 @@ const TimeTable = () => {
   const globalStyles = useGlobalStyles();
   const dispatch = useAppDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
+  const client = getWrappedClient();
 
-  const { fetchedWeeks, data, selectedWeek, currentWeek }: TimeTableState = useAppSelector(
+  const { data, currentWeek }: TimeTableState = useAppSelector(
     (state) => state.timeTable
   );
   const [isLoading, setLoading] = useState<boolean>(false);
 
-  const loadData = async (forceFetch?: boolean) => {
+  const loadData = async ({week, force}: {week?: number, force?: boolean}) => {
     setLoading(true);
 
-    /*
-    Идея в том, чтобы использовать кэш для предыдущих недель,
-    так как они больше не обновлятся в ЕТИС
-    и хранить кэшированные номера недель в стейте, чтобы не грузить их по новой
-    */
-    const useCacheFirst =
-      ((data && selectedWeek < currentWeek) || fetchedWeeks.includes(selectedWeek)) && !forceFetch;
+    const useCached =
+      ((data && week < currentWeek) || cache.hasTimeTableWeek(week)) && !force;
 
     const payload: ITimeTableGetProps = {
-      week: selectedWeek,
-      useCacheFirst,
-      useCache: true, // Если не получится получить данные, будем использовать кэшированные данные
+      week: week,
+      requestType: useCached ? RequestType.tryCache : RequestType.tryFetch, // Если не получится получить данные, будем использовать кэшированные данные
     };
-    const result = await getTimeTableData(payload);
+    const result = await client.getTimeTableData(payload);
 
-    if (result.isLoginPage) {
+    if (result.type === GetResultType.loginPage) {
       dispatch(setAuthorizing(true));
       return;
     }
@@ -61,25 +56,21 @@ const TimeTable = () => {
 
     dispatch(setData(result.data));
     setLoading(false);
-
-    if (result.fetched) {
-      dispatch(addFetchedWeek(result.data.selectedWeek));
-    }
   };
 
   useEffect(() => {
-    if (!isAuthorizing) loadData();
-  }, [selectedWeek, isAuthorizing]);
+    if (!isAuthorizing) loadData({});
+  }, [isAuthorizing]);
 
-  if (!data || isLoading) return <LoadingScreen onRefresh={loadData} />;
+  if (!data || isLoading) return <LoadingScreen onRefresh={() => loadData({force: true})} />;
 
   return (
-    <Screen onUpdate={() => loadData(true)}>
+    <Screen onUpdate={() => loadData({ force: true })}>
       <PageNavigator
         firstPage={data.firstWeek}
         lastPage={data.lastWeek}
         currentPage={data.selectedWeek}
-        onPageChange={(week) => dispatch(changeSelectedWeek(week))}
+        onPageChange={(week) => loadData({week})}
         pageStyles={{
           [currentWeek]: {
             view: {

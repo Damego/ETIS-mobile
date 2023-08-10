@@ -1,7 +1,8 @@
 import { load } from 'cheerio';
 
-export default function parseAnnounce(html: string): string[] {
+export default function parseAnnounce(html: string): string[] | null {
   const $ = load(html);
+
   const data: string[] = [];
 
   // Let WebView work with this shit
