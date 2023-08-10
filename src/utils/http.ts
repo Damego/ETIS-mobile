@@ -38,7 +38,7 @@ interface PayloadWithString {
 
 export interface Response<T> {
   data?: T;
-  error?: HTTPError
+  error?: HTTPError;
 }
 
 class HTTPClient {
@@ -113,7 +113,7 @@ class HTTPClient {
         data,
       });
       return {
-        data: returnResponse ? response : response.data
+        data: returnResponse ? response : response.data,
       };
     } catch (e) {
       console.warn('[HTTP]', e);
@@ -169,7 +169,7 @@ class HTTPClient {
     const cookies = response.data.headers['set-cookie'];
 
     if (!cookies) {
-      const $ = cheerio.load((response.data).data);
+      const $ = cheerio.load(response.data.data);
       const errorMessage = $('.error_message').text();
       if (!errorMessage)
         return {
@@ -228,8 +228,11 @@ class HTTPClient {
     });
   }
 
-  getTeachPlan() {
-    return this.request('GET', '/stu.teach_plan', { returnResponse: false });
+  getTeachPlan(mode?: string) {
+    return this.request('GET', '/stu.teach_plan', {
+      params: { p_mode: mode },
+      returnResponse: false,
+    });
   }
 
   /*

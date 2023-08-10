@@ -4,8 +4,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import Dropdown from '../../components/Dropdown';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { ThemeType, changeTheme } from '../../redux/reducers/settingsSlice';
-import { storage } from '../../utils';
 import { fontSize } from '../../utils/texts';
+import { cache } from '../../cache/smartCache';
 
 const options = [
   {
@@ -38,9 +38,10 @@ const ToggleThemeSetting = () => {
   const dispatch = useAppDispatch();
   const themeType = useAppSelector((state) => state.settings.theme);
   const globalStyles = useGlobalStyles();
+
   const changeAppTheme = (selectedTheme: ThemeType) => {
     dispatch(changeTheme(selectedTheme));
-    storage.storeAppTheme(selectedTheme);
+    cache.placeTheme(selectedTheme);
   };
 
   return (

@@ -1,10 +1,11 @@
 import React from 'react';
 import { Alert } from 'react-native';
 
+import { cache } from '../../cache/smartCache';
 import ClickableText from '../../components/ClickableText';
 import { useAppDispatch, useGlobalStyles } from '../../hooks';
 import { signOut } from '../../redux/reducers/authSlice';
-import { storage } from '../../utils';
+import { unregisterBackgroundFetchAsync } from '../../tasks/signs';
 import { fontSize } from '../../utils/texts';
 
 const SignOut = () => {
@@ -12,20 +13,25 @@ const SignOut = () => {
   const globalStyles = useGlobalStyles();
 
   const doSignOut = async () => {
-    await storage.deleteAccountData();
+    await cache.clear();
     dispatch(signOut({ cleanUserCredentials: true }));
+    unregisterBackgroundFetchAsync().catch(error => error);
   };
 
   const confirmSignOut = () => {
-    Alert.alert('Выход из аккаунта', 'Вы действительно хотите выйти из аккаунта?', [
-      {
-        text: 'Отмена',
-      },
-      {
-        text: 'Выйти',
-        onPress: doSignOut,
-      },
-    ]);
+    Alert.alert(
+      'Выход из аккаунта',
+      'Вы действительно хотите выйти из аккаунта? Это действие удалит все ваши данные.',
+      [
+        {
+          text: 'Отмена',
+        },
+        {
+          text: 'Выйти',
+          onPress: doSignOut,
+        },
+      ]
+    );
   };
 
   return (

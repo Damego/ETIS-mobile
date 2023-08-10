@@ -1,7 +1,15 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import {StyleProp, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle} from 'react-native';
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import { useGlobalStyles } from '../hooks';
 import { fontSize } from '../utils/texts';
@@ -87,16 +95,18 @@ const PageNavigator = ({
   currentPage,
   lastPage,
   onPageChange,
-  pageStyles
+  pageStyles = {},
 }: {
   firstPage: number;
   currentPage: number;
   lastPage: number;
   onPageChange(page: number): void;
-  pageStyles?: { [page: number]: {
-    view?: StyleProp<ViewStyle>;
-    text?: StyleProp<TextStyle>;
-    } }
+  pageStyles?: {
+    [page: number]: {
+      view?: StyleProp<ViewStyle>;
+      text?: StyleProp<TextStyle>;
+    };
+  };
 }) => {
   const globalStyles = useGlobalStyles();
   const [buttons, changeButtons] = useState([]);
