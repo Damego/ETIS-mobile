@@ -52,15 +52,15 @@ export default class SmartCache {
   app: FieldCache<AppConfig>;
 
   constructor() {
-    this.announce = new FieldCache(this.keys.ANNOUNCES, []);
+    this.announce = new FieldCache(this.keys.ANNOUNCES);
     this.messages = new MappedCache<number, IMessagesData>(this.keys.MESSAGES);
     this.orders = {
-      list: new FieldCache<IOrder[]>(this.keys.ORDERS, []),
+      list: new FieldCache<IOrder[]>(this.keys.ORDERS),
       info: new MappedCache<string, string>(this.keys.ORDERS_INFO),
     };
     this.timeTable = new MappedCache(this.keys.TIMETABLE);
     this.teachers = new FieldCache<TeacherType>(this.keys.TEACHERS);
-    this.teachPlan = new FieldCache(this.keys.TEACH_PLAN, []);
+    this.teachPlan = new FieldCache(this.keys.TEACH_PLAN);
     this.signsMarks = new MappedCache(this.keys.SIGNS_MARKS);
     this.signsPoints = new MappedCache(this.keys.SIGNS_POINTS);
     this.signsRating = new MappedCache(this.keys.SIGNS_RATING);
@@ -265,10 +265,10 @@ export default class SmartCache {
 
   async getAppConfig() {
     if (!this.app.isReady()) await this.app.init();
-    return this.app.get();
+    return this.app.get() || {} as AppConfig;
   }
 
-  async get() {
+  async getTheme() {
     const data = await this.getAppConfig();
     return data.theme;
   }
@@ -305,7 +305,8 @@ export default class SmartCache {
   }
 
   async getReviewStep() {
-    return (await this.getAppConfig()).reviewStep;
+    const data = await this.getAppConfig();
+    return data.reviewStep;
   }
 
   async setReviewStep(step: 'pending' | 'stop') {
@@ -355,7 +356,9 @@ export default class SmartCache {
     await this.signsRating.clear();
     await this.student.delete();
     await this.user.delete();
-    // await this.app.delete();
+
+    // Debug only
+    await this.app.delete();
   }
 }
 

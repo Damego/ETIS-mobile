@@ -6,10 +6,9 @@ export default class FieldCache<T> {
   private data: T;
   private readonly initialValue: T;
 
-  constructor(key: string, initialValue: T = {} as T) {
+  constructor(key: string) {
     this.key = key;
-    this.initialValue = initialValue;
-    this.data = initialValue;
+    this.data = null;
     this.ready = false;
   }
 
@@ -38,7 +37,7 @@ export default class FieldCache<T> {
   }
 
   async delete() {
-    this.data = this.initialValue;
+    this.data = null;
     await AsyncStorage.removeItem(this.key);
   }
 }
