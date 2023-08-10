@@ -135,7 +135,7 @@ export default class SmartCache {
   }
 
   async placeTimeTable(data: ITimeTable) {
-    this.timeTable.place(data.selectedWeek, data);
+    this.timeTable.place(data.weekInfo.selected, data);
     await this.timeTable.save();
   }
 
