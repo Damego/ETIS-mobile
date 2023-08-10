@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ToastAndroid } from 'react-native';
+import { Text, ToastAndroid, View } from 'react-native';
 
 import { cache } from '../../cache/smartCache';
 import LoadingScreen from '../../components/LoadingScreen';
@@ -11,6 +11,7 @@ import { GetResultType, RequestType } from '../../models/results';
 import { ITimeTableGetProps, WeekTypes } from '../../models/timeTable';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { setCurrentWeek, setData } from '../../redux/reducers/timeTableSlice';
+import { fontSize } from '../../utils/texts';
 import DayArray from './DayArray';
 import HolidayView from './HolidayView';
 
@@ -75,6 +76,13 @@ const TimeTable = () => {
           },
         }}
       />
+
+      {/* Даты начала и конца недели */}
+      <View style={{ marginTop: '2%', justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={[fontSize.medium, globalStyles.textColor, { fontWeight: '500' }]}>
+          {data.weekInfo.dates.start} - {data.weekInfo.dates.end}
+        </Text>
+      </View>
 
       {data.weekInfo.type === WeekTypes.holiday ? (
         <HolidayView holidayInfo={data.weekInfo.holidayDates} />
