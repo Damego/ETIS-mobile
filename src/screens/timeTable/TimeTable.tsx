@@ -77,7 +77,7 @@ const TimeTable = () => {
       />
 
       {data.weekInfo.type === WeekTypes.holiday ? (
-        <HolidayView holidayInfo={data.weekInfo.holiday} />
+        <HolidayView holidayInfo={data.weekInfo.holidayDates} />
       ) : (
         <DayArray data={data.days} />
       )}

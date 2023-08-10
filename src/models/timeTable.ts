@@ -8,7 +8,7 @@ export enum WeekTypes {
   elective
 }
 
-export interface HolidayInfo {
+export interface WeekDates {
   start: string,
   end: string,
 }
@@ -18,7 +18,8 @@ export interface WeekInfo {
   selected: number;
   last: number;
   type: WeekTypes;
-  holiday?: HolidayInfo;
+  dates: WeekDates;
+  holidayDates?: WeekDates;
 }
 
 export interface ILesson {

@@ -31,18 +31,21 @@ export default function parseTimeTable(html) {
     selected: parseInt(currentWeek.text()),
     last: parseInt(week.last().text()),
     type: getWeekType(currentWeek),
-    holiday: null,
+    holidayDates: null,
+    dates: null
   };
 
-  const holidayDates = getTextField(
-    $('.week-select').children().last().find('.holiday')
-  )
-  if (holidayDates) {
-    const [holidayStart, holidayEnd] = holidayDates.match(dateRegex);
-    weekInfo.holiday = {
-      start: holidayStart,
-      end: holidayEnd
+  const dates = getTextField($('.week-select').children().last());
+  if (dates) {
+    const [weekStart, weekEnd, holidayStart, holidayEnd] = dates.match(dateRegex);
+    weekInfo.dates = {
+      start: weekStart,
+      end: weekEnd
     }
+    weekInfo.holidayDates = {
+      start: holidayStart,
+      end: holidayEnd,
+    };
   }
 
   const data: ITimeTable = {

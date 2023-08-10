@@ -2,10 +2,10 @@ import React from 'react';
 import { Text, View } from 'react-native';
 
 import { useGlobalStyles } from '../../hooks';
-import { HolidayInfo } from '../../models/timeTable';
+import { WeekDates } from '../../models/timeTable';
 import { fontSize } from '../../utils/texts';
 
-const HolidayView = ({ holidayInfo }: { holidayInfo: HolidayInfo }) => {
+const HolidayView = ({ holidayInfo }: { holidayInfo: WeekDates }) => {
   const globalStyles = useGlobalStyles();
 
   return (
