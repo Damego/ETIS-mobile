@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { ToastAndroid, View } from 'react-native';
+
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
 import SessionDropdown from '../../components/SessionDropdown';
+import { getWrappedClient } from '../../data/client';
 import { composePointsAndMarks } from '../../data/signs';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { GetResultType, IGetResult, RequestType } from '../../models/results';
@@ -11,23 +13,16 @@ import { ISessionPoints } from '../../models/sessionPoints';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { setFetchedLatestSession, setMarks } from '../../redux/reducers/signsSlice';
 import CardSign from './CardSign';
-import { getWrappedClient } from '../../data/client';
-
-interface loadDataPayload {
-  session?: number;
-  force?: boolean;
-}
 
 const Signs = () => {
   const dispatch = useAppDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
-
   const [isLoading, setLoading] = useState<boolean>(false);
   const { sessionsMarks, fetchedLatestSession } = useAppSelector((state) => state.signs);
   const [data, setData] = useState<ISessionPoints>(null);
   const client = getWrappedClient();
 
-  const loadData = async ({ session, force }: loadDataPayload) => {
+  const loadData = async ({ session, force }: { session?: number; force?: boolean }) => {
     // We use dropdown to fetch new data, and we need to show loading state while data is fetching
     if (data) setLoading(true);
 
@@ -40,6 +35,7 @@ const Signs = () => {
       data &&
       (newSession < data.latestSession ||
         (newSession === data.latestSession && fetchedLatestSession));
+
     const result = await client.getSessionSignsData({
       requestType: useCacheFirst ? RequestType.tryCache : RequestType.tryFetch,
       session: newSession,

@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Button, StyleSheet, Text, ToastAndroid, View } from 'react-native';
 
+import { cache } from '../cache/smartCache';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
 import {
+  UserCredentials,
   setAuthorizing,
   signIn,
   signInDemo,
   signOut,
-  UserCredentials,
 } from '../redux/reducers/authSlice';
-import { httpClient, storage } from '../utils';
+import { httpClient } from '../utils';
 import { isDemoCredentials } from '../utils/demo';
 import CustomReCaptcha from './ReCaptcha';
 
@@ -49,8 +50,7 @@ const makeLogin = async (
   if (!token) {
     return LoginResponseType.missingToken;
   }
-  if (!(await storage.hasAcceptedPrivacyPolicy()))
-    return LoginResponseType.privacyPolicyNotAccepted;
+  if (!(await cache.hasAcceptedPrivacyPolicy())) return LoginResponseType.privacyPolicyNotAccepted;
 
   const response = await httpClient.login(
     userCredentials.login,
@@ -81,7 +81,7 @@ const makeLogin = async (
   }
 
   if (saveUserCredentials) {
-    await storage.storeAccountData(userCredentials.login, userCredentials.password);
+    await cache.placeUserCredentials(userCredentials);
   }
   return LoginResponseType.success;
 };

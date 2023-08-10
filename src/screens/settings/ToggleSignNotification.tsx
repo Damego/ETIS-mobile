@@ -8,6 +8,7 @@ import { setSignNotification } from '../../redux/reducers/settingsSlice';
 import { registerFetch, unregisterBackgroundFetchAsync } from '../../tasks/signs';
 import { NOTIFICATION_GUIDE_URL, storage } from '../../utils';
 import { fontSize } from '../../utils/texts';
+import { cache } from '../../cache/smartCache';
 
 const styles = StyleSheet.create({
   cardView: {
@@ -30,7 +31,7 @@ const ToggleSignNotification = () => {
       unregisterBackgroundFetchAsync();
     }
     dispatch(setSignNotification(signNotification));
-    storage.storeSignNotification(signNotification);
+    cache.placeSignNotification(signNotification);
   };
 
   return (

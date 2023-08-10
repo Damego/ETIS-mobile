@@ -1,6 +1,17 @@
-import Cache from './cache';
-import { httpClient } from '../utils';
+import { useMemo } from 'react';
+
+import { cache } from '../cache/smartCache';
+import { useAppSelector } from '../hooks';
+import { IGetMessagesPayload, IMessagesData } from '../models/messages';
+import { IOrder } from '../models/order';
+import { IGetRatingPayload, ISessionRating } from '../models/rating';
 import { IGetPayload, IGetResult } from '../models/results';
+import { ISessionMarks } from '../models/sessionMarks';
+import { ISessionPoints } from '../models/sessionPoints';
+import { IGetSignsPayload } from '../models/signs';
+import { ISessionTeachPlan } from '../models/teachPlan';
+import { TeacherType } from '../models/teachers';
+import { ITimeTable, ITimeTableGetProps } from '../models/timeTable';
 import {
   parseAnnounce,
   parseMenu,
@@ -11,23 +22,12 @@ import {
   parseTeachers,
   parseTimeTable,
 } from '../parser';
-import { BaseClient, BasicClient } from './base';
-import { useMemo } from 'react';
-import DemoClient from './demoClient';
-import { useAppSelector } from '../hooks';
-import { ITimeTable, ITimeTableGetProps } from '../models/timeTable';
-import { IGetMessagesPayload, IMessagesData } from '../models/messages';
-import { Response } from '../utils/http';
-import { IOrder } from '../models/order';
+import { StudentInfo } from '../parser/menu';
 import parseOrders from '../parser/order';
-import { IGetRatingPayload, ISessionRating } from '../models/rating';
 import parseRating from '../parser/rating';
-import { IGetSignsPayload } from '../models/signs';
-import { ISessionMarks } from '../models/sessionMarks';
-import { MenuParseResult } from '../parser/menu';
-import { TeacherType } from '../models/teachers';
-import { ISessionTeachPlan } from '../models/teachPlan';
-import { ISessionPoints } from '../models/sessionPoints';
+import { httpClient } from '../utils';
+import { BaseClient, BasicClient } from './base';
+import DemoClient from './demoClient';
 
 export const getWrappedClient: () => BaseClient = () => {
   const { isDemo } = useAppSelector((state) => state.auth);
@@ -41,11 +41,10 @@ class OrderClient extends BasicClient<IGetPayload, IOrder[]> {}
 class RatingClient extends BasicClient<IGetRatingPayload, ISessionRating> {}
 class SignsClient extends BasicClient<IGetSignsPayload, ISessionPoints> {}
 class MarksClient extends BasicClient<IGetPayload, ISessionMarks[]> {}
-class StudentClient extends BasicClient<IGetPayload, MenuParseResult> {}
+class StudentClient extends BasicClient<IGetPayload, StudentInfo> {}
 class TeachersClient extends BasicClient<IGetPayload, TeacherType> {}
 class TeachPlanClient extends BasicClient<IGetPayload, ISessionTeachPlan[]> {}
 export default class Client implements BaseClient {
-  private readonly cache: Cache;
   private announceClient: AnnounceClient;
   private timeTableClient: TimeTableClient;
   private messageClient: MessageClient;
@@ -58,100 +57,115 @@ export default class Client implements BaseClient {
   private teachPlanClient: TeachPlanClient;
 
   constructor() {
-    this.cache = new Cache();
     this.announceClient = new AnnounceClient(
-      this.cache.getAnnounceData,
+      () => cache.getAnnounce(),
       () => httpClient.getAnnounce(),
       parseAnnounce,
-      this.cache.placeAnnounceData
+      (data) => cache.placeAnnounce(data)
     );
     this.timeTableClient = new TimeTableClient(
-      ({ week }) => this.cache.getTimeTableData(week),
+      ({ week }) => cache.getTimeTable(week),
       ({ week }) => httpClient.getTimeTable({ week }),
       parseTimeTable,
-      this.cache.placeTimeTableData
+      (data) => cache.placeTimeTable(data)
     );
     this.messageClient = new MessageClient(
-      ({ page }) => this.cache.getMessagesData(page),
+      ({ page }) => cache.getMessages(page),
       ({ page }) => httpClient.getMessages(page),
       parseMessages,
-      this.cache.placeMessagesData
+      (data) => cache.placeMessages(data)
     );
     this.orderClient = new OrderClient(
-      this.cache.getOrderData,
+      () => cache.getOrders(),
       () => httpClient.getOrders(),
       parseOrders,
-      this.cache.placeOrderData
+      (data) => cache.placeOrders(data)
     );
     this.ratingClient = new RatingClient(
-      ({ session }) => this.cache.getRatingData(session),
-      () => httpClient.getSigns('rating'),
+      ({ session }) => cache.getSessionRating(session),
+      ({ session }) => httpClient.getSigns('rating', session),
       parseRating,
-      this.cache.placeRatingData
+      (data) => cache.placeSessionRating(data)
     );
     this.signsClient = new SignsClient(
-      ({ session }) => this.cache.getSignsData(session),
+      ({ session }) => cache.getSessionPoints(session),
       ({ session }) => httpClient.getSigns('current', session),
       parseSessionPoints,
-      this.cache.placeSignsData
+      (data) => cache.placeSessionPoints(data)
     );
     this.marksClient = new MarksClient(
-      this.cache.getMarksData,
+      () => cache.getAllSessionMarks(),
       () => httpClient.getSigns('session'),
-      (data) => parseSessionMarks(data),
-      this.cache.placeMarksData
+      parseSessionMarks,
+      (data) => cache.placeSessionMarks(data)
     );
     this.studentClient = new StudentClient(
-      this.cache.getStudentData,
+      () => cache.getStudent(),
       () => httpClient.getGroupJournal(),
       (payload) => parseMenu(payload, true),
-      ({ studentInfo }) => this.cache.placeStudentData(studentInfo)
+      (data) => cache.placeStudent(data)
     );
     this.teacherClient = new TeachersClient(
-      this.cache.getTeacherData,
+      () => cache.getTeachers(),
       () => httpClient.getTeachers(),
       parseTeachers,
-      this.cache.placeTeacherData
+      (data) => cache.placeTeachers(data)
     );
     this.teachPlanClient = new TeachPlanClient(
-      this.cache.getTeachPlanData,
+      () => cache.getTeachPlan(),
       () => httpClient.getTeachPlan(),
       parseShortTeachPlan,
-      this.cache.placeTeachPlanData
+      (data) => cache.placeTeachPlan(data)
     );
   }
+
   async getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>> {
+    await cache.announce.init();
     return this.announceClient.getData(payload);
   }
 
   async getTimeTableData(payload: ITimeTableGetProps): Promise<IGetResult<ITimeTable>> {
+    await cache.timeTable.init();
     return this.timeTableClient.getData(payload);
   }
 
   async getMessagesData(payload: IGetMessagesPayload): Promise<IGetResult<IMessagesData>> {
+    await cache.messages.init();
     return this.messageClient.getData(payload);
   }
 
   async getOrdersData(payload: IGetPayload): Promise<IGetResult<IOrder[]>> {
+    await cache.orders.list.init();
     return this.orderClient.getData(payload);
   }
 
   async getRatingData(payload: IGetRatingPayload): Promise<IGetResult<ISessionRating>> {
+    await cache.signsRating.init();
     return this.ratingClient.getData(payload);
   }
+
   async getSessionSignsData(payload: IGetSignsPayload): Promise<IGetResult<ISessionPoints>> {
+    await cache.signsPoints.init();
     return this.signsClient.getData(payload);
   }
+
   async getSessionMarksData(payload: IGetPayload): Promise<IGetResult<ISessionMarks[]>> {
+    await cache.signsMarks.init();
     return this.marksClient.getData(payload);
   }
-  async getStudentInfoData(payload: IGetPayload): Promise<IGetResult<MenuParseResult>> {
+
+  async getStudentInfoData(payload: IGetPayload): Promise<IGetResult<StudentInfo>> {
+    await cache.student.init();
     return this.studentClient.getData(payload);
   }
+
   async getTeacherData(payload: IGetPayload): Promise<IGetResult<TeacherType>> {
+    await cache.teachers.init();
     return this.teacherClient.getData(payload);
   }
+
   async getTeachPlanData(payload: IGetPayload): Promise<IGetResult<ISessionTeachPlan[]>> {
+    await cache.teachPlan.init();
     return this.teachPlanClient.getData(payload);
   }
 }

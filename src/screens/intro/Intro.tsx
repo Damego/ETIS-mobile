@@ -7,8 +7,8 @@ import { ImageRequireSource } from 'react-native/Libraries/Image/ImageSource';
 
 import { useAppDispatch } from '../../hooks';
 import { setIntroViewed } from '../../redux/reducers/settingsSlice';
-import { storage } from '../../utils';
 import { fontSize } from '../../utils/texts';
+import { cache } from '../../cache/smartCache';
 
 const styles = StyleSheet.create({
   mainContent: {
@@ -90,7 +90,7 @@ const Intro = () => {
   const dispatch = useAppDispatch();
 
   const onIntroDone = () => {
-    storage.setViewedIntro();
+    cache.placeIntroViewed(true);
     dispatch(setIntroViewed(true));
   };
 

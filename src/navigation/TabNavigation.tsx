@@ -1,8 +1,12 @@
 import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { useEffect } from 'react';
+
+import { getWrappedClient } from '../data/client';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
 import { useAppTheme } from '../hooks/theme';
+import { GetResultType, RequestType } from '../models/results';
+import { setAuthorizing } from '../redux/reducers/authSlice';
 import { setAnnounceCount, setMessageCount, setStudentInfo } from '../redux/reducers/studentSlice';
 import Announce from '../screens/announce/Announce';
 import Messages from '../screens/messages/Messages';
@@ -11,9 +15,6 @@ import { registerFetch } from '../tasks/signs';
 import ServicesStackNavigator from './ServicesStackNavigator';
 import SignsTopTabNavigator from './TopTabNavigator';
 import { headerParams } from './header';
-import { getWrappedClient } from '../data/client';
-import { GetResultType, RequestType } from '../models/results';
-import { setAuthorizing } from '../redux/reducers/authSlice';
 
 const Tab = createBottomTabNavigator();
 
@@ -26,8 +27,10 @@ const TabNavigator = () => {
   const sendNotifications = useAppSelector((state) => state.settings.signNotification);
   const client = getWrappedClient();
   const isDemo = useAppSelector((state) => state.auth.isDemo);
+
   const loadData = async () => {
-    const result = await client.getStudentInfoData({ requestType: RequestType.tryCache });
+    const result = await client.getStudentInfoData({ requestType: RequestType.tryFetch });
+
     if (result.type === GetResultType.loginPage) {
       dispatch(setAuthorizing(true));
       return;
@@ -35,7 +38,7 @@ const TabNavigator = () => {
 
     const data = result.data;
 
-    dispatch(setStudentInfo(data.studentInfo));
+    dispatch(setStudentInfo(data.student));
     dispatch(setMessageCount(data.messageCount));
     dispatch(setAnnounceCount(data.announceCount));
   };

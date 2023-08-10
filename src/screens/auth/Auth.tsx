@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { ToastAndroid } from 'react-native';
 
+import { cache } from '../../cache/smartCache';
 import Screen from '../../components/Screen';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setAuthorizing, setUserCredentials } from '../../redux/reducers/authSlice';
-import { httpClient, storage } from '../../utils';
+import { httpClient } from '../../utils';
 import showPrivacyPolicy from '../../utils/privacyPolicy';
 import Footer from './AuthFooter';
 import Form from './AuthForm';
@@ -27,7 +28,7 @@ const AuthScreen = () => {
   }, [userCredentials]);
 
   const onFormSubmit = async (login: string, password: string) => {
-    if (!(await storage.hasAcceptedPrivacyPolicy())) {
+    if (!(await cache.hasAcceptedPrivacyPolicy())) {
       showPrivacyPolicy();
       return;
     }

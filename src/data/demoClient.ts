@@ -4,7 +4,7 @@ import { ITimeTable, ITimeTableGetProps } from '../models/timeTable';
 import { IMessagesData, MessageType } from '../models/messages';
 import { IOrder } from '../models/order';
 import { ISessionMarks } from '../models/sessionMarks';
-import { MenuParseResult } from '../parser/menu';
+import { StudentInfo } from '../parser/menu';
 import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
 import { ISessionRating } from '../models/rating';
@@ -401,9 +401,9 @@ export default class DemoClient implements BaseClient {
     return this.toResult(data);
   }
 
-  async getStudentInfoData(): Promise<IGetResult<MenuParseResult>> {
-    const data: MenuParseResult = {
-      studentInfo: {
+  async getStudentInfoData(): Promise<IGetResult<StudentInfo>> {
+    const data: StudentInfo = {
+      student: {
         name: 'Лейбниц Готфрид Вильгельм',
         group: 'Математика-1',
         speciality: 'Математика',

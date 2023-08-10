@@ -1,22 +1,19 @@
-import { storage } from '../utils';
-import { UserCredentials, setUserCredentials } from './reducers/authSlice';
-import { changeTheme, setAppReady, setIntroViewed, setSignNotification } from './reducers/settingsSlice';
+import { setUserCredentials } from './reducers/authSlice';
+import { setConfig, setAppReady } from './reducers/settingsSlice';
 import { AppDispatch } from './store';
+import {cache} from '../cache/smartCache';
 
 export const loadSettings = () => async (dispatch: AppDispatch) => {
-  const [theme, hasViewedIntro, signNotification] = await Promise.all([
-    storage.getAppTheme(),
-    storage.hasViewedIntro(),
-    storage.getSignNotification(),
-  ]);
+  const config = await cache.getAppConfig();
 
-  dispatch(changeTheme(theme));
-  dispatch(setIntroViewed(hasViewedIntro));
-  dispatch(setSignNotification(signNotification));
+  if (!config) return;
+
+  dispatch(setConfig(config));
 };
 
 export const loadUserCredentials = () => async (dispatch: AppDispatch) => {
-  const userCredentials: UserCredentials = await storage.getAccountData();
+  const userCredentials = await cache.getUserCredentials();
+
   const payload = {
     userCredentials,
     fromStorage: true
