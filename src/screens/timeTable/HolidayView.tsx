@@ -1,15 +1,20 @@
-import { Text, View } from 'react-native';
-import { fontSize } from '../../utils/texts';
 import React from 'react';
-import { useGlobalStyles } from '../../hooks';
+import { Text, View } from 'react-native';
 
-const HolidayView = () => {
+import { useGlobalStyles } from '../../hooks';
+import { HolidayInfo } from '../../models/timeTable';
+import { fontSize } from '../../utils/texts';
+
+const HolidayView = ({ holidayInfo }: { holidayInfo: HolidayInfo }) => {
   const globalStyles = useGlobalStyles();
 
   return (
     <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
       <Text style={[fontSize.xlarge, globalStyles.textColor, { fontWeight: '600' }]}>
         Каникулы!
+      </Text>
+      <Text style={[fontSize.large, globalStyles.textColor, { fontWeight: '500' }]}>
+        С {holidayInfo.start} по {holidayInfo.end}
       </Text>
     </View>
   );

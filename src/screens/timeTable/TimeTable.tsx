@@ -10,12 +10,9 @@ import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { GetResultType, RequestType } from '../../models/results';
 import { ITimeTableGetProps, WeekTypes } from '../../models/timeTable';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
-import {
-  setCurrentWeek,
-  setData,
-} from '../../redux/reducers/timeTableSlice';
+import { setCurrentWeek, setData } from '../../redux/reducers/timeTableSlice';
 import DayArray from './DayArray';
-import HolidayView from "./HolidayView";
+import HolidayView from './HolidayView';
 
 const TimeTable = () => {
   const globalStyles = useGlobalStyles();
@@ -23,16 +20,13 @@ const TimeTable = () => {
   const { isAuthorizing } = useAppSelector((state) => state.auth);
   const client = getWrappedClient();
 
-  const { data, currentWeek } = useAppSelector(
-    (state) => state.timeTable
-  );
+  const { data, currentWeek } = useAppSelector((state) => state.timeTable);
   const [isLoading, setLoading] = useState<boolean>(false);
 
-  const loadData = async ({week, force}: {week?: number, force?: boolean}) => {
+  const loadData = async ({ week, force }: { week?: number; force?: boolean }) => {
     setLoading(true);
 
-    const useCached =
-      ((data && week < currentWeek) || cache.hasTimeTableWeek(week)) && !force;
+    const useCached = ((data && week < currentWeek) || cache.hasTimeTableWeek(week)) && !force;
 
     const payload: ITimeTableGetProps = {
       week: week,
@@ -62,7 +56,7 @@ const TimeTable = () => {
     if (!isAuthorizing) loadData({});
   }, [isAuthorizing]);
 
-  if (!data || isLoading) return <LoadingScreen onRefresh={() => loadData({force: true})} />;
+  if (!data || isLoading) return <LoadingScreen onRefresh={() => loadData({ force: true })} />;
 
   return (
     <Screen onUpdate={() => loadData({ force: true })}>
@@ -70,7 +64,7 @@ const TimeTable = () => {
         firstPage={data.weekInfo.first}
         lastPage={data.weekInfo.last}
         currentPage={data.weekInfo.selected}
-        onPageChange={(week) => loadData({week})}
+        onPageChange={(week) => loadData({ week })}
         pageStyles={{
           [currentWeek]: {
             view: {
@@ -82,7 +76,11 @@ const TimeTable = () => {
         }}
       />
 
-      {data.weekInfo.type === WeekTypes.common ? <DayArray data={data.days} /> : <HolidayView />}
+      {data.weekInfo.type === WeekTypes.holiday ? (
+        <HolidayView holidayInfo={data.weekInfo.holiday} />
+      ) : (
+        <DayArray data={data.days} />
+      )}
     </Screen>
   );
 };
