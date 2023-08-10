@@ -15,11 +15,7 @@ const SignOut = () => {
   const doSignOut = async () => {
     await cache.clear();
     dispatch(signOut({ cleanUserCredentials: true }));
-    try {
-      unregisterBackgroundFetchAsync();
-    } catch (error) {
-      /* empty */
-    }
+    unregisterBackgroundFetchAsync().catch(error => error);
   };
 
   const confirmSignOut = () => {
