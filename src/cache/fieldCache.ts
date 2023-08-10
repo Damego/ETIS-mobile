@@ -4,7 +4,6 @@ export default class FieldCache<T> {
   private readonly key: string;
   private ready: boolean;
   private data: T;
-  private readonly initialValue: T;
 
   constructor(key: string) {
     this.key = key;
@@ -20,7 +19,7 @@ export default class FieldCache<T> {
     if (this.isReady()) return;
 
     const stringData = await AsyncStorage.getItem(this.key);
-    if (stringData) this.data = JSON.parse(stringData);
+    this.data = JSON.parse(stringData);
     this.ready = true;
   }
 
