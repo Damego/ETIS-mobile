@@ -1,14 +1,15 @@
-import { GetResultType, IGetPayload, IGetResult } from '../models/results';
-import { BaseClient } from './base';
-import { ITimeTable, ITimeTableGetProps } from '../models/timeTable';
+import { ICalendarSchedule } from '../models/calendarSchedule';
 import { IMessagesData, MessageType } from '../models/messages';
 import { IOrder } from '../models/order';
+import { ISessionRating } from '../models/rating';
+import { GetResultType, IGetPayload, IGetResult } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
-import { StudentInfo } from '../parser/menu';
+import { ISessionPoints } from '../models/sessionPoints';
 import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
-import { ISessionRating } from '../models/rating';
-import { ISessionPoints } from '../models/sessionPoints';
+import { ITimeTable, ITimeTableGetProps } from '../models/timeTable';
+import { StudentInfo } from '../parser/menu';
+import { BaseClient } from './base';
 
 export default class DemoClient implements BaseClient {
   toResult<T>(data: T): IGetResult<T> {
@@ -513,6 +514,53 @@ export default class DemoClient implements BaseClient {
         ],
       ],
     ];
+    return this.toResult(data);
+  }
+
+  async getCalendarScheduleData() {
+    const data: ICalendarSchedule = {
+      course: 1,
+      sessions: [
+        {
+          title: 'Осенний триместр',
+          dates: [
+            '01.09.2022 - 03.11.2022 теоретическое обучение',
+            '04.11.2022 - 04.11.2022 нерабочие праздничные дни',
+            '05.11.2022 - 17.12.2022 теоретическое обучение',
+            '18.12.2022 - 24.12.2022 теоретическое обучение и промежуточная аттестация',
+            '25.12.2022 - 31.12.2022 каникулы',
+            '01.01.2023 - 08.01.2023 нерабочие праздничные дни',
+          ],
+        },
+        {
+          title: 'Весенний триместр',
+          dates: [
+            '09.01.2023 - 22.02.2023 теоретическое обучение',
+            '23.02.2023 - 23.02.2023 нерабочие праздничные дни',
+            '24.02.2023 - 07.03.2023 теоретическое обучение',
+            '08.03.2023 - 08.03.2023 нерабочие праздничные дни',
+            '09.03.2023 - 23.04.2023 теоретическое обучение',
+            '24.04.2023 - 30.04.2023 теоретическое обучение и промежуточная аттестация',
+            '01.05.2023 - 01.05.2023 нерабочие праздничные дни',
+            '02.05.2023 - 08.05.2023 каникулы',
+            '09.05.2023 - 09.05.2023 нерабочие праздничные дни',
+            '10.05.2023 - 10.05.2023 каникулы',
+          ],
+        },
+        {
+          title: 'Летний триместр',
+          dates: [
+            '11.05.2023 - 11.06.2023 учебная рассредоточенная практика',
+            '12.06.2023 - 12.06.2023 нерабочие праздничные дни',
+            '13.06.2023 - 29.06.2023 учебная рассредоточенная практика',
+            '30.06.2023 - 06.07.2023 теоретическое обучение и промежуточная аттестация',
+            '07.07.2023 - 20.07.2023 изучение факультативных дисциплин',
+            '21.07.2023 - 31.08.2023 каникулы',
+          ],
+        },
+      ],
+    };
+
     return this.toResult(data);
   }
 }

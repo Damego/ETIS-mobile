@@ -1,6 +1,6 @@
 import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
-import { getDocumentAsync } from 'expo-document-picker';
+import { getDocumentAsync, DocumentPickerAsset } from 'expo-document-picker';
 import React, { useState } from 'react';
 import {
   ActivityIndicator,

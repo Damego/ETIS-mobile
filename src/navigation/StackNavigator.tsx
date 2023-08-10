@@ -1,8 +1,9 @@
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { setBackgroundColorAsync as setBackgroundNavigationBarColorAsync } from 'expo-navigation-bar';
 import * as SplashScreen from 'expo-splash-screen';
-import React, { useEffect } from 'react';
+import { setBackgroundColorAsync } from 'expo-system-ui';
 
 import { cache } from '../cache/smartCache';
 import { useAppSelector } from '../hooks';
@@ -13,6 +14,7 @@ import MessageHistory from '../screens/messages/MessageHistory';
 import showPrivacyPolicy from '../utils/privacyPolicy';
 import TabNavigator from './TabNavigation';
 import { headerParams } from './header';
+import CalendarSchedule from '../screens/shortTeachPlan/CalendarSchedule';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,8 +22,6 @@ const StackNavigator = () => {
   const { isSignedIn } = useAppSelector((state) => state.auth);
   const { viewedIntro, appIsReady } = useAppSelector((state) => state.settings);
   const theme = useAppTheme();
-
-  setBackgroundNavigationBarColorAsync(theme.colors.card);
 
   useEffect(() => {
     const wrapper = async () => {
@@ -31,6 +31,11 @@ const StackNavigator = () => {
     };
     wrapper();
   }, []);
+
+  useEffect(() => {
+    setBackgroundNavigationBarColorAsync(theme.colors.card);
+    setBackgroundColorAsync(theme.colors.background);
+  }, [theme]);
 
   useEffect(() => {
     if (appIsReady) SplashScreen.hideAsync();
@@ -69,7 +74,14 @@ const StackNavigator = () => {
           headerShown: false,
         }}
       >
-        {component}
+        <Stack.Group>{component}</Stack.Group>
+        <Stack.Group screenOptions={{ presentation: 'modal' }}>
+          <Stack.Screen
+            name={'calendarSchedule'}
+            component={CalendarSchedule}
+            options={{ title: 'График' }}
+          />
+        </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
   );

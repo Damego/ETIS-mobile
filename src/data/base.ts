@@ -19,6 +19,7 @@ import { ITimeTable, ITimeTableGetProps } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
 import { isLoginPage } from '../parser/utils';
 import { Response } from '../utils/http';
+import { ICalendarSchedule } from '../models/calendarSchedule';
 
 export interface BaseClient {
   getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>>;
@@ -31,6 +32,7 @@ export interface BaseClient {
   getStudentInfoData(payload: IGetPayload): Promise<IGetResult<StudentInfo>>;
   getTeacherData(payload: IGetPayload): Promise<IGetResult<TeacherType>>;
   getTeachPlanData(payload: IGetPayload): Promise<IGetResult<ISessionTeachPlan[]>>;
+  getCalendarScheduleData(payload: IGetPayload): Promise<IGetResult<ICalendarSchedule>>;
 }
 
 export class BasicClient<P extends IGetPayload, T> {

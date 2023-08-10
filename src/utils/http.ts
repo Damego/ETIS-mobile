@@ -228,8 +228,11 @@ class HTTPClient {
     });
   }
 
-  getTeachPlan() {
-    return this.request('GET', '/stu.teach_plan', { returnResponse: false });
+  getTeachPlan(mode?: string) {
+    return this.request('GET', '/stu.teach_plan', {
+      params: { p_mode: mode },
+      returnResponse: false,
+    });
   }
 
   /*

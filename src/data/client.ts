@@ -28,6 +28,8 @@ import parseRating from '../parser/rating';
 import { httpClient } from '../utils';
 import { BaseClient, BasicClient } from './base';
 import DemoClient from './demoClient';
+import { ICalendarSchedule } from '../models/calendarSchedule';
+import parseCalendarSchedule from '../parser/calendar';
 
 export const getWrappedClient: () => BaseClient = () => {
   const { isDemo } = useAppSelector((state) => state.auth);
@@ -44,6 +46,8 @@ class MarksClient extends BasicClient<IGetPayload, ISessionMarks[]> {}
 class StudentClient extends BasicClient<IGetPayload, StudentInfo> {}
 class TeachersClient extends BasicClient<IGetPayload, TeacherType> {}
 class TeachPlanClient extends BasicClient<IGetPayload, ISessionTeachPlan[]> {}
+class CalendarScheduleClient extends BasicClient<IGetPayload, ICalendarSchedule> {}
+
 export default class Client implements BaseClient {
   private announceClient: AnnounceClient;
   private timeTableClient: TimeTableClient;
@@ -55,6 +59,7 @@ export default class Client implements BaseClient {
   private studentClient: StudentClient;
   private teacherClient: TeachersClient;
   private teachPlanClient: TeachPlanClient;
+  private calendarScheduleClient: CalendarScheduleClient;
 
   constructor() {
     this.announceClient = new AnnounceClient(
@@ -117,6 +122,12 @@ export default class Client implements BaseClient {
       parseShortTeachPlan,
       (data) => cache.placeTeachPlan(data)
     );
+    this.calendarScheduleClient = new CalendarScheduleClient(
+      () => cache.getCalendarSchedule(),
+      () => httpClient.getTeachPlan("advanced"),
+      parseCalendarSchedule,
+      (data) => cache.placeCalendarSchedule(data)
+    )
   }
 
   async getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>> {
@@ -167,5 +178,10 @@ export default class Client implements BaseClient {
   async getTeachPlanData(payload: IGetPayload): Promise<IGetResult<ISessionTeachPlan[]>> {
     await cache.teachPlan.init();
     return this.teachPlanClient.getData(payload);
+  }
+
+  async getCalendarScheduleData(payload: IGetPayload): Promise<IGetResult<ICalendarSchedule>> {
+    await cache.calendarSchedule.init();
+    return this.calendarScheduleClient.getData(payload);
   }
 }
