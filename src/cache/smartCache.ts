@@ -13,6 +13,7 @@ import { AppConfig } from '../redux/reducers/settingsSlice';
 import FieldCache from './fieldCache';
 import MappedCache from './mappedCache';
 import SecuredFieldCache from './securedFieldCache';
+import { ICalendarSchedule } from '../models/calendarSchedule';
 
 export default class SmartCache {
   private keys = {
@@ -28,6 +29,7 @@ export default class SmartCache {
     TEACH_PLAN: 'TEACH_PLAN',
     TEACHERS: 'TEACHERS',
     TIMETABLE: 'TIMETABLE',
+    CALENDAR_SCHEDULE: 'CALENDAR_SCHEDULE',
 
     // Internal keys
     USER: 'USER',
@@ -47,6 +49,7 @@ export default class SmartCache {
   signsPoints: MappedCache<number, ISessionPoints>;
   signsRating: MappedCache<number, ISessionRating>;
   student: FieldCache<StudentInfo>;
+  calendarSchedule: FieldCache<ICalendarSchedule>
 
   user: SecuredFieldCache<UserCredentials>;
   app: FieldCache<AppConfig>;
@@ -65,6 +68,7 @@ export default class SmartCache {
     this.signsPoints = new MappedCache(this.keys.SIGNS_POINTS);
     this.signsRating = new MappedCache(this.keys.SIGNS_RATING);
     this.student = new FieldCache<StudentInfo>(this.keys.STUDENT);
+    this.calendarSchedule = new FieldCache(this.keys.CALENDAR_SCHEDULE);
 
     this.user = new SecuredFieldCache<UserCredentials>(this.keys.USER);
     this.app = new FieldCache<AppConfig>(this.keys.APP);
@@ -240,6 +244,20 @@ export default class SmartCache {
 
     await this.student.save();
   }
+
+  // Calendar Schedule region
+
+  async getCalendarSchedule() {
+    if (!this.calendarSchedule.isReady()) await this.calendarSchedule.init();
+    return this.calendarSchedule.get();
+  }
+
+  async placeCalendarSchedule(data: ICalendarSchedule) {
+    this.calendarSchedule.place(data);
+    await this.calendarSchedule.save();
+  }
+
+  // End Calendar Schedule region
 
   // End Student Region
 

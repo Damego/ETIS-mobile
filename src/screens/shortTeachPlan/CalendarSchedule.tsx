@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 
-import { ToastAndroid, ActivityIndicator, View, Text, TouchableOpacity } from 'react-native';
-import { getCalendarSchedule } from '../../data/calendarSchedule';
+import { ActivityIndicator, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import { ICalendarSchedule, ISessionSchedule } from '../../models/calendarSchedule';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { useAppDispatch, useGlobalStyles } from '../../hooks';
 import { fontSize } from '../../utils/texts';
 import BorderLine from '../../components/BorderLine';
 import { AntDesign } from '@expo/vector-icons';
+import { getWrappedClient } from '../../data/client';
+import { GetResultType, RequestType } from '../../models/results';
 
 const SessionSchedule = ({ session }: { session: ISessionSchedule }) => {
   const globalStyles = useGlobalStyles();
@@ -71,13 +72,13 @@ export default function CalendarSchedule() {
   const [isOpened, setOpened] = useState(false);
   const [data, setData] = useState<ICalendarSchedule>();
   const dispatch = useAppDispatch();
+  const client = getWrappedClient();
 
   const loadData = async () => {
     setOpened(true);
 
-    const result = await getCalendarSchedule({
-      useCache: true,
-      useCacheFirst: false, // TODO: Когда нужно фетчить?
+    const result = await client.getCalendarScheduleData({
+      requestType: RequestType.tryFetch // TODO: Определить, когда использовать кэш
     });
 
     if (!result.data) {
@@ -85,7 +86,7 @@ export default function CalendarSchedule() {
       return;
     }
 
-    if (result.isLoginPage) {
+    if (result.type === GetResultType.loginPage) {
       dispatch(setAuthorizing(true));
       return;
     }
