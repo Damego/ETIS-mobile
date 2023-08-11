@@ -1,16 +1,55 @@
 import { load } from 'cheerio';
 
-import { ILesson, ITimeTable } from '../models/timeTable';
+import { ILesson, ITimeTable, WeekInfo, WeekTypes } from '../models/timeTable';
 import { getTextField } from './utils';
+
+const dateRegex = /[0-9]+.[0-9]+.[0-9]+/gm;
+
+const getWeekType = (week: cheerio.Cheerio): WeekTypes => {
+  if (week.hasClass('holiday')) {
+    return WeekTypes.holiday;
+  }
+  if (week.hasClass('session')) {
+    return WeekTypes.session;
+  }
+  if (week.hasClass('pract')) {
+    return WeekTypes.practice;
+  }
+  if (week.attr('title').includes('факультатив')) {
+    return WeekTypes.elective;
+  }
+  return WeekTypes.common;
+};
 
 export default function parseTimeTable(html) {
   const $ = load(html);
   const week = $('.week');
+  const currentWeek = $('.week.current');
+
+  const weekInfo: WeekInfo = {
+    first: parseInt(week.first().text()),
+    selected: parseInt(currentWeek.text()),
+    last: parseInt(week.last().text()),
+    type: getWeekType(currentWeek),
+    holidayDates: null,
+    dates: null
+  };
+
+  const dates = getTextField($('.week-select').children().last());
+  if (dates) {
+    const [weekStart, weekEnd, holidayStart, holidayEnd] = dates.match(dateRegex);
+    weekInfo.dates = {
+      start: weekStart,
+      end: weekEnd
+    }
+    weekInfo.holidayDates = {
+      start: holidayStart,
+      end: holidayEnd,
+    };
+  }
 
   const data: ITimeTable = {
-    firstWeek: parseInt(week.first().text()),
-    selectedWeek: parseInt($('.week.current').text()),
-    lastWeek: parseInt(week.last().text()),
+    weekInfo,
     days: [],
   };
 

@@ -135,7 +135,7 @@ export default class SmartCache {
   }
 
   async placeTimeTable(data: ITimeTable) {
-    this.timeTable.place(data.selectedWeek, data);
+    this.timeTable.place(data.weekInfo.selected, data);
     await this.timeTable.save();
   }
 
@@ -330,7 +330,7 @@ export default class SmartCache {
   async setReviewStep(step: 'pending' | 'stop') {
     const config = await this.getAppConfig();
     config.reviewStep = step;
-
+    this.app.place(config);
     await this.app.save();
   }
 
@@ -353,7 +353,7 @@ export default class SmartCache {
   async setPrivacyPolicyStatus(status: boolean) {
     const config = await this.getAppConfig();
     config.privacyPolicyAccepted = status;
-
+    this.app.place(config);
     await this.app.save();
   }
 
@@ -376,7 +376,7 @@ export default class SmartCache {
     await this.user.delete();
 
     // Debug only
-    await this.app.delete();
+    // await this.app.delete();
   }
 }
 
