@@ -1,6 +1,6 @@
 import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
-import { getDocumentAsync, DocumentPickerAsset } from 'expo-document-picker';
+import { getDocumentAsync } from 'expo-document-picker';
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
@@ -96,7 +96,7 @@ const MessageInput = ({
   showLoading,
   disabled,
 }: {
-  onFileSelect(file: UploadFile): void;
+  onFileSelect(file: UploadFile[]): void;
   onSubmit(text: string): Promise<Response<string>>;
   showLoading: boolean;
   disabled: boolean;
@@ -113,22 +113,24 @@ const MessageInput = ({
       return;
     }
 
-    if (result.type === 'cancel') {
+    if (result.canceled === true) {
       return;
     }
 
-    if (result.size > 2 * 1024 * 1024) {
-      ToastAndroid.show('Файл должен быть не более 2 МБ!', ToastAndroid.SHORT);
-      return;
-    }
-
-    const file = {
-      name: result.name,
-      type: result.mimeType,
-      uri: result.uri,
-    };
-
-    onFileSelect(file);
+    const docs = result.assets
+      .map((doc) => {
+        if (doc.size > 2 * 1024 * 1024) {
+          ToastAndroid.show('Файл должен быть не более 2 МБ!', ToastAndroid.SHORT);
+          return;
+        }
+        return {
+          name: doc.name,
+          type: doc.mimeType,
+          uri: doc.uri,
+        };
+      })
+      .filter((s) => !!s);
+    onFileSelect(docs);
   };
 
   const submit = async () => {

@@ -2,16 +2,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ToastAndroid } from 'react-native';
 
 import Screen from '../../components/Screen';
+import { getWrappedClient } from '../../data/client';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { IMessage } from '../../models/messages';
 import { UploadFile } from '../../models/other';
+import { GetResultType, RequestType } from '../../models/results';
 import { parseDate } from '../../parser/utils';
+import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { httpClient } from '../../utils';
 import Message from './Message';
 import MessageInput, { FilesPreview } from './MessageInput';
-import { getWrappedClient } from '../../data/client';
-import { GetResultType, RequestType } from '../../models/results';
-import { setAuthorizing } from '../../redux/reducers/authSlice';
 
 export default function MessageHistory({ route, navigation }) {
   const [data, setData] = useState<IMessage[]>(route.params.data);
@@ -55,10 +55,13 @@ export default function MessageHistory({ route, navigation }) {
     return 0;
   };
 
-  const onFileSelect = (fileData: UploadFile) => {
-    if (files.map((file) => file.name).includes(fileData.name)) return;
+  const onFileSelect = (fileData: UploadFile[]) => {
+    if (!fileData) return;
+    const uploadFiles = fileData.filter(
+      (uploadFile) => !files.find((file) => file.name === uploadFile.name)
+    );
 
-    setFiles([...files, fileData]);
+    setFiles([...files, ...uploadFiles]);
   };
 
   const onFileRemove = (fileName) => {
