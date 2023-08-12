@@ -1,7 +1,7 @@
 import { Alert, Linking } from 'react-native';
-import { PRIVACY_POLICY_URL } from './consts';
-import { storage } from './index';
+
 import { cache } from '../cache/smartCache';
+import { PRIVACY_POLICY_URL } from './consts';
 
 const showPrivacyPolicy = () => {
   Alert.alert(
