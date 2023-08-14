@@ -1,23 +1,23 @@
 import { load } from 'cheerio';
 import { getTextField } from './utils';
+import { ISessionTestLink } from '../models/sessionTest';
 
-export default function sessionTestList(html: string) {
+export default function parseSessionTestList(html: string) {
   const $ = load(html);
 
   const list = $(".list");
-  const data = []
+  const data: ISessionTestLink[] = []
 
   list.children().each((elIndex, el) => {
-    const element = $((el, list));
+    const element = $(el, list);
 
-    const text = getTextField(element);
+    const name = getTextField(element);
     const url = element.find("a").attr("href");
 
     data.push({
-      text,
+      name,
       url
     })
   });
-
   return data;
 }

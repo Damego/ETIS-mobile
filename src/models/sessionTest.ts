@@ -24,3 +24,8 @@ export interface ISessionTest {
   teacher: ISessionTestTeacher;
   themes: ISessionTestTheme[];
 }
+
+export interface ISessionTestLink {
+  name: string;
+  url?: string;
+}

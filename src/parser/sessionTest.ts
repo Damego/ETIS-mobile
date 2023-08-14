@@ -44,9 +44,12 @@ export default function parseSessionTest(html: string) {
 
         if (trIndex === 0) {
           tr.children().each((tdIndex, tdElement) => {
+            if (tdIndex === 0) return;
+
             const td = $(tdElement, tr);
             data.themes[index].answerTitles.push(getTextField(td));
           });
+          return;
         }
 
         const question = {

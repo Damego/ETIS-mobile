@@ -28,7 +28,12 @@ const styles = StyleSheet.create({
   },
 });
 
-function Button({ icon, text, page, link }: {
+function Button({
+  icon,
+  text,
+  page,
+  link,
+}: {
   icon: React.ReactNode;
   text: string;
   page?: string;
@@ -75,6 +80,13 @@ function Menu() {
           text="Приказы"
           icon={<AntDesign name="filetext1" size={iconSize} color={iconColor} />}
           page="Orders"
+        />
+      </Row>
+      <Row>
+        <Button
+          icon={<AntDesign name="copy1" size={iconSize} color="black" />}
+          text="Оценивание предыдущего триместра"
+          page="SessionTestList"
         />
       </Row>
       <Row>

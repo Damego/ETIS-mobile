@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
 import { useAppTheme } from '../hooks/theme';
 import { GetResultType, RequestType } from '../models/results';
 import { setAuthorizing } from '../redux/reducers/authSlice';
-import { setAnnounceCount, setMessageCount, setStudentInfo } from '../redux/reducers/studentSlice';
+import { setAnnounceCount, setMessageCount, setStudentInfo, setStudentState } from '../redux/reducers/studentSlice';
 import Announce from '../screens/announce/Announce';
 import Messages from '../screens/messages/Messages';
 import TimeTablePage from '../screens/timeTable/TimeTable';
@@ -38,9 +38,7 @@ const TabNavigator = () => {
 
     const data = result.data;
 
-    dispatch(setStudentInfo(data.student));
-    dispatch(setMessageCount(data.messageCount));
-    dispatch(setAnnounceCount(data.announceCount));
+    dispatch(setStudentState(data));
   };
 
   useEffect(() => {

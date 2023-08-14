@@ -20,6 +20,7 @@ import { StudentInfo } from '../parser/menu';
 import { isLoginPage } from '../parser/utils';
 import { Response } from '../utils/http';
 import { ICalendarSchedule } from '../models/calendarSchedule';
+import { ISessionTest, ISessionTestLink } from '../models/sessionTest';
 
 export interface BaseClient {
   getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>>;
@@ -33,6 +34,8 @@ export interface BaseClient {
   getTeacherData(payload: IGetPayload): Promise<IGetResult<TeacherType>>;
   getTeachPlanData(payload: IGetPayload): Promise<IGetResult<ISessionTeachPlan[]>>;
   getCalendarScheduleData(payload: IGetPayload): Promise<IGetResult<ICalendarSchedule>>;
+  getSessionTestList(id: string): Promise<IGetResult<ISessionTestLink[]>>;
+  getSessionTest(url: string): Promise<IGetResult<ISessionTest>>
 }
 
 export class BasicClient<P extends IGetPayload, T> {

@@ -318,6 +318,13 @@ class HTTPClient {
   getCertificate() {
     return this.request('GET', '/cert_pkg.stu_certif', { returnResponse: false });
   }
+
+  getSessionTestList(id: string | number) {
+    return this.request('GET', '/stu.term_test', {
+      params: { p_toes_id: id },
+      returnResponse: false,
+    });
+  }
 }
 
 const httpClient = new HTTPClient();
