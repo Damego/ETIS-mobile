@@ -34,7 +34,7 @@ const StackNavigator = () => {
     };
     const checkAction = async () => {
       const data = await QuickActions.popInitialAction();
-      if (data.type) dispatch(setInitialPage(data.type as PageType));
+      if (data?.type) dispatch(setInitialPage(data.type as PageType));
     };
     wrapper();
     checkAction();
