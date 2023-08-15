@@ -10,7 +10,7 @@ export const sendNewMarkNotification = (
   oldRes: number,
   newRes: number
 ) => {
-  let mark;
+  let mark: string;
   if (oldRes === 0.0) mark = `${newRes}`;
   else {
     let different = newRes - oldRes;
@@ -22,7 +22,7 @@ export const sendNewMarkNotification = (
     content: {
       title: 'Выставлена новая оценка!',
       body: `${subjectName}: ${checkPointName}
-${mark} ${getPointsWord(mark)}!`,
+${mark} ${getPointsWord(newRes)}!`,
     },
     trigger: {
       seconds: 5,

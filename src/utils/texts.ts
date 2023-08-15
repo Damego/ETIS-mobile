@@ -1,4 +1,4 @@
-export const getPointsWord = (points) => {
+export const getPointsWord = (points: number) => {
   let pointsWord = 'балл';
   const mod10 = points % 10;
   if ([2, 3, 4].includes(mod10)) pointsWord += 'а';
