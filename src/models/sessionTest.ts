@@ -19,8 +19,17 @@ export interface ISessionTestTheme {
   questions: ISessionTestQuestion[];
 }
 
+export interface ISessionTestMeta {
+  p_course: string;
+  p_dis_id: string;
+  p_peo_id: string;
+  p_que_str: string;
+  p_term: string;
+  p_ty_id: string;
+}
+
 export interface ISessionTest {
-  meta: unknown;
+  meta: ISessionTestMeta;
   teacher: ISessionTestTeacher;
   themes: ISessionTestTheme[];
 }
