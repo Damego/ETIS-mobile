@@ -5,7 +5,7 @@ import { documentDirectory, downloadAsync } from 'expo-file-system';
 import { getNetworkStateAsync } from 'expo-network';
 
 import { UploadFile } from '../models/other';
-import { toURLSearchParams } from './encoding';
+import { SessionTestPayload } from './sessionTest';
 
 const cyrillicToTranslit = CyrillicToTranslit();
 
@@ -324,6 +324,12 @@ class HTTPClient {
       params: { p_toes_id: id },
       returnResponse: false,
     });
+  }
+
+  async sendSessionTestResults(payload: SessionTestPayload) {
+    const data = toURLSearchParams(payload);
+
+    return this.request('POST', '/stu.term_test_save', { data, returnResponse: false });
   }
 }
 
