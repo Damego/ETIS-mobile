@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 import { DeviceEventEmitter } from 'react-native';
+import { ShortcutItem } from 'react-native-quick-actions';
 
 import { getWrappedClient } from '../data/client';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
@@ -31,9 +32,11 @@ const TabNavigator = () => {
   const isDemo = useAppSelector((state) => state.auth.isDemo);
   const navigation = useNavigation();
 
-  DeviceEventEmitter.addListener('quickActionShortcut', (data) => {
-    navigation.navigate(data.type);
-  });
+  useEffect(() => {
+    DeviceEventEmitter.addListener('quickActionShortcut', (data: ShortcutItem) => {
+      navigation.navigate(data.type);
+    });
+  }, []);
 
   const loadData = async () => {
     const result = await client.getStudentInfoData({ requestType: RequestType.tryFetch });
