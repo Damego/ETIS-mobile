@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Text, ToastAndroid, View } from 'react-native';
+import { Button, ToastAndroid, View } from 'react-native';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
@@ -8,17 +8,21 @@ import { useAppDispatch, useGlobalStyles } from '../../hooks';
 import { GetResultType } from '../../models/results';
 import { ISessionTest, ISessionTestAnswer } from '../../models/sessionTest';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
+import { httpClient } from '../../utils';
+import toSessionTestPayload from '../../utils/sessionTest';
 import AdditionalComment from './AdditionalComment';
+import { ConfirmResultView, ResultSentView, SendingResultView } from './ResultViews';
 import TeacherQuestionView from './TeacherQuestionView';
 import Theme from './Theme';
-import { httpClient } from '../../utils';
 
 enum Steps {
   inputTeacher = 1,
   showThemeTitle,
   showThemeQuestions,
   inputAdditionalComment,
+  confirmResult,
   sendResult,
+  resultSent,
 }
 
 export default function SessionTest({ route }) {
@@ -74,7 +78,15 @@ export default function SessionTest({ route }) {
 
   const onButtonClick = () => {
     if (step + 1 === Steps.sendResult) {
-      await httpClient.sendRecoveryMail()
+      const payload = toSessionTestPayload({
+        data,
+        answers: answersRef.current,
+        teacher: teacherRef.current,
+        additionalComment: additionalCommentRef.current,
+      });
+      httpClient.sendSessionTestResults(payload).then(() => {
+        setStep(Steps.resultSent);
+      });
     } else {
       setStep((prevState) => prevState + 1);
     }
@@ -82,37 +94,42 @@ export default function SessionTest({ route }) {
 
   if (!data) return <LoadingScreen />;
 
-  /*
-  1. Ввод преподавателя
-  2. Показ темы
-  3. Показ вопроса с 5 вариантами ответов
-  4. Продолжать до конца темы
-  5. Начать с п.2 до окончания тем
-  6. Отправка результатов
-  */
-
   let component: React.ReactNode;
   if (step === Steps.inputTeacher) {
     component = <TeacherQuestionView teacher={data.teacher.name} setTeacher={setTeacher} />;
   } else if (step === Steps.showThemeTitle || step === Steps.showThemeQuestions) {
     component = (
-      <Theme theme={data.themes[themeIndex]} showTitle={step === Steps.showThemeTitle} onSubmit={onThemeAnswer} />
+      <Theme
+        theme={data.themes[themeIndex]}
+        showTitle={step === Steps.showThemeQuestions}
+        onSubmit={onThemeAnswer}
+      />
     );
   } else if (step === Steps.inputAdditionalComment) {
     component = <AdditionalComment onTextChange={setAdditionalComment} />;
-  } else if (step === Steps.sendResult) {}
+  } else if (step === Steps.confirmResult) {
+    component = <ConfirmResultView />;
+  } else if (step === Steps.sendResult) {
+    component = <SendingResultView />;
+  } else if (step === Steps.resultSent) {
+    component = <ResultSentView />;
+  }
 
+  const hideButton =
+    step === Steps.showThemeQuestions || step === Steps.sendResult || step === Steps.resultSent;
   return (
     <Screen>
       {component}
-      <View style={{ marginVertical: '5%' }}>
-        <Button
-          onPress={onButtonClick}
-          disabled={step === Steps.showThemeQuestions}
-          title={'Далее'}
-          color={globalStyles.primaryFontColor.color}
-        />
-      </View>
+
+      {!hideButton && (
+        <View style={{ marginVertical: '5%' }}>
+          <Button
+            onPress={onButtonClick}
+            title={'Далее'}
+            color={globalStyles.primaryFontColor.color}
+          />
+        </View>
+      )}
     </Screen>
   );
 }
