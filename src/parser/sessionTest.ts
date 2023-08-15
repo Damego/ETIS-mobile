@@ -61,7 +61,7 @@ export default function parseSessionTest(html: string) {
           const td = $(tdElement, tr);
 
           if (td.hasClass('text')) {
-            question.name = getTextField(td).replaceAll("\n", "");
+            question.name = getTextField(td).replaceAll('\n', ' ').replaceAll('  ', ' ');
           } else {
             const input = td.find('input');
 
