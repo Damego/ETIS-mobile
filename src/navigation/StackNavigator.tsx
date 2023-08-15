@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { setBackgroundColorAsync as setBackgroundNavigationBarColorAsync } from 'expo-navigation-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import { setBackgroundColorAsync } from 'expo-system-ui';
+import React, { useEffect } from 'react';
 
 import { cache } from '../cache/smartCache';
 import { useAppSelector } from '../hooks';
@@ -11,10 +11,11 @@ import { useAppTheme } from '../hooks/theme';
 import AuthPage from '../screens/auth/Auth';
 import Intro from '../screens/intro/Intro';
 import MessageHistory from '../screens/messages/MessageHistory';
+import SessionTest from '../screens/sessionTest/SessionTest';
+import CalendarSchedule from '../screens/shortTeachPlan/CalendarSchedule';
 import showPrivacyPolicy from '../utils/privacyPolicy';
 import TabNavigator from './TabNavigation';
 import { headerParams } from './header';
-import CalendarSchedule from '../screens/shortTeachPlan/CalendarSchedule';
 
 const Stack = createNativeStackNavigator();
 
@@ -63,6 +64,11 @@ const StackNavigator = () => {
             headerShown: true,
             ...headerParams(theme),
           }}
+        />
+        <Stack.Screen
+          name={'SessionTest'}
+          component={SessionTest}
+          options={{ title: 'Анкетирование', headerShown: true, ...headerParams(theme) }}
         />
       </>
     );

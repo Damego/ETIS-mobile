@@ -44,11 +44,6 @@ function ServicesStackNavigator() {
         component={SessionTestList}
         options={{ title: 'Анкетирование' }}
       />
-      <Stack.Screen
-        name={'SessionTest'}
-        component={SessionTest}
-        options={{ title: 'Анкетирование' }}
-      />
     </Stack.Navigator>
   );
 }
