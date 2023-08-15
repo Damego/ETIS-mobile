@@ -26,18 +26,24 @@ const StackNavigator = () => {
   const theme = useAppTheme();
   const dispatch = useAppDispatch();
 
+  const dispatchInitialPage = async () => {
+    try {
+      const data = await QuickActions.popInitialAction();
+      if (data?.type) dispatch(setInitialPage(data.type as PageType));
+    } catch (e) {
+      // ignore
+    } 
+  };
+
   useEffect(() => {
     const wrapper = async () => {
       if (!(await cache.hasAcceptedPrivacyPolicy())) {
         showPrivacyPolicy();
       }
     };
-    const checkAction = async () => {
-      const data = await QuickActions.popInitialAction();
-      if (data?.type) dispatch(setInitialPage(data.type as PageType));
-    };
+
     wrapper();
-    checkAction();
+    dispatchInitialPage();
   }, []);
 
   useEffect(() => {
