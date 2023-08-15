@@ -1,3 +1,4 @@
+import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { Text, ToastAndroid, View } from 'react-native';
 
@@ -15,11 +16,14 @@ import { fontSize } from '../../utils/texts';
 export default function SessionTestList({ navigation }) {
   const globalStyles = useGlobalStyles();
   const [data, setData] = useState<ISessionTestLink[]>();
+  const [isLoading, setLoading] = useState(false);
   const { sessionTestID } = useAppSelector((state) => state.student);
   const dispatch = useAppDispatch();
   const client = getWrappedClient();
+  const isFocused = useIsFocused();
 
   const loadData = async () => {
+    setLoading(true);
     const result = await client.getSessionTestList(sessionTestID);
 
     if (result.type === GetResultType.loginPage) {
@@ -32,13 +36,15 @@ export default function SessionTestList({ navigation }) {
     }
 
     setData(result.data);
+    setLoading(false);
   };
 
   useEffect(() => {
-    loadData();
-  }, []);
+    // Если пользователь пройдёт тест, то список не обновится при нажатии кнопки "назад"
+    if (isFocused) loadData();
+  }, [isFocused]);
 
-  if (!data) {
+  if (!data || isLoading) {
     return <LoadingScreen />;
   }
 
