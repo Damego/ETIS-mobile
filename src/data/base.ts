@@ -34,6 +34,11 @@ export interface BaseClient {
   getTeacherData(payload: IGetPayload): Promise<IGetResult<TeacherType>>;
   getTeachPlanData(payload: IGetPayload): Promise<IGetResult<ISessionTeachPlan[]>>;
   getCalendarScheduleData(payload: IGetPayload): Promise<IGetResult<ICalendarSchedule>>;
+
+  // Эти методы не используют кэш, поэтому реализованный клиент не подходит для них
+  // Пустые методы для кэша выдают ошибки с типизацией, да и IGetPayload полностью бессмыслен
+  // так как тут только фетч данных
+  // TODO: Переписать тут что-то в будущем
   getSessionTestList(id: string): Promise<IGetResult<ISessionTestLink[]>>;
   getSessionTest(url: string): Promise<IGetResult<ISessionTest>>
 }
