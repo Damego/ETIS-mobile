@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Text, ToastAndroid, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { cache } from '../../cache/smartCache';
 import LoadingScreen from '../../components/LoadingScreen';
+import MissingDataScreen from '../../components/MissingDataScreen';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
 import { getWrappedClient } from '../../data/client';
@@ -11,6 +12,7 @@ import { GetResultType, RequestType } from '../../models/results';
 import { ITimeTableGetProps, WeekTypes } from '../../models/timeTable';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { setCurrentWeek, setData } from '../../redux/reducers/timeTableSlice';
+import { LoadingState } from '../../utils/http';
 import { fontSize } from '../../utils/texts';
 import DayArray from './DayArray';
 import HolidayView from './HolidayView';
@@ -22,10 +24,10 @@ const TimeTable = () => {
   const client = getWrappedClient();
 
   const { data, currentWeek } = useAppSelector((state) => state.timeTable);
-  const [isLoading, setLoading] = useState<boolean>(false);
+  const [loadingState, setLoading] = useState<LoadingState>(LoadingState.loading);
 
   const loadData = async ({ week, force }: { week?: number; force?: boolean }) => {
-    setLoading(true);
+    setLoading(LoadingState.loading);
 
     const useCached = ((data && week < currentWeek) || cache.hasTimeTableWeek(week)) && !force;
 
@@ -40,9 +42,8 @@ const TimeTable = () => {
       return;
     }
 
-    if (result.type === GetResultType.failed || !result?.data) {
-      setLoading(false);
-      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
+    if (!result.data) {
+      setLoading(LoadingState.missingData);
       return;
     }
 
@@ -50,17 +51,26 @@ const TimeTable = () => {
     if (!data) dispatch(setCurrentWeek(result.data.weekInfo.selected));
 
     dispatch(setData(result.data));
-    setLoading(false);
+    setLoading(LoadingState.loaded);
   };
 
   useEffect(() => {
     if (!isAuthorizing) loadData({});
   }, [isAuthorizing]);
 
-  if (!data || isLoading) return <LoadingScreen onRefresh={() => loadData({ force: true })} />;
+  const onUpdate = () => loadData({ force: true });
+
+  if (loadingState === LoadingState.missingData)
+    return (
+      <Screen onUpdate={onUpdate}>
+        <MissingDataScreen />
+      </Screen>
+    );
+
+  if (loadingState === LoadingState.loading) return <LoadingScreen onRefresh={onUpdate} />;
 
   return (
-    <Screen onUpdate={() => loadData({ force: true })}>
+    <Screen onUpdate={onUpdate}>
       <PageNavigator
         firstPage={data.weekInfo.first}
         lastPage={data.weekInfo.last}

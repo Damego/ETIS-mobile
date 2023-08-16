@@ -15,6 +15,12 @@ export enum ErrorCode {
   authError,
 }
 
+export enum LoadingState {
+  loading,
+  loaded,
+  missingData,
+}
+
 export interface HTTPError {
   code: ErrorCode;
   message: string;

@@ -28,12 +28,11 @@ const EmptyCard = () => {
 };
 
 interface LoadingScreenProps {
-  headerText?: string;
-  onRefresh?(): Promise<void>
+  onRefresh?(): Promise<void>;
 }
 
-const LoadingScreen = ({ headerText, onRefresh }: LoadingScreenProps) => (
-  <Screen headerText={headerText} onUpdate={onRefresh}>
+const LoadingScreen = ({ onRefresh }: LoadingScreenProps) => (
+  <Screen onUpdate={onRefresh}>
     <View style={{ marginTop: '10%' }} />
     <EmptyCard />
     <EmptyCard />

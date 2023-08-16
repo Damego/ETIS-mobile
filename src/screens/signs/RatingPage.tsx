@@ -1,18 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Text, ToastAndroid, View } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Text, View } from 'react-native';
 
 import BorderLine from '../../components/BorderLine';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import LoadingScreen from '../../components/LoadingScreen';
+import MissingDataScreen from '../../components/MissingDataScreen';
 import Screen from '../../components/Screen';
 import SessionDropdown from '../../components/SessionDropdown';
+import { getWrappedClient } from '../../data/client';
 import { useAppDispatch, useGlobalStyles } from '../../hooks';
 import { IGroup, ISessionRating } from '../../models/rating';
+import { GetResultType, RequestType } from '../../models/results';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
+import { LoadingState } from '../../utils/http';
 import { fontSize } from '../../utils/texts';
 import RightText from './RightText';
-import { getWrappedClient } from '../../data/client';
-import { GetResultType, RequestType } from '../../models/results';
 
 const Group = ({ group }: { group: IGroup }) => {
   const globalStyles = useGlobalStyles();
@@ -51,13 +53,13 @@ const Group = ({ group }: { group: IGroup }) => {
 
 export default function RatingPage() {
   const [data, setData] = useState<ISessionRating>();
-  const [isLoading, setLoading] = useState(false);
+  const [loadingState, setLoading] = useState<LoadingState>(LoadingState.loading);
   const fetchedFirstTime = useRef<boolean>(false);
   const dispatch = useAppDispatch();
   const client = getWrappedClient();
 
   const loadData = async ({ session, force }: { session?: number; force: boolean }) => {
-    setLoading(true);
+    setLoading(LoadingState.loading);
     const result = await client.getRatingData({
       requestType: !force && fetchedFirstTime.current ? RequestType.tryCache : RequestType.tryFetch,
       session,
@@ -68,7 +70,7 @@ export default function RatingPage() {
       return;
     }
     if (!result.data) {
-      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
+      setLoading(LoadingState.missingData);
       return;
     }
 
@@ -76,23 +78,29 @@ export default function RatingPage() {
     if (!fetchedFirstTime.current) {
       fetchedFirstTime.current = true;
     }
-    setLoading(false);
+    setLoading(LoadingState.loaded);
   };
 
   useEffect(() => {
     loadData({ force: false });
   }, []);
 
-  if (!data || isLoading) {
-    return <LoadingScreen />;
+  const onUpdate = () => loadData({ force: true });
+
+  if (loadingState === LoadingState.missingData) {
+    return (
+      <Screen onUpdate={onUpdate}>
+        <MissingDataScreen />
+      </Screen>
+    );
+  }
+
+  if (loadingState === LoadingState.loading) {
+    return <LoadingScreen onRefresh={onUpdate} />;
   }
 
   return (
-    <Screen
-      onUpdate={() => {
-        loadData({ session: data.session.current, force: true });
-      }}
-    >
+    <Screen onUpdate={() => loadData({ session: data.session.current, force: true })}>
       <View
         style={{
           marginTop: '2%',
@@ -106,9 +114,7 @@ export default function RatingPage() {
           currentSession={data.session.current}
           latestSession={data.session.latest}
           sessionName={data.session.name}
-          onSelect={(session) => {
-            loadData({ session, force: false });
-          }}
+          onSelect={(session) => loadData({ session, force: false })}
         />
       </View>
 

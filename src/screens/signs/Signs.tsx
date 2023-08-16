@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { ToastAndroid, View } from 'react-native';
+import { View } from 'react-native';
 
 import LoadingScreen from '../../components/LoadingScreen';
+import MissingDataScreen from '../../components/MissingDataScreen';
 import Screen from '../../components/Screen';
 import SessionDropdown from '../../components/SessionDropdown';
 import { getWrappedClient } from '../../data/client';
@@ -12,19 +13,20 @@ import { ISessionMarks } from '../../models/sessionMarks';
 import { ISessionPoints } from '../../models/sessionPoints';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { setFetchedLatestSession, setMarks } from '../../redux/reducers/signsSlice';
+import { LoadingState } from '../../utils/http';
 import CardSign from './CardSign';
 
 const Signs = () => {
   const dispatch = useAppDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
-  const [isLoading, setLoading] = useState<boolean>(false);
+  const [loadingState, setLoading] = useState<LoadingState>(LoadingState.loading);
   const { sessionsMarks, fetchedLatestSession } = useAppSelector((state) => state.signs);
   const [data, setData] = useState<ISessionPoints>(null);
   const client = getWrappedClient();
 
   const loadData = async ({ session, force }: { session?: number; force?: boolean }) => {
     // We use dropdown to fetch new data, and we need to show loading state while data is fetching
-    if (data) setLoading(true);
+    if (data) setLoading(LoadingState.loaded);
 
     let newSession;
     if (session !== undefined) newSession = session;
@@ -41,13 +43,12 @@ const Signs = () => {
       session: newSession,
     });
 
-    if (result.type == GetResultType.loginPage) {
+    if (result.type === GetResultType.loginPage) {
       dispatch(setAuthorizing(true));
       return;
     }
     if (!result.data) {
-      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
-      setLoading(false);
+      setLoading(LoadingState.missingData);
       return;
     }
 
@@ -76,17 +77,26 @@ const Signs = () => {
     );
 
     setData(fullData);
-    if (data) setLoading(false);
+    if (fullData) setLoading(LoadingState.loaded);
   };
 
   useEffect(() => {
     if (!isAuthorizing) loadData({});
   }, [isAuthorizing]);
 
-  if (!data || isLoading) return <LoadingScreen onRefresh={() => loadData({})} />;
+  const onUpdate = () => loadData({ force: true });
+
+  if (loadingState === LoadingState.missingData)
+    return (
+      <Screen onUpdate={onUpdate}>
+        <MissingDataScreen />
+      </Screen>
+    );
+
+  if (loadingState === LoadingState.loading) return <LoadingScreen onRefresh={onUpdate} />;
 
   return (
-    <Screen onUpdate={() => loadData({ force: true })}>
+    <Screen onUpdate={onUpdate}>
       <View
         style={{
           marginTop: '2%',
