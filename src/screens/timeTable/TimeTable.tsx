@@ -40,7 +40,7 @@ const TimeTable = () => {
       return;
     }
 
-    if (!result.data) {
+    if (result.type === GetResultType.failed || !result?.data) {
       setLoading(false);
       ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
       return;

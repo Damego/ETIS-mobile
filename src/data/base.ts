@@ -1,3 +1,4 @@
+import { ICalendarSchedule } from '../models/calendarSchedule';
 import { IGetMessagesPayload, IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
 import { IGetRatingPayload, ISessionRating } from '../models/rating';
@@ -19,7 +20,6 @@ import { ITimeTable, ITimeTableGetProps } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
 import { isLoginPage } from '../parser/utils';
 import { Response } from '../utils/http';
-import { ICalendarSchedule } from '../models/calendarSchedule';
 
 export interface BaseClient {
   getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>>;
@@ -80,7 +80,12 @@ export class BasicClient<P extends IGetPayload, T> {
   }
 
   async tryParse({ data }: Response<string>): Promise<IGetResult<T>> {
-    const parsedData = this.parseMethod(data);
+    let parsedData: T;
+    try {
+      parsedData = this.parseMethod(data);
+    } catch (e) {
+      /* empty */
+    }
     if (!parsedData) return failedResult;
 
     return {
