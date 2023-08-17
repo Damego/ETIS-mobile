@@ -78,6 +78,7 @@ export default function SessionQuestionnaire({ route }) {
 
   const onButtonClick = () => {
     if (step + 1 === Steps.sendResult) {
+      setStep(Steps.sendResult)
       const payload = toSessionTestPayload({
         data,
         answers: answersRef.current,
