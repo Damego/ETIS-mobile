@@ -89,7 +89,7 @@ function Menu() {
           <Button
             icon={<AntDesign name="copy1" size={iconSize} color="black" />}
             text="Анкетирование"
-            page="SessionTestList"
+            page="SessionQuestionnaireList"
           />
         )}
       </Row>

@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import Card from '../../components/Card';
 import ClickableText from '../../components/ClickableText';
 import { useGlobalStyles } from '../../hooks';
-import { ISessionTestAnswer, ISessionTestQuestion } from '../../models/sessionTest';
+import { IAnswer, IQuestion } from '../../models/sessionQuestionnaire';
 import { fontSize } from '../../utils/texts';
 
 export default function Question({
@@ -11,9 +11,9 @@ export default function Question({
   answerTitles,
   onAnswer,
 }: {
-  question: ISessionTestQuestion;
+  question: IQuestion;
   answerTitles: string[];
-  onAnswer(answer: ISessionTestAnswer): void;
+  onAnswer(answer: IAnswer): void;
 }) {
   const globalStyles = useGlobalStyles();
 

@@ -1,6 +1,6 @@
-import { ISessionTest, ISessionTestAnswer, ISessionTestMeta } from '../models/sessionTest';
+import { ISessionQuestionnaire, IAnswer, IMetaData } from '../models/sessionQuestionnaire';
 
-export interface SessionTestPayload extends ISessionTestMeta {
+export interface SessionQuestionnairePayload extends IMetaData {
   p_peo: string;
   p_teacher_fio: string;
   p_comment: string;
@@ -12,12 +12,12 @@ export default function toSessionTestPayload({
   answers,
   additionalComment,
 }: {
-  data: ISessionTest;
+  data: ISessionQuestionnaire;
   teacher: string;
-  answers: ISessionTestAnswer[];
+  answers: IAnswer[];
   additionalComment: string;
-}): SessionTestPayload {
-  const payload: SessionTestPayload = data.meta as SessionTestPayload;
+}): SessionQuestionnairePayload {
+  const payload: SessionQuestionnairePayload = data.meta as SessionQuestionnairePayload;
 
   if (teacher) {
     payload.p_peo = 'another';

@@ -6,7 +6,7 @@ import Screen from '../../components/Screen';
 import { getWrappedClient } from '../../data/client';
 import { useAppDispatch, useGlobalStyles } from '../../hooks';
 import { GetResultType } from '../../models/results';
-import { ISessionTest, ISessionTestAnswer } from '../../models/sessionTest';
+import { ISessionQuestionnaire, IAnswer } from '../../models/sessionQuestionnaire';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { httpClient } from '../../utils';
 import toSessionTestPayload from '../../utils/sessionTest';
@@ -25,20 +25,20 @@ enum Steps {
   resultSent,
 }
 
-export default function SessionTest({ route }) {
+export default function SessionQuestionnaire({ route }) {
   const globalStyles = useGlobalStyles();
   const dispatch = useAppDispatch();
   const { url } = route.params;
-  const [data, setData] = useState<ISessionTest>();
+  const [data, setData] = useState<ISessionQuestionnaire>();
   const [step, setStep] = useState<Steps>(1);
   const [themeIndex, setThemeIndex] = useState(0);
   const teacherRef = useRef<string>();
-  const answersRef = useRef<ISessionTestAnswer[]>([]);
+  const answersRef = useRef<IAnswer[]>([]);
   const additionalCommentRef = useRef<string>();
   const client = getWrappedClient();
 
   const loadData = async () => {
-    const result = await client.getSessionTest(url);
+    const result = await client.getSessionQuestionnaire(url);
 
     if (result.type === GetResultType.loginPage) {
       return dispatch(setAuthorizing(false));
@@ -64,7 +64,7 @@ export default function SessionTest({ route }) {
     additionalCommentRef.current = text;
   };
 
-  const onThemeAnswer = (answers: ISessionTestAnswer[]) => {
+  const onThemeAnswer = (answers: IAnswer[]) => {
     answersRef.current = [...answersRef.current, ...answers];
 
     if (themeIndex + 1 === data.themes.length) {
@@ -84,7 +84,7 @@ export default function SessionTest({ route }) {
         teacher: teacherRef.current,
         additionalComment: additionalCommentRef.current,
       });
-      httpClient.sendSessionTestResults(payload).then(() => {
+      httpClient.sendSessionQuestionnaireResult(payload).then(() => {
         setStep(Steps.resultSent);
       });
     } else {

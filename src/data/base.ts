@@ -20,7 +20,7 @@ import { StudentInfo } from '../parser/menu';
 import { isLoginPage } from '../parser/utils';
 import { Response } from '../utils/http';
 import { ICalendarSchedule } from '../models/calendarSchedule';
-import { ISessionTest, ISessionTestLink } from '../models/sessionTest';
+import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
 
 export interface BaseClient {
   getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>>;
@@ -39,8 +39,8 @@ export interface BaseClient {
   // Пустые методы для кэша выдают ошибки с типизацией, да и IGetPayload полностью бессмыслен
   // так как тут только фетч данных
   // TODO: Переписать тут что-то в будущем
-  getSessionTestList(id: string): Promise<IGetResult<ISessionTestLink[]>>;
-  getSessionTest(url: string): Promise<IGetResult<ISessionTest>>
+  getSessionQuestionnaireList(id: string): Promise<IGetResult<ISessionQuestionnaireLink[]>>;
+  getSessionQuestionnaire(url: string): Promise<IGetResult<ISessionQuestionnaire>>
 }
 
 export class BasicClient<P extends IGetPayload, T> {

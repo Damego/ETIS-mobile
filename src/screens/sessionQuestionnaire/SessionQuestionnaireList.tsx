@@ -9,13 +9,13 @@ import Screen from '../../components/Screen';
 import { getWrappedClient } from '../../data/client';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { GetResultType } from '../../models/results';
-import { ISessionTestLink } from '../../models/sessionTest';
+import { ISessionQuestionnaireLink } from '../../models/sessionQuestionnaire';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { fontSize } from '../../utils/texts';
 
-export default function SessionTestList({ navigation }) {
+export default function SessionQuestionnaireList({ navigation }) {
   const globalStyles = useGlobalStyles();
-  const [data, setData] = useState<ISessionTestLink[]>();
+  const [data, setData] = useState<ISessionQuestionnaireLink[]>();
   const [isLoading, setLoading] = useState(false);
   const { sessionTestID } = useAppSelector((state) => state.student);
   const dispatch = useAppDispatch();
@@ -24,7 +24,7 @@ export default function SessionTestList({ navigation }) {
 
   const loadData = async () => {
     setLoading(true);
-    const result = await client.getSessionTestList(sessionTestID);
+    const result = await client.getSessionQuestionnaireList(sessionTestID);
 
     if (result.type === GetResultType.loginPage) {
       return dispatch(setAuthorizing(false));
@@ -61,7 +61,7 @@ export default function SessionTestList({ navigation }) {
               <ClickableText
                 text={link.name}
                 onPress={() => {
-                  navigation.navigate('SessionTest', { url: link.url });
+                  navigation.navigate('SessionQuestionnaire', { url: link.url });
                 }}
               />
             </Card>

@@ -1,14 +1,14 @@
 import cheerio from 'cheerio';
 
-import { ISessionTest } from '../models/sessionTest';
+import { IMetaData, ISessionQuestionnaire } from '../models/sessionQuestionnaire';
 import { getTextField } from './utils';
 
-export default function parseSessionTest(html: string) {
+export default function parseSessionQuestionnaire(html: string) {
   const $ = cheerio.load(html);
 
   const form = $('.que_form');
-  const data: ISessionTest = {
-    meta: {},
+  const data: ISessionQuestionnaire = {
+    meta: {} as IMetaData,
     teacher: null,
     themes: [],
   };

@@ -15,7 +15,7 @@ import {
 } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
-import { ISessionTest, ISessionTestLink } from '../models/sessionTest';
+import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
 import { IGetSignsPayload } from '../models/signs';
 import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
@@ -34,8 +34,8 @@ import parseCalendarSchedule from '../parser/calendar';
 import { StudentInfo } from '../parser/menu';
 import parseOrders from '../parser/order';
 import parseRating from '../parser/rating';
-import parseSessionTest from '../parser/sessionTest';
-import parseSessionTestList from '../parser/sessionTestList';
+import parseSessionQuestionnaire from '../parser/sessionQuestionnaire';
+import parseSessionQuestionnaireList from '../parser/sessionQuestionnaireList';
 import { isLoginPage } from '../parser/utils';
 import { httpClient } from '../utils';
 import { BaseClient, BasicClient } from './base';
@@ -195,22 +195,22 @@ export default class Client implements BaseClient {
     return this.calendarScheduleClient.getData(payload);
   }
 
-  async getSessionTestList(id: string): Promise<IGetResult<ISessionTestLink[]>> {
+  async getSessionQuestionnaireList(id: string): Promise<IGetResult<ISessionQuestionnaireLink[]>> {
     // sry Aleksandr :D
 
-    const response = await httpClient.getSessionTestList(id);
+    const response = await httpClient.getSessionQuestionnaireList(id);
 
     if (response?.error) return errorResult;
     if (isLoginPage(response.data)) return loginPageResult;
 
-    const parsed = parseSessionTestList(response.data);
+    const parsed = parseSessionQuestionnaireList(response.data);
     return {
       type: GetResultType.fetched,
       data: parsed,
     };
   }
 
-  async getSessionTest(url: string): Promise<IGetResult<ISessionTest>> {
+  async getSessionQuestionnaire(url: string): Promise<IGetResult<ISessionQuestionnaire>> {
     // sry Aleksandr :D
 
     const response = await httpClient.request('GET', url, { returnResponse: false });
@@ -218,7 +218,7 @@ export default class Client implements BaseClient {
     if (response?.error) return errorResult;
     if (isLoginPage(response.data)) return loginPageResult;
 
-    const parsed = parseSessionTest(response.data);
+    const parsed = parseSessionQuestionnaire(response.data);
     return {
       type: GetResultType.fetched,
       data: parsed,

@@ -1,12 +1,12 @@
 import { load } from 'cheerio';
 import { getTextField } from './utils';
-import { ISessionTestLink } from '../models/sessionTest';
+import { ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
 
-export default function parseSessionTestList(html: string) {
+export default function parseSessionQuestionnaireList(html: string) {
   const $ = load(html);
 
   const list = $(".list");
-  const data: ISessionTestLink[] = []
+  const data: ISessionQuestionnaireLink[] = []
 
   list.children().each((elIndex, el) => {
     const element = $(el, list);

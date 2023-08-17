@@ -6,8 +6,7 @@ import About from '../screens/about/About';
 import OrderTable from '../screens/orders';
 import Services from '../screens/services';
 import { SettingButton } from '../screens/services/Services';
-import SessionTest from '../screens/sessionTest/SessionTest';
-import SessionTestList from '../screens/sessionTest/SessionTestList';
+import SessionQuestionnaireList from '../screens/sessionQuestionnaire/SessionQuestionnaireList';
 import Settings from '../screens/settings/Settings';
 import ShortTeachPlan from '../screens/shortTeachPlan';
 import TeacherTable from '../screens/teachers';
@@ -40,8 +39,8 @@ function ServicesStackNavigator() {
       <Stack.Screen name="Settings" component={Settings} options={{ title: 'Настройки' }} />
       <Stack.Screen name="AboutApp" component={About} options={{ title: 'О приложении' }} />
       <Stack.Screen
-        name={'SessionTestList'}
-        component={SessionTestList}
+        name={'SessionQuestionnaireList'}
+        component={SessionQuestionnaireList}
         options={{ title: 'Анкетирование' }}
       />
     </Stack.Navigator>

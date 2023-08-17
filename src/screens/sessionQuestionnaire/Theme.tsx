@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 
-import { ISessionTestAnswer, ISessionTestTheme } from '../../models/sessionTest';
+import { IAnswer, ITheme } from '../../models/sessionQuestionnaire';
 import { fontSize } from '../../utils/texts';
 import Question from './Question';
 
@@ -10,17 +10,17 @@ export default function Theme({
   showTitle,
   onSubmit,
 }: {
-  theme: ISessionTestTheme;
+  theme: ITheme;
   showTitle: boolean;
-  onSubmit(answers: ISessionTestAnswer[]): void;
+  onSubmit(answers: IAnswer[]): void;
 }) {
-  const [answers, setAnswers] = useState<ISessionTestAnswer[]>([]);
+  const [answers, setAnswers] = useState<IAnswer[]>([]);
   const [questionIndex, setQuestionIndex] = useState(0);
 
-  const addAnswer = (answer: ISessionTestAnswer) => {
+  const addAnswer = (answer: IAnswer) => {
     setAnswers([...answers, answer]);
   };
-  const onQuestionAnswer = (answer: ISessionTestAnswer) => {
+  const onQuestionAnswer = (answer: IAnswer) => {
     addAnswer(answer);
     if (questionIndex + 1 === theme.questions.length) return;
     setQuestionIndex((prevState) => prevState + 1);

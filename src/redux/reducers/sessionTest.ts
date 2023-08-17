@@ -1,4 +1,4 @@
-import { ISessionTestAnswer } from '../../models/sessionTest';
+import { IAnswer } from '../../models/sessionQuestionnaire';
 
 export enum SessionTestStep {
   none,
@@ -10,7 +10,7 @@ export enum SessionTestStep {
 
 export interface SessionTestState {
   step: SessionTestStep;
-  answers: ISessionTestAnswer[];
+  answers: IAnswer[];
   teacherName?: string;
 }
 

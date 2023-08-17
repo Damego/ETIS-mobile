@@ -11,7 +11,7 @@ import { useAppTheme } from '../hooks/theme';
 import AuthPage from '../screens/auth/Auth';
 import Intro from '../screens/intro/Intro';
 import MessageHistory from '../screens/messages/MessageHistory';
-import SessionTest from '../screens/sessionTest/SessionTest';
+import SessionQuestionnaire from '../screens/sessionQuestionnaire/SessionQuestionnaire';
 import CalendarSchedule from '../screens/shortTeachPlan/CalendarSchedule';
 import showPrivacyPolicy from '../utils/privacyPolicy';
 import TabNavigator from './TabNavigation';
@@ -66,8 +66,8 @@ const StackNavigator = () => {
           }}
         />
         <Stack.Screen
-          name={'SessionTest'}
-          component={SessionTest}
+          name={'SessionQuestionnaire'}
+          component={SessionQuestionnaire}
           options={{ title: 'Анкетирование', headerShown: true, ...headerParams(theme) }}
         />
       </>
