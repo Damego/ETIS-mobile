@@ -1,0 +1,34 @@
+import { load } from 'cheerio';
+
+import { ICertificate } from '../models/ICertificate';
+import { getTextField } from './utils';
+
+export default function parseCertificateTable(html: string): ICertificate[] {
+  const $ = load(html);
+  const data: ICertificate[] = [];
+
+  $('.ord', html).each((el, orderEl) => {
+    const order = $(orderEl).find('.ord-name');
+
+    // DD.DD.DDDD {NAME} (код запроса: #DDD, статус: {STATUS})
+    const rawText = getTextField(order);
+    const parsed =
+      /(\d{2}\.\d{2}\.\d{4}) ([а-яА-Я\s,.)("'-]+) \(код запроса: #(\d+), статус: ([а-яА-Я\s,.)("'-]+)\)/.exec(
+        rawText
+      );
+    if (parsed)
+      data.push({
+        id: parsed[3],
+        date: parsed[1],
+        name: parsed[2],
+        status: parsed[4],
+      });
+  });
+
+  return data;
+}
+
+export function cutCertificateHTML(html: string): string {
+  const $ = load(html);
+  return $('.span9', html).html();
+}

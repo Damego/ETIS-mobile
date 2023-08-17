@@ -1,3 +1,4 @@
+import { ICertificate } from '../models/ICertificate';
 import { ICalendarSchedule } from '../models/calendarSchedule';
 import { IGetMessagesPayload, IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
@@ -33,6 +34,7 @@ export interface BaseClient {
   getTeacherData(payload: IGetPayload): Promise<IGetResult<TeacherType>>;
   getTeachPlanData(payload: IGetPayload): Promise<IGetResult<ISessionTeachPlan[]>>;
   getCalendarScheduleData(payload: IGetPayload): Promise<IGetResult<ICalendarSchedule>>;
+  getCertificateData(payload: IGetPayload): Promise<IGetResult<ICertificate[]>>;
 }
 
 export class BasicClient<P extends IGetPayload, T> {

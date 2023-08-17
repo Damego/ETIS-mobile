@@ -1,3 +1,5 @@
+import { ICertificate } from '../models/ICertificate';
+import { ICalendarSchedule } from '../models/calendarSchedule';
 import { IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
 import { ISessionRating } from '../models/rating';
@@ -8,33 +10,13 @@ import { TeacherType } from '../models/teachers';
 import { ITimeTable } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
 import { UserCredentials } from '../redux/reducers/authSlice';
-import { ThemeType } from '../redux/reducers/settingsSlice';
-import { AppConfig } from '../redux/reducers/settingsSlice';
+import { AppConfig, ThemeType } from '../redux/reducers/settingsSlice';
 import FieldCache from './fieldCache';
 import MappedCache from './mappedCache';
 import SecuredFieldCache from './securedFieldCache';
-import { ICalendarSchedule } from '../models/calendarSchedule';
 
 export default class SmartCache {
-  private keys = {
-    // ETIS related keys
-    ANNOUNCES: 'ANNOUNCES',
-    MESSAGES: 'MESSAGES',
-    ORDERS: 'ORDERS',
-    ORDERS_INFO: 'ORDERS_INFO',
-    SIGNS_POINTS: 'SIGNS_POINTS',
-    SIGNS_MARKS: 'SIGNS_MARKS',
-    SIGNS_RATING: 'SIGNS_RATING',
-    STUDENT: 'STUDENT',
-    TEACH_PLAN: 'TEACH_PLAN',
-    TEACHERS: 'TEACHERS',
-    TIMETABLE: 'TIMETABLE',
-    CALENDAR_SCHEDULE: 'CALENDAR_SCHEDULE',
-
-    // Internal keys
-    USER: 'USER',
-    APP: 'APP',
-  };
+  calendarSchedule: FieldCache<ICalendarSchedule>;
 
   announce: FieldCache<string[]>;
   messages: MappedCache<number, IMessagesData>;
@@ -49,7 +31,27 @@ export default class SmartCache {
   signsPoints: MappedCache<number, ISessionPoints>;
   signsRating: MappedCache<number, ISessionRating>;
   student: FieldCache<StudentInfo>;
-  calendarSchedule: FieldCache<ICalendarSchedule>
+  certificate: FieldCache<ICertificate[]>;
+  private keys = {
+    // ETIS related keys
+    ANNOUNCES: 'ANNOUNCES',
+    MESSAGES: 'MESSAGES',
+    ORDERS: 'ORDERS',
+    ORDERS_INFO: 'ORDERS_INFO',
+    SIGNS_POINTS: 'SIGNS_POINTS',
+    SIGNS_MARKS: 'SIGNS_MARKS',
+    SIGNS_RATING: 'SIGNS_RATING',
+    STUDENT: 'STUDENT',
+    TEACH_PLAN: 'TEACH_PLAN',
+    TEACHERS: 'TEACHERS',
+    TIMETABLE: 'TIMETABLE',
+    CALENDAR_SCHEDULE: 'CALENDAR_SCHEDULE',
+    CERTIFICATE: 'CERTIFICATE',
+
+    // Internal keys
+    USER: 'USER',
+    APP: 'APP',
+  };
 
   user: SecuredFieldCache<UserCredentials>;
   app: FieldCache<AppConfig>;
@@ -69,6 +71,7 @@ export default class SmartCache {
     this.signsRating = new MappedCache(this.keys.SIGNS_RATING);
     this.student = new FieldCache<StudentInfo>(this.keys.STUDENT);
     this.calendarSchedule = new FieldCache(this.keys.CALENDAR_SCHEDULE);
+    this.certificate = new FieldCache(this.keys.CERTIFICATE);
 
     this.user = new SecuredFieldCache<UserCredentials>(this.keys.USER);
     this.app = new FieldCache<AppConfig>(this.keys.APP);
@@ -232,6 +235,20 @@ export default class SmartCache {
 
   // End Signs Region
 
+  // // Certificate Region
+
+  async getCertificate() {
+    if (!this.certificate.isReady()) await this.certificate.init();
+    return this.certificate.get();
+  }
+
+  async placeCertificate(data: ICertificate[]) {
+    this.certificate.place(data);
+    await this.certificate.save();
+  }
+
+  // // End Certificate Region
+
   // Student Region
 
   async getStudent() {
@@ -283,7 +300,7 @@ export default class SmartCache {
 
   async getAppConfig() {
     if (!this.app.isReady()) await this.app.init();
-    return this.app.get() || {} as AppConfig;
+    return this.app.get() || ({} as AppConfig);
   }
 
   async getTheme() {

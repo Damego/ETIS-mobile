@@ -2,6 +2,8 @@ import { useMemo } from 'react';
 
 import { cache } from '../cache/smartCache';
 import { useAppSelector } from '../hooks';
+import { ICertificate } from '../models/ICertificate';
+import { ICalendarSchedule } from '../models/calendarSchedule';
 import { IGetMessagesPayload, IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
 import { IGetRatingPayload, ISessionRating } from '../models/rating';
@@ -22,14 +24,14 @@ import {
   parseTeachers,
   parseTimeTable,
 } from '../parser';
+import parseCalendarSchedule from '../parser/calendar';
+import parseCertificateTable from '../parser/certificate';
 import { StudentInfo } from '../parser/menu';
 import parseOrders from '../parser/order';
 import parseRating from '../parser/rating';
 import { httpClient } from '../utils';
 import { BaseClient, BasicClient } from './base';
 import DemoClient from './demoClient';
-import { ICalendarSchedule } from '../models/calendarSchedule';
-import parseCalendarSchedule from '../parser/calendar';
 
 export const getWrappedClient: () => BaseClient = () => {
   const { isDemo } = useAppSelector((state) => state.auth);
@@ -47,7 +49,7 @@ class StudentClient extends BasicClient<IGetPayload, StudentInfo> {}
 class TeachersClient extends BasicClient<IGetPayload, TeacherType> {}
 class TeachPlanClient extends BasicClient<IGetPayload, ISessionTeachPlan[]> {}
 class CalendarScheduleClient extends BasicClient<IGetPayload, ICalendarSchedule> {}
-
+class CertificateClient extends BasicClient<IGetPayload, ICertificate[]> {}
 export default class Client implements BaseClient {
   private announceClient: AnnounceClient;
   private timeTableClient: TimeTableClient;
@@ -60,6 +62,7 @@ export default class Client implements BaseClient {
   private teacherClient: TeachersClient;
   private teachPlanClient: TeachPlanClient;
   private calendarScheduleClient: CalendarScheduleClient;
+  private certificateClient: CertificateClient;
 
   constructor() {
     this.announceClient = new AnnounceClient(
@@ -124,10 +127,16 @@ export default class Client implements BaseClient {
     );
     this.calendarScheduleClient = new CalendarScheduleClient(
       () => cache.getCalendarSchedule(),
-      () => httpClient.getTeachPlan("advanced"),
+      () => httpClient.getTeachPlan('advanced'),
       parseCalendarSchedule,
       (data) => cache.placeCalendarSchedule(data)
-    )
+    );
+    this.certificateClient = new CertificateClient(
+      () => cache.getCertificate(),
+      () => httpClient.getCertificate(),
+      parseCertificateTable,
+      (data) => cache.placeCertificate(data)
+    );
   }
 
   async getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>> {
@@ -183,5 +192,9 @@ export default class Client implements BaseClient {
   async getCalendarScheduleData(payload: IGetPayload): Promise<IGetResult<ICalendarSchedule>> {
     await cache.calendarSchedule.init();
     return this.calendarScheduleClient.getData(payload);
+  }
+  async getCertificateData(payload: IGetPayload): Promise<IGetResult<ICertificate[]>> {
+    await cache.certificate.init();
+    return this.certificateClient.getData(payload);
   }
 }
