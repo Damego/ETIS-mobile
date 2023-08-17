@@ -4,6 +4,7 @@ import { Text, View } from 'react-native';
 import { IAnswer, ITheme } from '../../models/sessionQuestionnaire';
 import { fontSize } from '../../utils/texts';
 import Question from './Question';
+import { useGlobalStyles } from '../../hooks';
 
 export default function Theme({
   theme,
@@ -16,6 +17,7 @@ export default function Theme({
 }) {
   const [answers, setAnswers] = useState<IAnswer[]>([]);
   const [questionIndex, setQuestionIndex] = useState(0);
+  const globalStyles = useGlobalStyles();
 
   const addAnswer = (answer: IAnswer) => {
     setAnswers([...answers, answer]);
@@ -37,7 +39,7 @@ export default function Theme({
   if (!showTitle) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={[fontSize.large]}>{theme.title}</Text>
+        <Text style={[fontSize.large, globalStyles.textColor]}>{theme.title}</Text>
       </View>
     );
   }

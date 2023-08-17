@@ -6,7 +6,7 @@ import Screen from '../../components/Screen';
 import { getWrappedClient } from '../../data/client';
 import { useAppDispatch, useGlobalStyles } from '../../hooks';
 import { GetResultType } from '../../models/results';
-import { ISessionQuestionnaire, IAnswer } from '../../models/sessionQuestionnaire';
+import { IAnswer, ISessionQuestionnaire } from '../../models/sessionQuestionnaire';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { httpClient } from '../../utils';
 import toSessionTestPayload from '../../utils/sessionTest';

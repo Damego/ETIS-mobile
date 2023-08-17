@@ -87,7 +87,7 @@ function Menu() {
         {/* TODO: Hide button in offline mode */}
         {!isDemo && (
           <Button
-            icon={<AntDesign name="copy1" size={iconSize} color="black" />}
+            icon={<AntDesign name="copy1" size={iconSize} color={iconColor} />}
             text="Анкетирование"
             page="SessionQuestionnaireList"
           />

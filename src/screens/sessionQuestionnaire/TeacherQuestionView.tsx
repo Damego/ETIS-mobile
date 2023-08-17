@@ -16,11 +16,16 @@ export default function TeacherQuestionView({
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text style={[fontSize.large, globalStyles.textColor]}>{teacher}</Text>
-      <Text style={[fontSize.small, globalStyles.textColor, {marginVertical: '2%'}]}>
+      <Text style={[fontSize.small, globalStyles.textColor, { marginVertical: '2%' }]}>
         Если же был другой преподаватель,{'\n'}то введите его
       </Text>
       <TextInput
-        style={[globalStyles.textColor, globalStyles.border, globalStyles.block, { width: '80%', paddingVertical: '2%', paddingHorizontal: '2%' }]}
+        style={[
+          globalStyles.textColor,
+          globalStyles.border,
+          globalStyles.block,
+          { width: '80%', paddingVertical: '2%', paddingHorizontal: '2%' },
+        ]}
         onChangeText={setTeacher}
         placeholder="Иванов И.И."
         placeholderTextColor={globalStyles.textColor.color}

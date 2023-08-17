@@ -63,6 +63,7 @@ export default function SessionQuestionnaireList({ navigation }) {
                 onPress={() => {
                   navigation.navigate('SessionQuestionnaire', { url: link.url });
                 }}
+                textStyle={[globalStyles.textColor, fontSize.small]}
               />
             </Card>
           ))}
@@ -73,7 +74,7 @@ export default function SessionQuestionnaireList({ navigation }) {
           .filter((link) => !link.url)
           .map((link) => (
             <Card key={link.name}>
-              <Text>{link.name}</Text>
+              <Text style={[globalStyles.textColor, fontSize.small]}>{link.name}</Text>
             </Card>
           ))}
       </View>

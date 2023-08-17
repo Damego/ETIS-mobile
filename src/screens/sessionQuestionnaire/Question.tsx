@@ -19,9 +19,7 @@ export default function Question({
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={[fontSize.large, globalStyles.textColor]}>
-        {question.name}
-      </Text>
+      <Text style={[fontSize.large, globalStyles.textColor]}>{question.name}</Text>
 
       <View style={{ marginTop: '2%' }}>
         {question.answers.map((answer, index) => (

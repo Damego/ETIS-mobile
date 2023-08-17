@@ -1,4 +1,4 @@
-import { TextInput, View, Text } from 'react-native';
+import { Text, TextInput, View } from 'react-native';
 
 import { useGlobalStyles } from '../../hooks';
 import { fontSize } from '../../utils/texts';
@@ -7,8 +7,10 @@ export default function AdditionalComment({ onTextChange }: { onTextChange(text:
   const globalStyles = useGlobalStyles();
 
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text style={[fontSize.medium, {marginBottom: '2%'}]}>Комментарий о преподавателе в свободной форме (не более 4000 символов)</Text>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text style={[globalStyles.textColor, fontSize.medium, { marginBottom: '2%' }]}>
+        Комментарий о преподавателе в свободной форме (не более 4000 символов)
+      </Text>
 
       <TextInput
         style={[
