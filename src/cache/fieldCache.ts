@@ -21,9 +21,9 @@ export default class FieldCache<T> {
     if (this.isReady()) return;
 
     const stringData = await AsyncStorage.getItem(this.key);
-    const { data, timestamp } = JSON.parse(stringData);
-    this.data = data;
-    this.timestamp = timestamp;
+    const parsed = JSON.parse(stringData);
+    this.data = parsed?.data;
+    this.timestamp = parsed?.timestamp;
     this.ready = true;
   }
 
@@ -49,6 +49,7 @@ export default class FieldCache<T> {
 
   async delete() {
     this.data = null;
+    this.timestamp = 0;
     await AsyncStorage.removeItem(this.key);
   }
 }
