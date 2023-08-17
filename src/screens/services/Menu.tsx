@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { useGlobalStyles } from '../../hooks';
+import { useAppSelector, useGlobalStyles } from '../../hooks';
 import { GITHUB_URL, TELEGRAM_URL } from '../../utils';
 import { fontSize } from '../../utils/texts';
 
@@ -61,6 +61,7 @@ function Row({ children }) {
 
 function Menu() {
   const globalStyles = useGlobalStyles();
+  const { isDemo } = useAppSelector((state) => state.auth);
   const iconColor = globalStyles.textColor.color;
 
   return (
@@ -83,11 +84,14 @@ function Menu() {
         />
       </Row>
       <Row>
-        <Button
-          icon={<AntDesign name="copy1" size={iconSize} color="black" />}
-          text="Оценивание предыдущего триместра"
-          page="SessionTestList"
-        />
+        {/* TODO: Hide button in offline mode */}
+        {!isDemo && (
+          <Button
+            icon={<AntDesign name="copy1" size={iconSize} color="black" />}
+            text="Анкетирование"
+            page="SessionTestList"
+          />
+        )}
       </Row>
       <Row>
         <Button
