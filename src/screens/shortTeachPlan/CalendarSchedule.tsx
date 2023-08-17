@@ -82,7 +82,7 @@ export default function CalendarSchedule() {
     });
 
     if (!result.data) {
-      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
+      ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
       return;
     }
 

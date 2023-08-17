@@ -2,21 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { ToastAndroid } from 'react-native';
 
 import LoadingScreen from '../../components/LoadingScreen';
+import NoDataView from '../../components/NoDataView';
 import Screen from '../../components/Screen';
+import { getWrappedClient } from '../../data/client';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { GetResultType, RequestType } from '../../models/results';
 import { ISessionTeachPlan } from '../../models/teachPlan';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
+import CalendarSchedule from './CalendarSchedule';
 import SessionCard from './SessionCard';
-import CalendarSchedule from "./CalendarSchedule";
-import { getWrappedClient } from '../../data/client';
-import { GetResultType, RequestType } from '../../models/results';
 
 const ShortTeachPlan = () => {
   const dispatch = useAppDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
   const [data, setData] = useState<ISessionTeachPlan[]>(null);
+  const [isLoading, setLoading] = useState(false);
   const client = getWrappedClient();
+
   const loadData = async (force?: boolean) => {
+    setLoading(true);
     const result = await client.getTeachPlanData({
       requestType: force ? RequestType.tryFetch : RequestType.tryCache,
     });
@@ -27,18 +31,24 @@ const ShortTeachPlan = () => {
     }
 
     if (!result.data) {
-      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
+      if (!data) setLoading(false);
+      ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
       return;
     }
 
     setData(result.data);
+    setLoading(false);
   };
 
   useEffect(() => {
     if (!isAuthorizing) loadData();
   }, [isAuthorizing]);
 
-  if (!data) return <LoadingScreen onRefresh={loadData} />;
+  if (isLoading) return <LoadingScreen onRefresh={loadData} />;
+  if (!data)
+    return (
+      <NoDataView text="Возникла ошибка при загрузке данных" onRefresh={() => loadData(true)} />
+    );
 
   return (
     <Screen onUpdate={() => loadData(true)}>

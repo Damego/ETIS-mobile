@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ToastAndroid, View } from 'react-native';
 
 import LoadingScreen from '../../components/LoadingScreen';
+import NoDataView from '../../components/NoDataView';
 import Screen from '../../components/Screen';
 import SessionDropdown from '../../components/SessionDropdown';
 import { getWrappedClient } from '../../data/client';
@@ -23,8 +24,7 @@ const Signs = () => {
   const client = getWrappedClient();
 
   const loadData = async ({ session, force }: { session?: number; force?: boolean }) => {
-    // We use dropdown to fetch new data, and we need to show loading state while data is fetching
-    if (data) setLoading(true);
+    setLoading(true);
 
     let newSession;
     if (session !== undefined) newSession = session;
@@ -46,8 +46,8 @@ const Signs = () => {
       return;
     }
     if (!result.data) {
-      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
-      setLoading(false);
+      if (!data) setLoading(false);
+      ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
       return;
     }
 
@@ -76,14 +76,21 @@ const Signs = () => {
     );
 
     setData(fullData);
-    if (data) setLoading(false);
+    setLoading(false);
   };
 
   useEffect(() => {
     if (!isAuthorizing) loadData({});
   }, [isAuthorizing]);
 
-  if (!data || isLoading) return <LoadingScreen onRefresh={() => loadData({})} />;
+  if (isLoading) return <LoadingScreen onRefresh={() => loadData({})} />;
+  if (!data)
+    return (
+      <NoDataView
+        text="Возникла ошибка при загрузке данных"
+        onRefresh={() => loadData({ force: true })}
+      />
+    );
 
   return (
     <Screen onUpdate={() => loadData({ force: true })}>

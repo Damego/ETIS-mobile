@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ToastAndroid } from 'react-native';
 
 import LoadingScreen from '../../components/LoadingScreen';
+import NoDataView from '../../components/NoDataView';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
 import { getWrappedClient } from '../../data/client';
@@ -17,16 +18,20 @@ const Messages = () => {
   const { isAuthorizing } = useAppSelector((state) => state.auth);
   const { messageCount } = useAppSelector((state) => state.student);
   const [data, setData] = useState<IMessagesData>();
+  const [isLoading, setLoading] = useState(false);
   const fetchedPages = useRef<number[]>([]);
   const client = getWrappedClient();
 
   const loadData = async ({ page, force }: { page?: number; force?: boolean }) => {
+    setLoading(true);
     if (page === undefined) page = 1;
 
     const result = await client.getMessagesData({
       page,
       requestType:
-        !force && !messageCount || fetchedPages.current.includes(page) ? RequestType.tryCache : RequestType.tryFetch,
+        (!force && !messageCount) || fetchedPages.current.includes(page)
+          ? RequestType.tryCache
+          : RequestType.tryFetch,
     });
 
     if (result.type === GetResultType.loginPage) {
@@ -35,7 +40,8 @@ const Messages = () => {
     }
 
     if (!result.data) {
-      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
+      if (!data) setLoading(false);
+      ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
       return;
     }
 
@@ -44,6 +50,7 @@ const Messages = () => {
     if (!fetchedPages.current.includes(result.data.page)) {
       fetchedPages.current.push(result.data.page);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -54,7 +61,14 @@ const Messages = () => {
     dispatch(setMessageCount(null));
   }, []);
 
-  if (!data) return <LoadingScreen onRefresh={() => loadData({ page: data.page })} />;
+  if (isLoading) return <LoadingScreen onRefresh={() => loadData({})} />;
+  if (!data)
+    return (
+      <NoDataView
+        text="Возникла ошибка при загрузке данных"
+        onRefresh={() => loadData({ force: true })}
+      />
+    );
 
   return (
     <Screen onUpdate={() => loadData({ force: true })}>

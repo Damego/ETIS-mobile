@@ -3,6 +3,7 @@ import { Text, ToastAndroid, View } from 'react-native';
 
 import { cache } from '../../cache/smartCache';
 import LoadingScreen from '../../components/LoadingScreen';
+import NoDataView from '../../components/NoDataView';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
 import { getWrappedClient } from '../../data/client';
@@ -40,9 +41,9 @@ const TimeTable = () => {
       return;
     }
 
-    if (result.type === GetResultType.failed || !result?.data) {
-      setLoading(false);
-      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
+    if (!result.data) {
+      if (!data) setLoading(false);
+      ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
       return;
     }
 
@@ -57,7 +58,14 @@ const TimeTable = () => {
     if (!isAuthorizing) loadData({});
   }, [isAuthorizing]);
 
-  if (!data || isLoading) return <LoadingScreen onRefresh={() => loadData({ force: true })} />;
+  if (isLoading) return <LoadingScreen onRefresh={() => loadData({ force: true })} />;
+  if (!data)
+    return (
+      <NoDataView
+        text="Возникла ошибка при загрузке данных"
+        onRefresh={() => loadData({ force: true })}
+      />
+    );
 
   return (
     <Screen onUpdate={() => loadData({ force: true })}>
