@@ -1,15 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-type Dict<K extends string | number | symbol, V> = { [key in K]: { data: V; timestamp: number } };
+type Dict<KT extends string | number | symbol, VT> = {
+  [key in KT]: { data: VT; timestamp: number };
+};
 
-export default class MappedCache<K extends string | number | symbol, V> {
+export default class MappedCache<KT extends string | number | symbol, VT> {
   private readonly key: string;
-  private data: Dict<K, V>;
+  private data: Dict<KT, VT>;
   private ready: boolean;
 
   constructor(key: string) {
     this.key = key;
-    this.data = {} as Dict<K, V>;
+    this.data = {} as Dict<KT, VT>;
     this.ready = false;
   }
 
@@ -31,29 +33,29 @@ export default class MappedCache<K extends string | number | symbol, V> {
     console.log(`[CACHE] ${this.key.toLowerCase()} is ready to work`);
   }
 
-  get(key: K): V {
+  get(key: KT): VT {
     return this.data[key].data;
   }
 
-  getTime(key: K): number {
+  getTime(key: KT): number {
     return this.data[key].timestamp;
   }
 
-  place(key: K, value: V) {
+  place(key: KT, value: VT) {
     this.data[key] = { data: value, timestamp: Date.now() };
   }
 
-  delete(key: K) {
+  delete(key: KT) {
     delete this.data[key];
   }
 
   async clear() {
-    this.data = {} as Dict<K, V>;
+    this.data = {} as Dict<KT, VT>;
 
     await AsyncStorage.removeItem(this.key);
   }
 
-  values(): V[] {
+  values(): VT[] {
     return Object.values(this.data);
   }
 }
