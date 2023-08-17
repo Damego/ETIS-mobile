@@ -34,11 +34,11 @@ export default class MappedCache<KT extends string | number | symbol, VT> {
   }
 
   get(key: KT): VT {
-    return this.data[key].data;
+    return this.data[key]?.data;
   }
 
   getTime(key: KT): number {
-    return this.data[key].timestamp;
+    return this.data[key]?.timestamp;
   }
 
   place(key: KT, value: VT) {
