@@ -23,17 +23,13 @@ const getCheckPointScore = (checkPoint: ICheckPoint) => {
   return checkPoint.isIntroductionWork ? checkPoint.points : checkPoint.currentScore;
 };
 
-interface SubjectCheckPointsProps {
-  data: ICheckPoint[];
-}
-
-const SubjectCheckPoints = ({ data }: SubjectCheckPointsProps): React.ReactNode => {
+const SubjectCheckPoints = ({ data }: { data: ICheckPoint[] }): React.ReactNode => {
   const globalStyles = useGlobalStyles();
 
   return data.map((checkPoint, index) => {
     const checkPointName = `КТ ${index + 1}`;
     const scoreText: string | number = getCheckPointScore(checkPoint);
-    const pointsString = `${checkPointName}: ${scoreText} / ${checkPoint.passScore} / ${checkPoint.maxScore}`;
+    const pointsString = `${checkPointName}: ${scoreText} из ${checkPoint.maxScore}`;
 
     return (
       <Text
