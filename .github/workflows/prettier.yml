@@ -22,6 +22,5 @@ jobs:
         uses: creyD/prettier_action@v4.3
         with:
           # This part is also where you can pass other options, for example:
-          prettier_plugins: "@trivago/prettier-plugin-sort-imports"
           prettier_options: --write **/*.{js,md}
           commit_message: "ci: prettified code"
