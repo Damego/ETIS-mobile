@@ -19,9 +19,9 @@ export default function Question({
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={[fontSize.large, globalStyles.textColor]}>{question.name}</Text>
+      <Text style={[fontSize.large, globalStyles.textColor, {height: '40%'}]}>{question.name}</Text>
 
-      <View style={{ marginTop: '2%' }}>
+      <View style={{ marginTop: '2%', height: '60%' }}>
         {question.answers.map((answer, index) => (
           <Card key={answerTitles[index]}>
             <ClickableText

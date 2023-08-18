@@ -47,17 +47,21 @@ export default function Theme({
   if (!showTitle) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={[fontSize.large, globalStyles.textColor]}>
+        <Text style={[fontSize.large, globalStyles.textColor, { fontWeight: '500' }]}>
           Тема {themeNumber} из {themeCount}
         </Text>
-        <Text style={[fontSize.large, globalStyles.textColor]}>{theme.title}</Text>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={[fontSize.large, globalStyles.textColor]}>{theme.title}</Text>
+        </View>
       </View>
     );
   }
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={[fontSize.large, globalStyles.textColor]}>
+      <Text
+        style={[fontSize.large, globalStyles.textColor, { marginBottom: '4%', fontWeight: '500' }]}
+      >
         Вопрос {answeredCount + questionIndex + 1} из {questionCount}
       </Text>
       <Question
