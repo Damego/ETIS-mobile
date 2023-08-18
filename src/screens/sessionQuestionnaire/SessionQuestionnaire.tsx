@@ -35,6 +35,7 @@ export default function SessionQuestionnaire({ route }) {
   const teacherRef = useRef<string>();
   const answersRef = useRef<IAnswer[]>([]);
   const additionalCommentRef = useRef<string>();
+  const questionCount = useRef(0);
   const client = getWrappedClient();
 
   const loadData = async () => {
@@ -50,6 +51,12 @@ export default function SessionQuestionnaire({ route }) {
     }
 
     setData(result.data);
+    
+    let $questionCount = 0;
+    for (const theme of result.data.themes) {
+      $questionCount += theme.questions.length;
+    }
+    questionCount.current = $questionCount;
   };
 
   useEffect(() => {
@@ -104,6 +111,10 @@ export default function SessionQuestionnaire({ route }) {
         theme={data.themes[themeIndex]}
         showTitle={step === Steps.showThemeQuestions}
         onSubmit={onThemeAnswer}
+        themeNumber={themeIndex + 1}
+        themeCount={data.themes.length}
+        answeredCount={answersRef.current.length}
+        questionCount={questionCount.current}
       />
     );
   } else if (step === Steps.inputAdditionalComment) {

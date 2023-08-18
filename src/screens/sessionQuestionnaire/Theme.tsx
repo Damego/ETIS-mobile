@@ -1,19 +1,27 @@
 import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 
+import { useGlobalStyles } from '../../hooks';
 import { IAnswer, ITheme } from '../../models/sessionQuestionnaire';
 import { fontSize } from '../../utils/texts';
 import Question from './Question';
-import { useGlobalStyles } from '../../hooks';
 
 export default function Theme({
   theme,
   showTitle,
   onSubmit,
+  themeNumber,
+  themeCount,
+  answeredCount,
+  questionCount,
 }: {
   theme: ITheme;
   showTitle: boolean;
   onSubmit(answers: IAnswer[]): void;
+  themeNumber: number;
+  themeCount: number;
+  answeredCount: number;
+  questionCount: number;
 }) {
   const [answers, setAnswers] = useState<IAnswer[]>([]);
   const [questionIndex, setQuestionIndex] = useState(0);
@@ -39,6 +47,9 @@ export default function Theme({
   if (!showTitle) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={[fontSize.large, globalStyles.textColor]}>
+          Тема {themeNumber} из {themeCount}
+        </Text>
         <Text style={[fontSize.large, globalStyles.textColor]}>{theme.title}</Text>
       </View>
     );
@@ -46,6 +57,9 @@ export default function Theme({
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text style={[fontSize.large, globalStyles.textColor]}>
+        Вопрос {answeredCount + questionIndex + 1} из {questionCount}
+      </Text>
       <Question
         question={theme.questions[questionIndex]}
         answerTitles={theme.answerTitles}
