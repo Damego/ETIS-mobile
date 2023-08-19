@@ -1,3 +1,4 @@
+import { ICertificate } from '../models/ICertificate';
 import { ICalendarSchedule } from '../models/calendarSchedule';
 import { IMessagesData, MessageType } from '../models/messages';
 import { IOrder } from '../models/order';
@@ -10,8 +11,12 @@ import { TeacherType } from '../models/teachers';
 import { ITimeTable, ITimeTableGetProps } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
 import { BaseClient } from './base';
+import { toResult } from './utils';
 
 export default class DemoClient implements BaseClient {
+  async getCertificateData(payload: IGetPayload): Promise<IGetResult<ICertificate[]>> {
+    return toResult([]);
+  }
   toResult<T>(data: T): IGetResult<T> {
     return {
       type: GetResultType.cached,

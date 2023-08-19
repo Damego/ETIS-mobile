@@ -5,17 +5,14 @@ import { useGlobalStyles } from '../hooks';
 
 const styles = StyleSheet.create({
   cardView: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#837373',
     padding: '2%',
     marginBottom: '2%',
     borderWidth: 1,
   },
 });
 
-const Card = ({ children, style }: {
-  children: React.ReactNode;
-  style?: StyleProp<ViewStyle>
-}) => {
+const Card = ({ children, style }: { children: React.ReactNode; style?: StyleProp<ViewStyle> }) => {
   const globalStyles = useGlobalStyles();
 
   return (
