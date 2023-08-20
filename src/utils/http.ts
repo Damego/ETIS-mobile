@@ -5,6 +5,7 @@ import { documentDirectory, downloadAsync } from 'expo-file-system';
 import { getNetworkStateAsync } from 'expo-network';
 
 import { UploadFile } from '../models/other';
+import { CertificateRequestPayload } from './certificate';
 import { toURLSearchParams } from './encoding';
 
 const cyrillicToTranslit = CyrillicToTranslit();
@@ -317,6 +318,10 @@ class HTTPClient {
 
   getCertificate() {
     return this.request('GET', '/cert_pkg.stu_certif', { returnResponse: false });
+  }
+  async sendCertificateRequest(payload: CertificateRequestPayload) {
+    const data = toURLSearchParams(payload);
+    return this.request('POST', '/cert_pkg.stu_certif', { data, returnResponse: false });
   }
 }
 

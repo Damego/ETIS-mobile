@@ -1,30 +1,24 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useEffect, useMemo, useState } from 'react';
-import { Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  Keyboard,
+  StyleSheet,
+  Text,
+  TextInput,
+  ToastAndroid,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 import { RadioButtonProps, RadioGroup } from 'react-native-radio-buttons-group';
 
 import Screen from '../../components/Screen';
 import { useGlobalStyles } from '../../hooks';
 import { useAppColorScheme } from '../../hooks/theme';
+import { CertificateParam } from '../../models/CertificateRequest';
+import { httpClient } from '../../utils';
+import { toCertificatePayload } from '../../utils/certificate';
 import { fontSize } from '../../utils/texts';
-
-interface CertificateParam {
-  id: string;
-  name: string;
-  note: boolean;
-  maxQuantity: number;
-  place: boolean; // место предъявления
-  deliveryMethod: { id: string; name: string }[];
-}
-
-interface CertificateRequest {
-  id: string;
-  note?: string;
-  maxQuantity?: string;
-  place?: string;
-  deliveryMethod: string;
-}
 
 const deliveryMethods = [{ id: '1', name: 'лично (в отделе кадров обучающихся)' }];
 
@@ -76,6 +70,13 @@ export const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: '500',
   },
+  bottomButton: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    top: '85%',
+    alignItems: 'center',
+  },
   buttonContainer: {
     height: '12%',
     width: '90%',
@@ -85,6 +86,14 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  popover: {
+    borderRadius: 10,
+    padding: '2%',
+  },
+  input: { margin: '3%', paddingStart: '1%' },
+  inputRow: { flexDirection: 'row', alignItems: 'center' },
+  width90: { width: '90%' },
+  alignStart: { alignItems: 'flex-start', marginBottom: 10 },
 });
 
 export default function RequestCertificate() {
@@ -118,13 +127,10 @@ export default function RequestCertificate() {
               <AntDesign name="infocirlce" size={24} color={schemeColor} />
             </TouchableOpacity>
           }
-          popoverStyle={{
-            borderRadius: 10,
-            padding: '2%',
-          }}
+          popoverStyle={styles.popover}
           onRequestClose={() => onPress(false)}
         >
-          {text}
+          <Text>{text}</Text>
         </Popover>
       ),
     []
@@ -133,15 +139,10 @@ export default function RequestCertificate() {
   const Input = useMemo(
     () =>
       ({ name, placeholder, onUpdate, value }) => (
-        <View style={{ width: '90%' }}>
+        <View style={styles.width90}>
           <Text style={[fontSize.medium, globalStyles.textColor]}>{name}</Text>
           <TextInput
-            style={[
-              fontSize.small,
-              globalStyles.textColor,
-              globalStyles.border,
-              { margin: '3%', paddingStart: '1%' },
-            ]}
+            style={[fontSize.small, globalStyles.textColor, globalStyles.border, styles.input]}
             placeholderTextColor="#837373"
             placeholder={placeholder}
             onChangeText={onUpdate}
@@ -166,6 +167,7 @@ export default function RequestCertificate() {
     () =>
       currentId &&
       !keyboardOpen &&
+      !!place === currentCertificate.place &&
       !!note <= currentCertificate.note &&
       Number(quantity) <= currentCertificate.maxQuantity &&
       !!currentCertificate.deliveryMethod.find((s) => delivery === s.id),
@@ -175,7 +177,7 @@ export default function RequestCertificate() {
   const radioFactory = (id: string, name: string) => ({
     id,
     label: name,
-    color: globalStyles.textColor.color,
+    ...globalStyles.textColor,
     labelStyle: [fontSize.medium, globalStyles.textColor],
   });
 
@@ -203,7 +205,7 @@ export default function RequestCertificate() {
           radioButtons={certificateRadioButtons}
           onPress={setCurrentId}
           selectedId={currentId}
-          containerStyle={{ alignItems: 'flex-start' }}
+          containerStyle={styles.alignStart}
         />
       </View>
       {currentId && (
@@ -214,19 +216,19 @@ export default function RequestCertificate() {
               radioButtons={deliveryWayRadioButtons}
               onPress={setDelivery}
               selectedId={delivery}
-              containerStyle={{ alignItems: 'flex-start' }}
+              containerStyle={styles.alignStart}
             />
             <Text style={[fontSize.medium, globalStyles.textColor]}>Выберите Количество</Text>
             <RadioGroup
               radioButtons={quantityRadioButtons}
               selectedId={quantity}
               onPress={setQuantity}
-              containerStyle={{ alignItems: 'flex-start', marginBottom: 10 }}
+              containerStyle={styles.alignStart}
             />
           </View>
           <View style={[styles.container, globalStyles.border, globalStyles.block]}>
             {currentCertificate.note && (
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={styles.inputRow}>
                 <Input
                   name="Примечание"
                   placeholder="Заберёт Иванов Андрей Алексеевич"
@@ -237,19 +239,13 @@ export default function RequestCertificate() {
                 <PopoverElement
                   isVisible={notePopover}
                   onPress={setNotePopover}
-                  text={
-                    <Text>
-                      Справки выдаются лично заявителю. Если Вы доверяете получить справку другому
-                      лицу, пишите в примечаниях фамилию, имя отчество того, кто будет справку
-                      забирать.
-                    </Text>
-                  }
+                  text="Справки выдаются лично заявителю. Если Вы доверяете получить справку другому лицу, пишите в примечаниях фамилию, имя отчество того, кто будет справку забирать."
                 />
               </View>
             )}
             {currentCertificate.place && (
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View style={{ width: '90%' }}>
+              <View style={styles.inputRow}>
+                <View style={styles.width90}>
                   <Input
                     name="Место предъявления (организация-работодатель)"
                     placeholder="ОАО НефтьГаз"
@@ -260,35 +256,33 @@ export default function RequestCertificate() {
                 <PopoverElement
                   isVisible={placePopover}
                   onPress={setPlacePopover}
-                  text={
-                    <Text>
-                      Название организации необходимо указывать в РОДИТЕЛЬНОМ падеже для соблюдения
-                      норм русского языка при формировании текста справки.
-                    </Text>
-                  }
+                  text="Название организации необходимо указывать в РОДИТЕЛЬНОМ падеже для соблюдения норм русского языка при формировании текста справки."
                 ></PopoverElement>
               </View>
             )}
           </View>
         </>
       )}
-      <View
-        style={{
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          top: '85%',
-          alignItems: 'center',
-        }}
-      >
+      <View style={styles.bottomButton}>
         {applicable && (
           <TouchableOpacity
-            onPress={() => {
-              /*TODO*/
-            }}
+            onPress={() =>
+              httpClient
+                .sendCertificateRequest(
+                  toCertificatePayload({
+                    certificateId: currentId,
+                    place,
+                    note,
+                    quantity,
+                    delivery,
+                  })
+                )
+                .then()
+                .catch((e) => ToastAndroid.show('Ошибка: ' + e, ToastAndroid.LONG))
+            }
             activeOpacity={0.6}
             style={[styles.buttonContainer, globalStyles.primaryBackgroundColor]}
-            disabled={false}
+            disabled={!applicable}
           >
             <Text style={styles.text}>Заказать!</Text>
           </TouchableOpacity>
