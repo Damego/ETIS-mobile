@@ -30,5 +30,5 @@ export default function parseCertificateTable(html: string): ICertificate[] {
 
 export function cutCertificateHTML(html: string): string {
   const $ = load(html);
-  return $('.span9', html).html();
+  return $('.bgprj', html).html();
 }

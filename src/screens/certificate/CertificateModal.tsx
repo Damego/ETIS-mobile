@@ -35,7 +35,7 @@ export default function CertificateModal({ html, closeModal }) {
         <AutoHeightWebView
           source={{ html }}
           scalesPageToFit
-          style={{ marginHorizontal: '20%' }}
+          style={{ marginHorizontal: '20%', marginVertical: '3%' }}
           customStyle={getStyles(globalStyles.textColor.color)}
         />
         <ClickableText

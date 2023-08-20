@@ -2,6 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import AutoHeightWebView from 'react-native-autoheight-webview';
 import { useDispatch } from 'react-redux';
 
 import { cache } from '../../cache/smartCache';
@@ -24,6 +25,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
 });
+
+const getStyles = (textColor: string): string => `
+* {
+  color: ${textColor};
+  font-size:16pt;
+  margin-left: 1%;
+}
+`;
 
 function Button({
   icon,
@@ -52,6 +61,7 @@ const CertificateTable = () => {
   const client = getWrappedClient();
   const iconColor = useGlobalStyles().textColor.color;
   const navigation = useNavigation();
+  const globalStyles = useGlobalStyles();
 
   const loadData = async () => {
     const result = await client.getCertificateData({ requestType: RequestType.tryFetch });
@@ -93,7 +103,35 @@ const CertificateTable = () => {
       {data.map((certificate, index) => (
         <Certificate key={index} certificate={certificate} updateData={updateData} />
       ))}
-      <BorderLine />
+      <View
+        style={{
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          top: '85%',
+          alignItems: 'center',
+        }}
+      >
+        <AutoHeightWebView
+          scalesPageToFit
+          minimumFontSize={16}
+          overScrollMode={'never'}
+          source={{
+            html:
+              'Справки обучающимся готовятся в течение 3 рабочих дней, с даты поступления заявки.\n' +
+              '<br>Готовые справки можно получить в отделе кадров обучающихся (ОКО) \n' +
+              '<br><b>(не путать с отделом кадров сотрудников)</b>\n' +
+              '<br>\n' +
+              '<br>корпус № 8 ПГНИУ <b>каб.214</b>\n' +
+              '<br>Часы работы с 8.30 по 17.30 (пятница до 16.30).\n' +
+              '<br>Суббота, воскресенье - выходной\n' +
+              '<br>Обед с 12.00 до 13.00\n' +
+              '<br>Телефон: (342) 2-396-135\n' +
+              '<br>Просим отслеживать статус заявки в личном кабинете!\n',
+          }}
+          customStyle={getStyles(globalStyles.textColor.color)}
+        />
+      </View>
     </Screen>
   );
 };
