@@ -102,41 +102,44 @@ const AuthLoadingModal = () => {
 
     if (isDemoCredentials(userCredentials)) {
       dispatch(signInDemo(true));
-    } else {
-      const response = await makeLogin(
-        token,
-        userCredentials,
-        saveUserCredentials,
-        isInvisibleRecaptcha
-      );
-
-      if (
-        response === LoginResponseType.missingToken ||
-        response === LoginResponseType.invalidToken
-      ) {
-        setMessageStatus(`Получение токена...`);
-        setIsInvisibleRecaptcha(false);
-        return;
-      }
-
-      if (response === LoginResponseType.rateLimited) {
-        dispatch(signOut({}));
-      } else if (response === LoginResponseType.invalidUserCredentials) {
-        // Данные устарели, поэтому их стоит удалить
-        dispatch(signOut({ cleanUserCredentials: true }));
-      } else if (response === LoginResponseType.success) {
-        dispatch(signIn({}));
-      } else if (response === LoginResponseType.failed) {
-        // fromStorage Для проверки, были ли загружены данные из хранилища или нет (т.е. пользователь ввёл данные в форме)
-        // Возможно, что пользователь вышел из аккаунта или неудачная попытка ввода данных,
-        // то нам не нужно заходить в оффлайн режим в этих случаях
-        // Если же етис недоступен, но данные идут из хранилища, то разрешаем оффлайн режим
-
-        // Есть небольшая уязвимость, если пользователь сменит пароль, то приложение всё равно войдёт в оффлайн режим
-        // при недоступности етиса или интернета
-        signInOffline();
-      }
+      dispatch(setAuthorizing(false));
+      return;
     }
+
+    const response = await makeLogin(
+      token,
+      userCredentials,
+      saveUserCredentials,
+      isInvisibleRecaptcha
+    );
+
+    if (
+      response === LoginResponseType.missingToken ||
+      response === LoginResponseType.invalidToken
+    ) {
+      setMessageStatus(`Получение токена...`);
+      setIsInvisibleRecaptcha(false);
+      return;
+    }
+
+    if (response === LoginResponseType.rateLimited) {
+      dispatch(signOut({}));
+    } else if (response === LoginResponseType.invalidUserCredentials) {
+      // Данные устарели, поэтому их стоит удалить
+      dispatch(signOut({ cleanUserCredentials: true }));
+    } else if (response === LoginResponseType.success) {
+      dispatch(signIn({}));
+    } else if (response === LoginResponseType.failed) {
+      // fromStorage Для проверки, были ли загружены данные из хранилища или нет (т.е. пользователь ввёл данные в форме)
+      // Возможно, что пользователь вышел из аккаунта или неудачная попытка ввода данных,
+      // то нам не нужно заходить в оффлайн режим в этих случаях
+      // Если же етис недоступен, но данные идут из хранилища, то разрешаем оффлайн режим
+
+      // Есть небольшая уязвимость, если пользователь сменит пароль, то приложение всё равно войдёт в оффлайн режим
+      // при недоступности етиса или интернета
+      signInOffline();
+    }
+
     dispatch(setAuthorizing(false));
   };
 
