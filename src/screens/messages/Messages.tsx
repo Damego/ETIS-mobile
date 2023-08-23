@@ -62,13 +62,7 @@ const Messages = () => {
   }, []);
 
   if (isLoading) return <LoadingScreen onRefresh={() => loadData({})} />;
-  if (!data)
-    return (
-      <NoData
-        text="Возникла ошибка при загрузке данных"
-        onRefresh={() => loadData({ force: true })}
-      />
-    );
+  if (!data) return <NoData onRefresh={() => loadData({ force: true })} />;
 
   return (
     <Screen onUpdate={() => loadData({ force: true })}>
