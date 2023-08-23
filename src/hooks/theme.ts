@@ -1,8 +1,8 @@
 import { useColorScheme } from 'react-native';
 
 import { ThemeType } from '../redux/reducers/settingsSlice';
-import { useAppSelector } from './redux';
 import { AmoledTheme, DarkTheme, ITheme, LightTheme } from '../styles/themes';
+import { useAppSelector } from './redux';
 
 export const useAppColorScheme = () => {
   const themeType = useAppSelector((state) => state.settings.theme);
@@ -25,4 +25,4 @@ export const useAppTheme = () => {
   }
 
   return theme;
-}
+};

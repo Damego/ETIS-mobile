@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ToastAndroid } from 'react-native';
 
 import LoadingScreen from '../../components/LoadingScreen';
-import NoDataView from '../../components/NoDataView';
+import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
 import { getWrappedClient } from '../../data/client';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -45,10 +45,7 @@ const ShortTeachPlan = () => {
   }, [isAuthorizing]);
 
   if (isLoading) return <LoadingScreen onRefresh={loadData} />;
-  if (!data)
-    return (
-      <NoDataView text="Возникла ошибка при загрузке данных" onRefresh={() => loadData(true)} />
-    );
+  if (!data) return <NoData onRefresh={() => loadData(true)} />;
 
   return (
     <Screen onUpdate={() => loadData(true)}>

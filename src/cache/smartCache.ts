@@ -1,3 +1,4 @@
+import { ICalendarSchedule } from '../models/calendarSchedule';
 import { IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
 import { ISessionRating } from '../models/rating';
@@ -13,7 +14,6 @@ import { AppConfig } from '../redux/reducers/settingsSlice';
 import FieldCache from './fieldCache';
 import MappedCache from './mappedCache';
 import SecuredFieldCache from './securedFieldCache';
-import { ICalendarSchedule } from '../models/calendarSchedule';
 
 export default class SmartCache {
   private keys = {
@@ -49,7 +49,7 @@ export default class SmartCache {
   signsPoints: MappedCache<number, ISessionPoints>;
   signsRating: MappedCache<number, ISessionRating>;
   student: FieldCache<StudentInfo>;
-  calendarSchedule: FieldCache<ICalendarSchedule>
+  calendarSchedule: FieldCache<ICalendarSchedule>;
 
   user: SecuredFieldCache<UserCredentials>;
   app: FieldCache<AppConfig>;
@@ -283,7 +283,7 @@ export default class SmartCache {
 
   async getAppConfig() {
     if (!this.app.isReady()) await this.app.init();
-    return this.app.get() || {} as AppConfig;
+    return this.app.get() || ({} as AppConfig);
   }
 
   async getTheme() {

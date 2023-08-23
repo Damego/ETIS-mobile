@@ -23,7 +23,7 @@ export default class SecuredFieldCache<T> {
     if (this.isReady()) return;
     const stringData = await SecureStore.getItemAsync(this.key);
     this.data = JSON.parse(stringData);
-    this.ready = true
+    this.ready = true;
   }
 
   get() {

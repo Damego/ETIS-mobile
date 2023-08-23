@@ -32,7 +32,7 @@ const StackNavigator = () => {
       if (data?.type) dispatch(setInitialPage(data.type as PageType));
     } catch (e) {
       // ignore
-    } 
+    }
   };
 
   useEffect(() => {

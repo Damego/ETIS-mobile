@@ -5,12 +5,12 @@ export enum WeekTypes {
   session,
   holiday,
   practice,
-  elective
+  elective,
 }
 
 export interface WeekDates {
-  start: string,
-  end: string,
+  start: string;
+  end: string;
 }
 
 export interface WeekInfo {

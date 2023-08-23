@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 
 import { cache } from '../cache/smartCache';
 import { useAppSelector } from '../hooks';
+import { ICalendarSchedule } from '../models/calendarSchedule';
 import { IGetMessagesPayload, IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
 import { IGetRatingPayload, ISessionRating } from '../models/rating';
@@ -22,14 +23,13 @@ import {
   parseTeachers,
   parseTimeTable,
 } from '../parser';
+import parseCalendarSchedule from '../parser/calendar';
 import { StudentInfo } from '../parser/menu';
 import parseOrders from '../parser/order';
 import parseRating from '../parser/rating';
 import { httpClient } from '../utils';
 import { BaseClient, BasicClient } from './base';
 import DemoClient from './demoClient';
-import { ICalendarSchedule } from '../models/calendarSchedule';
-import parseCalendarSchedule from '../parser/calendar';
 
 export const getWrappedClient: () => BaseClient = () => {
   const { isDemo } = useAppSelector((state) => state.auth);
@@ -124,10 +124,10 @@ export default class Client implements BaseClient {
     );
     this.calendarScheduleClient = new CalendarScheduleClient(
       () => cache.getCalendarSchedule(),
-      () => httpClient.getTeachPlan("advanced"),
+      () => httpClient.getTeachPlan('advanced'),
       parseCalendarSchedule,
       (data) => cache.placeCalendarSchedule(data)
-    )
+    );
   }
 
   async getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>> {

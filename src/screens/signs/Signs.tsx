@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ToastAndroid, View } from 'react-native';
 
 import LoadingScreen from '../../components/LoadingScreen';
-import NoDataView from '../../components/NoDataView';
+import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
 import SessionDropdown from '../../components/SessionDropdown';
 import { getWrappedClient } from '../../data/client';
@@ -78,22 +78,17 @@ const Signs = () => {
     setData(fullData);
     setLoading(false);
   };
+  const refresh = () => loadData({ force: true });
 
   useEffect(() => {
     if (!isAuthorizing) loadData({});
   }, [isAuthorizing]);
 
-  if (isLoading) return <LoadingScreen onRefresh={() => loadData({})} />;
-  if (!data)
-    return (
-      <NoDataView
-        text="Возникла ошибка при загрузке данных"
-        onRefresh={() => loadData({ force: true })}
-      />
-    );
+  if (isLoading) return <LoadingScreen onRefresh={refresh} />;
+  if (!data) return <NoData onRefresh={refresh} />;
 
   return (
-    <Screen onUpdate={() => loadData({ force: true })}>
+    <Screen onUpdate={refresh}>
       <View
         style={{
           marginTop: '2%',

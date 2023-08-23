@@ -1,7 +1,7 @@
 import { load } from 'cheerio';
 
-import { getTextField } from './utils';
 import { StudentData } from '../models/student';
+import { getTextField } from './utils';
 
 export interface StudentInfo {
   announceCount: number;
@@ -34,7 +34,7 @@ export default function parseMenu(html: string, parseGroupJournal = false): Stud
     speciality,
     educationForm: form,
     year,
-    group: null
+    group: null,
   };
 
   // Получение группы студента

@@ -3,7 +3,7 @@ import { ToastAndroid } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import LoadingScreen from '../../components/LoadingScreen';
-import NoDataView from '../../components/NoDataView';
+import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
 import { getWrappedClient } from '../../data/client';
 import { useAppSelector } from '../../hooks';
@@ -46,7 +46,8 @@ const TeacherTable = () => {
   }, [isAuthorizing]);
 
   if (isLoading) return <LoadingScreen onRefresh={loadData} />;
-  if (!data) return <NoDataView text="Возникла ошибка при загрузке данных" onRefresh={loadData} />;
+  if (!data) return <NoData onRefresh={loadData} />;
+  if (!data.length) return <NoData text={'Список преподавателей пуст'} onRefresh={loadData} />;
 
   return (
     <Screen onUpdate={loadData}>

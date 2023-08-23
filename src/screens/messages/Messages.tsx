@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ToastAndroid } from 'react-native';
 
 import LoadingScreen from '../../components/LoadingScreen';
-import NoDataView from '../../components/NoDataView';
+import NoData from '../../components/NoData';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
 import { getWrappedClient } from '../../data/client';
@@ -64,7 +64,7 @@ const Messages = () => {
   if (isLoading) return <LoadingScreen onRefresh={() => loadData({})} />;
   if (!data)
     return (
-      <NoDataView
+      <NoData
         text="Возникла ошибка при загрузке данных"
         onRefresh={() => loadData({ force: true })}
       />

@@ -12,10 +12,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Card = ({ children, style }: {
-  children: React.ReactNode;
-  style?: StyleProp<ViewStyle>
-}) => {
+const Card = ({ children, style }: { children: React.ReactNode; style?: StyleProp<ViewStyle> }) => {
   const globalStyles = useGlobalStyles();
 
   return (

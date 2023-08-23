@@ -38,6 +38,9 @@
         "projectId": "a3b11e9a-6c2e-4082-81e8-58bc2324b582"
       }
     },
-    "plugins": [["./src/plugins/disabledForcedDarkModeAndroid.ts", {}], "@config-plugins/react-native-quick-actions"]
+    "plugins": [
+      ["./src/plugins/disabledForcedDarkModeAndroid.ts", {}],
+      "@config-plugins/react-native-quick-actions"
+    ]
   }
 }

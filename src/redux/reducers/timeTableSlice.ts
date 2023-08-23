@@ -26,5 +26,4 @@ const timeTableSlice = createSlice({
 });
 
 export default timeTableSlice.reducer;
-export const { setData, setCurrentWeek } =
-  timeTableSlice.actions;
+export const { setData, setCurrentWeek } = timeTableSlice.actions;

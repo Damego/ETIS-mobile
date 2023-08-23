@@ -1,12 +1,12 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+
 import { StudentData, StudentState } from '../../models/student';
 
 const initialState: StudentState = {
   info: null,
   messageCount: null,
   announceCount: null,
-}
-
+};
 
 const studentSlice = createSlice({
   name: 'student',

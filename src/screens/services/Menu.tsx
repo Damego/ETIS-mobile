@@ -28,7 +28,12 @@ const styles = StyleSheet.create({
   },
 });
 
-function Button({ icon, text, page, link }: {
+function Button({
+  icon,
+  text,
+  page,
+  link,
+}: {
   icon: React.ReactNode;
   text: string;
   page?: string;
