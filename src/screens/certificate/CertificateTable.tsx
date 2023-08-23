@@ -59,7 +59,6 @@ const CertificateTable = () => {
   const dispatch = useDispatch();
   const [data, setData] = useState<ICertificate[]>(null);
   const client = getWrappedClient();
-  const iconColor = useGlobalStyles().textColor.color;
   const navigation = useNavigation();
   const globalStyles = useGlobalStyles();
 
@@ -96,7 +95,7 @@ const CertificateTable = () => {
     <Screen onUpdate={loadData}>
       <Button
         text="Заказать справку"
-        icon={<AntDesign name="plus" size={iconSize} color={iconColor} />}
+        icon={<AntDesign name="plus" size={iconSize} color={globalStyles.textColor.color} />}
         changePage={() => navigation.navigate('RequestCertificate')}
       />
       <BorderLine />

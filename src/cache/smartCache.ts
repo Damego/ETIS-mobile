@@ -16,8 +16,6 @@ import MappedCache from './mappedCache';
 import SecuredFieldCache from './securedFieldCache';
 
 export default class SmartCache {
-  calendarSchedule: FieldCache<ICalendarSchedule>;
-
   announce: FieldCache<string[]>;
   messages: MappedCache<number, IMessagesData>;
   orders: {
@@ -31,7 +29,9 @@ export default class SmartCache {
   signsPoints: MappedCache<number, ISessionPoints>;
   signsRating: MappedCache<number, ISessionRating>;
   student: FieldCache<StudentInfo>;
+  calendarSchedule: FieldCache<ICalendarSchedule>;
   certificate: FieldCache<ICertificate[]>;
+
   private keys = {
     // ETIS related keys
     ANNOUNCES: 'ANNOUNCES',

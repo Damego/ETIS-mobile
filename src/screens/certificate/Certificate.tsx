@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, ToastAndroid, TouchableOpacity } from 'react-native';
 
 import CardHeaderIn from '../../components/CardHeaderIn';
-import { getCertificateHTML } from '../../data/certificate';
 import { useGlobalStyles } from '../../hooks';
 import { ICertificate } from '../../models/ICertificate';
 import { cutCertificateHTML } from '../../parser/certificate';
+import { httpClient } from '../../utils';
 import { fontSize } from '../../utils/texts';
 import CertificateModal from './CertificateModal';
 
@@ -34,7 +34,7 @@ const Certificate = ({
       setHTML(certificate.example);
       setOpened(true);
     } else
-      getCertificateHTML(certificate).then((certificateHTML) => {
+      httpClient.getCertificateHTML(certificate).then((certificateHTML) => {
         const preparedHTML = cutCertificateHTML(certificateHTML);
         if (!preparedHTML) {
           ToastAndroid.show('Произошла ошибка...', ToastAndroid.LONG);

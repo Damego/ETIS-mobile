@@ -4,6 +4,7 @@ import CyrillicToTranslit from 'cyrillic-to-translit-js';
 import { documentDirectory, downloadAsync } from 'expo-file-system';
 import { getNetworkStateAsync } from 'expo-network';
 
+import { ICertificate } from '../models/ICertificate';
 import { UploadFile } from '../models/other';
 import { CertificateRequestPayload } from './certificate';
 import { toURLSearchParams } from './encoding';
@@ -217,7 +218,7 @@ class HTTPClient {
     `showConsultations`:
     - y: Показывать консультации
     - n: Скрывать консультации
-  
+
     `week`: неделя в триместре.
    */
   getTimeTable({ showConsultations = null, week = null } = {}) {
@@ -240,7 +241,7 @@ class HTTPClient {
     `mode`:
     - session: оценки за сессии
     - current: оценки в триместре
-    - rating: итоговый рейтинг за триместр 
+    - rating: итоговый рейтинг за триместр
     - diplom: оценки в диплом
     */
   getSigns(mode: string, trimester?: number) {
@@ -322,6 +323,19 @@ class HTTPClient {
   async sendCertificateRequest(payload: CertificateRequestPayload) {
     const data = toURLSearchParams(payload);
     return this.request('POST', '/cert_pkg.stu_certif', { data, returnResponse: false });
+  }
+
+  async getCertificateHTML(certificate: ICertificate): Promise<string> {
+    const fetched = await httpClient.request(
+      'GET',
+      `/cert_pkg.stu_certif?p_creq_id=${certificate.id}&p_action=VIEW`,
+      { returnResponse: false }
+    );
+    if (fetched.error) return;
+
+    console.log('[DATA] fetched certificate html');
+
+    return fetched.data;
   }
 }
 
