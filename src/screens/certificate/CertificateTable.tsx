@@ -12,6 +12,7 @@ import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
 import { getWrappedClient } from '../../data/client';
 import { useGlobalStyles } from '../../hooks';
+import { useAppTheme } from '../../hooks/theme';
 import { ICertificate, ICertificateTable } from '../../models/certificate';
 import { GetResultType, RequestType } from '../../models/results';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
@@ -30,14 +31,8 @@ const styles = StyleSheet.create({
 const getStylesFooter = (textColor: string): string => `
 * {
   color: ${textColor};
-  font-size:20pt;
-  margin-left: 1%;
-}`;
-
-const getStylesHeader = (textColor: string): string => `
-* {
   font-size:24pt;
-  width: 97%;
+  margin-left: 1%;
 }`;
 
 const CertificateTable = () => {
@@ -47,6 +42,7 @@ const CertificateTable = () => {
   const client = getWrappedClient();
   const navigation = useNavigation();
   const globalStyles = useGlobalStyles();
+  const appTheme = useAppTheme();
 
   const loadData = async () => {
     const result = await client.getCertificateData({ requestType: RequestType.tryFetch });
@@ -75,38 +71,67 @@ const CertificateTable = () => {
     cache.certificate.place(newData.certificates);
     setData(newData);
   };
+  const handlePress = () => {
+    if (isOpened) return setOpened(false);
+
+    setOpened(true);
+  };
 
   if (!data) return <LoadingScreen onRefresh={loadData} />;
 
   return (
     <Screen onUpdate={loadData}>
       {data.announce.header && (
-        <Popover
-          placement={PopoverPlacement.FLOATING}
-          isVisible={isOpened}
-          from={
-            <TouchableOpacity onPress={() => setOpened(true)}>
-              <Text
-                style={[
-                  { fontWeight: '600', paddingBottom: '3%' },
-                  fontSize.medium,
-                  globalStyles.primaryFontColor,
-                ]}
-              >
-                Объявление
-              </Text>
-            </TouchableOpacity>
-          }
-          popoverStyle={{
-            borderRadius: 10,
-            padding: '2%',
-          }}
-          onRequestClose={() => setOpened(false)}
+        <View
+          style={[
+            {
+              paddingVertical: '2%',
+              paddingHorizontal: '2%',
+              marginBottom: '2%',
+            },
+            globalStyles.block,
+            globalStyles.border,
+          ]}
         >
-          <Text textBreakStrategy={'simple'} selectable style={fontSize.medium}>
-            {data.announce.header}
-          </Text>
-        </Popover>
+          <Popover
+            placement={PopoverPlacement.FLOATING}
+            isVisible={isOpened}
+            from={
+              <TouchableOpacity onPress={() => setOpened(true)}>
+                <TouchableOpacity
+                  onPress={handlePress}
+                  style={{
+                    paddingVertical: '2%',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
+                  activeOpacity={0.45}
+                >
+                  <Text
+                    style={[{ fontWeight: '600' }, fontSize.medium, globalStyles.primaryFontColor]}
+                  >
+                    Объявление
+                  </Text>
+                </TouchableOpacity>
+              </TouchableOpacity>
+            }
+            popoverStyle={{
+              borderRadius: 10,
+              padding: '2%',
+              backgroundColor: appTheme.colors.background,
+            }}
+            onRequestClose={() => setOpened(false)}
+          >
+            <Text
+              textBreakStrategy={'simple'}
+              selectable
+              style={[fontSize.medium, globalStyles.textColor]}
+            >
+              {data.announce.header}
+            </Text>
+          </Popover>
+        </View>
       )}
 
       <TouchableOpacity
@@ -127,7 +152,7 @@ const CertificateTable = () => {
           position: 'absolute',
           width: '100%',
           height: '100%',
-          top: '80%',
+          top: '75%',
           alignItems: 'center',
         }}
       >

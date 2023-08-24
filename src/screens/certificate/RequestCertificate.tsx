@@ -14,7 +14,7 @@ import { RadioButtonProps, RadioGroup } from 'react-native-radio-buttons-group';
 
 import Screen from '../../components/Screen';
 import { useGlobalStyles } from '../../hooks';
-import { useAppColorScheme } from '../../hooks/theme';
+import { useAppColorScheme, useAppTheme } from '../../hooks/theme';
 import { CertificateParam } from '../../models/certificateRequest';
 import { httpClient } from '../../utils';
 import { toCertificatePayload } from '../../utils/certificate';
@@ -107,6 +107,7 @@ export default function RequestCertificate() {
   const [notePopover, setNotePopover] = useState<boolean>(false);
   const [keyboardOpen, setKeyboardOpen] = useState<boolean>(false);
   const schemeColor = useAppColorScheme() === 'light' ? 'black' : 'white';
+  const appTheme = useAppTheme();
 
   Keyboard.addListener('keyboardDidShow', () => {
     setKeyboardOpen(true);
@@ -127,10 +128,10 @@ export default function RequestCertificate() {
               <AntDesign name="infocirlce" size={24} color={schemeColor} />
             </TouchableOpacity>
           }
-          popoverStyle={styles.popover}
+          popoverStyle={[styles.popover, { backgroundColor: appTheme.colors.background }]}
           onRequestClose={() => onPress(false)}
         >
-          <Text>{text}</Text>
+          <Text style={[fontSize.medium, globalStyles.textColor]}>{text}</Text>
         </Popover>
       ),
     []
