@@ -92,7 +92,7 @@ export const styles = StyleSheet.create({
   },
   input: { margin: '3%', paddingStart: '1%' },
   inputRow: { flexDirection: 'row', alignItems: 'center' },
-  width90: { width: '90%' },
+  width90: { minWidth: '85%' },
   alignStart: { alignItems: 'flex-start', marginBottom: 10 },
 });
 
@@ -139,18 +139,27 @@ export default function RequestCertificate() {
 
   const Input = useMemo(
     () =>
-      ({ name, placeholder, onUpdate, value }) => (
-        <View style={styles.width90}>
+      ({ name, placeholder, onUpdate, value, popover }) => (
+        <>
           <Text style={[fontSize.medium, globalStyles.textColor]}>{name}</Text>
-          <TextInput
-            style={[fontSize.small, globalStyles.textColor, globalStyles.border, styles.input]}
-            placeholderTextColor="#837373"
-            placeholder={placeholder}
-            onChangeText={onUpdate}
-            value={value}
-            selectionColor={globalStyles.primaryBackgroundColor.backgroundColor}
-          />
-        </View>
+          <View style={styles.inputRow}>
+            <TextInput
+              style={[
+                fontSize.small,
+                globalStyles.textColor,
+                globalStyles.border,
+                styles.input,
+                styles.width90,
+              ]}
+              placeholderTextColor="#837373"
+              placeholder={placeholder}
+              onChangeText={onUpdate}
+              value={value}
+              selectionColor={globalStyles.primaryBackgroundColor.backgroundColor}
+            />
+            {popover}
+          </View>
+        </>
       ),
     []
   );
@@ -229,36 +238,35 @@ export default function RequestCertificate() {
           </View>
           <View style={[styles.container, globalStyles.border, globalStyles.block]}>
             {currentCertificate.note && (
-              <View style={styles.inputRow}>
-                <Input
-                  name="Примечание"
-                  placeholder="Заберёт Иванов Андрей Алексеевич"
-                  value={note}
-                  onUpdate={setNote}
-                />
-
-                <PopoverElement
-                  isVisible={notePopover}
-                  onPress={setNotePopover}
-                  text="Справки выдаются лично заявителю. Если Вы доверяете получить справку другому лицу, пишите в примечаниях фамилию, имя отчество того, кто будет справку забирать."
-                />
-              </View>
+              <Input
+                name="Примечание"
+                placeholder="Заберёт Иванов Андрей Алексеевич"
+                value={note}
+                onUpdate={setNote}
+                popover={
+                  <PopoverElement
+                    isVisible={notePopover}
+                    onPress={setNotePopover}
+                    text="Справки выдаются лично заявителю. Если Вы доверяете получить справку другому лицу, пишите в примечаниях фамилию, имя отчество того, кто будет справку забирать."
+                  />
+                }
+              />
             )}
             {currentCertificate.place && (
-              <View style={styles.inputRow}>
-                <View style={styles.width90}>
-                  <Input
-                    name="Место предъявления (организация-работодатель)"
-                    placeholder="ОАО НефтьГаз"
-                    value={place}
-                    onUpdate={setPlace}
-                  />
-                </View>
-                <PopoverElement
-                  isVisible={placePopover}
-                  onPress={setPlacePopover}
-                  text="Название организации необходимо указывать в РОДИТЕЛЬНОМ падеже для соблюдения норм русского языка при формировании текста справки."
-                ></PopoverElement>
+              <View style={styles.width90}>
+                <Input
+                  name="Место предъявления (организация-работодатель)"
+                  placeholder="ОАО НефтьГаз"
+                  value={place}
+                  onUpdate={setPlace}
+                  popover={
+                    <PopoverElement
+                      isVisible={placePopover}
+                      onPress={setPlacePopover}
+                      text="Название организации необходимо указывать в РОДИТЕЛЬНОМ падеже для соблюдения норм русского языка при формировании текста справки."
+                    />
+                  }
+                />
               </View>
             )}
           </View>
