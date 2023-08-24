@@ -38,7 +38,6 @@ const getStylesFooter = (textColor: string): string => `
 const CertificateTable = () => {
   const dispatch = useDispatch();
   const [data, setData] = useState<ICertificateTable>(null);
-  const [isOpened, setOpened] = useState(false);
   const client = getWrappedClient();
   const navigation = useNavigation();
   const globalStyles = useGlobalStyles();
@@ -71,11 +70,6 @@ const CertificateTable = () => {
     cache.certificate.place(newData.certificates);
     setData(newData);
   };
-  const handlePress = () => {
-    if (isOpened) return setOpened(false);
-
-    setOpened(true);
-  };
 
   if (!data) return <LoadingScreen onRefresh={loadData} />;
 
@@ -95,33 +89,29 @@ const CertificateTable = () => {
         >
           <Popover
             placement={PopoverPlacement.FLOATING}
-            isVisible={isOpened}
-            from={
-              <TouchableOpacity onPress={() => setOpened(true)}>
-                <TouchableOpacity
-                  onPress={handlePress}
-                  style={{
-                    paddingVertical: '2%',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}
-                  activeOpacity={0.45}
+            from={(_, showPopover) => (
+              <TouchableOpacity
+                onPress={showPopover}
+                style={{
+                  paddingVertical: '2%',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+                activeOpacity={0.45}
+              >
+                <Text
+                  style={[{ fontWeight: '600' }, fontSize.medium, globalStyles.primaryFontColor]}
                 >
-                  <Text
-                    style={[{ fontWeight: '600' }, fontSize.medium, globalStyles.primaryFontColor]}
-                  >
-                    Объявление
-                  </Text>
-                </TouchableOpacity>
+                  Объявление
+                </Text>
               </TouchableOpacity>
-            }
+            )}
             popoverStyle={{
               borderRadius: 10,
               padding: '2%',
               backgroundColor: appTheme.colors.background,
             }}
-            onRequestClose={() => setOpened(false)}
           >
             <Text
               textBreakStrategy={'simple'}
@@ -144,9 +134,11 @@ const CertificateTable = () => {
         </View>
       </TouchableOpacity>
       <BorderLine />
+
       {data.certificates.map((certificate, index) => (
         <Certificate key={index} certificate={certificate} updateData={updateData} />
       ))}
+
       <View
         style={{
           position: 'absolute',

@@ -103,8 +103,6 @@ export default function RequestCertificate() {
   const [place, setPlace] = useState<string>('');
   const [quantity, setQuantity] = useState<string>();
   const [delivery, setDelivery] = useState<string>();
-  const [placePopover, setPlacePopover] = useState<boolean>(false);
-  const [notePopover, setNotePopover] = useState<boolean>(false);
   const [keyboardOpen, setKeyboardOpen] = useState<boolean>(false);
   const schemeColor = useAppColorScheme() === 'light' ? 'black' : 'white';
   const appTheme = useAppTheme();
@@ -119,17 +117,15 @@ export default function RequestCertificate() {
 
   const PopoverElement = useMemo(
     () =>
-      ({ isVisible, onPress, text }) => (
+      ({ text }) => (
         <Popover
           placement={PopoverPlacement.FLOATING}
-          isVisible={isVisible}
-          from={
-            <TouchableOpacity onPress={() => onPress(true)}>
+          from={(_, showPopover) => (
+            <TouchableOpacity onPress={showPopover}>
               <AntDesign name="infocirlce" size={24} color={schemeColor} />
             </TouchableOpacity>
-          }
+          )}
           popoverStyle={[styles.popover, { backgroundColor: appTheme.colors.background }]}
-          onRequestClose={() => onPress(false)}
         >
           <Text style={[fontSize.medium, globalStyles.textColor]}>{text}</Text>
         </Popover>
@@ -244,11 +240,7 @@ export default function RequestCertificate() {
                 value={note}
                 onUpdate={setNote}
                 popover={
-                  <PopoverElement
-                    isVisible={notePopover}
-                    onPress={setNotePopover}
-                    text="Справки выдаются лично заявителю. Если Вы доверяете получить справку другому лицу, пишите в примечаниях фамилию, имя отчество того, кто будет справку забирать."
-                  />
+                  <PopoverElement text="Справки выдаются лично заявителю. Если Вы доверяете получить справку другому лицу, пишите в примечаниях фамилию, имя отчество того, кто будет справку забирать." />
                 }
               />
             )}
@@ -260,11 +252,7 @@ export default function RequestCertificate() {
                   value={place}
                   onUpdate={setPlace}
                   popover={
-                    <PopoverElement
-                      isVisible={placePopover}
-                      onPress={setPlacePopover}
-                      text="Название организации необходимо указывать в РОДИТЕЛЬНОМ падеже для соблюдения норм русского языка при формировании текста справки."
-                    />
+                    <PopoverElement text="Название организации необходимо указывать в РОДИТЕЛЬНОМ падеже для соблюдения норм русского языка при формировании текста справки." />
                   }
                 />
               </View>
