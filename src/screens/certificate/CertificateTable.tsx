@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
+import Popover, { PopoverPlacement } from 'react-native-popover-view';
 import { useDispatch } from 'react-redux';
 
 import { cache } from '../../cache/smartCache';
@@ -26,38 +27,23 @@ const styles = StyleSheet.create({
   },
 });
 
-const getStyles = (textColor: string): string => `
+const getStylesFooter = (textColor: string): string => `
 * {
   color: ${textColor};
-  font-size:16pt;
+  font-size:20pt;
   margin-left: 1%;
-}
-`;
+}`;
 
-function Button({
-  icon,
-  text,
-  changePage,
-}: {
-  icon: React.ReactNode;
-  text: string;
-  changePage: () => void;
-}) {
-  const globalStyles = useGlobalStyles();
-
-  return (
-    <TouchableOpacity onPress={changePage} activeOpacity={0.9}>
-      <View style={[styles.buttonContainer, globalStyles.border, globalStyles.block]}>
-        {icon}
-        <Text style={[fontSize.medium, globalStyles.textColor]}>{text}</Text>
-      </View>
-    </TouchableOpacity>
-  );
-}
+const getStylesHeader = (textColor: string): string => `
+* {
+  font-size:24pt;
+  width: 97%;
+}`;
 
 const CertificateTable = () => {
   const dispatch = useDispatch();
   const [data, setData] = useState<ICertificateTable>(null);
+  const [isOpened, setOpened] = useState(false);
   const client = getWrappedClient();
   const navigation = useNavigation();
   const globalStyles = useGlobalStyles();
@@ -94,11 +80,49 @@ const CertificateTable = () => {
 
   return (
     <Screen onUpdate={loadData}>
-      <Button
-        text="Заказать справку"
-        icon={<AntDesign name="plus" size={iconSize} color={globalStyles.textColor.color} />}
-        changePage={() => navigation.navigate('RequestCertificate')}
-      />
+      {data.announce.header && (
+        <Popover
+          placement={PopoverPlacement.FLOATING}
+          isVisible={isOpened}
+          from={
+            <TouchableOpacity onPress={() => setOpened(true)}>
+              <Text
+                style={[
+                  { fontWeight: '600', paddingBottom: '3%' },
+                  fontSize.medium,
+                  globalStyles.primaryFontColor,
+                ]}
+              >
+                Объявление
+              </Text>
+            </TouchableOpacity>
+          }
+          popoverStyle={{
+            borderRadius: 10,
+            padding: '2%',
+          }}
+          onRequestClose={() => setOpened(false)}
+        >
+          <AutoHeightWebView
+            scalesPageToFit
+            overScrollMode={'never'}
+            source={{
+              html: data.announce.header,
+            }}
+            customStyle={getStylesHeader(globalStyles.textColor.color)}
+          />
+        </Popover>
+      )}
+
+      <TouchableOpacity
+        onPress={() => navigation.navigate('RequestCertificate')}
+        activeOpacity={0.9}
+      >
+        <View style={[styles.buttonContainer, globalStyles.border, globalStyles.block]}>
+          <AntDesign name="plus" size={iconSize} color={globalStyles.textColor.color} />
+          <Text style={[fontSize.medium, globalStyles.textColor]}>Заказать справку</Text>
+        </View>
+      </TouchableOpacity>
       <BorderLine />
       {data.certificates.map((certificate, index) => (
         <Certificate key={index} certificate={certificate} updateData={updateData} />
@@ -108,7 +132,7 @@ const CertificateTable = () => {
           position: 'absolute',
           width: '100%',
           height: '100%',
-          top: '85%',
+          top: '80%',
           alignItems: 'center',
         }}
       >
@@ -118,7 +142,7 @@ const CertificateTable = () => {
           source={{
             html: data.announce.footer,
           }}
-          customStyle={getStyles(globalStyles.textColor.color)}
+          customStyle={getStylesFooter(globalStyles.textColor.color)}
         />
       </View>
     </Screen>
