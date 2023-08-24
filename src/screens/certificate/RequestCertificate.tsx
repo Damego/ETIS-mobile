@@ -15,7 +15,7 @@ import { RadioButtonProps, RadioGroup } from 'react-native-radio-buttons-group';
 import Screen from '../../components/Screen';
 import { useGlobalStyles } from '../../hooks';
 import { useAppColorScheme } from '../../hooks/theme';
-import { CertificateParam } from '../../models/CertificateRequest';
+import { CertificateParam } from '../../models/certificateRequest';
 import { httpClient } from '../../utils';
 import { toCertificatePayload } from '../../utils/certificate';
 import { fontSize } from '../../utils/texts';

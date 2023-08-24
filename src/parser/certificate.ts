@@ -1,9 +1,15 @@
 import { load } from 'cheerio';
 
-import { ICertificate } from '../models/ICertificate';
+import { ICertificate, ICertificateAnnounce, ICertificateTable } from '../models/certificate';
 import { getTextField } from './utils';
 
-export default function parseCertificateTable(html: string): ICertificate[] {
+export function parseCertificateTable(html: string): ICertificateTable {
+  return {
+    certificates: parseCertificates(html),
+    announce: parseAnnounces(html),
+  };
+}
+function parseCertificates(html: string): ICertificate[] {
   const $ = load(html);
   const data: ICertificate[] = [];
 
@@ -26,6 +32,17 @@ export default function parseCertificateTable(html: string): ICertificate[] {
   });
 
   return data;
+}
+function parseAnnounces(html: string): ICertificateAnnounce {
+  const $ = load(html);
+  const selector = $('.span9 font');
+  const firstItem = selector.eq(0);
+  const lastItem = selector.eq(1);
+  if (!lastItem) {
+    return { footer: firstItem.html() };
+  } else {
+    return { header: firstItem.html(), footer: lastItem.html() };
+  }
 }
 
 export function cutCertificateHTML(html: string): string {

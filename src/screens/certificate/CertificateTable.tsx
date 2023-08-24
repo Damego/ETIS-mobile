@@ -11,7 +11,7 @@ import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
 import { getWrappedClient } from '../../data/client';
 import { useGlobalStyles } from '../../hooks';
-import { ICertificate } from '../../models/ICertificate';
+import { ICertificate, ICertificateTable } from '../../models/certificate';
 import { GetResultType, RequestType } from '../../models/results';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { fontSize } from '../../utils/texts';
@@ -57,7 +57,7 @@ function Button({
 
 const CertificateTable = () => {
   const dispatch = useDispatch();
-  const [data, setData] = useState<ICertificate[]>(null);
+  const [data, setData] = useState<ICertificateTable>(null);
   const client = getWrappedClient();
   const navigation = useNavigation();
   const globalStyles = useGlobalStyles();
@@ -84,8 +84,9 @@ const CertificateTable = () => {
 
   const updateData = (certificate: ICertificate) => {
     const newData = data;
-    newData[newData.findIndex((c) => c.id === certificate.id)] = certificate;
-    cache.certificate.place(newData);
+    newData.certificates[newData.certificates.findIndex((c) => c.id === certificate.id)] =
+      certificate;
+    cache.certificate.place(newData.certificates);
     setData(newData);
   };
 
@@ -99,7 +100,7 @@ const CertificateTable = () => {
         changePage={() => navigation.navigate('RequestCertificate')}
       />
       <BorderLine />
-      {data.map((certificate, index) => (
+      {data.certificates.map((certificate, index) => (
         <Certificate key={index} certificate={certificate} updateData={updateData} />
       ))}
       <View
@@ -113,20 +114,9 @@ const CertificateTable = () => {
       >
         <AutoHeightWebView
           scalesPageToFit
-          minimumFontSize={16}
           overScrollMode={'never'}
           source={{
-            html:
-              'Справки обучающимся готовятся в течение 3 рабочих дней, с даты поступления заявки.\n' +
-              '<br>Готовые справки можно получить в отделе кадров обучающихся (ОКО) \n' +
-              '<br><b>(не путать с отделом кадров сотрудников)</b>\n' +
-              '<br>\n' +
-              '<br>корпус № 8 ПГНИУ <b>каб.214</b>\n' +
-              '<br>Часы работы с 8.30 по 17.30 (пятница до 16.30).\n' +
-              '<br>Суббота, воскресенье - выходной\n' +
-              '<br>Обед с 12.00 до 13.00\n' +
-              '<br>Телефон: (342) 2-396-135\n' +
-              '<br>Просим отслеживать статус заявки в личном кабинете!\n',
+            html: data.announce.footer,
           }}
           customStyle={getStyles(globalStyles.textColor.color)}
         />

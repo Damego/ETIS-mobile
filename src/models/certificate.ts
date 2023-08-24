@@ -12,3 +12,13 @@ export interface ICertificate {
   quantity?: number;
   deliveryMethod?: string;
 }
+
+export interface ICertificateAnnounce {
+  header?: string;
+  footer?: string;
+}
+
+export interface ICertificateTable {
+  announce: ICertificateAnnounce;
+  certificates: ICertificate[];
+}

@@ -1,5 +1,5 @@
-import { ICertificate } from '../models/ICertificate';
 import { ICalendarSchedule } from '../models/calendarSchedule';
+import { ICertificateTable } from '../models/certificate';
 import { IMessagesData, MessageType } from '../models/messages';
 import { IOrder } from '../models/order';
 import { ISessionRating } from '../models/rating';
@@ -14,8 +14,23 @@ import { BaseClient } from './base';
 import { toResult } from './utils';
 
 export default class DemoClient implements BaseClient {
-  async getCertificateData(payload: IGetPayload): Promise<IGetResult<ICertificate[]>> {
-    return toResult([]);
+  async getCertificateData(payload: IGetPayload): Promise<IGetResult<ICertificateTable>> {
+    return toResult({
+      certificates: [],
+      announce: {
+        footer: `Справки обучающимся готовятся в течение 3 рабочих дней, с даты поступления заявки.
+<br>Готовые справки можно получить в отделе кадров обучающихся (ОКО) 
+<br><b>(не путать с отделом кадров сотрудников)</b>
+<br>
+<br>корпус № 8 ПГНИУ <b>каб.214</b>
+<br>Часы работы с 8.30 по 17.30 (пятница до 16.30).
+<br>Суббота, воскресенье - выходной
+<br>Обед с 12.00 до 13.00
+<br>Телефон: (342) 2-396-135
+<br>Просим отслеживать статус заявки в личном кабинете!
+`,
+      },
+    });
   }
   toResult<T>(data: T): IGetResult<T> {
     return {

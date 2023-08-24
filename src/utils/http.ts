@@ -4,7 +4,7 @@ import CyrillicToTranslit from 'cyrillic-to-translit-js';
 import { documentDirectory, downloadAsync } from 'expo-file-system';
 import { getNetworkStateAsync } from 'expo-network';
 
-import { ICertificate } from '../models/ICertificate';
+import { ICertificate } from '../models/certificate';
 import { UploadFile } from '../models/other';
 import { CertificateRequestPayload } from './certificate';
 import { toURLSearchParams } from './encoding';

@@ -1,5 +1,5 @@
-import { ICertificate } from '../models/ICertificate';
 import { ICalendarSchedule } from '../models/calendarSchedule';
+import { ICertificateTable } from '../models/certificate';
 import { IGetMessagesPayload, IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
 import { IGetRatingPayload, ISessionRating } from '../models/rating';
@@ -34,7 +34,7 @@ export interface BaseClient {
   getTeacherData(payload: IGetPayload): Promise<IGetResult<TeacherType>>;
   getTeachPlanData(payload: IGetPayload): Promise<IGetResult<ISessionTeachPlan[]>>;
   getCalendarScheduleData(payload: IGetPayload): Promise<IGetResult<ICalendarSchedule>>;
-  getCertificateData(payload: IGetPayload): Promise<IGetResult<ICertificate[]>>;
+  getCertificateData(payload: IGetPayload): Promise<IGetResult<ICertificateTable>>;
 }
 
 export class BasicClient<P extends IGetPayload, T> {

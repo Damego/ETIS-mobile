@@ -3,7 +3,7 @@ import { StyleSheet, Text, ToastAndroid, TouchableOpacity } from 'react-native';
 
 import CardHeaderIn from '../../components/CardHeaderIn';
 import { useGlobalStyles } from '../../hooks';
-import { ICertificate } from '../../models/ICertificate';
+import { ICertificate } from '../../models/certificate';
 import { cutCertificateHTML } from '../../parser/certificate';
 import { httpClient } from '../../utils';
 import { fontSize } from '../../utils/texts';

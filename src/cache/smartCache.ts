@@ -1,5 +1,5 @@
-import { ICertificate } from '../models/ICertificate';
 import { ICalendarSchedule } from '../models/calendarSchedule';
+import { ICertificate, ICertificateTable } from '../models/certificate';
 import { IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
 import { ISessionRating } from '../models/rating';
@@ -237,13 +237,13 @@ export default class SmartCache {
 
   // // Certificate Region
 
-  async getCertificate() {
+  async getCertificate(): Promise<ICertificateTable> {
     if (!this.certificate.isReady()) await this.certificate.init();
-    return this.certificate.get();
+    return { certificates: this.certificate.get(), announce: {} };
   }
 
-  async placeCertificate(data: ICertificate[]) {
-    this.certificate.place(data);
+  async placeCertificate(data: ICertificateTable) {
+    this.certificate.place(data.certificates);
     await this.certificate.save();
   }
 
