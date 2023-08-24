@@ -41,7 +41,17 @@ function parseAnnounces(html: string): ICertificateAnnounce {
   if (!lastItem) {
     return { footer: firstItem.html() };
   } else {
-    return { header: firstItem.html(), footer: lastItem.html() };
+    return {
+      header: firstItem
+        .contents()
+        .map(function (index, element) {
+          if (element.name === 'br') return '\n';
+          return $(this).text();
+        })
+        .toArray()
+        .join('').trim(),
+      footer: lastItem.html(),
+    };
   }
 }
 

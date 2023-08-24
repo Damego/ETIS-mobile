@@ -103,14 +103,9 @@ const CertificateTable = () => {
           }}
           onRequestClose={() => setOpened(false)}
         >
-          <AutoHeightWebView
-            scalesPageToFit
-            overScrollMode={'never'}
-            source={{
-              html: data.announce.header,
-            }}
-            customStyle={getStylesHeader(globalStyles.textColor.color)}
-          />
+          <Text textBreakStrategy={'simple'} selectable style={fontSize.medium}>
+            {data.announce.header}
+          </Text>
         </Popover>
       )}
 
