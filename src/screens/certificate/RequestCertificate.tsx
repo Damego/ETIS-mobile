@@ -112,7 +112,7 @@ export default function RequestCertificate() {
   });
 
   Keyboard.addListener('keyboardDidHide', () => {
-    setKeyboardOpen(false);
+    setTimeout(() => setKeyboardOpen(false), 60);
   });
 
   const PopoverElement = useMemo(
@@ -274,7 +274,6 @@ export default function RequestCertificate() {
                     delivery,
                   })
                 )
-                .then()
                 .catch((e) => ToastAndroid.show('Ошибка: ' + e, ToastAndroid.LONG))
             }
             activeOpacity={0.6}
