@@ -1,13 +1,20 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
-import AutoHeightWebView from 'react-native-autoheight-webview';
+import {
+  StyleProp,
+  Text,
+  TextStyle,
+  ToastAndroid,
+  TouchableOpacity,
+  ViewStyle,
+} from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 import { useDispatch } from 'react-redux';
 
 import { cache } from '../../cache/smartCache';
 import BorderLine from '../../components/BorderLine';
+import Card from '../../components/Card';
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
 import { getWrappedClient } from '../../data/client';
@@ -19,29 +26,92 @@ import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { fontSize } from '../../utils/texts';
 import Certificate from './Certificate';
 
-const iconSize = 36;
-const styles = StyleSheet.create({
-  buttonContainer: {
-    height: 50,
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-});
+const iconSize = 24;
 
-const getStylesFooter = (textColor: string): string => `
-* {
-  color: ${textColor};
-  font-size:24pt;
-  margin-left: 1%;
-}`;
+const ButtonWithPopover = ({
+  title,
+  info,
+  textStyle,
+  cardStyle,
+  icon,
+}: {
+  title: string;
+  info: string;
+  textStyle?: StyleProp<TextStyle>;
+  cardStyle?: StyleProp<ViewStyle>;
+  icon?: React.ReactNode;
+}) => {
+  const globalStyles = useGlobalStyles();
+  const appTheme = useAppTheme();
+
+  return (
+    <Card style={cardStyle}>
+      <Popover
+        placement={PopoverPlacement.FLOATING}
+        from={(_, showPopover) => (
+          <TouchableOpacity
+            onPress={showPopover}
+            style={[
+              {
+                paddingVertical: '2%',
+                flexDirection: 'row',
+              },
+            ]}
+            activeOpacity={0.45}
+          >
+            {icon}
+            <Text style={textStyle}>{title}</Text>
+          </TouchableOpacity>
+        )}
+        popoverStyle={{
+          borderRadius: globalStyles.border.borderRadius,
+          padding: '2%',
+          backgroundColor: appTheme.colors.background,
+        }}
+      >
+        <Text
+          textBreakStrategy={'simple'}
+          selectable
+          style={[fontSize.medium, globalStyles.textColor]}
+        >
+          {info}
+        </Text>
+      </Popover>
+    </Card>
+  );
+};
+
+const RequestCertificateButton = () => {
+  const navigation = useNavigation();
+  const globalStyles = useGlobalStyles();
+
+  return (
+    <Card>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('RequestCertificate')}
+        activeOpacity={0.9}
+        style={{ flexDirection: 'row', paddingVertical: '2%' }}
+      >
+        <AntDesign
+          name="plus"
+          size={iconSize}
+          color={globalStyles.textColor.color}
+          style={{ marginRight: '2%' }}
+        />
+        <Text style={[{ fontWeight: '500' }, fontSize.medium, globalStyles.textColor]}>
+          Заказать справку
+        </Text>
+      </TouchableOpacity>
+    </Card>
+  );
+};
 
 const CertificateTable = () => {
   const dispatch = useDispatch();
   const [data, setData] = useState<ICertificateTable>(null);
   const client = getWrappedClient();
-  const navigation = useNavigation();
+
   const globalStyles = useGlobalStyles();
-  const appTheme = useAppTheme();
 
   const loadData = async () => {
     const result = await client.getCertificateData({ requestType: RequestType.tryFetch });
@@ -76,87 +146,48 @@ const CertificateTable = () => {
   return (
     <Screen onUpdate={loadData}>
       {data.announce.header && (
-        <View
-          style={[
-            {
-              paddingVertical: '2%',
-              paddingHorizontal: '2%',
-              marginBottom: '2%',
-            },
-            globalStyles.block,
-            globalStyles.border,
-          ]}
-        >
-          <Popover
-            placement={PopoverPlacement.FLOATING}
-            from={(_, showPopover) => (
-              <TouchableOpacity
-                onPress={showPopover}
-                style={{
-                  paddingVertical: '2%',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-                activeOpacity={0.45}
-              >
-                <Text
-                  style={[{ fontWeight: '600' }, fontSize.medium, globalStyles.primaryFontColor]}
-                >
-                  Объявление
-                </Text>
-              </TouchableOpacity>
-            )}
-            popoverStyle={{
-              borderRadius: 10,
-              padding: '2%',
-              backgroundColor: appTheme.colors.background,
-            }}
-          >
-            <Text
-              textBreakStrategy={'simple'}
-              selectable
-              style={[fontSize.medium, globalStyles.textColor]}
-            >
-              {data.announce.header}
-            </Text>
-          </Popover>
-        </View>
+        <>
+          <ButtonWithPopover
+            title="Объявление"
+            info={data.announce.header}
+            textStyle={[
+              {
+                fontWeight: '600',
+              },
+              fontSize.large,
+              globalStyles.primaryFontColor,
+            ]}
+          />
+
+          <BorderLine />
+        </>
       )}
 
-      <TouchableOpacity
-        onPress={() => navigation.navigate('RequestCertificate')}
-        activeOpacity={0.9}
-      >
-        <View style={[styles.buttonContainer, globalStyles.border, globalStyles.block]}>
-          <AntDesign name="plus" size={iconSize} color={globalStyles.textColor.color} />
-          <Text style={[fontSize.medium, globalStyles.textColor]}>Заказать справку</Text>
-        </View>
-      </TouchableOpacity>
+      <RequestCertificateButton />
+      <ButtonWithPopover
+        title="Сроки и выдача справок"
+        info={data.announce.footer}
+        textStyle={[
+          {
+            fontWeight: '500',
+          },
+          fontSize.medium,
+          globalStyles.textColor,
+        ]}
+        icon={
+          <AntDesign
+            name="infocirlceo"
+            size={iconSize}
+            color={globalStyles.textColor.color}
+            style={{ marginRight: '2%' }}
+          />
+        }
+      />
       <BorderLine />
 
       {data.certificates.map((certificate, index) => (
         <Certificate key={index} certificate={certificate} updateData={updateData} />
       ))}
-
-      <View
-        style={{
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          top: '75%',
-          alignItems: 'center',
-        }}
-      >
-        <AutoHeightWebView
-          scalesPageToFit
-          overScrollMode={'never'}
-          source={{
-            html: data.announce.footer,
-          }}
-          customStyle={getStylesFooter(globalStyles.textColor.color)}
-        />
-      </View>
     </Screen>
   );
 };

@@ -1,4 +1,4 @@
-import { load } from 'cheerio';
+import * as cheerio from 'cheerio';
 
 import { ICertificate, ICertificateAnnounce, ICertificateTable } from '../models/certificate';
 import { getTextField } from './utils';
@@ -10,7 +10,7 @@ export function parseCertificateTable(html: string): ICertificateTable {
   };
 }
 function parseCertificates(html: string): ICertificate[] {
-  const $ = load(html);
+  const $ = cheerio.load(html);
   const data: ICertificate[] = [];
 
   $('.ord', html).each((el, orderEl) => {
@@ -33,8 +33,20 @@ function parseCertificates(html: string): ICertificate[] {
 
   return data;
 }
+
+const parseAnnounceText = (item: cheerio.Cheerio) =>
+  item
+    .contents()
+    .map(function (index, element) {
+      if (element.name === 'br') return '\n';
+      return item.find(element).text();
+    })
+    .toArray()
+    .join('')
+    .trim();
+
 function parseAnnounces(html: string): ICertificateAnnounce {
-  const $ = load(html);
+  const $ = cheerio.load(html);
   const selector = $('.span9 font');
   const firstItem = selector.eq(0);
   const lastItem = selector.eq(1);
@@ -42,20 +54,13 @@ function parseAnnounces(html: string): ICertificateAnnounce {
     return { footer: firstItem.html() };
   } else {
     return {
-      header: firstItem
-        .contents()
-        .map(function (index, element) {
-          if (element.name === 'br') return '\n';
-          return $(this).text();
-        })
-        .toArray()
-        .join('').trim(),
-      footer: lastItem.html(),
+      header: parseAnnounceText(firstItem),
+      footer: parseAnnounceText(lastItem),
     };
   }
 }
 
 export function cutCertificateHTML(html: string): string {
-  const $ = load(html);
+  const $ = cheerio.load(html);
   return $('.bgprj', html).html();
 }
