@@ -2,12 +2,20 @@ import { useMemo } from 'react';
 
 import { cache } from '../cache/smartCache';
 import { useAppSelector } from '../hooks';
+import { ICalendarSchedule } from '../models/calendarSchedule';
 import { IGetMessagesPayload, IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
 import { IGetRatingPayload, ISessionRating } from '../models/rating';
-import { IGetPayload, IGetResult } from '../models/results';
+import {
+  GetResultType,
+  IGetPayload,
+  IGetResult,
+  errorResult,
+  loginPageResult,
+} from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
+import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
 import { IGetSignsPayload } from '../models/signs';
 import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
@@ -22,14 +30,16 @@ import {
   parseTeachers,
   parseTimeTable,
 } from '../parser';
+import parseCalendarSchedule from '../parser/calendar';
 import { StudentInfo } from '../parser/menu';
 import parseOrders from '../parser/order';
 import parseRating from '../parser/rating';
+import parseSessionQuestionnaire from '../parser/sessionQuestionnaire';
+import parseSessionQuestionnaireList from '../parser/sessionQuestionnaireList';
+import { isLoginPage } from '../parser/utils';
 import { httpClient } from '../utils';
 import { BaseClient, BasicClient } from './base';
 import DemoClient from './demoClient';
-import { ICalendarSchedule } from '../models/calendarSchedule';
-import parseCalendarSchedule from '../parser/calendar';
 
 export const getWrappedClient: () => BaseClient = () => {
   const { isDemo } = useAppSelector((state) => state.auth);
@@ -124,10 +134,10 @@ export default class Client implements BaseClient {
     );
     this.calendarScheduleClient = new CalendarScheduleClient(
       () => cache.getCalendarSchedule(),
-      () => httpClient.getTeachPlan("advanced"),
+      () => httpClient.getTeachPlan('advanced'),
       parseCalendarSchedule,
       (data) => cache.placeCalendarSchedule(data)
-    )
+    );
   }
 
   async getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>> {
@@ -183,5 +193,35 @@ export default class Client implements BaseClient {
   async getCalendarScheduleData(payload: IGetPayload): Promise<IGetResult<ICalendarSchedule>> {
     await cache.calendarSchedule.init();
     return this.calendarScheduleClient.getData(payload);
+  }
+
+  async getSessionQuestionnaireList(id: string): Promise<IGetResult<ISessionQuestionnaireLink[]>> {
+    // sry Aleksandr :D
+
+    const response = await httpClient.getSessionQuestionnaireList(id);
+
+    if (response?.error) return errorResult;
+    if (isLoginPage(response.data)) return loginPageResult;
+
+    const parsed = parseSessionQuestionnaireList(response.data);
+    return {
+      type: GetResultType.fetched,
+      data: parsed,
+    };
+  }
+
+  async getSessionQuestionnaire(url: string): Promise<IGetResult<ISessionQuestionnaire>> {
+    // sry Aleksandr :D
+
+    const response = await httpClient.request('GET', url, { returnResponse: false });
+
+    if (response?.error) return errorResult;
+    if (isLoginPage(response.data)) return loginPageResult;
+
+    const parsed = parseSessionQuestionnaire(response.data);
+    return {
+      type: GetResultType.fetched,
+      data: parsed,
+    };
   }
 }

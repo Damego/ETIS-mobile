@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { useGlobalStyles } from '../../hooks';
+import { useAppSelector, useGlobalStyles } from '../../hooks';
 import { GITHUB_URL, TELEGRAM_URL } from '../../utils';
 import { fontSize } from '../../utils/texts';
 
@@ -28,7 +28,12 @@ const styles = StyleSheet.create({
   },
 });
 
-function Button({ icon, text, page, link }: {
+function Button({
+  icon,
+  text,
+  page,
+  link,
+}: {
   icon: React.ReactNode;
   text: string;
   page?: string;
@@ -56,6 +61,7 @@ function Row({ children }) {
 
 function Menu() {
   const globalStyles = useGlobalStyles();
+  const { isDemo } = useAppSelector((state) => state.auth);
   const iconColor = globalStyles.textColor.color;
 
   return (
@@ -76,6 +82,16 @@ function Menu() {
           icon={<AntDesign name="filetext1" size={iconSize} color={iconColor} />}
           page="Orders"
         />
+      </Row>
+      <Row>
+        {/* TODO: Hide button in offline mode */}
+        {!isDemo && (
+          <Button
+            icon={<AntDesign name="copy1" size={iconSize} color={iconColor} />}
+            text="Анкетирование"
+            page="SessionQuestionnaireList"
+          />
+        )}
       </Row>
       <Row>
         <Button
