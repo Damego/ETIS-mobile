@@ -1,3 +1,4 @@
+import { ICalendarSchedule } from '../models/calendarSchedule';
 import { IGetMessagesPayload, IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
 import { IGetRatingPayload, ISessionRating } from '../models/rating';
@@ -12,6 +13,7 @@ import {
 } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
+import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
 import { IGetSignsPayload } from '../models/signs';
 import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
@@ -19,8 +21,6 @@ import { ITimeTable, ITimeTableGetProps } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
 import { isLoginPage } from '../parser/utils';
 import { Response } from '../utils/http';
-import { ICalendarSchedule } from '../models/calendarSchedule';
-import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
 
 export interface BaseClient {
   getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>>;
@@ -40,7 +40,7 @@ export interface BaseClient {
   // так как тут только фетч данных
   // TODO: Переписать тут что-то в будущем
   getSessionQuestionnaireList(id: string): Promise<IGetResult<ISessionQuestionnaireLink[]>>;
-  getSessionQuestionnaire(url: string): Promise<IGetResult<ISessionQuestionnaire>>
+  getSessionQuestionnaire(url: string): Promise<IGetResult<ISessionQuestionnaire>>;
 }
 
 export class BasicClient<P extends IGetPayload, T> {
@@ -88,7 +88,13 @@ export class BasicClient<P extends IGetPayload, T> {
   }
 
   async tryParse({ data }: Response<string>): Promise<IGetResult<T>> {
-    const parsedData = this.parseMethod(data);
+    let parsedData: T;
+    try {
+      parsedData = this.parseMethod(data);
+    } catch (e) {
+      console.warn(`[PARSER] Ignoring a error from ${this.name}`);
+      console.trace(e);
+    }
     if (!parsedData) return failedResult;
 
     return {

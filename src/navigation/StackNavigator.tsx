@@ -4,10 +4,12 @@ import { setBackgroundColorAsync as setBackgroundNavigationBarColorAsync } from 
 import * as SplashScreen from 'expo-splash-screen';
 import { setBackgroundColorAsync } from 'expo-system-ui';
 import React, { useEffect } from 'react';
+import QuickActions from 'react-native-quick-actions';
 
 import { cache } from '../cache/smartCache';
-import { useAppSelector } from '../hooks';
+import { useAppDispatch, useAppSelector } from '../hooks';
 import { useAppTheme } from '../hooks/theme';
+import { PageType, setInitialPage } from '../redux/reducers/settingsSlice';
 import AuthPage from '../screens/auth/Auth';
 import Intro from '../screens/intro/Intro';
 import MessageHistory from '../screens/messages/MessageHistory';
@@ -23,6 +25,16 @@ const StackNavigator = () => {
   const { isSignedIn } = useAppSelector((state) => state.auth);
   const { viewedIntro, appIsReady } = useAppSelector((state) => state.settings);
   const theme = useAppTheme();
+  const dispatch = useAppDispatch();
+
+  const dispatchInitialPage = async () => {
+    try {
+      const data = await QuickActions.popInitialAction();
+      if (data?.type) dispatch(setInitialPage(data.type as PageType));
+    } catch (e) {
+      // ignore
+    }
+  };
 
   useEffect(() => {
     const wrapper = async () => {
@@ -30,7 +42,9 @@ const StackNavigator = () => {
         showPrivacyPolicy();
       }
     };
+
     wrapper();
+    dispatchInitialPage();
   }, []);
 
   useEffect(() => {

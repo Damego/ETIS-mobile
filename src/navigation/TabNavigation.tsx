@@ -1,6 +1,9 @@
 import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
+import { DeviceEventEmitter } from 'react-native';
+import { ShortcutItem } from 'react-native-quick-actions';
 
 import { getWrappedClient } from '../data/client';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
@@ -24,9 +27,16 @@ const TabNavigator = () => {
 
   const dispatch = useAppDispatch();
   const { messageCount, announceCount } = useAppSelector((state) => state.student);
-  const sendNotifications = useAppSelector((state) => state.settings.signNotification);
+  const { signNotification, initialPage } = useAppSelector((state) => state.settings);
   const client = getWrappedClient();
   const isDemo = useAppSelector((state) => state.auth.isDemo);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    DeviceEventEmitter.addListener('quickActionShortcut', (data: ShortcutItem) => {
+      navigation.navigate(data.type);
+    });
+  }, []);
 
   const loadData = async () => {
     const result = await client.getStudentInfoData({ requestType: RequestType.tryFetch });
@@ -42,7 +52,7 @@ const TabNavigator = () => {
   };
 
   useEffect(() => {
-    if (sendNotifications && !isDemo) {
+    if (signNotification && !isDemo) {
       registerFetch();
     }
     loadData();
@@ -50,6 +60,7 @@ const TabNavigator = () => {
 
   return (
     <Tab.Navigator
+      initialRouteName={initialPage}
       screenOptions={{
         headerShown: true,
         ...headerParams(theme),
