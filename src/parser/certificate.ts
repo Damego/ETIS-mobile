@@ -38,7 +38,7 @@ const parseAnnounceText = (item: cheerio.Cheerio) =>
   item
     .contents()
     .map(function (index, element) {
-      if (element.name === 'br') return '\n';
+      if (element.name === 'br' && element.next.name === "br") return '\n';
       return item.find(element).text();
     })
     .toArray()
