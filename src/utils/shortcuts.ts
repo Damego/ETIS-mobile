@@ -26,6 +26,7 @@ const SHORTCUTS_ITEMS: ShortcutItem[] = [
     icon: 'announce',
     userInfo: { url: '' },
   },
+  { type: 'debug', title: 'Отладочный запуск', icon: 'debug', userInfo: { url: '' } },
 ];
 
 export const addShortcuts = () => {

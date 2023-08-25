@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react-native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect } from 'react';
@@ -43,4 +44,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Sentry.wrap(App);

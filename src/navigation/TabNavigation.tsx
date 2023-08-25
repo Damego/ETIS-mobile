@@ -2,7 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
-import { DeviceEventEmitter } from 'react-native';
+import { DeviceEventEmitter, ToastAndroid } from 'react-native';
 import { ShortcutItem } from 'react-native-quick-actions';
 
 import { getWrappedClient } from '../data/client';
@@ -34,7 +34,11 @@ const TabNavigator = () => {
 
   useEffect(() => {
     DeviceEventEmitter.addListener('quickActionShortcut', (data: ShortcutItem) => {
-      navigation.navigate(data.type);
+      if (data.type !== 'debug') {
+        navigation.navigate(data.type);
+      } else {
+        ToastAndroid.show('Перезапустите приложение через ярлык', ToastAndroid.LONG);
+      }
     });
   }, []);
 
