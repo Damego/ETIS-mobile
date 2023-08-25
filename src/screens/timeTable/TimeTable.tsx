@@ -3,6 +3,7 @@ import { Text, ToastAndroid, View } from 'react-native';
 
 import { cache } from '../../cache/smartCache';
 import LoadingScreen from '../../components/LoadingScreen';
+import NoData from '../../components/NoData';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
 import { getWrappedClient } from '../../data/client';
@@ -14,6 +15,26 @@ import { setCurrentWeek, setData } from '../../redux/reducers/timeTableSlice';
 import { fontSize } from '../../utils/texts';
 import DayArray from './DayArray';
 import HolidayView from './HolidayView';
+
+const TimeTableData = ({ data }) => {
+  const globalStyles = useGlobalStyles();
+
+  return (
+    <>
+      <View style={{ marginTop: '2%', justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={[fontSize.medium, globalStyles.textColor, { fontWeight: '500' }]}>
+          {data.weekInfo.dates.start} - {data.weekInfo.dates.end}
+        </Text>
+      </View>
+
+      {data.weekInfo.type === WeekTypes.holiday ? (
+        <HolidayView holidayInfo={data.weekInfo.holidayDates} />
+      ) : (
+        <DayArray data={data.days} />
+      )}
+    </>
+  );
+};
 
 const TimeTable = () => {
   const globalStyles = useGlobalStyles();
@@ -40,9 +61,9 @@ const TimeTable = () => {
       return;
     }
 
-    if (result.type === GetResultType.failed || !result?.data) {
-      setLoading(false);
-      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
+    if (!result.data) {
+      if (!data) setLoading(false);
+      ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
       return;
     }
 
@@ -53,14 +74,17 @@ const TimeTable = () => {
     setLoading(false);
   };
 
+  const refresh = () => loadData({ week: data && data.weekInfo.selected, force: true });
+
   useEffect(() => {
     if (!isAuthorizing) loadData({});
   }, [isAuthorizing]);
 
-  if (!data || isLoading) return <LoadingScreen onRefresh={() => loadData({ force: true })} />;
+  if (isLoading) return <LoadingScreen onRefresh={refresh} />;
+  if (!data) return <NoData onRefresh={refresh} />;
 
   return (
-    <Screen onUpdate={() => loadData({ force: true })}>
+    <Screen onUpdate={refresh}>
       <PageNavigator
         firstPage={data.weekInfo.first}
         lastPage={data.weekInfo.last}
@@ -77,18 +101,7 @@ const TimeTable = () => {
         }}
       />
 
-      {/* Даты начала и конца недели */}
-      <View style={{ marginTop: '2%', justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={[fontSize.medium, globalStyles.textColor, { fontWeight: '500' }]}>
-          {data.weekInfo.dates.start} - {data.weekInfo.dates.end}
-        </Text>
-      </View>
-
-      {data.weekInfo.type === WeekTypes.holiday ? (
-        <HolidayView holidayInfo={data.weekInfo.holidayDates} />
-      ) : (
-        <DayArray data={data.days} />
-      )}
+      {data ? <TimeTableData data={data} /> : <NoData onRefresh={refresh} />}
     </Screen>
   );
 };

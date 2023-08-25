@@ -32,7 +32,7 @@ export default function parseTimeTable(html) {
     last: parseInt(week.last().text()),
     type: getWeekType(currentWeek),
     holidayDates: null,
-    dates: null
+    dates: null,
   };
 
   const dates = getTextField($('.week-select').children().last());
@@ -40,8 +40,8 @@ export default function parseTimeTable(html) {
     const [weekStart, weekEnd, holidayStart, holidayEnd] = dates.match(dateRegex);
     weekInfo.dates = {
       start: weekStart,
-      end: weekEnd
-    }
+      end: weekEnd,
+    };
     weekInfo.holidayDates = {
       start: holidayStart,
       end: holidayEnd,

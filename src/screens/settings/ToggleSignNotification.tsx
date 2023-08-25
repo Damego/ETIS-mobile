@@ -2,13 +2,13 @@ import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
 import { Linking, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 
+import { cache } from '../../cache/smartCache';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { useAppColorScheme } from '../../hooks/theme';
 import { setSignNotification } from '../../redux/reducers/settingsSlice';
 import { registerFetch, unregisterBackgroundFetchAsync } from '../../tasks/signs';
 import { NOTIFICATION_GUIDE_URL, storage } from '../../utils';
 import { fontSize } from '../../utils/texts';
-import { cache } from '../../cache/smartCache';
 
 const styles = StyleSheet.create({
   cardView: {

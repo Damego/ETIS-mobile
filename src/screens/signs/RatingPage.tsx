@@ -4,15 +4,16 @@ import { Text, ToastAndroid, View } from 'react-native';
 import BorderLine from '../../components/BorderLine';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import LoadingScreen from '../../components/LoadingScreen';
+import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
 import SessionDropdown from '../../components/SessionDropdown';
+import { getWrappedClient } from '../../data/client';
 import { useAppDispatch, useGlobalStyles } from '../../hooks';
 import { IGroup, ISessionRating } from '../../models/rating';
+import { GetResultType, RequestType } from '../../models/results';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { fontSize } from '../../utils/texts';
 import RightText from './RightText';
-import { getWrappedClient } from '../../data/client';
-import { GetResultType, RequestType } from '../../models/results';
 
 const Group = ({ group }: { group: IGroup }) => {
   const globalStyles = useGlobalStyles();
@@ -68,7 +69,7 @@ export default function RatingPage() {
       return;
     }
     if (!result.data) {
-      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
+      ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
       return;
     }
 
@@ -78,21 +79,20 @@ export default function RatingPage() {
     }
     setLoading(false);
   };
+  const refresh = () => loadData({ session: data.session.current, force: true });
 
   useEffect(() => {
     loadData({ force: false });
   }, []);
 
-  if (!data || isLoading) {
+  if (isLoading) {
     return <LoadingScreen />;
   }
 
+  if (!data) return <NoData onRefresh={refresh} />;
+
   return (
-    <Screen
-      onUpdate={() => {
-        loadData({ session: data.session.current, force: true });
-      }}
-    >
+    <Screen onUpdate={refresh}>
       <View
         style={{
           marginTop: '2%',
