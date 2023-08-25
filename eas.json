@@ -3,7 +3,7 @@
     "version": ">= 2.5.1"
   },
   "build": {
-    "development": {
+    "production_apk": {
       "distribution": "internal",
       "android": {
         "buildType": "apk"
