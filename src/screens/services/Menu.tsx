@@ -92,8 +92,6 @@ function Menu() {
             page="SessionQuestionnaireList"
           />
         )}
-      </Row>
-      <Row>
         <Button
           text="Справки"
           icon={<AntDesign name="book" size={iconSize} color={iconColor} />}
