@@ -1,6 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useEffect, useMemo, useState } from 'react';
 import {
+  Alert,
   Keyboard,
   StyleSheet,
   Text,
@@ -12,6 +13,7 @@ import {
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 import { RadioButtonProps, RadioGroup } from 'react-native-radio-buttons-group';
 
+import Card from '../../components/Card';
 import Screen from '../../components/Screen';
 import { useGlobalStyles } from '../../hooks';
 import { useAppColorScheme, useAppTheme } from '../../hooks/theme';
@@ -25,7 +27,7 @@ const deliveryMethods = [{ id: '1', name: 'лично (в отделе кадр�
 const certificateType: CertificateParam[] = [
   {
     id: '13',
-    name: 'справка, подтверждающая факт обучения в ПГНИУ',
+    name: 'Справка, подтверждающая факт обучения в ПГНИУ',
     note: true,
     maxQuantity: 3,
     place: false,
@@ -58,30 +60,13 @@ const certificateType: CertificateParam[] = [
 ];
 
 export const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: '1%',
-    marginBottom: '3%',
-  },
-  button: {
-    marginBottom: '50%',
-  },
   text: {
     ...fontSize.xlarge,
     color: '#FFFFFF',
     fontWeight: '500',
   },
-  bottomButton: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    top: '85%',
-    alignItems: 'center',
-  },
   buttonContainer: {
-    height: '12%',
-    width: '90%',
-    marginTop: '5%',
-    paddingHorizontal: '5%',
+    paddingVertical: '2%',
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
@@ -202,37 +187,66 @@ export default function RequestCertificate() {
     [currentId]
   );
 
+  const submitRequest = async () => {
+    try {
+      await httpClient.sendCertificateRequest(
+        toCertificatePayload({
+          certificateId: currentId,
+          place,
+          note,
+          quantity,
+          delivery,
+        })
+      );
+    } catch (e) {
+      ToastAndroid.show('Ошибка: ' + e, ToastAndroid.LONG);
+    }
+  };
+
+  const confirmSubmit = () => {
+    Alert.alert('Подтверждение', 'Проверьте введённые данные и нажмите Подтвердить', [
+      {
+        text: 'Вернуться',
+      },
+      {
+        text: 'Подтвердить',
+        onPress: submitRequest,
+      },
+    ]);
+  };
+
   return (
     <Screen>
-      <View style={[styles.container, globalStyles.border, globalStyles.block]}>
-        <Text style={[fontSize.medium, globalStyles.textColor]}>Выберите тип справки</Text>
-
+      <Card>
+        <Text style={[fontSize.medium, globalStyles.textColor]}>Тип справки</Text>
         <RadioGroup
           radioButtons={certificateRadioButtons}
           onPress={setCurrentId}
           selectedId={currentId}
           containerStyle={styles.alignStart}
         />
-      </View>
+      </Card>
+
       {currentId && (
         <>
-          <View style={[styles.container, globalStyles.border, globalStyles.block]}>
-            <Text style={[fontSize.medium, globalStyles.textColor]}>Выберите метод вручения</Text>
+          <Card>
+            <Text style={[fontSize.medium, globalStyles.textColor]}>Метод вручения</Text>
             <RadioGroup
               radioButtons={deliveryWayRadioButtons}
               onPress={setDelivery}
               selectedId={delivery}
               containerStyle={styles.alignStart}
             />
-            <Text style={[fontSize.medium, globalStyles.textColor]}>Выберите Количество</Text>
+            <Text style={[fontSize.medium, globalStyles.textColor]}>Количество</Text>
             <RadioGroup
               radioButtons={quantityRadioButtons}
               selectedId={quantity}
               onPress={setQuantity}
               containerStyle={styles.alignStart}
             />
-          </View>
-          <View style={[styles.container, globalStyles.border, globalStyles.block]}>
+          </Card>
+
+          <Card>
             {currentCertificate.note && (
               <Input
                 name="Примечание"
@@ -245,45 +259,31 @@ export default function RequestCertificate() {
               />
             )}
             {currentCertificate.place && (
-              <View style={styles.width90}>
-                <Input
-                  name="Место предъявления (организация-работодатель)"
-                  placeholder="ОАО НефтьГаз"
-                  value={place}
-                  onUpdate={setPlace}
-                  popover={
-                    <PopoverElement text="Название организации необходимо указывать в РОДИТЕЛЬНОМ падеже для соблюдения норм русского языка при формировании текста справки." />
-                  }
-                />
-              </View>
+              <Input
+                name="Место предъявления (организация-работодатель)"
+                placeholder="ОАО НефтьГаз"
+                value={place}
+                onUpdate={setPlace}
+                popover={
+                  <PopoverElement text="Название организации необходимо указывать в РОДИТЕЛЬНОМ падеже для соблюдения норм русского языка при формировании текста справки." />
+                }
+              />
             )}
-          </View>
+          </Card>
         </>
       )}
-      <View style={styles.bottomButton}>
-        {applicable && (
+
+      {applicable && (
+        <View style={{ position: 'absolute', left: 0, right: 0, bottom: '1%' }}>
           <TouchableOpacity
-            onPress={() =>
-              httpClient
-                .sendCertificateRequest(
-                  toCertificatePayload({
-                    certificateId: currentId,
-                    place,
-                    note,
-                    quantity,
-                    delivery,
-                  })
-                )
-                .catch((e) => ToastAndroid.show('Ошибка: ' + e, ToastAndroid.LONG))
-            }
+            onPress={confirmSubmit}
             activeOpacity={0.6}
             style={[styles.buttonContainer, globalStyles.primaryBackgroundColor]}
-            disabled={!applicable}
           >
-            <Text style={styles.text}>Заказать!</Text>
+            <Text style={styles.text}>Заказать</Text>
           </TouchableOpacity>
-        )}
-      </View>
+        </View>
+      )}
     </Screen>
   );
 }
