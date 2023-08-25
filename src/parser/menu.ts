@@ -7,6 +7,7 @@ export interface StudentInfo {
   announceCount: number;
   messageCount: number;
   student: StudentData;
+  sessionTestID: string;
 }
 
 export default function parseMenu(html: string, parseGroupJournal = false): StudentInfo {
@@ -15,6 +16,7 @@ export default function parseMenu(html: string, parseGroupJournal = false): Stud
   const data: StudentInfo = {
     announceCount: null,
     messageCount: null,
+    sessionTestID: null,
     student: {
       name: null,
       speciality: null,
@@ -37,13 +39,20 @@ export default function parseMenu(html: string, parseGroupJournal = false): Stud
     group: null,
   };
 
+  const menu = $('.span3');
+  const menuBlocks = menu.find('.nav.nav-tabs.nav-stacked');
+  const sessionTestURL = menuBlocks.eq(1).find('li').first().find('a').attr('href');
+  const [, sessionTestID] = sessionTestURL.split('=');
+  data.sessionTestID = sessionTestID;
+
   // Получение группы студента
   if (parseGroupJournal) {
     data.student.group = $('.span9').find('h3').text().split(' ').at(1);
   }
 
   // Получения количества новых уведомлений
-  $('.nav.nav-tabs.nav-stacked')
+  menuBlocks
+    .first()
     .find('.badge')
     .each((i, el) => {
       const span = $(el);

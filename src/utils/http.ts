@@ -5,6 +5,7 @@ import { documentDirectory, downloadAsync } from 'expo-file-system';
 import { getNetworkStateAsync } from 'expo-network';
 
 import { UploadFile } from '../models/other';
+import { SessionQuestionnairePayload } from './sessionTest';
 import { toURLSearchParams } from './encoding';
 
 const cyrillicToTranslit = CyrillicToTranslit();
@@ -317,6 +318,19 @@ class HTTPClient {
 
   getCertificate() {
     return this.request('GET', '/cert_pkg.stu_certif', { returnResponse: false });
+  }
+
+  getSessionQuestionnaireList(id: string | number) {
+    return this.request('GET', '/stu.term_test', {
+      params: { p_toes_id: id },
+      returnResponse: false,
+    });
+  }
+
+  async sendSessionQuestionnaireResult(payload: SessionQuestionnairePayload) {
+    const data = toURLSearchParams(payload);
+
+    return this.request('POST', '/stu.term_test_save', { data, returnResponse: false });
   }
 }
 
