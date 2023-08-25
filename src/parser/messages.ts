@@ -34,7 +34,7 @@ const parseTeacherMessage = (message: cheerio.Cheerio): IMessage => {
   const type = MessageType.teacherReply;
   const time = getTextField(fontComponent.eq(0));
   const author = getTextField(bComponent.eq(0));
-  const content = getMessageContent(message)
+  const content = getMessageContent(message);
 
   return {
     type,
@@ -49,7 +49,7 @@ const parseStudentMessage = ($: cheerio.Root, message: cheerio.Cheerio): IMessag
 
   const type = MessageType.studentReply;
   const time = getTextField(fontComponent.eq(0));
-  const content = getMessageContent(message)
+  const content = getMessageContent(message);
   const files = getMessageFiles($, message);
 
   let answerMessageID;
@@ -84,7 +84,7 @@ const parseStartMessage = ($: cheerio.Root, message: cheerio.Cheerio): IMessage 
   const theme = !fontComponent.eq(2).parent().is('form') ? getTextField(fontComponent.eq(2)) : null;
   const files = getMessageFiles($, message);
 
-  const content = getMessageContent(message)
+  const content = getMessageContent(message);
 
   let messageID;
   let answerID;
@@ -116,8 +116,8 @@ export default function parseMessages(html: string) {
   const data: IMessagesData = {
     messages: [],
     page,
-    lastPage
-  }
+    lastPage,
+  };
   const { messages } = data;
   let messageThemeIndex = -1;
 

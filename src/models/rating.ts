@@ -1,5 +1,5 @@
-import { ISession } from './session';
 import { IGetPayload } from './results';
+import { ISession } from './session';
 
 export interface OverallRating {
   top: number;

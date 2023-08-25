@@ -29,7 +29,7 @@ const Order = ({ order }: { order: IOrder }) => {
     }
     getOrderHTML(order).then((orderHTML) => {
       if (!orderHTML) {
-        ToastAndroid.show("Приказ не загружен!", ToastAndroid.SHORT);
+        ToastAndroid.show('Приказ не загружен!', ToastAndroid.SHORT);
         return;
       }
       setHTML(orderHTML);

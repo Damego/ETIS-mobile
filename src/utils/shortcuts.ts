@@ -26,12 +26,12 @@ const SHORTCUTS_ITEMS: ShortcutItem[] = [
     icon: 'announce',
     userInfo: { url: '' },
   },
-]
+];
 
 export const addShortcuts = () => {
   try {
-    return QuickActions.setShortcutItems(SHORTCUTS_ITEMS)
+    return QuickActions.setShortcutItems(SHORTCUTS_ITEMS);
   } catch (e) {
     // I hate js. Damego
   }
-}
+};

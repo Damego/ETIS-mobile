@@ -22,5 +22,4 @@ const saveFile = async (fileData, fileName) => {
   }
 };
 
-
 export { downloadFile, saveFile };

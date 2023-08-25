@@ -1,5 +1,6 @@
-import { ITheme } from '../styles/themes';
 import React from 'react';
+
+import { ITheme } from '../styles/themes';
 
 export const headerParams = (theme: ITheme) => {
   return {

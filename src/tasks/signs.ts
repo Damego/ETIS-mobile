@@ -1,11 +1,11 @@
 import * as BackgroundFetch from 'expo-background-fetch';
 import * as TaskManager from 'expo-task-manager';
 
+import { BaseClient } from '../data/base';
+import Client from '../data/client';
+import { GetResultType, RequestType } from '../models/results';
 import { ICheckPoint, ISubject } from '../models/sessionPoints';
 import { sendNewMarkNotification } from '../utils/notifications';
-import { GetResultType, RequestType } from '../models/results';
-import Client from '../data/client';
-import { BaseClient } from '../data/base';
 
 const BACKGROUND_FETCH_TASK = 'signs-fetch';
 let currentSession: number;
