@@ -42,7 +42,7 @@ const SubjectCheckPoints = ({ data }: SubjectCheckPointsProps): React.ReactNode 
             ? [fontSize.medium, styles.markFail]
             : [fontSize.medium, styles.markNeutral, globalStyles.textColor]
         }
-        key={checkPoint.theme}
+        key={checkPoint.theme + index}
       >
         {pointsString}
       </Text>
