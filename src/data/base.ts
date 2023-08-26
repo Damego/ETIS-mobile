@@ -13,7 +13,11 @@ import {
 } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
-import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
+import {
+  IGetStringPayload,
+  ISessionQuestionnaire,
+  ISessionQuestionnaireLink,
+} from '../models/sessionQuestionnaire';
 import { IGetSignsPayload } from '../models/signs';
 import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
@@ -34,13 +38,10 @@ export interface BaseClient {
   getTeacherData(payload: IGetPayload): Promise<IGetResult<TeacherType>>;
   getTeachPlanData(payload: IGetPayload): Promise<IGetResult<ISessionTeachPlan[]>>;
   getCalendarScheduleData(payload: IGetPayload): Promise<IGetResult<ICalendarSchedule>>;
-
-  // Эти методы не используют кэш, поэтому реализованный клиент не подходит для них
-  // Пустые методы для кэша выдают ошибки с типизацией, да и IGetPayload полностью бессмыслен
-  // так как тут только фетч данных
-  // TODO: Переписать тут что-то в будущем
-  getSessionQuestionnaireList(id: string): Promise<IGetResult<ISessionQuestionnaireLink[]>>;
-  getSessionQuestionnaire(url: string): Promise<IGetResult<ISessionQuestionnaire>>;
+  getSessionQuestionnaireList(
+    payload: IGetStringPayload
+  ): Promise<IGetResult<ISessionQuestionnaireLink[]>>;
+  getSessionQuestionnaire(payload: IGetStringPayload): Promise<IGetResult<ISessionQuestionnaire>>;
 }
 
 export class BasicClient<P extends IGetPayload, T> {

@@ -8,7 +8,7 @@ import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
 import { getWrappedClient } from '../../data/client';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
-import { GetResultType } from '../../models/results';
+import { GetResultType, RequestType } from '../../models/results';
 import { ISessionQuestionnaireLink } from '../../models/sessionQuestionnaire';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { fontSize } from '../../utils/texts';
@@ -24,7 +24,10 @@ export default function SessionQuestionnaireList({ navigation }) {
 
   const loadData = async () => {
     setLoading(true);
-    const result = await client.getSessionQuestionnaireList(sessionTestID);
+    const result = await client.getSessionQuestionnaireList({
+      requestType: RequestType.forceFetch,
+      data: sessionTestID,
+    });
 
     if (result.type === GetResultType.loginPage) {
       return dispatch(setAuthorizing(false));

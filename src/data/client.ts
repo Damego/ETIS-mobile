@@ -6,16 +6,14 @@ import { ICalendarSchedule } from '../models/calendarSchedule';
 import { IGetMessagesPayload, IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
 import { IGetRatingPayload, ISessionRating } from '../models/rating';
-import {
-  GetResultType,
-  IGetPayload,
-  IGetResult,
-  errorResult,
-  loginPageResult,
-} from '../models/results';
+import { IGetPayload, IGetResult } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
-import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
+import {
+  IGetStringPayload,
+  ISessionQuestionnaire,
+  ISessionQuestionnaireLink,
+} from '../models/sessionQuestionnaire';
 import { IGetSignsPayload } from '../models/signs';
 import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
@@ -36,7 +34,6 @@ import parseOrders from '../parser/order';
 import parseRating from '../parser/rating';
 import parseSessionQuestionnaire from '../parser/sessionQuestionnaire';
 import parseSessionQuestionnaireList from '../parser/sessionQuestionnaireList';
-import { isLoginPage } from '../parser/utils';
 import { httpClient } from '../utils';
 import { BaseClient, BasicClient } from './base';
 import DemoClient from './demoClient';
@@ -45,6 +42,8 @@ export const getWrappedClient: () => BaseClient = () => {
   const { isDemo } = useAppSelector((state) => state.auth);
   return useMemo(() => (isDemo ? new DemoClient() : new Client()), [isDemo]);
 };
+
+const emptyFunction = <T>() => undefined as T;
 
 class AnnounceClient extends BasicClient<IGetPayload, string[]> {}
 class TimeTableClient extends BasicClient<ITimeTableGetProps, ITimeTable> {}
@@ -58,6 +57,11 @@ class TeachersClient extends BasicClient<IGetPayload, TeacherType> {}
 class TeachPlanClient extends BasicClient<IGetPayload, ISessionTeachPlan[]> {}
 class CalendarScheduleClient extends BasicClient<IGetPayload, ICalendarSchedule> {}
 
+class SessionQuestionnaireClient extends BasicClient<IGetStringPayload, ISessionQuestionnaire> {}
+class SessionQuestionnaireListClient extends BasicClient<
+  IGetStringPayload,
+  ISessionQuestionnaireLink[]
+> {}
 export default class Client implements BaseClient {
   private announceClient: AnnounceClient;
   private timeTableClient: TimeTableClient;
@@ -70,6 +74,8 @@ export default class Client implements BaseClient {
   private teacherClient: TeachersClient;
   private teachPlanClient: TeachPlanClient;
   private calendarScheduleClient: CalendarScheduleClient;
+  private sessionQuestionnaireClient: SessionQuestionnaireClient;
+  private sessionQuestionnaireListClient: SessionQuestionnaireListClient;
 
   constructor() {
     this.announceClient = new AnnounceClient(
@@ -138,6 +144,18 @@ export default class Client implements BaseClient {
       parseCalendarSchedule,
       (data) => cache.placeCalendarSchedule(data)
     );
+    this.sessionQuestionnaireClient = new SessionQuestionnaireClient(
+      emptyFunction,
+      (url) => httpClient.getSessionQuestionnaire(url.data),
+      parseSessionQuestionnaire,
+      emptyFunction
+    );
+    this.sessionQuestionnaireListClient = new SessionQuestionnaireListClient(
+      emptyFunction,
+      (url) => httpClient.getSessionQuestionnaireList(url.data),
+      parseSessionQuestionnaireList,
+      emptyFunction
+    );
   }
 
   async getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>> {
@@ -195,33 +213,15 @@ export default class Client implements BaseClient {
     return this.calendarScheduleClient.getData(payload);
   }
 
-  async getSessionQuestionnaireList(id: string): Promise<IGetResult<ISessionQuestionnaireLink[]>> {
-    // sry Aleksandr :D
-
-    const response = await httpClient.getSessionQuestionnaireList(id);
-
-    if (response?.error) return errorResult;
-    if (isLoginPage(response.data)) return loginPageResult;
-
-    const parsed = parseSessionQuestionnaireList(response.data);
-    return {
-      type: GetResultType.fetched,
-      data: parsed,
-    };
+  async getSessionQuestionnaireList(
+    payload: IGetStringPayload
+  ): Promise<IGetResult<ISessionQuestionnaireLink[]>> {
+    return this.sessionQuestionnaireListClient.getData(payload);
   }
 
-  async getSessionQuestionnaire(url: string): Promise<IGetResult<ISessionQuestionnaire>> {
-    // sry Aleksandr :D
-
-    const response = await httpClient.request('GET', url, { returnResponse: false });
-
-    if (response?.error) return errorResult;
-    if (isLoginPage(response.data)) return loginPageResult;
-
-    const parsed = parseSessionQuestionnaire(response.data);
-    return {
-      type: GetResultType.fetched,
-      data: parsed,
-    };
+  async getSessionQuestionnaire(
+    payload: IGetStringPayload
+  ): Promise<IGetResult<ISessionQuestionnaire>> {
+    return this.sessionQuestionnaireClient.getData(payload);
   }
 }

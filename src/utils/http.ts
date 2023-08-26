@@ -5,8 +5,8 @@ import { documentDirectory, downloadAsync } from 'expo-file-system';
 import { getNetworkStateAsync } from 'expo-network';
 
 import { UploadFile } from '../models/other';
-import { SessionQuestionnairePayload } from './sessionTest';
 import { toURLSearchParams } from './encoding';
+import { SessionQuestionnairePayload } from './sessionTest';
 
 const cyrillicToTranslit = CyrillicToTranslit();
 
@@ -217,7 +217,7 @@ class HTTPClient {
     `showConsultations`:
     - y: Показывать консультации
     - n: Скрывать консультации
-  
+
     `week`: неделя в триместре.
    */
   getTimeTable({ showConsultations = null, week = null } = {}) {
@@ -240,7 +240,7 @@ class HTTPClient {
     `mode`:
     - session: оценки за сессии
     - current: оценки в триместре
-    - rating: итоговый рейтинг за триместр 
+    - rating: итоговый рейтинг за триместр
     - diplom: оценки в диплом
     */
   getSigns(mode: string, trimester?: number) {
@@ -325,6 +325,10 @@ class HTTPClient {
       params: { p_toes_id: id },
       returnResponse: false,
     });
+  }
+
+  getSessionQuestionnaire(url: string) {
+    return this.request('GET', url, { returnResponse: false });
   }
 
   async sendSessionQuestionnaireResult(payload: SessionQuestionnairePayload) {
