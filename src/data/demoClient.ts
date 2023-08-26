@@ -5,6 +5,7 @@ import { ISessionRating } from '../models/rating';
 import { GetResultType, IGetPayload, IGetResult } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
+import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
 import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
 import { ITimeTable, ITimeTableGetProps } from '../models/timeTable';
@@ -12,6 +13,27 @@ import { StudentInfo } from '../parser/menu';
 import { BaseClient } from './base';
 
 export default class DemoClient implements BaseClient {
+  async getSessionQuestionnaireList(): Promise<IGetResult<ISessionQuestionnaireLink[]>> {
+    const data: ISessionQuestionnaireLink[] = [
+      { url: '1', name: 'Математический анализ (Иванов И. И.)' },
+      {
+        name: 'Комплексный анализ (лаб) (Иванов А. И.)',
+      },
+      {
+        name: 'Комплексный анализ (практ) (Иванов И. И.)',
+      },
+      {
+        name: 'Комплексный анализ (лек) (Иванов И. А.)',
+      },
+    ];
+    return this.toResult(data);
+  }
+  async getSessionQuestionnaire(): Promise<IGetResult<ISessionQuestionnaire>> {
+    const data: ISessionQuestionnaire =
+      require('./demo-questionnaire.json') as ISessionQuestionnaire;
+    return this.toResult(data);
+  }
+
   toResult<T>(data: T): IGetResult<T> {
     return {
       type: GetResultType.cached,
@@ -73,10 +95,7 @@ export default class DemoClient implements BaseClient {
       '\n<li><font color="#808080">01.09.2023 12:00:28</font><br>\n<font style="font-weight:bold">Другое тестовое объявление</font><br>\n<br>Современные технологии достигли такого уровня, что высококачественный прототип будущего проекта способствует повышению качества существующих финансовых и административных условий.</b><br><br><br>Создатели ETIS Mobile</li>\n',
     ];
 
-    return {
-      type: GetResultType.fetched,
-      data,
-    };
+    return this.toResult(data);
   }
 
   async getMessagesData(): Promise<IGetResult<IMessagesData>> {
@@ -413,6 +432,7 @@ export default class DemoClient implements BaseClient {
       },
       announceCount: 2,
       messageCount: 1,
+      sessionTestID: '',
     };
     return this.toResult(data);
   }

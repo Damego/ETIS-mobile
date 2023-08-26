@@ -89,16 +89,20 @@ export default function SessionQuestionnaire({ route }) {
 
   const onButtonClick = () => {
     if (step + 1 === Steps.sendResult) {
-      setStep(Steps.sendResult);
-      const payload = toSessionTestPayload({
-        data,
-        answers: answersRef.current,
-        teacher: teacherRef.current,
-        additionalComment: additionalCommentRef.current,
-      });
-      httpClient.sendSessionQuestionnaireResult(payload).then(() => {
-        setStep(Steps.resultSent);
-      });
+      if (isDemo) {
+        ToastAndroid.show('Запросы в демо режиме невозможны!', ToastAndroid.LONG);
+      } else {
+        setStep(Steps.sendResult);
+        const payload = toSessionTestPayload({
+          data,
+          answers: answersRef.current,
+          teacher: teacherRef.current,
+          additionalComment: additionalCommentRef.current,
+        });
+        httpClient.sendSessionQuestionnaireResult(payload).then(() => {
+          setStep(Steps.resultSent);
+        });
+      }
     } else {
       setStep((prevState) => prevState + 1);
     }
