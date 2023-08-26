@@ -15,7 +15,7 @@ import { RadioButtonProps, RadioGroup } from 'react-native-radio-buttons-group';
 
 import Card from '../../components/Card';
 import Screen from '../../components/Screen';
-import { useGlobalStyles } from '../../hooks';
+import { useAppSelector, useGlobalStyles } from '../../hooks';
 import { useAppColorScheme, useAppTheme } from '../../hooks/theme';
 import { CertificateParam } from '../../models/certificateRequest';
 import { httpClient } from '../../utils';
@@ -83,6 +83,7 @@ export const styles = StyleSheet.create({
 
 export default function RequestCertificate() {
   const globalStyles = useGlobalStyles();
+  const { isDemo } = useAppSelector((state) => state.auth);
   const [currentId, setCurrentId] = useState<string>();
   const [note, setNote] = useState<string>('');
   const [place, setPlace] = useState<string>('');
@@ -188,18 +189,22 @@ export default function RequestCertificate() {
   );
 
   const submitRequest = async () => {
-    try {
-      await httpClient.sendCertificateRequest(
-        toCertificatePayload({
-          certificateId: currentId,
-          place,
-          note,
-          quantity,
-          delivery,
-        })
-      );
-    } catch (e) {
-      ToastAndroid.show('Ошибка: ' + e, ToastAndroid.LONG);
+    if (isDemo) {
+      ToastAndroid.show('Запросы в демо режиме невозможны!', ToastAndroid.LONG);
+    } else {
+      try {
+        await httpClient.sendCertificateRequest(
+          toCertificatePayload({
+            certificateId: currentId,
+            place,
+            note,
+            quantity,
+            delivery,
+          })
+        );
+      } catch (e) {
+        ToastAndroid.show('Ошибка: ' + e, ToastAndroid.LONG);
+      }
     }
   };
 
