@@ -8,7 +8,7 @@ import { ISessionPoints } from '../models/sessionPoints';
 import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
 import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
-import { ITimeTable, ITimeTableGetProps } from '../models/timeTable';
+import { ITimeTable, ITimeTableGetProps, WeekTypes } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
 import { BaseClient } from './base';
 
@@ -43,10 +43,21 @@ export default class DemoClient implements BaseClient {
 
   async getTimeTableData(payload: ITimeTableGetProps): Promise<IGetResult<ITimeTable>> {
     const data: ITimeTable = {
-      firstWeek: 1,
-      lastWeek: 5,
-      selectedWeek: payload?.week,
       days: [],
+      weekInfo: {
+        first: 1,
+        last: 5,
+        selected: payload?.week || 2,
+        type: payload.week === 1 ? WeekTypes.holiday : WeekTypes.common,
+        dates: {
+          start: '01.01.2023',
+          end: '07.01.2023',
+        },
+        holidayDates: {
+          start: '01.01.2023',
+          end: '07.01.2023',
+        },
+      },
     };
     const dayOfWeek = [
       'Понедельник',
