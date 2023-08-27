@@ -191,20 +191,21 @@ export default function RequestCertificate() {
   const submitRequest = async () => {
     if (isDemo) {
       ToastAndroid.show('Запросы в демо режиме невозможны!', ToastAndroid.LONG);
-    } else {
-      try {
-        await httpClient.sendCertificateRequest(
-          toCertificatePayload({
-            certificateId: currentId,
-            place,
-            note,
-            quantity,
-            delivery,
-          })
-        );
-      } catch (e) {
-        ToastAndroid.show('Ошибка: ' + e, ToastAndroid.LONG);
-      }
+      return;
+    }
+
+    try {
+      await httpClient.sendCertificateRequest(
+        toCertificatePayload({
+          certificateId: currentId,
+          place,
+          note,
+          quantity,
+          delivery,
+        })
+      );
+    } catch (e) {
+      ToastAndroid.show('Ошибка: ' + e, ToastAndroid.LONG);
     }
   };
 
