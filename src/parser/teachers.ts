@@ -3,6 +3,9 @@ import { load } from 'cheerio';
 import { ITeacher, TeacherType } from '../models/teachers';
 import { getTextField } from './utils';
 
+/* https://regex101.com/r/gvUVMt/3 */
+const subjectRegex =
+  /([а-яА-Я\w\s":.,+-]+ (?:\([а-яА-Я\s]+\) )?(?:\[[а-яА-Я\s,]+] )?)\(([а-яА-Я\s,.]+)\)/s;
 const groupTeachers = (data: ITeacher[]) => {
   const dataGrouped = {};
   data.forEach((val) => {
@@ -30,13 +33,13 @@ export default function parseTeachers(html): TeacherType {
     getTextField(teacherEl.find('.dis'))
       .split('\n')
       .forEach((subject) => {
-        const [subjectUntyped, subjectType] = subject.trim().split('(');
+        const [_, subjectUntyped, subjectType] = subjectRegex.exec(subject);
         data.push({
           photo,
           name,
           cathedra,
           subjectUntyped,
-          subjectType: subjectType.slice(0, -1),
+          subjectType,
           photoTitle,
         });
       });
