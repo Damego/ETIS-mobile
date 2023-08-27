@@ -155,16 +155,13 @@ export default function RequestCertificate() {
     !currentCertificate?.place && setPlace('');
   }, [currentId]);
 
-  const applicable = useMemo(
-    () =>
-      currentId &&
-      !keyboardOpen &&
-      !!place === currentCertificate.place &&
-      !!note <= currentCertificate.note &&
-      Number(quantity) <= currentCertificate.maxQuantity &&
-      !!currentCertificate.deliveryMethod.find((s) => delivery === s.id),
-    [note, place, quantity, delivery, keyboardOpen, currentId]
-  );
+  const applicable =
+    currentId &&
+    !keyboardOpen &&
+    !!place === currentCertificate.place &&
+    !!note <= currentCertificate.note &&
+    Number(quantity) <= currentCertificate.maxQuantity &&
+    !!currentCertificate.deliveryMethod.find((s) => delivery === s.id);
 
   const radioFactory = (id: string, name: string) => ({
     id,
