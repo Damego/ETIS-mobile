@@ -64,22 +64,15 @@ const TabNavigator = () => {
       screenOptions={{
         headerShown: true,
         ...headerParams(theme),
-
-        // cursed thing...
         tabBarVisibilityAnimationConfig: {
           show: {
             animation: 'timing',
             config: {
-              duration: 0,
-            },
-          },
-          hide: {
-            animation: 'timing',
-            config: {
-              duration: 0,
+              duration: 50,
             },
           },
         },
+
         tabBarActiveTintColor: globalStyles.primaryFontColor.color,
         tabBarShowLabel: false,
         tabBarBadgeStyle: globalStyles.primaryBackgroundColor,
