@@ -163,27 +163,31 @@ const CertificateTable = () => {
         </>
       )}
 
-      <RequestCertificateButton />
-      <ButtonWithPopover
-        title="Сроки и выдача справок"
-        info={data.announce.footer}
-        textStyle={[
-          {
-            fontWeight: '500',
-          },
-          fontSize.medium,
-          globalStyles.textColor,
-        ]}
-        icon={
-          <AntDesign
-            name="infocirlceo"
-            size={iconSize}
-            color={globalStyles.textColor.color}
-            style={{ marginRight: '2%' }}
+      {data.announce.footer && (
+        <>
+          <RequestCertificateButton />
+          <ButtonWithPopover
+            title="Сроки и выдача справок"
+            info={data.announce.footer}
+            textStyle={[
+              {
+                fontWeight: '500',
+              },
+              fontSize.medium,
+              globalStyles.textColor,
+            ]}
+            icon={
+              <AntDesign
+                name="infocirlceo"
+                size={iconSize}
+                color={globalStyles.textColor.color}
+                style={{ marginRight: '2%' }}
+              />
+            }
           />
-        }
-      />
-      <BorderLine />
+          <BorderLine />
+        </>
+      )}
 
       {data.certificates.map((certificate, index) => (
         <Certificate key={index} certificate={certificate} updateData={updateData} />
