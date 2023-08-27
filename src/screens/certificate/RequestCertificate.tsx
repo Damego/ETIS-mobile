@@ -108,7 +108,7 @@ export default function RequestCertificate() {
           placement={PopoverPlacement.FLOATING}
           from={(_, showPopover) => (
             <TouchableOpacity onPress={showPopover}>
-              <AntDesign name="infocirlce" size={24} color={schemeColor} />
+              <AntDesign name="infocirlceo" size={24} color={schemeColor} />
             </TouchableOpacity>
           )}
           popoverStyle={[styles.popover, { backgroundColor: appTheme.colors.background }]}
