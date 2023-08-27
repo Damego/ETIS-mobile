@@ -5,7 +5,7 @@ import { useGlobalStyles } from '../hooks';
 
 const styles = StyleSheet.create({
   cardView: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#fff',
     padding: '2%',
     marginBottom: '2%',
     borderWidth: 1,

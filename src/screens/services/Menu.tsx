@@ -92,6 +92,11 @@ function Menu() {
             page="SessionQuestionnaireList"
           />
         )}
+        <Button
+          text="Справки"
+          icon={<AntDesign name="book" size={iconSize} color={iconColor} />}
+          page="Certificate"
+        />
       </Row>
       <Row>
         <Button

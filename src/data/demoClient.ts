@@ -1,4 +1,5 @@
 import { ICalendarSchedule } from '../models/calendarSchedule';
+import { ICertificateTable } from '../models/certificate';
 import { IMessagesData, MessageType } from '../models/messages';
 import { IOrder } from '../models/order';
 import { ISessionRating } from '../models/rating';
@@ -10,8 +11,35 @@ import { TeacherType } from '../models/teachers';
 import { ITimeTable, ITimeTableGetProps } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
 import { BaseClient } from './base';
+import { toResult } from './utils';
 
 export default class DemoClient implements BaseClient {
+  async getCertificateData(payload: IGetPayload): Promise<IGetResult<ICertificateTable>> {
+    return toResult({
+      certificates: [
+        {
+          date: '01.01.2023',
+          deliveryMethod: '1',
+          status: 'справка готова',
+          name: 'Справка, подтверждающая факт обучения в ПГНИУ',
+          id: '042',
+        },
+      ],
+      announce: {
+        footer: `Справки обучающимся готовятся в течение 3 рабочих дней, с даты поступления заявки.
+Готовые справки можно получить в отделе кадров обучающихся (ОКО) 
+(не путать с отделом кадров сотрудников)
+
+корпус № 8 ПГНИУ каб.214
+Часы работы с 8.30 по 17.30 (пятница до 16.30).
+Суббота, воскресенье - выходной
+Обед с 12.00 до 13.00
+Телефон: (342) 2-396-135
+Просим отслеживать статус заявки в личном кабинете!
+`,
+      },
+    });
+  }
   toResult<T>(data: T): IGetResult<T> {
     return {
       type: GetResultType.cached,
@@ -73,10 +101,7 @@ export default class DemoClient implements BaseClient {
       '\n<li><font color="#808080">01.09.2023 12:00:28</font><br>\n<font style="font-weight:bold">Другое тестовое объявление</font><br>\n<br>Современные технологии достигли такого уровня, что высококачественный прототип будущего проекта способствует повышению качества существующих финансовых и административных условий.</b><br><br><br>Создатели ETIS Mobile</li>\n',
     ];
 
-    return {
-      type: GetResultType.fetched,
-      data,
-    };
+    return this.toResult(data);
   }
 
   async getMessagesData(): Promise<IGetResult<IMessagesData>> {

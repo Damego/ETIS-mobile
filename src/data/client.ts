@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { cache } from '../cache/smartCache';
 import { useAppSelector } from '../hooks';
 import { ICalendarSchedule } from '../models/calendarSchedule';
+import { ICertificateTable } from '../models/certificate';
 import { IGetMessagesPayload, IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
 import { IGetRatingPayload, ISessionRating } from '../models/rating';
@@ -30,6 +31,7 @@ import {
   parseTeachers,
   parseTimeTable,
 } from '../parser';
+import { parseCertificateTable } from '../parser/certificate';
 import parseCalendarSchedule from '../parser/calendar';
 import { StudentInfo } from '../parser/menu';
 import parseOrders from '../parser/order';
@@ -57,7 +59,7 @@ class StudentClient extends BasicClient<IGetPayload, StudentInfo> {}
 class TeachersClient extends BasicClient<IGetPayload, TeacherType> {}
 class TeachPlanClient extends BasicClient<IGetPayload, ISessionTeachPlan[]> {}
 class CalendarScheduleClient extends BasicClient<IGetPayload, ICalendarSchedule> {}
-
+class CertificateClient extends BasicClient<IGetPayload, ICertificateTable> {}
 export default class Client implements BaseClient {
   private announceClient: AnnounceClient;
   private timeTableClient: TimeTableClient;
@@ -70,6 +72,7 @@ export default class Client implements BaseClient {
   private teacherClient: TeachersClient;
   private teachPlanClient: TeachPlanClient;
   private calendarScheduleClient: CalendarScheduleClient;
+  private certificateClient: CertificateClient;
 
   constructor() {
     this.announceClient = new AnnounceClient(
@@ -138,6 +141,12 @@ export default class Client implements BaseClient {
       parseCalendarSchedule,
       (data) => cache.placeCalendarSchedule(data)
     );
+    this.certificateClient = new CertificateClient(
+      () => cache.getCertificate(),
+      () => httpClient.getCertificate(),
+      parseCertificateTable,
+      (data) => cache.placeCertificate(data)
+    );
   }
 
   async getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>> {
@@ -193,6 +202,10 @@ export default class Client implements BaseClient {
   async getCalendarScheduleData(payload: IGetPayload): Promise<IGetResult<ICalendarSchedule>> {
     await cache.calendarSchedule.init();
     return this.calendarScheduleClient.getData(payload);
+  }
+  async getCertificateData(payload: IGetPayload): Promise<IGetResult<ICertificateTable>> {
+    await cache.certificate.init();
+    return this.certificateClient.getData(payload);
   }
 
   async getSessionQuestionnaireList(id: string): Promise<IGetResult<ISessionQuestionnaireLink[]>> {
