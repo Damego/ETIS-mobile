@@ -157,6 +157,7 @@ const CertificateTable = () => {
               fontSize.large,
               globalStyles.primaryFontColor,
             ]}
+            cardStyle={{ marginBottom: '0%' }}
           />
 
           <BorderLine />
@@ -184,6 +185,7 @@ const CertificateTable = () => {
                 style={{ marginRight: '2%' }}
               />
             }
+            cardStyle={{ marginBottom: '0%' }}
           />
           <BorderLine />
         </>
