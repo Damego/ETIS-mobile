@@ -45,6 +45,7 @@ export default {
       ['./src/plugins/copyDrawable.js', './assets/tab_icons'],
       ['./src/plugins/disabledForcedDarkModeAndroid.ts', {}],
       '@config-plugins/react-native-quick-actions',
+      'sentry-expo',
     ],
   },
 };

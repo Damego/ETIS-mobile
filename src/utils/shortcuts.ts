@@ -2,12 +2,6 @@ import QuickActions, { ShortcutItem } from 'react-native-quick-actions';
 
 const SHORTCUTS_ITEMS: ShortcutItem[] = [
   {
-    type: 'Timetable',
-    title: 'Расписание',
-    icon: 'timetable',
-    userInfo: { url: '' },
-  },
-  {
     type: 'SignsNavigator',
     title: 'Оценки',
     icon: 'signs',
@@ -26,6 +20,7 @@ const SHORTCUTS_ITEMS: ShortcutItem[] = [
     icon: 'announce',
     userInfo: { url: '' },
   },
+  { type: 'debug', title: 'Отладочный запуск', icon: 'debug', userInfo: { url: '' } },
 ];
 
 export const addShortcuts = () => {

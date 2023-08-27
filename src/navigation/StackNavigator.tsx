@@ -16,6 +16,7 @@ import MessageHistory from '../screens/messages/MessageHistory';
 import SessionQuestionnaire from '../screens/sessionQuestionnaire/SessionQuestionnaire';
 import CalendarSchedule from '../screens/shortTeachPlan/CalendarSchedule';
 import showPrivacyPolicy from '../utils/privacyPolicy';
+import InitSentry from '../utils/sentry';
 import TabNavigator from './TabNavigation';
 import { headerParams } from './header';
 
@@ -30,7 +31,13 @@ const StackNavigator = () => {
   const dispatchInitialPage = async () => {
     try {
       const data = await QuickActions.popInitialAction();
-      if (data?.type) dispatch(setInitialPage(data.type as PageType));
+      if (data?.type) {
+        if (data.type === 'debug') {
+          InitSentry();
+        } else {
+          dispatch(setInitialPage(data.type as PageType));
+        }
+      }
     } catch (e) {
       // ignore
     }
