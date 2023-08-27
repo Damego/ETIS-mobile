@@ -75,9 +75,9 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     padding: '2%',
   },
-  input: { margin: '3%', paddingStart: '1%' },
+  input: { margin: '3%', paddingHorizontal: '2%' },
   inputRow: { flexDirection: 'row', alignItems: 'center' },
-  width90: { minWidth: '85%' },
+  width90: { width: '85%' },
   alignStart: { alignItems: 'flex-start', marginBottom: 10 },
 });
 
