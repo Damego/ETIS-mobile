@@ -21,8 +21,8 @@ const options = [
     value: ThemeType.dark,
   },
   {
-    label: 'Amoled',
-    value: ThemeType.amoled,
+    label: 'Чёрная',
+    value: ThemeType.black,
   },
 ];
 

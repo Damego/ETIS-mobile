@@ -4,7 +4,7 @@ export enum ThemeType {
   auto = 'auto',
   light = 'light',
   dark = 'dark',
-  amoled = 'amoled',
+  black = 'black',
 }
 
 export enum PageType {

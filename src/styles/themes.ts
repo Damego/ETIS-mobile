@@ -36,7 +36,8 @@ export const DarkTheme = {
     shadow: '#FFFFFF',
   },
 };
-export const AmoledTheme = {
+
+export const BlackTheme = {
   ...DarkTheme,
   colors: {
     ...DarkTheme.colors,
