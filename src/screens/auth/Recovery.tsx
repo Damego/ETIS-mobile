@@ -35,10 +35,9 @@ const Recovery = ({ setShowModal }) => {
     setLoading(false);
 
     if (res && res.error) {
-      if (res.error.message.toLowerCase().includes("проверк")) {
+      if (res.error.message.toLowerCase().includes('проверк')) {
         setIsInvisibleRecaptcha(false);
-      }
-      else changeMessage(res.error.message);
+      } else changeMessage(res.error.message);
       return;
     }
 

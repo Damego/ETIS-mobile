@@ -1,5 +1,5 @@
-import { getTextField } from './utils';
 import { ISession } from '../models/session';
+import { getTextField } from './utils';
 
 export default function parseSessionData($: cheerio.Root): ISession {
   const data: ISession = {};

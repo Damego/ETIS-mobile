@@ -1,6 +1,6 @@
 export interface ISessionSchedule {
   title: string;
-  dates: string[]
+  dates: string[];
 }
 
 export interface ICalendarSchedule {

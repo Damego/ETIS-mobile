@@ -1,4 +1,5 @@
 import { load } from 'cheerio';
+
 import { ICalendarSchedule } from '../models/calendarSchedule';
 
 const courseRegex = /[0-9]/;
@@ -19,7 +20,7 @@ export default function parseCalendarSchedule(html: string): ICalendarSchedule {
     const el = $(element, block);
 
     if (el.is('h3')) {
-      console.log(el.text())
+      console.log(el.text());
       const [course] = el.text().match(courseRegex);
       data.course = parseInt(course);
       pending = true;
@@ -29,9 +30,9 @@ export default function parseCalendarSchedule(html: string): ICalendarSchedule {
       return;
     }
 
-    if (el.is("br")) {
+    if (el.is('br')) {
       pending = false;
-      return false
+      return false;
     }
 
     if (el.is('p')) {

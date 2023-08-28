@@ -36,12 +36,20 @@ const styles = StyleSheet.create({
   },
 });
 
-const SelectOption = ({ label }) => {
+const SelectOption = ({ label, current }) => {
   const globalStyles = useGlobalStyles();
 
   return (
     <View style={styles.optionView}>
-      <Text style={[fontSize.medium, styles.optionText, globalStyles.textColor]}>{label}</Text>
+      <Text
+        style={[
+          fontSize.medium,
+          styles.optionText,
+          current ? globalStyles.primaryFontColor : globalStyles.textColor,
+        ]}
+      >
+        {label}
+      </Text>
     </View>
   );
 };
@@ -51,13 +59,14 @@ function Menu({ options, onSelect }) {
 
   return (
     <View style={[styles.menuView, globalStyles.border, globalStyles.block]}>
-      {options.map(({ label, value }) => (
+      {options.map(({ label, value, current }) => (
         <TouchableOpacity
           onPress={() => onSelect(value)}
           key={`pressable-${label}`}
           activeOpacity={0.9}
+          disabled={current}
         >
-          <SelectOption label={label} key={label} />
+          <SelectOption label={label} key={label} current={current} />
         </TouchableOpacity>
       ))}
     </View>

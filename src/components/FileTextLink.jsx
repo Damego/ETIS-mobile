@@ -27,7 +27,7 @@ const FileTextLink = ({ src, fileName, style, children }) => {
         trigger: null,
       });
     } catch (e) {
-      ToastAndroid.show("Невозможно скачать файл в указанную папку", ToastAndroid.SHORT);
+      ToastAndroid.show('Невозможно скачать файл в указанную папку', ToastAndroid.SHORT);
       console.log(e);
     }
     await shareAsync(fileData.uri);

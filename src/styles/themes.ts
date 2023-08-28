@@ -8,7 +8,7 @@ export interface ITheme {
     block: string;
     card: string;
     shadow: string;
-  }
+  };
 }
 
 export const LightTheme = {
@@ -20,7 +20,7 @@ export const LightTheme = {
     text: '#000000',
     block: '#FFFFFF',
     card: '#FFFFFF',
-    shadow: '#000000'
+    shadow: '#000000',
   },
 };
 
@@ -33,15 +33,16 @@ export const DarkTheme = {
     text: '#DDDDDD',
     block: '#222222',
     card: '#222222',
-    shadow: '#FFFFFF'
+    shadow: '#FFFFFF',
   },
 };
-export const AmoledTheme = {
+
+export const BlackTheme = {
   ...DarkTheme,
   colors: {
     ...DarkTheme.colors,
     background: '#000000',
     card: '#000000',
-    block: '#000000'
+    block: '#000000',
   },
 };

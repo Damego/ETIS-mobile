@@ -2,7 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
-import { DeviceEventEmitter } from 'react-native';
+import { DeviceEventEmitter, ToastAndroid } from 'react-native';
 import { ShortcutItem } from 'react-native-quick-actions';
 
 import { getWrappedClient } from '../data/client';
@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
 import { useAppTheme } from '../hooks/theme';
 import { GetResultType, RequestType } from '../models/results';
 import { setAuthorizing } from '../redux/reducers/authSlice';
-import { setAnnounceCount, setMessageCount, setStudentInfo } from '../redux/reducers/studentSlice';
+import { setStudentState } from '../redux/reducers/studentSlice';
 import Announce from '../screens/announce/Announce';
 import Messages from '../screens/messages/Messages';
 import TimeTablePage from '../screens/timeTable/TimeTable';
@@ -34,7 +34,11 @@ const TabNavigator = () => {
 
   useEffect(() => {
     DeviceEventEmitter.addListener('quickActionShortcut', (data: ShortcutItem) => {
-      navigation.navigate(data.type);
+      if (data.type !== 'debug') {
+        navigation.navigate(data.type);
+      } else {
+        ToastAndroid.show('Перезапустите приложение через ярлык', ToastAndroid.LONG);
+      }
     });
   }, []);
 
@@ -48,9 +52,7 @@ const TabNavigator = () => {
 
     const data = result.data;
 
-    dispatch(setStudentInfo(data.student));
-    dispatch(setMessageCount(data.messageCount));
-    dispatch(setAnnounceCount(data.announceCount));
+    dispatch(setStudentState(data));
   };
 
   useEffect(() => {
@@ -66,6 +68,14 @@ const TabNavigator = () => {
       screenOptions={{
         headerShown: true,
         ...headerParams(theme),
+        tabBarVisibilityAnimationConfig: {
+          show: {
+            animation: 'timing',
+            config: {
+              duration: 50,
+            },
+          },
+        },
 
         tabBarActiveTintColor: globalStyles.primaryFontColor.color,
         tabBarShowLabel: false,

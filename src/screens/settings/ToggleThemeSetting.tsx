@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { cache } from '../../cache/smartCache';
 import Dropdown from '../../components/Dropdown';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { ThemeType, changeTheme } from '../../redux/reducers/settingsSlice';
 import { fontSize } from '../../utils/texts';
-import { cache } from '../../cache/smartCache';
 
 const options = [
   {
@@ -21,8 +21,8 @@ const options = [
     value: ThemeType.dark,
   },
   {
-    label: 'Amoled',
-    value: ThemeType.amoled,
+    label: 'Чёрная',
+    value: ThemeType.black,
   },
 ];
 

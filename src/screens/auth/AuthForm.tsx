@@ -64,7 +64,7 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
     <View style={[styles.container, globalStyles.border, globalStyles.block]}>
       <Image style={styles.logoImage} source={require('../../../assets/logo_red.png')} />
 
-      <Text>{errorMessage}</Text>
+      <Text style={globalStyles.textColor}>{errorMessage}</Text>
 
       <TextInput
         style={[styles.input, globalStyles.border, globalStyles.textColor]}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ToastAndroid } from 'react-native';
 
 import LoadingScreen from '../../components/LoadingScreen';
+import NoData from '../../components/NoData';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
 import { getWrappedClient } from '../../data/client';
@@ -15,6 +16,7 @@ export default function Announce() {
   const dispatch = useAppDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
   const { announceCount } = useAppSelector((state) => state.student);
+  const [isLoading, setLoading] = useState(false);
 
   const [data, setData] = useState<string[]>();
   const [pageCount, setPageCount] = useState<number>();
@@ -22,6 +24,7 @@ export default function Announce() {
   const client = getWrappedClient();
 
   const loadData = async (force?: boolean) => {
+    setLoading(true);
     const result = await client.getAnnounceData({
       requestType: !force && announceCount === null ? RequestType.tryCache : RequestType.tryFetch,
     });
@@ -32,12 +35,14 @@ export default function Announce() {
     }
 
     if (!result.data) {
-      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
+      if (!data) setLoading(false);
+      ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
       return;
     }
 
     setPageCount(Math.ceil(result.data.length / 5));
     setData(result.data);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -55,7 +60,8 @@ export default function Announce() {
     setCurrentPageNum(pageNum);
   };
 
-  if (!data) return <LoadingScreen onRefresh={loadData} />;
+  if (isLoading) return <LoadingScreen onRefresh={loadData} />;
+  if (!data) return <NoData onRefresh={() => loadData(true)} />;
 
   return (
     <Screen onUpdate={() => loadData(true)}>
