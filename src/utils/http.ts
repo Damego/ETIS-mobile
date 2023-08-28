@@ -329,6 +329,10 @@ class HTTPClient {
     });
   }
 
+  getSessionQuestionnaire(url: string) {
+    return this.request('GET', url, { returnResponse: false });
+  }
+
   async sendSessionQuestionnaireResult(payload: SessionQuestionnairePayload) {
     const data = toURLSearchParams(payload);
 

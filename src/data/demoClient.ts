@@ -6,14 +6,36 @@ import { ISessionRating } from '../models/rating';
 import { GetResultType, IGetPayload, IGetResult } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
+import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
 import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
-import { ITimeTable, ITimeTableGetProps } from '../models/timeTable';
+import { ITimeTable, ITimeTableGetProps, WeekTypes } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
 import { BaseClient } from './base';
 import { toResult } from './utils';
 
 export default class DemoClient implements BaseClient {
+  async getSessionQuestionnaireList(): Promise<IGetResult<ISessionQuestionnaireLink[]>> {
+    const data: ISessionQuestionnaireLink[] = [
+      { url: '1', name: 'Математический анализ (Иванов И. И.)' },
+      {
+        name: 'Комплексный анализ (лаб) (Иванов А. И.)',
+      },
+      {
+        name: 'Комплексный анализ (практ) (Иванов И. И.)',
+      },
+      {
+        name: 'Комплексный анализ (лек) (Иванов И. А.)',
+      },
+    ];
+    return this.toResult(data);
+  }
+  async getSessionQuestionnaire(): Promise<IGetResult<ISessionQuestionnaire>> {
+    const data: ISessionQuestionnaire =
+      require('./demo-questionnaire.json') as ISessionQuestionnaire;
+    return this.toResult(data);
+  }
+
   async getCertificateData(payload: IGetPayload): Promise<IGetResult<ICertificateTable>> {
     return toResult({
       certificates: [
@@ -49,10 +71,21 @@ export default class DemoClient implements BaseClient {
 
   async getTimeTableData(payload: ITimeTableGetProps): Promise<IGetResult<ITimeTable>> {
     const data: ITimeTable = {
-      firstWeek: 1,
-      lastWeek: 5,
-      selectedWeek: payload?.week,
       days: [],
+      weekInfo: {
+        first: 1,
+        last: 5,
+        selected: payload?.week || 2,
+        type: payload.week === 1 ? WeekTypes.holiday : WeekTypes.common,
+        dates: {
+          start: '01.01.2023',
+          end: '07.01.2023',
+        },
+        holidayDates: {
+          start: '01.01.2023',
+          end: '07.01.2023',
+        },
+      },
     };
     const dayOfWeek = [
       'Понедельник',
@@ -438,6 +471,7 @@ export default class DemoClient implements BaseClient {
       },
       announceCount: 2,
       messageCount: 1,
+      sessionTestID: '',
     };
     return this.toResult(data);
   }

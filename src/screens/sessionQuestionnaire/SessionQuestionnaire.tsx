@@ -4,8 +4,8 @@ import { Button, ToastAndroid, View } from 'react-native';
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
 import { getWrappedClient } from '../../data/client';
-import { useAppDispatch, useGlobalStyles } from '../../hooks';
-import { GetResultType } from '../../models/results';
+import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
+import { GetResultType, RequestType } from '../../models/results';
 import { IAnswer, ISessionQuestionnaire } from '../../models/sessionQuestionnaire';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { httpClient } from '../../utils';
@@ -37,9 +37,13 @@ export default function SessionQuestionnaire({ route }) {
   const additionalCommentRef = useRef<string>();
   const questionCount = useRef(0);
   const client = getWrappedClient();
+  const { isDemo } = useAppSelector((state) => state.auth);
 
   const loadData = async () => {
-    const result = await client.getSessionQuestionnaire(url);
+    const result = await client.getSessionQuestionnaire({
+      requestType: RequestType.forceFetch,
+      data: url,
+    });
 
     if (result.type === GetResultType.loginPage) {
       return dispatch(setAuthorizing(false));
@@ -51,7 +55,7 @@ export default function SessionQuestionnaire({ route }) {
     }
 
     setData(result.data);
-    
+
     let $questionCount = 0;
     for (const theme of result.data.themes) {
       $questionCount += theme.questions.length;
@@ -85,16 +89,20 @@ export default function SessionQuestionnaire({ route }) {
 
   const onButtonClick = () => {
     if (step + 1 === Steps.sendResult) {
-      setStep(Steps.sendResult)
-      const payload = toSessionTestPayload({
-        data,
-        answers: answersRef.current,
-        teacher: teacherRef.current,
-        additionalComment: additionalCommentRef.current,
-      });
-      httpClient.sendSessionQuestionnaireResult(payload).then(() => {
-        setStep(Steps.resultSent);
-      });
+      if (isDemo) {
+        ToastAndroid.show('Запросы в демо режиме невозможны!', ToastAndroid.LONG);
+      } else {
+        setStep(Steps.sendResult);
+        const payload = toSessionTestPayload({
+          data,
+          answers: answersRef.current,
+          teacher: teacherRef.current,
+          additionalComment: additionalCommentRef.current,
+        });
+        httpClient.sendSessionQuestionnaireResult(payload).then(() => {
+          setStep(Steps.resultSent);
+        });
+      }
     } else {
       setStep((prevState) => prevState + 1);
     }

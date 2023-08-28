@@ -84,14 +84,11 @@ function Menu() {
         />
       </Row>
       <Row>
-        {/* TODO: Hide button in offline mode */}
-        {!isDemo && (
-          <Button
-            icon={<AntDesign name="copy1" size={iconSize} color={iconColor} />}
-            text="Анкетирование"
-            page="SessionQuestionnaireList"
-          />
-        )}
+        <Button
+          icon={<AntDesign name="copy1" size={iconSize} color={iconColor} />}
+          text="Анкетирование"
+          page="SessionQuestionnaireList"
+        />
         <Button
           text="Справки"
           icon={<AntDesign name="book" size={iconSize} color={iconColor} />}
