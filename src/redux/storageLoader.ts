@@ -12,7 +12,15 @@ export const loadSettings = () => async (dispatch: AppDispatch) => {
 };
 
 export const loadUserCredentials = () => async (dispatch: AppDispatch) => {
-  const userCredentials = await cache.getUserCredentials();
+  let userCredentials = await cache.getUserCredentials();
+
+  // TODO: Remove in the future
+  if (!userCredentials) {
+    userCredentials = await cache.getLegacyUserCredentials();
+    if (userCredentials) {
+      cache.placeUserCredentials(userCredentials)
+    }
+  }
 
   const payload = {
     userCredentials,

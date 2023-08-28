@@ -1,3 +1,5 @@
+import { getItemAsync as getSecuredItemAsync } from 'expo-secure-store';
+
 import { ICalendarSchedule } from '../models/calendarSchedule';
 import { ICertificate, ICertificateTable } from '../models/certificate';
 import { IMessagesData } from '../models/messages';
@@ -32,6 +34,10 @@ export default class SmartCache {
   calendarSchedule: FieldCache<ICalendarSchedule>;
   certificate: FieldCache<ICertificate[]>;
 
+  // Internal
+  user: SecuredFieldCache<UserCredentials>;
+  app: FieldCache<AppConfig>;
+
   private keys = {
     // ETIS related keys
     ANNOUNCES: 'ANNOUNCES',
@@ -52,9 +58,6 @@ export default class SmartCache {
     USER: 'USER',
     APP: 'APP',
   };
-
-  user: SecuredFieldCache<UserCredentials>;
-  app: FieldCache<AppConfig>;
 
   constructor() {
     this.announce = new FieldCache(this.keys.ANNOUNCES);
@@ -394,6 +397,21 @@ export default class SmartCache {
 
     // Debug only
     // await this.app.delete();
+  }
+
+  // Legacy
+
+  // TODO: Remove in the future
+  async getLegacyUserCredentials(): Promise<UserCredentials> {
+    const login = await getSecuredItemAsync('userLogin');
+
+    if (!login) return null;
+
+    const password = await getSecuredItemAsync('userPassword');
+    return {
+      login,
+      password,
+    };
   }
 }
 
