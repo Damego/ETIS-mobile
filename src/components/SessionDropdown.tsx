@@ -2,19 +2,20 @@ import React from 'react';
 
 import Dropdown from './Dropdown';
 
-const buildOption = (session: number, sessionName: string) => ({
+const buildOption = (session: number, sessionName: string, current: boolean) => ({
   label: `${session} ${sessionName}`,
   value: session,
+  current,
 });
 
 function buildSessionOptions(currentSession: number, latestSession: number, sessionName: string) {
   const options = [];
   for (let index = latestSession; index > 0; index -= 1) {
-    if (index !== currentSession) options.push(buildOption(index, sessionName));
+    options.push(buildOption(index, sessionName, index === currentSession));
   }
 
   return {
-    current: buildOption(currentSession, sessionName),
+    current: buildOption(currentSession, sessionName, false),
     options,
   };
 }
