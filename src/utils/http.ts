@@ -7,8 +7,9 @@ import { getNetworkStateAsync } from 'expo-network';
 import { ICertificate } from '../models/certificate';
 import { UploadFile } from '../models/other';
 import { CertificateRequestPayload } from './certificate';
-import { SessionQuestionnairePayload } from './sessionTest';
 import { toURLSearchParams } from './encoding';
+import { SessionQuestionnairePayload } from './sessionTest';
+import { getRandomUserAgent } from './userAgents';
 
 const cyrillicToTranslit = CyrillicToTranslit();
 
@@ -54,6 +55,9 @@ class HTTPClient {
     this.defaultURL = 'https://student.psu.ru/pls/stu_cus_et';
     this.instance = axios.create({
       baseURL: this.defaultURL,
+      headers: {
+        'User-Agent': getRandomUserAgent(),
+      },
     });
   }
 
