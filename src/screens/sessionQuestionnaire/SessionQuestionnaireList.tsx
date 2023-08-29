@@ -5,6 +5,7 @@ import { Text, ToastAndroid, View } from 'react-native';
 import Card from '../../components/Card';
 import ClickableText from '../../components/ClickableText';
 import LoadingScreen from '../../components/LoadingScreen';
+import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
 import { getWrappedClient } from '../../data/client';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
@@ -34,7 +35,8 @@ export default function SessionQuestionnaireList({ navigation }) {
     }
 
     if (!result.data) {
-      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
+      setLoading(false);
+      ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
       return;
     }
 
@@ -47,9 +49,8 @@ export default function SessionQuestionnaireList({ navigation }) {
     if (isFocused) loadData();
   }, [isFocused]);
 
-  if (!data || isLoading) {
-    return <LoadingScreen />;
-  }
+  if (isLoading) return <LoadingScreen />;
+  if (!data) return <NoData onRefresh={loadData} />;
 
   return (
     <Screen>

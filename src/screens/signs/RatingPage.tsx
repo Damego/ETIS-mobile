@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Text, ToastAndroid, View } from 'react-native';
 
+import { cache } from '../../cache/smartCache';
 import BorderLine from '../../components/BorderLine';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import LoadingScreen from '../../components/LoadingScreen';
@@ -69,7 +70,16 @@ export default function RatingPage() {
       return;
     }
     if (!result.data) {
-      ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
+      if (!data) {
+        const cached = await client.getRatingData({
+          session: (await cache.getStudent()).currentSession,
+          requestType: RequestType.forceCache,
+        });
+        if (cached.data) {
+          setData(cached.data);
+        }
+      } else ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
+      setLoading(false);
       return;
     }
 
@@ -79,7 +89,7 @@ export default function RatingPage() {
     }
     setLoading(false);
   };
-  const refresh = () => loadData({ session: data.session.current, force: true });
+  const refresh = () => loadData({ session: data?.session?.current, force: true });
 
   useEffect(() => {
     loadData({ force: false });

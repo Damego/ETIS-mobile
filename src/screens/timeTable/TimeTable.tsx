@@ -45,8 +45,16 @@ const TimeTable = () => {
     }
 
     if (!result.data) {
-      if (!data) setLoading(false);
-      ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
+      if (!data) {
+        const cached = await client.getTimeTableData({
+          week: (await cache.getStudent()).currentWeek,
+          requestType: RequestType.forceCache,
+        });
+        if (cached.data) {
+          setData(cached.data);
+        }
+      } else ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
+      setLoading(false);
       return;
     }
 
