@@ -14,7 +14,6 @@ import AuthPage from '../screens/auth/Auth';
 import Intro from '../screens/intro/Intro';
 import MessageHistory from '../screens/messages/MessageHistory';
 import SessionQuestionnaire from '../screens/sessionQuestionnaire/SessionQuestionnaire';
-import CalendarSchedule from '../screens/shortTeachPlan/CalendarSchedule';
 import showPrivacyPolicy from '../utils/privacyPolicy';
 import InitSentry from '../utils/sentry';
 import TabNavigator from './TabNavigation';
@@ -101,14 +100,7 @@ const StackNavigator = () => {
           headerShown: false,
         }}
       >
-        <Stack.Group>{component}</Stack.Group>
-        <Stack.Group screenOptions={{ presentation: 'modal' }}>
-          <Stack.Screen
-            name={'calendarSchedule'}
-            component={CalendarSchedule}
-            options={{ title: 'График' }}
-          />
-        </Stack.Group>
+        {component}
       </Stack.Navigator>
     </NavigationContainer>
   );

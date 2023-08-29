@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ToastAndroid } from 'react-native';
+import { ToastAndroid, View } from 'react-native';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
@@ -15,7 +15,6 @@ import AnnounceCard from './AnnounceCard';
 export default function Announce() {
   const dispatch = useAppDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
-  const { announceCount } = useAppSelector((state) => state.student);
   const [isLoading, setLoading] = useState(false);
 
   const [data, setData] = useState<string[]>();
@@ -26,7 +25,7 @@ export default function Announce() {
   const loadData = async (force?: boolean) => {
     setLoading(true);
     const result = await client.getAnnounceData({
-      requestType: !force && announceCount === null ? RequestType.tryCache : RequestType.tryFetch,
+      requestType: !force ? RequestType.tryCache : RequestType.tryFetch,
     });
 
     if (result.type === GetResultType.loginPage) {
@@ -40,8 +39,14 @@ export default function Announce() {
       return;
     }
 
+    // WebView сильно нагружает устройство, поэтому распределяем их по страницам
     setPageCount(Math.ceil(result.data.length / 5));
     setData(result.data);
+
+    if (!data) {
+      dispatch(setAnnounceCount(null));
+    }
+
     setLoading(false);
   };
 
@@ -49,28 +54,24 @@ export default function Announce() {
     if (!isAuthorizing) loadData();
   }, [isAuthorizing]);
 
-  useEffect(() => {
-    dispatch(setAnnounceCount(null));
-  }, []);
-
   const filterData = (el: string, index: number) =>
     index < currentPageNum * 5 && index >= (currentPageNum - 1) * 5;
 
-  const changePage = (pageNum) => {
-    setCurrentPageNum(pageNum);
-  };
+  const changePage = (pageNum: number) => setCurrentPageNum(pageNum);
 
   if (isLoading) return <LoadingScreen onRefresh={loadData} />;
   if (!data) return <NoData onRefresh={() => loadData(true)} />;
 
   return (
     <Screen onUpdate={() => loadData(true)}>
-      <PageNavigator
-        firstPage={1}
-        currentPage={currentPageNum}
-        lastPage={pageCount}
-        onPageChange={changePage}
-      />
+      <View style={{ marginBottom: '2%' }}>
+        <PageNavigator
+          firstPage={1}
+          currentPage={currentPageNum}
+          lastPage={pageCount}
+          onPageChange={changePage}
+        />
+      </View>
 
       {data.filter(filterData).map((message, i) => (
         <AnnounceCard data={message} key={`card-${i}`} />

@@ -16,7 +16,6 @@ import MessagePreview from './MessagePreview';
 const Messages = () => {
   const dispatch = useAppDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
-  const { messageCount } = useAppSelector((state) => state.student);
   const [data, setData] = useState<IMessagesData>();
   const [isLoading, setLoading] = useState(false);
   const fetchedPages = useRef<number[]>([]);
@@ -29,9 +28,7 @@ const Messages = () => {
     const result = await client.getMessagesData({
       page,
       requestType:
-        (!force && !messageCount) || fetchedPages.current.includes(page)
-          ? RequestType.tryCache
-          : RequestType.tryFetch,
+        !force && fetchedPages.current.includes(page) ? RequestType.tryCache : RequestType.tryFetch,
     });
 
     if (result.type === GetResultType.loginPage) {
@@ -50,16 +47,16 @@ const Messages = () => {
     if (!fetchedPages.current.includes(result.data.page)) {
       fetchedPages.current.push(result.data.page);
     }
+
+    if (!data) {
+      dispatch(setMessageCount(null));
+    }
     setLoading(false);
   };
 
   useEffect(() => {
     if (!isAuthorizing) loadData({});
   }, [isAuthorizing]);
-
-  useEffect(() => {
-    dispatch(setMessageCount(null));
-  }, []);
 
   if (isLoading) return <LoadingScreen onRefresh={() => loadData({})} />;
   if (!data) return <NoData onRefresh={() => loadData({ force: true })} />;

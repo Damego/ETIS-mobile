@@ -10,7 +10,7 @@ import { ISessionPoints } from '../models/sessionPoints';
 import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
 import { ITimeTable } from '../models/timeTable';
-import { StudentInfo } from '../parser/menu';
+import { OptionalStudentInfo, StudentInfo } from '../parser/menu';
 import { UserCredentials } from '../redux/reducers/authSlice';
 import { AppConfig, ThemeType } from '../redux/reducers/settingsSlice';
 import FieldCache from './fieldCache';
@@ -263,6 +263,19 @@ export default class SmartCache {
     this.student.place(data);
 
     await this.student.save();
+  }
+
+  async placePartialStudent(data: OptionalStudentInfo) {
+    const student = await this.getStudent() || ({} as StudentInfo);
+    // TODO: add more stuff
+    if (data.currentSession) {
+      student.currentSession = data.currentSession;
+    }
+    if (data.currentWeek) {
+      student.currentWeek = data.currentWeek;
+    }
+
+    await this.placeStudent(student);
   }
 
   // Calendar Schedule region
