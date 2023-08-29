@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ToastAndroid } from 'react-native';
+import { ToastAndroid, View } from 'react-native';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
@@ -64,12 +64,14 @@ export default function Announce() {
 
   return (
     <Screen onUpdate={() => loadData(true)}>
-      <PageNavigator
-        firstPage={1}
-        currentPage={currentPageNum}
-        lastPage={pageCount}
-        onPageChange={changePage}
-      />
+      <View style={{ marginBottom: '2%' }}>
+        <PageNavigator
+          firstPage={1}
+          currentPage={currentPageNum}
+          lastPage={pageCount}
+          onPageChange={changePage}
+        />
+      </View>
 
       {data.filter(filterData).map((message, i) => (
         <AnnounceCard data={message} key={`card-${i}`} />
