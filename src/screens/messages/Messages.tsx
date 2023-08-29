@@ -47,16 +47,16 @@ const Messages = () => {
     if (!fetchedPages.current.includes(result.data.page)) {
       fetchedPages.current.push(result.data.page);
     }
+
+    if (!data) {
+      dispatch(setMessageCount(null));
+    }
     setLoading(false);
   };
 
   useEffect(() => {
     if (!isAuthorizing) loadData({});
   }, [isAuthorizing]);
-
-  useEffect(() => {
-    dispatch(setMessageCount(null));
-  }, []);
 
   if (isLoading) return <LoadingScreen onRefresh={() => loadData({})} />;
   if (!data) return <NoData onRefresh={() => loadData({ force: true })} />;

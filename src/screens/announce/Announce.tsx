@@ -39,8 +39,14 @@ export default function Announce() {
       return;
     }
 
+    // WebView сильно нагружает устройство, поэтому распределяем их по страницам
     setPageCount(Math.ceil(result.data.length / 5));
     setData(result.data);
+
+    if (!data) {
+      dispatch(setAnnounceCount(null));
+    }
+
     setLoading(false);
   };
 
@@ -48,16 +54,10 @@ export default function Announce() {
     if (!isAuthorizing) loadData();
   }, [isAuthorizing]);
 
-  useEffect(() => {
-    dispatch(setAnnounceCount(null));
-  }, []);
-
   const filterData = (el: string, index: number) =>
     index < currentPageNum * 5 && index >= (currentPageNum - 1) * 5;
 
-  const changePage = (pageNum) => {
-    setCurrentPageNum(pageNum);
-  };
+  const changePage = (pageNum: number) => setCurrentPageNum(pageNum);
 
   if (isLoading) return <LoadingScreen onRefresh={loadData} />;
   if (!data) return <NoData onRefresh={() => loadData(true)} />;
