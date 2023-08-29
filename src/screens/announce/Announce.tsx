@@ -15,7 +15,6 @@ import AnnounceCard from './AnnounceCard';
 export default function Announce() {
   const dispatch = useAppDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
-  const { announceCount } = useAppSelector((state) => state.student);
   const [isLoading, setLoading] = useState(false);
 
   const [data, setData] = useState<string[]>();
@@ -26,7 +25,7 @@ export default function Announce() {
   const loadData = async (force?: boolean) => {
     setLoading(true);
     const result = await client.getAnnounceData({
-      requestType: !force && announceCount === null ? RequestType.tryCache : RequestType.tryFetch,
+      requestType: !force ? RequestType.tryCache : RequestType.tryFetch,
     });
 
     if (result.type === GetResultType.loginPage) {
