@@ -56,11 +56,10 @@ export default function SessionQuestionnaire({ route }) {
 
     setData(result.data);
 
-    let $questionCount = 0;
-    for (const theme of result.data.themes) {
-      $questionCount += theme.questions.length;
-    }
-    questionCount.current = $questionCount;
+    questionCount.current = result.data.themes.reduce(
+      (count, theme) => count + theme.questions.length,
+      0
+    );
   };
 
   useEffect(() => {
