@@ -94,10 +94,11 @@ const AuthLoadingModal = () => {
   const [showOfflineButton, setShowOfflineButton] = useState<boolean>(false);
   const [messageStatus, setMessageStatus] = useState<string>();
   const [isInvisibleRecaptcha, setIsInvisibleRecaptcha] = useState<boolean>(true);
-
+  const [isLoading, setLoading] = useState(false);
   const globalStyles = useGlobalStyles();
 
   const onReceiveToken = async (token: string) => {
+    setLoading(true);
     setMessageStatus('Авторизация...');
 
     if (isDemoCredentials(userCredentials)) {
@@ -141,10 +142,11 @@ const AuthLoadingModal = () => {
     }
 
     dispatch(setAuthorizing(false));
+    setLoading(false);
   };
 
   const onRecaptchaModalClose = () => {
-    if (!isInvisibleRecaptcha) dispatch(setAuthorizing(false));
+    if (!isInvisibleRecaptcha && !isLoading) dispatch(setAuthorizing(false));
   };
 
   useEffect(() => {
@@ -184,15 +186,9 @@ const AuthLoadingModal = () => {
           globalStyles.shadow,
         ]}
       >
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <ActivityIndicator size="large" color={globalStyles.primaryFontColor.color} />
           <Text style={globalStyles.textColor}>{messageStatus}</Text>
-
-          <CustomReCaptcha
-            onReceiveToken={onReceiveToken}
-            size={isInvisibleRecaptcha ? 'invisible' : 'normal'}
-            onClose={onRecaptchaModalClose}
-          />
 
           {showOfflineButton && (
             <View style={{ marginTop: '15%' }}>
@@ -203,6 +199,11 @@ const AuthLoadingModal = () => {
               />
             </View>
           )}
+          <CustomReCaptcha
+            onReceiveToken={onReceiveToken}
+            size={isInvisibleRecaptcha ? 'invisible' : 'normal'}
+            onClose={onRecaptchaModalClose}
+          />
         </View>
       </View>
     </View>

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button, ToastAndroid, View } from 'react-native';
 
 import LoadingScreen from '../../components/LoadingScreen';
+import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
 import { getWrappedClient } from '../../data/client';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
@@ -30,6 +31,7 @@ export default function SessionQuestionnaire({ route }) {
   const dispatch = useAppDispatch();
   const { url } = route.params;
   const [data, setData] = useState<ISessionQuestionnaire>();
+  const [isLoading, setLoading] = useState(false);
   const [step, setStep] = useState<Steps>(1);
   const [themeIndex, setThemeIndex] = useState(0);
   const teacherRef = useRef<string>();
@@ -40,6 +42,7 @@ export default function SessionQuestionnaire({ route }) {
   const { isDemo } = useAppSelector((state) => state.auth);
 
   const loadData = async () => {
+    setLoading(true);
     const result = await client.getSessionQuestionnaire({
       requestType: RequestType.forceFetch,
       data: url,
@@ -50,11 +53,13 @@ export default function SessionQuestionnaire({ route }) {
     }
 
     if (!result.data) {
-      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
+      setLoading(false);
+      ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
       return;
     }
 
     setData(result.data);
+    setLoading(false);
 
     questionCount.current = result.data.themes.reduce(
       (count, theme) => count + theme.questions.length,
@@ -107,7 +112,8 @@ export default function SessionQuestionnaire({ route }) {
     }
   };
 
-  if (!data) return <LoadingScreen />;
+  if (isLoading) return <LoadingScreen />;
+  if (!data) return <NoData onRefresh={loadData} />;
 
   let component: React.ReactNode;
   if (step === Steps.inputTeacher) {
