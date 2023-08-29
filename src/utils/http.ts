@@ -107,8 +107,12 @@ class HTTPClient {
       Cookie: this.sessionID,
     };
 
-    if (data instanceof FormData) {
-      headers['Content-Type'] = 'multipart/form-data';
+    if (data) {
+      if (data instanceof FormData) {
+        headers['Content-Type'] = 'multipart/form-data';
+      } else {
+        data = toURLSearchParams(data);
+      }
     }
 
     try {
@@ -159,13 +163,13 @@ class HTTPClient {
     token: string,
     isInvisibleRecaptcha: boolean
   ): Promise<Response<AxiosResponse | null>> {
-    const data = new FormData();
-    data.append('p_redirect', '/stu.timetable');
-    data.append('p_username', username.trim());
-    data.append('p_password', password.trim());
-    data.append('p_recaptcha_ver', isInvisibleRecaptcha ? '3' : '2');
-    data.append('p_recaptcha_response', token.trim());
-
+    const data = {
+      p_redirect: '/stu.timetable',
+      p_username: username.trim(),
+      p_password: password.trim(),
+      p_recaptcha_ver: isInvisibleRecaptcha ? '3' : '2',
+      p_recaptcha_response: token,
+    };
     const response = await this.request('POST', `/stu.login`, {
       data,
       returnResponse: true,
@@ -289,11 +293,10 @@ class HTTPClient {
   }
 
   async replyToMessage(answerID: string, content: string) {
-    const rawData = {
+    const data = {
       p_anv_id: answerID,
       p_msg_txt: content,
     };
-    const data = toURLSearchParams(rawData);
     return await this.request('POST', '/stu.send_reply', { data, returnResponse: false });
   }
 
@@ -338,13 +341,10 @@ class HTTPClient {
   }
 
   async sendSessionQuestionnaireResult(payload: SessionQuestionnairePayload) {
-    const data = toURLSearchParams(payload);
-
-    return this.request('POST', '/stu.term_test_save', { data, returnResponse: false });
+    return this.request('POST', '/stu.term_test_save', { data: payload, returnResponse: false });
   }
   async sendCertificateRequest(payload: CertificateRequestPayload) {
-    const data = toURLSearchParams(payload);
-    return this.request('POST', '/cert_pkg.stu_certif', { data, returnResponse: false });
+    return this.request('POST', '/cert_pkg.stu_certif', { data: payload, returnResponse: false });
   }
 
   async getCertificateHTML(certificate: ICertificate): Promise<string> {
