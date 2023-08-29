@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Text, ToastAndroid, View } from 'react-native';
 
 import { cache } from '../../cache/smartCache';
@@ -20,6 +20,7 @@ const TimeTable = () => {
   const globalStyles = useGlobalStyles();
   const dispatch = useAppDispatch();
   const [data, setData] = useState<ITimeTable>();
+  const fetchedWeeks = useRef<number[]>([]);
   const { isAuthorizing } = useAppSelector((state) => state.auth);
   const { currentWeek } = useAppSelector((state) => state.student);
   const client = getWrappedClient();
@@ -29,7 +30,8 @@ const TimeTable = () => {
   const loadData = async ({ week, force }: { week?: number; force?: boolean }) => {
     setLoading(true);
 
-    const useCached = ((data && week < currentWeek) || cache.hasTimeTableWeek(week)) && !force;
+    const useCached =
+      ((data && week < currentWeek) || fetchedWeeks.current.includes(week)) && !force;
 
     const payload: ITimeTableGetProps = {
       week: week,
@@ -52,6 +54,10 @@ const TimeTable = () => {
     if (!data) {
       dispatch(setCurrentWeek(result.data.weekInfo.selected));
       cache.placePartialStudent({ currentWeek: result.data.weekInfo.selected });
+    }
+
+    if (!fetchedWeeks.current.includes(result.data.weekInfo.selected)) {
+      fetchedWeeks.current.push(result.data.weekInfo.selected);
     }
 
     setData(result.data);

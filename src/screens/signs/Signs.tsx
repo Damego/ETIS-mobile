@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ToastAndroid, View } from 'react-native';
 
+import { cache } from '../../cache/smartCache';
 import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
@@ -12,29 +13,29 @@ import { GetResultType, IGetResult, RequestType } from '../../models/results';
 import { ISessionMarks } from '../../models/sessionMarks';
 import { ISessionPoints } from '../../models/sessionPoints';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
-import { setFetchedLatestSession, setMarks } from '../../redux/reducers/signsSlice';
+import { setMarks } from '../../redux/reducers/signsSlice';
+import { setCurrentSession } from '../../redux/reducers/studentSlice';
 import CardSign from './CardSign';
 
 const Signs = () => {
+  const [data, setData] = useState<ISessionPoints>();
+  const [isLoading, setLoading] = useState<boolean>(false);
+  const fetchedSessions = useRef<number[]>([]);
   const dispatch = useAppDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
-  const [isLoading, setLoading] = useState<boolean>(false);
-  const { sessionsMarks, fetchedLatestSession } = useAppSelector((state) => state.signs);
-  const [data, setData] = useState<ISessionPoints>(null);
+  const { sessionsMarks } = useAppSelector((state) => state.signs);
+  const { currentSession } = useAppSelector((state) => state.student);
   const client = getWrappedClient();
 
   const loadData = async ({ session, force }: { session?: number; force?: boolean }) => {
     setLoading(true);
 
-    let newSession;
+    let newSession: number;
     if (session !== undefined) newSession = session;
     else if (data) newSession = data.currentSession;
 
     const useCacheFirst =
-      !force &&
-      data &&
-      (newSession < data.latestSession ||
-        (newSession === data.latestSession && fetchedLatestSession));
+      !force && data && (newSession < currentSession || fetchedSessions.current.includes(session));
 
     const result = await client.getSessionSignsData({
       requestType: useCacheFirst ? RequestType.tryCache : RequestType.tryFetch,
@@ -51,9 +52,10 @@ const Signs = () => {
       return;
     }
 
-    // Очевидно, что в самом начале мы получаем текущую, т.е. последнюю сессию
+    // Очевидно, что в самом начале мы получаем текущую сессию
     if (!data) {
-      dispatch(setFetchedLatestSession(true));
+      dispatch(setCurrentSession(result.data.currentSession));
+      cache.placePartialStudent({ currentSession: result.data.currentSession });
     }
 
     let marksResult: IGetResult<ISessionMarks[]>;
@@ -75,6 +77,9 @@ const Signs = () => {
       sessionsMarks.length !== 0 ? sessionsMarks : marksResult.data
     );
 
+    if (!fetchedSessions.current.includes(result.data.currentSession)) {
+      fetchedSessions.current.push(result.data.currentSession);
+    }
     setData(fullData);
     setLoading(false);
   };
