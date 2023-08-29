@@ -9,40 +9,21 @@ import Screen from '../../components/Screen';
 import { getWrappedClient } from '../../data/client';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { GetResultType, RequestType } from '../../models/results';
-import { ITimeTableGetProps, WeekTypes } from '../../models/timeTable';
+import { ITimeTable, ITimeTableGetProps, WeekTypes } from '../../models/timeTable';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
-import { setCurrentWeek, setData } from '../../redux/reducers/timeTableSlice';
+import { setCurrentWeek } from '../../redux/reducers/studentSlice';
 import { fontSize } from '../../utils/texts';
 import DayArray from './DayArray';
 import HolidayView from './HolidayView';
 
-const TimeTableData = ({ data }) => {
-  const globalStyles = useGlobalStyles();
-
-  return (
-    <>
-      <View style={{ marginTop: '2%', justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={[fontSize.medium, globalStyles.textColor, { fontWeight: '500' }]}>
-          {data.weekInfo.dates.start} - {data.weekInfo.dates.end}
-        </Text>
-      </View>
-
-      {data.weekInfo.type === WeekTypes.holiday ? (
-        <HolidayView holidayInfo={data.weekInfo.holidayDates} />
-      ) : (
-        <DayArray data={data.days} />
-      )}
-    </>
-  );
-};
-
 const TimeTable = () => {
   const globalStyles = useGlobalStyles();
   const dispatch = useAppDispatch();
+  const [data, setData] = useState<ITimeTable>();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
+  const { currentWeek } = useAppSelector((state) => state.student);
   const client = getWrappedClient();
 
-  const { data, currentWeek } = useAppSelector((state) => state.timeTable);
   const [isLoading, setLoading] = useState<boolean>(false);
 
   const loadData = async ({ week, force }: { week?: number; force?: boolean }) => {
@@ -68,9 +49,12 @@ const TimeTable = () => {
     }
 
     // Очевидно, что это будет текущей неделей
-    if (!data) dispatch(setCurrentWeek(result.data.weekInfo.selected));
+    if (!data) {
+      dispatch(setCurrentWeek(result.data.weekInfo.selected));
+      cache.placePartialStudent({ currentWeek: result.data.weekInfo.selected });
+    }
 
-    dispatch(setData(result.data));
+    setData(result.data);
     setLoading(false);
   };
 
@@ -101,7 +85,17 @@ const TimeTable = () => {
         }}
       />
 
-      {data ? <TimeTableData data={data} /> : <NoData onRefresh={refresh} />}
+      <View style={{ marginTop: '2%', justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={[fontSize.medium, globalStyles.textColor, { fontWeight: '500' }]}>
+          {data.weekInfo.dates.start} - {data.weekInfo.dates.end}
+        </Text>
+      </View>
+
+      {data.weekInfo.type === WeekTypes.holiday ? (
+        <HolidayView holidayInfo={data.weekInfo.holidayDates} />
+      ) : (
+        <DayArray data={data.days} />
+      )}
     </Screen>
   );
 };

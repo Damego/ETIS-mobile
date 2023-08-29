@@ -3,11 +3,22 @@ import { load } from 'cheerio';
 import { StudentData } from '../models/student';
 import { getTextField } from './utils';
 
+export interface OptionalStudentInfo {
+  announceCount?: number;
+  messageCount?: number;
+  student?: StudentData;
+  sessionTestID?: string;
+  currentWeek?: number;
+  currentSession?: number;
+}
+
 export interface StudentInfo {
   announceCount: number;
   messageCount: number;
   student: StudentData;
   sessionTestID: string;
+  currentWeek?: number;
+  currentSession?: number;
 }
 
 export default function parseMenu(html: string, parseGroupJournal = false): StudentInfo {

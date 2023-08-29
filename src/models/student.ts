@@ -11,4 +11,6 @@ export interface StudentState {
   messageCount: number | null;
   announceCount: number | null;
   sessionTestID: string;
+  currentWeek?: number;
+  currentSession?: number;
 }

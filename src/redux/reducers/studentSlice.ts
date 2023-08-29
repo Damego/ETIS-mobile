@@ -8,6 +8,8 @@ const initialState: StudentState = {
   messageCount: null,
   announceCount: null,
   sessionTestID: null,
+  currentSession: null,
+  currentWeek: null,
 };
 
 const studentSlice = createSlice({
@@ -32,9 +34,21 @@ const studentSlice = createSlice({
     setSessionTestID(state, action: PayloadAction<string>) {
       state.sessionTestID = action.payload;
     },
+    setCurrentWeek(state, action: PayloadAction<number>) {
+      state.currentWeek = action.payload;
+    },
+    setCurrentSession(state, action: PayloadAction<number>) {
+      state.currentSession = action.payload;
+    },
   },
 });
 
 export default studentSlice.reducer;
-export const { setStudentState, setStudentInfo, setMessageCount, setAnnounceCount } =
-  studentSlice.actions;
+export const {
+  setStudentState,
+  setStudentInfo,
+  setMessageCount,
+  setAnnounceCount,
+  setCurrentWeek,
+  setCurrentSession,
+} = studentSlice.actions;
