@@ -99,26 +99,42 @@ export default class DemoClient implements BaseClient {
     for (let i = 1; i <= 7; i++) {
       data.days.push({
         date: `${dayOfWeek[i - 1]}, ${i} сентября`,
-        lessons:
+        pairs:
           i <= 2
             ? [
                 {
-                  audience: 'ауд. 411/2 (2 корпус, 3 этаж)',
-                  subject: 'Математический анализ (лек)',
+                  position: 1,
                   time: '8:00',
-                  lessonPosition: 1,
+                  lessons: [
+                    {
+                      audience: 'ауд. 411/2 (2 корпус, 3 этаж)',
+                      subject: 'Математический анализ (лек)',
+                    },
+                  ],
                 },
                 {
-                  audience: 'ауд. 411/2 (2 корпус, 3 этаж)',
-                  subject: 'Комплексный анализ (лек)',
+                  position: 2,
                   time: '9:45',
-                  lessonPosition: 2,
+                  lessons: [
+                    {
+                      audience: 'ауд. 411/2 (2 корпус, 3 этаж)',
+                      subject: 'Комплексный анализ (лек)',
+                    },
+                  ],
                 },
                 {
-                  audience: 'ауд. 411/2 (2 корпус, 3 этаж)',
-                  subject: 'Функциональный анализ (лек)',
-                  time: '11:30',
-                  lessonPosition: 3,
+                  position: 3,
+                  time: '11: 30',
+                  lessons: [
+                    {
+                      audience: 'ауд. 411/2 (2 корпус, 3 этаж)',
+                      subject: 'Функциональный анализ (лек)',
+                    },
+                    {
+                      audience: 'ауд. 411/2 (2 корпус, 3 этаж)',
+                      subject: 'Программный анализ (лек)',
+                    },
+                  ],
                 },
               ]
             : [],

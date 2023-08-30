@@ -25,13 +25,17 @@ export interface WeekInfo {
 export interface ILesson {
   audience: string;
   subject: string;
+}
+
+export interface IPair {
+  position: number;
   time: string;
-  lessonPosition: number;
+  lessons: ILesson[];
 }
 
 export interface ITimeTableDay {
   date: string;
-  lessons: ILesson[];
+  pairs: IPair[];
 }
 
 export interface ITimeTable {

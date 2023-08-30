@@ -10,7 +10,7 @@ interface IDayArrayProps {
 const DayArray = ({ data }: IDayArrayProps) => (
   <>
     {data.map((day) =>
-      day.lessons.length === 0 ? (
+      day.pairs.length === 0 ? (
         <EmptyDay key={day.date} data={day} />
       ) : (
         <Day key={day.date} data={day} />
