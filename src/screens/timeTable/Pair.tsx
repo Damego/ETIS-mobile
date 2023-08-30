@@ -27,12 +27,12 @@ export default function Pair({ pair }: { pair: IPair }) {
 
 const Lesson = ({ data }: { data: ILesson }) => {
   const globalStyles = useGlobalStyles();
-  const { audience, subject } = data;
+  const audience = data.isDistance ? data.audience : data.audienceText;
 
   return (
     <View style={styles.lessonContainer}>
       <Text style={[fontSize.medium, styles.lessonInfoText, globalStyles.textColor]}>
-        {subject}
+        {data.subject}
       </Text>
       <Text style={globalStyles.textColor}>{audience}</Text>
     </View>
