@@ -23,8 +23,12 @@ export interface WeekInfo {
 }
 
 export interface ILesson {
-  audience: string;
   subject: string;
+  audienceText: string;
+  audience: string;
+  building: string;
+  floor: string;
+  isDistance: boolean;
 }
 
 export interface IPair {

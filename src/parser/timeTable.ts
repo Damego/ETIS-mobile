@@ -4,6 +4,7 @@ import { ILesson, IPair, ITimeTable, WeekInfo, WeekTypes } from '../models/timeT
 import { getTextField } from './utils';
 
 const dateRegex = /\d+.\d+.\d+/gm;
+const audienceRegex = /ауд\. (.*) \((.*) корпус(?:, (\d) этаж)?\)/s;
 
 const getWeekType = (week: cheerio.Cheerio): WeekTypes => {
   if (week.hasClass('holiday')) {
@@ -68,11 +69,17 @@ export default function parseTimeTable(html) {
 
         pairInfo.children().each((lessonIndex, lessonElement) => {
           const lesson = pairInfo.find(lessonElement);
-          const audience = getTextField(lesson.find('.aud'));
           const subject = getTextField(lesson.find('.dis'));
+          const audienceText = getTextField(lesson.find('.aud'));
+          const [_, audience, building, floor] = audienceRegex.exec(audienceText);
+
           lessons.push({
+            audienceText,
             audience,
+            building,
+            floor,
             subject,
+            isDistance: audience === 'Дистанционно'
           });
         })
 
