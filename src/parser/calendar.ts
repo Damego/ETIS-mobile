@@ -2,7 +2,7 @@ import { load } from 'cheerio';
 
 import { ICalendarSchedule } from '../models/calendarSchedule';
 
-const courseRegex = /[0-9]/;
+const courseRegex = /\d/;
 
 export default function parseCalendarSchedule(html: string): ICalendarSchedule {
   const $ = load(html);

@@ -4,7 +4,7 @@ import { ISessionRating, OverallRating } from '../models/rating';
 import parseSessionData from './session';
 import { getTextField } from './utils';
 
-const numberRegex = /[0-9]+/gm;
+const numberRegex = /\d+/gm;
 
 export default function parseRating(html: string) {
   const $ = load(html);

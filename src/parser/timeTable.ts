@@ -3,7 +3,7 @@ import { load } from 'cheerio';
 import { ILesson, ITimeTable, WeekInfo, WeekTypes } from '../models/timeTable';
 import { getTextField } from './utils';
 
-const dateRegex = /[0-9]+.[0-9]+.[0-9]+/gm;
+const dateRegex = /\d+.\d+.\d+/gm;
 
 const getWeekType = (week: cheerio.Cheerio): WeekTypes => {
   if (week.hasClass('holiday')) {
