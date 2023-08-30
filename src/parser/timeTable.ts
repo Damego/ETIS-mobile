@@ -91,7 +91,5 @@ export default function parseTimeTable(html) {
     });
   });
 
-  console.log(JSON.stringify(data))
-
   return data;
 }

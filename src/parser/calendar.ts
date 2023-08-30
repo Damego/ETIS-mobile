@@ -20,7 +20,6 @@ export default function parseCalendarSchedule(html: string): ICalendarSchedule {
     const el = $(element, block);
 
     if (el.is('h3')) {
-      console.log(el.text());
       const [course] = el.text().match(courseRegex);
       data.course = parseInt(course);
       pending = true;
