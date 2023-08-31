@@ -46,6 +46,7 @@ const authSlice = createSlice({
     signIn(state, action: PayloadAction<SignInPayload>) {
       state.isSignedIn = true;
       state.isSignedOut = false;
+      state.isDemo = false;
       if (action && action.payload.isOffline !== undefined) {
         state.isOfflineMode = action.payload.isOffline;
       }
@@ -53,6 +54,7 @@ const authSlice = createSlice({
     signOut(state, action: PayloadAction<SignOutPayload>) {
       state.isSignedIn = false;
       state.isSignedOut = true;
+      state.isDemo = false;
       if (action.payload.cleanUserCredentials) state.userCredentials = undefined;
     },
     setAuthorizing(state, action: PayloadAction<boolean>) {
