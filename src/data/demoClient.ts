@@ -107,7 +107,11 @@ export default class DemoClient implements BaseClient {
                   time: '8:00',
                   lessons: [
                     {
-                      audience: 'ауд. 411/2 (2 корпус, 3 этаж)',
+                      audienceText: 'ауд. 411/2 (2 корпус, 3 этаж)',
+                      audience: '411/2',
+                      floor: 3,
+                      building: 2,
+                      isDistance: false,
                       subject: 'Математический анализ (лек)',
                     },
                   ],
@@ -117,7 +121,11 @@ export default class DemoClient implements BaseClient {
                   time: '9:45',
                   lessons: [
                     {
-                      audience: 'ауд. 411/2 (2 корпус, 3 этаж)',
+                      audienceText: 'ауд. 411/2 (2 корпус, 3 этаж)',
+                      audience: '411/2',
+                      floor: 3,
+                      building: 2,
+                      isDistance: false,
                       subject: 'Комплексный анализ (лек)',
                     },
                   ],
@@ -127,11 +135,19 @@ export default class DemoClient implements BaseClient {
                   time: '11: 30',
                   lessons: [
                     {
-                      audience: 'ауд. 411/2 (2 корпус, 3 этаж)',
+                      audienceText: 'ауд. 411/2 (2 корпус, 3 этаж)',
+                      audience: '411/2',
+                      floor: 3,
+                      building: 2,
+                      isDistance: false,
                       subject: 'Функциональный анализ (лек)',
                     },
                     {
-                      audience: 'ауд. 411/2 (2 корпус, 3 этаж)',
+                      audienceText: 'ауд. Дистанционно (on-line корпус)',
+                      audience: 'Дистанционно',
+                      floor: undefined,
+                      building: 'on-line',
+                      isDistance: true,
                       subject: 'Программный анализ (лек)',
                     },
                   ],
