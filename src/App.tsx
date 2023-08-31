@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react-native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect } from 'react';
@@ -9,14 +10,16 @@ import setupStore from './redux';
 import { loadStorage } from './redux/storageLoader';
 import { defineFetchTask } from './tasks/signs';
 import { registerForPushNotificationsAsync, setNotificationHandler } from './utils/notifications';
+import { addShortcuts } from './utils/shortcuts';
 
 SplashScreen.preventAutoHideAsync();
 
 const store = setupStore();
-store.dispatch(loadStorage())
+store.dispatch(loadStorage());
 
 defineFetchTask();
 setNotificationHandler();
+addShortcuts();
 
 const App = () => {
   const [fontsLoaded] = useFonts({
@@ -41,4 +44,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Sentry.wrap(App);

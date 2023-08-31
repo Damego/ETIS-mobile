@@ -15,7 +15,7 @@ import {
 
 import { useGlobalStyles } from '../../hooks';
 import { UploadFile } from '../../models/other';
-import { HTTPError } from '../../utils/http';
+import { Response } from '../../utils/http';
 import { fontSize } from '../../utils/texts';
 
 const styles = StyleSheet.create({
@@ -94,10 +94,12 @@ const MessageInput = ({
   onFileSelect,
   onSubmit,
   showLoading,
+  disabled,
 }: {
-  onFileSelect(file: UploadFile): void;
-  onSubmit(text: string): Promise<string | HTTPError>;
+  onFileSelect(file: UploadFile[]): void;
+  onSubmit(text: string): Promise<Response<string>>;
   showLoading: boolean;
+  disabled: boolean;
 }) => {
   const globalStyles = useGlobalStyles();
   const theme = useTheme();
@@ -111,27 +113,29 @@ const MessageInput = ({
       return;
     }
 
-    if (result.type === 'cancel') {
+    if (result.canceled === true) {
       return;
     }
 
-    if (result.size > 2 * 1024 * 1024) {
-      ToastAndroid.show('Файл должен быть не более 2 МБ!', ToastAndroid.SHORT);
-      return;
-    }
-
-    const file = {
-      name: result.name,
-      type: result.mimeType,
-      uri: result.uri,
-    };
-
-    onFileSelect(file);
+    const docs = result.assets
+      .map((doc) => {
+        if (doc.size > 2 * 1024 * 1024) {
+          ToastAndroid.show('Файл должен быть не более 2 МБ!', ToastAndroid.SHORT);
+          return;
+        }
+        return {
+          name: doc.name,
+          type: doc.mimeType,
+          uri: doc.uri,
+        };
+      })
+      .filter((s) => !!s);
+    onFileSelect(docs);
   };
 
   const submit = async () => {
     const res = await onSubmit(value);
-    if (!res || !(res as HTTPError).error) {
+    if (!res || !res.error) {
       setValue('');
     }
   };
@@ -156,9 +160,14 @@ const MessageInput = ({
         multiline
         selectionColor="#C62E3E"
         placeholderTextColor={globalStyles.textColor.color}
+        editable={!disabled}
       />
 
-      <TouchableOpacity disabled={!value.trim() || showLoading} style={styles.iconView} onPress={submit}>
+      <TouchableOpacity
+        disabled={disabled && (!value.trim() || showLoading)}
+        style={styles.iconView}
+        onPress={submit}
+      >
         {showLoading ? (
           <ActivityIndicator
             size="small"

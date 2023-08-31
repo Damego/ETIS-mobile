@@ -1,17 +1,27 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+
 import { StudentData, StudentState } from '../../models/student';
+import { StudentInfo } from '../../parser/menu';
 
 const initialState: StudentState = {
   info: null,
   messageCount: null,
   announceCount: null,
-}
-
+  sessionTestID: null,
+  currentSession: null,
+  currentWeek: null,
+};
 
 const studentSlice = createSlice({
   name: 'student',
   initialState: initialState,
   reducers: {
+    setStudentState(state, action: PayloadAction<StudentInfo>) {
+      state.info = action.payload.student;
+      state.sessionTestID = action.payload.sessionTestID;
+      state.announceCount = action.payload.announceCount;
+      state.messageCount = action.payload.messageCount;
+    },
     setStudentInfo(state, action: PayloadAction<StudentData>) {
       state.info = action.payload;
     },
@@ -21,8 +31,24 @@ const studentSlice = createSlice({
     setAnnounceCount(state, action: PayloadAction<number>) {
       state.announceCount = action.payload;
     },
+    setSessionTestID(state, action: PayloadAction<string>) {
+      state.sessionTestID = action.payload;
+    },
+    setCurrentWeek(state, action: PayloadAction<number>) {
+      state.currentWeek = action.payload;
+    },
+    setCurrentSession(state, action: PayloadAction<number>) {
+      state.currentSession = action.payload;
+    },
   },
 });
 
 export default studentSlice.reducer;
-export const { setStudentInfo, setMessageCount, setAnnounceCount } = studentSlice.actions;
+export const {
+  setStudentState,
+  setStudentInfo,
+  setMessageCount,
+  setAnnounceCount,
+  setCurrentWeek,
+  setCurrentSession,
+} = studentSlice.actions;

@@ -7,10 +7,9 @@ export function encodeTextURI(data: string) {
   buffer.forEach((i, item) => {
     const symbol = i.toString(16).toUpperCase();
     URIString += `%${symbol}`;
-  })
+  });
 
   return URIString;
-
 }
 
 export function toURLSearchParams(obj) {
@@ -18,8 +17,7 @@ export function toURLSearchParams(obj) {
 
   Object.entries(obj).forEach(([key, value]) => {
     params.push(`${key}=${encodeTextURI(value.toString())}`);
-  })
+  });
 
-  return params.join("&")
-
+  return params.join('&');
 }

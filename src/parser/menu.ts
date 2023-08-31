@@ -1,21 +1,34 @@
 import { load } from 'cheerio';
 
-import { getTextField } from './utils';
 import { StudentData } from '../models/student';
+import { getTextField } from './utils';
 
-export interface MenuParseResult {
-  announceCount: number;
-  messageCount: number;
-  studentInfo: StudentData;
+export interface OptionalStudentInfo {
+  announceCount?: number;
+  messageCount?: number;
+  student?: StudentData;
+  sessionTestID?: string;
+  currentWeek?: number;
+  currentSession?: number;
 }
 
-export default function parseMenu(html, parseGroupJournal = false): MenuParseResult {
+export interface StudentInfo {
+  announceCount: number;
+  messageCount: number;
+  student: StudentData;
+  sessionTestID: string;
+  currentWeek?: number;
+  currentSession?: number;
+}
+
+export default function parseMenu(html: string, parseGroupJournal = false): StudentInfo {
   const $ = load(html);
 
-  const data: MenuParseResult = {
+  const data: StudentInfo = {
     announceCount: null,
     messageCount: null,
-    studentInfo: {
+    sessionTestID: null,
+    student: {
       name: null,
       speciality: null,
       educationForm: null,
@@ -29,21 +42,28 @@ export default function parseMenu(html, parseGroupJournal = false): MenuParseRes
   const [rawName, speciality, form, year] = rawData.split('\n').map((string) => string.trim());
   const [name1, name2, name3] = rawName.split(' ');
 
-  data.studentInfo = {
+  data.student = {
     name: `${name1} ${name2} ${name3}`,
     speciality,
     educationForm: form,
     year,
-    group: null
+    group: null,
   };
+
+  const menu = $('.span3');
+  const menuBlocks = menu.find('.nav.nav-tabs.nav-stacked');
+  const sessionTestURL = menuBlocks.eq(1).find('li').first().find('a').attr('href');
+  const [, sessionTestID] = sessionTestURL.split('=');
+  data.sessionTestID = sessionTestID;
 
   // Получение группы студента
   if (parseGroupJournal) {
-    data.studentInfo.group = $('.span9').find('h3').text().split(' ').at(1);
+    data.student.group = $('.span9').find('h3').text().split(' ').at(1);
   }
 
   // Получения количества новых уведомлений
-  $('.nav.nav-tabs.nav-stacked')
+  menuBlocks
+    .first()
     .find('.badge')
     .each((i, el) => {
       const span = $(el);

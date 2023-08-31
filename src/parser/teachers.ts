@@ -3,7 +3,10 @@ import { load } from 'cheerio';
 import { ITeacher, TeacherType } from '../models/teachers';
 import { getTextField } from './utils';
 
-const groupTeachers = (data) => {
+/* https://regex101.com/r/gvUVMt/3 */
+const subjectRegex =
+  /([а-яА-Я\w\s":.,+-]+ (?:\([а-яА-Я\s]+\) )?(?:\[[а-яА-Я\s,]+] )?)\(([а-яА-Я\s,.]+)\)/s;
+const groupTeachers = (data: ITeacher[]) => {
   const dataGrouped = {};
   data.forEach((val) => {
     if (dataGrouped[val.subjectUntyped]) {
@@ -25,18 +28,21 @@ export default function parseTeachers(html): TeacherType {
       photo = teacherEl.find('img').attr('src'),
       photoTitle = teacherEl.find('img').attr('title'),
       name = getTextField(teacherEl.find('.teacher_name')),
-      cathedra = getTextField(teacherEl.find('.chair')),
-      subject = getTextField(teacherEl.find('.dis')),
-      [subjectUntyped, subjectType] = subject.trim().split('(');
+      cathedra = getTextField(teacherEl.find('.chair'));
 
-    data.push({
-      photo,
-      name,
-      cathedra,
-      subjectUntyped,
-      subjectType: subjectType.slice(0, -1),
-      photoTitle,
-    });
+    getTextField(teacherEl.find('.dis'))
+      .split('\n')
+      .forEach((subject) => {
+        const [_, subjectUntyped, subjectType] = subjectRegex.exec(subject);
+        data.push({
+          photo,
+          name,
+          cathedra,
+          subjectUntyped,
+          subjectType,
+          photoTitle,
+        });
+      });
   });
 
   return groupTeachers(data);

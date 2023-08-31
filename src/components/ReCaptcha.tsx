@@ -29,7 +29,7 @@ export default function CustomReCaptcha({
       onClose={onClose}
       hideBadge={true}
       loadingComponent={<></>}
-      style={size === 'invisible' ? {backgroundColor: undefined} : undefined}
+      webViewStyle={size === 'invisible' ? { backgroundColor: undefined } : undefined}
     />
   );
 }

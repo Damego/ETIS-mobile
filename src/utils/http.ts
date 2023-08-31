@@ -4,8 +4,12 @@ import CyrillicToTranslit from 'cyrillic-to-translit-js';
 import { documentDirectory, downloadAsync } from 'expo-file-system';
 import { getNetworkStateAsync } from 'expo-network';
 
+import { ICertificate } from '../models/certificate';
 import { UploadFile } from '../models/other';
+import { CertificateRequestPayload } from './certificate';
 import { toURLSearchParams } from './encoding';
+import { SessionQuestionnairePayload } from './sessionTest';
+import { getRandomUserAgent } from './userAgents';
 
 const cyrillicToTranslit = CyrillicToTranslit();
 
@@ -16,10 +20,8 @@ export enum ErrorCode {
 }
 
 export interface HTTPError {
-  error: {
-    code: ErrorCode;
-    message: string;
-  };
+  code: ErrorCode;
+  message: string;
 }
 
 interface Payload {
@@ -38,6 +40,11 @@ interface PayloadWithString {
   returnResponse?: false;
 }
 
+export interface Response<T> {
+  data?: T;
+  error?: HTTPError;
+}
+
 class HTTPClient {
   private sessionID: string | null;
   private instance: AxiosInstance;
@@ -48,6 +55,9 @@ class HTTPClient {
     this.defaultURL = 'https://student.psu.ru/pls/stu_cus_et';
     this.instance = axios.create({
       baseURL: this.defaultURL,
+      headers: {
+        'User-Agent': getRandomUserAgent(),
+      },
     });
   }
 
@@ -64,19 +74,19 @@ class HTTPClient {
     method: string,
     endpoint: string,
     { params, data, returnResponse }?: PayloadWithResponse
-  ): Promise<AxiosResponse | HTTPError>;
+  ): Promise<Response<AxiosResponse>>;
 
   async request(
     method: string,
     endpoint: string,
     { params, data, returnResponse }?: PayloadWithString
-  ): Promise<string | HTTPError>;
+  ): Promise<Response<string>>;
 
   async request(
     method: string,
     endpoint: string,
     { params, data, returnResponse }: Payload = { returnResponse: false }
-  ): Promise<AxiosResponse | HTTPError | string> {
+  ): Promise<Response<string | AxiosResponse>> {
     console.log(
       `[HTTP] [${method}] Sending request to '${endpoint}' with params: ${JSON.stringify(
         params
@@ -97,8 +107,12 @@ class HTTPClient {
       Cookie: this.sessionID,
     };
 
-    if (data instanceof FormData) {
-      headers['Content-Type'] = 'multipart/form-data';
+    if (data) {
+      if (data instanceof FormData) {
+        headers['Content-Type'] = 'multipart/form-data';
+      } else {
+        data = toURLSearchParams(data);
+      }
     }
 
     try {
@@ -109,7 +123,9 @@ class HTTPClient {
         params,
         data,
       });
-      return returnResponse ? response : response.data;
+      return {
+        data: returnResponse ? response : response.data,
+      };
     } catch (e) {
       console.warn('[HTTP]', e);
       return {
@@ -146,25 +162,25 @@ class HTTPClient {
     password: string,
     token: string,
     isInvisibleRecaptcha: boolean
-  ): Promise<HTTPError | null> {
-    const data = new FormData();
-    data.append('p_redirect', '/stu.timetable');
-    data.append('p_username', username.trim());
-    data.append('p_password', password.trim());
-    data.append('p_recaptcha_ver', isInvisibleRecaptcha ? '3' : '2');
-    data.append('p_recaptcha_response', token.trim());
-
+  ): Promise<Response<AxiosResponse | null>> {
+    const data = {
+      p_redirect: '/stu.timetable',
+      p_username: username.trim(),
+      p_password: password.trim(),
+      p_recaptcha_ver: isInvisibleRecaptcha ? '3' : '2',
+      p_recaptcha_response: token,
+    };
     const response = await this.request('POST', `/stu.login`, {
       data,
       returnResponse: true,
     });
 
-    if ((response as HTTPError).error) return response as HTTPError;
+    if (response.error) return response;
 
-    const cookies = (response as AxiosResponse).headers['set-cookie'];
+    const cookies = response.data.headers['set-cookie'];
 
     if (!cookies) {
-      const $ = cheerio.load((response as AxiosResponse).data);
+      const $ = cheerio.load(response.data.data);
       const errorMessage = $('.error_message').text();
       if (!errorMessage)
         return {
@@ -177,9 +193,11 @@ class HTTPClient {
     this.sessionID = sessionID;
 
     console.log(`[HTTP] Authorized with ${sessionID}`);
+
+    return null;
   }
 
-  async sendRecoveryMail(email: string, token: string) {
+  async sendRecoveryMail(email: string, token: string): Promise<Response<null>> {
     const data = new FormData();
     data.append('p_step', '1');
     data.append('p_email', email.trim());
@@ -190,9 +208,9 @@ class HTTPClient {
       returnResponse: false,
     });
 
-    if ((response as HTTPError).error) return null;
+    if (response.error) return null;
 
-    const $ = cheerio.load(response as string);
+    const $ = cheerio.load(response.data);
     if ($('#sbmt > span').text() === 'Получить письмо') {
       return {
         error: {
@@ -209,7 +227,7 @@ class HTTPClient {
     `showConsultations`:
     - y: Показывать консультации
     - n: Скрывать консультации
-  
+
     `week`: неделя в триместре.
    */
   getTimeTable({ showConsultations = null, week = null } = {}) {
@@ -221,15 +239,18 @@ class HTTPClient {
     });
   }
 
-  getTeachPlan() {
-    return this.request('GET', '/stu.teach_plan', { returnResponse: false });
+  getTeachPlan(mode?: string) {
+    return this.request('GET', '/stu.teach_plan', {
+      params: { p_mode: mode },
+      returnResponse: false,
+    });
   }
 
   /*
     `mode`:
     - session: оценки за сессии
     - current: оценки в триместре
-    - rating: итоговый рейтинг за триместр 
+    - rating: итоговый рейтинг за триместр
     - diplom: оценки в диплом
     */
   getSigns(mode: string, trimester?: number) {
@@ -272,11 +293,10 @@ class HTTPClient {
   }
 
   async replyToMessage(answerID: string, content: string) {
-    const rawData = {
+    const data = {
       p_anv_id: answerID,
       p_msg_txt: content,
     };
-    const data = toURLSearchParams(rawData);
     return await this.request('POST', '/stu.send_reply', { data, returnResponse: false });
   }
 
@@ -307,6 +327,37 @@ class HTTPClient {
 
   getCertificate() {
     return this.request('GET', '/cert_pkg.stu_certif', { returnResponse: false });
+  }
+
+  getSessionQuestionnaireList(id: string | number) {
+    return this.request('GET', '/stu.term_test', {
+      params: { p_toes_id: id },
+      returnResponse: false,
+    });
+  }
+
+  getSessionQuestionnaire(url: string) {
+    return this.request('GET', url, { returnResponse: false });
+  }
+
+  async sendSessionQuestionnaireResult(payload: SessionQuestionnairePayload) {
+    return this.request('POST', '/stu.term_test_save', { data: payload, returnResponse: false });
+  }
+  async sendCertificateRequest(payload: CertificateRequestPayload) {
+    return this.request('POST', '/cert_pkg.stu_certif', { data: payload, returnResponse: false });
+  }
+
+  async getCertificateHTML(certificate: ICertificate): Promise<string> {
+    const fetched = await httpClient.request(
+      'GET',
+      `/cert_pkg.stu_certif?p_creq_id=${certificate.id}&p_action=VIEW`,
+      { returnResponse: false }
+    );
+    if (fetched.error) return;
+
+    console.log('[DATA] fetched certificate html');
+
+    return fetched.data;
   }
 }
 

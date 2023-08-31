@@ -1,13 +1,10 @@
-import { useRoute } from '@react-navigation/native';
-import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
-import React, { ReactElement, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 
 import { useAppSelector } from '../hooks';
 import { useAppColorScheme } from '../hooks/theme';
 import AuthLoadingModal from './AuthLoadingModal';
-import Header from './Header';
 
 const styles = StyleSheet.create({
   screen: {
@@ -18,27 +15,15 @@ const styles = StyleSheet.create({
 });
 
 interface ScreenProps {
-  headerText?: string;
-  scrollHeader?: boolean;
-  onUpdate?(arg?: any): Promise<void>;
+  onUpdate?(...args): unknown;
   children: React.ReactNode;
-  onBackPageClick?(): void | Promise<void>;
   startScrollFromBottom?: boolean;
 }
 
-const Screen = ({
-  headerText,
-  scrollHeader = true,
-  onUpdate,
-  children,
-  onBackPageClick,
-  startScrollFromBottom,
-}: ScreenProps) => {
+const Screen = ({ onUpdate, children, startScrollFromBottom }: ScreenProps) => {
   const { isAuthorizing } = useAppSelector((state) => state.auth);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const scrollRef = useRef<ScrollView>();
-  const route = useRoute();
-  headerText = headerText || route.name;
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -47,14 +32,13 @@ const Screen = ({
   };
 
   return (
-    <View style={{ marginTop: Constants.statusBarHeight, flex: 1 }}>
+    <View style={{ flex: 1 }}>
       {isAuthorizing && <AuthLoadingModal />}
 
       <StatusBar style={useAppColorScheme() === 'light' ? 'dark' : 'light'} />
 
-      {!scrollHeader && <Header text={headerText} onBackButtonClick={onBackPageClick} />}
       <ScrollView
-        ref={startScrollFromBottom ? scrollRef : undefined}
+        ref={scrollRef}
         contentContainerStyle={{ flexGrow: 1 }}
         style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
@@ -66,10 +50,7 @@ const Screen = ({
           startScrollFromBottom ? () => scrollRef.current.scrollToEnd() : undefined
         }
       >
-        <View style={styles.screen}>
-          {scrollHeader && <Header text={headerText} onBackButtonClick={onBackPageClick} />}
-          {children}
-        </View>
+        <View style={styles.screen}>{children}</View>
       </ScrollView>
     </View>
   );

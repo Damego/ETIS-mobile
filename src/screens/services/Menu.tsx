@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { useGlobalStyles } from '../../hooks';
+import { useAppSelector, useGlobalStyles } from '../../hooks';
 import { GITHUB_URL, TELEGRAM_URL } from '../../utils';
 import { fontSize } from '../../utils/texts';
 
@@ -28,7 +28,17 @@ const styles = StyleSheet.create({
   },
 });
 
-function Button({ icon, text, page, link }) {
+function Button({
+  icon,
+  text,
+  page,
+  link,
+}: {
+  icon: React.ReactNode;
+  text: string;
+  page?: string;
+  link?: string;
+}) {
   const navigation = useNavigation();
   const globalStyles = useGlobalStyles();
 
@@ -51,6 +61,7 @@ function Row({ children }) {
 
 function Menu() {
   const globalStyles = useGlobalStyles();
+  const { isDemo } = useAppSelector((state) => state.auth);
   const iconColor = globalStyles.textColor.color;
 
   return (
@@ -59,17 +70,29 @@ function Menu() {
         <Button
           text="Учебный план"
           icon={<AntDesign name="profile" size={iconSize} color={iconColor} />}
-          page="Учебный план"
+          page="TeachPlan"
         />
         <Button
           text="Преподаватели"
           icon={<AntDesign name="team" size={iconSize} color={iconColor} />}
-          page="Преподаватели"
+          page="Teachers"
         />
         <Button
           text="Приказы"
           icon={<AntDesign name="filetext1" size={iconSize} color={iconColor} />}
-          page="Приказы"
+          page="Orders"
+        />
+      </Row>
+      <Row>
+        <Button
+          icon={<AntDesign name="copy1" size={iconSize} color={iconColor} />}
+          text="Анкетирование"
+          page="SessionQuestionnaireList"
+        />
+        <Button
+          text="Справки"
+          icon={<AntDesign name="book" size={iconSize} color={iconColor} />}
+          page="Certificate"
         />
       </Row>
       <Row>
@@ -79,21 +102,9 @@ function Menu() {
           link={GITHUB_URL}
         />
         <Button
-          text="Telegram-паблик"
+          text="Telegram канал"
           link={TELEGRAM_URL}
           icon={<FontAwesome5 name="telegram" size={iconSize} color={iconColor} />}
-        />
-      </Row>
-      <Row>
-        <Button
-          text="Настройки"
-          icon={<AntDesign name="setting" size={iconSize} color={iconColor} />}
-          page="Настройки"
-        />
-        <Button
-          text="О приложении"
-          icon={<AntDesign name="infocirlceo" size={iconSize} color={iconColor} />}
-          page="О приложении"
         />
       </Row>
     </View>

@@ -5,9 +5,9 @@ import { Image, ListRenderItemInfo, StyleSheet, Text, View } from 'react-native'
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { ImageRequireSource } from 'react-native/Libraries/Image/ImageSource';
 
+import { cache } from '../../cache/smartCache';
 import { useAppDispatch } from '../../hooks';
 import { setIntroViewed } from '../../redux/reducers/settingsSlice';
-import { storage } from '../../utils';
 import { fontSize } from '../../utils/texts';
 
 const styles = StyleSheet.create({
@@ -90,7 +90,7 @@ const Intro = () => {
   const dispatch = useAppDispatch();
 
   const onIntroDone = () => {
-    storage.setViewedIntro();
+    cache.placeIntroViewed(true);
     dispatch(setIntroViewed(true));
   };
 

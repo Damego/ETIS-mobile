@@ -2,11 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ToastAndroid } from 'react-native';
 
 import LoadingScreen from '../../components/LoadingScreen';
+import NoData from '../../components/NoData';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
-import { getMessagesData } from '../../data/messages';
+import { getWrappedClient } from '../../data/client';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { IMessagesData } from '../../models/messages';
+import { GetResultType, RequestType } from '../../models/results';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { setMessageCount } from '../../redux/reducers/studentSlice';
 import MessagePreview from './MessagePreview';
@@ -15,24 +17,28 @@ const Messages = () => {
   const dispatch = useAppDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
   const [data, setData] = useState<IMessagesData>();
+  const [isLoading, setLoading] = useState(false);
   const fetchedPages = useRef<number[]>([]);
+  const client = getWrappedClient();
 
   const loadData = async ({ page, force }: { page?: number; force?: boolean }) => {
+    setLoading(true);
     if (page === undefined) page = 1;
 
-    const result = await getMessagesData({
+    const result = await client.getMessagesData({
       page,
-      useCache: true,
-      useCacheFirst: !force && fetchedPages.current.includes(page),
+      requestType:
+        !force && fetchedPages.current.includes(page) ? RequestType.tryCache : RequestType.tryFetch,
     });
 
-    if (result.isLoginPage) {
+    if (result.type === GetResultType.loginPage) {
       dispatch(setAuthorizing(true));
       return;
     }
 
     if (!result.data) {
-      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
+      if (!data) setLoading(false);
+      ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
       return;
     }
 
@@ -41,17 +47,19 @@ const Messages = () => {
     if (!fetchedPages.current.includes(result.data.page)) {
       fetchedPages.current.push(result.data.page);
     }
+
+    if (!data) {
+      dispatch(setMessageCount(null));
+    }
+    setLoading(false);
   };
 
   useEffect(() => {
     if (!isAuthorizing) loadData({});
   }, [isAuthorizing]);
 
-  useEffect(() => {
-    dispatch(setMessageCount(null));
-  }, []);
-
-  if (!data) return <LoadingScreen onRefresh={() => loadData({})} />;
+  if (isLoading) return <LoadingScreen onRefresh={() => loadData({})} />;
+  if (!data) return <NoData onRefresh={() => loadData({ force: true })} />;
 
   return (
     <Screen onUpdate={() => loadData({ force: true })}>

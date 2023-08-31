@@ -1,11 +1,12 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
+import BorderLine from '../../components/BorderLine';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import { useGlobalStyles } from '../../hooks';
 import { ITimeTableDay } from '../../models/timeTable';
 import { fontSize } from '../../utils/texts';
-import Lesson from './Lesson';
+import Pair from './Pair';
 
 interface DayData {
   data: ITimeTableDay;
@@ -31,12 +32,15 @@ const EmptyDay = ({ data }: DayData) => {
 };
 
 const Day = ({ data }: DayData) => {
-  const { date, lessons } = data;
+  const { date, pairs } = data;
 
   return (
     <CardHeaderOut topText={date}>
-      {lessons.map((lesson) => (
-        <Lesson key={date + lesson.time + lesson.subject} data={lesson} />
+      {pairs.map((pair, index) => (
+        <View key={index + pair.time}>
+          <Pair pair={pair} />
+          {index !== pairs.length - 1 && <BorderLine />}
+        </View>
       ))}
     </CardHeaderOut>
   );

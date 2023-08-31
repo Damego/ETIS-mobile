@@ -2,45 +2,55 @@ import React, { useEffect, useState } from 'react';
 import { ToastAndroid } from 'react-native';
 
 import LoadingScreen from '../../components/LoadingScreen';
+import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
-import { cacheTeachPlanData, getTeachPlanData } from '../../data/teachPlan';
+import { getWrappedClient } from '../../data/client';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { GetResultType, RequestType } from '../../models/results';
 import { ISessionTeachPlan } from '../../models/teachPlan';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
+import CalendarSchedule from './CalendarSchedule';
 import SessionCard from './SessionCard';
 
 const ShortTeachPlan = () => {
   const dispatch = useAppDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
   const [data, setData] = useState<ISessionTeachPlan[]>(null);
+  const [isLoading, setLoading] = useState(false);
+  const client = getWrappedClient();
 
   const loadData = async (force?: boolean) => {
-    const result = await getTeachPlanData({ useCache: true, useCacheFirst: !force });
+    setLoading(true);
+    const result = await client.getTeachPlanData({
+      requestType: force ? RequestType.tryFetch : RequestType.tryCache,
+    });
 
-    if (!result.data) {
-      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
-      return;
-    }
-
-    if (result.isLoginPage) {
+    if (result.type === GetResultType.loginPage) {
       dispatch(setAuthorizing(true));
       return;
     }
 
-    setData(result.data);
-    if (result.fetched) {
-      cacheTeachPlanData(result.data);
+    if (!result.data) {
+      if (!data) setLoading(false);
+      ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
+      return;
     }
+
+    setData(result.data);
+    setLoading(false);
   };
 
   useEffect(() => {
     if (!isAuthorizing) loadData();
   }, [isAuthorizing]);
 
-  if (!data) return <LoadingScreen onRefresh={loadData} />;
+  if (isLoading) return <LoadingScreen onRefresh={loadData} />;
+  if (!data) return <NoData onRefresh={() => loadData(true)} />;
 
   return (
     <Screen onUpdate={() => loadData(true)}>
+      <CalendarSchedule />
+
       {data.map((session) => (
         <SessionCard data={session} key={session.stringSession} />
       ))}

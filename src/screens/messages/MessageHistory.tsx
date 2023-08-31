@@ -1,22 +1,24 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { ToastAndroid } from 'react-native';
 
 import Screen from '../../components/Screen';
+import { getWrappedClient } from '../../data/client';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { IMessage } from '../../models/messages';
+import { UploadFile } from '../../models/other';
+import { GetResultType, RequestType } from '../../models/results';
 import { parseDate } from '../../parser/utils';
+import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { httpClient } from '../../utils';
 import Message from './Message';
 import MessageInput, { FilesPreview } from './MessageInput';
-import { getMessagesData } from '../../data/messages';
-import { setAuthorizing } from '../../redux/reducers/authSlice';
-import { useAppDispatch } from '../../hooks';
-import { ToastAndroid } from 'react-native';
-import { UploadFile } from '../../models/other';
 
 export default function MessageHistory({ route, navigation }) {
-  const dispatch = useAppDispatch();
   const [data, setData] = useState<IMessage[]>(route.params.data);
   const pageRef = useRef<number>(route.params.page);
   const [isUploading, setUploading] = useState<boolean>(false);
+  const isDemo = useAppSelector((state) => state.auth.isDemo);
+  const dispatch = useAppDispatch();
 
   const [mainMessage] = data;
   const { author } = mainMessage;
@@ -24,15 +26,14 @@ export default function MessageHistory({ route, navigation }) {
   const shortAuthor = `${name1} ${name2.charAt(0)}. ${name3.charAt(0)}.`;
 
   const [files, setFiles] = useState<UploadFile[]>([]);
-
+  const client = getWrappedClient();
   const loadData = async () => {
-    const result = await getMessagesData({
+    const result = await client.getMessagesData({
       page: pageRef.current,
-      useCache: true,
-      useCacheFirst: false
+      requestType: RequestType.tryFetch,
     });
 
-    if (result.isLoginPage) {
+    if (result.type === GetResultType.loginPage) {
       dispatch(setAuthorizing(true));
       return;
     }
@@ -54,10 +55,13 @@ export default function MessageHistory({ route, navigation }) {
     return 0;
   };
 
-  const onFileSelect = (fileData: UploadFile) => {
-    if (files.map((file) => file.name).includes(fileData.name)) return;
+  const onFileSelect = (fileData: UploadFile[]) => {
+    if (!fileData) return;
+    const uploadFiles = fileData.filter(
+      (uploadFile) => !files.find((file) => file.name === uploadFile.name)
+    );
 
-    setFiles([...files, fileData]);
+    setFiles([...files, ...uploadFiles]);
   };
 
   const onFileRemove = (fileName) => {
@@ -65,7 +69,7 @@ export default function MessageHistory({ route, navigation }) {
   };
 
   const onSubmit = async (text: string) => {
-    setUploading(true)
+    setUploading(true); // TODO: block replying on demo account
     const response = await httpClient.replyToMessage(mainMessage.answerID, text);
 
     if (response.error) {
@@ -88,18 +92,16 @@ export default function MessageHistory({ route, navigation }) {
 
     loadData();
     setFiles([]);
-    setUploading(false)
+    setUploading(false);
   };
+
+  useEffect(() => {
+    navigation.setOptions({ title: shortAuthor });
+  }, []);
 
   return (
     <>
-      <Screen
-        headerText={shortAuthor}
-        scrollHeader={false}
-        onBackPageClick={() => navigation.navigate('Сообщения')}
-        startScrollFromBottom
-        disableRefresh
-      >
+      <Screen startScrollFromBottom>
         {data.sort(compareMessages).map((message, index) => (
           <Message message={message} key={`${message.time}-${index}`} />
         ))}
@@ -109,6 +111,7 @@ export default function MessageHistory({ route, navigation }) {
         onFileSelect={onFileSelect}
         onSubmit={onSubmit}
         showLoading={isUploading}
+        disabled={isDemo}
       />
     </>
   );

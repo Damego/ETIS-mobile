@@ -1,7 +1,15 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import { useGlobalStyles } from '../hooks';
 import { fontSize } from '../utils/texts';
@@ -12,7 +20,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '1%',
   },
   button: {
     width: 35,
@@ -28,7 +35,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Arrow = ({ onClick, name }) => {
+const Arrow = ({ onClick, name }: { onClick(): void; name: keyof typeof AntDesign.glyphMap }) => {
   const {
     colors: { primary },
   } = useTheme();
@@ -40,7 +47,7 @@ const Arrow = ({ onClick, name }) => {
   );
 };
 
-const ActiveButton = ({ number }) => {
+const ActiveButton = ({ number }: { number: string | number }) => {
   const globalStyles = useGlobalStyles();
 
   return (
@@ -73,7 +80,7 @@ const calculateLimits = (firstPage: number, currentPage: number, lastPage: numbe
   return { leftLimit, rightLimit };
 };
 
-const getNewButtonArray = (firstPage, currentPage, lastPage) => {
+const getNewButtonArray = (firstPage: number, currentPage: number, lastPage: number) => {
   const { leftLimit, rightLimit } = calculateLimits(firstPage, currentPage, lastPage);
   const buttonNums = [];
 
@@ -83,12 +90,29 @@ const getNewButtonArray = (firstPage, currentPage, lastPage) => {
   return buttonNums;
 };
 
-const PageNavigator = ({ firstPage, currentPage, lastPage, onPageChange }) => {
+const PageNavigator = ({
+  firstPage,
+  currentPage,
+  lastPage,
+  onPageChange,
+  pageStyles = {},
+}: {
+  firstPage: number;
+  currentPage: number;
+  lastPage: number;
+  onPageChange(page: number): void;
+  pageStyles?: {
+    [page: number]: {
+      view?: StyleProp<ViewStyle>;
+      text?: StyleProp<TextStyle>;
+    };
+  };
+}) => {
   const globalStyles = useGlobalStyles();
   const [buttons, changeButtons] = useState([]);
   const [pageNums, setPageNums] = useState([firstPage, currentPage, lastPage]);
 
-  const onArrowClick = (direction) => {
+  const onArrowClick = (direction: number) => {
     let toAdd;
     if (direction === 1) toAdd = 7;
     else toAdd = -7;
@@ -122,8 +146,8 @@ const PageNavigator = ({ firstPage, currentPage, lastPage, onPageChange }) => {
       {buttons.map((number) =>
         currentPage !== number ? (
           <ClickableText
-            viewStyle={[styles.button]}
-            textStyle={[fontSize.large, globalStyles.textColor]}
+            viewStyle={[styles.button, pageStyles[number]?.view]}
+            textStyle={[fontSize.large, pageStyles[number]?.text, globalStyles.textColor]}
             text={number}
             onPress={() => onPageChange(number)}
             key={number}

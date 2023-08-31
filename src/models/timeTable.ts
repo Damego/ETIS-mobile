@@ -1,21 +1,49 @@
 import { IGetPayload } from './results';
 
+export enum WeekTypes {
+  common,
+  session,
+  holiday,
+  practice,
+  elective,
+}
+
+export interface WeekDates {
+  start: string;
+  end: string;
+}
+
+export interface WeekInfo {
+  first: number;
+  selected: number;
+  last: number;
+  type: WeekTypes;
+  dates: WeekDates;
+  holidayDates?: WeekDates;
+}
+
 export interface ILesson {
-  audience: string;
   subject: string;
+  audienceText: string;
+  audience: string;
+  building: string;
+  floor: string;
+  isDistance: boolean;
+}
+
+export interface IPair {
+  position: number;
   time: string;
-  lessonPosition: number;
+  lessons: ILesson[];
 }
 
 export interface ITimeTableDay {
   date: string;
-  lessons: ILesson[];
+  pairs: IPair[];
 }
 
 export interface ITimeTable {
-  firstWeek: number;
-  selectedWeek: number;
-  lastWeek: number;
+  weekInfo: WeekInfo;
   days: ITimeTableDay[];
 }
 

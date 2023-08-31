@@ -1,10 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Button, StyleSheet, Text, ToastAndroid, View } from 'react-native';
-import { RecaptchaHandles } from 'react-native-recaptcha-that-works';
 
+import { cache } from '../cache/smartCache';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
-import { UserCredentials, setAuthorizing, signIn, signOut } from '../redux/reducers/authSlice';
-import { httpClient, storage } from '../utils';
+import {
+  UserCredentials,
+  setAuthorizing,
+  signIn,
+  signInDemo,
+  signOut,
+} from '../redux/reducers/authSlice';
+import { httpClient } from '../utils';
+import { isDemoCredentials } from '../utils/demo';
 import CustomReCaptcha from './ReCaptcha';
 
 const styles = StyleSheet.create({
@@ -43,8 +50,7 @@ const makeLogin = async (
   if (!token) {
     return LoginResponseType.missingToken;
   }
-  if (!(await storage.hasAcceptedPrivacyPolicy()))
-    return LoginResponseType.privacyPolicyNotAccepted;
+  if (!(await cache.hasAcceptedPrivacyPolicy())) return LoginResponseType.privacyPolicyNotAccepted;
 
   const response = await httpClient.login(
     userCredentials.login,
@@ -75,7 +81,7 @@ const makeLogin = async (
   }
 
   if (saveUserCredentials) {
-    await storage.storeAccountData(userCredentials.login, userCredentials.password);
+    await cache.placeUserCredentials(userCredentials);
   }
   return LoginResponseType.success;
 };
@@ -88,11 +94,18 @@ const AuthLoadingModal = () => {
   const [showOfflineButton, setShowOfflineButton] = useState<boolean>(false);
   const [messageStatus, setMessageStatus] = useState<string>();
   const [isInvisibleRecaptcha, setIsInvisibleRecaptcha] = useState<boolean>(true);
-
+  const [isLoading, setLoading] = useState(false);
   const globalStyles = useGlobalStyles();
 
   const onReceiveToken = async (token: string) => {
+    setLoading(true);
     setMessageStatus('Авторизация...');
+
+    if (isDemoCredentials(userCredentials)) {
+      dispatch(signInDemo(true));
+      dispatch(setAuthorizing(false));
+      return;
+    }
 
     const response = await makeLogin(
       token,
@@ -129,15 +142,15 @@ const AuthLoadingModal = () => {
     }
 
     dispatch(setAuthorizing(false));
+    setLoading(false);
   };
 
   const onRecaptchaModalClose = () => {
-    if (!isInvisibleRecaptcha) dispatch(setAuthorizing(false));
-  }
+    if (!isInvisibleRecaptcha && !isLoading) dispatch(setAuthorizing(false));
+  };
 
   useEffect(() => {
     setMessageStatus('Получение токена...');
-
 
     // Вход в оффлайн режим слишком резкий, поэтому ставим таймер 1 сек.
     // TODO: В идеале, сразу после Splash включать оффлайн режим
@@ -165,11 +178,6 @@ const AuthLoadingModal = () => {
 
   return (
     <View style={styles.modalWrapper}>
-      <CustomReCaptcha
-        onReceiveToken={onReceiveToken}
-        size={isInvisibleRecaptcha ? 'invisible' : 'normal'}
-        onClose={onRecaptchaModalClose}
-      />
       <View
         style={[
           styles.modalContainer,
@@ -178,7 +186,7 @@ const AuthLoadingModal = () => {
           globalStyles.shadow,
         ]}
       >
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <ActivityIndicator size="large" color={globalStyles.primaryFontColor.color} />
           <Text style={globalStyles.textColor}>{messageStatus}</Text>
 
@@ -191,6 +199,11 @@ const AuthLoadingModal = () => {
               />
             </View>
           )}
+          <CustomReCaptcha
+            onReceiveToken={onReceiveToken}
+            size={isInvisibleRecaptcha ? 'invisible' : 'normal'}
+            onClose={onRecaptchaModalClose}
+          />
         </View>
       </View>
     </View>

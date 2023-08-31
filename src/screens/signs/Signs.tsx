@@ -1,98 +1,82 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ToastAndroid, View } from 'react-native';
 
-import Dropdown from '../../components/Dropdown';
+import { cache } from '../../cache/smartCache';
 import LoadingScreen from '../../components/LoadingScreen';
+import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
-import {
-  cacheMarksData,
-  cacheSignsData,
-  composePointsAndMarks,
-  getMarksData,
-  getPartialSignsData,
-} from '../../data/signs';
+import SessionDropdown from '../../components/SessionDropdown';
+import { getWrappedClient } from '../../data/client';
+import { composePointsAndMarks } from '../../data/signs';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { IGetResult } from '../../models/results';
+import { GetResultType, IGetResult, RequestType } from '../../models/results';
 import { ISessionMarks } from '../../models/sessionMarks';
-import { ISessionSignsData } from '../../models/sessionPoints';
+import { ISessionPoints } from '../../models/sessionPoints';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
-import { setFetchedLatestSession, setMarks } from '../../redux/reducers/signsSlice';
+import { setMarks } from '../../redux/reducers/signsSlice';
+import { setCurrentSession } from '../../redux/reducers/studentSlice';
 import CardSign from './CardSign';
 
-const buildOption = (session: number, sessionName: string) => ({
-  label: `${session} ${sessionName}`,
-  value: session,
-});
-
-function buildTrimesterOptions(currentSession: number, latestSession: number, sessionName: string) {
-  const options = [];
-  for (let index = latestSession; index > 0; index -= 1) {
-    if (index !== currentSession) options.push(buildOption(index, sessionName));
-  }
-
-  return {
-    current: buildOption(currentSession, sessionName),
-    options,
-  };
-}
-
-interface ISubjectListProps {
-  data: ISessionSignsData;
-}
-
-interface loadDataPayload {
-  session?: number;
-  force?: boolean;
-}
-
 const Signs = () => {
+  const [data, setData] = useState<ISessionPoints>();
+  const [isLoading, setLoading] = useState<boolean>(false);
+  const fetchedSessions = useRef<number[]>([]);
   const dispatch = useAppDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
+  const { sessionsMarks } = useAppSelector((state) => state.signs);
+  const { currentSession } = useAppSelector((state) => state.student);
+  const client = getWrappedClient();
 
-  const [isLoading, setLoading] = useState<boolean>(false);
-  const { sessionsMarks, fetchedLatestSession } = useAppSelector((state) => state.signs);
-  const [data, setData] = useState<ISessionSignsData>(null);
-  const [optionData, setOptionData] = useState(null);
+  const loadData = async ({ session, force }: { session?: number; force?: boolean }) => {
+    setLoading(true);
 
-  const loadData = async ({ session, force }: loadDataPayload) => {
-    // We use dropdown to fetch new data, and we need to show loading state while data is fetching
-    if (data) setLoading(true);
-
-    let newSession;
+    let newSession: number;
     if (session !== undefined) newSession = session;
     else if (data) newSession = data.currentSession;
 
-    const result = await getPartialSignsData({
-      useCache: true,
-      useCacheFirst:
-        !force &&
-        data &&
-        (newSession < data.latestSession ||
-          (newSession === data.latestSession && fetchedLatestSession)),
+    const useCacheFirst =
+      !force && data && (newSession < currentSession || fetchedSessions.current.includes(session));
+
+    const result = await client.getSessionSignsData({
+      requestType: useCacheFirst ? RequestType.tryCache : RequestType.tryFetch,
       session: newSession,
     });
 
-    if (result.isLoginPage) {
+    if (result.type == GetResultType.loginPage) {
       dispatch(setAuthorizing(true));
       return;
     }
     if (!result.data) {
-      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
+      if (!data) {
+        const cached = await client.getSessionSignsData({
+          session: (await cache.getStudent()).currentSession,
+          requestType: RequestType.forceCache,
+        });
+        if (cached.data) {
+          setData(cached.data);
+        }
+      } else ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
       setLoading(false);
       return;
     }
 
-    // Очевидно, что в самом начале мы получаем текущую, т.е. последнюю сессию
+    // Очевидно, что в самом начале мы получаем текущую сессию
     if (!data) {
-      dispatch(setFetchedLatestSession(true));
+      dispatch(setCurrentSession(result.data.currentSession));
+      cache.placePartialStudent({ currentSession: result.data.currentSession });
     }
 
     let marksResult: IGetResult<ISessionMarks[]>;
     if (sessionsMarks.length === 0) {
-      marksResult = await getMarksData({ useCache: true });
+      marksResult = await client.getSessionMarksData({ requestType: RequestType.tryFetch });
+
+      if (marksResult.type === GetResultType.loginPage) {
+        dispatch(setAuthorizing(true));
+        return;
+      }
+
       if (marksResult.data) {
         dispatch(setMarks(marksResult.data));
-        cacheMarksData(marksResult.data);
       }
     }
 
@@ -101,30 +85,37 @@ const Signs = () => {
       sessionsMarks.length !== 0 ? sessionsMarks : marksResult.data
     );
 
-    setOptionData(
-      buildTrimesterOptions(fullData.currentSession, fullData.latestSession, fullData.sessionName)
-    );
-    setData(fullData);
-    if (data) setLoading(false);
-
-    if (result.fetched) {
-      cacheSignsData(result.data, !data);
+    if (!fetchedSessions.current.includes(result.data.currentSession)) {
+      fetchedSessions.current.push(result.data.currentSession);
     }
+    setData(fullData);
+    setLoading(false);
   };
+  const refresh = () => loadData({ force: true });
 
   useEffect(() => {
     if (!isAuthorizing) loadData({});
   }, [isAuthorizing]);
 
-  if (!data || !optionData || isLoading) return <LoadingScreen onRefresh={() => loadData({})} />;
+  if (isLoading) return <LoadingScreen onRefresh={refresh} />;
+  if (!data) return <NoData onRefresh={refresh} />;
 
   return (
-    <Screen onUpdate={() => loadData({ force: true })}>
-      <View style={{ marginLeft: 'auto', marginRight: 0, paddingBottom: '2%', zIndex: 1 }}>
-        <Dropdown
+    <Screen onUpdate={refresh}>
+      <View
+        style={{
+          marginTop: '2%',
+          marginLeft: 'auto',
+          marginRight: 0,
+          paddingBottom: '2%',
+          zIndex: 1,
+        }}
+      >
+        <SessionDropdown
+          currentSession={data.currentSession}
+          latestSession={data.latestSession}
+          sessionName={data.sessionName}
           onSelect={(session) => loadData({ session })}
-          selectedOption={optionData.current}
-          options={optionData.options}
         />
       </View>
 

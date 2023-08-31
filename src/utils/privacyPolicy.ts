@@ -1,6 +1,7 @@
 import { Alert, Linking } from 'react-native';
+
+import { cache } from '../cache/smartCache';
 import { PRIVACY_POLICY_URL } from './consts';
-import { storage } from './index';
 
 const showPrivacyPolicy = () => {
   Alert.alert(
@@ -14,7 +15,7 @@ const showPrivacyPolicy = () => {
           Linking.openURL(PRIVACY_POLICY_URL);
         },
       },
-      { text: 'Принять', onPress: () => storage.acceptPrivacyPolicy() },
+      { text: 'Принять', onPress: () => cache.setPrivacyPolicyStatus(true) },
     ]
   );
 };

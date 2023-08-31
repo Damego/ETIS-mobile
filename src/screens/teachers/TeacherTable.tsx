@@ -3,10 +3,11 @@ import { ToastAndroid } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import LoadingScreen from '../../components/LoadingScreen';
+import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
-import { cacheTeacherData, getTeacherData } from '../../data/teachers';
+import { getWrappedClient } from '../../data/client';
 import { useAppSelector } from '../../hooks';
-import { IGetPayload } from '../../models/results';
+import { GetResultType, IGetPayload, RequestType } from '../../models/results';
 import { TeacherType } from '../../models/teachers';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import TeacherCard from './TeacherCard';
@@ -14,37 +15,39 @@ import TeacherCard from './TeacherCard';
 const TeacherTable = () => {
   const dispatch = useDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
-
+  const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState<TeacherType>(null);
+  const client = getWrappedClient();
 
   const loadData = async () => {
+    setLoading(true);
     const payload: IGetPayload = {
-      useCache: true,
-      useCacheFirst: false,
+      requestType: RequestType.tryFetch,
     };
-    const result = await getTeacherData(payload);
+    const result = await client.getTeacherData(payload);
 
-    if (result.isLoginPage) {
+    if (result.type === GetResultType.loginPage) {
       dispatch(setAuthorizing(true));
       return;
     }
 
     if (!result.data) {
-      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
+      if (!data) setLoading(false);
+      ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
       return;
     }
 
     setData(result.data);
-    if (result.fetched) {
-      cacheTeacherData(result.data);
-    }
+    setLoading(false);
   };
 
   useEffect(() => {
     if (!isAuthorizing) loadData();
   }, [isAuthorizing]);
 
-  if (!data) return <LoadingScreen onRefresh={loadData} />;
+  if (isLoading) return <LoadingScreen onRefresh={loadData} />;
+  if (!data) return <NoData onRefresh={loadData} />;
+  if (!data.length) return <NoData text={'Список преподавателей пуст'} onRefresh={loadData} />;
 
   return (
     <Screen onUpdate={loadData}>

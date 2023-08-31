@@ -11,6 +11,7 @@ export interface ICheckPoint {
   isAbsent: boolean;
   isIntroductionWork: boolean;
   hasPoints: boolean;
+  failed: boolean;
 }
 
 export interface ISubject {
@@ -20,7 +21,7 @@ export interface ISubject {
   mark?: string;
 }
 
-export interface ISessionSignsData {
+export interface ISessionPoints {
   subjects: ISubject[];
   currentSession: number;
   latestSession: number;

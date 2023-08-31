@@ -16,10 +16,10 @@ const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequ
     <View style={[styles.container, globalStyles.border, globalStyles.block]}>
       <Image style={styles.logoImage} source={require('../../../assets/logo_red.png')} />
 
-      <Text>{message}</Text>
+      <Text style={globalStyles.textColor}>{message}</Text>
 
       <TextInput
-        style={[styles.input, globalStyles.border]}
+        style={[styles.input, globalStyles.border, globalStyles.textColor]}
         onChangeText={(newLogin) => {
           setLogin(newLogin);
         }}

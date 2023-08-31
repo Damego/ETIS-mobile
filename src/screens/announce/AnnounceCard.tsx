@@ -29,7 +29,9 @@ export default function AnnounceCard({ data }) {
         source={{ html: data }}
         style={{ flex: 0, width: '100%' }}
         customStyle={getStyles(globalStyles.textColor.color)}
-        injectedJavaScript={`document.cookie = ${httpClient.getSessionID()}` /* Allows download files */}
+        injectedJavaScript={
+          `document.cookie = ${httpClient.getSessionID()}` /* Allows download files */
+        }
       />
     </Card>
   );
