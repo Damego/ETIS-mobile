@@ -16,10 +16,7 @@ export const loadUserCredentials = () => async (dispatch: AppDispatch) => {
 
   // TODO: Remove in the future
   if (!userCredentials) {
-    userCredentials = await cache.getLegacyUserCredentials();
-    if (userCredentials) {
-      cache.placeUserCredentials(userCredentials)
-    }
+    userCredentials = await cache.migrateLegacyUserCredentials();
   }
 
   const payload = {

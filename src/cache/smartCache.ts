@@ -1,4 +1,4 @@
-import { getItemAsync as getSecuredItemAsync } from 'expo-secure-store';
+import * as SecureStore from 'expo-secure-store';
 
 import { ICalendarSchedule } from '../models/calendarSchedule';
 import { ICertificate, ICertificateTable } from '../models/certificate';
@@ -266,7 +266,7 @@ export default class SmartCache {
   }
 
   async placePartialStudent(data: OptionalStudentInfo) {
-    const student = await this.getStudent() || ({} as StudentInfo);
+    const student = (await this.getStudent()) || ({} as StudentInfo);
     // TODO: add more stuff
     if (data.currentSession) {
       student.currentSession = data.currentSession;
@@ -415,16 +415,22 @@ export default class SmartCache {
   // Legacy
 
   // TODO: Remove in the future
-  async getLegacyUserCredentials(): Promise<UserCredentials> {
-    const login = await getSecuredItemAsync('userLogin');
+  async migrateLegacyUserCredentials(): Promise<UserCredentials> {
+    const login = await SecureStore.getItemAsync('userLogin');
 
     if (!login) return null;
 
-    const password = await getSecuredItemAsync('userPassword');
-    return {
+    const password = await SecureStore.getItemAsync('userPassword');
+    const userCredentials = {
       login,
       password,
     };
+
+    this.placeUserCredentials(userCredentials);
+    SecureStore.deleteItemAsync('userLogin');
+    SecureStore.deleteItemAsync('userPassword');
+
+    return userCredentials;
   }
 }
 
