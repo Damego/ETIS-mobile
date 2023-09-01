@@ -16,7 +16,7 @@ export default function Pair({ pair }: { pair: IPair }) {
         <Text style={globalStyles.textColor}>{pair.time}</Text>
       </View>
 
-      <View style={{ flexDirection: 'column' }}>
+      <View style={{ flexDirection: 'column', flex: 1 }}>
         {pair.lessons.map((lesson, ind) => (
           <Lesson data={lesson} key={lesson.subject + ind} />
         ))}
@@ -45,13 +45,11 @@ const styles = StyleSheet.create({
     marginBottom: '1%',
   },
   pairTimeContainer: {
-    paddingRight: '2%',
-    paddingVertical: 2,
+    marginVertical: 2,
+    marginRight: '2%',
     alignItems: 'center',
   },
-  lessonContainer: {
-    flex: 1,
-  },
+  lessonContainer: {},
   lessonInfoText: {
     fontWeight: '500',
   },
