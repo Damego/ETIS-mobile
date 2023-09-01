@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ToastAndroid } from 'react-native';
 
 import Screen from '../../components/Screen';
-import { getWrappedClient } from '../../data/client';
+import { useClient } from '../../data/client';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { IMessage } from '../../models/messages';
 import { UploadFile } from '../../models/other';
@@ -26,7 +26,7 @@ export default function MessageHistory({ route, navigation }) {
   const shortAuthor = `${name1} ${name2.charAt(0)}. ${name3.charAt(0)}.`;
 
   const [files, setFiles] = useState<UploadFile[]>([]);
-  const client = getWrappedClient();
+  const client = useClient();
   const loadData = async () => {
     const result = await client.getMessagesData({
       page: pageRef.current,

@@ -4,7 +4,7 @@ import { ToastAndroid } from 'react-native';
 import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
-import { getWrappedClient } from '../../data/client';
+import { useClient } from '../../data/client';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { GetResultType, RequestType } from '../../models/results';
 import { ISessionTeachPlan } from '../../models/teachPlan';
@@ -18,7 +18,7 @@ const ShortTeachPlan = () => {
   const { isAuthorizing } = useAppSelector((state) => state.auth);
   const [data, setData] = useState<ISessionTeachPlan[]>(null);
   const [isLoading, setLoading] = useState(false);
-  const client = getWrappedClient();
+  const client = useClient();
 
   const loadData = async (force?: boolean) => {
     setLoading(true);

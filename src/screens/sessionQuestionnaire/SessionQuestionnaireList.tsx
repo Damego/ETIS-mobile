@@ -7,7 +7,7 @@ import ClickableText from '../../components/ClickableText';
 import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
-import { getWrappedClient } from '../../data/client';
+import { useClient } from '../../data/client';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { GetResultType, RequestType } from '../../models/results';
 import { ISessionQuestionnaireLink } from '../../models/sessionQuestionnaire';
@@ -20,7 +20,7 @@ export default function SessionQuestionnaireList({ navigation }) {
   const [isLoading, setLoading] = useState(false);
   const { sessionTestID } = useAppSelector((state) => state.student);
   const dispatch = useAppDispatch();
-  const client = getWrappedClient();
+  const client = useClient();
   const isFocused = useIsFocused();
 
   const loadData = async () => {

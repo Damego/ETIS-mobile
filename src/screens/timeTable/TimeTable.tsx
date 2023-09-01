@@ -6,7 +6,7 @@ import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
-import { getWrappedClient } from '../../data/client';
+import { useClient } from '../../data/client';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { GetResultType, RequestType } from '../../models/results';
 import { ITimeTable, ITimeTableGetProps, WeekTypes } from '../../models/timeTable';
@@ -23,7 +23,7 @@ const TimeTable = () => {
   const fetchedWeeks = useRef<number[]>([]);
   const { isAuthorizing } = useAppSelector((state) => state.auth);
   const { currentWeek } = useAppSelector((state) => state.student);
-  const client = getWrappedClient();
+  const client = useClient();
 
   const [isLoading, setLoading] = useState<boolean>(false);
 

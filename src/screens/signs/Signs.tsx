@@ -6,7 +6,7 @@ import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
 import SessionDropdown from '../../components/SessionDropdown';
-import { getWrappedClient } from '../../data/client';
+import { useClient } from '../../data/client';
 import { composePointsAndMarks } from '../../data/signs';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { GetResultType, IGetResult, RequestType } from '../../models/results';
@@ -25,7 +25,7 @@ const Signs = () => {
   const { isAuthorizing } = useAppSelector((state) => state.auth);
   const { sessionsMarks } = useAppSelector((state) => state.signs);
   const { currentSession } = useAppSelector((state) => state.student);
-  const client = getWrappedClient();
+  const client = useClient();
 
   const loadData = async ({ session, force }: { session?: number; force?: boolean }) => {
     setLoading(true);

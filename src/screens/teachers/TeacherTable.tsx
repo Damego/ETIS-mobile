@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
-import { getWrappedClient } from '../../data/client';
+import { useClient } from '../../data/client';
 import { useAppSelector } from '../../hooks';
 import { GetResultType, IGetPayload, RequestType } from '../../models/results';
 import { TeacherType } from '../../models/teachers';
@@ -17,7 +17,7 @@ const TeacherTable = () => {
   const { isAuthorizing } = useAppSelector((state) => state.auth);
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState<TeacherType>(null);
-  const client = getWrappedClient();
+  const client = useClient();
 
   const loadData = async () => {
     setLoading(true);

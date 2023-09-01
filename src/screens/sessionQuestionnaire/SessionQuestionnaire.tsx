@@ -4,7 +4,7 @@ import { Button, ToastAndroid, View } from 'react-native';
 import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
-import { getWrappedClient } from '../../data/client';
+import { useClient } from '../../data/client';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { GetResultType, RequestType } from '../../models/results';
 import { IAnswer, ISessionQuestionnaire } from '../../models/sessionQuestionnaire';
@@ -38,7 +38,7 @@ export default function SessionQuestionnaire({ route }) {
   const answersRef = useRef<IAnswer[]>([]);
   const additionalCommentRef = useRef<string>();
   const questionCount = useRef(0);
-  const client = getWrappedClient();
+  const client = useClient();
   const { isDemo } = useAppSelector((state) => state.auth);
 
   const loadData = async () => {

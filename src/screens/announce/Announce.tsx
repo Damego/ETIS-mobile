@@ -5,7 +5,7 @@ import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
-import { getWrappedClient } from '../../data/client';
+import { useClient } from '../../data/client';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { GetResultType, RequestType } from '../../models/results';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
@@ -20,7 +20,7 @@ export default function Announce() {
   const [data, setData] = useState<string[]>();
   const [pageCount, setPageCount] = useState<number>();
   const [currentPageNum, setCurrentPageNum] = useState<number>(1);
-  const client = getWrappedClient();
+  const client = useClient();
 
   const loadData = async (force?: boolean) => {
     setLoading(true);

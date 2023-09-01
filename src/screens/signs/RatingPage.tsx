@@ -8,7 +8,7 @@ import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
 import SessionDropdown from '../../components/SessionDropdown';
-import { getWrappedClient } from '../../data/client';
+import { useClient } from '../../data/client';
 import { useAppDispatch, useGlobalStyles } from '../../hooks';
 import { IGroup, ISessionRating } from '../../models/rating';
 import { GetResultType, RequestType } from '../../models/results';
@@ -56,7 +56,7 @@ export default function RatingPage() {
   const [isLoading, setLoading] = useState(false);
   const fetchedFirstTime = useRef<boolean>(false);
   const dispatch = useAppDispatch();
-  const client = getWrappedClient();
+  const client = useClient();
 
   const loadData = async ({ session, force }: { session?: number; force: boolean }) => {
     setLoading(true);

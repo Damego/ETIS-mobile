@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
-import { getWrappedClient } from '../../data/client';
+import { useClient } from '../../data/client';
 import { useAppSelector } from '../../hooks';
 import { IOrder } from '../../models/order';
 import { GetResultType, RequestType } from '../../models/results';
@@ -17,7 +17,7 @@ const OrderTable = () => {
   const [data, setData] = useState<IOrder[]>();
   const [isLoading, setLoading] = useState(false);
   const { isAuthorizing } = useAppSelector((state) => state.auth);
-  const client = getWrappedClient();
+  const client = useClient();
 
   const loadData = async () => {
     setLoading(true);

@@ -17,7 +17,7 @@ import BorderLine from '../../components/BorderLine';
 import Card from '../../components/Card';
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
-import { getWrappedClient } from '../../data/client';
+import { useClient } from '../../data/client';
 import { useGlobalStyles } from '../../hooks';
 import { useAppTheme } from '../../hooks/theme';
 import { ICertificate, ICertificateTable } from '../../models/certificate';
@@ -109,7 +109,7 @@ const RequestCertificateButton = () => {
 const CertificateTable = () => {
   const dispatch = useDispatch();
   const [data, setData] = useState<ICertificateTable>(null);
-  const client = getWrappedClient();
+  const client = useClient();
 
   const globalStyles = useGlobalStyles();
 

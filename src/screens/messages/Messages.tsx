@@ -5,7 +5,7 @@ import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
-import { getWrappedClient } from '../../data/client';
+import { useClient } from '../../data/client';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { IMessagesData } from '../../models/messages';
 import { GetResultType, RequestType } from '../../models/results';
@@ -19,7 +19,7 @@ const Messages = () => {
   const [data, setData] = useState<IMessagesData>();
   const [isLoading, setLoading] = useState(false);
   const fetchedPages = useRef<number[]>([]);
-  const client = getWrappedClient();
+  const client = useClient();
 
   const loadData = async ({ page, force }: { page?: number; force?: boolean }) => {
     setLoading(true);

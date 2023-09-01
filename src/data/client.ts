@@ -40,7 +40,7 @@ import { httpClient } from '../utils';
 import { BaseClient, BasicClient } from './base';
 import DemoClient from './demoClient';
 
-export const getWrappedClient: () => BaseClient = () => {
+export const useClient: () => BaseClient = () => {
   const { isDemo } = useAppSelector((state) => state.auth);
   return useMemo(() => (isDemo ? new DemoClient() : new Client()), [isDemo]);
 };
