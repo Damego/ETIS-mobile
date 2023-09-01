@@ -3,9 +3,9 @@ import { load } from 'cheerio';
 import { ITeacher, TeacherType } from '../models/teachers';
 import { getTextField } from './utils';
 
-/* https://regex101.com/r/gvUVMt/3 */
+/* https://regex101.com/r/gvUVMt/4 */
 const subjectRegex =
-  /([а-яА-Я\w\s":.,+-]+ (?:\([а-яА-Я\s]+\) )?(?:\[[а-яА-Я\s,]+] )?)\(([а-яА-Я\s,.]+)\)/s;
+  /([а-яА-Я\w\s":.,+#-]+ (?:\([а-яА-Я\w\s]+\) )?(?:\[[а-яА-Я\w\s,]+] )?)\(([а-яА-Я\s,.-]+)\)/s;
 const groupTeachers = (data: ITeacher[]) => {
   const dataGrouped = {};
   data.forEach((val) => {
