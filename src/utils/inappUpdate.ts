@@ -8,7 +8,7 @@ export const checkUpdate = () => {
   );
   console.log('[INAPP] Checking store version');
   inAppUpdates.checkNeedsUpdate({ curVersion: Constants.expoConfig.version }).then((result) => {
-    console.log('[INAPP] result: ' + JSON.stringify(result));
+    console.warn('[INAPP] result: ' + JSON.stringify(result));
     if (result.shouldUpdate) {
       let updateOptions: StartUpdateOptions = {};
       if (Platform.OS === 'android') {
@@ -17,6 +17,9 @@ export const checkUpdate = () => {
           updateType: IAUUpdateKind.FLEXIBLE,
         };
       }
+      inAppUpdates.addStatusUpdateListener((event) =>
+        console.warn(`[INAPP] ${JSON.stringify(event)}`)
+      );
       inAppUpdates.startUpdate(updateOptions); // https://github.com/SudoPlz/sp-react-native-in-app-updates/blob/master/src/types.ts#L78
     }
   });
