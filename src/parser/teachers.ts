@@ -4,6 +4,7 @@ import { ITeacher, TeacherType } from '../models/teachers';
 import { getTextField } from './utils';
 
 /* https://regex101.com/r/gvUVMt/4 */
+/* duplicated in sentry.ts */
 const subjectRegex =
   /([а-яА-Я\w\s":.,+#-]+ (?:\([а-яА-Я\w\s]+\) )?(?:\[[а-яА-Я\w\s,]+] )?)\(([а-яА-Я\s,.-]+)\)/s;
 const groupTeachers = (data: ITeacher[]) => {

@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { GetResultType, RequestType } from '../../models/results';
 import { ISessionTeachPlan } from '../../models/teachPlan';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
+import { checkSubjectNames } from '../../utils/sentry';
 import CalendarSchedule from './CalendarSchedule';
 import SessionCard from './SessionCard';
 
@@ -39,6 +40,10 @@ const ShortTeachPlan = () => {
     setData(result.data);
     setLoading(false);
   };
+
+  useEffect(() => {
+    if (data) checkSubjectNames(data);
+  }, [data]);
 
   useEffect(() => {
     if (!isAuthorizing) loadData();
