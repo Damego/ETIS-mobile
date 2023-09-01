@@ -9,6 +9,7 @@ import StackNavigator from './navigation/StackNavigator';
 import setupStore from './redux';
 import { loadStorage } from './redux/storageLoader';
 import { defineFetchTask } from './tasks/signs';
+import { checkUpdate } from './utils/inappUpdate';
 import { registerForPushNotificationsAsync, setNotificationHandler } from './utils/notifications';
 import { addShortcuts } from './utils/shortcuts';
 
@@ -31,6 +32,7 @@ const App = () => {
 
   useEffect(() => {
     registerForPushNotificationsAsync();
+    checkUpdate();
   }, []);
 
   if (!fontsLoaded) {
