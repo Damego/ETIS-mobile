@@ -41,6 +41,17 @@ export default {
         projectId: 'a3b11e9a-6c2e-4082-81e8-58bc2324b582',
       },
     },
+    hooks: {
+      postPublish: [
+        {
+          file: "sentry-expo/upload-sourcemaps",
+          config: {
+            organization: "etismobile",
+            project: "etis-mobile"
+          }
+        }
+      ]
+    },
     plugins: [
       ['./src/plugins/copyDrawable.js', './assets/tab_icons'],
       ['./src/plugins/disabledForcedDarkModeAndroid.ts', {}],
