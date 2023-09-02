@@ -1,56 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { ToastAndroid } from 'react-native';
-import { useDispatch } from 'react-redux';
+import React from 'react';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
 import { useClient } from '../../data/client';
-import { useAppSelector } from '../../hooks';
-import { GetResultType, IGetPayload, RequestType } from '../../models/results';
-import { TeacherType } from '../../models/teachers';
-import { setAuthorizing } from '../../redux/reducers/authSlice';
+import useQuery from '../../hooks/useQuery';
+import { RequestType } from '../../models/results';
 import TeacherCard from './TeacherCard';
 
 const TeacherTable = () => {
-  const dispatch = useDispatch();
-  const { isAuthorizing } = useAppSelector((state) => state.auth);
-  const [isLoading, setLoading] = useState(false);
-  const [data, setData] = useState<TeacherType>(null);
   const client = useClient();
-
-  const loadData = async () => {
-    setLoading(true);
-    const payload: IGetPayload = {
+  const { data, isLoading, refresh } = useQuery({
+    method: client.getTeacherData,
+    payload: {
       requestType: RequestType.tryFetch,
-    };
-    const result = await client.getTeacherData(payload);
+    },
+  });
 
-    if (result.type === GetResultType.loginPage) {
-      dispatch(setAuthorizing(true));
-      return;
-    }
-
-    if (!result.data) {
-      if (!data) setLoading(false);
-      ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
-      return;
-    }
-
-    setData(result.data);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    if (!isAuthorizing) loadData();
-  }, [isAuthorizing]);
-
-  if (isLoading) return <LoadingScreen onRefresh={loadData} />;
-  if (!data) return <NoData onRefresh={loadData} />;
-  if (!data.length) return <NoData text={'Список преподавателей пуст'} onRefresh={loadData} />;
+  if (isLoading) return <LoadingScreen onRefresh={refresh} />;
+  if (!data) return <NoData onRefresh={refresh} />;
+  if (!data.length) return <NoData text={'Список преподавателей пуст'} onRefresh={refresh} />;
 
   return (
-    <Screen onUpdate={loadData}>
+    <Screen onUpdate={refresh}>
       {data.map(([discipline, teachers]) => (
         <TeacherCard discipline={discipline} teachers={teachers} key={discipline} />
       ))}
