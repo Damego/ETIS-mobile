@@ -38,7 +38,7 @@ const parseAnnounceText = (item: cheerio.Cheerio) =>
   item
     .contents()
     .map(function (index, element) {
-      if (element.name === 'br' && element.next.name === "br") return '\n';
+      if (element.name === 'br' && element.next.name === 'br') return '\n';
       return item.find(element).text();
     })
     .toArray()
@@ -47,17 +47,18 @@ const parseAnnounceText = (item: cheerio.Cheerio) =>
 
 function parseAnnounces(html: string): ICertificateAnnounce {
   const $ = cheerio.load(html);
-  const selector = $('.span9 font');
+  const selector = $('.span9').children().filter('font');
+
   const firstItem = selector.eq(0);
   const lastItem = selector.eq(1);
-  if (!lastItem) {
-    return { footer: firstItem.html() };
-  } else {
-    return {
-      header: parseAnnounceText(firstItem),
-      footer: parseAnnounceText(lastItem),
-    };
+
+  if (selector.length === 1) {
+    return { footer: parseAnnounceText(firstItem) };
   }
+  return {
+    header: parseAnnounceText(firstItem),
+    footer: parseAnnounceText(lastItem),
+  };
 }
 
 export function cutCertificateHTML(html: string): string {
