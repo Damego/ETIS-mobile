@@ -4,20 +4,18 @@ import React from 'react';
 import { StyleProp, Text, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 
-import { cache } from '../../cache/smartCache';
 import BorderLine from '../../components/BorderLine';
 import Card from '../../components/Card';
 import LoadingScreen from '../../components/LoadingScreen';
+import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
 import { useClient } from '../../data/client';
 import { useGlobalStyles } from '../../hooks';
 import { useAppTheme } from '../../hooks/theme';
-import { ICertificate } from '../../models/certificate';
+import useQuery from '../../hooks/useQuery';
 import { RequestType } from '../../models/results';
 import { fontSize } from '../../utils/texts';
 import Certificate from './Certificate';
-import useQuery from '../../hooks/useQuery';
-import NoData from '../../components/NoData';
 
 const iconSize = 24;
 
@@ -101,18 +99,16 @@ const RequestCertificateButton = () => {
 
 const CertificateTable = () => {
   const client = useClient();
-  const {data, isLoading, refresh} = useQuery(
-    {
-      method: client.getCertificateData,
-      payload: {
-        requestType: RequestType.tryFetch
-      }
-    }
-  )
+  const { data, isLoading, refresh } = useQuery({
+    method: client.getCertificateData,
+    payload: {
+      requestType: RequestType.tryFetch,
+    },
+  });
   const globalStyles = useGlobalStyles();
 
   if (isLoading) return <LoadingScreen onRefresh={refresh} />;
-  if (!data) return <NoData />
+  if (!data) return <NoData />;
 
   return (
     <Screen onUpdate={refresh}>
