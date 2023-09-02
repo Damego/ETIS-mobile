@@ -37,6 +37,7 @@ import parseRating from '../parser/rating';
 import parseSessionQuestionnaire from '../parser/sessionQuestionnaire';
 import parseSessionQuestionnaireList from '../parser/sessionQuestionnaireList';
 import { httpClient } from '../utils';
+import bind from '../utils/methodBinder';
 import { BaseClient, BasicClient } from './base';
 import DemoClient from './demoClient';
 
@@ -166,6 +167,8 @@ export default class Client implements BaseClient {
       parseSessionQuestionnaireList,
       emptyFunction
     );
+
+    bind(this, Client);
   }
 
   async getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>> {
