@@ -1,59 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { ToastAndroid } from 'react-native';
+import React from 'react';
 
 import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
 import { useClient } from '../../data/client';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { GetResultType, RequestType } from '../../models/results';
-import { ISessionTeachPlan } from '../../models/teachPlan';
-import { setAuthorizing } from '../../redux/reducers/authSlice';
+import useQuery from '../../hooks/useQuery';
+import { RequestType } from '../../models/results';
 import { checkSubjectNames } from '../../utils/sentry';
 import CalendarSchedule from './CalendarSchedule';
 import SessionCard from './SessionCard';
 
 const ShortTeachPlan = () => {
-  const dispatch = useAppDispatch();
-  const { isAuthorizing } = useAppSelector((state) => state.auth);
-  const [data, setData] = useState<ISessionTeachPlan[]>(null);
-  const [isLoading, setLoading] = useState(false);
   const client = useClient();
-
-  const loadData = async (force?: boolean) => {
-    setLoading(true);
-    const result = await client.getTeachPlanData({
-      requestType: force ? RequestType.tryFetch : RequestType.tryCache,
-    });
-
-    if (result.type === GetResultType.loginPage) {
-      dispatch(setAuthorizing(true));
-      return;
+  const { data, isLoading, refresh } = useQuery({
+    method: client.getTeachPlanData,
+    payload: {
+      requestType: RequestType.tryFetch,
+    },
+    after: (result) => {
+      checkSubjectNames(result.data);
     }
+  });
 
-    if (!result.data) {
-      if (!data) setLoading(false);
-      ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
-      return;
-    }
-
-    setData(result.data);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    if (data) checkSubjectNames(data);
-  }, [data]);
-
-  useEffect(() => {
-    if (!isAuthorizing) loadData();
-  }, [isAuthorizing]);
-
-  if (isLoading) return <LoadingScreen onRefresh={loadData} />;
-  if (!data) return <NoData onRefresh={() => loadData(true)} />;
-
+  if (isLoading) return <LoadingScreen onRefresh={refresh} />;
+  if (!data) return <NoData onRefresh={refresh} />;
   return (
-    <Screen onUpdate={() => loadData(true)}>
+    <Screen onUpdate={refresh}>
       <CalendarSchedule />
 
       {data.map((session) => (
