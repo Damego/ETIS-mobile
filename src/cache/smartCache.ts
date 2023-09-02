@@ -250,6 +250,16 @@ export default class SmartCache {
     await this.certificate.save();
   }
 
+  async placeOneCertificate(certificate: ICertificate) {
+    if (!this.certificate.isReady()) await this.certificate.init();
+    console.log("caching")
+
+    const certificates = this.certificate.get();
+    certificates[certificates.findIndex((c) => c.id === certificate.id)] = certificate;
+
+    this.placeCertificate({certificates, announce: {}})
+  }
+
   // // End Certificate Region
 
   // Student Region
