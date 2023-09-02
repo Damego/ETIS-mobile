@@ -1,4 +1,7 @@
+import * as Sentry from '@sentry/react-native';
 import * as SentryExpo from 'sentry-expo';
+
+import { ISessionTeachPlan } from '../models/teachPlan';
 
 export default () => {
   console.log('[SENTRY] Initializing...');
@@ -11,8 +14,31 @@ export default () => {
     SentryExpo.init({
       dsn,
       tracesSampleRate: 1.0,
-      enableInExpoDevelopment: false,
-      debug: false, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
+      integrations: __DEV__
+        ? [
+            new SentryExpo.Native.ReactNativeTracing({
+              shouldCreateSpanForRequest: (url) => {
+                return !url.startsWith(`http://`);
+              },
+            }),
+          ]
+        : [],
+      enableInExpoDevelopment: true,
+      debug: __DEV__, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
     });
+  }
+};
+
+const subjectRegex = /([а-яА-Я\w\s":.,+#-]+(?: \([а-яА-Я\w\s]+\))?(?: \[[а-яА-Я\w\s,]+])?)/s;
+export const checkSubjectNames = (teachPlan: ISessionTeachPlan[]) => {
+  const incorrectDisciplines = teachPlan
+    ?.map((session) => session.disciplines.map((discipline) => discipline.name))
+    .flat()
+    .filter((name) => !subjectRegex.test(name));
+  if (incorrectDisciplines?.length != 0) {
+    Sentry.captureMessage(
+      `Disciplines mismatched w/ regex: ${JSON.stringify(incorrectDisciplines)}`,
+      'error'
+    );
   }
 };
