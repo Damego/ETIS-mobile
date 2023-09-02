@@ -49,6 +49,9 @@ const useQuery = <P, R>({
       dispatch(setAuthorizing(true));
       return;
     }
+
+    if (after) after(result);
+
     if (!result.data) {
       setError({ code: ErrorCode.unknown, message: 'no data' });
       if (onFail) onFail(result);
@@ -57,7 +60,7 @@ const useQuery = <P, R>({
     }
     setLoading(false);
 
-    if (after) after(result);
+
   };
 
   const refresh = () => loadData({ requestType: RequestType.forceFetch, data: payloadData.current });
