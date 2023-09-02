@@ -4,9 +4,9 @@ import { cache } from '../cache/smartCache';
 import { useAppSelector } from '../hooks';
 import { ICalendarSchedule } from '../models/calendarSchedule';
 import { ICertificateTable } from '../models/certificate';
-import { IGetMessagesPayload, IMessagesData } from '../models/messages';
+import { IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
-import { IGetRatingPayload, ISessionRating } from '../models/rating';
+import { ISessionRating } from '../models/rating';
 import { IGetPayload, IGetResult } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
@@ -15,10 +15,9 @@ import {
   ISessionQuestionnaire,
   ISessionQuestionnaireLink,
 } from '../models/sessionQuestionnaire';
-import { IGetSignsPayload } from '../models/signs';
 import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
-import { ITimeTable, ITimeTableGetProps } from '../models/timeTable';
+import { ITimeTable } from '../models/timeTable';
 import {
   parseAnnounce,
   parseMenu,
@@ -29,8 +28,8 @@ import {
   parseTeachers,
   parseTimeTable,
 } from '../parser';
-import { parseCertificateTable } from '../parser/certificate';
 import parseCalendarSchedule from '../parser/calendar';
+import { parseCertificateTable } from '../parser/certificate';
 import { StudentInfo } from '../parser/menu';
 import parseOrders from '../parser/order';
 import parseRating from '../parser/rating';
@@ -49,20 +48,20 @@ export const useClient: () => BaseClient = () => {
 const emptyFunction = <T>() => undefined as T;
 
 class AnnounceClient extends BasicClient<IGetPayload, string[]> {}
-class TimeTableClient extends BasicClient<ITimeTableGetProps, ITimeTable> {}
-class MessageClient extends BasicClient<IGetMessagesPayload, IMessagesData> {}
+class TimeTableClient extends BasicClient<IGetPayload<number>, ITimeTable> {}
+class MessageClient extends BasicClient<IGetPayload<number>, IMessagesData> {}
 class OrderClient extends BasicClient<IGetPayload, IOrder[]> {}
-class RatingClient extends BasicClient<IGetRatingPayload, ISessionRating> {}
-class SignsClient extends BasicClient<IGetSignsPayload, ISessionPoints> {}
+class RatingClient extends BasicClient<IGetPayload<number>, ISessionRating> {}
+class SignsClient extends BasicClient<IGetPayload<number>, ISessionPoints> {}
 class MarksClient extends BasicClient<IGetPayload, ISessionMarks[]> {}
 class StudentClient extends BasicClient<IGetPayload, StudentInfo> {}
 class TeachersClient extends BasicClient<IGetPayload, TeacherType> {}
 class TeachPlanClient extends BasicClient<IGetPayload, ISessionTeachPlan[]> {}
 class CalendarScheduleClient extends BasicClient<IGetPayload, ICalendarSchedule> {}
 class CertificateClient extends BasicClient<IGetPayload, ICertificateTable> {}
-class SessionQuestionnaireClient extends BasicClient<IGetStringPayload, ISessionQuestionnaire> {}
+class SessionQuestionnaireClient extends BasicClient<IGetPayload<string>, ISessionQuestionnaire> {}
 class SessionQuestionnaireListClient extends BasicClient<
-  IGetStringPayload,
+  IGetPayload<string>,
   ISessionQuestionnaireLink[]
 > {}
 
@@ -90,14 +89,14 @@ export default class Client implements BaseClient {
       (data) => cache.placeAnnounce(data)
     );
     this.timeTableClient = new TimeTableClient(
-      ({ week }) => cache.getTimeTable(week),
-      ({ week }) => httpClient.getTimeTable({ week }),
+      ({ data }) => cache.getTimeTable(data),
+      ({ data }) => httpClient.getTimeTable({ week: data }),
       parseTimeTable,
       (data) => cache.placeTimeTable(data)
     );
     this.messageClient = new MessageClient(
-      ({ page }) => cache.getMessages(page),
-      ({ page }) => httpClient.getMessages(page),
+      ({ data }) => cache.getMessages(data),
+      ({ data }) => httpClient.getMessages(data),
       parseMessages,
       (data) => cache.placeMessages(data)
     );
@@ -108,14 +107,14 @@ export default class Client implements BaseClient {
       (data) => cache.placeOrders(data)
     );
     this.ratingClient = new RatingClient(
-      ({ session }) => cache.getSessionRating(session),
-      ({ session }) => httpClient.getSigns('rating', session),
+      ({ data }) => cache.getSessionRating(data),
+      ({ data }) => httpClient.getSigns('rating', data),
       parseRating,
       (data) => cache.placeSessionRating(data)
     );
     this.signsClient = new SignsClient(
-      ({ session }) => cache.getSessionPoints(session),
-      ({ session }) => httpClient.getSigns('current', session),
+      ({ data }) => cache.getSessionPoints(data),
+      ({ data }) => httpClient.getSigns('current', data),
       parseSessionPoints,
       (data) => cache.placeSessionPoints(data)
     );
@@ -176,12 +175,12 @@ export default class Client implements BaseClient {
     return this.announceClient.getData(payload);
   }
 
-  async getTimeTableData(payload: ITimeTableGetProps): Promise<IGetResult<ITimeTable>> {
+  async getTimeTableData(payload: IGetPayload<number>): Promise<IGetResult<ITimeTable>> {
     await cache.timeTable.init();
     return this.timeTableClient.getData(payload);
   }
 
-  async getMessagesData(payload: IGetMessagesPayload): Promise<IGetResult<IMessagesData>> {
+  async getMessagesData(payload: IGetPayload<number>): Promise<IGetResult<IMessagesData>> {
     await cache.messages.init();
     return this.messageClient.getData(payload);
   }
@@ -191,12 +190,12 @@ export default class Client implements BaseClient {
     return this.orderClient.getData(payload);
   }
 
-  async getRatingData(payload: IGetRatingPayload): Promise<IGetResult<ISessionRating>> {
+  async getRatingData(payload: IGetPayload<number>): Promise<IGetResult<ISessionRating>> {
     await cache.signsRating.init();
     return this.ratingClient.getData(payload);
   }
 
-  async getSessionSignsData(payload: IGetSignsPayload): Promise<IGetResult<ISessionPoints>> {
+  async getSessionSignsData(payload: IGetPayload<number>): Promise<IGetResult<ISessionPoints>> {
     await cache.signsPoints.init();
     return this.signsClient.getData(payload);
   }

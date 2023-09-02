@@ -29,8 +29,9 @@ export interface IGetResult<T> {
   data: T | null;
 }
 
-export interface IGetPayload {
+export interface IGetPayload<T = unknown> {
   requestType: RequestType;
+  data?: T;
 }
 
 export const errorResult: IGetResult<null> = {
