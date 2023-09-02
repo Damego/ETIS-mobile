@@ -1,16 +1,8 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
-import {
-  StyleProp,
-  Text,
-  TextStyle,
-  ToastAndroid,
-  TouchableOpacity,
-  ViewStyle,
-} from 'react-native';
+import React from 'react';
+import { StyleProp, Text, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
-import { useDispatch } from 'react-redux';
 
 import { cache } from '../../cache/smartCache';
 import BorderLine from '../../components/BorderLine';
@@ -20,11 +12,12 @@ import Screen from '../../components/Screen';
 import { useClient } from '../../data/client';
 import { useGlobalStyles } from '../../hooks';
 import { useAppTheme } from '../../hooks/theme';
-import { ICertificate, ICertificateTable } from '../../models/certificate';
-import { GetResultType, RequestType } from '../../models/results';
-import { setAuthorizing } from '../../redux/reducers/authSlice';
+import { ICertificate } from '../../models/certificate';
+import { RequestType } from '../../models/results';
 import { fontSize } from '../../utils/texts';
 import Certificate from './Certificate';
+import useQuery from '../../hooks/useQuery';
+import NoData from '../../components/NoData';
 
 const iconSize = 24;
 
@@ -107,44 +100,22 @@ const RequestCertificateButton = () => {
 };
 
 const CertificateTable = () => {
-  const dispatch = useDispatch();
-  const [data, setData] = useState<ICertificateTable>(null);
   const client = useClient();
-
+  const {data, isLoading, refresh} = useQuery(
+    {
+      method: client.getCertificateData,
+      payload: {
+        requestType: RequestType.tryFetch
+      }
+    }
+  )
   const globalStyles = useGlobalStyles();
 
-  const loadData = async () => {
-    const result = await client.getCertificateData({ requestType: RequestType.tryFetch });
-
-    if (result.type === GetResultType.loginPage) {
-      dispatch(setAuthorizing(true));
-      return;
-    }
-
-    if (!result.data) {
-      ToastAndroid.show('Упс... Нет данных для отображения', ToastAndroid.LONG);
-      return;
-    }
-
-    setData(result.data);
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const updateData = (certificate: ICertificate) => {
-    const newData = data;
-    newData.certificates[newData.certificates.findIndex((c) => c.id === certificate.id)] =
-      certificate;
-    cache.certificate.place(newData.certificates);
-    setData(newData);
-  };
-
-  if (!data) return <LoadingScreen onRefresh={loadData} />;
+  if (isLoading) return <LoadingScreen onRefresh={refresh} />;
+  if (!data) return <NoData />
 
   return (
-    <Screen onUpdate={loadData}>
+    <Screen onUpdate={refresh}>
       {data.announce.header && (
         <>
           <ButtonWithPopover
@@ -192,7 +163,7 @@ const CertificateTable = () => {
       )}
 
       {data.certificates.map((certificate, index) => (
-        <Certificate key={index} certificate={certificate} updateData={updateData} />
+        <Certificate key={index} certificate={certificate} />
       ))}
     </Screen>
   );
