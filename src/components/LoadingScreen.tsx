@@ -29,7 +29,7 @@ const EmptyCard = () => {
 
 interface LoadingScreenProps {
   headerText?: string;
-  onRefresh?(): Promise<void>;
+  onRefresh?(): void;
 }
 
 const LoadingScreen = ({ headerText, onRefresh }: LoadingScreenProps) => (
