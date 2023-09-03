@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 
 import { GetResultType, IGetPayload, IGetResult, RequestType } from '../models/results';
 import { setAuthorizing } from '../redux/reducers/authSlice';
-import { ErrorCode, HTTPError } from '../utils/http';
 import { useAppDispatch, useAppSelector } from './redux';
 
 interface getMethod<P, R> {
@@ -12,7 +11,6 @@ interface getMethod<P, R> {
 interface useQueryReturn<P, R> {
   data: R;
   isLoading: boolean;
-  error: HTTPError;
   refresh: () => void;
   update: (payload: IGetPayload<P>) => void;
 }
@@ -37,7 +35,6 @@ const useQuery = <P, R>({
 
   const [data, setData] = useState<R>();
   const [isLoading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<HTTPError>();
 
   const enableLoading = () => setLoading(true);
   const disableLoading = () => setLoading(false);
@@ -77,8 +74,6 @@ const useQuery = <P, R>({
     if (after) await handleAfter(result);
 
     if (!result.data) {
-      setError({ code: ErrorCode.unknown, message: 'no data' });
-
       if (onFail) handleOnFail(result);
     } else {
       setData(result.data);
@@ -92,7 +87,6 @@ const useQuery = <P, R>({
   return {
     data,
     isLoading,
-    error,
     refresh,
     update: (payload) => loadData(payload),
   };
