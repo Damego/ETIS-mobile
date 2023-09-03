@@ -38,13 +38,17 @@ const useQuery = <P, R>({
   const [isLoading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<HTTPError>();
 
+  const enableLoading = () => setLoading(true);
+  const disableLoading = () => setLoading(false);
+
   useEffect(() => {
     console.log("[QUERY] Handle useEffect hook")
     if (!isAuthorizing) loadData(payload);
   }, [isAuthorizing]);
 
   const loadData = async (payload: IGetPayload<P>) => {
-    setLoading(true);
+    enableLoading()
+
     payloadData.current = payload.data;
     const result = await method(payload);
     if (result.type === GetResultType.loginPage) {
@@ -65,9 +69,7 @@ const useQuery = <P, R>({
     } else {
       setData(result.data);
     }
-    setLoading(false);
-
-
+    disableLoading();
   };
 
   const refresh = () => loadData({ requestType: RequestType.forceFetch, data: payloadData.current });
