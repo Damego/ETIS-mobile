@@ -10,7 +10,7 @@ interface getMethod<P, R> {
 }
 
 interface useQueryReturn<P, R> {
-  data: R,
+  data: R;
   isLoading: boolean;
   error: HTTPError;
   refresh: () => void;
@@ -28,10 +28,11 @@ const useQuery = <P, R>({
   after?: (result: IGetResult<R>) => void | Promise<void>;
   onFail?: (result: IGetResult<R>) => void;
 }): useQueryReturn<P, R> => {
-  payload = payload || {requestType: RequestType.tryFetch}
+  payload = payload || { requestType: RequestType.tryFetch };
 
   const dispatch = useAppDispatch();
-  const payloadData = useRef<P>(payload.data)
+  const payloadData = useRef<P>(payload.data);
+  const fromFail = useRef<boolean>(false);
   const { isAuthorizing } = useAppSelector((state) => state.auth);
 
   const [data, setData] = useState<R>();
@@ -42,7 +43,7 @@ const useQuery = <P, R>({
   const disableLoading = () => setLoading(false);
 
   useEffect(() => {
-    console.log("[QUERY] Handle useEffect hook")
+    console.log('[QUERY] Handle useEffect hook');
     if (!isAuthorizing) loadData(payload);
   }, [isAuthorizing]);
 
@@ -51,10 +52,20 @@ const useQuery = <P, R>({
     if (afterReturn instanceof Promise) {
       await afterReturn;
     }
-  }
+  };
+
+  const handleOnFail = (result: IGetResult<R>) => {
+    if (fromFail) {
+      console.warn('[QUERY] Recursion caught. Ignoring next calling');
+      return;
+    }
+    fromFail.current = true;
+    onFail(result);
+    fromFail.current = false;
+  };
 
   const loadData = async (payload: IGetPayload<P>) => {
-    enableLoading()
+    enableLoading();
 
     payloadData.current = payload.data;
     const result = await method(payload);
@@ -63,25 +74,27 @@ const useQuery = <P, R>({
       return;
     }
 
-    if (after) await handleAfter(result)
+    if (after) await handleAfter(result);
 
     if (!result.data) {
       setError({ code: ErrorCode.unknown, message: 'no data' });
-      if (onFail) onFail(result);
+
+      if (onFail) handleOnFail(result);
     } else {
       setData(result.data);
     }
     disableLoading();
   };
 
-  const refresh = () => loadData({ requestType: RequestType.forceFetch, data: payloadData.current });
+  const refresh = () =>
+    loadData({ requestType: RequestType.forceFetch, data: payloadData.current });
 
   return {
     data,
     isLoading,
     error,
     refresh,
-    update: (payload) => loadData(payload)
+    update: (payload) => loadData(payload),
   };
 };
 
