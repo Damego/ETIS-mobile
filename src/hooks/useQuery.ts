@@ -24,10 +24,12 @@ const useQuery = <P, R>({
   onFail,
 }: {
   method: getMethod<P, R>;
-  payload: IGetPayload<P>;
+  payload?: IGetPayload<P>;
   after?: (result: IGetResult<R>) => void | Promise<void>;
   onFail?: (result: IGetResult<R>) => void;
 }): useQueryReturn<P, R> => {
+  payload = payload || {requestType: RequestType.tryFetch}
+
   const dispatch = useAppDispatch();
   const payloadData = useRef<P>(payload.data)
   const { isAuthorizing } = useAppSelector((state) => state.auth);
