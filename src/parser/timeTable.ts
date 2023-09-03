@@ -53,20 +53,17 @@ export default function parseTimeTable(html) {
     weekInfo,
     days: [],
   };
-
   const { days } = data;
 
   $('.day', html).each((el, day) => {
     const daySelector = $(day);
     const pairs: IPair[] = [];
     const date = getTextField(daySelector.find('h3'));
-
     if (!daySelector.children().last().hasClass('no_pairs')) {
       $('tr', day).each((index, tr) => {
         const lessons: ILesson[] = [];
         const pair = $(tr);
         const pairInfo = pair.find('.pair_info');
-
         pairInfo.children().each((lessonIndex, lessonElement) => {
           const lesson = pairInfo.find(lessonElement);
           const subject = getTextField(lesson.find('.dis'));
@@ -79,17 +76,16 @@ export default function parseTimeTable(html) {
             building,
             floor,
             subject,
-            isDistance: audience === 'Дистанционно'
+            isDistance: audience === 'Дистанционно',
           });
-        })
+        });
 
         const pairTime = getTextField(pair.find('.pair_num').find('.eval'));
         pairs.push({
           time: pairTime,
           position: index + 1,
-          lessons
-        })
-
+          lessons,
+        });
       });
     }
     days.push({

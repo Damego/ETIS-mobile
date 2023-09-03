@@ -9,6 +9,9 @@ export const alertParserBugReport = () =>
       'Будем рады если сообщите нам подробности!',
     [
       {
+        text: 'Назад',
+      },
+      {
         text: 'Открыть',
         onPress: () => Linking.openURL(DEBUG_GUIDE_URL),
       },

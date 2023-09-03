@@ -25,8 +25,8 @@ import { TeacherType } from '../models/teachers';
 import { ITimeTable, ITimeTableGetProps } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
 import { isLoginPage } from '../parser/utils';
-import { alertParserBugReport } from '../utils/debug';
 import { Response } from '../utils/http';
+import { reportParserError } from '../utils/sentry';
 
 export interface BaseClient {
   getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>>;
@@ -98,6 +98,7 @@ export class BasicClient<P extends IGetPayload, T> {
     } catch (e) {
       console.warn(`[PARSER] Ignoring a error from ${this.name}`);
       console.trace(e);
+      reportParserError(e);
     }
     if (!parsedData) return failedResult;
 
@@ -113,6 +114,8 @@ export class BasicClient<P extends IGetPayload, T> {
     if (cached?.data) {
       console.log(`[DATA] Retrieved ${this.name} from cache`);
       return cached;
+    } else if (payload.requestType === RequestType.forceCache) {
+      return errorResult;
     }
     const fetched = await this.tryFetch(payload);
 
@@ -131,7 +134,6 @@ export class BasicClient<P extends IGetPayload, T> {
     }
     const parsed = await this.tryParse(fetched);
     if (parsed === failedResult) {
-      alertParserBugReport();
       console.log(`[DATA] Retrieved ${this.name} from server, but failed to parse`);
       return parsed;
     }
