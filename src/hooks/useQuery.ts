@@ -36,7 +36,7 @@ const useQuery = <P, R>({
   const { isAuthorizing } = useAppSelector((state) => state.auth);
 
   const [data, setData] = useState<R>();
-  const [isLoading, setLoading] = useState<boolean>(false);
+  const [isLoading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<HTTPError>();
 
   const enableLoading = () => setLoading(true);
