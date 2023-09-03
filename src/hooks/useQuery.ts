@@ -25,7 +25,7 @@ const useQuery = <P, R>({
 }: {
   method: getMethod<P, R>;
   payload: IGetPayload<P>;
-  after?: (result: IGetResult<R>) => void;
+  after?: (result: IGetResult<R>) => void | Promise<void>;
   onFail?: (result: IGetResult<R>) => void;
 }): useQueryReturn<P, R> => {
   const dispatch = useAppDispatch();
@@ -50,7 +50,12 @@ const useQuery = <P, R>({
       return;
     }
 
-    if (after) after(result);
+    if (after) {
+      const afterReturn = after(result);
+      if (afterReturn instanceof Promise) {
+        await afterReturn;
+      }
+    }
 
     if (!result.data) {
       setError({ code: ErrorCode.unknown, message: 'no data' });
