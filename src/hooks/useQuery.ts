@@ -46,6 +46,13 @@ const useQuery = <P, R>({
     if (!isAuthorizing) loadData(payload);
   }, [isAuthorizing]);
 
+  const handleAfter = async (result: IGetResult<R>) => {
+    const afterReturn = after(result);
+    if (afterReturn instanceof Promise) {
+      await afterReturn;
+    }
+  }
+
   const loadData = async (payload: IGetPayload<P>) => {
     enableLoading()
 
@@ -56,12 +63,7 @@ const useQuery = <P, R>({
       return;
     }
 
-    if (after) {
-      const afterReturn = after(result);
-      if (afterReturn instanceof Promise) {
-        await afterReturn;
-      }
-    }
+    if (after) await handleAfter(result)
 
     if (!result.data) {
       setError({ code: ErrorCode.unknown, message: 'no data' });
