@@ -2,5 +2,6 @@ export const PRIVACY_POLICY_URL = 'https://damego.github.io/ETIS-mobile/privacy_
 export const TELEGRAM_URL = 'https://t.me/etis_mobile';
 
 export const NOTIFICATION_GUIDE_URL = `${TELEGRAM_URL}/12`;
+export const DEBUG_GUIDE_URL = `${TELEGRAM_URL}/37`;
 
 export const GITHUB_URL = 'https://github.com/damego/ETIS-mobile';

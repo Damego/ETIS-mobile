@@ -25,6 +25,7 @@ import { TeacherType } from '../models/teachers';
 import { ITimeTable, ITimeTableGetProps } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
 import { isLoginPage } from '../parser/utils';
+import { alertParserBugReport } from '../utils/debug';
 import { Response } from '../utils/http';
 
 export interface BaseClient {
@@ -130,6 +131,7 @@ export class BasicClient<P extends IGetPayload, T> {
     }
     const parsed = await this.tryParse(fetched);
     if (parsed === failedResult) {
+      alertParserBugReport();
       console.log(`[DATA] Retrieved ${this.name} from server, but failed to parse`);
       return parsed;
     }
