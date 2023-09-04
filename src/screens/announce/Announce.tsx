@@ -8,7 +8,7 @@ import Screen from '../../components/Screen';
 import { useClient } from '../../data/client';
 import { useAppDispatch } from '../../hooks';
 import useQuery from '../../hooks/useQuery';
-import { RequestType } from '../../models/results';
+import { GetResultType, RequestType } from '../../models/results';
 import { setAnnounceCount } from '../../redux/reducers/studentSlice';
 import AnnounceCard from './AnnounceCard';
 
@@ -26,7 +26,7 @@ export default function Announce() {
       // WebView сильно нагружает устройство, поэтому распределяем их по страницам
       setPageCount(Math.ceil(result.data.length / 5));
 
-      if (result.data) {
+      if (result.data && result.type == GetResultType.fetched) {
         dispatch(setAnnounceCount(null));
       }
     },

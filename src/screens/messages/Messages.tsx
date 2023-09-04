@@ -7,7 +7,7 @@ import Screen from '../../components/Screen';
 import { useClient } from '../../data/client';
 import { useAppDispatch } from '../../hooks';
 import useQuery from '../../hooks/useQuery';
-import { RequestType } from '../../models/results';
+import { GetResultType, RequestType } from '../../models/results';
 import { setMessageCount } from '../../redux/reducers/studentSlice';
 import MessagePreview from './MessagePreview';
 
@@ -25,7 +25,7 @@ const Messages = () => {
         fetchedPages.current.push(result.data.page);
       }
 
-      if (!result.data) {
+      if (result.data && result.type == GetResultType.fetched) {
         dispatch(setMessageCount(null));
       }
     },
