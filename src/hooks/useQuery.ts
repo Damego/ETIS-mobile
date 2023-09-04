@@ -13,6 +13,7 @@ interface Query<P, R> {
   isLoading: boolean;
   refresh: () => void;
   update: (payload: IGetPayload<P>) => void;
+  get: (payload: IGetPayload<P>) => Promise<IGetResult<R>>
 }
 
 const useQuery = <P, R>({
@@ -20,16 +21,19 @@ const useQuery = <P, R>({
   payload,
   after,
   onFail,
+  skipInitialGet
 }: {
   method: getMethod<P, R>;
   payload?: IGetPayload<P>;
   after?: (result: IGetResult<R>) => void | Promise<void>;
   onFail?: (result: IGetResult<R>) => void;
+  skipInitialGet?: boolean;
 }): Query<P, R> => {
   payload = payload || { requestType: RequestType.tryFetch };
 
   const dispatch = useAppDispatch();
   const payloadData = useRef<P>(payload.data);
+  const skippedInitialGet = useRef<boolean>(false)
   const fromFail = useRef<boolean>(false);
   const { isAuthorizing } = useAppSelector((state) => state.auth);
 
@@ -40,7 +44,10 @@ const useQuery = <P, R>({
   const disableLoading = () => setLoading(false);
 
   useEffect(() => {
-    console.log('[QUERY] Handle useEffect hook');
+    if (skipInitialGet && !skippedInitialGet.current) {
+      skippedInitialGet.current = true;
+      return;
+    }
     if (!isAuthorizing) loadData(payload);
   }, [isAuthorizing]);
 
@@ -61,18 +68,20 @@ const useQuery = <P, R>({
     fromFail.current = false;
   };
 
+  const checkLoginPage = (result: IGetResult<R>) => {
+    if (result.type === GetResultType.loginPage) {
+      dispatch(setAuthorizing(true));
+      return true;
+    }
+    return false;
+  }
+
   const loadData = async (payload: IGetPayload<P>) => {
     enableLoading();
 
-    payloadData.current = payload.data;
-    const result = await method(payload);
-    if (result.type === GetResultType.loginPage) {
-      dispatch(setAuthorizing(true));
-      return;
-    }
+    const result = await get(payload);
 
     if (after) await handleAfter(result);
-
     if (!result.data) {
       if (onFail) handleFailedQuery(result);
     } else {
@@ -84,11 +93,20 @@ const useQuery = <P, R>({
   const refresh = () =>
     loadData({ requestType: RequestType.forceFetch, data: payloadData.current });
 
+  const get = async (payload: IGetPayload<P>): Promise<IGetResult<R>> => {
+    payloadData.current = payload.data;
+    const result = await method(payload);
+
+    if (checkLoginPage(result)) return;
+    return result;
+  }
+
   return {
     data,
     isLoading,
     refresh,
     update: (payload) => loadData(payload),
+    get
   };
 };
 
