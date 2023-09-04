@@ -8,7 +8,7 @@ interface getMethod<P, R> {
   (payload: IGetPayload<P>): Promise<IGetResult<R>>;
 }
 
-interface useQueryReturn<P, R> {
+interface Query<P, R> {
   data: R;
   isLoading: boolean;
   refresh: () => void;
@@ -25,7 +25,7 @@ const useQuery = <P, R>({
   payload?: IGetPayload<P>;
   after?: (result: IGetResult<R>) => void | Promise<void>;
   onFail?: (result: IGetResult<R>) => void;
-}): useQueryReturn<P, R> => {
+}): Query<P, R> => {
   payload = payload || { requestType: RequestType.tryFetch };
 
   const dispatch = useAppDispatch();
@@ -51,7 +51,7 @@ const useQuery = <P, R>({
     }
   };
 
-  const handleOnFail = (result: IGetResult<R>) => {
+  const handleFailedQuery = (result: IGetResult<R>) => {
     if (fromFail) {
       console.warn('[QUERY] Recursion caught. Ignoring next calling');
       return;
@@ -74,7 +74,7 @@ const useQuery = <P, R>({
     if (after) await handleAfter(result);
 
     if (!result.data) {
-      if (onFail) handleOnFail(result);
+      if (onFail) handleFailedQuery(result);
     } else {
       setData(result.data);
     }
