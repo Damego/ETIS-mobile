@@ -32,6 +32,7 @@ export default class DemoClient implements BaseClient {
   }
   async getSessionQuestionnaire(): Promise<IGetResult<ISessionQuestionnaire>> {
     const data: ISessionQuestionnaire =
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('./demo-questionnaire.json') as ISessionQuestionnaire;
     return this.toResult(data);
   }

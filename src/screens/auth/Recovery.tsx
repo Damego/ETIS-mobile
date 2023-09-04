@@ -50,7 +50,7 @@ const Recovery = ({ setShowModal }) => {
   };
 
   return (
-    <Screen headerText={'Восстановление доступа'}>
+    <Screen>
       {!recaptchaToken && (
         <CustomReCaptcha
           onReceiveToken={onReceiveRecaptchaToken}
