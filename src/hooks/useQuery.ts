@@ -52,7 +52,7 @@ const useQuery = <P, R>({
   };
 
   const handleFailedQuery = (result: IGetResult<R>) => {
-    if (fromFail) {
+    if (fromFail.current) {
       console.warn('[QUERY] Recursion caught. Ignoring next calling');
       return;
     }
