@@ -48,13 +48,16 @@ const Signs = () => {
     }
     if (!result.data) {
       if (!data) {
-        const cached = await client.getSessionSignsData({
-          session: (await cache.getStudent()).currentSession,
-          requestType: RequestType.forceCache,
-        });
-        if (cached.data) {
-          setData(cached.data);
-        }
+        const student = await cache.getStudent();
+        if (student?.currentSession) {
+          const cached = await client.getSessionSignsData({
+            session: (await cache.getStudent()).currentSession,
+            requestType: RequestType.forceCache,
+          });
+          if (cached.data) {
+            setData(cached.data);
+          }
+        } else ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
       } else ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
       setLoading(false);
       return;
