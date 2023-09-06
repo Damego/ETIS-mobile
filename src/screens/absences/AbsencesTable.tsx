@@ -11,7 +11,7 @@ import { GetResultType, IGetPayload, RequestType } from '../../models/results';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { IDisciplineAbsences } from '../../models/absences';
 
-const Absences = () => {
+const AbsencesTable = () => {
   const dispatch = useDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
   const [isLoading, setLoading] = useState(false);
@@ -23,7 +23,7 @@ const Absences = () => {
     const payload: IGetPayload = {
       requestType: RequestType.tryFetch,
     };
-    const result = await client.getTeacherData(payload);
+    const result = await client.getAbsencesData(payload);
 
     if (result.type === GetResultType.loginPage) {
       dispatch(setAuthorizing(true));
@@ -39,6 +39,23 @@ const Absences = () => {
     setData(result.data);
     setLoading(false);
   };  
+
+  useEffect(() => {
+    if (!isAuthorizing) loadData();
+  }, [isAuthorizing]);
+
+  if (isLoading) return <LoadingScreen onRefresh={loadData} />;
+  if (!data) return <NoData onRefresh={loadData} />;
+  if (!data.length) return <NoData text={'Записи о пропущенных занятиях отсутствуют'} onRefresh={loadData} />;
+
+  return (
+    <Screen onUpdate={loadData}>
+      {data.map((absence, index) => (
+          < />
+        ))
+      })}
+    </Screen>
+  );
 };
 
 export default Absences;
