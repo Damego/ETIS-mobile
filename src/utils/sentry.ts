@@ -1,10 +1,12 @@
-import * as Sentry from '@sentry/react-native';
 import * as SentryExpo from 'sentry-expo';
 
 import { ISessionTeachPlan } from '../models/teachPlan';
+import { alertParserBugReport } from './debug';
 
+let isDebug = false;
 export default () => {
   console.log('[SENTRY] Initializing...');
+  isDebug = true;
 
   const dsn = process.env.EXPO_PUBLIC_SENTRY_DSN;
 
@@ -36,9 +38,14 @@ export const checkSubjectNames = (teachPlan: ISessionTeachPlan[]) => {
     .flat()
     .filter((name) => !subjectRegex.test(name));
   if (incorrectDisciplines?.length != 0) {
-    Sentry.captureMessage(
+    SentryExpo.React.captureMessage(
       `Disciplines mismatched w/ regex: ${JSON.stringify(incorrectDisciplines)}`,
       'error'
     );
   }
+};
+
+export const reportParserError = (error) => {
+  if (isDebug) SentryExpo.React.captureException(error);
+  else alertParserBugReport();
 };

@@ -1,16 +1,15 @@
-import type { ConfigPlugin } from '@expo/config-plugins';
-import { withDangerousMod } from '@expo/config-plugins';
-import { copyFileSync, existsSync, lstatSync, mkdirSync, readdirSync } from 'fs';
-import { basename, join } from 'path';
+const { withDangerousMod } = require('@expo/config-plugins');
+const { copyFileSync, existsSync, lstatSync, mkdirSync, readdirSync } = require('fs');
+const { basename, join } = require('path');
 
 const androidFolderPath = ['app', 'src', 'main', 'res', 'drawable'];
 
-const withDrawableAssets: ConfigPlugin<string | string[]> = (expoConfig, files) =>
+const withDrawableAssets = (expoConfig, files) =>
   withDangerousMod(expoConfig, [
     'android',
     (modConfig) => {
       if (modConfig.modRequest.platform === 'android') {
-        const androidDwarablePath = join(
+        const androidDrawablePath = join(
           modConfig.modRequest.platformProjectRoot,
           ...androidFolderPath
         );
@@ -21,9 +20,9 @@ const withDrawableAssets: ConfigPlugin<string | string[]> = (expoConfig, files) 
         files.forEach((file) => {
           const isFile = lstatSync(file).isFile();
           if (isFile) {
-            copyFileSync(file, join(androidDwarablePath, basename(file)));
+            copyFileSync(file, join(androidDrawablePath, basename(file)));
           } else {
-            copyFolderRecursiveSync(file, androidDwarablePath);
+            copyFolderRecursiveSync(file, androidDrawablePath);
           }
         });
       }
@@ -31,7 +30,7 @@ const withDrawableAssets: ConfigPlugin<string | string[]> = (expoConfig, files) 
     },
   ]);
 
-async function copyFolderRecursiveSync(source: string, target: string) {
+async function copyFolderRecursiveSync(source, target) {
   if (!existsSync(target)) mkdirSync(target);
 
   const files = readdirSync(source);
@@ -48,4 +47,4 @@ async function copyFolderRecursiveSync(source: string, target: string) {
   }
 }
 
-export default withDrawableAssets;
+module.exports = withDrawableAssets;

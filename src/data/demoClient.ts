@@ -3,7 +3,7 @@ import { ICertificateTable } from '../models/certificate';
 import { IMessagesData, MessageType } from '../models/messages';
 import { IOrder } from '../models/order';
 import { ISessionRating } from '../models/rating';
-import { GetResultType, IGetPayload, IGetResult } from '../models/results';
+import { GetResultType, IGetResult } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
 import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
@@ -32,11 +32,12 @@ export default class DemoClient implements BaseClient {
   }
   async getSessionQuestionnaire(): Promise<IGetResult<ISessionQuestionnaire>> {
     const data: ISessionQuestionnaire =
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('./demo-questionnaire.json') as ISessionQuestionnaire;
     return this.toResult(data);
   }
 
-  async getCertificateData(payload: IGetPayload): Promise<IGetResult<ICertificateTable>> {
+  async getCertificateData(): Promise<IGetResult<ICertificateTable>> {
     return toResult({
       certificates: [
         {
@@ -109,8 +110,8 @@ export default class DemoClient implements BaseClient {
                     {
                       audienceText: 'ауд. 411/2 (2 корпус, 3 этаж)',
                       audience: '411/2',
-                      floor: 3,
-                      building: 2,
+                      floor: '3',
+                      building: '2',
                       isDistance: false,
                       subject: 'Математический анализ (лек)',
                     },
@@ -123,8 +124,8 @@ export default class DemoClient implements BaseClient {
                     {
                       audienceText: 'ауд. 411/2 (2 корпус, 3 этаж)',
                       audience: '411/2',
-                      floor: 3,
-                      building: 2,
+                      floor: '3',
+                      building: '2',
                       isDistance: false,
                       subject: 'Комплексный анализ (лек)',
                     },
@@ -137,8 +138,8 @@ export default class DemoClient implements BaseClient {
                     {
                       audienceText: 'ауд. 411/2 (2 корпус, 3 этаж)',
                       audience: '411/2',
-                      floor: 3,
-                      building: 2,
+                      floor: '3',
+                      building: '2',
                       isDistance: false,
                       subject: 'Функциональный анализ (лек)',
                     },
@@ -206,7 +207,7 @@ export default class DemoClient implements BaseClient {
     return this.toResult(data);
   }
 
-  async getOrdersData(payload: IGetPayload): Promise<IGetResult<IOrder[]>> {
+  async getOrdersData(): Promise<IGetResult<IOrder[]>> {
     const data: IOrder[] = [
       {
         id: '1',
