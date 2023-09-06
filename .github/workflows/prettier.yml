@@ -19,7 +19,7 @@ jobs:
           ref: ${{ github.head_ref }}
 
       - name: Prettier Action
-        uses: Damego/prettier_action@update
+        uses: Damego/prettier_action@4.4-beta.2
         with:
           # This part is also where you can pass other options, for example:
           prettier_plugins: "@trivago/prettier-plugin-sort-imports"
