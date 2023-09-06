@@ -5,7 +5,7 @@ on:
   pull_request:
   push:
     branches:
-      - main
+      - ci/custom-gh-action
 
 jobs:
   prettier:
@@ -19,7 +19,7 @@ jobs:
           ref: ${{ github.head_ref }}
 
       - name: Prettier Action
-        uses: creyD/prettier_action@v4.3
+        uses: Damego/prettier_action@update
         with:
           # This part is also where you can pass other options, for example:
           prettier_options: --write **/*.{js,md}
