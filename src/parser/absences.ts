@@ -1,10 +1,11 @@
 import { load } from 'cheerio';
 
+import { IDisciplineAbsences } from '../models/absences'
 import { getTextField } from './utils';
 
 export default function parseAbsences(html) {
   const $ = load(html);
-  let data = [];
+  let data: IDisciplineAbsences[] = [];
   $('tr', html).each((index, element) => {
     if (index === 0) return;
 
@@ -16,7 +17,7 @@ export default function parseAbsences(html) {
     const [number, time, subject, type, teacher] = fields;
 
     data.push({
-      number,
+      number: parseInt(number),
       time,
       subject,
       type,
