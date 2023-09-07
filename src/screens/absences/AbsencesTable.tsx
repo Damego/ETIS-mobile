@@ -10,8 +10,8 @@ import { useAppSelector, useGlobalStyles } from '../../hooks';
 import { GetResultType, IGetPayload, RequestType } from '../../models/results';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { IGetAbsencesPayload, IPeriodAbsences } from '../../models/absences';
-import AbsencesRow, { styles } from './AbsencesRow';
-import AbsencesHeader from './AbsencesHeader';
+import AbsencesCard from './AbsencesCard';
+import styles from './AbsencesStyles';
 
 const AbsencesTable = () => {
   const globalStyles = useGlobalStyles();
@@ -43,18 +43,16 @@ const AbsencesTable = () => {
     }
 
     setData(result.data);
-    let test: IPeriodAbsences = { period: 1, overallMissed: 10, absences: [] };
-    test.overallMissed = 10;
-    test.period = 1;
-    test.absences.push( { number: 5, time: "21.09", subject: 'Math', type: "practice", teacher: "Andrey Vasiliev" },
-    { number: 2, time: "22.09", subject: 'Math', type: "practice", teacher: "Andrey Vasiliev" } );
-    setData(test);
+    // let test: IPeriodAbsences = { period: 1, overallMissed: 9, absences: [] };
+
+    // test.absences.push( 
+    //   { dates: ["21.09", "22.09", "23.09", "01.10", "02.10"], subject: 'Элементы высшей математики', type: "практика", teacher: "Andrey Vasiliev" },
+    //   { dates: ["18.09", "22.09"], subject: 'Иностранный язык', type: "практика", teacher: "Andrey Vasiliev" },
+    //   { dates: ["12.09", "14.09"], subject: 'Биология', type: "практика", teacher: "Andrey Vasiliev" }
+    // );
+    // setData(test);
 
     
-    if (data != null) {
-      data.absences.push({ number: 5, time: "21.09", subject: 'Math', type: "practice", teacher: "Andrey Vasiliev" },
-                         { number: 2, time: "22.09", subject: 'Math', type: "practice", teacher: "Andrey Vasiliev" });
-    }
     setLoading(false);
   };  
 
@@ -67,13 +65,10 @@ const AbsencesTable = () => {
 
   return (
     <Screen onUpdate={loadData}>
-      <DataTable style={styles.table} >
-        {data.absences.length !== 0 ? <AbsencesHeader /> : <></> }
-        {data.absences.map((absences, index) => (
-           <AbsencesRow record={absences} key={index} ></AbsencesRow>
-        ))}
-        <Text style={globalStyles.textColor && styles.centre}>{ 'Всего пропущено занятий: ' + data.overallMissed }</Text>
-      </DataTable>
+      {data.absences.map((absences, index) => (
+         <AbsencesCard disciplineAbsences={absences} key={index} ></AbsencesCard>
+      ))}
+      <Text style={[globalStyles.textColor, ]}>{ 'Всего пропущено занятий: ' + data.overallMissed }</Text>
     </Screen>
   );
 };

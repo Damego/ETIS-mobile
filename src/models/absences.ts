@@ -1,8 +1,7 @@
 import { IGetPayload } from "./results";
 
 export interface IDisciplineAbsences {
-  number: number;
-  time: string;
+  dates: string[];
   subject: string;
   type: string;
   teacher: string;

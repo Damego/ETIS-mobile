@@ -11,14 +11,19 @@ export default function parseAbsences(html): IPeriodAbsences {
 
     const td = $(element).find('td');
     const fields = [];
-    for (let i = 0; i < 5; i += 1) {
-      fields[i] = getTextField(td.eq(i));
+    
+    // we will skip the number as it's not important info
+    for (let i = 1; i < 5; i += 1) {
+      if (i = 1) { // for the times
+        fields[i - 1] = td.eq(i).html().trim().split('<br>');
+        continue;
+      }
+      fields[i - 1] = getTextField(td.eq(i));
     }
-    const [number, time, subject, type, teacher] = fields;
+    const [time, subject, type, teacher] = fields;
 
     data.push({
-      number: parseInt(number),
-      time,
+      dates: time,
       subject,
       type,
       teacher,
