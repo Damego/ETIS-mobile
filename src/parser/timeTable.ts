@@ -1,6 +1,15 @@
 import { load } from 'cheerio';
 
-import { ILesson, IPair, ITimeTable, WeekInfo, WeekTypes } from '../models/timeTable';
+import {
+  DistancePlatform,
+  DistancePlatformTypes,
+  ILesson,
+  IPair,
+  ITimeTable,
+  WeekInfo,
+  WeekTypes,
+} from '../models/timeTable';
+import { httpClient } from '../utils';
 import { getTextField } from './utils';
 
 const dateRegex = /\d+.\d+.\d+/gm;
@@ -22,7 +31,23 @@ const getWeekType = (week: cheerio.Cheerio): WeekTypes => {
   return WeekTypes.common;
 };
 
-export default function parseTimeTable(html) {
+const getDistancePlatformType = (image: cheerio.Cheerio): DistancePlatformTypes => {
+  const title = image.attr('title');
+
+  if (title === 'bbb.psu.ru') return DistancePlatformTypes.bbb;
+  else if (title === 'zoom.us') return DistancePlatformTypes.zoom; // maybe...
+
+  return DistancePlatformTypes.unknown;
+};
+
+const getDistancePlatformName = (type: DistancePlatformTypes) => {
+  if (type === DistancePlatformTypes.zoom) return 'Платформа Zoom';
+  else if (type === DistancePlatformTypes.bbb) return 'Платформа BBB';
+
+  return null;
+};
+
+export default function parseTimeTable(html: string) {
   const $ = load(html);
   const week = $('.week');
   const currentWeek = $('.week.current');
@@ -53,43 +78,57 @@ export default function parseTimeTable(html) {
     weekInfo,
     days: [],
   };
-
   const { days } = data;
 
   $('.day', html).each((el, day) => {
     const daySelector = $(day);
     const pairs: IPair[] = [];
     const date = getTextField(daySelector.find('h3'));
-
     if (!daySelector.children().last().hasClass('no_pairs')) {
       $('tr', day).each((index, tr) => {
         const lessons: ILesson[] = [];
         const pair = $(tr);
         const pairInfo = pair.find('.pair_info');
-
         pairInfo.children().each((lessonIndex, lessonElement) => {
           const lesson = pairInfo.find(lessonElement);
           const subject = getTextField(lesson.find('.dis'));
-          const audienceText = getTextField(lesson.find('.aud'));
-          const [_, audience, building, floor] = audienceRegex.exec(audienceText);
+          const audience = lesson.find('.aud');
+          let audienceText: string, floor: string, building: string, audienceNumber: string;
+          let distancePlatform: DistancePlatform;
+
+          const platform = audience.find('a');
+          if (platform.length === 1) {
+            const image = platform.find('img');
+            const platformType = getDistancePlatformType(image);
+            distancePlatform = {
+              name: getDistancePlatformName(platformType) || image.attr('title'),
+              url: platform.attr('href'),
+              type: platformType,
+              imageUrl: httpClient.getSiteURL() + image.attr('src'),
+            };
+          } else {
+            audienceText = getTextField(audience);
+            let _;
+            [_, audienceNumber, building, floor] = audienceRegex.exec(audienceText);
+          }
 
           lessons.push({
             audienceText,
-            audience,
+            audience: audienceNumber,
             building,
             floor,
             subject,
-            isDistance: audience === 'Дистанционно'
+            isDistance: audienceNumber === 'Дистанционно' || !!distancePlatform,
+            distancePlatform,
           });
-        })
+        });
 
         const pairTime = getTextField(pair.find('.pair_num').find('.eval'));
         pairs.push({
           time: pairTime,
           position: index + 1,
-          lessons
-        })
-
+          lessons,
+        });
       });
     }
     days.push({

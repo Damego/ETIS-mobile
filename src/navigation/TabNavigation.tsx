@@ -52,7 +52,9 @@ const TabNavigator = () => {
 
     const data = result.data;
 
-    dispatch(setStudentState(data));
+    if (data) {
+      dispatch(setStudentState(data));
+    }
   };
 
   useEffect(() => {

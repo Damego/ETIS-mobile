@@ -1,4 +1,4 @@
-import { CertificateRequest } from '../models/CertificateRequest';
+import { CertificateRequest } from '../models/certificateRequest';
 
 export interface CertificateRequestPayload {
   p_action: 'INSERT';
