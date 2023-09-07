@@ -94,6 +94,11 @@ function Menu() {
           icon={<AntDesign name="book" size={iconSize} color={iconColor} />}
           page="Certificate"
         />
+        <Button 
+          text="Пропущенные занятия"
+          icon={<AntDesign name="paperclip" size={iconSize} color={iconColor} />}
+          page="Absences"
+        />
       </Row>
       <Row>
         <Button

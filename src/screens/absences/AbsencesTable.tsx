@@ -10,6 +10,7 @@ import { useAppSelector } from '../../hooks';
 import { GetResultType, IGetPayload, RequestType } from '../../models/results';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { IDisciplineAbsences } from '../../models/absences';
+import Absences from './Absences';
 
 const AbsencesTable = () => {
   const dispatch = useDispatch();
@@ -50,12 +51,11 @@ const AbsencesTable = () => {
 
   return (
     <Screen onUpdate={loadData}>
-      {data.map((absence, index) => (
-          < />
-        ))
-      })}
+      {data.map((absences, index) => (
+          <Absences key={index} record={absences} />
+      ))}
     </Screen>
   );
 };
 
-export default Absences;
+export default AbsencesTable;

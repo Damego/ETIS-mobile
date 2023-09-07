@@ -88,7 +88,7 @@ export default class Client implements BaseClient {
   constructor() {
     this.absencesClient = new AbsencesClient(
       () => cache.getAbsences(),
-      () => httpClient.getAbsences(2), // TODO: make trimester
+      ({trimester}) => httpClient.getAbsences(trimester), // TODO: make trimester
       parseAbsenses,
       (data) => cache.placeAbsences(data)
     );
