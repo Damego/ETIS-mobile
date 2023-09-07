@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Linking, StyleSheet, Text, View } from 'react-native';
 
+import ClickableText from '../../components/ClickableText';
 import { useGlobalStyles } from '../../hooks';
 import { ILesson, IPair } from '../../models/timeTable';
 import { fontSize } from '../../utils/texts';
@@ -34,7 +35,20 @@ const Lesson = ({ data }: { data: ILesson }) => {
       <Text style={[fontSize.medium, styles.lessonInfoText, globalStyles.textColor]}>
         {data.subject}
       </Text>
-      <Text style={globalStyles.textColor}>{audience}</Text>
+      {data.distancePlatform ? (
+        <ClickableText
+          text={data.distancePlatform.name}
+          onPress={() => {
+            Linking.openURL(data.distancePlatform.url);
+          }}
+          textStyle={[
+            globalStyles.textColor,
+            { textDecorationLine: 'underline', fontWeight: '500' },
+          ]}
+        />
+      ) : (
+        <Text style={globalStyles.textColor}>{audience}</Text>
+      )}
     </View>
   );
 };
