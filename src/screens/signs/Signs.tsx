@@ -53,9 +53,12 @@ const Signs = () => {
       }
     },
     onFail: async () => {
+      const student = await cache.getStudent();
+      if (!student || !student.currentSession) return;
+
       update({
         requestType: RequestType.forceCache,
-        data: (await cache.getStudent()).currentSession,
+        data: student.currentSession,
       });
     },
   });

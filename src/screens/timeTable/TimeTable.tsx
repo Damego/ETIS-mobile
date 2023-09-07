@@ -29,9 +29,12 @@ const TimeTable = () => {
       requestType: RequestType.tryFetch,
     },
     onFail: async () => {
+      const student = await cache.getStudent();
+      if (!student || !student.currentWeek) return;
+
       update({
         requestType: RequestType.forceCache,
-        data: (await cache.getStudent()).currentWeek,
+        data: student.currentWeek,
       });
     },
     after: (result) => {
