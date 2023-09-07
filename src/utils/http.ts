@@ -48,17 +48,27 @@ export interface Response<T> {
 class HTTPClient {
   private sessionID: string | null;
   private instance: AxiosInstance;
-  private readonly defaultURL: string;
+  private readonly baseURL: string;
+  private readonly siteURL: string;
 
   constructor() {
     this.sessionID = null;
-    this.defaultURL = 'https://student.psu.ru/pls/stu_cus_et';
+    this.siteURL = 'https://student.psu.ru'
+    this.baseURL = `${this.siteURL}/pls/stu_cus_et`;
     this.instance = axios.create({
-      baseURL: this.defaultURL,
+      baseURL: this.baseURL,
       headers: {
         'User-Agent': getRandomUserAgent(),
       },
     });
+  }
+
+  getSiteURL() {
+    return this.siteURL;
+  }
+
+  getBaseURL() {
+    return this.baseURL;
   }
 
   getSessionID() {
@@ -138,7 +148,7 @@ class HTTPClient {
   }
 
   downloadFile(uri: string, fileName: string) {
-    const url = `${this.defaultURL}/${uri}`;
+    const url = `${this.baseURL}/${uri}`;
 
     console.log(`[HTTP] Downloading a file from ${url}`);
 
