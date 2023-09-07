@@ -41,12 +41,26 @@ const getDistancePlatformType = (platform: cheerio.Cheerio): DistancePlatformTyp
   return DistancePlatformTypes.unknown;
 };
 
-const getDistancePlatformName = (type: DistancePlatformTypes) => {
+const getDistancePlatformName = (platform: cheerio.Cheerio, type: DistancePlatformTypes) => {
   if (type === DistancePlatformTypes.zoom) return 'Платформа Zoom';
   else if (type === DistancePlatformTypes.bbb) return 'Платформа BBB';
   else if (type === DistancePlatformTypes.skype) return 'Skype';
 
-  return null;
+  const image = platform.find('img');
+
+  return image.attr('title') || platform.attr('href');
+};
+
+const getDistancePlatform = (platform: cheerio.Cheerio): DistancePlatform => {
+  const image = platform.find('img');
+  const type = getDistancePlatformType(platform);
+
+  return {
+    name: getDistancePlatformName(platform, type),
+    url: platform.attr('href'),
+    type,
+    imageUrl: httpClient.getSiteURL() + image.attr('src'),
+  };
 };
 
 export default function parseTimeTable(html: string) {
@@ -100,17 +114,7 @@ export default function parseTimeTable(html: string) {
 
           const platform = audience.find('a');
           if (platform.length === 1) {
-            const image = platform.find('img');
-            const platformType = getDistancePlatformType(platform);
-            distancePlatform = {
-              name:
-                getDistancePlatformName(platformType) ||
-                image.attr('title') ||
-                platform.attr('href'),
-              url: platform.attr('href'),
-              type: platformType,
-              imageUrl: httpClient.getSiteURL() + image.attr('src'),
-            };
+            distancePlatform = getDistancePlatform(platform);
           } else {
             audienceText = getTextField(audience);
             let _;
