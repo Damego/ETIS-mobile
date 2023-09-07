@@ -31,11 +31,12 @@ const getWeekType = (week: cheerio.Cheerio): WeekTypes => {
   return WeekTypes.common;
 };
 
-const getDistancePlatformType = (image: cheerio.Cheerio): DistancePlatformTypes => {
-  const title = image.attr('title');
+const getDistancePlatformType = (platform: cheerio.Cheerio): DistancePlatformTypes => {
+  const title = platform.find('img').attr('title');
 
   if (title === 'bbb.psu.ru') return DistancePlatformTypes.bbb;
   else if (title === 'zoom.us') return DistancePlatformTypes.zoom; // maybe...
+  else if (platform.attr('href').includes('skype')) return DistancePlatformTypes.skype;
 
   return DistancePlatformTypes.unknown;
 };
@@ -43,6 +44,7 @@ const getDistancePlatformType = (image: cheerio.Cheerio): DistancePlatformTypes 
 const getDistancePlatformName = (type: DistancePlatformTypes) => {
   if (type === DistancePlatformTypes.zoom) return 'Платформа Zoom';
   else if (type === DistancePlatformTypes.bbb) return 'Платформа BBB';
+  else if (type === DistancePlatformTypes.skype) return 'Skype';
 
   return null;
 };
@@ -99,9 +101,12 @@ export default function parseTimeTable(html: string) {
           const platform = audience.find('a');
           if (platform.length === 1) {
             const image = platform.find('img');
-            const platformType = getDistancePlatformType(image);
+            const platformType = getDistancePlatformType(platform);
             distancePlatform = {
-              name: getDistancePlatformName(platformType) || image.attr('title'),
+              name:
+                getDistancePlatformName(platformType) ||
+                image.attr('title') ||
+                platform.attr('href'),
               url: platform.attr('href'),
               type: platformType,
               imageUrl: httpClient.getSiteURL() + image.attr('src'),
