@@ -3,7 +3,8 @@ import { load } from 'cheerio';
 import { ISessionMarks } from '../models/sessionMarks';
 import { getTextField } from './utils';
 
-const tableTitleRegex = /(?:(\d)\s+([а-я]+)\s+\((\d)\s+.*\))?(?:[а-я\s,]+(\d{2}.\d{2}.\d{4}))?/s;
+const tableTitleRegex =
+  /(?:(\d)\s+([а-я]+)\s+\((\d)\s+[а-я]+\))?(?:[а-я\s,]+(\d{2}.\d{2}.\d{4}))?/s;
 
 export default function parseSessionMarks(html: string): ISessionMarks[] {
   const $ = load(html);
