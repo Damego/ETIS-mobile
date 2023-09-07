@@ -101,7 +101,7 @@ export default function parseTimeTable(html: string) {
             const image = platform.find('img');
             const platformType = getDistancePlatformType(image);
             distancePlatform = {
-              name: getDistancePlatformName(platformType),
+              name: getDistancePlatformName(platformType) || image.attr('title'),
               url: platform.attr('href'),
               type: platformType,
               imageUrl: httpClient.getSiteURL() + image.attr('src'),
@@ -118,11 +118,7 @@ export default function parseTimeTable(html: string) {
             building,
             floor,
             subject,
-            // TODO: move it to object in the future since this is a breaking change
-            isDistance:
-              audienceNumber === 'Дистанционно' ||
-              !!distancePlatform?.url ||
-              !!distancePlatform?.type,
+            isDistance: audienceNumber === 'Дистанционно' || !!distancePlatform,
             distancePlatform,
           });
         });
