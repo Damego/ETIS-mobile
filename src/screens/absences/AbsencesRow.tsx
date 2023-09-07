@@ -1,32 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, ToastAndroid, TouchableOpacity } from 'react-native';
 
-import Card from '../../components/Card';
-import { getOrderHTML } from '../../data/orders';
 import { useGlobalStyles } from '../../hooks';
-import { fontSize } from '../../utils/texts';
 import { IDisciplineAbsences } from '../../models/absences';
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
     container: {
         flexDirection: 'row'
+    },
+    centre: {
+        alignContent: 'center'
+    },
+    table: {
+        padding: 'auto'
     }
 });
 
-const Absences = ({ record }: { record: IDisciplineAbsences}) => {
+const AbsencesRow = ({ record }: { record: IDisciplineAbsences}) => {
     const globalStyles = useGlobalStyles();
 
     return (
-        <Card>
-            <View style={styles.container}>
+        <DataTable.Row>
+            <DataTable.Cell numeric>
                 <Text style={globalStyles.textColor}>{record.number}</Text>
+            </DataTable.Cell>
+            <DataTable.Cell>
                 <Text style={globalStyles.textColor}>{record.time}</Text>
+            </DataTable.Cell>
+            <DataTable.Cell>
                 <Text style={globalStyles.textColor}>{record.subject}</Text>
-                <Text style={globalStyles.textColor}>{record.type}</Text>
-                <Text style={globalStyles.textColor}>{record.teacher}</Text>
-            </View>
-        </Card>
+            </DataTable.Cell>
+        </DataTable.Row>
     );
 };
 
-export default Absences;
+export default AbsencesRow;

@@ -1,3 +1,5 @@
+import { IGetPayload } from "./results";
+
 export interface IDisciplineAbsences {
   number: number;
   time: string;
@@ -6,6 +8,12 @@ export interface IDisciplineAbsences {
   teacher: string;
 }
   
-// export interface IAbsences {
-//   disciplineAbsences: IDisciplineAbsences[];
-// }
+export interface IPeriodAbsences {
+  absences: IDisciplineAbsences[];
+  period: number;
+  overallMissed: number;
+}
+
+export interface IGetAbsencesPayload extends IGetPayload {
+  period?: number;
+}

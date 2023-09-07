@@ -1,4 +1,4 @@
-import { IDisciplineAbsences } from '../models/absences';
+import { IPeriodAbsences, IGetAbsencesPayload } from '../models/absences';
 import { ICalendarSchedule } from '../models/calendarSchedule';
 import { ICertificateTable } from '../models/certificate';
 import { IGetMessagesPayload, IMessagesData } from '../models/messages';
@@ -30,7 +30,7 @@ import { Response } from '../utils/http';
 import { reportParserError } from '../utils/sentry';
 
 export interface BaseClient {
-  getAbsencesData(payload: IGetPayload): Promise<IGetResult<IDisciplineAbsences[]>>;
+  getAbsencesData(payload: IGetAbsencesPayload): Promise<IGetResult<IPeriodAbsences>>;
   getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>>;
   getTimeTableData(payload: ITimeTableGetProps): Promise<IGetResult<ITimeTable>>;
   getMessagesData(payload: IGetMessagesPayload): Promise<IGetResult<IMessagesData>>;

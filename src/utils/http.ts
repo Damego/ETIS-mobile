@@ -279,11 +279,14 @@ class HTTPClient {
     - 2: весенний
     - 3: летний
    */
-  getAbsences(trimester: number) {
-    return this.request('GET', '/stu.absence', {
-      params: { p_term: trimester },
-      returnResponse: false,
-    });
+  getAbsences(period?: number) {
+    let object: PayloadWithString = { returnResponse: false, params: {} };
+    
+    if (typeof(period) !== 'undefined') {
+      object.params = { p_term: period };
+    }
+
+    return this.request('GET', '/stu.absence', object);
   }
 
   getTeachers() {
