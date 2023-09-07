@@ -1,5 +1,11 @@
 import { IGetPayload } from './results';
 
+export enum DistancePlatformTypes {
+  unknown,
+  bbb,
+  zoom
+}
+
 export enum WeekTypes {
   common,
   session,
@@ -22,13 +28,21 @@ export interface WeekInfo {
   holidayDates?: WeekDates;
 }
 
+export interface DistancePlatform {
+  name: string;
+  type: DistancePlatformTypes;
+  url: string;
+  imageUrl: string;
+}
+
 export interface ILesson {
   subject: string;
-  audienceText: string;
-  audience: string;
-  building: string;
-  floor: string;
+  audienceText?: string;
+  audience?: string;
+  building?: string;
+  floor?: string;
   isDistance: boolean;
+  distancePlatform?: DistancePlatform;
 }
 
 export interface IPair {
