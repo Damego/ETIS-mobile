@@ -374,11 +374,12 @@ class HTTPClient {
     return this.request('GET', '/stu.change_pr_page', { returnResponse: false });
   }
 
-  changePersonalRecord(id: string) {
+  async changePersonalRecord(id: string) {
     const params = {
       p_pr_id: id,
     };
-    return this.request('GET', '/stu.change_pr', { params });
+    const response = await this.request('GET', '/stu.change_pr', { params, returnResponse: true });
+    return response.data.status === 200;
   }
 }
 
