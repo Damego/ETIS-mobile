@@ -1,9 +1,11 @@
 import React from 'react';
+import { Text } from 'react-native';
 
 import Card from '../../components/Card';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import Screen from '../../components/Screen';
 import AboutAppButton from './AboutApp';
+import ChangePersonalRecord from './ChangePersonalRecord';
 import ResetIntroSetting from './ResetIntroSetting';
 import SignOut from './SignOut';
 import ToggleSignNotification from './ToggleSignNotification';
@@ -24,9 +26,13 @@ export default function Settings() {
       <CardHeaderOut topText={'Приложение'}>
         <AboutAppButton />
       </CardHeaderOut>
-      <CardHeaderOut topText={'Аккаунт'}>
+      <Text>Аккаунт</Text>
+      <Card>
+        <ChangePersonalRecord />
+      </Card>
+      <Card>
         <SignOut />
-      </CardHeaderOut>
+      </Card>
     </Screen>
   );
 }
