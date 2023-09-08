@@ -1,16 +1,16 @@
 import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useNavigationState } from '@react-navigation/native';
 import React, { useEffect } from 'react';
-import { DeviceEventEmitter, ToastAndroid } from 'react-native';
+import { ActivityIndicator, DeviceEventEmitter, ToastAndroid, View } from 'react-native';
 import { ShortcutItem } from 'react-native-quick-actions';
 
+import { cache } from '../cache/smartCache';
 import { getWrappedClient } from '../data/client';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
 import { useAppTheme } from '../hooks/theme';
-import { GetResultType, RequestType } from '../models/results';
-import { setAuthorizing } from '../redux/reducers/authSlice';
-import { setStudentState } from '../redux/reducers/studentSlice';
+import { RequestType } from '../models/results';
+import { setPersonalRecords, setStudentState } from '../redux/reducers/studentSlice';
 import Announce from '../screens/announce/Announce';
 import Messages from '../screens/messages/Messages';
 import TimeTablePage from '../screens/timeTable/TimeTable';
@@ -26,7 +26,9 @@ const TabNavigator = () => {
   const theme = useAppTheme();
 
   const dispatch = useAppDispatch();
-  const { messageCount, announceCount } = useAppSelector((state) => state.student);
+  const { messageCount, announceCount, personalRecords, updatePersonalRecords } = useAppSelector(
+    (state) => state.student
+  );
   const { signNotification, initialPage } = useAppSelector((state) => state.settings);
   const client = getWrappedClient();
   const isDemo = useAppSelector((state) => state.auth.isDemo);
@@ -42,18 +44,24 @@ const TabNavigator = () => {
     });
   }, []);
 
-  const loadData = async () => {
-    const result = await client.getStudentInfoData({ requestType: RequestType.tryFetch });
-
-    if (result.type === GetResultType.loginPage) {
-      dispatch(setAuthorizing(true));
-      return;
-    }
-
+  const getPersonalRecords = async () => {
+    const result = await client.getPersonalRecords({ requestType: RequestType.tryFetch });
     const data = result.data;
 
-    if (data) {
-      dispatch(setStudentState(data));
+    const currentPersonalRecord = data[data.findIndex((record) => !record.id)];
+    cache.init(currentPersonalRecord.index);
+
+    if (result.data) {
+      dispatch(setPersonalRecords(result.data));
+    }
+  };
+
+  const loadData = async () => {
+    await getPersonalRecords();
+
+    const result = await client.getStudentInfoData({ requestType: RequestType.tryFetch });
+    if (result.data) {
+      dispatch(setStudentState(result.data));
     }
   };
 
@@ -63,6 +71,13 @@ const TabNavigator = () => {
     }
     loadData();
   }, []);
+
+  if (!personalRecords)
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size={'large'} />
+      </View>
+    );
 
   return (
     <Tab.Navigator
