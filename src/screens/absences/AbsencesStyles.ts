@@ -19,6 +19,12 @@ const styles = StyleSheet.create({
     },
     leftMargin: {
         marginLeft: 'auto'
+    },
+    rootView: {
+        height: '100%', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        marginTop: -20 // so that the icon and text feel more in the centre (mind games)
     }
 });
 

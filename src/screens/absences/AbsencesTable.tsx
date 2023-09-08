@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ToastAndroid, Text } from 'react-native';
+import { ToastAndroid, Text, View, StyleProp, TextStyle } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import LoadingScreen from '../../components/LoadingScreen';
@@ -12,6 +12,8 @@ import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { IGetAbsencesPayload, IPeriodAbsences } from '../../models/absences';
 import AbsencesCard from './AbsencesCard';
 import styles from './AbsencesStyles';
+import { AntDesign } from '@expo/vector-icons';
+import { fontSize } from '../../utils/texts';
 
 const AbsencesTable = () => {
   const globalStyles = useGlobalStyles();
@@ -20,6 +22,7 @@ const AbsencesTable = () => {
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState<IPeriodAbsences>(null);
   const client = getWrappedClient();
+  const doubledIconSize = 72;
 
   const loadData = async (period?: number) => {
     setLoading(true);
@@ -63,12 +66,26 @@ const AbsencesTable = () => {
   if (isLoading) return <LoadingScreen onRefresh={loadData} />;
   if (!data) return <NoData onRefresh={loadData} />;
 
+  const empty = (): boolean => {
+    return data.absences.length === 0;
+  };
+
+  let textStyles: StyleProp<TextStyle> = 
+    [globalStyles.textColor, empty() ? { fontSize: fontSize.medium.fontSize, marginTop: 10 } : {}];
+
   return (
     <Screen onUpdate={loadData}>
       {data.absences.map((absences, index) => (
-         <AbsencesCard disciplineAbsences={absences} key={index} ></AbsencesCard>
+        <AbsencesCard disciplineAbsences={absences} key={index} />
       ))}
-      <Text style={[globalStyles.textColor, ]}>{ 'Всего пропущено занятий: ' + data.overallMissed }</Text>
+      <View style={ empty() ? styles.rootView : {} }>
+        {empty() ?
+        <AntDesign name={'paperclip'} size={doubledIconSize} color={globalStyles.textColor.color} /> 
+        : <></>}
+        <Text style={textStyles}>
+          { 'Всего пропущено занятий: ' + data.overallMissed }
+        </Text>
+      </View>
     </Screen>
   );
 };
