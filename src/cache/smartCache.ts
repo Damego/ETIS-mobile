@@ -4,6 +4,7 @@ import { ICalendarSchedule } from '../models/calendarSchedule';
 import { ICertificate, ICertificateTable } from '../models/certificate';
 import { IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
+import { IPersonalRecord } from '../models/personalRecords';
 import { ISessionRating } from '../models/rating';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
@@ -16,9 +17,10 @@ import { AppConfig, ThemeType } from '../redux/reducers/settingsSlice';
 import FieldCache from './fieldCache';
 import MappedCache from './mappedCache';
 import SecuredFieldCache from './securedFieldCache';
-import { IPersonalRecord } from '../models/personalRecords';
 
 export default class SmartCache {
+  currentPersonalRecordIndex: number;
+
   announce: FieldCache<string[]>;
   messages: MappedCache<number, IMessagesData>;
   orders: {
@@ -34,9 +36,9 @@ export default class SmartCache {
   student: FieldCache<StudentInfo>;
   calendarSchedule: FieldCache<ICalendarSchedule>;
   certificate: FieldCache<ICertificate[]>;
-  personalRecords: FieldCache<IPersonalRecord[]>;
 
   // Internal
+  personalRecords: FieldCache<IPersonalRecord[]>;
   user: SecuredFieldCache<UserCredentials>;
   app: FieldCache<AppConfig>;
 
@@ -63,25 +65,40 @@ export default class SmartCache {
   };
 
   constructor() {
+    // Некоторые данные доступны на всех личных записях, поэтому их не нужно хранить по записи
     this.announce = new FieldCache(this.keys.ANNOUNCES);
     this.messages = new MappedCache<number, IMessagesData>(this.keys.MESSAGES);
-    this.orders = {
-      list: new FieldCache<IOrder[]>(this.keys.ORDERS),
-      info: new MappedCache<string, string>(this.keys.ORDERS_INFO),
-    };
-    this.timeTable = new MappedCache(this.keys.TIMETABLE);
-    this.teachers = new FieldCache<TeacherType>(this.keys.TEACHERS);
-    this.teachPlan = new FieldCache(this.keys.TEACH_PLAN);
-    this.signsMarks = new MappedCache(this.keys.SIGNS_MARKS);
-    this.signsPoints = new MappedCache(this.keys.SIGNS_POINTS);
-    this.signsRating = new MappedCache(this.keys.SIGNS_RATING);
-    this.student = new FieldCache<StudentInfo>(this.keys.STUDENT);
-    this.calendarSchedule = new FieldCache(this.keys.CALENDAR_SCHEDULE);
-    this.certificate = new FieldCache(this.keys.CERTIFICATE);
-    this.personalRecords = new FieldCache(this.keys.PERSONAL_RECORDS)
+    this.personalRecords = new FieldCache(this.keys.PERSONAL_RECORDS);
 
     this.user = new SecuredFieldCache<UserCredentials>(this.keys.USER);
     this.app = new FieldCache<AppConfig>(this.keys.APP);
+  }
+
+  buildKey(key: string) {
+    return `PR-${this.currentPersonalRecordIndex}::${key}`;
+  }
+
+  init(personalRecordIndex: number) {
+    // Кэш зависит от текущей учётной записи студента
+    // Сделано это ради того, чтобы не было коллизий с другими записями при сменах,
+    // и при этом не очищать кэш при переходе из одной записи в другую.
+    // Однако, коллизии всё равно могут быть, если сменить запись на сайте, и при этом пользоваться приложением,
+    // но мы с этим ничего не сможем сделать
+    this.currentPersonalRecordIndex = personalRecordIndex;
+
+    this.orders = {
+      list: new FieldCache<IOrder[]>(this.buildKey(this.keys.ORDERS)),
+      info: new MappedCache<string, string>(this.buildKey(this.keys.ORDERS_INFO)),
+    };
+    this.timeTable = new MappedCache(this.buildKey(this.keys.TIMETABLE));
+    this.teachers = new FieldCache<TeacherType>(this.buildKey(this.keys.TEACHERS));
+    this.teachPlan = new FieldCache(this.buildKey(this.keys.TEACH_PLAN));
+    this.signsMarks = new MappedCache(this.buildKey(this.keys.SIGNS_MARKS));
+    this.signsPoints = new MappedCache(this.buildKey(this.keys.SIGNS_POINTS));
+    this.signsRating = new MappedCache(this.buildKey(this.keys.SIGNS_RATING));
+    this.student = new FieldCache<StudentInfo>(this.buildKey(this.keys.STUDENT));
+    this.calendarSchedule = new FieldCache(this.buildKey(this.keys.CALENDAR_SCHEDULE));
+    this.certificate = new FieldCache(this.buildKey(this.keys.CERTIFICATE));
   }
 
   // Announce Region
@@ -284,20 +301,6 @@ export default class SmartCache {
 
   // End Student Region
 
-  // Personal Records Region
-
-  async getPersonalRecords() {
-    if (!this.personalRecords.isReady()) await this.personalRecords.init();
-    return this.personalRecords.get();
-  }
-
-  async placePersonalRecords(data: IPersonalRecord[]) {
-    this.personalRecords.place(data);
-    await this.personalRecords.save();
-  }
-
-  // End Personal Records region
-
   // Calendar Schedule region
 
   async getCalendarSchedule() {
@@ -331,6 +334,19 @@ export default class SmartCache {
   // End Secure Region
 
   // Internal Region
+
+  async getPersonalRecords() {
+    if (!this.personalRecords.isReady()) await this.personalRecords.init();
+    return this.personalRecords.get();
+  }
+
+  async placePersonalRecords(data: IPersonalRecord[]) {
+    this.personalRecords.place(data);
+    await this.personalRecords.save();
+
+    const currentPersonalRecord = data[data.findIndex((record) => !record.id)];
+    this.init(currentPersonalRecord.index);
+  }
 
   async getAppConfig() {
     if (!this.app.isReady()) await this.app.init();

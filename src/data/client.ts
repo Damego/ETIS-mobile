@@ -250,6 +250,6 @@ export default class Client implements BaseClient {
   }
 
   async getPersonalRecords(payload: IGetPayload): Promise<IGetResult<IPersonalRecord[]>> {
-    return this.personalRecordsClient.getData(payload)
+    return this.personalRecordsClient.getData(payload);
   }
 }
