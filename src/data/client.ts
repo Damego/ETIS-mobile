@@ -6,6 +6,7 @@ import { ICalendarSchedule } from '../models/calendarSchedule';
 import { ICertificateTable } from '../models/certificate';
 import { IGetMessagesPayload, IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
+import { IPersonalRecord } from '../models/personalRecords';
 import { IGetRatingPayload, ISessionRating } from '../models/rating';
 import { IGetPayload, IGetResult } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
@@ -29,10 +30,11 @@ import {
   parseTeachers,
   parseTimeTable,
 } from '../parser';
-import { parseCertificateTable } from '../parser/certificate';
 import parseCalendarSchedule from '../parser/calendar';
+import { parseCertificateTable } from '../parser/certificate';
 import { StudentInfo } from '../parser/menu';
 import parseOrders from '../parser/order';
+import parsePersonalRecords from '../parser/personalRecords';
 import parseRating from '../parser/rating';
 import parseSessionQuestionnaire from '../parser/sessionQuestionnaire';
 import parseSessionQuestionnaireList from '../parser/sessionQuestionnaireList';
@@ -64,6 +66,7 @@ class SessionQuestionnaireListClient extends BasicClient<
   IGetStringPayload,
   ISessionQuestionnaireLink[]
 > {}
+class PersonalRecordsClient extends BasicClient<IGetPayload, IPersonalRecord[]> {}
 
 export default class Client implements BaseClient {
   private announceClient: AnnounceClient;
@@ -80,6 +83,7 @@ export default class Client implements BaseClient {
   private certificateClient: CertificateClient;
   private sessionQuestionnaireClient: SessionQuestionnaireClient;
   private sessionQuestionnaireListClient: SessionQuestionnaireListClient;
+  private personalRecordsClient: PersonalRecordsClient;
 
   constructor() {
     this.announceClient = new AnnounceClient(
@@ -166,6 +170,12 @@ export default class Client implements BaseClient {
       parseSessionQuestionnaireList,
       emptyFunction
     );
+    this.personalRecordsClient = new PersonalRecordsClient(
+      () => cache.getPersonalRecords(),
+      () => httpClient.getPersonalRecords(),
+      parsePersonalRecords,
+      (data) => cache.placePersonalRecords(data)
+    );
   }
 
   async getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>> {
@@ -237,5 +247,9 @@ export default class Client implements BaseClient {
     payload: IGetStringPayload
   ): Promise<IGetResult<ISessionQuestionnaire>> {
     return this.sessionQuestionnaireClient.getData(payload);
+  }
+
+  async getPersonalRecords(payload: IGetPayload): Promise<IGetResult<IPersonalRecord[]>> {
+    return this.personalRecordsClient.getData(payload)
   }
 }

@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { StudentData, StudentState } from '../../models/student';
 import { StudentInfo } from '../../parser/menu';
+import { IPersonalRecord } from '../../models/personalRecords';
 
 const initialState: StudentState = {
   info: null,
@@ -40,6 +41,9 @@ const studentSlice = createSlice({
     setCurrentSession(state, action: PayloadAction<number>) {
       state.currentSession = action.payload;
     },
+    setPersonalRecords(state, action: PayloadAction<IPersonalRecord[]>) {
+      state.personalRecords = action.payload;
+    }
   },
 });
 
@@ -51,4 +55,5 @@ export const {
   setAnnounceCount,
   setCurrentWeek,
   setCurrentSession,
+  setPersonalRecords
 } = studentSlice.actions;

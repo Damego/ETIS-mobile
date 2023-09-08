@@ -16,6 +16,7 @@ import { AppConfig, ThemeType } from '../redux/reducers/settingsSlice';
 import FieldCache from './fieldCache';
 import MappedCache from './mappedCache';
 import SecuredFieldCache from './securedFieldCache';
+import { IPersonalRecord } from '../models/personalRecords';
 
 export default class SmartCache {
   announce: FieldCache<string[]>;
@@ -33,6 +34,7 @@ export default class SmartCache {
   student: FieldCache<StudentInfo>;
   calendarSchedule: FieldCache<ICalendarSchedule>;
   certificate: FieldCache<ICertificate[]>;
+  personalRecords: FieldCache<IPersonalRecord[]>;
 
   // Internal
   user: SecuredFieldCache<UserCredentials>;
@@ -41,9 +43,12 @@ export default class SmartCache {
   private keys = {
     // ETIS related keys
     ANNOUNCES: 'ANNOUNCES',
+    CALENDAR_SCHEDULE: 'CALENDAR_SCHEDULE',
+    CERTIFICATE: 'CERTIFICATE',
     MESSAGES: 'MESSAGES',
     ORDERS: 'ORDERS',
     ORDERS_INFO: 'ORDERS_INFO',
+    PERSONAL_RECORDS: 'PERSONAL_RECORDS',
     SIGNS_POINTS: 'SIGNS_POINTS',
     SIGNS_MARKS: 'SIGNS_MARKS',
     SIGNS_RATING: 'SIGNS_RATING',
@@ -51,8 +56,6 @@ export default class SmartCache {
     TEACH_PLAN: 'TEACH_PLAN',
     TEACHERS: 'TEACHERS',
     TIMETABLE: 'TIMETABLE',
-    CALENDAR_SCHEDULE: 'CALENDAR_SCHEDULE',
-    CERTIFICATE: 'CERTIFICATE',
 
     // Internal keys
     USER: 'USER',
@@ -75,6 +78,7 @@ export default class SmartCache {
     this.student = new FieldCache<StudentInfo>(this.keys.STUDENT);
     this.calendarSchedule = new FieldCache(this.keys.CALENDAR_SCHEDULE);
     this.certificate = new FieldCache(this.keys.CERTIFICATE);
+    this.personalRecords = new FieldCache(this.keys.PERSONAL_RECORDS)
 
     this.user = new SecuredFieldCache<UserCredentials>(this.keys.USER);
     this.app = new FieldCache<AppConfig>(this.keys.APP);
@@ -278,6 +282,22 @@ export default class SmartCache {
     await this.placeStudent(student);
   }
 
+  // End Student Region
+
+  // Personal Records Region
+
+  async getPersonalRecords() {
+    if (!this.personalRecords.isReady()) await this.personalRecords.init();
+    return this.personalRecords.get();
+  }
+
+  async placePersonalRecords(data: IPersonalRecord[]) {
+    this.personalRecords.place(data);
+    await this.personalRecords.save();
+  }
+
+  // End Personal Records region
+
   // Calendar Schedule region
 
   async getCalendarSchedule() {
@@ -291,8 +311,6 @@ export default class SmartCache {
   }
 
   // End Calendar Schedule region
-
-  // End Student Region
 
   // Secure Region
 

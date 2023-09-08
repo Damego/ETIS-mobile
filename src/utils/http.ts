@@ -53,7 +53,7 @@ class HTTPClient {
 
   constructor() {
     this.sessionID = null;
-    this.siteURL = 'https://student.psu.ru'
+    this.siteURL = 'https://student.psu.ru';
     this.baseURL = `${this.siteURL}/pls/stu_cus_et`;
     this.instance = axios.create({
       baseURL: this.baseURL,
@@ -368,6 +368,17 @@ class HTTPClient {
     console.log('[DATA] fetched certificate html');
 
     return fetched.data;
+  }
+
+  getPersonalRecords() {
+    return this.request('GET', '/stu.change_pr_page', { returnResponse: false });
+  }
+
+  changePersonalRecord(id: string) {
+    const params = {
+      p_pr_id: id,
+    };
+    return this.request('GET', '/stu.change_pr', { params });
   }
 }
 
