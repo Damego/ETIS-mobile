@@ -1,3 +1,5 @@
+import { IPersonalRecord } from './personalRecords';
+
 export interface StudentData {
   name: string;
   speciality: string;
@@ -13,4 +15,5 @@ export interface StudentState {
   sessionTestID: string;
   currentWeek?: number;
   currentSession?: number;
+  personalRecords: IPersonalRecord[];
 }
