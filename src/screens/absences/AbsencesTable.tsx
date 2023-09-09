@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ToastAndroid, Text, View, StyleProp, TextStyle } from 'react-native';
+import { ToastAndroid, Text, View, StyleProp, TextStyle, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import LoadingScreen from '../../components/LoadingScreen';
@@ -14,6 +14,11 @@ import AbsencesCard from './AbsencesCard';
 import styles from './AbsencesStyles';
 import { AntDesign } from '@expo/vector-icons';
 import { fontSize } from '../../utils/texts';
+import ClickableText from '../../components/ClickableText';
+import Dropdown from '../../components/Dropdown';
+import { IDropdownOption } from '../../models/dropdown';
+
+export const absencesIconName = 'paperclip';
 
 const AbsencesTable = () => {
   const globalStyles = useGlobalStyles();
@@ -46,14 +51,14 @@ const AbsencesTable = () => {
     }
 
     setData(result.data);
-    // let test: IPeriodAbsences = { period: 1, overallMissed: 9, absences: [] };
+    let test: IPeriodAbsences = { period: 1, periods: ['осенний триместр', "весенний триместр", "летний триместр"], overallMissed: 9, absences: [] };
 
-    // test.absences.push( 
-    //   { dates: ["21.09", "22.09", "23.09", "01.10", "02.10"], subject: 'Элементы высшей математики', type: "практика", teacher: "Andrey Vasiliev" },
-    //   { dates: ["18.09", "22.09"], subject: 'Иностранный язык', type: "практика", teacher: "Andrey Vasiliev" },
-    //   { dates: ["12.09", "14.09"], subject: 'Биология', type: "практика", teacher: "Andrey Vasiliev" }
-    // );
-    // setData(test);
+    test.absences.push( 
+      { dates: ["21.09.2023", "22.09.2023", "23.09.2023", "01.10.2023", "02.10.2023"], subject: 'Элементы высшей математики', type: "практика", teacher: "Andrey Vasiliev Syskoeblanovich" },
+      { dates: ["18.09.2023", "22.09.2023"], subject: 'Иностранный язык', type: "практика", teacher: "Andrey Vasiliev Syskoeblanovich" },
+      { dates: ["12.09.2023", "14.09.2023"], subject: 'Биология', type: "практика", teacher: "Andrey Vasiliev Syskoeblanovich" }
+    );
+    setData(test);
 
     
     setLoading(false);
@@ -71,16 +76,38 @@ const AbsencesTable = () => {
   };
 
   let textStyles: StyleProp<TextStyle> = 
-    [globalStyles.textColor, empty() ? { fontSize: fontSize.medium.fontSize, marginTop: 10 } : {}];
+    [globalStyles.textColor, empty() ? [fontSize.medium, { marginTop: 10 }] : {}];
+  
+  let dropdownOptions: IDropdownOption[] = [];
+
+  data.periods.map((value: string, index: number) => {
+    dropdownOptions.push({label: value, value: index + 1, current: index + 1 === data.period ? true : false });
+  });
 
   return (
     <Screen onUpdate={loadData}>
+      {/* <Dropdown options={dropdownOptions} selectedOption={dropdownOptions[data.period-1]} onSelect={(selectedOption: number) => loadData(selectedOption)} /> */}
+      <View style={[styles.hbox, styles.flexWrap, styles.centre, { columnGap: 20, borderWidth: 2 }]}>
+        {data.periods.map((value: string, index: number) => (
+          <ClickableText key={index} 
+            onPress={() => {if (index + 1 !== data.period) loadData(index + 1)}}
+            viewStyle={{ padding: 0 }}
+            textStyle={[
+              { maxHeight: '50%', paddingHorizontal: 0, paddingVertical: 0, borderWidth: 2, zIndex: 1, borderColor: 'red' },
+              fontSize.medium, 
+              globalStyles.textColor, 
+              index + 1 === data.period ? {} : {textDecorationLine: 'underline'}
+            ]}
+            text={value} />
+        ))}
+      </View>
+      
       {data.absences.map((absences, index) => (
-        <AbsencesCard disciplineAbsences={absences} key={index} />
+        <AbsencesCard key={index} disciplineAbsences={absences} />
       ))}
       <View style={ empty() ? styles.rootView : {} }>
         {empty() ?
-        <AntDesign name={'paperclip'} size={doubledIconSize} color={globalStyles.textColor.color} /> 
+          <AntDesign name={absencesIconName} size={doubledIconSize} color={globalStyles.textColor.color} /> 
         : <></>}
         <Text style={textStyles}>
           { 'Всего пропущено занятий: ' + data.overallMissed }

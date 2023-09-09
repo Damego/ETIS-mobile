@@ -10,6 +10,7 @@ export interface IDisciplineAbsences {
 export interface IPeriodAbsences {
   absences: IDisciplineAbsences[];
   period: number;
+  periods: string[];
   overallMissed: number;
 }
 

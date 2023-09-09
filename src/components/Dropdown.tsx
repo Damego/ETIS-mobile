@@ -4,6 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { useGlobalStyles } from '../hooks';
 import { fontSize } from '../utils/texts';
+import { IDropdownOption } from '../models/dropdown';
 
 const styles = StyleSheet.create({
   dropdownView: {
@@ -54,7 +55,7 @@ const SelectOption = ({ label, current }) => {
   );
 };
 
-function Menu({ options, onSelect }) {
+function Menu({ options, onSelect } : { options: IDropdownOption[], onSelect: any}) {
   const globalStyles = useGlobalStyles();
 
   return (

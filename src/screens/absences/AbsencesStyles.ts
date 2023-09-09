@@ -1,27 +1,27 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-    container: {
+    hbox: {
         flexDirection: 'row'
     },
     centre: {
-        alignContent: 'center',
+        display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        alignContent: 'center', 
+        width: '100%',
+        justifyContent: 'center', 
     },
-    table: {
-        padding: 'auto'
+    flexWrap: {
+        flexWrap: 'wrap'
     },
     dropdownView: {
         width: 'auto',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start',
-    },
-    leftMargin: {
-        marginLeft: 'auto'
+        columnGap: 0,
     },
     rootView: {
-        height: '100%', 
+        position: 'absolute',
+        height: '100%',
+        width: '100%',
         justifyContent: 'center', 
         alignItems: 'center', 
         marginTop: -20 // so that the icon and text feel more in the centre (mind games)

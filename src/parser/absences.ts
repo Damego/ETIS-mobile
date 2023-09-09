@@ -31,18 +31,17 @@ export default function parseAbsences(html): IPeriodAbsences {
   });
 
   let period: number;
-  let periods: number = 0;
-  $('.submenu-item', html).each((index, element) => {
-    if (index === 0) return;
+  let periods: string[] = [];
+  $('span.submenu-item', html).each((index, element) => {
+    let parsed = $(element);
+    periods.push(parsed.text());
 
-    periods++;
-
-    // define current period (current period doesn't have href attr)
-    if ($(element).attr('href') === 'undefined')
+    // define current period (current period's <a> doesn't have href attr)
+    if (parsed.find('a.dashed').attr('href') === undefined)
       period = index + 1;
   });
 
   let overallMissed: string = $('div.span9', html).text().split(' ').at(-1);
 
-  return { period: period, absences: data, overallMissed: parseInt(overallMissed) };
+  return { period: period, periods: periods, absences: data, overallMissed: parseInt(overallMissed) };
 }
