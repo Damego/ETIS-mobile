@@ -25,7 +25,7 @@ const getWeekType = (week: cheerio.Cheerio): WeekTypes => {
   if (week.hasClass('pract')) {
     return WeekTypes.practice;
   }
-  if (week.attr('title').includes('факультатив')) {
+  if (week.attr('title')?.includes('факультатив')) {
     return WeekTypes.elective;
   }
   return WeekTypes.common;
