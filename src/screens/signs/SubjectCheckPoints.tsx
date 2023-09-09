@@ -4,6 +4,7 @@ import { StyleSheet, Text } from 'react-native';
 import { useGlobalStyles } from '../../hooks';
 import { ICheckPoint } from '../../models/sessionPoints';
 import { fontSize } from '../../utils/texts';
+import { Float } from 'react-native/Libraries/Types/CodegenTypes';
 
 const styles = StyleSheet.create({
   markNeutral: {
@@ -15,9 +16,26 @@ const styles = StyleSheet.create({
   },
 });
 
+const adjustPassScore = (checkPoint: ICheckPoint): number => {
+  // Если баллы и текущая равны, значит разбалловка в норме
+  if (checkPoint.points === checkPoint.currentScore || checkPoint.currentScore === 0) 
+    return checkPoint.passScore;
+
+  else {
+    const currentToMaxRatio: Float = checkPoint.currentScore / checkPoint.maxScore;
+    const maxPoints: number = checkPoint.points / currentToMaxRatio;
+    const passToMaxPointsRatio: Float = checkPoint.passScore / maxPoints;
+    const adjustedPassScore: number = checkPoint.maxScore * passToMaxPointsRatio;
+    return adjustedPassScore;
+  }
+};
+
 const getCheckPointScore = (checkPoint: ICheckPoint) => {
   if (checkPoint.isAbsent) return 'н';
   else if (Number.isNaN(checkPoint.points) || !checkPoint.points) return '-';
+
+  // Если в текущей стоит 0, а в баллах не ноль, значит меньше проходного, но мы покажем баллы
+  else if (checkPoint.currentScore === 0 && checkPoint.points !== 0) return checkPoint.points;
 
   // Вводные работы в рейтинге не показываются, поэтому выводим просто полученные баллы
   return checkPoint.isIntroductionWork ? checkPoint.points : checkPoint.currentScore;
@@ -33,7 +51,8 @@ const SubjectCheckPoints = ({ data }: SubjectCheckPointsProps): React.ReactNode 
   return data.map((checkPoint, index) => {
     const checkPointName = `КТ ${index + 1}`;
     const scoreText: string | number = getCheckPointScore(checkPoint);
-    const pointsString = `${checkPointName}: ${scoreText} / ${checkPoint.passScore} / ${checkPoint.maxScore}`;
+    const passScore: number = adjustPassScore(checkPoint);
+    const pointsString = `${checkPointName}: ${scoreText} / ${passScore} / ${checkPoint.maxScore}`;
 
     return (
       <Text
