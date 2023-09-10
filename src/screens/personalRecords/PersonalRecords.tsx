@@ -1,6 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { StyleProp, Text, TextStyle, ToastAndroid, TouchableOpacity, View } from 'react-native';
 
 import { cache } from '../../cache/smartCache';
 import Card from '../../components/Card';
@@ -9,8 +9,15 @@ import { useAppDispatch, useGlobalStyles } from '../../hooks';
 import { IPersonalRecord } from '../../models/personalRecords';
 import { resetForRecord } from '../../redux/reducers/studentSlice';
 import { httpClient } from '../../utils';
+import { fontSize } from '../../utils/texts';
 
-const PersonalRecord = ({ record }: { record: IPersonalRecord }) => {
+const PersonalRecord = ({
+  record,
+  showStatus,
+}: {
+  record: IPersonalRecord;
+  showStatus: boolean;
+}) => {
   const globalStyles = useGlobalStyles();
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
@@ -29,6 +36,7 @@ const PersonalRecord = ({ record }: { record: IPersonalRecord }) => {
         <Text style={globalStyles.textColor}>
           {record.year} {record.speciality}
         </Text>
+        {!showStatus && <Text style={globalStyles.textColor}>Статус: {record.status}</Text>}
       </View>
       {record.id && (
         <View>
@@ -43,6 +51,11 @@ const PersonalRecord = ({ record }: { record: IPersonalRecord }) => {
 
 export default function PersonalRecords() {
   const globalStyles = useGlobalStyles();
+  const textStyles: StyleProp<TextStyle> = [
+    globalStyles.textColor,
+    fontSize.medium,
+    { fontWeight: '500', marginBottom: '2%' },
+  ];
 
   const personalRecords = cache.personalRecords.get();
   const currentRecord = personalRecords.find((record) => !record.id);
@@ -55,17 +68,21 @@ export default function PersonalRecords() {
 
   return (
     <Screen>
-      <Text style={globalStyles.textColor}>Текущая запись</Text>
-      <PersonalRecord record={currentRecord} />
+      <Text
+        style={[globalStyles.textColor, fontSize.medium, { fontWeight: '500', marginBottom: '2%' }]}
+      >
+        Текущая запись
+      </Text>
+      <PersonalRecord record={currentRecord} showStatus={true} />
 
-      <Text style={globalStyles.textColor}>Активные записи</Text>
+      {activeRecords.length && <Text style={textStyles}>Активные записи</Text>}
       {activeRecords.map((record) => (
-        <PersonalRecord record={record} key={record.id + record.index} />
+        <PersonalRecord record={record} key={record.id + record.index} showStatus={true} />
       ))}
 
-      <Text style={globalStyles.textColor}>Неактивные записи</Text>
+      {inactiveRecords.length && <Text style={textStyles}>Неактивные записи</Text>}
       {inactiveRecords.map((record) => (
-        <PersonalRecord record={record} key={record.id + record.index} />
+        <PersonalRecord record={record} key={record.id + record.index} showStatus={false} />
       ))}
     </Screen>
   );

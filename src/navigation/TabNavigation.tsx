@@ -1,6 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useNavigation, useNavigationState } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 import { ActivityIndicator, DeviceEventEmitter, ToastAndroid, View } from 'react-native';
 import { ShortcutItem } from 'react-native-quick-actions';
@@ -26,7 +26,7 @@ const TabNavigator = () => {
   const theme = useAppTheme();
 
   const dispatch = useAppDispatch();
-  const { messageCount, announceCount, personalRecords, updatePersonalRecords } = useAppSelector(
+  const { messageCount, announceCount, personalRecords } = useAppSelector(
     (state) => state.student
   );
   const { signNotification, initialPage } = useAppSelector((state) => state.settings);
@@ -44,7 +44,7 @@ const TabNavigator = () => {
     });
   }, []);
 
-  const getPersonalRecords = async () => {
+  const loadPersonalRecords = async () => {
     const result = await client.getPersonalRecords({ requestType: RequestType.tryFetch });
     const data = result.data;
 
@@ -57,7 +57,7 @@ const TabNavigator = () => {
   };
 
   const loadData = async () => {
-    await getPersonalRecords();
+    await loadPersonalRecords();
 
     const result = await client.getStudentInfoData({ requestType: RequestType.tryFetch });
     if (result.data) {
