@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 
 import { ICalendarSchedule } from '../models/calendarSchedule';
@@ -64,6 +65,18 @@ export default class SmartCache {
     APP: 'APP',
   };
 
+  private generalKeys = [
+    this.keys.APP,
+    this.keys.USER,
+    this.keys.ANNOUNCES,
+    this.keys.MESSAGES,
+    this.keys.PERSONAL_RECORDS,
+  ];
+
+  private bindRecordKeys = [
+    ...Object.values(this.keys).filter((key) => !this.generalKeys.includes(key)),
+  ];
+
   constructor() {
     // Некоторые данные доступны на всех личных записях, поэтому их не нужно хранить по записи
     this.announce = new FieldCache(this.keys.ANNOUNCES);
@@ -78,13 +91,15 @@ export default class SmartCache {
     return `PR-${this.currentPersonalRecordIndex}::${key}`;
   }
 
-  init(personalRecordIndex: number) {
+  async init(personalRecordIndex: number, personalRecordsCount: number) {
     // Кэш зависит от текущей учётной записи студента
     // Сделано это ради того, чтобы не было коллизий с другими записями при сменах,
     // и при этом не очищать кэш при переходе из одной записи в другую.
     // Однако, коллизии всё равно могут быть, если сменить запись на сайте, и при этом пользоваться приложением,
     // но мы с этим ничего не сможем сделать
     this.currentPersonalRecordIndex = personalRecordIndex;
+
+    await this.migrateToV120(personalRecordsCount);
 
     this.orders = {
       list: new FieldCache<IOrder[]>(this.buildKey(this.keys.ORDERS)),
@@ -424,6 +439,13 @@ export default class SmartCache {
     await this.app.save();
   }
 
+  async placeCacheV120Migrated() {
+    const config = await this.getAppConfig();
+    config.cacheV120Migrated = true;
+    this.app.place(config);
+    await this.app.save();
+  }
+
   // End Internal Region
 
   // Helper methods
@@ -465,6 +487,29 @@ export default class SmartCache {
     SecureStore.deleteItemAsync('userPassword');
 
     return userCredentials;
+  }
+
+  /*
+   * Делает миграцию кэша с v1.1.X до v.1.2.0
+   */
+  async migrateToV120(personalRecordsCount: number) {
+    const app = await this.getAppConfig();
+    if (app.cacheV120Migrated) return;
+
+    console.log('[CACHE] Migrating to v1.2.0...');
+
+    // Мы не знаем, к какой личной записи принадлежат ранее кэшированные данные
+    // поэтому удаляем их, чтобы не было коллизий
+    // А если запись одна, то просто переносим все данные под новые ключи
+    if (personalRecordsCount === 1) {
+      const data = await AsyncStorage.multiGet(this.bindRecordKeys);
+      const updated: [string, string][] = data.map(([key, value]) => [this.buildKey(key), value]);
+      await AsyncStorage.multiSet(updated);
+    }
+    await AsyncStorage.multiRemove(this.bindRecordKeys);
+    await this.placeCacheV120Migrated();
+
+    console.log('[CACHE] Successfully migrated');
   }
 }
 

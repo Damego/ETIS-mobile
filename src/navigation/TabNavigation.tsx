@@ -49,7 +49,7 @@ const TabNavigator = () => {
     const data = result.data;
 
     const currentPersonalRecord = data[data.findIndex((record) => !record.id)];
-    cache.init(currentPersonalRecord.index);
+    await cache.init(currentPersonalRecord.index, data.length);
 
     if (result.data) {
       dispatch(setPersonalRecords(result.data));
