@@ -13,8 +13,13 @@ import { ITimeTable, ITimeTableGetProps, WeekTypes } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
 import { BaseClient } from './base';
 import { toResult } from './utils';
+import bind from '../utils/methodBinder';
 
 export default class DemoClient implements BaseClient {
+  constructor() {
+    bind(this, DemoClient);
+  }
+
   async getSessionQuestionnaireList(): Promise<IGetResult<ISessionQuestionnaireLink[]>> {
     const data: ISessionQuestionnaireLink[] = [
       { url: '1', name: 'Математический анализ (Иванов И. И.)' },
