@@ -23,7 +23,3 @@ export interface ISessionRating {
   session: ISession;
   groups: IGroup[];
 }
-
-export interface IGetRatingPayload extends IGetPayload {
-  session: number;
-}

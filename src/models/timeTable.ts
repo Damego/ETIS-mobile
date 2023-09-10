@@ -60,7 +60,3 @@ export interface ITimeTable {
   weekInfo: WeekInfo;
   days: ITimeTableDay[];
 }
-
-export interface ITimeTableGetProps extends IGetPayload {
-  week?: number;
-}

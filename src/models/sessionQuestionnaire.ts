@@ -40,7 +40,3 @@ export interface ISessionQuestionnaireLink {
   name: string;
   url?: string;
 }
-
-export interface IGetStringPayload extends IGetPayload {
-  data: string;
-}

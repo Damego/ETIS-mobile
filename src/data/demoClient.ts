@@ -3,13 +3,13 @@ import { ICertificateTable } from '../models/certificate';
 import { IMessagesData, MessageType } from '../models/messages';
 import { IOrder } from '../models/order';
 import { ISessionRating } from '../models/rating';
-import { GetResultType, IGetResult } from '../models/results';
+import { GetResultType, IGetPayload, IGetResult } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
 import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
 import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
-import { ITimeTable, ITimeTableGetProps, WeekTypes } from '../models/timeTable';
+import { ITimeTable, WeekTypes } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
 import { BaseClient } from './base';
 import { toResult } from './utils';
@@ -75,14 +75,15 @@ export default class DemoClient implements BaseClient {
     };
   }
 
-  async getTimeTableData(payload: ITimeTableGetProps): Promise<IGetResult<ITimeTable>> {
+  async getTimeTableData(payload: IGetPayload<number>): Promise<IGetResult<ITimeTable>> {
+    console.log(payload)
     const data: ITimeTable = {
       days: [],
       weekInfo: {
         first: 1,
         last: 5,
-        selected: payload?.week || 2,
-        type: payload.week === 1 ? WeekTypes.holiday : WeekTypes.common,
+        selected: payload?.data || 2,
+        type: payload.data === 1 ? WeekTypes.holiday : WeekTypes.common,
         dates: {
           start: '01.01.2023',
           end: '07.01.2023',

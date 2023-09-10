@@ -29,7 +29,3 @@ export interface IMessagesData {
   page: number;
   lastPage: number;
 }
-
-export interface IGetMessagesPayload extends IGetPayload {
-  page: number;
-}
