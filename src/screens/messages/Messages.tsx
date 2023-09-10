@@ -17,9 +17,6 @@ const Messages = () => {
   const client = useClient();
   const { data, isLoading, refresh, update } = useQuery({
     method: client.getMessagesData,
-    payload: {
-      requestType: RequestType.tryFetch,
-    },
     after: (result) => {
       if (!fetchedPages.current.includes(result.data.page)) {
         fetchedPages.current.push(result.data.page);
@@ -34,8 +31,8 @@ const Messages = () => {
     update({
       data: page,
       requestType: fetchedPages.current.includes(page)
-        ? RequestType.forceCache
-        : RequestType.forceFetch,
+        ? RequestType.tryCache
+        : RequestType.tryFetch,
     });
   };
 
