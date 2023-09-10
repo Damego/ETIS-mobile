@@ -1,5 +1,3 @@
-import { IGetPayload } from './results';
-
 export enum DistancePlatformTypes {
   unknown,
   bbb,

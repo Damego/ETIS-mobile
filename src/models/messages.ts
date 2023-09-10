@@ -1,5 +1,3 @@
-import { IGetPayload } from './results';
-
 export enum MessageType {
   message = 'message',
   studentReply = 'studentReply',

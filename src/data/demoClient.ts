@@ -11,9 +11,9 @@ import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
 import { ITimeTable, WeekTypes } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
+import bind from '../utils/methodBinder';
 import { BaseClient } from './base';
 import { toResult } from './utils';
-import bind from '../utils/methodBinder';
 
 export default class DemoClient implements BaseClient {
   constructor() {
@@ -76,7 +76,7 @@ export default class DemoClient implements BaseClient {
   }
 
   async getTimeTableData(payload: IGetPayload<number>): Promise<IGetResult<ITimeTable>> {
-    console.log(payload)
+    console.log(payload);
     const data: ITimeTable = {
       days: [],
       weekInfo: {

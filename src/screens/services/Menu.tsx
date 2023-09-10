@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { useAppSelector, useGlobalStyles } from '../../hooks';
+import { useGlobalStyles } from '../../hooks';
 import { GITHUB_URL, TELEGRAM_URL } from '../../utils';
 import { fontSize } from '../../utils/texts';
 
@@ -61,7 +61,6 @@ function Row({ children }) {
 
 function Menu() {
   const globalStyles = useGlobalStyles();
-  const { isDemo } = useAppSelector((state) => state.auth);
   const iconColor = globalStyles.textColor.color;
 
   return (

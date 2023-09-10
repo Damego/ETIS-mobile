@@ -1,5 +1,3 @@
-import { IGetPayload } from './results';
-
 export interface IDefaultTeacher {
   name: string;
   id: string;

@@ -1,4 +1,3 @@
-import { IGetPayload } from './results';
 import { ISession } from './session';
 
 export interface OverallRating {

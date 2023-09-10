@@ -10,11 +10,7 @@ import { ISessionRating } from '../models/rating';
 import { IGetPayload, IGetResult } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
-import {
-  IGetStringPayload,
-  ISessionQuestionnaire,
-  ISessionQuestionnaireLink,
-} from '../models/sessionQuestionnaire';
+import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
 import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
 import { ITimeTable } from '../models/timeTable';
@@ -230,13 +226,13 @@ export default class Client implements BaseClient {
   }
 
   async getSessionQuestionnaireList(
-    payload: IGetStringPayload
+    payload: IGetPayload<string>
   ): Promise<IGetResult<ISessionQuestionnaireLink[]>> {
     return this.sessionQuestionnaireListClient.getData(payload);
   }
 
   async getSessionQuestionnaire(
-    payload: IGetStringPayload
+    payload: IGetPayload<string>
   ): Promise<IGetResult<ISessionQuestionnaire>> {
     return this.sessionQuestionnaireClient.getData(payload);
   }
