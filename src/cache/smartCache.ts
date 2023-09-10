@@ -360,7 +360,7 @@ export default class SmartCache {
     await this.personalRecords.save();
 
     const currentPersonalRecord = data[data.findIndex((record) => !record.id)];
-    this.init(currentPersonalRecord.index);
+    await this.init(currentPersonalRecord.index, data.length);
   }
 
   async getAppConfig() {
