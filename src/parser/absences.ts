@@ -1,7 +1,13 @@
 import { load } from 'cheerio';
 
-import { IDisciplineAbsences, IPeriodAbsences } from '../models/absences'
+import { IAbsenceDate, IDisciplineAbsences, IPeriodAbsences } from '../models/absences'
 import { getTextField } from './utils';
+
+const parseDate = (date: string): IAbsenceDate => {
+  const $ = load(date);
+  const parsed = $('font', date);
+  return { date: parsed.text(), isCovered: parsed.attr('color') !== 'red'  }
+};
 
 export default function parseAbsences(html): IPeriodAbsences {
   const $ = load(html);
@@ -14,16 +20,16 @@ export default function parseAbsences(html): IPeriodAbsences {
     
     // we will skip the number as it's not important info
     for (let i = 1; i < 5; i += 1) {
-      if (i = 1) { // for the times
+      if (i == 1) { // for the dates
         fields[i - 1] = td.eq(i).html().trim().split('<br>');
         continue;
       }
       fields[i - 1] = getTextField(td.eq(i));
     }
-    const [time, subject, type, teacher] = fields;
+    const [dates, subject, type, teacher] = fields;
 
     data.push({
-      dates: time,
+      dates: dates.map(parseDate),
       subject,
       type,
       teacher,
@@ -34,7 +40,7 @@ export default function parseAbsences(html): IPeriodAbsences {
   let periods: string[] = [];
   $('span.submenu-item', html).each((index, element) => {
     let parsed = $(element);
-    periods.push(parsed.text());
+    periods.push(parsed.text().trim());
 
     // define current period (current period's <a> doesn't have href attr)
     if (parsed.find('a.dashed').attr('href') === undefined)

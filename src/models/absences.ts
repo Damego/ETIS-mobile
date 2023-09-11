@@ -1,7 +1,12 @@
 import { IGetPayload } from "./results";
 
+export interface IAbsenceDate {
+  date: string;
+  isCovered: boolean;
+}
+
 export interface IDisciplineAbsences {
-  dates: string[];
+  dates: IAbsenceDate[];
   subject: string;
   type: string;
   teacher: string;

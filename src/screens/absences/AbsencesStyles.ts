@@ -1,6 +1,12 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+    uncoveredAbsenceColor: {
+        color: 'red'
+    },
+    coveredAbsenceColor: {
+        color: 'green'
+    },
     hbox: {
         flexDirection: 'row'
     },
@@ -14,9 +20,10 @@ const styles = StyleSheet.create({
     flexWrap: {
         flexWrap: 'wrap'
     },
-    dropdownView: {
+    touchable: {
         width: 'auto',
-        columnGap: 0,
+        flexDirection: 'row',
+        overflow: 'hidden'
     },
     rootView: {
         position: 'absolute',

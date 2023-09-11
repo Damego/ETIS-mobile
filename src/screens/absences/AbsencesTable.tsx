@@ -7,7 +7,7 @@ import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
 import { getWrappedClient } from '../../data/client';
 import { useAppSelector, useGlobalStyles } from '../../hooks';
-import { GetResultType, IGetPayload, RequestType } from '../../models/results';
+import { GetResultType, RequestType } from '../../models/results';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { IGetAbsencesPayload, IPeriodAbsences } from '../../models/absences';
 import AbsencesCard from './AbsencesCard';
@@ -15,8 +15,6 @@ import styles from './AbsencesStyles';
 import { AntDesign } from '@expo/vector-icons';
 import { fontSize } from '../../utils/texts';
 import ClickableText from '../../components/ClickableText';
-import Dropdown from '../../components/Dropdown';
-import { IDropdownOption } from '../../models/dropdown';
 
 export const absencesIconName = 'paperclip';
 
@@ -51,15 +49,6 @@ const AbsencesTable = () => {
     }
 
     setData(result.data);
-    let test: IPeriodAbsences = { period: 1, periods: ['осенний триместр', "весенний триместр", "летний триместр"], overallMissed: 9, absences: [] };
-
-    test.absences.push( 
-      { dates: ["21.09.2023", "22.09.2023", "23.09.2023", "01.10.2023", "02.10.2023"], subject: 'Элементы высшей математики', type: "практика", teacher: "Andrey Vasiliev Syskoeblanovich" },
-      { dates: ["18.09.2023", "22.09.2023"], subject: 'Иностранный язык', type: "практика", teacher: "Andrey Vasiliev Syskoeblanovich" },
-      { dates: ["12.09.2023", "14.09.2023"], subject: 'Биология', type: "практика", teacher: "Andrey Vasiliev Syskoeblanovich" }
-    );
-    setData(test);
-
     
     setLoading(false);
   };  
@@ -77,25 +66,18 @@ const AbsencesTable = () => {
 
   let textStyles: StyleProp<TextStyle> = 
     [globalStyles.textColor, empty() ? [fontSize.medium, { marginTop: 10 }] : {}];
-  
-  let dropdownOptions: IDropdownOption[] = [];
-
-  data.periods.map((value: string, index: number) => {
-    dropdownOptions.push({label: value, value: index + 1, current: index + 1 === data.period ? true : false });
-  });
 
   return (
     <Screen onUpdate={loadData}>
-      {/* <Dropdown options={dropdownOptions} selectedOption={dropdownOptions[data.period-1]} onSelect={(selectedOption: number) => loadData(selectedOption)} /> */}
-      <View style={[styles.hbox, styles.flexWrap, styles.centre, { columnGap: 20, borderWidth: 2 }]}>
+      <View style={[styles.hbox, styles.flexWrap, styles.centre, { columnGap: 20, marginBottom: 20 }]}>
         {data.periods.map((value: string, index: number) => (
           <ClickableText key={index} 
             onPress={() => {if (index + 1 !== data.period) loadData(index + 1)}}
             viewStyle={{ padding: 0 }}
             textStyle={[
-              { maxHeight: '50%', paddingHorizontal: 0, paddingVertical: 0, borderWidth: 2, zIndex: 1, borderColor: 'red' },
+              {paddingVertical: 5},
               fontSize.medium, 
-              globalStyles.textColor, 
+              globalStyles.textColor,
               index + 1 === data.period ? {} : {textDecorationLine: 'underline'}
             ]}
             text={value} />
