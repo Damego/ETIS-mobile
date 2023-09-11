@@ -3,7 +3,10 @@ import { load } from 'cheerio';
 import { ISessionMarks } from '../models/sessionMarks';
 import { getTextField } from './utils';
 
-export default function parseSessionMarks(html): ISessionMarks[] {
+const tableTitleRegex =
+  /(?:(\d)\s+([а-я]+)\s+\((\d)\s+[а-я]+\))?(?:[а-я\s,]+(\d{2}.\d{2}.\d{4}))?/s;
+
+export default function parseSessionMarks(html: string): ISessionMarks[] {
   const $ = load(html);
   const table = $('.common');
 
@@ -18,19 +21,16 @@ export default function parseSessionMarks(html): ISessionMarks[] {
     if (title.length > 1) return;
 
     if (title.length === 1) {
-      const [sessionCourse, rawEndDate] = title.text().split(', ');
-      const [sessionString, courseString] = sessionCourse.split('(');
-      const sessionNumber = parseInt(sessionString.split(' ').at(0));
-      const courseNumber = parseInt(courseString.split(' ').at(0));
+      const stringData = getTextField(title).replaceAll('\n', ' ');
+      const [_, session, sessionName, course, endDate] = tableTitleRegex.exec(stringData);
 
-      if (rawEndDate === undefined) return;
-
-      const endDate = rawEndDate.split(' ').at(-1).replaceAll('\n', '');
+      if (!endDate) return;
 
       sessionIndex += 1;
       data[sessionIndex] = {
-        session: sessionNumber,
-        course: courseNumber,
+        session: parseInt(session),
+        sessionName,
+        course: parseInt(course),
         endDate,
         disciplines: [],
       };

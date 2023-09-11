@@ -62,7 +62,7 @@ function Row({ children }) {
 
 function Menu() {
   const globalStyles = useGlobalStyles();
-  const { isDemo } = useAppSelector((state) => state.auth);
+  const { sessionTestID } = useAppSelector((state) => state.student);
   const iconColor = globalStyles.textColor.color;
 
   return (
@@ -85,11 +85,13 @@ function Menu() {
         />
       </Row>
       <Row>
-        <Button 
-          icon={<AntDesign name="copy1" size={iconSize} color={iconColor} />}
-          text="Анкетирование"
-          page="SessionQuestionnaireList"
-        />
+        {sessionTestID && (
+          <Button
+            icon={<AntDesign name="copy1" size={iconSize} color={iconColor} />}
+            text="Анкетирование"
+            page="SessionQuestionnaireList"
+          />
+        )}
         <Button
           text="Справки"
           icon={<AntDesign name="book" size={iconSize} color={iconColor} />}

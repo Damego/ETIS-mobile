@@ -3,6 +3,8 @@ import { load } from 'cheerio';
 import { ISessionTeachPlan, ITeachPlanDiscipline } from '../models/teachPlan';
 import { getTextField } from './utils';
 
+const FIELDS_NUM = 5;
+
 export default function parseShortTeachPlan(html) {
   const $ = load(html);
   const sessionName = $('h3').first().text().split(' ').at(-1);
@@ -15,11 +17,13 @@ export default function parseShortTeachPlan(html) {
     $('.cgrldatarow', table).each((ind, tr) => {
       const td = $(tr).find('td');
 
-      const electiveLimit = Number(getTextField(td.eq(0)) === '{');
+      // Со знака "{" начинаются дисциплины по выбору https://github.com/Damego/ETIS-mobile/issues/99
+      let electiveOffset = 0;
+      while (getTextField(td.eq(electiveOffset)) === '{') electiveOffset++;
 
       const fields = [];
-      for (let i = 0; i < electiveLimit + 5; i += 1) {
-        fields.push(getTextField(td.eq(electiveLimit + i)));
+      for (let i = 0; i < FIELDS_NUM + electiveOffset; i += 1) {
+        fields.push(getTextField(td.eq(i + electiveOffset)));
       }
       const [name, reporting, classWorkHours, soloWorkHours, totalWorkHours] = fields;
 

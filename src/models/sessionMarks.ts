@@ -7,6 +7,7 @@ export interface IDiscipline {
 
 export interface ISessionMarks {
   session: number;
+  sessionName: string;
   course: number;
   endDate: string;
   disciplines: IDiscipline[];
