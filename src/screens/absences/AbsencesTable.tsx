@@ -32,7 +32,7 @@ const AbsencesTable = () => {
     const payload: IGetAbsencesPayload = {
       requestType: RequestType.tryFetch,
     };
-    if (typeof(period) !== 'undefined') {
+    if (period) {
       payload.period = period;
     }
     const result = await client.getAbsencesData(payload);
