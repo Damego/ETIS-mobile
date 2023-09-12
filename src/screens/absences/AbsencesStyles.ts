@@ -7,18 +7,16 @@ const styles = StyleSheet.create({
     coveredAbsenceColor: {
         color: 'green'
     },
-    hbox: {
-        flexDirection: 'row'
-    },
-    centre: {
+    navigation: {
+        flexWrap: 'wrap',
+        flexDirection: 'row',
         display: 'flex',
         alignItems: 'center',
         alignContent: 'center', 
         width: '100%',
         justifyContent: 'center', 
-    },
-    flexWrap: {
-        flexWrap: 'wrap'
+        columnGap: 20, 
+        marginBottom: 20
     },
     touchable: {
         width: 'auto',

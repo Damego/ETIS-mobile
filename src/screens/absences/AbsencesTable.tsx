@@ -69,7 +69,7 @@ const AbsencesTable = () => {
 
   return (
     <Screen onUpdate={loadData}>
-      <View style={[styles.hbox, styles.flexWrap, styles.centre, { columnGap: 20, marginBottom: 20 }]}>
+      <View style={styles.navigation}>
         {data.periods.map((value: string, index: number) => (
           <ClickableText key={index} 
             onPress={() => {if (index + 1 !== data.period) loadData(index + 1)}}

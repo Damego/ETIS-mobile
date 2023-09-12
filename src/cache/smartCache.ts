@@ -86,9 +86,9 @@ export default class SmartCache {
 
   // Absences Region
 
-  async getAbsences(trimester: number) {
+  async getAbsences(period: number) {
     if (!this.absences.isReady()) await this.absences.init();
-    return this.absences.get(trimester);
+    return this.absences.get(period);
   }
 
   async placeAbsences(data: IPeriodAbsences) {

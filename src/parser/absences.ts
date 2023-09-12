@@ -49,5 +49,5 @@ export default function parseAbsences(html): IPeriodAbsences {
 
   let overallMissed: string = $('div.span9', html).text().split(' ').at(-1);
 
-  return { period: period, periods: periods, absences: data, overallMissed: parseInt(overallMissed) };
+  return { period, periods, absences: data, overallMissed: parseInt(overallMissed) };
 }
