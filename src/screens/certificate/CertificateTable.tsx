@@ -101,9 +101,6 @@ const CertificateTable = () => {
   const client = useClient();
   const { data, isLoading, refresh } = useQuery({
     method: client.getCertificateData,
-    payload: {
-      requestType: RequestType.tryFetch,
-    },
   });
   const globalStyles = useGlobalStyles();
 

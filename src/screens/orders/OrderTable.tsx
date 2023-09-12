@@ -4,18 +4,14 @@ import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
 import { useClient } from '../../data/client';
-import { RequestType } from '../../models/results';
-import Order from './Order';
 import useQuery from '../../hooks/useQuery';
+import Order from './Order';
 
 const OrderTable = () => {
   const client = useClient();
-  const {data, isLoading, refresh} = useQuery({
+  const { data, isLoading, refresh } = useQuery({
     method: client.getOrdersData,
-    payload: {
-      requestType: RequestType.tryFetch
-    }
-  })
+  });
 
   if (isLoading) return <LoadingScreen onRefresh={refresh} />;
   if (!data) return <NoData onRefresh={refresh} />;

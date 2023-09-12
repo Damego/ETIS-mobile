@@ -19,9 +19,6 @@ export default function Announce() {
   const client = useClient();
   const { data, isLoading, refresh } = useQuery({
     method: client.getAnnounceData,
-    payload: {
-      requestType: RequestType.tryFetch,
-    },
     after: (result) => {
       // WebView сильно нагружает устройство, поэтому распределяем их по страницам
       setPageCount(Math.ceil(result.data.length / 5));
