@@ -1,18 +1,15 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { Text, View } from 'react-native';
 
-import { cache } from '../../cache/smartCache';
 import BorderLine from '../../components/BorderLine';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
 import SessionDropdown from '../../components/SessionDropdown';
-import { useClient } from '../../data/client';
 import { useGlobalStyles } from '../../hooks';
-import useQuery from '../../hooks/useQuery';
+import useRatingQuery from '../../hooks/useRatingQuery';
 import { IGroup } from '../../models/rating';
-import { RequestType } from '../../models/results';
 import { fontSize } from '../../utils/texts';
 import RightText from './RightText';
 
@@ -52,40 +49,9 @@ const Group = ({ group }: { group: IGroup }) => {
 };
 
 export default function RatingPage() {
-  const fetchedFirstTime = useRef<boolean>(false);
-  const client = useClient();
-  const { data, isLoading, refresh, update } = useQuery({
-    method: client.getRatingData,
-    payload: {
-      requestType: RequestType.tryFetch,
-    },
-    onFail: async () => {
-      const student = await cache.getStudent();
-      if (!student || !student.currentSession) return;
+  const { data, isLoading, refresh, loadSession } = useRatingQuery();
 
-      update({
-        requestType: RequestType.forceCache,
-        data: student.currentSession,
-      });
-    },
-    after: () => {
-      if (!fetchedFirstTime.current) {
-        fetchedFirstTime.current = true;
-      }
-    },
-  });
-
-  const innerUpdate = (session: number) => {
-    update({
-      requestType: fetchedFirstTime.current ? RequestType.tryCache : RequestType.tryFetch,
-      data: session,
-    });
-  };
-
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
-
+  if (isLoading) return <LoadingScreen />;
   if (!data) return <NoData onRefresh={refresh} />;
 
   return (
@@ -103,7 +69,7 @@ export default function RatingPage() {
           currentSession={data.session.current}
           latestSession={data.session.latest}
           sessionName={data.session.name}
-          onSelect={innerUpdate}
+          onSelect={loadSession}
         />
       </View>
 
