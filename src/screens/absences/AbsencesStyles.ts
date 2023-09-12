@@ -10,10 +10,6 @@ const styles = StyleSheet.create({
     navigation: {
         flexWrap: 'wrap',
         flexDirection: 'row',
-        display: 'flex',
-        alignItems: 'center',
-        alignContent: 'center', 
-        width: '100%',
         justifyContent: 'center', 
         columnGap: 20, 
         marginBottom: 20
