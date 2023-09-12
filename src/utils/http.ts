@@ -282,7 +282,7 @@ class HTTPClient {
   getAbsences(period?: number) {
     let object: PayloadWithString = { returnResponse: false, params: {} };
     
-    if (typeof(period) !== 'undefined') {
+    if (period) {
       object.params = { p_term: period };
     }
 
