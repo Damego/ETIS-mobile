@@ -2,6 +2,7 @@ import { load } from 'cheerio';
 
 import { ITeacher, TeacherType } from '../models/teachers';
 import { getTextField } from './utils';
+import { executeRegex } from '../utils/sentry';
 
 /* https://regex101.com/r/gvUVMt/4 */
 /* duplicated in sentry.ts */
@@ -34,7 +35,7 @@ export default function parseTeachers(html): TeacherType {
     getTextField(teacherEl.find('.dis'))
       .split('\n')
       .forEach((subject) => {
-        const [_, subjectUntyped, subjectType] = subjectRegex.exec(subject);
+        const [_, subjectUntyped, subjectType] = executeRegex(subjectRegex, subject);
         data.push({
           photo,
           name,
