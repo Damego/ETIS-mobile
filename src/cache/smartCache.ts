@@ -450,22 +450,35 @@ export default class SmartCache {
 
   // Helper methods
 
-  async clear() {
-    await this.announce.delete();
-    await this.messages.clear();
-    await this.orders.list.delete();
-    await this.orders.info.clear();
-    await this.timeTable.clear();
-    await this.teachers.delete();
-    await this.teachPlan.delete();
-    await this.signsMarks.clear();
-    await this.signsPoints.clear();
-    await this.signsRating.clear();
-    await this.student.delete();
-    await this.user.delete();
+  async clear(clearAppData?: boolean) {
+    const personalRecords = await cache.getPersonalRecords();
 
-    // Debug only
-    // await this.app.delete();
+    for (const record of personalRecords) {
+      this.currentPersonalRecordIndex = record.index;
+      const keys = this.bindRecordKeys.map((key) => this.buildKey(key));
+      await AsyncStorage.multiRemove(keys);
+    }
+    await AsyncStorage.removeItem(this.keys.USER);
+
+    if (clearAppData) {
+      await AsyncStorage.multiRemove(this.generalKeys);
+      this.app = null;
+    }
+
+    this.announce = null;
+    this.messages = null;
+    this.orders.list = null;
+    this.orders.info = null;
+    this.timeTable = null;
+    this.teachers = null;
+    this.teachPlan = null;
+    this.signsMarks = null;
+    this.signsPoints = null;
+    this.signsRating = null;
+    this.student = null;
+    this.user = null;
+    this.certificate = null;
+    this.personalRecords = null;
   }
 
   // Legacy
