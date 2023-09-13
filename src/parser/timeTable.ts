@@ -11,6 +11,7 @@ import {
 } from '../models/timeTable';
 import { httpClient } from '../utils';
 import { getTextField } from './utils';
+import { executeRegex } from '../utils/sentry';
 
 const dateRegex = /\d+.\d+.\d+/gm;
 const audienceRegex = /ауд\. (.*) \((.*) корпус(?:, (\d) этаж)?\)/s;
@@ -25,26 +26,42 @@ const getWeekType = (week: cheerio.Cheerio): WeekTypes => {
   if (week.hasClass('pract')) {
     return WeekTypes.practice;
   }
-  if (week.attr('title').includes('факультатив')) {
+  if (week.attr('title')?.includes('факультатив')) {
     return WeekTypes.elective;
   }
   return WeekTypes.common;
 };
 
-const getDistancePlatformType = (image: cheerio.Cheerio): DistancePlatformTypes => {
-  const title = image.attr('title');
+const getDistancePlatformType = (platform: cheerio.Cheerio): DistancePlatformTypes => {
+  const title = platform.find('img').attr('title');
 
   if (title === 'bbb.psu.ru') return DistancePlatformTypes.bbb;
   else if (title === 'zoom.us') return DistancePlatformTypes.zoom; // maybe...
+  else if (platform.attr('href').includes('skype')) return DistancePlatformTypes.skype;
 
   return DistancePlatformTypes.unknown;
 };
 
-const getDistancePlatformName = (type: DistancePlatformTypes) => {
+const getDistancePlatformName = (platform: cheerio.Cheerio, type: DistancePlatformTypes) => {
   if (type === DistancePlatformTypes.zoom) return 'Платформа Zoom';
   else if (type === DistancePlatformTypes.bbb) return 'Платформа BBB';
+  else if (type === DistancePlatformTypes.skype) return 'Skype';
 
-  return null;
+  const image = platform.find('img');
+
+  return image.attr('title') || platform.attr('href');
+};
+
+const getDistancePlatform = (platform: cheerio.Cheerio): DistancePlatform => {
+  const image = platform.find('img');
+  const type = getDistancePlatformType(platform);
+
+  return {
+    name: getDistancePlatformName(platform, type),
+    url: platform.attr('href'),
+    type,
+    imageUrl: httpClient.getSiteURL() + image.attr('src'),
+  };
 };
 
 export default function parseTimeTable(html: string) {
@@ -98,18 +115,14 @@ export default function parseTimeTable(html: string) {
 
           const platform = audience.find('a');
           if (platform.length === 1) {
-            const image = platform.find('img');
-            const platformType = getDistancePlatformType(image);
-            distancePlatform = {
-              name: getDistancePlatformName(platformType) || image.attr('title'),
-              url: platform.attr('href'),
-              type: platformType,
-              imageUrl: httpClient.getSiteURL() + image.attr('src'),
-            };
+            distancePlatform = getDistancePlatform(platform);
           } else {
             audienceText = getTextField(audience);
-            let _;
-            [_, audienceNumber, building, floor] = audienceRegex.exec(audienceText);
+            const regexResult = executeRegex(audienceRegex, audienceText);
+            if (regexResult) {
+              let _;
+              [_, audienceNumber, building, floor] = regexResult;
+            }
           }
 
           lessons.push({
