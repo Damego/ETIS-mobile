@@ -117,8 +117,11 @@ export default function parseTimeTable(html: string) {
             distancePlatform = getDistancePlatform(platform);
           } else {
             audienceText = getTextField(audience);
-            let _;
-            [_, audienceNumber, building, floor] = audienceRegex.exec(audienceText);
+            const regexResult = audienceRegex.exec(audienceText);
+            if (regexResult) {
+              let _;
+              [_, audienceNumber, building, floor] = regexResult;
+            }
           }
 
           lessons.push({
