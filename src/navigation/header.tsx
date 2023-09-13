@@ -1,8 +1,9 @@
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import React from 'react';
 
 import { ITheme } from '../styles/themes';
 
-export const headerParams = (theme: ITheme) => {
+export const headerParams = (theme: ITheme): NativeStackNavigationOptions => {
   return {
     headerStyle: {
       backgroundColor: theme.colors.background,
