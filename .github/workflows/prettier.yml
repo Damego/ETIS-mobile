@@ -5,7 +5,7 @@ on:
   pull_request:
   push:
     branches:
-      - ci/custom-gh-action
+      - development
 
 jobs:
   prettier:
