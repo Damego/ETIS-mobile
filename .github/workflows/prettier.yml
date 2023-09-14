@@ -27,7 +27,7 @@ jobs:
         run: |
           bun install prettier @trivago/prettier-plugin-sort-imports
       - name: Prettier Action
-        uses: Damego/prettier_action@5
+        uses: Damego/prettier_action@5.1
         with:
           # This part is also where you can pass other options, for example:
           prettier_plugins: '@trivago/prettier-plugin-sort-imports'
