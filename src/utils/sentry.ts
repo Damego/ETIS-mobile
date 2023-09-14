@@ -49,3 +49,13 @@ export const reportParserError = (error) => {
   if (isDebug) SentryExpo.React.captureException(error);
   else alertParserBugReport();
 };
+
+export const executeRegex = (regex: RegExp, str: string): RegExpExecArray => {
+  const result = regex.exec(str);
+  if (!result) {
+    SentryExpo.React.captureMessage(
+      `String ${str} mismatched with regex ${regex}`, 'error'
+    );
+  }
+  return result;
+};

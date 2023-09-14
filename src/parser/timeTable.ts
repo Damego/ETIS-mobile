@@ -11,6 +11,7 @@ import {
 } from '../models/timeTable';
 import { httpClient } from '../utils';
 import { getTextField } from './utils';
+import { executeRegex } from '../utils/sentry';
 
 const dateRegex = /\d+.\d+.\d+/gm;
 const audienceRegex = /ауд\. (.*) \((.*) корпус(?:, (\d) этаж)?\)/s;
@@ -117,8 +118,11 @@ export default function parseTimeTable(html: string) {
             distancePlatform = getDistancePlatform(platform);
           } else {
             audienceText = getTextField(audience);
-            let _;
-            [_, audienceNumber, building, floor] = audienceRegex.exec(audienceText);
+            const regexResult = executeRegex(audienceRegex, audienceText);
+            if (regexResult) {
+              let _;
+              [_, audienceNumber, building, floor] = regexResult;
+            }
           }
 
           lessons.push({

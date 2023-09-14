@@ -2,6 +2,7 @@ import { load } from 'cheerio';
 
 import { ISessionMarks } from '../models/sessionMarks';
 import { getTextField } from './utils';
+import { executeRegex } from '../utils/sentry';
 
 const tableTitleRegex =
   /(?:(\d)\s+([а-я]+)\s+\((\d)\s+[а-я]+\))?(?:[а-я\s,]+(\d{2}.\d{2}.\d{4}))?/s;
@@ -22,7 +23,7 @@ export default function parseSessionMarks(html: string): ISessionMarks[] {
 
     if (title.length === 1) {
       const stringData = getTextField(title).replaceAll('\n', ' ');
-      const [_, session, sessionName, course, endDate] = tableTitleRegex.exec(stringData);
+      const [_, session, sessionName, course, endDate] = executeRegex(tableTitleRegex, stringData);
 
       if (!endDate) return;
 
