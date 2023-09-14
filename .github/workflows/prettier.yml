@@ -25,7 +25,7 @@ jobs:
       # github actions env sucks
       - name: Install dependencies
         run: |
-          bun install prettier @trivago/prettier-plugin-sort-imports
+          bun install --dev
       - name: Prettier Action
         uses: Damego/prettier_action@5.1
         with:
