@@ -53,7 +53,7 @@ class HTTPClient {
 
   constructor() {
     this.sessionID = null;
-    this.siteURL = 'https://student.psu.ru'
+    this.siteURL = 'https://student.psu.ru';
     this.baseURL = `${this.siteURL}/pls/stu_cus_et`;
     this.instance = axios.create({
       baseURL: this.baseURL,
