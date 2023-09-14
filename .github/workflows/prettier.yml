@@ -18,10 +18,18 @@ jobs:
           # Make sure the actual branch is checked out when running on pull requests
           ref: ${{ github.head_ref }}
 
+      - name: Installing Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+      # gh sucks
+      - name: Install dependencies
+        run: |
+          bun install --dev
       - name: Prettier Action
-        uses: Damego/prettier_action@4.4-beta.3
+        uses: Damego/prettier_action@test-3
         with:
           # This part is also where you can pass other options, for example:
-          prettier_plugins: "@trivago/prettier-plugin-sort-imports"
-          prettier_options: --write **/*.{js,md}
+          prettier_plugins: '@trivago/prettier-plugin-sort-imports'
+          prettier_options: --write **/*.{js,jsx,ts,tsx,md}
           commit_message: 'ci: prettified code'
