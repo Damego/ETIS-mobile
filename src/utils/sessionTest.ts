@@ -1,4 +1,4 @@
-import { ISessionQuestionnaire, IAnswer, IMetaData } from '../models/sessionQuestionnaire';
+import { IAnswer, IMetaData, ISessionQuestionnaire } from '../models/sessionQuestionnaire';
 
 export interface SessionQuestionnairePayload extends IMetaData {
   p_peo: string;
