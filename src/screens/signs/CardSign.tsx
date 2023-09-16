@@ -1,67 +1,15 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Text, View } from 'react-native';
 
 import CardHeaderIn from '../../components/CardHeaderIn';
 import { useGlobalStyles } from '../../hooks';
 import { ISubject } from '../../models/sessionPoints';
-import { fontSize, getPointsWord } from '../../utils/texts';
+import { fontSize } from '../../utils/texts';
 import SubjectCheckPoints from './SubjectCheckPoints';
-
-const styles = StyleSheet.create({
-  pointsView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  totalPoints: {
-    alignItems: 'center',
-    width: '25%',
-  },
-  markNumberText: {
-    fontWeight: '600',
-  },
-  markView: {
-    marginTop: '1%',
-    alignItems: 'flex-end',
-  },
-  markWordText: {
-    fontWeight: '600',
-  },
-  colorMark2: {
-    color: '#CE2539',
-  },
-  colorMark3: {
-    color: '#f6d832',
-  },
-  colorMark4: {
-    color: '#76c248',
-  },
-  colorMark5: {
-    color: '#5c9f38',
-  },
-});
-
-const getSubjectPointsStyle = (subject: ISubject, defaultTextColor) => {
-  if (subject.checkPoints.length === 0) return defaultTextColor;
-
-  let textStyle;
-  subject.checkPoints.every((checkPoint) => {
-    if (!checkPoint.isIntroductionWork) {
-      if (checkPoint.failed) {
-        textStyle = styles.colorMark2;
-        return false;
-      }
-    }
-    return true;
-  });
-
-  if (textStyle) return textStyle;
-
-  if (subject.totalPoints === 0) return defaultTextColor;
-  if (subject.totalPoints < 61) return styles.colorMark3;
-  if (subject.totalPoints < 81) return styles.colorMark4;
-  return styles.colorMark5;
-};
+import { Button } from '../../components/Button';
+import SignModal from './SignModal';
+import TotalPoints from './TotalPoints';
+import styles from './styles';
 
 interface CardSignProps {
   subject: ISubject;
@@ -69,25 +17,29 @@ interface CardSignProps {
 
 const CardSign = ({ subject }: CardSignProps) => {
   const globalStyles = useGlobalStyles();
+  const [isOpened, setOpened] = useState(false);
 
-  const textStyle = getSubjectPointsStyle(subject, globalStyles.textColor);
-  const pointsWord = getPointsWord(subject.totalPoints);
+  const closeModal = () => setOpened(false);
+
+  const openModal = () => {
+    setOpened(true);
+  };
 
   return (
+    <>
+    {isOpened && <SignModal subject={subject} closeModal={closeModal} />}
     <CardHeaderIn topText={subject.name}>
       <View style={styles.pointsView}>
         <View>
           <SubjectCheckPoints data={subject.checkPoints} />
+          <Button text={'Подробнее...'} 
+            onPress={openModal} 
+            textStyle={[fontSize.medium, {paddingVertical: 3, paddingHorizontal: 10}]}
+            viewStyle={{width: 'auto', height: 'auto'}}
+            />
         </View>
 
-        <View style={styles.totalPoints}>
-          <Text style={[fontSize.xxlarge, styles.markNumberText, textStyle]}>
-            {subject.totalPoints}
-          </Text>
-          <Text style={[fontSize.medium, styles.markWordText, globalStyles.textColor]}>
-            {pointsWord}
-          </Text>
-        </View>
+        <TotalPoints subject={subject} style={styles.totalPoints} />
       </View>
 
       {subject.mark !== null && (
@@ -98,6 +50,7 @@ const CardSign = ({ subject }: CardSignProps) => {
         </View>
       )}
     </CardHeaderIn>
+    </>
   );
 };
 

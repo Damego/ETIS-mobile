@@ -30,12 +30,9 @@ const adjustPassScore = (checkPoint: ICheckPoint): number => {
   }
 };
 
-const getCheckPointScore = (checkPoint: ICheckPoint) => {
+export const getCheckPointScore = (checkPoint: ICheckPoint) => {
   if (checkPoint.isAbsent) return 'н';
   else if (Number.isNaN(checkPoint.points) || !checkPoint.points) return '-';
-
-  // Если в текущей стоит 0, а в баллах не ноль, значит меньше проходного, но мы покажем баллы
-  else if (checkPoint.currentScore === 0 && checkPoint.points !== 0) return checkPoint.points;
 
   // Вводные работы в рейтинге не показываются, поэтому выводим просто полученные баллы
   return checkPoint.isIntroductionWork ? checkPoint.points : checkPoint.currentScore;
