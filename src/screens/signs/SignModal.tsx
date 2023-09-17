@@ -98,7 +98,7 @@ export default function SignModal({
         <ClickableText
           onPress={closeModal}
           text={'Закрыть'}
-          viewStyle={{ position: 'absolute', bottom: '2%', width: '100%', alignItems: 'center' }}
+          viewStyle={styles.modalCloseText}
           textStyle={[globalStyles.textColor, fontSize.medium]}
         />
       </View>

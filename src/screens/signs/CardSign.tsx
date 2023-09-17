@@ -10,6 +10,7 @@ import { Button } from '../../components/Button';
 import SignModal from './SignModal';
 import TotalPoints from './TotalPoints';
 import styles from './styles';
+import ClickableText from '../../components/ClickableText';
 
 interface CardSignProps {
   subject: ISubject;
@@ -20,10 +21,7 @@ const CardSign = ({ subject }: CardSignProps) => {
   const [isOpened, setOpened] = useState(false);
 
   const closeModal = () => setOpened(false);
-
-  const openModal = () => {
-    setOpened(true);
-  };
+  const openModal = () => setOpened(true);
 
   return (
     <>
@@ -32,10 +30,9 @@ const CardSign = ({ subject }: CardSignProps) => {
       <View style={styles.pointsView}>
         <View>
           <SubjectCheckPoints data={subject.checkPoints} />
-          <Button text={'Подробнее...'} 
+          <ClickableText text={'Подробнее...'} 
             onPress={openModal} 
-            textStyle={[fontSize.medium, {paddingVertical: 3, paddingHorizontal: 10}]}
-            viewStyle={{width: 'auto', height: 'auto'}}
+            textStyle={[fontSize.medium, globalStyles.textColor, styles.detailsText]}
             />
         </View>
 

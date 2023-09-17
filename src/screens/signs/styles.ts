@@ -50,6 +50,17 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
   },
+  detailsText: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    textDecorationLine: 'underline',
+  },
+  modalCloseText: {
+    position: 'absolute',
+    bottom: '2%',
+    width: '100%',
+    alignItems: 'center',
+  },
 });
 
 export default styles;

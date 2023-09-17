@@ -4,7 +4,6 @@ import { StyleSheet, Text } from 'react-native';
 import { useGlobalStyles } from '../../hooks';
 import { ICheckPoint } from '../../models/sessionPoints';
 import { fontSize } from '../../utils/texts';
-import { Float } from 'react-native/Libraries/Types/CodegenTypes';
 
 const styles = StyleSheet.create({
   markNeutral: {
@@ -15,20 +14,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
-
-const adjustPassScore = (checkPoint: ICheckPoint): number => {
-  // Если баллы и текущая равны, значит разбалловка в норме
-  if (checkPoint.points === checkPoint.currentScore || checkPoint.currentScore === 0) 
-    return checkPoint.passScore;
-
-  else {
-    const currentToMaxRatio: Float = checkPoint.currentScore / checkPoint.maxScore;
-    const maxPoints: number = checkPoint.points / currentToMaxRatio;
-    const passToMaxPointsRatio: Float = checkPoint.passScore / maxPoints;
-    const adjustedPassScore: number = checkPoint.maxScore * passToMaxPointsRatio;
-    return adjustedPassScore;
-  }
-};
 
 export const getCheckPointScore = (checkPoint: ICheckPoint) => {
   if (checkPoint.isAbsent) return 'н';
@@ -48,8 +33,7 @@ const SubjectCheckPoints = ({ data }: SubjectCheckPointsProps): React.ReactNode 
   return data.map((checkPoint, index) => {
     const checkPointName = `КТ ${index + 1}`;
     const scoreText: string | number = getCheckPointScore(checkPoint);
-    const passScore: number = adjustPassScore(checkPoint);
-    const pointsString = `${checkPointName}: ${scoreText} / ${passScore} / ${checkPoint.maxScore}`;
+    const pointsString = `${checkPointName}: ${scoreText} / ${checkPoint.passScore} / ${checkPoint.maxScore}`;
 
     return (
       <Text
