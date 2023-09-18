@@ -36,7 +36,7 @@ const useRatingQuery = () => {
     });
   };
 
-  return {data, isLoading, refresh, loadSession};
+  return { data, isLoading, refresh, loadSession };
 };
 
 export default useRatingQuery;

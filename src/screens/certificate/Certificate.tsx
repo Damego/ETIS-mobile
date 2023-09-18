@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, ToastAndroid, TouchableOpacity } from 'react-native';
 
+import { cache } from '../../cache/smartCache';
 import CardHeaderIn from '../../components/CardHeaderIn';
 import { useGlobalStyles } from '../../hooks';
 import { ICertificate } from '../../models/certificate';
@@ -8,7 +9,6 @@ import { cutCertificateHTML } from '../../parser/certificate';
 import { httpClient } from '../../utils';
 import { fontSize } from '../../utils/texts';
 import CertificateModal from './CertificateModal';
-import { cache } from '../../cache/smartCache';
 
 const styles = StyleSheet.create({
   fontW500: {
@@ -26,14 +26,14 @@ const Certificate = ({ certificate }: { certificate: ICertificate }) => {
     if (certificate.example) return certificate.example;
 
     const response = await httpClient.getCertificateHTML(certificate);
-    if (!response.data) return
+    if (!response.data) return;
 
     const html = cutCertificateHTML(response.data);
     if (!html) return;
 
     certificate.example = html;
     cache.placeOneCertificate(certificate);
-    return certificate.example
+    return certificate.example;
   };
 
   const closeModal = () => setOpened(false);
@@ -45,7 +45,7 @@ const Certificate = ({ certificate }: { certificate: ICertificate }) => {
       return;
     }
     setHTML(html);
-    setOpened(true)
+    setOpened(true);
   };
 
   return (

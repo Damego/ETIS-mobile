@@ -15,10 +15,7 @@ import {
 } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
-import {
-  ISessionQuestionnaire,
-  ISessionQuestionnaireLink,
-} from '../models/sessionQuestionnaire';
+import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
 import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
 import { ITimeTable } from '../models/timeTable';

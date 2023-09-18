@@ -32,7 +32,7 @@ const useMessagesQuery = () => {
     });
   };
 
-  return {data, isLoading, refresh, loadPage};
+  return { data, isLoading, refresh, loadPage };
 };
 
 export default useMessagesQuery;

@@ -13,7 +13,7 @@ interface Query<P, R> {
   isLoading: boolean;
   refresh: () => void;
   update: (payload: IGetPayload<P>) => void;
-  get: (payload: IGetPayload<P>) => Promise<IGetResult<R>>
+  get: (payload: IGetPayload<P>) => Promise<IGetResult<R>>;
 }
 
 const useQuery = <P, R>({
@@ -21,7 +21,7 @@ const useQuery = <P, R>({
   payload,
   after,
   onFail,
-  skipInitialGet
+  skipInitialGet,
 }: {
   method: getMethod<P, R>;
   payload?: IGetPayload<P>;
@@ -33,7 +33,7 @@ const useQuery = <P, R>({
 
   const dispatch = useAppDispatch();
   const payloadData = useRef<P>(payload.data);
-  const skippedInitialGet = useRef<boolean>(false)
+  const skippedInitialGet = useRef<boolean>(false);
   const fromFail = useRef<boolean>(false);
   const { isAuthorizing } = useAppSelector((state) => state.auth);
 
@@ -74,7 +74,7 @@ const useQuery = <P, R>({
       return true;
     }
     return false;
-  }
+  };
 
   const loadData = async (payload: IGetPayload<P>) => {
     enableLoading();
@@ -99,14 +99,14 @@ const useQuery = <P, R>({
 
     if (checkLoginPage(result)) return;
     return result;
-  }
+  };
 
   return {
     data,
     isLoading,
     refresh,
     update: (payload) => loadData(payload),
-    get
+    get,
   };
 };
 
