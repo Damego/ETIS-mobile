@@ -10,8 +10,8 @@ import {
   WeekTypes,
 } from '../models/timeTable';
 import { httpClient } from '../utils';
-import { getTextField } from './utils';
 import { executeRegex } from '../utils/sentry';
+import { getTextField } from './utils';
 
 const dateRegex = /\d+.\d+.\d+/gm;
 const audienceRegex = /ауд\. (.*) \((.*) корпус(?:, (\d) этаж)?\)/s;

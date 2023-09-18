@@ -1,8 +1,8 @@
 import { load } from 'cheerio';
 
 import { ITeacher, TeacherType } from '../models/teachers';
-import { getTextField } from './utils';
 import { executeRegex } from '../utils/sentry';
+import { getTextField } from './utils';
 
 /* https://regex101.com/r/gvUVMt/4 */
 /* duplicated in sentry.ts */

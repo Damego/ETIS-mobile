@@ -1,6 +1,7 @@
 [![wakatime](https://wakatime.com/badge/user/d6a559cb-3190-4b5a-9176-720d57c53941/project/4fd4884a-36b0-49e0-86e0-320c8fbedd38.svg)](https://wakatime.com/badge/user/d6a559cb-3190-4b5a-9176-720d57c53941/project/4fd4884a-36b0-49e0-86e0-320c8fbedd38) - Damego
 
 [![wakatime](https://wakatime.com/badge/user/c0888a2f-137a-4357-a47d-1fb0ea962aa1/project/34fe0e32-a798-4391-9461-20709a6c4d07.svg)](https://wakatime.com/badge/user/c0888a2f-137a-4357-a47d-1fb0ea962aa1/project/34fe0e32-a798-4391-9461-20709a6c4d07) - ijo42
+
 ## О приложении
 
 ЕТИС мобайл - это неофициальное мобильное приложение для ЕТИС ПГНИУ. Приложение позволяет в удобном режиме пользоваться ЕТИС используя ваш смартфон.  

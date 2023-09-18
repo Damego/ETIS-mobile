@@ -44,13 +44,13 @@ export default {
     hooks: {
       postPublish: [
         {
-          file: "sentry-expo/upload-sourcemaps",
+          file: 'sentry-expo/upload-sourcemaps',
           config: {
-            organization: "etismobile",
-            project: "etis-mobile"
-          }
-        }
-      ]
+            organization: 'etismobile',
+            project: 'etis-mobile',
+          },
+        },
+      ],
     },
     plugins: [
       ['./src/plugins/copyDrawable.ts', './assets/tab_icons'],

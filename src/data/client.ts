@@ -31,8 +31,8 @@ import {
   parseTeachers,
   parseTimeTable,
 } from '../parser';
-import { parseCertificateTable } from '../parser/certificate';
 import parseCalendarSchedule from '../parser/calendar';
+import { parseCertificateTable } from '../parser/certificate';
 import { StudentInfo } from '../parser/menu';
 import parseOrders from '../parser/order';
 import parseRating from '../parser/rating';
