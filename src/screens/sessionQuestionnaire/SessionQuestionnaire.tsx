@@ -8,7 +8,7 @@ import { useClient } from '../../data/client';
 import { useAppSelector, useGlobalStyles } from '../../hooks';
 import useQuery from '../../hooks/useQuery';
 import { RequestType } from '../../models/results';
-import { IAnswer} from '../../models/sessionQuestionnaire';
+import { IAnswer } from '../../models/sessionQuestionnaire';
 import { httpClient } from '../../utils';
 import toSessionTestPayload from '../../utils/sessionTest';
 import AdditionalComment from './AdditionalComment';

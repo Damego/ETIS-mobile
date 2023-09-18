@@ -363,13 +363,9 @@ class HTTPClient {
   async getCertificateHTML(certificate: ICertificate) {
     const params = {
       p_creq_id: certificate.id,
-      p_action: 'VIEW'
-    }
-    return this.request(
-      'GET',
-      `/cert_pkg.stu_certif`,
-      { params, returnResponse: false }
-    );
+      p_action: 'VIEW',
+    };
+    return this.request('GET', `/cert_pkg.stu_certif`, { params, returnResponse: false });
   }
 }
 
