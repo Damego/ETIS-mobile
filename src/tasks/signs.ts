@@ -16,7 +16,7 @@ interface IDifferentCheckPoint {
   subjectName: string;
 }
 
-const differenceSigns = (marks1: ISubject[], marks2: ISubject[]) => {
+const differenceSigns = (marks1: ISubject[], marks2: ISubject[]): IDifferentCheckPoint[] => {
   if (marks1.length !== marks2.length) {
     return [];
   }
@@ -64,14 +64,11 @@ export const defineFetchTask = () =>
       unregisterBackgroundFetchAsync();
       result = BackgroundFetch.BackgroundFetchResult.Failed;
     } else {
-      const difference =
-        cachedResult.type === GetResultType.fetched
-          ? differenceSigns(cachedResult.data.subjects, onlineResult.data.subjects)
-          : onlineResult.data.subjects;
+      const difference = differenceSigns(cachedResult.data.subjects, onlineResult.data.subjects);
 
-      if (difference !== null) {
+      if (difference?.length !== 0) {
         console.log('[FETCH] Fetched new data!');
-        difference.map((checkPoint) => {
+        difference.forEach((checkPoint) => {
           sendNewMarkNotification(
             checkPoint.subjectName,
             checkPoint.newResult.theme,

@@ -4,7 +4,7 @@ export default {
   expo: {
     name: 'ЕТИС мобайл' + (IS_DEV ? ' (DEV)' : ''),
     slug: 'etis-mobile',
-    version: '1.1.2',
+    version: '1.1.4',
     owner: 'damego',
     orientation: 'portrait',
     icon: './assets/icon.png',
@@ -23,7 +23,7 @@ export default {
       supportsTablet: true,
     },
     android: {
-      versionCode: 10102000,
+      versionCode: 10104000,
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
         backgroundColor: '#FFFFFF',
@@ -44,13 +44,13 @@ export default {
     hooks: {
       postPublish: [
         {
-          file: "sentry-expo/upload-sourcemaps",
+          file: 'sentry-expo/upload-sourcemaps',
           config: {
-            organization: "etismobile",
-            project: "etis-mobile"
-          }
-        }
-      ]
+            organization: 'etismobile',
+            project: 'etis-mobile',
+          },
+        },
+      ],
     },
     plugins: [
       ['./src/plugins/copyDrawable.ts', './assets/tab_icons'],

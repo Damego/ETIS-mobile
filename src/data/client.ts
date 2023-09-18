@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 
 import { cache } from '../cache/smartCache';
 import { useAppSelector } from '../hooks';
+import { IAbsence, IGetAbsencesPayload } from '../models/absences';
 import { ICalendarSchedule } from '../models/calendarSchedule';
 import { ICertificateTable } from '../models/certificate';
 import { IMessagesData } from '../models/messages';
@@ -15,6 +16,7 @@ import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
 import { ITimeTable } from '../models/timeTable';
 import {
+  parseAbsenses,
   parseAnnounce,
   parseMenu,
   parseMessages,
@@ -43,6 +45,7 @@ export const useClient: () => BaseClient = () => {
 
 const emptyFunction = <T>() => undefined as T;
 
+class AbsencesClient extends BasicClient<IGetAbsencesPayload, IAbsence> {}
 class AnnounceClient extends BasicClient<IGetPayload, string[]> {}
 class TimeTableClient extends BasicClient<IGetPayload<number>, ITimeTable> {}
 class MessageClient extends BasicClient<IGetPayload<number>, IMessagesData> {}
@@ -62,6 +65,7 @@ class SessionQuestionnaireListClient extends BasicClient<
 > {}
 
 export default class Client implements BaseClient {
+  private absencesClient: AbsencesClient;
   private announceClient: AnnounceClient;
   private timeTableClient: TimeTableClient;
   private messageClient: MessageClient;
@@ -78,6 +82,12 @@ export default class Client implements BaseClient {
   private sessionQuestionnaireListClient: SessionQuestionnaireListClient;
 
   constructor() {
+    this.absencesClient = new AbsencesClient(
+      ({ session }) => cache.getAbsences(session),
+      ({ session }) => httpClient.getAbsences(session),
+      parseAbsenses,
+      (data) => cache.placeAbsences(data)
+    );
     this.announceClient = new AnnounceClient(
       () => cache.getAnnounce(),
       () => httpClient.getAnnounce(),
@@ -164,6 +174,11 @@ export default class Client implements BaseClient {
     );
 
     bind(this, Client);
+  }
+
+  async getAbsencesData(payload: IGetAbsencesPayload): Promise<IGetResult<IAbsence>> {
+    await cache.absences.init();
+    return this.absencesClient.getData(payload);
   }
 
   async getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>> {

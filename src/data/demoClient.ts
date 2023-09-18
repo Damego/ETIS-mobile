@@ -1,3 +1,4 @@
+import { IAbsence, IAbsenceSession, IGetAbsencesPayload } from '../models/absences';
 import { ICalendarSchedule } from '../models/calendarSchedule';
 import { ICertificateTable } from '../models/certificate';
 import { IMessagesData, MessageType } from '../models/messages';
@@ -654,6 +655,45 @@ export default class DemoClient implements BaseClient {
             '30.06.2023 - 06.07.2023 теоретическое обучение и промежуточная аттестация',
             '07.07.2023 - 20.07.2023 изучение факультативных дисциплин',
             '21.07.2023 - 31.08.2023 каникулы',
+          ],
+        },
+      ],
+    };
+
+    return this.toResult(data);
+  }
+
+  async getAbsencesData(payload: IGetAbsencesPayload): Promise<IGetResult<IAbsence>> {
+    let currentSession: IAbsenceSession;
+    if (!payload.session || payload.session === 1) {
+      currentSession = { name: 'Осенний триместр', number: 1 };
+    } else if (payload.session === 2) {
+      currentSession = { name: 'Весенний триместр', number: 2 };
+    } else if (payload.session === 3) {
+      currentSession = { name: 'Летний триместр', number: 3 };
+    }
+    const data: IAbsence = {
+      overallMissed: 2,
+      currentSession,
+      sessions: [
+        { name: 'Осенний триместр', number: 1 },
+        { name: 'Весенний триместр', number: 2 },
+        { name: 'Летний триместр', number: 3 },
+      ],
+      absences: [
+        {
+          subject: 'Технологический анализ',
+          type: 'практ',
+          teacher: 'Иванов И.И',
+          dates: [
+            {
+              date: '13.13.1313',
+              isCovered: false,
+            },
+            {
+              date: '13.13.1313',
+              isCovered: true,
+            },
           ],
         },
       ],

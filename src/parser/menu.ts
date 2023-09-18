@@ -53,7 +53,10 @@ export default function parseMenu(html: string, parseGroupJournal = false): Stud
   const menu = $('.span3');
   const menuBlocks = menu.find('.nav.nav-tabs.nav-stacked');
   const sessionTestURL = menuBlocks.eq(1).find('li').first().find('a').attr('href');
-  const [, sessionTestID] = sessionTestURL.split('=');
+  let sessionTestID: string;
+  if (sessionTestURL) {
+    [, sessionTestID] = sessionTestURL.split('=');
+  }
   data.sessionTestID = sessionTestID;
 
   // Получение группы студента
