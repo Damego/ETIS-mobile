@@ -81,7 +81,7 @@ export default function SignModal({
               <CardHeaderIn
                 key={index}
                 style={{ alignSelf: 'stretch' }}
-                topText={checkPointTitle(checkPoint.theme, index + 1)}
+                topText={getCheckpointTitle(checkPoint.theme, index + 1)}
               >
                 <DoubleTextRow  first={'Оценка: '}             second={getCheckPointScore(checkPoint)} />
                 <DoubleTextRow  first={'Проходной балл: '}     second={checkPoint.passScore} />
