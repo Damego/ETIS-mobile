@@ -48,8 +48,8 @@ export default function SignModal({
 }) {
   const globalStyles = useGlobalStyles();
 
-  const checkPointTitle = (theme: string, number: number) => {
-    return 'КТ ' + number + ': ' + theme;
+  const getCheckpointTitle = (theme: string, number: number) => {
+    return `КТ ${number}: ${theme}`;
   };
 
   return (
