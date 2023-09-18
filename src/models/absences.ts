@@ -1,4 +1,4 @@
-import { IGetPayload } from "./results";
+import { IGetPayload } from './results';
 
 export interface IAbsenceDate {
   date: string;
@@ -16,7 +16,7 @@ export interface IAbsenceSession {
   name: string;
   number: number;
 }
-  
+
 export interface IAbsence {
   absences: IDisciplineAbsences[];
   currentSession: IAbsenceSession;

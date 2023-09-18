@@ -22,7 +22,10 @@ const AbsencesCard = ({ disciplineAbsences }: { disciplineAbsences: IDisciplineA
           {disciplineAbsences.dates.map((date: IAbsenceDate, index: number) => (
             <Text
               key={index}
-              style={[{fontWeight: '500'}, date.isCovered ? globalStyles.textColor : globalStyles.primaryFontColor]}
+              style={[
+                { fontWeight: '500' },
+                date.isCovered ? globalStyles.textColor : globalStyles.primaryFontColor,
+              ]}
             >
               {date.date}
             </Text>

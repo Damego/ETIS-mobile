@@ -1,6 +1,6 @@
 import { load } from 'cheerio';
 
-import { IAbsenceDate, IAbsenceSession, IAbsence, IDisciplineAbsences } from '../models/absences';
+import { IAbsence, IAbsenceDate, IAbsenceSession, IDisciplineAbsences } from '../models/absences';
 import { getTextField } from './utils';
 
 export default function parseAbsences(html: string): IAbsence {
@@ -15,7 +15,8 @@ export default function parseAbsences(html: string): IAbsence {
 
     // We will skip the number as it's not important info
     const dates: IAbsenceDate[] = [];
-    td.eq(1).children()
+    td.eq(1)
+      .children()
       .filter('font')
       .each((ind, el) => {
         const font = $(el);
@@ -47,10 +48,11 @@ export default function parseAbsences(html: string): IAbsence {
     });
 
     // define current period (current period's <a> doesn't have href attr)
-    if (!session.find('a.dashed').attr('href')) currentSession = {
-      name: getTextField(session),
-      number: index + 1
-    };
+    if (!session.find('a.dashed').attr('href'))
+      currentSession = {
+        name: getTextField(session),
+        number: index + 1,
+      };
   });
 
   let overallMissed: string = $('div.span9').text().split(' ').at(-1);

@@ -280,13 +280,13 @@ class HTTPClient {
     - 3: летний (если студент учится по триместрам)
    */
   getAbsences(session?: number) {
-    const params: {p_term?: number} = {} 
-   
+    const params: { p_term?: number } = {};
+
     if (session) {
       params.p_term = session;
     }
 
-    return this.request('GET', '/stu.absence', {params,  returnResponse: false });
+    return this.request('GET', '/stu.absence', { params, returnResponse: false });
   }
 
   getTeachers() {

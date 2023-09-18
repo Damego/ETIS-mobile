@@ -660,13 +660,11 @@ export default class DemoClient implements BaseClient {
   async getAbsencesData(payload: IGetAbsencesPayload): Promise<IGetResult<IAbsence>> {
     let currentSession: IAbsenceSession;
     if (!payload.session || payload.session === 1) {
-      currentSession =  { name: 'Осенний триместр', number: 1 }
-    }
-    else if (payload.session === 2) {
-      currentSession = { name: 'Весенний триместр', number: 2 }
-    }
-    else if (payload.session === 3) {
-      currentSession = { name: 'Летний триместр', number: 3 }
+      currentSession = { name: 'Осенний триместр', number: 1 };
+    } else if (payload.session === 2) {
+      currentSession = { name: 'Весенний триместр', number: 2 };
+    } else if (payload.session === 3) {
+      currentSession = { name: 'Летний триместр', number: 3 };
     }
     const data: IAbsence = {
       overallMissed: 2,

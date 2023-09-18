@@ -1,3 +1,3 @@
 import AbsencesTable from './AbsencesTable';
 
-export default AbsencesTable
+export default AbsencesTable;

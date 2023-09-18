@@ -51,7 +51,7 @@ function Button({
   return (
     <TouchableOpacity style={styles.buttonView} onPress={changePage} activeOpacity={0.9}>
       <View style={[styles.buttonContainer, globalStyles.border, globalStyles.block]}>{icon}</View>
-      <Text style={[fontSize.mini, globalStyles.textColor, {textAlign: 'center'}]}>{text}</Text>
+      <Text style={[fontSize.mini, globalStyles.textColor, { textAlign: 'center' }]}>{text}</Text>
     </TouchableOpacity>
   );
 }

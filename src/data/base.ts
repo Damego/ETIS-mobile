@@ -1,4 +1,4 @@
-import { IPeriodAbsences, IGetAbsencesPayload } from '../models/absences';
+import { IGetAbsencesPayload, IPeriodAbsences } from '../models/absences';
 import { ICalendarSchedule } from '../models/calendarSchedule';
 import { ICertificateTable } from '../models/certificate';
 import { IGetMessagesPayload, IMessagesData } from '../models/messages';
