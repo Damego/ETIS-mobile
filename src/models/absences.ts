@@ -11,14 +11,19 @@ export interface IDisciplineAbsences {
   type: string;
   teacher: string;
 }
+
+export interface IAbsenceSession {
+  name: string;
+  number: number;
+}
   
-export interface IPeriodAbsences {
+export interface IAbsence {
   absences: IDisciplineAbsences[];
-  period: number;
-  periods: string[];
+  currentSession: IAbsenceSession;
+  sessions: IAbsenceSession[];
   overallMissed: number;
 }
 
 export interface IGetAbsencesPayload extends IGetPayload {
-  period?: number;
+  session?: number;
 }

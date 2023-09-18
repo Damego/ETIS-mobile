@@ -1,14 +1,13 @@
-import { View, Text, StyleProp, ViewStyle } from "react-native";
-import { useGlobalStyles } from "../../hooks";
-import styles from "./AbsencesStyles";
-import CardHeaderOut from "../../components/CardHeaderOut";
-import { IAbsenceDate, IDisciplineAbsences } from "../../models/absences";
-import { TouchableOpacity } from "react-native";
+import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { AntDesign } from "@expo/vector-icons";
+import { Text, View } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
-const AbsencesCard = ({disciplineAbsences, style} 
-  : {disciplineAbsences: IDisciplineAbsences, style?: StyleProp<ViewStyle>}) => {
+import CardHeaderOut from '../../components/CardHeaderOut';
+import { useGlobalStyles } from '../../hooks';
+import { IAbsenceDate, IDisciplineAbsences } from '../../models/absences';
+
+const AbsencesCard = ({ disciplineAbsences }: { disciplineAbsences: IDisciplineAbsences }) => {
   const globalStyles = useGlobalStyles();
   const [isOpened, setOpened] = useState(false);
 
@@ -16,43 +15,45 @@ const AbsencesCard = ({disciplineAbsences, style}
     <CardHeaderOut topText={disciplineAbsences.subject}>
       <TouchableOpacity
         onPress={() => setOpened(!isOpened)}
-        style={[styles.touchable, style]}
-        activeOpacity={0.45} >
-        <View style={{flex: 1}}>
-          <View style={ isOpened ? {} : {  position: "absolute", left: 0 } }>
-            {disciplineAbsences.dates.map((date: IAbsenceDate, index: number) => (
-              <Text key={index} 
-                style={date.isCovered ? styles.coveredAbsenceColor : styles.uncoveredAbsenceColor}>
-                {date.date}
-              </Text>
+        style={[{ flexDirection: 'row' }]}
+        activeOpacity={0.45}
+      >
+        <View style={{ marginRight: '2%' }}>
+          {disciplineAbsences.dates.map((date: IAbsenceDate, index: number) => (
+            <Text
+              key={index}
+              style={[{fontWeight: '500'}, date.isCovered ? globalStyles.textColor : globalStyles.primaryFontColor]}
+            >
+              {date.date}
+            </Text>
           ))}
-          </View>
         </View>
-        <View style={{flex: 3}}>
-          <View style={{width: '90%'}}>
-            <Text style={[globalStyles.textColor]}>
-              {'Пропущенных занятий: ' + disciplineAbsences.dates.length}
-            </Text>
-            <Text style={globalStyles.textColor}>
-              {'Из них по уважительной причине: ' + disciplineAbsences.dates.filter(date => date.isCovered).length}
-            </Text>
-            {isOpened ? 
-            <View>
+        <View>
+          <Text style={globalStyles.textColor}>
+            {`Пропущенных занятий: ${disciplineAbsences.dates.length}`}
+          </Text>
+          <Text style={globalStyles.textColor}>
+            {`Из них по уважительной причине: ${
+              disciplineAbsences.dates.filter((date) => date.isCovered).length
+            }`}
+          </Text>
+          {isOpened && (
+            <>
               <Text style={globalStyles.textColor}>
-                {'Преподаватель: ' + disciplineAbsences.teacher}
+                {`Преподаватель: ${disciplineAbsences.teacher}`}
               </Text>
-              <Text style={globalStyles.textColor}>
-                {'Вид работы: ' + disciplineAbsences.type}
-              </Text> 
-            </View>
-            : <></>}
-          </View>
+              <Text style={globalStyles.textColor}>{`Вид работы: ${disciplineAbsences.type}`}</Text>
+            </>
+          )}
         </View>
-        <AntDesign 
-          name={isOpened ? 'up' : 'down'} 
-          size={18} 
-          color={globalStyles.textColor.color}
-          style={{position: 'absolute', right: 0, bottom: 0}} />
+
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-end' }}>
+          <AntDesign
+            name={isOpened ? 'up' : 'down'}
+            size={18}
+            color={globalStyles.textColor.color}
+          />
+        </View>
       </TouchableOpacity>
     </CardHeaderOut>
   );

@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { ToastAndroid, Text, View, StyleProp, TextStyle, TouchableOpacity } from 'react-native';
+import { Text, ToastAndroid, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
+import Dropdown from '../../components/Dropdown';
 import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
 import { getWrappedClient } from '../../data/client';
 import { useAppSelector, useGlobalStyles } from '../../hooks';
+import { IAbsence, IGetAbsencesPayload } from '../../models/absences';
 import { GetResultType, RequestType } from '../../models/results';
 import { setAuthorizing } from '../../redux/reducers/authSlice';
-import { IGetAbsencesPayload, IPeriodAbsences } from '../../models/absences';
 import AbsencesCard from './AbsencesCard';
-import styles from './AbsencesStyles';
-import { AntDesign } from '@expo/vector-icons';
-import { fontSize } from '../../utils/texts';
-import ClickableText from '../../components/ClickableText';
 
 export const absencesIconName = 'paperclip';
 
@@ -23,17 +20,16 @@ const AbsencesTable = () => {
   const dispatch = useDispatch();
   const { isAuthorizing } = useAppSelector((state) => state.auth);
   const [isLoading, setLoading] = useState(false);
-  const [data, setData] = useState<IPeriodAbsences>(null);
+  const [data, setData] = useState<IAbsence>();
   const client = getWrappedClient();
-  const doubledIconSize = 72;
 
-  const loadData = async (period?: number) => {
+  const loadData = async (session?: number) => {
     setLoading(true);
     const payload: IGetAbsencesPayload = {
       requestType: RequestType.tryFetch,
     };
-    if (period) {
-      payload.period = period;
+    if (session) {
+      payload.session = session;
     }
     const result = await client.getAbsencesData(payload);
 
@@ -49,9 +45,8 @@ const AbsencesTable = () => {
     }
 
     setData(result.data);
-    
     setLoading(false);
-  };  
+  };
 
   useEffect(() => {
     if (!isAuthorizing) loadData();
@@ -60,41 +55,44 @@ const AbsencesTable = () => {
   if (isLoading) return <LoadingScreen onRefresh={loadData} />;
   if (!data) return <NoData onRefresh={loadData} />;
 
-  const empty = (): boolean => {
-    return data.absences.length === 0;
-  };
-
-  let textStyles: StyleProp<TextStyle> = 
-    [globalStyles.textColor, empty() ? [fontSize.medium, { marginTop: 10 }] : {}];
-
   return (
     <Screen onUpdate={loadData}>
-      <View style={styles.navigation}>
-        {data.periods.map((value: string, index: number) => (
-          <ClickableText key={index} 
-            onPress={() => {if (index + 1 !== data.period) loadData(index + 1)}}
-            viewStyle={{ padding: 0 }}
-            textStyle={[
-              {paddingVertical: 5},
-              fontSize.medium, 
-              globalStyles.textColor,
-              index + 1 === data.period ? {} : {textDecorationLine: 'underline'}
-            ]}
-            text={value} />
-        ))}
+      <View
+        style={{
+          marginTop: '2%',
+          marginLeft: 'auto',
+          marginRight: 0,
+          paddingBottom: '2%',
+          zIndex: 1,
+        }}
+      >
+        <Dropdown
+          selectedOption={{
+            label: data.currentSession.name,
+            value: data.currentSession.number,
+            current: false,
+          }}
+          options={data.sessions.map((session) => ({
+            label: session.name,
+            value: session.number,
+            current: session.number === data.currentSession.number,
+          }))}
+          onSelect={loadData}
+        />
       </View>
-      
-      {data.absences.map((absences, index) => (
-        <AbsencesCard key={index} disciplineAbsences={absences} />
-      ))}
-      <View style={ empty() ? styles.rootView : {} }>
-        {empty() ?
-          <AntDesign name={absencesIconName} size={doubledIconSize} color={globalStyles.textColor.color} /> 
-        : <></>}
-        <Text style={textStyles}>
-          { 'Всего пропущено занятий: ' + data.overallMissed }
-        </Text>
-      </View>
+
+      {data.absences.length ? (
+        <>
+          {data.absences.map((absences, index) => (
+            <AbsencesCard key={index} disciplineAbsences={absences} />
+          ))}
+          <Text
+            style={globalStyles.textColor}
+          >{`Всего пропущено занятий: ${data.overallMissed}`}</Text>
+        </>
+      ) : (
+        <NoData text="Нет пропущенных занятий!" />
+      )}
     </Screen>
   );
 };
