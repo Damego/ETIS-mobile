@@ -5,6 +5,12 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useGlobalStyles } from '../hooks';
 import { fontSize } from '../utils/texts';
 
+interface IDropdownOption {
+  label: string;
+  value: unknown;
+  current: boolean;
+}
+
 const styles = StyleSheet.create({
   dropdownView: {
     position: 'relative',
@@ -36,7 +42,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const SelectOption = ({ label, current }) => {
+const SelectOption = ({ label, current }: { label: string; current: boolean }) => {
   const globalStyles = useGlobalStyles();
 
   return (
@@ -54,7 +60,13 @@ const SelectOption = ({ label, current }) => {
   );
 };
 
-function Menu({ options, onSelect }) {
+function Menu({
+  options,
+  onSelect,
+}: {
+  options: IDropdownOption[];
+  onSelect: (value: unknown) => void;
+}) {
   const globalStyles = useGlobalStyles();
 
   return (
@@ -73,7 +85,15 @@ function Menu({ options, onSelect }) {
   );
 }
 
-function Select({ selectedOption, isOpened, toggleOpened }) {
+function Select({
+  selectedOption,
+  isOpened,
+  toggleOpened,
+}: {
+  selectedOption: string;
+  isOpened: boolean;
+  toggleOpened: () => void;
+}) {
   const globalStyles = useGlobalStyles();
 
   return (
@@ -94,7 +114,15 @@ function Select({ selectedOption, isOpened, toggleOpened }) {
   );
 }
 
-export default function Dropdown({ selectedOption, options, onSelect }) {
+export default function Dropdown({
+  selectedOption,
+  options,
+  onSelect,
+}: {
+  selectedOption: IDropdownOption;
+  options: IDropdownOption[];
+  onSelect: (value: unknown) => void;
+}) {
   const [isOpened, setOpened] = useState(false);
 
   const toggleOpened = () => {

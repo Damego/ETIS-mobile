@@ -1,5 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 
+import { IPeriodAbsences } from '../models/absences';
 import { ICalendarSchedule } from '../models/calendarSchedule';
 import { ICertificate, ICertificateTable } from '../models/certificate';
 import { IMessagesData } from '../models/messages';
@@ -18,6 +19,7 @@ import MappedCache from './mappedCache';
 import SecuredFieldCache from './securedFieldCache';
 
 export default class SmartCache {
+  absences: MappedCache<number, IPeriodAbsences>;
   announce: FieldCache<string[]>;
   messages: MappedCache<number, IMessagesData>;
   orders: {
@@ -40,6 +42,7 @@ export default class SmartCache {
 
   private keys = {
     // ETIS related keys
+    ABSENCES: 'ABSENCES',
     ANNOUNCES: 'ANNOUNCES',
     MESSAGES: 'MESSAGES',
     ORDERS: 'ORDERS',
@@ -60,6 +63,7 @@ export default class SmartCache {
   };
 
   constructor() {
+    this.absences = new MappedCache<number, IPeriodAbsences>(this.keys.ABSENCES);
     this.announce = new FieldCache(this.keys.ANNOUNCES);
     this.messages = new MappedCache<number, IMessagesData>(this.keys.MESSAGES);
     this.orders = {
@@ -79,6 +83,20 @@ export default class SmartCache {
     this.user = new SecuredFieldCache<UserCredentials>(this.keys.USER);
     this.app = new FieldCache<AppConfig>(this.keys.APP);
   }
+
+  // Absences Region
+
+  async getAbsences(period: number) {
+    if (!this.absences.isReady()) await this.absences.init();
+    return this.absences.get(period);
+  }
+
+  async placeAbsences(data: IPeriodAbsences) {
+    this.absences.place(data.period, data);
+    await this.absences.save();
+  }
+
+  // End Absences Region
 
   // Announce Region
 
