@@ -1,0 +1,62 @@
+import { AntDesign } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { Text, View } from 'react-native';
+import { TouchableOpacity } from 'react-native';
+
+import CardHeaderOut from '../../components/CardHeaderOut';
+import { useGlobalStyles } from '../../hooks';
+import { IAbsenceDate, IDisciplineAbsences } from '../../models/absences';
+
+const AbsencesCard = ({ disciplineAbsences }: { disciplineAbsences: IDisciplineAbsences }) => {
+  const globalStyles = useGlobalStyles();
+  const [isOpened, setOpened] = useState(false);
+
+  return (
+    <CardHeaderOut topText={disciplineAbsences.subject}>
+      <TouchableOpacity
+        onPress={() => setOpened(!isOpened)}
+        style={[{ flexDirection: 'row' }]}
+        activeOpacity={0.45}
+      >
+        <View style={{ marginRight: '2%' }}>
+          {disciplineAbsences.dates.map((date: IAbsenceDate, index: number) => (
+            <Text
+              key={index}
+              style={[{fontWeight: '500'}, date.isCovered ? globalStyles.textColor : globalStyles.primaryFontColor]}
+            >
+              {date.date}
+            </Text>
+          ))}
+        </View>
+        <View>
+          <Text style={globalStyles.textColor}>
+            {`Пропущенных занятий: ${disciplineAbsences.dates.length}`}
+          </Text>
+          <Text style={globalStyles.textColor}>
+            {`Из них по уважительной причине: ${
+              disciplineAbsences.dates.filter((date) => date.isCovered).length
+            }`}
+          </Text>
+          {isOpened && (
+            <>
+              <Text style={globalStyles.textColor}>
+                {`Преподаватель: ${disciplineAbsences.teacher}`}
+              </Text>
+              <Text style={globalStyles.textColor}>{`Вид работы: ${disciplineAbsences.type}`}</Text>
+            </>
+          )}
+        </View>
+
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-end' }}>
+          <AntDesign
+            name={isOpened ? 'up' : 'down'}
+            size={18}
+            color={globalStyles.textColor.color}
+          />
+        </View>
+      </TouchableOpacity>
+    </CardHeaderOut>
+  );
+};
+
+export default AbsencesCard;

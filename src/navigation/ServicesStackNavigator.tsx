@@ -13,6 +13,7 @@ import Settings from '../screens/settings/Settings';
 import ShortTeachPlan from '../screens/shortTeachPlan';
 import TeacherTable from '../screens/teachers';
 import { headerParams } from './header';
+import AbsencesTable from '../screens/absences';
 
 const Stack = createNativeStackNavigator();
 
@@ -37,6 +38,7 @@ function ServicesStackNavigator() {
         options={{ title: 'Учебный план' }}
       />
       <Stack.Screen name="Teachers" component={TeacherTable} options={{ title: 'Преподаватели' }} />
+      <Stack.Screen name="Absences" component={AbsencesTable} options={{title: 'Пропущенные занятия' }} />
       <Stack.Screen name="Orders" component={OrderTable} options={{ title: 'Приказы' }} />
       <Stack.Screen
         name="Certificate"
