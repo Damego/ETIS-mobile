@@ -81,10 +81,10 @@ const useQuery = <P, R>({
 
     const result = await get(payload);
 
-    if (after) await handleAfter(result);
     if (!result.data) {
       if (onFail) handleFailedQuery(result);
     } else {
+      if (after) await handleAfter(result);
       setData(result.data);
     }
     disableLoading();
