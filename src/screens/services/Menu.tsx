@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { useGlobalStyles } from '../../hooks';
+import { useAppSelector, useGlobalStyles } from '../../hooks';
 import { GITHUB_URL, TELEGRAM_URL } from '../../utils';
 import { fontSize } from '../../utils/texts';
 import { absencesIconName } from '../absences/AbsencesTable';
