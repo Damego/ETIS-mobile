@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { cache } from '../cache/smartCache';
 import { useAppSelector } from '../hooks';
-import { IAbsence, IGetAbsencesPayload } from '../models/absences';
+import { IAbsence } from '../models/absences';
 import { ICalendarSchedule } from '../models/calendarSchedule';
 import { ICertificateTable } from '../models/certificate';
 import { IMessagesData } from '../models/messages';
@@ -45,7 +45,7 @@ export const useClient: () => BaseClient = () => {
 
 const emptyFunction = <T>() => undefined as T;
 
-class AbsencesClient extends BasicClient<IGetAbsencesPayload, IAbsence> {}
+class AbsencesClient extends BasicClient<IGetPayload<number>, IAbsence> {}
 class AnnounceClient extends BasicClient<IGetPayload, string[]> {}
 class TimeTableClient extends BasicClient<IGetPayload<number>, ITimeTable> {}
 class MessageClient extends BasicClient<IGetPayload<number>, IMessagesData> {}
@@ -83,8 +83,8 @@ export default class Client implements BaseClient {
 
   constructor() {
     this.absencesClient = new AbsencesClient(
-      ({ session }) => cache.getAbsences(session),
-      ({ session }) => httpClient.getAbsences(session),
+      ({ data }) => cache.getAbsences(data),
+      ({ data }) => httpClient.getAbsences(data),
       parseAbsenses,
       (data) => cache.placeAbsences(data)
     );
@@ -176,7 +176,7 @@ export default class Client implements BaseClient {
     bind(this, Client);
   }
 
-  async getAbsencesData(payload: IGetAbsencesPayload): Promise<IGetResult<IAbsence>> {
+  async getAbsencesData(payload: IGetPayload<number>): Promise<IGetResult<IAbsence>> {
     await cache.absences.init();
     return this.absencesClient.getData(payload);
   }
