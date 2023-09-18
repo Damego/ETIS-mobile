@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator, StyleProp, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { useGlobalStyles } from '../hooks';
 import { fontSize } from '../utils/texts';
@@ -25,14 +25,10 @@ const Button = ({
   text,
   onPress,
   disabled,
-  textStyle,
-  viewStyle
 }: {
   text: string;
   onPress(): void;
   disabled?: boolean;
-  viewStyle?: StyleProp<ViewStyle>;
-  textStyle?: StyleProp<TextStyle>;
 }) => {
   const globalStyles = useGlobalStyles();
 
@@ -40,10 +36,10 @@ const Button = ({
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.6}
-      style={[styles.container, globalStyles.primaryBackgroundColor, viewStyle]}
+      style={[styles.container, globalStyles.primaryBackgroundColor]}
       disabled={disabled}
     >
-      <Text style={[styles.text, textStyle]}>{text}</Text>
+      <Text style={styles.text}>{text}</Text>
     </TouchableOpacity>
   );
 };
