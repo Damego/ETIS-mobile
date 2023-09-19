@@ -1,8 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 
 import ClickableText from '../../components/ClickableText';
-import { fontSize } from '../../utils/texts';
 import { useGlobalStyles } from '../../hooks';
+import { fontSize } from '../../utils/texts';
 
 export default function ChangePersonalRecord() {
   const navigation = useNavigation();
