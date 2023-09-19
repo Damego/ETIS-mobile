@@ -1,16 +1,41 @@
 import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 
 import CardHeaderIn from '../../components/CardHeaderIn';
 import { useGlobalStyles } from '../../hooks';
 import { ISubject } from '../../models/sessionPoints';
 import { fontSize } from '../../utils/texts';
 import SubjectCheckPoints from './SubjectCheckPoints';
-import { Button } from '../../components/Button';
 import SignModal from './SignModal';
 import TotalPoints from './TotalPoints';
-import styles from './styles';
 import ClickableText from '../../components/ClickableText';
+
+const styles = StyleSheet.create({
+  pointsView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  totalPoints: {
+    alignItems: 'center',
+    width: '25%',
+  },
+  markNumberText: {
+    fontWeight: '600',
+  },
+  markView: {
+    marginTop: '1%',
+    alignItems: 'flex-end',
+  },
+  markWordText: {
+    fontWeight: '600',
+  },
+  detailsText: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    textDecorationLine: 'underline',
+  },
+});
 
 interface CardSignProps {
   subject: ISubject;

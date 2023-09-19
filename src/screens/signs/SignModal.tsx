@@ -1,5 +1,13 @@
 import React from 'react';
-import { Modal, ScrollView, StyleProp, Text, View, ViewStyle } from 'react-native';
+import {
+  Modal,
+  ScrollView,
+  StyleProp,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import CardHeaderIn from '../../components/CardHeaderIn';
 import ClickableText from '../../components/ClickableText';
@@ -8,34 +16,50 @@ import { ICheckPoint, ISubject } from '../../models/sessionPoints';
 import { fontSize } from '../../utils/texts';
 import { getCheckPointScore } from './SubjectCheckPoints';
 import TotalPoints from './TotalPoints';
-import styles from './styles';
 
-const Row = ({ children, style }: { children: React.ReactNode; style?: StyleProp<ViewStyle> }) => {
-  return <View style={[styles.modalRowStyle, style]}>{children}</View>;
-};
+const styles = StyleSheet.create({
+  modalCloseText: {
+    position: 'absolute',
+    bottom: '2%',
+    width: '100%',
+    alignItems: 'center',
+  },
+  modalRowStyle: {
+    flexDirection: 'row',
+    width: '90%',
+    alignSelf: 'center',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+  },
+  modalRootStyle: {
+    alignItems: 'center',
+    flex: 1,
+    marginVertical: '20%',
+    marginHorizontal: '2%',
+    height: '100%',
+  },
+  scrollContainer: {
+    width: '90%',
+    gap: 10,
+    alignSelf: 'center',
+    alignItems: 'center',
+  },
+});
 
-const TextRow = ({ text, style }: { text: any; style?: StyleProp<ViewStyle> }) => {
-  return (
-    <Row style={style}>
-      <Text style={useGlobalStyles().textColor}>{text}</Text>
-    </Row>
-  );
-};
-
-const DoubleTextRow = ({
+const Row = ({
   first,
   second,
   style,
 }: {
   first: any;
-  second: any;
+  second?: any;
   style?: StyleProp<ViewStyle>;
 }) => {
   return (
-    <Row style={[{ justifyContent: 'space-between' }, style]}>
+    <View style={[styles.modalRowStyle, style]}>
       <Text style={useGlobalStyles().textColor}>{first}</Text>
       <Text style={useGlobalStyles().textColor}>{second}</Text>
-    </Row>
+    </View>
   );
 };
 
@@ -71,7 +95,7 @@ export default function SignModal({
               style={[
                 globalStyles.textColor,
                 fontSize.large,
-                { marginTop: '2%', textAlign: 'center' },
+                { marginTop: 5, textAlign: 'center' },
               ]}
             >
               {subject.name}
@@ -83,14 +107,19 @@ export default function SignModal({
                 style={{ alignSelf: 'stretch' }}
                 topText={getCheckpointTitle(checkPoint.theme, index + 1)}
               >
-                <DoubleTextRow  first={'Оценка: '}             second={getCheckPointScore(checkPoint)} />
-                <DoubleTextRow  first={'Проходной балл: '}     second={checkPoint.passScore} />
-                <DoubleTextRow  first={'Текущий балл: '}       second={checkPoint.currentScore} />
-                <DoubleTextRow  first={'Максимальный балл: '}  second={checkPoint.maxScore} />
-                <TextRow        text={'Дата: ' + checkPoint.date} />
-                <TextRow        text={'Вид работы: ' + checkPoint.typeWork} />
-                <TextRow        text={'Вид контроля: ' + checkPoint.typeControl} />
-                <TextRow        text={'Преподаватель: ' + checkPoint.teacher} />
+                <Row first={'Оценка: '} second={getCheckPointScore(checkPoint)} />
+                <Row first={'Проходной балл: '} second={checkPoint.passScore} />
+                <Row first={'Текущий балл: '} second={checkPoint.currentScore} />
+                <Row first={'Максимальный балл: '} second={checkPoint.maxScore} />
+                <Row first={`Вид работы: ${checkPoint.typeWork}`} />
+                <Row first={`Вид контроля: ${checkPoint.typeControl}`} />
+                {checkPoint.teacher && (
+                  <>
+                    <Row first={`Преподаватель: ${checkPoint.teacher}`} />
+                    <Row first={`Дата: ${checkPoint.date}`} />
+                  </>
+                )}
+                
               </CardHeaderIn>
             ))}
           </ScrollView>

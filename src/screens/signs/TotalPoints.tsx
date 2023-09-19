@@ -1,9 +1,23 @@
-import { StyleProp, Text, View, ViewStyle } from 'react-native';
+import { StyleProp, Text, View, ViewStyle, StyleSheet } from 'react-native';
 
 import { useGlobalStyles } from '../../hooks';
 import { ISubject } from '../../models/sessionPoints';
 import { fontSize, getPointsWord } from '../../utils/texts';
-import styles from './styles';
+
+const styles = StyleSheet.create({
+  colorMark2: {
+    color: '#CE2539',
+  },
+  colorMark3: {
+    color: '#f6d832',
+  },
+  colorMark4: {
+    color: '#76c248',
+  },
+  colorMark5: {
+    color: '#5c9f38',
+  },
+});
 
 const getSubjectPointsStyle = (subject: ISubject, defaultTextColor) => {
   if (subject.checkPoints.length === 0) return defaultTextColor;
@@ -35,10 +49,10 @@ const TotalPoints = ({ subject, style }: { subject: ISubject, style?: StyleProp<
 
   return (
     <View style={style}>
-      <Text style={[fontSize.xxlarge, styles.markNumberText, textStyle]}>
+      <Text style={[fontSize.xxlarge, { fontWeight: '600' }, textStyle]}>
         {subject.totalPoints}
       </Text>
-      <Text style={[fontSize.medium, styles.markWordText, globalStyles.textColor]}>
+      <Text style={[fontSize.medium, { fontWeight: '600' }, globalStyles.textColor]}>
         {pointsWord}
       </Text>
     </View>
