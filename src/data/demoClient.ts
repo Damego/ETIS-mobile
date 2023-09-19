@@ -260,6 +260,7 @@ export default class DemoClient implements BaseClient {
     const data: ISessionMarks[] = [
       {
         session: 1,
+        sessionName: 'триместр',
         course: 1,
         endDate: '30 декабря',
         disciplines: [
@@ -683,15 +684,15 @@ export default class DemoClient implements BaseClient {
       absences: [
         {
           subject: 'Технологический анализ',
-          type: 'практ',
-          teacher: 'Иванов И.И',
+          type: 'Проведение практический занятий семинаров',
+          teacher: 'Иванов Иван Иванович',
           dates: [
             {
-              date: '13.13.1313',
+              date: '19.09.2023',
               isCovered: false,
             },
             {
-              date: '13.13.1313',
+              date: '20.09.2023',
               isCovered: true,
             },
           ],
