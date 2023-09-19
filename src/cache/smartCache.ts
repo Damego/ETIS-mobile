@@ -298,7 +298,7 @@ export default class SmartCache {
 
     Object.entries(data).forEach(([key, value]) => {
       student[key] = value;
-    })
+    });
 
     await this.placeStudent(student);
   }
