@@ -2,25 +2,22 @@ import { useMemo } from 'react';
 
 import { cache } from '../cache/smartCache';
 import { useAppSelector } from '../hooks';
+import { IAbsence } from '../models/absences';
 import { ICalendarSchedule } from '../models/calendarSchedule';
 import { ICertificateTable } from '../models/certificate';
-import { IGetMessagesPayload, IMessagesData } from '../models/messages';
+import { IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
 import { IPersonalRecord } from '../models/personalRecords';
-import { IGetRatingPayload, ISessionRating } from '../models/rating';
+import { ISessionRating } from '../models/rating';
 import { IGetPayload, IGetResult } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
-import {
-  IGetStringPayload,
-  ISessionQuestionnaire,
-  ISessionQuestionnaireLink,
-} from '../models/sessionQuestionnaire';
-import { IGetSignsPayload } from '../models/signs';
+import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
 import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
-import { ITimeTable, ITimeTableGetProps } from '../models/timeTable';
+import { ITimeTable } from '../models/timeTable';
 import {
+  parseAbsenses,
   parseAnnounce,
   parseMenu,
   parseMessages,
@@ -39,36 +36,39 @@ import parseRating from '../parser/rating';
 import parseSessionQuestionnaire from '../parser/sessionQuestionnaire';
 import parseSessionQuestionnaireList from '../parser/sessionQuestionnaireList';
 import { httpClient } from '../utils';
+import bind from '../utils/methodBinder';
 import { BaseClient, BasicClient } from './base';
 import DemoClient from './demoClient';
 
-export const getWrappedClient: () => BaseClient = () => {
+export const useClient: () => BaseClient = () => {
   const { isDemo } = useAppSelector((state) => state.auth);
   return useMemo(() => (isDemo ? new DemoClient() : new Client()), [isDemo]);
 };
 
 const emptyFunction = <T>() => undefined as T;
 
+class AbsencesClient extends BasicClient<IGetPayload<number>, IAbsence> {}
 class AnnounceClient extends BasicClient<IGetPayload, string[]> {}
-class TimeTableClient extends BasicClient<ITimeTableGetProps, ITimeTable> {}
-class MessageClient extends BasicClient<IGetMessagesPayload, IMessagesData> {}
+class TimeTableClient extends BasicClient<IGetPayload<number>, ITimeTable> {}
+class MessageClient extends BasicClient<IGetPayload<number>, IMessagesData> {}
 class OrderClient extends BasicClient<IGetPayload, IOrder[]> {}
-class RatingClient extends BasicClient<IGetRatingPayload, ISessionRating> {}
-class SignsClient extends BasicClient<IGetSignsPayload, ISessionPoints> {}
+class RatingClient extends BasicClient<IGetPayload<number>, ISessionRating> {}
+class SignsClient extends BasicClient<IGetPayload<number>, ISessionPoints> {}
 class MarksClient extends BasicClient<IGetPayload, ISessionMarks[]> {}
 class StudentClient extends BasicClient<IGetPayload, StudentInfo> {}
 class TeachersClient extends BasicClient<IGetPayload, TeacherType> {}
 class TeachPlanClient extends BasicClient<IGetPayload, ISessionTeachPlan[]> {}
 class CalendarScheduleClient extends BasicClient<IGetPayload, ICalendarSchedule> {}
 class CertificateClient extends BasicClient<IGetPayload, ICertificateTable> {}
-class SessionQuestionnaireClient extends BasicClient<IGetStringPayload, ISessionQuestionnaire> {}
+class SessionQuestionnaireClient extends BasicClient<IGetPayload<string>, ISessionQuestionnaire> {}
 class SessionQuestionnaireListClient extends BasicClient<
-  IGetStringPayload,
+  IGetPayload<string>,
   ISessionQuestionnaireLink[]
 > {}
 class PersonalRecordsClient extends BasicClient<IGetPayload, IPersonalRecord[]> {}
 
 export default class Client implements BaseClient {
+  private absencesClient: AbsencesClient;
   private announceClient: AnnounceClient;
   private timeTableClient: TimeTableClient;
   private messageClient: MessageClient;
@@ -86,6 +86,12 @@ export default class Client implements BaseClient {
   private personalRecordsClient: PersonalRecordsClient;
 
   constructor() {
+    this.absencesClient = new AbsencesClient(
+      ({ data }) => cache.getAbsences(data),
+      ({ data }) => httpClient.getAbsences(data),
+      parseAbsenses,
+      (data) => cache.placeAbsences(data)
+    );
     this.announceClient = new AnnounceClient(
       () => cache.getAnnounce(),
       () => httpClient.getAnnounce(),
@@ -93,14 +99,14 @@ export default class Client implements BaseClient {
       (data) => cache.placeAnnounce(data)
     );
     this.timeTableClient = new TimeTableClient(
-      ({ week }) => cache.getTimeTable(week),
-      ({ week }) => httpClient.getTimeTable({ week }),
+      ({ data }) => cache.getTimeTable(data),
+      ({ data }) => httpClient.getTimeTable({ week: data }),
       parseTimeTable,
       (data) => cache.placeTimeTable(data)
     );
     this.messageClient = new MessageClient(
-      ({ page }) => cache.getMessages(page),
-      ({ page }) => httpClient.getMessages(page),
+      ({ data }) => cache.getMessages(data),
+      ({ data }) => httpClient.getMessages(data),
       parseMessages,
       (data) => cache.placeMessages(data)
     );
@@ -111,14 +117,14 @@ export default class Client implements BaseClient {
       (data) => cache.placeOrders(data)
     );
     this.ratingClient = new RatingClient(
-      ({ session }) => cache.getSessionRating(session),
-      ({ session }) => httpClient.getSigns('rating', session),
+      ({ data }) => cache.getSessionRating(data),
+      ({ data }) => httpClient.getSigns('rating', data),
       parseRating,
       (data) => cache.placeSessionRating(data)
     );
     this.signsClient = new SignsClient(
-      ({ session }) => cache.getSessionPoints(session),
-      ({ session }) => httpClient.getSigns('current', session),
+      ({ data }) => cache.getSessionPoints(data),
+      ({ data }) => httpClient.getSigns('current', data),
       parseSessionPoints,
       (data) => cache.placeSessionPoints(data)
     );
@@ -132,7 +138,7 @@ export default class Client implements BaseClient {
       () => cache.getStudent(),
       () => httpClient.getGroupJournal(),
       (payload) => parseMenu(payload, true),
-      (data) => cache.placeStudent(data)
+      (data) => cache.placePartialStudent(data)
     );
     this.teacherClient = new TeachersClient(
       () => cache.getTeachers(),
@@ -176,6 +182,13 @@ export default class Client implements BaseClient {
       parsePersonalRecords,
       (data) => cache.placePersonalRecords(data)
     );
+
+    bind(this, Client);
+  }
+
+  async getAbsencesData(payload: IGetPayload<number>): Promise<IGetResult<IAbsence>> {
+    await cache.absences.init();
+    return this.absencesClient.getData(payload);
   }
 
   async getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>> {
@@ -183,12 +196,12 @@ export default class Client implements BaseClient {
     return this.announceClient.getData(payload);
   }
 
-  async getTimeTableData(payload: ITimeTableGetProps): Promise<IGetResult<ITimeTable>> {
+  async getTimeTableData(payload: IGetPayload<number>): Promise<IGetResult<ITimeTable>> {
     await cache.timeTable.init();
     return this.timeTableClient.getData(payload);
   }
 
-  async getMessagesData(payload: IGetMessagesPayload): Promise<IGetResult<IMessagesData>> {
+  async getMessagesData(payload: IGetPayload<number>): Promise<IGetResult<IMessagesData>> {
     await cache.messages.init();
     return this.messageClient.getData(payload);
   }
@@ -198,12 +211,12 @@ export default class Client implements BaseClient {
     return this.orderClient.getData(payload);
   }
 
-  async getRatingData(payload: IGetRatingPayload): Promise<IGetResult<ISessionRating>> {
+  async getRatingData(payload: IGetPayload<number>): Promise<IGetResult<ISessionRating>> {
     await cache.signsRating.init();
     return this.ratingClient.getData(payload);
   }
 
-  async getSessionSignsData(payload: IGetSignsPayload): Promise<IGetResult<ISessionPoints>> {
+  async getSessionSignsData(payload: IGetPayload<number>): Promise<IGetResult<ISessionPoints>> {
     await cache.signsPoints.init();
     return this.signsClient.getData(payload);
   }
@@ -238,13 +251,13 @@ export default class Client implements BaseClient {
   }
 
   async getSessionQuestionnaireList(
-    payload: IGetStringPayload
+    payload: IGetPayload<string>
   ): Promise<IGetResult<ISessionQuestionnaireLink[]>> {
     return this.sessionQuestionnaireListClient.getData(payload);
   }
 
   async getSessionQuestionnaire(
-    payload: IGetStringPayload
+    payload: IGetPayload<string>
   ): Promise<IGetResult<ISessionQuestionnaire>> {
     return this.sessionQuestionnaireClient.getData(payload);
   }

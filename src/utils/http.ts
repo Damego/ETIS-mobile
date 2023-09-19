@@ -274,16 +274,19 @@ class HTTPClient {
   }
 
   /*
-  `trimester`:
+  `session`:
     - 1: осенний
     - 2: весенний
-    - 3: летний
+    - 3: летний (если студент учится по триместрам)
    */
-  getAbsences(trimester: number) {
-    return this.request('GET', '/stu.absence', {
-      params: { p_term: trimester },
-      returnResponse: false,
-    });
+  getAbsences(session?: number) {
+    const params: { p_term?: number } = {};
+
+    if (session) {
+      params.p_term = session;
+    }
+
+    return this.request('GET', '/stu.absence', { params, returnResponse: false });
   }
 
   getTeachers() {
@@ -357,17 +360,12 @@ class HTTPClient {
     return this.request('POST', '/cert_pkg.stu_certif', { data: payload, returnResponse: false });
   }
 
-  async getCertificateHTML(certificate: ICertificate): Promise<string> {
-    const fetched = await httpClient.request(
-      'GET',
-      `/cert_pkg.stu_certif?p_creq_id=${certificate.id}&p_action=VIEW`,
-      { returnResponse: false }
-    );
-    if (fetched.error) return;
-
-    console.log('[DATA] fetched certificate html');
-
-    return fetched.data;
+  async getCertificateHTML(certificate: ICertificate) {
+    const params = {
+      p_creq_id: certificate.id,
+      p_action: 'VIEW',
+    };
+    return this.request('GET', `/cert_pkg.stu_certif`, { params, returnResponse: false });
   }
 
   getPersonalRecords() {

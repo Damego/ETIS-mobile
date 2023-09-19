@@ -2,57 +2,56 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ToastAndroid } from 'react-native';
 
 import Screen from '../../components/Screen';
-import { getWrappedClient } from '../../data/client';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useClient } from '../../data/client';
+import { useAppSelector } from '../../hooks';
+import useQuery from '../../hooks/useQuery';
 import { IMessage } from '../../models/messages';
 import { UploadFile } from '../../models/other';
-import { GetResultType, RequestType } from '../../models/results';
+import { RequestType } from '../../models/results';
 import { parseDate } from '../../parser/utils';
-import { setAuthorizing } from '../../redux/reducers/authSlice';
 import { httpClient } from '../../utils';
 import Message from './Message';
 import MessageInput, { FilesPreview } from './MessageInput';
 
+const formatTeacherName = (name: string): string => {
+  const [name1, name2, name3] = name.split(' ');
+  return `${name1} ${name2.charAt(0)}. ${name3.charAt(0)}.`;
+};
+
+const compareMessages = (first: IMessage, second: IMessage) => {
+  const time1 = parseDate(first.time);
+  const time2 = parseDate(second.time);
+  if (time1 < time2) return -1;
+  if (time1 > time2) return 1;
+  return 0;
+};
+
 export default function MessageHistory({ route, navigation }) {
-  const [data, setData] = useState<IMessage[]>(route.params.data);
+  const [messages, setMessages] = useState<IMessage[]>(route.params.data);
   const pageRef = useRef<number>(route.params.page);
   const [isUploading, setUploading] = useState<boolean>(false);
-  const isDemo = useAppSelector((state) => state.auth.isDemo);
-  const dispatch = useAppDispatch();
-
-  const [mainMessage] = data;
-  const { author } = mainMessage;
-  const [name1, name2, name3] = author.split(' ');
-  const shortAuthor = `${name1} ${name2.charAt(0)}. ${name3.charAt(0)}.`;
-
   const [files, setFiles] = useState<UploadFile[]>([]);
-  const client = getWrappedClient();
+  const isDemo = useAppSelector((state) => state.auth.isDemo);
+
+  const [firstMessage] = messages;
+  const shortAuthor = formatTeacherName(firstMessage.author);
+
+  const client = useClient();
+  const query = useQuery({
+    method: client.getMessagesData,
+    skipInitialGet: true,
+  });
+
   const loadData = async () => {
-    const result = await client.getMessagesData({
-      page: pageRef.current,
-      requestType: RequestType.tryFetch,
-    });
+    const result = await query.get({ data: pageRef.current, requestType: RequestType.tryFetch });
 
-    if (result.type === GetResultType.loginPage) {
-      dispatch(setAuthorizing(true));
-      return;
-    }
-
-    for (const messageBlock of result.data.messages) {
-      const [mainMsg] = messageBlock;
-      if (mainMsg.messageID === mainMessage.messageID) {
-        setData(messageBlock);
-        return messageBlock;
+    for (const messages of result.data.messages) {
+      const [message] = messages;
+      if (message.messageID === firstMessage.messageID) {
+        setMessages(messages);
+        return messages;
       }
     }
-  };
-
-  const compareMessages = (first: IMessage, second: IMessage) => {
-    const time1 = parseDate(first.time);
-    const time2 = parseDate(second.time);
-    if (time1 < time2) return -1;
-    if (time1 > time2) return 1;
-    return 0;
   };
 
   const onFileSelect = (fileData: UploadFile[]) => {
@@ -64,13 +63,13 @@ export default function MessageHistory({ route, navigation }) {
     setFiles([...files, ...uploadFiles]);
   };
 
-  const onFileRemove = (fileName) => {
+  const onFileRemove = (fileName: string) => {
     setFiles(files.filter((file) => file.name !== fileName));
   };
 
   const onSubmit = async (text: string) => {
     setUploading(true); // TODO: block replying on demo account
-    const response = await httpClient.replyToMessage(mainMessage.answerID, text);
+    const response = await httpClient.replyToMessage(firstMessage.answerID, text);
 
     if (response.error) {
       setUploading(false);
@@ -87,7 +86,7 @@ export default function MessageHistory({ route, navigation }) {
     const message = messageBlock.at(-1);
 
     for (const file of files) {
-      await httpClient.attachFileToMessage(mainMessage.messageID, message.answerMessageID, file);
+      await httpClient.attachFileToMessage(firstMessage.messageID, message.answerMessageID, file);
     }
 
     loadData();
@@ -102,7 +101,7 @@ export default function MessageHistory({ route, navigation }) {
   return (
     <>
       <Screen startScrollFromBottom>
-        {data.sort(compareMessages).map((message, index) => (
+        {messages.sort(compareMessages).map((message, index) => (
           <Message message={message} key={`${message.time}-${index}`} />
         ))}
       </Screen>

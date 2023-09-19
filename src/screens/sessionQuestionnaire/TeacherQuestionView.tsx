@@ -3,7 +3,6 @@ import { Text, TextInput, View } from 'react-native';
 
 import { useGlobalStyles } from '../../hooks';
 import { fontSize } from '../../utils/texts';
-import { styles } from '../auth/AuthForm';
 
 export default function TeacherQuestionView({
   teacher,

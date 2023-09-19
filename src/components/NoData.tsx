@@ -10,8 +10,10 @@ export default function NoData({ text, onRefresh }: { text?: string; onRefresh?:
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={[globalStyles.textColor, fontSize.large, { marginBottom: '4%' }]}>{$text}</Text>
-      <Button title="Повторить" onPress={onRefresh} color={globalStyles.primaryFontColor.color} />
+      <Text style={[globalStyles.textColor, fontSize.large, { textAlign: 'center' }]}>{$text}</Text>
+      {onRefresh && (
+        <Button title="Повторить" onPress={onRefresh} color={globalStyles.primaryFontColor.color} />
+      )}
     </View>
   );
 }

@@ -1,20 +1,26 @@
+import { IAbsence, IAbsenceSession, IGetAbsencesPayload } from '../models/absences';
 import { ICalendarSchedule } from '../models/calendarSchedule';
 import { ICertificateTable } from '../models/certificate';
 import { IMessagesData, MessageType } from '../models/messages';
 import { IOrder } from '../models/order';
 import { ISessionRating } from '../models/rating';
-import { GetResultType, IGetResult } from '../models/results';
+import { GetResultType, IGetPayload, IGetResult } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
 import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
 import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
-import { ITimeTable, ITimeTableGetProps, WeekTypes } from '../models/timeTable';
+import { ITimeTable, WeekTypes } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
+import bind from '../utils/methodBinder';
 import { BaseClient } from './base';
 import { toResult } from './utils';
 
 export default class DemoClient implements BaseClient {
+  constructor() {
+    bind(this, DemoClient);
+  }
+
   async getSessionQuestionnaireList(): Promise<IGetResult<ISessionQuestionnaireLink[]>> {
     const data: ISessionQuestionnaireLink[] = [
       { url: '1', name: 'Математический анализ (Иванов И. И.)' },
@@ -70,14 +76,15 @@ export default class DemoClient implements BaseClient {
     };
   }
 
-  async getTimeTableData(payload: ITimeTableGetProps): Promise<IGetResult<ITimeTable>> {
+  async getTimeTableData(payload: IGetPayload<number>): Promise<IGetResult<ITimeTable>> {
+    console.log(payload);
     const data: ITimeTable = {
       days: [],
       weekInfo: {
         first: 1,
         last: 5,
-        selected: payload?.week || 2,
-        type: payload.week === 1 ? WeekTypes.holiday : WeekTypes.common,
+        selected: payload?.data || 2,
+        type: payload.data === 1 ? WeekTypes.holiday : WeekTypes.common,
         dates: {
           start: '01.01.2023',
           end: '07.01.2023',
@@ -253,6 +260,7 @@ export default class DemoClient implements BaseClient {
     const data: ISessionMarks[] = [
       {
         session: 1,
+        sessionName: 'триместр',
         course: 1,
         endDate: '30 декабря',
         disciplines: [
@@ -648,6 +656,45 @@ export default class DemoClient implements BaseClient {
             '30.06.2023 - 06.07.2023 теоретическое обучение и промежуточная аттестация',
             '07.07.2023 - 20.07.2023 изучение факультативных дисциплин',
             '21.07.2023 - 31.08.2023 каникулы',
+          ],
+        },
+      ],
+    };
+
+    return this.toResult(data);
+  }
+
+  async getAbsencesData(payload: IGetAbsencesPayload): Promise<IGetResult<IAbsence>> {
+    let currentSession: IAbsenceSession;
+    if (!payload.session || payload.session === 1) {
+      currentSession = { name: 'Осенний триместр', number: 1 };
+    } else if (payload.session === 2) {
+      currentSession = { name: 'Весенний триместр', number: 2 };
+    } else if (payload.session === 3) {
+      currentSession = { name: 'Летний триместр', number: 3 };
+    }
+    const data: IAbsence = {
+      overallMissed: 2,
+      currentSession,
+      sessions: [
+        { name: 'Осенний триместр', number: 1 },
+        { name: 'Весенний триместр', number: 2 },
+        { name: 'Летний триместр', number: 3 },
+      ],
+      absences: [
+        {
+          subject: 'Технологический анализ',
+          type: 'Проведение практический занятий семинаров',
+          teacher: 'Иванов Иван Иванович',
+          dates: [
+            {
+              date: '19.09.2023',
+              isCovered: false,
+            },
+            {
+              date: '20.09.2023',
+              isCovered: true,
+            },
           ],
         },
       ],

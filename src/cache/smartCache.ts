@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 
+import { IAbsence } from '../models/absences';
 import { ICalendarSchedule } from '../models/calendarSchedule';
 import { ICertificate, ICertificateTable } from '../models/certificate';
 import { IMessagesData } from '../models/messages';
@@ -22,6 +23,7 @@ import SecuredFieldCache from './securedFieldCache';
 export default class SmartCache {
   currentPersonalRecordIndex: number;
 
+  absences: MappedCache<number, IAbsence>;
   announce: FieldCache<string[]>;
   messages: MappedCache<number, IMessagesData>;
   orders: {
@@ -45,6 +47,7 @@ export default class SmartCache {
 
   private keys = {
     // ETIS related keys
+    ABSENCES: 'ABSENCES',
     ANNOUNCES: 'ANNOUNCES',
     CALENDAR_SCHEDULE: 'CALENDAR_SCHEDULE',
     CERTIFICATE: 'CERTIFICATE',
@@ -78,7 +81,6 @@ export default class SmartCache {
   ];
 
   constructor() {
-    // Некоторые данные доступны на всех личных записях, поэтому их не нужно хранить по записи
     this.announce = new FieldCache(this.keys.ANNOUNCES);
     this.messages = new MappedCache<number, IMessagesData>(this.keys.MESSAGES);
     this.personalRecords = new FieldCache(this.keys.PERSONAL_RECORDS);
@@ -101,6 +103,7 @@ export default class SmartCache {
 
     await this.migrateToV120(personalRecordsCount);
 
+    this.absences = new MappedCache<number, IAbsence>(this.keys.ABSENCES);
     this.orders = {
       list: new FieldCache<IOrder[]>(this.buildKey(this.keys.ORDERS)),
       info: new MappedCache<string, string>(this.buildKey(this.keys.ORDERS_INFO)),
@@ -115,6 +118,20 @@ export default class SmartCache {
     this.calendarSchedule = new FieldCache(this.buildKey(this.keys.CALENDAR_SCHEDULE));
     this.certificate = new FieldCache(this.buildKey(this.keys.CERTIFICATE));
   }
+
+  // Absences Region
+
+  async getAbsences(session: number) {
+    if (!this.absences.isReady()) await this.absences.init();
+    return this.absences.get(session);
+  }
+
+  async placeAbsences(data: IAbsence) {
+    this.absences.place(data.currentSession.number, data);
+    await this.absences.save();
+  }
+
+  // End Absences Region
 
   // Announce Region
 
@@ -286,6 +303,15 @@ export default class SmartCache {
     await this.certificate.save();
   }
 
+  async placeOneCertificate(certificate: ICertificate) {
+    if (!this.certificate.isReady()) await this.certificate.init();
+
+    const certificates = this.certificate.get();
+    certificates[certificates.findIndex((c) => c.id === certificate.id)] = certificate;
+
+    this.placeCertificate({ certificates, announce: {} });
+  }
+
   // // End Certificate Region
 
   // Student Region
@@ -303,13 +329,10 @@ export default class SmartCache {
 
   async placePartialStudent(data: OptionalStudentInfo) {
     const student = (await this.getStudent()) || ({} as StudentInfo);
-    // TODO: add more stuff
-    if (data.currentSession) {
-      student.currentSession = data.currentSession;
-    }
-    if (data.currentWeek) {
-      student.currentWeek = data.currentWeek;
-    }
+
+    Object.entries(data).forEach(([key, value]) => {
+      student[key] = value;
+    });
 
     await this.placeStudent(student);
   }

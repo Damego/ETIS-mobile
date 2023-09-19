@@ -6,6 +6,7 @@ import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useAppSelector, useGlobalStyles } from '../../hooks';
 import { GITHUB_URL, TELEGRAM_URL } from '../../utils';
 import { fontSize } from '../../utils/texts';
+import { absencesIconName } from '../absences/AbsencesTable';
 
 const iconSize = 36;
 const styles = StyleSheet.create({
@@ -50,7 +51,7 @@ function Button({
   return (
     <TouchableOpacity style={styles.buttonView} onPress={changePage} activeOpacity={0.9}>
       <View style={[styles.buttonContainer, globalStyles.border, globalStyles.block]}>{icon}</View>
-      <Text style={[fontSize.mini, globalStyles.textColor]}>{text}</Text>
+      <Text style={[fontSize.mini, globalStyles.textColor, { textAlign: 'center' }]}>{text}</Text>
     </TouchableOpacity>
   );
 }
@@ -61,7 +62,7 @@ function Row({ children }) {
 
 function Menu() {
   const globalStyles = useGlobalStyles();
-  const { isDemo } = useAppSelector((state) => state.auth);
+  const { sessionTestID } = useAppSelector((state) => state.student);
   const iconColor = globalStyles.textColor.color;
 
   return (
@@ -84,15 +85,22 @@ function Menu() {
         />
       </Row>
       <Row>
-        <Button
-          icon={<AntDesign name="copy1" size={iconSize} color={iconColor} />}
-          text="Анкетирование"
-          page="SessionQuestionnaireList"
-        />
+        {sessionTestID && (
+          <Button
+            icon={<AntDesign name="copy1" size={iconSize} color={iconColor} />}
+            text="Анкетирование"
+            page="SessionQuestionnaireList"
+          />
+        )}
         <Button
           text="Справки"
           icon={<AntDesign name="book" size={iconSize} color={iconColor} />}
           page="Certificate"
+        />
+        <Button
+          text="Пропущенные занятия"
+          icon={<AntDesign name={absencesIconName} size={iconSize} color={iconColor} />}
+          page="Absences"
         />
       </Row>
       <Row>

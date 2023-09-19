@@ -1,4 +1,3 @@
-import { IGetPayload } from './results';
 import { ISession } from './session';
 
 export interface OverallRating {
@@ -22,8 +21,4 @@ export interface IGroup {
 export interface ISessionRating {
   session: ISession;
   groups: IGroup[];
-}
-
-export interface IGetRatingPayload extends IGetPayload {
-  session: number;
 }

@@ -6,7 +6,7 @@ import { ActivityIndicator, DeviceEventEmitter, ToastAndroid, View } from 'react
 import { ShortcutItem } from 'react-native-quick-actions';
 
 import { cache } from '../cache/smartCache';
-import { getWrappedClient } from '../data/client';
+import { useClient } from '../data/client';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
 import { useAppTheme } from '../hooks/theme';
 import { RequestType } from '../models/results';
@@ -26,11 +26,9 @@ const TabNavigator = () => {
   const theme = useAppTheme();
 
   const dispatch = useAppDispatch();
-  const { messageCount, announceCount, personalRecords } = useAppSelector(
-    (state) => state.student
-  );
+  const { messageCount, announceCount, personalRecords } = useAppSelector((state) => state.student);
   const { signNotification, initialPage } = useAppSelector((state) => state.settings);
-  const client = getWrappedClient();
+  const client = useClient();
   const isDemo = useAppSelector((state) => state.auth.isDemo);
   const navigation = useNavigation();
 
