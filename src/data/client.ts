@@ -134,7 +134,7 @@ export default class Client implements BaseClient {
       () => cache.getStudent(),
       () => httpClient.getGroupJournal(),
       (payload) => parseMenu(payload, true),
-      (data) => cache.placeStudent(data)
+      (data) => cache.placePartialStudent(data)
     );
     this.teacherClient = new TeachersClient(
       () => cache.getTeachers(),
