@@ -270,7 +270,6 @@ export default class SmartCache {
 
   async placeOneCertificate(certificate: ICertificate) {
     if (!this.certificate.isReady()) await this.certificate.init();
-    console.log('caching');
 
     const certificates = this.certificate.get();
     certificates[certificates.findIndex((c) => c.id === certificate.id)] = certificate;
