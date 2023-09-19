@@ -5,7 +5,7 @@ import { useClient } from '../data/client';
 import { composePointsAndMarks } from '../data/signs';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import useQuery from '../hooks/useQuery';
-import { IGetResult, RequestType } from '../models/results';
+import { GetResultType, IGetResult, RequestType } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
 import { setCurrentSession } from '../redux/reducers/studentSlice';
 
@@ -18,10 +18,21 @@ const useSignsQuery = () => {
 
   const { data, isLoading, update, refresh } = useQuery({
     method: client.getSessionSignsData,
-    payload: {
-      requestType: RequestType.tryFetch,
-    },
     after: async (result) => {
+      // Очевидно, что в самом начале мы получаем текущую сессию
+      const currentSession = result.data.currentSession;
+      if (!data) {
+        dispatch(setCurrentSession(currentSession));
+
+        if (result.type === GetResultType.fetched) {
+          cache.placePartialStudent({ currentSession });
+        }
+      }
+
+      if (!fetchedSessions.current.includes(currentSession)) {
+        fetchedSessions.current.push(currentSession);
+      }
+
       // oh dear...
       let marksResult: IGetResult<ISessionMarks[]>;
       if (sessionsMarks.current.length === 0) {
@@ -36,21 +47,10 @@ const useSignsQuery = () => {
         result.data,
         sessionsMarks.current.length !== 0 ? sessionsMarks.current : marksResult.data
       );
-      // Очевидно, что в самом начале мы получаем текущую сессию
-      const currentSession = result.data.currentSession;
-      if (!data) {
-        dispatch(setCurrentSession(currentSession));
-        cache.placePartialStudent({ currentSession: currentSession });
-      }
-
-      if (!fetchedSessions.current.includes(currentSession)) {
-        fetchedSessions.current.push(currentSession);
-      }
     },
     onFail: async () => {
       const student = await cache.getStudent();
       if (!student || !student.currentSession) return;
-
       update({
         requestType: RequestType.forceCache,
         data: student.currentSession,
