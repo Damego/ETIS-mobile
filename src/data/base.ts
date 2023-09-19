@@ -1,9 +1,9 @@
-import { IGetAbsencesPayload, IPeriodAbsences } from '../models/absences';
+import { IAbsence } from '../models/absences';
 import { ICalendarSchedule } from '../models/calendarSchedule';
 import { ICertificateTable } from '../models/certificate';
-import { IGetMessagesPayload, IMessagesData } from '../models/messages';
+import { IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
-import { IGetRatingPayload, ISessionRating } from '../models/rating';
+import { ISessionRating } from '../models/rating';
 import {
   GetResultType,
   IGetPayload,
@@ -15,28 +15,23 @@ import {
 } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
-import {
-  IGetStringPayload,
-  ISessionQuestionnaire,
-  ISessionQuestionnaireLink,
-} from '../models/sessionQuestionnaire';
-import { IGetSignsPayload } from '../models/signs';
+import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
 import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
-import { ITimeTable, ITimeTableGetProps } from '../models/timeTable';
+import { ITimeTable } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
 import { isLoginPage } from '../parser/utils';
 import { Response } from '../utils/http';
 import { reportParserError } from '../utils/sentry';
 
 export interface BaseClient {
-  getAbsencesData(payload: IGetAbsencesPayload): Promise<IGetResult<IPeriodAbsences>>;
+  getAbsencesData(payload: IGetPayload<number>): Promise<IGetResult<IAbsence>>;
   getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>>;
-  getTimeTableData(payload: ITimeTableGetProps): Promise<IGetResult<ITimeTable>>;
-  getMessagesData(payload: IGetMessagesPayload): Promise<IGetResult<IMessagesData>>;
+  getTimeTableData(payload: IGetPayload<number>): Promise<IGetResult<ITimeTable>>;
+  getMessagesData(payload: IGetPayload<number>): Promise<IGetResult<IMessagesData>>;
   getOrdersData(payload: IGetPayload): Promise<IGetResult<IOrder[]>>;
-  getRatingData(payload: IGetRatingPayload): Promise<IGetResult<ISessionRating>>;
-  getSessionSignsData(payload: IGetSignsPayload): Promise<IGetResult<ISessionPoints>>;
+  getRatingData(payload: IGetPayload<number>): Promise<IGetResult<ISessionRating>>;
+  getSessionSignsData(payload: IGetPayload<number>): Promise<IGetResult<ISessionPoints>>;
   getSessionMarksData(payload: IGetPayload): Promise<IGetResult<ISessionMarks[]>>;
   getStudentInfoData(payload: IGetPayload): Promise<IGetResult<StudentInfo>>;
   getTeacherData(payload: IGetPayload): Promise<IGetResult<TeacherType>>;
@@ -44,9 +39,9 @@ export interface BaseClient {
   getCalendarScheduleData(payload: IGetPayload): Promise<IGetResult<ICalendarSchedule>>;
   getCertificateData(payload: IGetPayload): Promise<IGetResult<ICertificateTable>>;
   getSessionQuestionnaireList(
-    payload: IGetStringPayload
+    payload: IGetPayload<string>
   ): Promise<IGetResult<ISessionQuestionnaireLink[]>>;
-  getSessionQuestionnaire(payload: IGetStringPayload): Promise<IGetResult<ISessionQuestionnaire>>;
+  getSessionQuestionnaire(payload: IGetPayload<string>): Promise<IGetResult<ISessionQuestionnaire>>;
 }
 
 export class BasicClient<P extends IGetPayload, T> {

@@ -1,56 +1,38 @@
 import { useIsFocused } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
-import { Text, ToastAndroid, View } from 'react-native';
+import { useEffect } from 'react';
+import { Text, View } from 'react-native';
 
 import Card from '../../components/Card';
 import ClickableText from '../../components/ClickableText';
 import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
-import { getWrappedClient } from '../../data/client';
-import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
-import { GetResultType, RequestType } from '../../models/results';
-import { ISessionQuestionnaireLink } from '../../models/sessionQuestionnaire';
-import { setAuthorizing } from '../../redux/reducers/authSlice';
+import { useClient } from '../../data/client';
+import { useAppSelector, useGlobalStyles } from '../../hooks';
+import useQuery from '../../hooks/useQuery';
+import { RequestType } from '../../models/results';
 import { fontSize } from '../../utils/texts';
 
 export default function SessionQuestionnaireList({ navigation }) {
   const globalStyles = useGlobalStyles();
-  const [data, setData] = useState<ISessionQuestionnaireLink[]>();
-  const [isLoading, setLoading] = useState(false);
   const { sessionTestID } = useAppSelector((state) => state.student);
-  const dispatch = useAppDispatch();
-  const client = getWrappedClient();
-  const isFocused = useIsFocused();
-
-  const loadData = async () => {
-    setLoading(true);
-    const result = await client.getSessionQuestionnaireList({
+  const client = useClient();
+  const { data, isLoading, refresh } = useQuery({
+    method: client.getSessionQuestionnaireList,
+    payload: {
       requestType: RequestType.forceFetch,
       data: sessionTestID,
-    });
-
-    if (result.type === GetResultType.loginPage) {
-      return dispatch(setAuthorizing(false));
-    }
-
-    if (!result.data) {
-      setLoading(false);
-      ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
-      return;
-    }
-
-    setData(result.data);
-    setLoading(false);
-  };
+    },
+  });
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     // Если пользователь пройдёт тест, то список не обновится при нажатии кнопки "назад"
-    if (isFocused) loadData();
+    if (isFocused) refresh();
   }, [isFocused]);
 
   if (isLoading) return <LoadingScreen />;
-  if (!data) return <NoData onRefresh={loadData} />;
+  if (!data) return <NoData onRefresh={refresh} />;
 
   return (
     <Screen>

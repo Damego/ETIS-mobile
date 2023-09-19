@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { DeviceEventEmitter, ToastAndroid } from 'react-native';
 import { ShortcutItem } from 'react-native-quick-actions';
 
-import { getWrappedClient } from '../data/client';
+import { useClient } from '../data/client';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
 import { useAppTheme } from '../hooks/theme';
 import { GetResultType, RequestType } from '../models/results';
@@ -28,7 +28,7 @@ const TabNavigator = () => {
   const dispatch = useAppDispatch();
   const { messageCount, announceCount } = useAppSelector((state) => state.student);
   const { signNotification, initialPage } = useAppSelector((state) => state.settings);
-  const client = getWrappedClient();
+  const client = useClient();
   const isDemo = useAppSelector((state) => state.auth.isDemo);
   const navigation = useNavigation();
 

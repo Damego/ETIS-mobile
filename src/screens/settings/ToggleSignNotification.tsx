@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { useAppColorScheme } from '../../hooks/theme';
 import { setSignNotification } from '../../redux/reducers/settingsSlice';
 import { registerFetch, unregisterBackgroundFetchAsync } from '../../tasks/signs';
-import { NOTIFICATION_GUIDE_URL, storage } from '../../utils';
+import { NOTIFICATION_GUIDE_URL } from '../../utils';
 import { fontSize } from '../../utils/texts';
 
 const styles = StyleSheet.create({

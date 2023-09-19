@@ -1,5 +1,3 @@
-import { IGetPayload } from './results';
-
 export enum DistancePlatformTypes {
   unknown,
   bbb,
@@ -60,8 +58,4 @@ export interface ITimeTableDay {
 export interface ITimeTable {
   weekInfo: WeekInfo;
   days: ITimeTableDay[];
-}
-
-export interface ITimeTableGetProps extends IGetPayload {
-  week?: number;
 }

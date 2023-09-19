@@ -31,7 +31,7 @@ const AbsencesCard = ({ disciplineAbsences }: { disciplineAbsences: IDisciplineA
             </Text>
           ))}
         </View>
-        <View>
+        <View style={{ flex: 1 }}>
           <Text style={globalStyles.textColor}>
             {`Пропущенных занятий: ${disciplineAbsences.dates.length}`}
           </Text>
@@ -50,7 +50,7 @@ const AbsencesCard = ({ disciplineAbsences }: { disciplineAbsences: IDisciplineA
           )}
         </View>
 
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-end' }}>
+        <View style={{ justifyContent: 'center', alignItems: 'flex-end' }}>
           <AntDesign
             name={isOpened ? 'up' : 'down'}
             size={18}
