@@ -1,6 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 
-import { IPeriodAbsences } from '../models/absences';
+import { IAbsence } from '../models/absences';
 import { ICalendarSchedule } from '../models/calendarSchedule';
 import { ICertificate, ICertificateTable } from '../models/certificate';
 import { IMessagesData } from '../models/messages';
@@ -19,7 +19,7 @@ import MappedCache from './mappedCache';
 import SecuredFieldCache from './securedFieldCache';
 
 export default class SmartCache {
-  absences: MappedCache<number, IPeriodAbsences>;
+  absences: MappedCache<number, IAbsence>;
   announce: FieldCache<string[]>;
   messages: MappedCache<number, IMessagesData>;
   orders: {
@@ -63,7 +63,7 @@ export default class SmartCache {
   };
 
   constructor() {
-    this.absences = new MappedCache<number, IPeriodAbsences>(this.keys.ABSENCES);
+    this.absences = new MappedCache<number, IAbsence>(this.keys.ABSENCES);
     this.announce = new FieldCache(this.keys.ANNOUNCES);
     this.messages = new MappedCache<number, IMessagesData>(this.keys.MESSAGES);
     this.orders = {
@@ -86,13 +86,13 @@ export default class SmartCache {
 
   // Absences Region
 
-  async getAbsences(period: number) {
+  async getAbsences(session: number) {
     if (!this.absences.isReady()) await this.absences.init();
-    return this.absences.get(period);
+    return this.absences.get(session);
   }
 
-  async placeAbsences(data: IPeriodAbsences) {
-    this.absences.place(data.period, data);
+  async placeAbsences(data: IAbsence) {
+    this.absences.place(data.currentSession.number, data);
     await this.absences.save();
   }
 
