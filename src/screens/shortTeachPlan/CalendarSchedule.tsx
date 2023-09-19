@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { ActivityIndicator, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
 
 import BorderLine from '../../components/BorderLine';
-import { getWrappedClient } from '../../data/client';
+import { useClient } from '../../data/client';
 import { useAppDispatch, useGlobalStyles } from '../../hooks';
 import { ICalendarSchedule, ISessionSchedule } from '../../models/calendarSchedule';
 import { GetResultType, RequestType } from '../../models/results';
@@ -72,7 +72,7 @@ export default function CalendarSchedule() {
   const [isOpened, setOpened] = useState(false);
   const [data, setData] = useState<ICalendarSchedule>();
   const dispatch = useAppDispatch();
-  const client = getWrappedClient();
+  const client = useClient();
 
   const loadData = async () => {
     setOpened(true);

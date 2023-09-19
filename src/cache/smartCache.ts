@@ -268,6 +268,16 @@ export default class SmartCache {
     await this.certificate.save();
   }
 
+  async placeOneCertificate(certificate: ICertificate) {
+    if (!this.certificate.isReady()) await this.certificate.init();
+    console.log('caching');
+
+    const certificates = this.certificate.get();
+    certificates[certificates.findIndex((c) => c.id === certificate.id)] = certificate;
+
+    this.placeCertificate({ certificates, announce: {} });
+  }
+
   // // End Certificate Region
 
   // Student Region
@@ -285,13 +295,10 @@ export default class SmartCache {
 
   async placePartialStudent(data: OptionalStudentInfo) {
     const student = (await this.getStudent()) || ({} as StudentInfo);
-    // TODO: add more stuff
-    if (data.currentSession) {
-      student.currentSession = data.currentSession;
-    }
-    if (data.currentWeek) {
-      student.currentWeek = data.currentWeek;
-    }
+
+    Object.entries(data).forEach(([key, value]) => {
+      student[key] = value;
+    });
 
     await this.placeStudent(student);
   }

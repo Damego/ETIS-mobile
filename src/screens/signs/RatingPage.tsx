@@ -1,18 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Text, ToastAndroid, View } from 'react-native';
+import React from 'react';
+import { Text, View } from 'react-native';
 
-import { cache } from '../../cache/smartCache';
 import BorderLine from '../../components/BorderLine';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
 import SessionDropdown from '../../components/SessionDropdown';
-import { getWrappedClient } from '../../data/client';
-import { useAppDispatch, useGlobalStyles } from '../../hooks';
-import { IGroup, ISessionRating } from '../../models/rating';
-import { GetResultType, RequestType } from '../../models/results';
-import { setAuthorizing } from '../../redux/reducers/authSlice';
+import { useGlobalStyles } from '../../hooks';
+import useRatingQuery from '../../hooks/useRatingQuery';
+import { IGroup } from '../../models/rating';
 import { fontSize } from '../../utils/texts';
 import RightText from './RightText';
 
@@ -52,56 +49,9 @@ const Group = ({ group }: { group: IGroup }) => {
 };
 
 export default function RatingPage() {
-  const [data, setData] = useState<ISessionRating>();
-  const [isLoading, setLoading] = useState(false);
-  const fetchedFirstTime = useRef<boolean>(false);
-  const dispatch = useAppDispatch();
-  const client = getWrappedClient();
+  const { data, isLoading, refresh, loadSession } = useRatingQuery();
 
-  const loadData = async ({ session, force }: { session?: number; force: boolean }) => {
-    setLoading(true);
-    const result = await client.getRatingData({
-      requestType: !force && fetchedFirstTime.current ? RequestType.tryCache : RequestType.tryFetch,
-      session,
-    });
-
-    if (result.type === GetResultType.loginPage) {
-      dispatch(setAuthorizing(true));
-      return;
-    }
-    if (!result.data) {
-      if (!data) {
-        const student = await cache.getStudent();
-        if (student?.currentSession) {
-          const cached = await client.getRatingData({
-            session: (await cache.getStudent()).currentSession,
-            requestType: RequestType.forceCache,
-          });
-          if (cached.data) {
-            setData(cached.data);
-          }
-        } else ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
-      } else ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
-      setLoading(false);
-      return;
-    }
-
-    setData(result.data);
-    if (!fetchedFirstTime.current) {
-      fetchedFirstTime.current = true;
-    }
-    setLoading(false);
-  };
-  const refresh = () => loadData({ session: data?.session?.current, force: true });
-
-  useEffect(() => {
-    loadData({ force: false });
-  }, []);
-
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
-
+  if (isLoading) return <LoadingScreen />;
   if (!data) return <NoData onRefresh={refresh} />;
 
   return (
@@ -119,9 +69,7 @@ export default function RatingPage() {
           currentSession={data.session.current}
           latestSession={data.session.latest}
           sessionName={data.session.name}
-          onSelect={(session) => {
-            loadData({ session, force: false });
-          }}
+          onSelect={loadSession}
         />
       </View>
 

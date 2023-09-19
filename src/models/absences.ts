@@ -23,7 +23,3 @@ export interface IAbsence {
   sessions: IAbsenceSession[];
   overallMissed: number;
 }
-
-export interface IGetAbsencesPayload extends IGetPayload {
-  session?: number;
-}

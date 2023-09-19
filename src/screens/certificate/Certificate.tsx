@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, ToastAndroid, TouchableOpacity } from 'react-native';
 
+import { cache } from '../../cache/smartCache';
 import CardHeaderIn from '../../components/CardHeaderIn';
 import { useGlobalStyles } from '../../hooks';
 import { ICertificate } from '../../models/certificate';
@@ -15,37 +16,36 @@ const styles = StyleSheet.create({
   },
 });
 
-const Certificate = ({
-  certificate,
-  updateData,
-}: {
-  certificate: ICertificate;
-  updateData: (certificate: ICertificate) => void;
-}) => {
+const Certificate = ({ certificate }: { certificate: ICertificate }) => {
   const globalStyles = useGlobalStyles();
 
   const [isOpened, setOpened] = useState<boolean>(false);
   const [html, setHTML] = useState<string>();
 
+  const getCertificate = async () => {
+    if (certificate.example) return certificate.example;
+
+    const response = await httpClient.getCertificateHTML(certificate);
+    if (!response.data) return;
+
+    const html = cutCertificateHTML(response.data);
+    if (!html) return;
+
+    certificate.example = html;
+    cache.placeOneCertificate(certificate);
+    return certificate.example;
+  };
+
   const closeModal = () => setOpened(false);
 
-  const openModal = () => {
-    if (certificate.example) {
-      setHTML(certificate.example);
-      setOpened(true);
-    } else
-      httpClient.getCertificateHTML(certificate).then((certificateHTML) => {
-        const preparedHTML = cutCertificateHTML(certificateHTML);
-        if (!preparedHTML) {
-          ToastAndroid.show('Произошла ошибка...', ToastAndroid.LONG);
-          return;
-        }
-        const newCert = certificate;
-        newCert.example = preparedHTML;
-        updateData(newCert);
-        setHTML(preparedHTML);
-        setOpened(true);
-      });
+  const openModal = async () => {
+    const html = await getCertificate();
+    if (!html) {
+      ToastAndroid.show('Ошибка', ToastAndroid.LONG);
+      return;
+    }
+    setHTML(html);
+    setOpened(true);
   };
 
   return (
