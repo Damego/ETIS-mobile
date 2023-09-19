@@ -43,7 +43,7 @@ const TabNavigator = () => {
   }, []);
 
   const loadData = async () => {
-    const result = await client.getStudentInfoData({ requestType: RequestType.tryFetch });
+    const result = await client.getStudentInfoData({ requestType: RequestType.tryFetch});
 
     if (result.type === GetResultType.loginPage) {
       dispatch(setAuthorizing(true));
