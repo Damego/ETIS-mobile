@@ -295,13 +295,10 @@ export default class SmartCache {
 
   async placePartialStudent(data: OptionalStudentInfo) {
     const student = (await this.getStudent()) || ({} as StudentInfo);
-    // TODO: add more stuff
-    if (data.currentSession) {
-      student.currentSession = data.currentSession;
-    }
-    if (data.currentWeek) {
-      student.currentWeek = data.currentWeek;
-    }
+
+    Object.entries(data).forEach(([key, value]) => {
+      student[key] = value;
+    })
 
     await this.placeStudent(student);
   }
