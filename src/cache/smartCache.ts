@@ -473,7 +473,7 @@ export default class SmartCache {
 
   // Helper methods
 
-  async clear(clearAppData?: boolean) {
+  async clear() {
     const personalRecords = await cache.getPersonalRecords();
 
     for (const record of personalRecords) {
@@ -482,12 +482,9 @@ export default class SmartCache {
       await AsyncStorage.multiRemove(keys);
     }
     await AsyncStorage.removeItem(this.keys.USER);
+    await AsyncStorage.multiRemove(this.generalKeys.filter(key => key !== this.keys.APP));
 
-    if (clearAppData) {
-      await AsyncStorage.multiRemove(this.generalKeys);
-      this.app = null;
-    }
-
+    this.absences = null;
     this.announce = null;
     this.messages = null;
     this.orders.list = null;
@@ -502,6 +499,7 @@ export default class SmartCache {
     this.user = null;
     this.certificate = null;
     this.personalRecords = null;
+    this.calendarSchedule = null;
   }
 
   // Legacy
