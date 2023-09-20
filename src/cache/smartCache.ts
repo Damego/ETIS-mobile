@@ -482,7 +482,7 @@ export default class SmartCache {
       await AsyncStorage.multiRemove(keys);
     }
     await AsyncStorage.removeItem(this.keys.USER);
-    await AsyncStorage.multiRemove(this.generalKeys.filter(key => key !== this.keys.APP));
+    await AsyncStorage.multiRemove(this.generalKeys.filter((key) => key !== this.keys.APP));
 
     this.absences = null;
     this.announce = null;
