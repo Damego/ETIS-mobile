@@ -25,8 +25,6 @@ export default function parseSessionMarks(html: string): ISessionMarks[] {
       const stringData = getTextField(title).replaceAll('\n', ' ');
       const [_, session, sessionName, course, endDate] = executeRegex(tableTitleRegex, stringData);
 
-      if (!endDate) return;
-
       sessionIndex += 1;
       data[sessionIndex] = {
         session: parseInt(session),
