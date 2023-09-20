@@ -11,8 +11,6 @@ import useQuery from '../../hooks/useQuery';
 import { RequestType } from '../../models/results';
 import AbsencesCard from './AbsencesCard';
 
-export const absencesIconName = 'paperclip';
-
 const AbsencesTable = () => {
   const globalStyles = useGlobalStyles();
   const client = useClient();
