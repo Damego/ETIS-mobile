@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
@@ -6,7 +7,6 @@ import ClickableText from '../../components/ClickableText';
 import { useGlobalStyles } from '../../hooks';
 import { ISubject } from '../../models/sessionPoints';
 import { fontSize } from '../../utils/texts';
-import SignModal from './SignModal';
 import SubjectCheckPoints from './SubjectCheckPoints';
 import TotalPoints from './TotalPoints';
 
@@ -20,16 +20,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '25%',
   },
-  markNumberText: {
-    fontWeight: '600',
-  },
   markView: {
     marginTop: '1%',
     alignItems: 'flex-end',
   },
   markWordText: {
     fontWeight: '600',
-    marginRight: 10
+    marginRight: 10,
   },
   detailsText: {
     paddingVertical: 5,
@@ -44,37 +41,32 @@ interface CardSignProps {
 
 const CardSign = ({ subject }: CardSignProps) => {
   const globalStyles = useGlobalStyles();
-  const [isOpened, setOpened] = useState(false);
-
-  const closeModal = () => setOpened(false);
-  const openModal = () => setOpened(true);
+  const navigation = useNavigation();
 
   return (
-    <>
-      {isOpened && <SignModal subject={subject} closeModal={closeModal} />}
-      <CardHeaderIn topText={subject.name}>
-        <View style={styles.pointsView}>
-          <View>
-            <SubjectCheckPoints data={subject.checkPoints} />
+    <CardHeaderIn topText={subject.name}>
+      <View style={styles.pointsView}>
+        <View>
+          <SubjectCheckPoints data={subject.checkPoints} />
+        </View>
+        <TotalPoints subject={subject} style={styles.totalPoints} />
+      </View>
+      <View style={styles.pointsView}>
+        <ClickableText
+          text={'Подробнее...'}
+          // @ts-ignore
+          onPress={() => navigation.navigate('SignsDetails', { subject })}
+          textStyle={[fontSize.medium, globalStyles.textColor, styles.detailsText]}
+        />
+        {subject.mark !== null && (
+          <View style={styles.markView}>
+            <Text style={[fontSize.medium, styles.markWordText, globalStyles.textColor]}>
+              Оценка: {subject.mark}
+            </Text>
           </View>
-          <TotalPoints subject={subject} style={styles.totalPoints} />
-        </View>
-        <View style={styles.pointsView}>
-          <ClickableText
-            text={'Подробнее...'}
-            onPress={openModal}
-            textStyle={[fontSize.medium, globalStyles.textColor, styles.detailsText]}
-          />
-          {subject.mark !== null && (
-            <View style={styles.markView}>
-              <Text style={[fontSize.medium, styles.markWordText, globalStyles.textColor]}>
-                Оценка: {subject.mark}
-              </Text>
-            </View>
-          )}
-        </View>
-      </CardHeaderIn>
-    </>
+        )}
+      </View>
+    </CardHeaderIn>
   );
 };
 
