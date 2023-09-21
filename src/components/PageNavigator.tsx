@@ -1,12 +1,10 @@
-import { AntDesign } from '@expo/vector-icons';
-import { useTheme } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import {
+  ScrollView,
   StyleProp,
   StyleSheet,
   Text,
   TextStyle,
-  TouchableOpacity,
   View,
   ViewStyle,
 } from 'react-native';
@@ -16,10 +14,11 @@ import { fontSize } from '../utils/texts';
 import ClickableText from './ClickableText';
 
 const styles = StyleSheet.create({
-  containerView: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  view: {
+    alignItems: 'center'
+  },
+  scrollContainer: {
+    gap: 5
   },
   button: {
     width: 35,
@@ -35,18 +34,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const Arrow = ({ onClick, name }: { onClick(): void; name: keyof typeof AntDesign.glyphMap }) => {
-  const {
-    colors: { primary },
-  } = useTheme();
-
-  return (
-    <TouchableOpacity style={styles.button} onPress={onClick}>
-      <AntDesign name={name} size={20} color={primary} />
-    </TouchableOpacity>
-  );
-};
-
 const ActiveButton = ({ number }: { number: string | number }) => {
   const globalStyles = useGlobalStyles();
 
@@ -55,39 +42,6 @@ const ActiveButton = ({ number }: { number: string | number }) => {
       <Text style={[fontSize.large, styles.activeButtonText]}>{number}</Text>
     </View>
   );
-};
-
-const HiddenView = () => <View style={styles.button}></View>;
-
-const calculateLimits = (firstPage: number, currentPage: number, lastPage: number) => {
-  const limits = 3;
-  if (lastPage - firstPage <= limits * 2) {
-    return { leftLimit: firstPage, rightLimit: lastPage };
-  }
-
-  let leftLimit = currentPage - limits;
-  let rightLimit = currentPage + limits;
-
-  if (currentPage - firstPage <= limits) {
-    leftLimit = firstPage;
-    rightLimit = firstPage + limits * 2;
-  }
-  if (lastPage - currentPage <= limits) {
-    rightLimit = lastPage;
-    leftLimit = lastPage - limits * 2;
-  }
-
-  return { leftLimit, rightLimit };
-};
-
-const getNewButtonArray = (firstPage: number, currentPage: number, lastPage: number) => {
-  const { leftLimit, rightLimit } = calculateLimits(firstPage, currentPage, lastPage);
-  const buttonNums = [];
-
-  for (let i = leftLimit; i < rightLimit + 1; i += 1) {
-    buttonNums.push(i);
-  }
-  return buttonNums;
 };
 
 const PageNavigator = ({
@@ -109,59 +63,41 @@ const PageNavigator = ({
   };
 }) => {
   const globalStyles = useGlobalStyles();
-  const [buttons, changeButtons] = useState([]);
-  const [pageNums, setPageNums] = useState([firstPage, currentPage, lastPage]);
+  const [pages, setPages] = useState<number[]>([]);
 
-  const onArrowClick = (direction: number) => {
-    let toAdd;
-    if (direction === 1) toAdd = 7;
-    else toAdd = -7;
-
-    setPageNums([
-      pageNums[0],
-      buttons[3] + toAdd, // central button,
-      pageNums[2],
-    ]);
+  const generateButtons = () => {
+    const array: number[] = [];
+    for (let i = firstPage; i <= lastPage; i += 1) {
+      array.push(i);
+    }
+    setPages(array);
   };
 
   useEffect(() => {
-    changeButtons(getNewButtonArray(...pageNums));
-  }, [pageNums]);
-
-  if (
-    Number.isNaN(currentPage) ||
-    Number.isNaN(lastPage) ||
-    (firstPage == 1 && currentPage === 1 && lastPage === 1)
-  )
-    return;
+    generateButtons();
+  }, []);
 
   return (
-    <View style={styles.containerView}>
-      {buttons.at(0) !== firstPage ? (
-        <Arrow name="left" onClick={() => onArrowClick(0)} />
-      ) : (
-        <HiddenView />
-      )}
-
-      {buttons.map((number) =>
-        currentPage !== number ? (
-          <ClickableText
-            viewStyle={[styles.button, pageStyles[number]?.view]}
-            textStyle={[fontSize.large, pageStyles[number]?.text, globalStyles.textColor]}
-            text={number}
-            onPress={() => onPageChange(number)}
-            key={number}
-          />
-        ) : (
-          <ActiveButton number={number} key={number} />
-        )
-      )}
-
-      {buttons.at(-1) !== lastPage ? (
-        <Arrow name="right" onClick={() => onArrowClick(1)} />
-      ) : (
-        <HiddenView />
-      )}
+    <View style={styles.view}>
+      <ScrollView
+        horizontal
+        contentContainerStyle={styles.scrollContainer}
+        showsHorizontalScrollIndicator={false}
+      >
+        {pages.map((number) =>
+          currentPage !== number ? (
+            <ClickableText
+              viewStyle={[styles.button, pageStyles[number]?.view]}
+              textStyle={[fontSize.large, globalStyles.textColor, pageStyles[number]?.text]}
+              text={number}
+              onPress={() => onPageChange(number)}
+              key={number}
+            />
+          ) : (
+            <ActiveButton number={number} key={number} />
+          )
+        )}
+      </ScrollView>
     </View>
   );
 };
