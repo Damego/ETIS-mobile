@@ -38,8 +38,8 @@ const Row = ({
   const globalStyles = useGlobalStyles();
   return (
     <View style={[styles.rowStyle, style]}>
-      <Text style={[globalStyles.textColor, fontSize.medium]}>{first}</Text>
-      <Text style={[globalStyles.textColor, fontSize.medium]}>{second}</Text>
+      <Text style={[globalStyles.textColor, {fontSize: 15}]}>{first}</Text>
+      <Text style={[globalStyles.textColor, {fontSize: 15}]}>{second}</Text>
     </View>
   );
 };
