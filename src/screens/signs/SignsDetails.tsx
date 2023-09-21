@@ -43,7 +43,7 @@ const Row = ({
   );
 };
 
-export default function SignsDetails({ route, navigation }) {
+export default function SignsDetails({ route }) {
   const globalStyles = useGlobalStyles();
   const subject: ISubject = route.params.subject;
 
