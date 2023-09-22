@@ -34,9 +34,9 @@ const Row = ({
 }) => {
   const globalStyles = useGlobalStyles();
   return (
-      <Text style={[globalStyles.textColor, {fontSize: 15}]}>{first}</Text>
-      <Text style={[globalStyles.textColor, {fontSize: 15}]}>{second}</Text>
     <View style={styles.rowStyle}>
+      <Text style={[globalStyles.textColor, { fontSize: 15 }]}>{first}</Text>
+      <Text style={[globalStyles.textColor, { fontSize: 15 }]}>{second}</Text>
     </View>
   );
 };
@@ -59,11 +59,10 @@ export default function SignsDetails({ route }) {
   return (
     <Screen>
       <View style={styles.header}>
-        <Text style={[globalStyles.textColor, fontSize.large, { flex: 1 }]}>
-          {subject.name}
-        </Text>
+        <Text style={[globalStyles.textColor, fontSize.large, { flex: 1 }]}>{subject.name}</Text>
         <TotalPoints subject={subject} style={{ alignItems: 'center' }} />
       </View>
+
       {subject.checkPoints.map((checkPoint: ICheckPoint, index: number) => (
         <CardHeaderIn key={index} topText={getCheckpointTitle(checkPoint.theme, index + 1)}>
           <Row first={'Оценка:'} second={getCheckPointScore(checkPoint)} />
