@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import CardHeaderIn from '../../components/CardHeaderIn';
 import ClickableText from '../../components/ClickableText';
@@ -28,11 +28,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginRight: 10,
   },
-  detailsText: {
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    textDecorationLine: 'underline',
-  },
 });
 
 interface CardSignProps {
@@ -46,18 +41,16 @@ const CardSign = ({ subject }: CardSignProps) => {
   return (
     <CardHeaderIn topText={subject.name}>
       <View style={styles.pointsView}>
-        <View>
+        <TouchableOpacity
+          /* @ts-ignore */
+          onPress={() => navigation.navigate('SignsDetails', { subject })}
+          activeOpacity={0.45}
+        >
           <SubjectCheckPoints data={subject.checkPoints} />
-        </View>
+        </TouchableOpacity>
         <TotalPoints subject={subject} style={styles.totalPoints} />
       </View>
       <View style={styles.pointsView}>
-        <ClickableText
-          text={'Подробнее...'}
-          // @ts-ignore
-          onPress={() => navigation.navigate('SignsDetails', { subject })}
-          textStyle={[fontSize.medium, globalStyles.textColor, styles.detailsText]}
-        />
         {subject.mark !== null && (
           <View style={styles.markView}>
             <Text style={[fontSize.medium, styles.markWordText, globalStyles.textColor]}>
