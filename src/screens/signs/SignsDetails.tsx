@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import CardHeaderIn from '../../components/CardHeaderIn';
 import Screen from '../../components/Screen';
@@ -48,7 +48,7 @@ const getCheckpointTitle = (theme: string, number: number) => {
 const cutTypeControl = (typeControl: string): string => {
   return typeControl
     .split(' ')
-    .map((str) => str.charAt(0).toUpperCase())
+    .map((char) => char.charAt(0).toUpperCase())
     .join("");
 };
 
@@ -76,6 +76,7 @@ export default function SignsDetails({ route }) {
             </>
           )}
           <Row first={'Вид работы:'} second={checkPoint.typeWork} />
+          {/* TODO: Вызывать Toast при нажатии с показом полного текста вида контроля */}
           <Row first={'Вид контроля:'} second={cutTypeControl(checkPoint.typeControl)} />
         </CardHeaderIn>
       ))}

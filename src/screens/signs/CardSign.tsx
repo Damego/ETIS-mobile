@@ -3,7 +3,6 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import CardHeaderIn from '../../components/CardHeaderIn';
-import ClickableText from '../../components/ClickableText';
 import { useGlobalStyles } from '../../hooks';
 import { ISubject } from '../../models/sessionPoints';
 import { fontSize } from '../../utils/texts';
