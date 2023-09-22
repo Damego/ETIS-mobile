@@ -42,13 +42,20 @@ const Row = ({
   );
 };
 
+const getCheckpointTitle = (theme: string, number: number) => {
+  return `КТ ${number}: ${theme}`;
+};
+
+const cutTypeControl = (typeControl: string): string => {
+  return typeControl
+    .split(' ')
+    .map((str) => str.charAt(0).toUpperCase())
+    .join("");
+};
+
 export default function SignsDetails({ route }) {
   const globalStyles = useGlobalStyles();
   const subject: ISubject = route.params.subject;
-
-  const getCheckpointTitle = (theme: string, number: number) => {
-    return `КТ ${number}: ${theme}`;
-  };
 
   return (
     <Screen>
@@ -74,7 +81,7 @@ export default function SignsDetails({ route }) {
             </>
           )}
           <Row first={`Вид работы: ${checkPoint.typeWork}`} />
-          <Row first={`Вид контроля: ${checkPoint.typeControl}`} />
+          <Row first={'Вид контроля:'} second={cutTypeControl(checkPoint.typeControl)} />
         </CardHeaderIn>
       ))}
     </Screen>
