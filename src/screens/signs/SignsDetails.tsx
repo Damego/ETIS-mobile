@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, ToastAndroid, View } from 'react-native';
 
 import CardHeaderIn from '../../components/CardHeaderIn';
+import ClickableText from '../../components/ClickableText';
 import Screen from '../../components/Screen';
 import { useGlobalStyles } from '../../hooks';
 import { ICheckPoint, ISubject } from '../../models/sessionPoints';
@@ -10,7 +11,7 @@ import { getCheckPointScore } from './SubjectCheckPoints';
 import TotalPoints from './TotalPoints';
 
 const styles = StyleSheet.create({
-  rowStyle: {
+  row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
@@ -25,22 +26,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const Row = ({
-  first,
-  second,
-}: {
-  first: any;
-  second?: any;
-}) => {
-  const globalStyles = useGlobalStyles();
-  return (
-    <View style={styles.rowStyle}>
-      <Text style={[globalStyles.textColor, { fontSize: 15 }]}>{first}</Text>
-      <Text style={[globalStyles.textColor, { fontSize: 15 }]}>{second}</Text>
-    </View>
-  );
-};
-
 const getCheckpointTitle = (theme: string, number: number) => {
   return `КТ ${number}: ${theme}`;
 };
@@ -49,12 +34,23 @@ const cutTypeControl = (typeControl: string): string => {
   return typeControl
     .split(' ')
     .map((char) => char.charAt(0).toUpperCase())
-    .join("");
+    .join('');
 };
 
 export default function SignsDetails({ route }) {
   const globalStyles = useGlobalStyles();
   const subject: ISubject = route.params.subject;
+
+  const rowTextStyle = StyleSheet.compose(globalStyles.textColor, { fontSize: 15 });
+
+  const Row = ({ first, second }: { first: any; second?: any }) => {
+    return (
+      <View style={styles.row}>
+        <Text style={rowTextStyle}>{first}</Text>
+        <Text style={rowTextStyle}>{second}</Text>
+      </View>
+    );
+  };
 
   return (
     <Screen>
@@ -76,8 +72,20 @@ export default function SignsDetails({ route }) {
             </>
           )}
           <Row first={'Вид работы:'} second={checkPoint.typeWork} />
-          {/* TODO: Вызывать Toast при нажатии с показом полного текста вида контроля */}
-          <Row first={'Вид контроля:'} second={cutTypeControl(checkPoint.typeControl)} />
+          <View style={styles.row}>
+            <Text style={rowTextStyle}>{'Вид контроля:'}</Text>
+            <ClickableText
+              text={cutTypeControl(checkPoint.typeControl)}
+              onPress={() => {
+                ToastAndroid.showWithGravity(
+                  checkPoint.typeControl,
+                  ToastAndroid.SHORT,
+                  ToastAndroid.CENTER
+                );
+              }}
+              textStyle={[rowTextStyle, {textDecorationLine: 'underline'}]}
+            />
+          </View>
         </CardHeaderIn>
       ))}
     </Screen>
