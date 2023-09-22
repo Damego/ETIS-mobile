@@ -29,17 +29,15 @@ const styles = StyleSheet.create({
 const Row = ({
   first,
   second,
-  style,
 }: {
   first: any;
   second?: any;
-  style?: StyleProp<ViewStyle>;
 }) => {
   const globalStyles = useGlobalStyles();
   return (
-    <View style={[styles.rowStyle, style]}>
       <Text style={[globalStyles.textColor, {fontSize: 15}]}>{first}</Text>
       <Text style={[globalStyles.textColor, {fontSize: 15}]}>{second}</Text>
+    <View style={styles.rowStyle}>
     </View>
   );
 };
