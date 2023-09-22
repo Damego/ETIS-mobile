@@ -12,8 +12,6 @@ import TotalPoints from './TotalPoints';
 const styles = StyleSheet.create({
   rowStyle: {
     flexDirection: 'row',
-    width: '90%',
-    alignSelf: 'center',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
   },
