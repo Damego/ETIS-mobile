@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: '2%',
     marginBottom: '2%',
+    gap: 5,
   },
 });
 
