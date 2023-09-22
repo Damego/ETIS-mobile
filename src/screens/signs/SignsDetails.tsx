@@ -66,21 +66,18 @@ export default function SignsDetails({ route }) {
         <TotalPoints subject={subject} style={{ alignItems: 'center' }} />
       </View>
       {subject.checkPoints.map((checkPoint: ICheckPoint, index: number) => (
-        <CardHeaderIn
-          key={index}
-          topText={getCheckpointTitle(checkPoint.theme, index + 1)}
-        >
-          <Row first={'Оценка: '} second={getCheckPointScore(checkPoint)} />
-          <Row first={'Проходной балл: '} second={checkPoint.passScore} />
-          <Row first={'Текущий балл: '} second={checkPoint.currentScore} />
-          <Row first={'Максимальный балл: '} second={checkPoint.maxScore} />
+        <CardHeaderIn key={index} topText={getCheckpointTitle(checkPoint.theme, index + 1)}>
+          <Row first={'Оценка:'} second={getCheckPointScore(checkPoint)} />
+          <Row first={'Проходной балл:'} second={checkPoint.passScore} />
+          <Row first={'Текущий балл:'} second={checkPoint.currentScore} />
+          <Row first={'Максимальный балл:'} second={checkPoint.maxScore} />
           {checkPoint.teacher && (
             <>
-              <Row first={`Преподаватель: ${checkPoint.teacher}`} />
-              <Row first={`Дата: ${checkPoint.date}`} />
+              <Row first={'Преподаватель:'} second={checkPoint.teacher} />
+              <Row first={'Дата:'} second={checkPoint.date} />
             </>
           )}
-          <Row first={`Вид работы: ${checkPoint.typeWork}`} />
+          <Row first={'Вид работы:'} second={checkPoint.typeWork} />
           <Row first={'Вид контроля:'} second={cutTypeControl(checkPoint.typeControl)} />
         </CardHeaderIn>
       ))}
