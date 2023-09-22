@@ -55,7 +55,7 @@ export default function SignsDetails({ route }) {
   return (
     <Screen>
       <View style={styles.header}>
-        <Text style={[globalStyles.textColor, fontSize.large, { maxWidth: '80%' }]}>
+        <Text style={[globalStyles.textColor, fontSize.large, { flex: 1 }]}>
           {subject.name}
         </Text>
         <TotalPoints subject={subject} style={{ alignItems: 'center' }} />
