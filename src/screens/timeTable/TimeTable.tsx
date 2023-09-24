@@ -37,11 +37,13 @@ const TimeTable = () => {
         }}
       />
 
-      <View style={{ marginTop: '2%', justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={[fontSize.medium, globalStyles.textColor, { fontWeight: '500' }]}>
-          {data.weekInfo.dates.start} - {data.weekInfo.dates.end}
-        </Text>
-      </View>
+      {data.weekInfo.dates && (
+        <View style={{ marginTop: '2%', justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={[fontSize.medium, globalStyles.textColor, { fontWeight: '500' }]}>
+            {data.weekInfo.dates.start} - {data.weekInfo.dates.end}
+          </Text>
+        </View>
+      )}
 
       {data.weekInfo.type === WeekTypes.holiday ? (
         <HolidayView holidayInfo={data.weekInfo.holidayDates} />
