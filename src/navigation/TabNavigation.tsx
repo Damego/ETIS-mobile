@@ -13,6 +13,7 @@ import { setAuthorizing } from '../redux/reducers/authSlice';
 import { setStudentState } from '../redux/reducers/studentSlice';
 import Announce from '../screens/announce/Announce';
 import Messages from '../screens/messages/Messages';
+import AboutSignsDetails from '../screens/signs/AboutSignsDetails';
 import TimeTablePage from '../screens/timeTable/TimeTable';
 import { registerFetch } from '../tasks/signs';
 import ServicesStackNavigator from './ServicesStackNavigator';
@@ -99,6 +100,7 @@ const TabNavigator = () => {
         options={{
           title: 'Оценки',
           tabBarIcon: ({ size, color }) => <AntDesign name="barschart" size={size} color={color} />,
+          headerRight: () => <AboutSignsDetails />,
         }}
       />
       <Tab.Screen

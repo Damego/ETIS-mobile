@@ -16,7 +16,7 @@ export default function parseSessionMarks(html: string): ISessionMarks[] {
 
   table.find('tr').each((elementIndex, element) => {
     // @ts-ignore
-    const tr = table.find(element);
+    const tr = $(element);
     const title = tr.find('th');
 
     if (title.length > 1) return;

@@ -12,6 +12,7 @@ import { useAppTheme } from '../hooks/theme';
 import { PageType, setInitialPage } from '../redux/reducers/settingsSlice';
 import AuthPage from '../screens/auth/Auth';
 import Intro from '../screens/intro/Intro';
+import SignsDetails from '../screens/signs/SignsDetails';
 import MessageHistory from '../screens/messages/MessageHistory';
 import SessionQuestionnaire from '../screens/sessionQuestionnaire/SessionQuestionnaire';
 import showPrivacyPolicy from '../utils/privacyPolicy';
@@ -84,6 +85,11 @@ const StackNavigator = () => {
             headerShown: true,
             ...headerParams(theme),
           }}
+        />
+        <Stack.Screen
+          name="SignsDetails"
+          component={SignsDetails}
+          options={{ title: 'Подробности', headerShown: true, ...headerParams(theme) }}
         />
         <Stack.Screen
           name={'SessionQuestionnaire'}

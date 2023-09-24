@@ -1,11 +1,13 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import CardHeaderIn from '../../components/CardHeaderIn';
 import { useGlobalStyles } from '../../hooks';
 import { ISubject } from '../../models/sessionPoints';
-import { fontSize, getPointsWord } from '../../utils/texts';
+import { fontSize } from '../../utils/texts';
 import SubjectCheckPoints from './SubjectCheckPoints';
+import TotalPoints from './TotalPoints';
 
 const styles = StyleSheet.create({
   pointsView: {
@@ -17,51 +19,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '25%',
   },
-  markNumberText: {
-    fontWeight: '600',
-  },
   markView: {
     marginTop: '1%',
     alignItems: 'flex-end',
   },
   markWordText: {
     fontWeight: '600',
-  },
-  colorMark2: {
-    color: '#CE2539',
-  },
-  colorMark3: {
-    color: '#f6d832',
-  },
-  colorMark4: {
-    color: '#76c248',
-  },
-  colorMark5: {
-    color: '#5c9f38',
+    marginRight: 10,
   },
 });
-
-const getSubjectPointsStyle = (subject: ISubject, defaultTextColor) => {
-  if (subject.checkPoints.length === 0) return defaultTextColor;
-
-  let textStyle;
-  subject.checkPoints.every((checkPoint) => {
-    if (!checkPoint.isIntroductionWork) {
-      if (checkPoint.failed) {
-        textStyle = styles.colorMark2;
-        return false;
-      }
-    }
-    return true;
-  });
-
-  if (textStyle) return textStyle;
-
-  if (subject.totalPoints === 0) return defaultTextColor;
-  if (subject.totalPoints < 61) return styles.colorMark3;
-  if (subject.totalPoints < 81) return styles.colorMark4;
-  return styles.colorMark5;
-};
 
 interface CardSignProps {
   subject: ISubject;
@@ -69,34 +35,29 @@ interface CardSignProps {
 
 const CardSign = ({ subject }: CardSignProps) => {
   const globalStyles = useGlobalStyles();
-
-  const textStyle = getSubjectPointsStyle(subject, globalStyles.textColor);
-  const pointsWord = getPointsWord(subject.totalPoints);
+  const navigation = useNavigation();
 
   return (
     <CardHeaderIn topText={subject.name}>
       <View style={styles.pointsView}>
-        <View>
+        <TouchableOpacity
+          /* @ts-ignore */
+          onPress={() => navigation.navigate('SignsDetails', { subject })}
+          activeOpacity={0.45}
+        >
           <SubjectCheckPoints data={subject.checkPoints} />
-        </View>
-
-        <View style={styles.totalPoints}>
-          <Text style={[fontSize.xxlarge, styles.markNumberText, textStyle]}>
-            {subject.totalPoints}
-          </Text>
-          <Text style={[fontSize.medium, styles.markWordText, globalStyles.textColor]}>
-            {pointsWord}
-          </Text>
-        </View>
+        </TouchableOpacity>
+        <TotalPoints subject={subject} style={styles.totalPoints} />
       </View>
-
-      {subject.mark !== null && (
-        <View style={styles.markView}>
-          <Text style={[fontSize.medium, styles.markWordText, globalStyles.textColor]}>
-            Оценка: {subject.mark}
-          </Text>
-        </View>
-      )}
+      <View style={styles.pointsView}>
+        {subject.mark !== null && (
+          <View style={styles.markView}>
+            <Text style={[fontSize.medium, styles.markWordText, globalStyles.textColor]}>
+              Оценка: {subject.mark}
+            </Text>
+          </View>
+        )}
+      </View>
     </CardHeaderIn>
   );
 };

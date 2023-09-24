@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const getCheckPointScore = (checkPoint: ICheckPoint) => {
+export const getCheckPointScore = (checkPoint: ICheckPoint) => {
   if (checkPoint.isAbsent) return 'н';
   else if (Number.isNaN(checkPoint.points) || !checkPoint.points) return '-';
 
