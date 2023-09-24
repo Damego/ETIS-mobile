@@ -1,4 +1,4 @@
-import { StyleProp, Text, View, ViewStyle, StyleSheet } from 'react-native';
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 
 import { useGlobalStyles } from '../../hooks';
 import { ISubject } from '../../models/sessionPoints';
@@ -41,7 +41,7 @@ const getSubjectPointsStyle = (subject: ISubject, defaultTextColor) => {
   return styles.colorMark5;
 };
 
-const TotalPoints = ({ subject, style }: { subject: ISubject, style?: StyleProp<ViewStyle> }) => {
+const TotalPoints = ({ subject, style }: { subject: ISubject; style?: StyleProp<ViewStyle> }) => {
   const globalStyles = useGlobalStyles();
 
   const textStyle = getSubjectPointsStyle(subject, globalStyles.textColor);

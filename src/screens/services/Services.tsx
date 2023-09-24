@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 });
 
 export const SettingButton = () => {
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
 
   return (
     <TouchableOpacity

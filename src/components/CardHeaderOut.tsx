@@ -14,8 +14,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const CardHeaderOut = ({ topText, children, style }
-  : { topText: string, children: React.ReactNode, style?: StyleProp<ViewStyle> }) => {
+const CardHeaderOut = ({
+  topText,
+  children,
+  style,
+}: {
+  topText: string;
+  children: React.ReactNode;
+  style?: StyleProp<ViewStyle>;
+}) => {
   const globalStyles = useGlobalStyles();
 
   return (
@@ -25,9 +32,7 @@ const CardHeaderOut = ({ topText, children, style }
           {topText}
         </Text>
       </View>
-      <Card style={style}>
-        {children}
-      </Card>
+      <Card style={style}>{children}</Card>
     </>
   );
 };

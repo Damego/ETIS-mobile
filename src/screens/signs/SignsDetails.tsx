@@ -83,7 +83,7 @@ export default function SignsDetails({ route }) {
                   ToastAndroid.CENTER
                 );
               }}
-              textStyle={[rowTextStyle, {textDecorationLine: 'underline'}]}
+              textStyle={[rowTextStyle, { textDecorationLine: 'underline' }]}
             />
           </View>
         </CardHeaderIn>
