@@ -36,9 +36,7 @@ export const AboutSignsDetails = () => {
       }}
     >
       <Text textBreakStrategy={'simple'} style={[fontSize.medium, globalStyles.textColor]}>
-        {/* TODO: Добавить гифку, перефразировать текст */}
-        Нажмите на блок с контрольными точками и вы перейдёте на экран с подробным описанием всех
-        контрольных точек
+        Нажмите на блок контрольных точек для открытия подробной информации о каждой из них
       </Text>
     </Popover>
   );
