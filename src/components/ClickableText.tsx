@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleProp, Text, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
 
 interface ClickableTextProps {
-  text: string;
+  text: string | number;
   textStyle?: StyleProp<TextStyle>;
   viewStyle?: StyleProp<ViewStyle>;
   onPress(): void;
