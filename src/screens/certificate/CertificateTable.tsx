@@ -155,7 +155,7 @@ const CertificateTable = () => {
         </>
       )}
 
-      {data.certificates.map((certificate, index) => (
+      {data.certificates?.map((certificate, index) => (
         <Certificate key={index} certificate={certificate} />
       ))}
     </Screen>
