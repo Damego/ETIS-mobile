@@ -16,7 +16,7 @@ export default function parseSessionMarks(html: string): ISessionMarks[] {
 
   table.find('tr').each((elementIndex, element) => {
     // @ts-ignore
-    const tr = table.find(element);
+    const tr = $(element);
     const title = tr.find('th');
 
     if (title.length > 1) return;
@@ -24,8 +24,6 @@ export default function parseSessionMarks(html: string): ISessionMarks[] {
     if (title.length === 1) {
       const stringData = getTextField(title).replaceAll('\n', ' ');
       const [_, session, sessionName, course, endDate] = executeRegex(tableTitleRegex, stringData);
-
-      if (!endDate) return;
 
       sessionIndex += 1;
       data[sessionIndex] = {

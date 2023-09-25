@@ -6,7 +6,6 @@ import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useAppSelector, useGlobalStyles } from '../../hooks';
 import { GITHUB_URL, TELEGRAM_URL } from '../../utils';
 import { fontSize } from '../../utils/texts';
-import { absencesIconName } from '../absences/AbsencesTable';
 
 const iconSize = 36;
 const styles = StyleSheet.create({
@@ -99,7 +98,7 @@ function Menu() {
         />
         <Button
           text="Пропущенные занятия"
-          icon={<AntDesign name={absencesIconName} size={iconSize} color={iconColor} />}
+          icon={<AntDesign name={'paperclip'} size={iconSize} color={iconColor} />}
           page="Absences"
         />
       </Row>
