@@ -1,3 +1,3 @@
 import Constants from 'expo-constants';
 
-export const getVersion = () => Constants.expoConfig?.version
+export const getVersion = () => Constants.expoConfig?.version;
