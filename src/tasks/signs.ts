@@ -49,11 +49,11 @@ export const defineFetchTask = () =>
   TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
     const [cachedResult, onlineResult] = await Promise.all([
       await client.getSessionSignsData({
-        session: currentSession,
+        data: currentSession,
         requestType: RequestType.forceCache,
       }),
       await client.getSessionSignsData({
-        session: currentSession,
+        data: currentSession,
         requestType: RequestType.forceFetch,
       }),
     ]);
