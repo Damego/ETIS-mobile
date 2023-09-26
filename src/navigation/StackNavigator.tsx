@@ -84,6 +84,7 @@ const StackNavigator = () => {
           options={{
             animation: 'none',
             headerShown: true,
+            ...headerParams(theme),
           }}
         />
         <Stack.Screen
