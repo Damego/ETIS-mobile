@@ -8,10 +8,11 @@ export interface ITheme {
     block: string;
     card: string;
     shadow: string;
+    notification: string;
   };
 }
 
-export const LightTheme = {
+export const LightTheme: ITheme = {
   dark: false,
   colors: {
     background: '#F8F8FA',
@@ -21,10 +22,11 @@ export const LightTheme = {
     block: '#FFFFFF',
     card: '#FFFFFF',
     shadow: '#000000',
+    notification: '#EAEAEA'
   },
 };
 
-export const DarkTheme = {
+export const DarkTheme: ITheme = {
   dark: true,
   colors: {
     background: '#121212',
@@ -34,10 +36,11 @@ export const DarkTheme = {
     block: '#222222',
     card: '#222222',
     shadow: '#FFFFFF',
+    notification: '#3B3B3B'
   },
 };
 
-export const BlackTheme = {
+export const BlackTheme: ITheme = {
   ...DarkTheme,
   colors: {
     ...DarkTheme.colors,

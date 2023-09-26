@@ -19,8 +19,9 @@ import showPrivacyPolicy from '../utils/privacyPolicy';
 import InitSentry from '../utils/sentry';
 import TabNavigator from './TabNavigation';
 import { headerParams } from './header';
+import { RootStackParamList } from './types';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const StackNavigator = () => {
   const { isSignedIn } = useAppSelector((state) => state.auth);
@@ -83,7 +84,6 @@ const StackNavigator = () => {
           options={{
             animation: 'none',
             headerShown: true,
-            ...headerParams(theme),
           }}
         />
         <Stack.Screen

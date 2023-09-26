@@ -7,6 +7,7 @@ import { useGlobalStyles } from '../../hooks';
 import { IMessage } from '../../models/messages';
 import { parseDate } from '../../parser/utils';
 import { fontSize } from '../../utils/texts';
+import { BottomTabsNavigationProp } from '../../navigation/types';
 
 const styles = StyleSheet.create({
   textBold: {
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
 
 const MessagePreview = ({ data, page }: { data: IMessage[]; page: number }) => {
   const globalStyles = useGlobalStyles();
-  const navigation = useNavigation();
+  const navigation = useNavigation<BottomTabsNavigationProp>();
   const [mainMessage] = data;
   const { author, subject, theme } = mainMessage;
   const time = parseDate(mainMessage.time);

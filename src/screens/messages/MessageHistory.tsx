@@ -8,6 +8,7 @@ import useQuery from '../../hooks/useQuery';
 import { IMessage } from '../../models/messages';
 import { UploadFile } from '../../models/other';
 import { RequestType } from '../../models/results';
+import { RootStackScreenProps } from '../../navigation/types';
 import { parseDate } from '../../parser/utils';
 import { httpClient } from '../../utils';
 import Message from './Message';
@@ -26,7 +27,7 @@ const compareMessages = (first: IMessage, second: IMessage) => {
   return 0;
 };
 
-export default function MessageHistory({ route, navigation }) {
+export default function MessageHistory({ route, navigation }: RootStackScreenProps<'History'>) {
   const [messages, setMessages] = useState<IMessage[]>(route.params.data);
   const pageRef = useRef<number>(route.params.page);
   const [isUploading, setUploading] = useState<boolean>(false);

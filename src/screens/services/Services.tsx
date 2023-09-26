@@ -10,6 +10,7 @@ import { useAppSelector, useGlobalStyles } from '../../hooks';
 import { fontSize } from '../../utils/texts';
 import Menu from './Menu';
 import UserInfo from './UserInfo';
+import { ServicesNavigationProp } from '../../navigation/types';
 
 const styles = StyleSheet.create({
   textTitle: {
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
 });
 
 export const SettingButton = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<ServicesNavigationProp>();
 
   return (
     <TouchableOpacity
