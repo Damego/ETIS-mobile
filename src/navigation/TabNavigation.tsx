@@ -123,7 +123,7 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
         }}
       />
       <Tab.Screen
-        name="Services"
+        name="ServicesNavigator"
         component={ServicesStackNavigator}
         options={{
           headerShown: false,
