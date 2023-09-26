@@ -61,5 +61,5 @@ export const headerParams = (theme: ITheme): HeaderParamList => ({
     fontWeight: '600',
     fontSize: 24,
   },
-  headerBackground: null,
+  headerBackground: () => <></>,
 });
