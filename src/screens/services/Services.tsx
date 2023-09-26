@@ -7,10 +7,10 @@ import { cache } from '../../cache/smartCache';
 import ReviewBox from '../../components/ReviewBox';
 import Screen from '../../components/Screen';
 import { useAppSelector, useGlobalStyles } from '../../hooks';
+import { ServicesNavigationProp } from '../../navigation/types';
 import { fontSize } from '../../utils/texts';
 import Menu from './Menu';
 import UserInfo from './UserInfo';
-import { ServicesNavigationProp } from '../../navigation/types';
 
 const styles = StyleSheet.create({
   textTitle: {

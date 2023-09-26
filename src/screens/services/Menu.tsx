@@ -4,9 +4,9 @@ import React from 'react';
 import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { useAppSelector, useGlobalStyles } from '../../hooks';
+import { ServicesNativeStackParamList, ServicesNavigationProp } from '../../navigation/types';
 import { GITHUB_URL, TELEGRAM_URL } from '../../utils';
 import { fontSize } from '../../utils/texts';
-import { ServicesNativeStackParamList, ServicesNavigationProp } from '../../navigation/types';
 
 const iconSize = 36;
 const styles = StyleSheet.create({

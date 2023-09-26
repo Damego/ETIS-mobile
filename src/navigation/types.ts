@@ -42,7 +42,6 @@ export type SignsTopTabsParamsList = {
   Rating: undefined;
 };
 
-
 export type RootStackScreenProps<ScreenName extends keyof RootStackParamList = undefined> =
   StackScreenProps<RootStackParamList, ScreenName>;
 export type BottomTabsScreenProps<ScreenName extends keyof BottomTabsParamList = undefined> =
