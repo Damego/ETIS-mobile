@@ -1,9 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 import { DeviceEventEmitter, ToastAndroid } from 'react-native';
-import { ShortcutItem } from 'react-native-quick-actions';
 
 import { useClient } from '../data/client';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
@@ -16,13 +14,15 @@ import Messages from '../screens/messages/Messages';
 import AboutSignsDetails from '../screens/signs/AboutSignsDetails';
 import TimeTablePage from '../screens/timeTable/TimeTable';
 import { registerFetch } from '../tasks/signs';
+import { AppShortcutItem } from '../utils/shortcuts';
 import ServicesStackNavigator from './ServicesStackNavigator';
 import SignsTopTabNavigator from './TopTabNavigator';
 import { headerParams } from './header';
+import { BottomTabsParamList, BottomTabsScreenProps } from './types';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<BottomTabsParamList>();
 
-const TabNavigator = () => {
+const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
   const globalStyles = useGlobalStyles();
   const theme = useAppTheme();
 
@@ -31,10 +31,9 @@ const TabNavigator = () => {
   const { signNotification, initialPage } = useAppSelector((state) => state.settings);
   const client = useClient();
   const isDemo = useAppSelector((state) => state.auth.isDemo);
-  const navigation = useNavigation();
 
   useEffect(() => {
-    DeviceEventEmitter.addListener('quickActionShortcut', (data: ShortcutItem) => {
+    DeviceEventEmitter.addListener('quickActionShortcut', (data: AppShortcutItem) => {
       if (data.type !== 'debug') {
         navigation.navigate(data.type);
       } else {

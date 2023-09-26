@@ -4,6 +4,7 @@ import React from 'react';
 import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { useAppSelector, useGlobalStyles } from '../../hooks';
+import { ServicesNativeStackParamList, ServicesNavigationProp } from '../../navigation/types';
 import { GITHUB_URL, TELEGRAM_URL } from '../../utils';
 import { fontSize } from '../../utils/texts';
 
@@ -36,10 +37,10 @@ function Button({
 }: {
   icon: React.ReactNode;
   text: string;
-  page?: string;
+  page?: keyof ServicesNativeStackParamList;
   link?: string;
 }) {
-  const navigation = useNavigation();
+  const navigation = useNavigation<ServicesNavigationProp>();
   const globalStyles = useGlobalStyles();
 
   const changePage = () => {

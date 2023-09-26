@@ -9,6 +9,7 @@ import { useAppSelector, useGlobalStyles } from '../../hooks';
 import useQuery from '../../hooks/useQuery';
 import { RequestType } from '../../models/results';
 import { IAnswer } from '../../models/sessionQuestionnaire';
+import { RootStackScreenProps } from '../../navigation/types';
 import { httpClient } from '../../utils';
 import toSessionTestPayload from '../../utils/sessionTest';
 import AdditionalComment from './AdditionalComment';
@@ -26,7 +27,9 @@ enum Steps {
   resultSent,
 }
 
-export default function SessionQuestionnaire({ route }) {
+export default function SessionQuestionnaire({
+  route,
+}: RootStackScreenProps<'SessionQuestionnaire'>) {
   const globalStyles = useGlobalStyles();
   const { url } = route.params;
   const [step, setStep] = useState<Steps>(1);

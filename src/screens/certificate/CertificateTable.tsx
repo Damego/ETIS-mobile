@@ -13,7 +13,7 @@ import { useClient } from '../../data/client';
 import { useGlobalStyles } from '../../hooks';
 import { useAppTheme } from '../../hooks/theme';
 import useQuery from '../../hooks/useQuery';
-import { RequestType } from '../../models/results';
+import { ServicesNavigationProp } from '../../navigation/types';
 import { fontSize } from '../../utils/texts';
 import Certificate from './Certificate';
 
@@ -73,8 +73,8 @@ const ButtonWithPopover = ({
 };
 
 const RequestCertificateButton = () => {
-  const navigation = useNavigation();
   const globalStyles = useGlobalStyles();
+  const navigation = useNavigation<ServicesNavigationProp>();
 
   return (
     <Card>

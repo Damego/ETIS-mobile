@@ -7,6 +7,7 @@ import { cache } from '../../cache/smartCache';
 import ReviewBox from '../../components/ReviewBox';
 import Screen from '../../components/Screen';
 import { useAppSelector, useGlobalStyles } from '../../hooks';
+import { ServicesNavigationProp } from '../../navigation/types';
 import { fontSize } from '../../utils/texts';
 import Menu from './Menu';
 import UserInfo from './UserInfo';
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
 });
 
 export const SettingButton = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<ServicesNavigationProp>();
 
   return (
     <TouchableOpacity

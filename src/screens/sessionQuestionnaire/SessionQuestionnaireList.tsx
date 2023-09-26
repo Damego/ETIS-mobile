@@ -11,9 +11,10 @@ import { useClient } from '../../data/client';
 import { useAppSelector, useGlobalStyles } from '../../hooks';
 import useQuery from '../../hooks/useQuery';
 import { RequestType } from '../../models/results';
+import { RootStackScreenProps } from '../../navigation/types';
 import { fontSize } from '../../utils/texts';
 
-export default function SessionQuestionnaireList({ navigation }) {
+export default function SessionQuestionnaireList({ navigation }: RootStackScreenProps) {
   const globalStyles = useGlobalStyles();
   const { sessionTestID } = useAppSelector((state) => state.student);
   const client = useClient();

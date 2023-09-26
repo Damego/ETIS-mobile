@@ -5,6 +5,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import CardHeaderIn from '../../components/CardHeaderIn';
 import { useGlobalStyles } from '../../hooks';
 import { ISubject } from '../../models/sessionPoints';
+import { RootStackNavigationProp } from '../../navigation/types';
 import { fontSize } from '../../utils/texts';
 import SubjectCheckPoints from './SubjectCheckPoints';
 import TotalPoints from './TotalPoints';
@@ -29,19 +30,14 @@ const styles = StyleSheet.create({
   },
 });
 
-interface CardSignProps {
-  subject: ISubject;
-}
-
-const CardSign = ({ subject }: CardSignProps) => {
+const CardSign = ({ subject }: { subject: ISubject }) => {
   const globalStyles = useGlobalStyles();
-  const navigation = useNavigation();
+  const navigation = useNavigation<RootStackNavigationProp>();
 
   return (
     <CardHeaderIn topText={subject.name}>
       <View style={styles.pointsView}>
         <TouchableOpacity
-          /* @ts-ignore */
           onPress={() => navigation.navigate('SignsDetails', { subject })}
           activeOpacity={0.45}
         >
