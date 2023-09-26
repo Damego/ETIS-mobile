@@ -20,7 +20,7 @@ export type BottomTabsParamList = {
   SignsNavigator: undefined;
   Messages: undefined;
   Announces: undefined;
-  Services: undefined;
+  ServicesNavigator: undefined;
 };
 
 export type ServicesNativeStackParamList = {
