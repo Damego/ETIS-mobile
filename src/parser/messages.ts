@@ -7,7 +7,7 @@ const getMessageFiles = ($: cheerio.Root, message: cheerio.Cheerio): IMessageFil
   const files: IMessageFile[] = [];
 
   message.find('a').each((index, element) => {
-    const link = $(element, message);
+    const link = $(element);
     files.push({
       name: link.text(),
       uri: link.attr('href'),
@@ -54,7 +54,7 @@ const parseStudentMessage = ($: cheerio.Root, message: cheerio.Cheerio): IMessag
 
   let answerMessageID;
   message.find('input').each((index, element) => {
-    const input = $(element, message);
+    const input = $(element);
     if (input.attr('type') === 'button') {
       answerMessageID = input.attr('id').split('_').at(-1);
     }
@@ -76,7 +76,7 @@ const parseStartMessage = ($: cheerio.Root, message: cheerio.Cheerio): IMessage 
   const type = MessageType.message;
   const author = getTextField(bComponent.eq(0));
   const fields = [];
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < 2; i += 1) {
     fields[i] = getTextField(fontComponent.eq(i));
   }
   const [time, subject] = fields;
@@ -89,7 +89,7 @@ const parseStartMessage = ($: cheerio.Root, message: cheerio.Cheerio): IMessage 
   let messageID;
   let answerID;
   message.find('input').each((index, element) => {
-    const input = $(element, message);
+    const input = $(element);
     if (input.attr('type') === 'hidden') answerID = input.attr('value');
     else if (input.attr('type') === 'button') messageID = input.attr('id').split('_').at(1);
   });

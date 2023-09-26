@@ -217,7 +217,7 @@ export default class SmartCache {
   }
 
   async placeSessionMarks(data: ISessionMarks[]) {
-    data.every((d) => {
+    data.forEach((d) => {
       this.signsMarks.place(d.session, d);
     });
 
@@ -397,7 +397,8 @@ export default class SmartCache {
     if (!step) {
       await this.setReviewStep('pending');
       return false;
-    } else if (step === 'pending') {
+    }
+    if (step === 'pending') {
       return true;
     }
   }

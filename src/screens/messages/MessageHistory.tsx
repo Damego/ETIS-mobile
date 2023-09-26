@@ -27,6 +27,9 @@ const compareMessages = (first: IMessage, second: IMessage) => {
   return 0;
 };
 
+const findMessageBlockById = (messages: IMessage[][], messageId: string) =>
+  messages.find((messageBlock) => messageBlock.find((message) => message.messageID === messageId));
+
 export default function MessageHistory({ route, navigation }: RootStackScreenProps<'History'>) {
   const [messages, setMessages] = useState<IMessage[]>(route.params.data);
   const pageRef = useRef<number>(route.params.page);
@@ -46,13 +49,9 @@ export default function MessageHistory({ route, navigation }: RootStackScreenPro
   const loadData = async () => {
     const result = await query.get({ data: pageRef.current, requestType: RequestType.tryFetch });
 
-    for (const messages of result.data.messages) {
-      const [message] = messages;
-      if (message.messageID === firstMessage.messageID) {
-        setMessages(messages);
-        return messages;
-      }
-    }
+    const $messages = findMessageBlockById(result.data.messages, firstMessage.messageID);
+    setMessages($messages);
+    return $messages;
   };
 
   const onFileSelect = (fileData: UploadFile[]) => {
@@ -86,9 +85,10 @@ export default function MessageHistory({ route, navigation }: RootStackScreenPro
     }
     const message = messageBlock.at(-1);
 
-    for (const file of files) {
-      await httpClient.attachFileToMessage(firstMessage.messageID, message.answerMessageID, file);
-    }
+    const promises = files.map((file) =>
+      httpClient.attachFileToMessage(firstMessage.messageID, message.answerMessageID, file)
+    );
+    await Promise.all(promises);
 
     loadData();
     setFiles([]);

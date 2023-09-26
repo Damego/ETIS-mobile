@@ -26,16 +26,16 @@ export default function parseTeachers(html): TeacherType {
   const data: ITeacher[] = [];
 
   $('.teacher_info', html).each((index, element) => {
-    const teacherEl = $(element),
-      photo = teacherEl.find('img').attr('src'),
-      photoTitle = teacherEl.find('img').attr('title'),
-      name = getTextField(teacherEl.find('.teacher_name')),
-      cathedra = getTextField(teacherEl.find('.chair'));
+    const teacherEl = $(element);
+    const photo = teacherEl.find('img').attr('src');
+    const photoTitle = teacherEl.find('img').attr('title');
+    const name = getTextField(teacherEl.find('.teacher_name'));
+    const cathedra = getTextField(teacherEl.find('.chair'));
 
     getTextField(teacherEl.find('.dis'))
       .split('\n')
       .forEach((subject) => {
-        const [_, subjectUntyped, subjectType] = executeRegex(subjectRegex, subject);
+        const [, subjectUntyped, subjectType] = executeRegex(subjectRegex, subject);
         data.push({
           photo,
           name,

@@ -41,7 +41,7 @@ export default function parseAbsences(html: string): IAbsence {
   const sessions: IAbsenceSession[] = [];
 
   $('span.submenu-item').each((index, element) => {
-    let session = $(element);
+    const session = $(element);
     sessions.push({
       name: getTextField(session),
       number: index + 1,
@@ -55,7 +55,7 @@ export default function parseAbsences(html: string): IAbsence {
       };
   });
 
-  let overallMissed: string = $('div.span9').text().split(' ').at(-1);
+  const overallMissed: string = $('div.span9').text().split(' ').at(-1);
 
   return { currentSession, sessions, absences, overallMissed: parseInt(overallMissed) };
 }

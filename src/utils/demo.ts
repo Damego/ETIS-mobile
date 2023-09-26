@@ -1,5 +1,5 @@
 import { UserCredentials } from '../redux/reducers/authSlice';
 
-export const isDemoCredentials = (userCredentials: UserCredentials) => {
-  return userCredentials.login === 'demo';
-};
+const isDemoCredentials = (userCredentials: UserCredentials) => userCredentials.login === 'demo';
+
+export default isDemoCredentials;

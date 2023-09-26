@@ -235,6 +235,7 @@ export default class Client implements BaseClient {
     await cache.calendarSchedule.init();
     return this.calendarScheduleClient.getData(payload);
   }
+
   async getCertificateData(payload: IGetPayload): Promise<IGetResult<ICertificateTable>> {
     await cache.certificate.init();
     return this.certificateClient.getData(payload);

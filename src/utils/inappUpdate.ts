@@ -13,7 +13,7 @@ export const checkUpdate = () => {
     const inAppUpdates = new SpInAppUpdates(false);
     console.log('[INAPP] Checking store version');
     inAppUpdates.checkNeedsUpdate({ curVersion: Constants.expoConfig.version }).then((result) => {
-      console.log('[INAPP] result: ' + JSON.stringify(result));
+      console.log(`[INAPP] result: ${JSON.stringify(result)}`);
       if (result.shouldUpdate) {
         if (Platform.OS === 'android') {
           const updateOptions: StartUpdateOptions = {

@@ -14,7 +14,7 @@ const initialState: StudentState = {
 
 const studentSlice = createSlice({
   name: 'student',
-  initialState: initialState,
+  initialState,
   reducers: {
     setStudentState(state, action: PayloadAction<StudentInfo>) {
       state.info = action.payload.student;

@@ -17,7 +17,7 @@ const useMessagesQuery = () => {
       if (!fetchedPages.current.includes(result.data.page)) {
         fetchedPages.current.push(result.data.page);
       }
-      if (result.data && result.type == GetResultType.fetched) {
+      if (result.data && result.type === GetResultType.fetched) {
         dispatch(setMessageCount(null));
       }
     },

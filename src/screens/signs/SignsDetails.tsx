@@ -5,7 +5,8 @@ import CardHeaderIn from '../../components/CardHeaderIn';
 import ClickableText from '../../components/ClickableText';
 import Screen from '../../components/Screen';
 import { useGlobalStyles } from '../../hooks';
-import { ICheckPoint, ISubject } from '../../models/sessionPoints';
+import { ICheckPoint } from '../../models/sessionPoints';
+import { RootStackScreenProps } from '../../navigation/types';
 import { fontSize } from '../../utils/texts';
 import { getCheckPointScore } from './SubjectCheckPoints';
 import TotalPoints from './TotalPoints';
@@ -26,31 +27,26 @@ const styles = StyleSheet.create({
   },
 });
 
-const getCheckpointTitle = (theme: string, number: number) => {
-  return `КТ ${number}: ${theme}`;
-};
+const getCheckpointTitle = (theme: string, number: number) => `КТ ${number}: ${theme}`;
 
-const cutTypeControl = (typeControl: string): string => {
-  return typeControl
+const cutTypeControl = (typeControl: string): string =>
+  typeControl
     .split(' ')
     .map((char) => char.charAt(0).toUpperCase())
     .join('');
-};
 
-export default function SignsDetails({ route }) {
+export default function SignsDetails({ route }: RootStackScreenProps<'SignsDetails'>) {
   const globalStyles = useGlobalStyles();
-  const subject: ISubject = route.params.subject;
+  const { subject } = route.params;
 
   const rowTextStyle = StyleSheet.compose(globalStyles.textColor, { fontSize: 15 });
 
-  const Row = ({ first, second }: { first: any; second?: any }) => {
-    return (
-      <View style={styles.row}>
-        <Text style={rowTextStyle}>{first}</Text>
-        <Text style={rowTextStyle}>{second}</Text>
-      </View>
-    );
-  };
+  const Row = ({ first, second }: { first: string | number; second: string | number }) => (
+    <View style={styles.row}>
+      <Text style={rowTextStyle}>{first}</Text>
+      <Text style={rowTextStyle}>{second}</Text>
+    </View>
+  );
 
   return (
     <Screen>

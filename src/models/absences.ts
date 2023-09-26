@@ -1,5 +1,3 @@
-import { IGetPayload } from './results';
-
 export interface IAbsenceDate {
   date: string;
   isCovered: boolean;

@@ -50,7 +50,7 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
       return;
     }
 
-    const data = result.data;
+    const { data } = result;
 
     if (data) {
       dispatch(setStudentState(data));

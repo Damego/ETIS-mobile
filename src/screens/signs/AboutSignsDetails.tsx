@@ -1,14 +1,13 @@
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
-import { Text } from 'react-native';
-import { TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 
 import { useGlobalStyles } from '../../hooks';
 import { useAppTheme } from '../../hooks/theme';
 import { fontSize } from '../../utils/texts';
 
-export const AboutSignsDetails = () => {
+const AboutSignsDetails = () => {
   const globalStyles = useGlobalStyles();
   const appTheme = useAppTheme();
 

@@ -4,7 +4,7 @@ import { GetResultType, IGetPayload, IGetResult, RequestType } from '../models/r
 import { setAuthorizing } from '../redux/reducers/authSlice';
 import { useAppDispatch, useAppSelector } from './redux';
 
-interface getMethod<P, R> {
+interface GetMethod<P, R> {
   (payload: IGetPayload<P>): Promise<IGetResult<R>>;
 }
 
@@ -23,7 +23,7 @@ const useQuery = <P, R>({
   onFail,
   skipInitialGet,
 }: {
-  method: getMethod<P, R>;
+  method: GetMethod<P, R>;
   payload?: IGetPayload<P>;
   after?: (result: IGetResult<R>) => void | Promise<void>;
   onFail?: (result: IGetResult<R>) => void;

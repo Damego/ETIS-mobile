@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 
 export const getCheckPointScore = (checkPoint: ICheckPoint) => {
   if (checkPoint.isAbsent) return 'н';
-  else if (Number.isNaN(checkPoint.points) || !checkPoint.points) return '-';
+  if (Number.isNaN(checkPoint.points) || !checkPoint.points) return '-';
 
   // Вводные работы в рейтинге не показываются, поэтому выводим просто полученные баллы
   return checkPoint.isIntroductionWork ? checkPoint.points : checkPoint.currentScore;

@@ -2,7 +2,7 @@ import { Alert, Linking } from 'react-native';
 
 import { DEBUG_GUIDE_URL } from './consts';
 
-export const alertParserBugReport = () =>
+const alertParserBugReport = () =>
   Alert.alert(
     'Произошла ошибка парсера',
     'Вероятно, Вы столкнулись с неожиданным поведением ЕТИС.\n' +
@@ -17,3 +17,5 @@ export const alertParserBugReport = () =>
       },
     ]
   );
+
+export default alertParserBugReport;

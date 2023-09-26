@@ -28,10 +28,10 @@ const Certificate = ({ certificate }: { certificate: ICertificate }) => {
     const response = await httpClient.getCertificateHTML(certificate);
     if (!response.data) return;
 
-    const html = cutCertificateHTML(response.data);
-    if (!html) return;
+    const $html = cutCertificateHTML(response.data);
+    if (!$html) return;
 
-    certificate.example = html;
+    certificate.example = $html;
     cache.placeOneCertificate(certificate);
     return certificate.example;
   };
@@ -39,12 +39,12 @@ const Certificate = ({ certificate }: { certificate: ICertificate }) => {
   const closeModal = () => setOpened(false);
 
   const openModal = async () => {
-    const html = await getCertificate();
-    if (!html) {
+    const $html = await getCertificate();
+    if (!$html) {
       ToastAndroid.show('Ошибка', ToastAndroid.LONG);
       return;
     }
-    setHTML(html);
+    setHTML($html);
     setOpened(true);
   };
 

@@ -52,16 +52,14 @@ export type HeaderParamList = {
   >;
 };
 
-export const headerParams = (theme: ITheme): HeaderParamList => {
-  return {
-    headerStyle: {
-      backgroundColor: theme.colors.background,
-    },
-    headerTitleStyle: {
-      color: theme.colors.primary,
-      fontWeight: '600',
-      fontSize: 24,
-    },
-    headerBackground: () => <></>,
-  };
-};
+export const headerParams = (theme: ITheme): HeaderParamList => ({
+  headerStyle: {
+    backgroundColor: theme.colors.background,
+  },
+  headerTitleStyle: {
+    color: theme.colors.primary,
+    fontWeight: '600',
+    fontSize: 24,
+  },
+  headerBackground: null,
+});
