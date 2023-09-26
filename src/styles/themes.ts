@@ -22,7 +22,7 @@ export const LightTheme: ITheme = {
     block: '#FFFFFF',
     card: '#FFFFFF',
     shadow: '#000000',
-    notification: '#EAEAEA'
+    notification: '#EAEAEA',
   },
 };
 
@@ -36,7 +36,7 @@ export const DarkTheme: ITheme = {
     block: '#222222',
     card: '#222222',
     shadow: '#FFFFFF',
-    notification: '#3B3B3B'
+    notification: '#3B3B3B',
   },
 };
 

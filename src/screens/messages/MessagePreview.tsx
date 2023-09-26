@@ -5,9 +5,9 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import { useGlobalStyles } from '../../hooks';
 import { IMessage } from '../../models/messages';
+import { BottomTabsNavigationProp } from '../../navigation/types';
 import { parseDate } from '../../parser/utils';
 import { fontSize } from '../../utils/texts';
-import { BottomTabsNavigationProp } from '../../navigation/types';
 
 const styles = StyleSheet.create({
   textBold: {

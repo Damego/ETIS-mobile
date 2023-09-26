@@ -18,7 +18,7 @@ import { AppShortcutItem } from '../utils/shortcuts';
 import ServicesStackNavigator from './ServicesStackNavigator';
 import SignsTopTabNavigator from './TopTabNavigator';
 import { headerParams } from './header';
-import { BottomTabsScreenProps, BottomTabsParamList } from './types';
+import { BottomTabsParamList, BottomTabsScreenProps } from './types';
 
 const Tab = createBottomTabNavigator<BottomTabsParamList>();
 
