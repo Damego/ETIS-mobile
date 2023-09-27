@@ -47,11 +47,8 @@ export interface Response<T> {
 
 class HTTPClient {
   private sessionID: string | null;
-
   private instance: AxiosInstance;
-
   private readonly baseURL: string;
-
   private readonly siteURL: string;
 
   constructor() {
