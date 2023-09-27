@@ -51,7 +51,7 @@ export default function SessionQuestionnaire({
         (count, theme) => count + theme.questions.length,
         0
       );
-    }
+    },
   });
   const { isDemo } = useAppSelector((state) => state.auth);
   const setTeacher = (name: string) => {
