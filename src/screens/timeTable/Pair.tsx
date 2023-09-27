@@ -28,7 +28,9 @@ export default function Pair({ pair }: { pair: IPair }) {
 
 const Lesson = ({ data }: { data: ILesson }) => {
   const globalStyles = useGlobalStyles();
-  const audience = data.isDistance ? data.audience : data.audienceText;
+  const audience = data.isDistance
+    ? data.audience
+    : `ауд. ${data.audience} (${data.building} корпус, ${data.floor} этаж)`;
 
   return (
     <View style={styles.lessonContainer}>
