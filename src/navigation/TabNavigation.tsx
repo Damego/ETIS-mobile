@@ -3,11 +3,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { useEffect } from 'react';
 import { DeviceEventEmitter, ToastAndroid } from 'react-native';
 
+import { cache } from '../cache/smartCache';
 import { useClient } from '../data/client';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
 import { useAppTheme } from '../hooks/theme';
-import { GetResultType, RequestType } from '../models/results';
-import { setAuthorizing } from '../redux/reducers/authSlice';
+import { RequestType } from '../models/results';
 import { setStudentState } from '../redux/reducers/studentSlice';
 import Announce from '../screens/announce/Announce';
 import Messages from '../screens/messages/Messages';
@@ -30,7 +30,7 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
   const { messageCount, announceCount } = useAppSelector((state) => state.student);
   const { signNotification, initialPage } = useAppSelector((state) => state.settings);
   const client = useClient();
-  const isDemo = useAppSelector((state) => state.auth.isDemo);
+  const { isDemo, isOfflineMode } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
     DeviceEventEmitter.addListener('quickActionShortcut', (data: AppShortcutItem) => {
@@ -43,25 +43,37 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
   }, []);
 
   const loadData = async () => {
-    const result = await client.getStudentInfoData({ requestType: RequestType.tryFetch });
-
-    if (result.type === GetResultType.loginPage) {
-      dispatch(setAuthorizing(true));
-      return;
+    if (isDemo || isOfflineMode) {
+      const result = await client.getStudentInfoData({ requestType: RequestType.forceCache });
+      if (result.data) {
+        dispatch(setStudentState(result.data));
+      }
     }
 
-    const { data } = result;
+    const cached = await client.getStudentInfoData({ requestType: RequestType.forceCache });
+    const cachedStudent = cached.data?.student ? { ...cached.data.student } : null;
+    const fetched = await client.getStudentInfoData({ requestType: RequestType.forceFetch });
 
-    if (data) {
-      dispatch(setStudentState(data));
+    if (!cached.data && !fetched.data) return; // edge case
+
+    if (
+      cachedStudent &&
+      fetched.data?.student &&
+      cachedStudent.group !== fetched.data.student.group
+    ) {
+      await cache.clear();
+      await cache.placePartialStudent(fetched.data);
     }
+
+    if (fetched.data || cached.data) dispatch(setStudentState(fetched.data || cached.data));
   };
 
   useEffect(() => {
-    if (signNotification && !isDemo) {
-      registerFetch();
-    }
-    loadData();
+    loadData().then(() => {
+      if (signNotification && !isDemo) {
+        registerFetch();
+      }
+    });
   }, []);
 
   return (

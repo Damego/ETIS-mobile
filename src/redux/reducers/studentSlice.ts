@@ -40,6 +40,14 @@ const studentSlice = createSlice({
     setCurrentSession(state, action: PayloadAction<number>) {
       state.currentSession = action.payload;
     },
+    resetForRecord(state) {
+      state.info = null;
+      state.messageCount = null;
+      state.announceCount = null;
+      state.sessionTestID = null;
+      state.currentSession = null;
+      state.currentWeek = null;
+    },
   },
 });
 
@@ -51,4 +59,5 @@ export const {
   setAnnounceCount,
   setCurrentWeek,
   setCurrentSession,
+  resetForRecord,
 } = studentSlice.actions;

@@ -7,6 +7,7 @@ import AbsencesTable from '../screens/absences';
 import CertificateTable from '../screens/certificate/CertificateTable';
 import RequestCertificate from '../screens/certificate/RequestCertificate';
 import OrderTable from '../screens/orders';
+import PersonalRecords from '../screens/personalRecords/PersonalRecords';
 import Services from '../screens/services';
 import { SettingButton } from '../screens/services/Services';
 import SessionQuestionnaireList from '../screens/sessionQuestionnaire/SessionQuestionnaireList';
@@ -61,6 +62,11 @@ function ServicesStackNavigator() {
         name={'SessionQuestionnaireList'}
         component={SessionQuestionnaireList}
         options={{ title: 'Анкетирование' }}
+      />
+      <Stack.Screen
+        name={'PersonalRecords'}
+        component={PersonalRecords}
+        options={{ title: 'Личные записи' }}
       />
     </Stack.Navigator>
   );

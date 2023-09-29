@@ -3,6 +3,7 @@ import { ICalendarSchedule } from '../models/calendarSchedule';
 import { ICertificateTable } from '../models/certificate';
 import { IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
+import { IPersonalRecord } from '../models/personalRecords';
 import { ISessionRating } from '../models/rating';
 import {
   GetResultType,
@@ -42,6 +43,7 @@ export interface BaseClient {
     payload: IGetPayload<string>
   ): Promise<IGetResult<ISessionQuestionnaireLink[]>>;
   getSessionQuestionnaire(payload: IGetPayload<string>): Promise<IGetResult<ISessionQuestionnaire>>;
+  getPersonalRecords(payload: IGetPayload): Promise<IGetResult<IPersonalRecord[]>>;
 }
 
 export class BasicClient<P extends IGetPayload, T> {

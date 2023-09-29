@@ -5,13 +5,14 @@ import { ICalendarSchedule } from '../models/calendarSchedule';
 import { ICertificate, ICertificateTable } from '../models/certificate';
 import { IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
+import { IPersonalRecord } from '../models/personalRecords';
 import { ISessionRating } from '../models/rating';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
 import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
 import { ITimeTable } from '../models/timeTable';
-import { OptionalStudentInfo, StudentInfo } from '../parser/menu';
+import { StudentInfo } from '../parser/menu';
 import { UserCredentials } from '../redux/reducers/authSlice';
 import { AppConfig, ThemeType } from '../redux/reducers/settingsSlice';
 import FieldCache from './fieldCache';
@@ -26,6 +27,7 @@ export default class SmartCache {
     list: FieldCache<IOrder[]>;
     info: MappedCache<string, string>;
   };
+  personalRecords: FieldCache<IPersonalRecord[]>;
   timeTable: MappedCache<number, ITimeTable>;
   teachers: FieldCache<TeacherType>;
   teachPlan: FieldCache<ISessionTeachPlan[]>;
@@ -44,9 +46,12 @@ export default class SmartCache {
     // ETIS related keys
     ABSENCES: 'ABSENCES',
     ANNOUNCES: 'ANNOUNCES',
+    CALENDAR_SCHEDULE: 'CALENDAR_SCHEDULE',
+    CERTIFICATE: 'CERTIFICATE',
     MESSAGES: 'MESSAGES',
     ORDERS: 'ORDERS',
     ORDERS_INFO: 'ORDERS_INFO',
+    PERSONAL_RECORDS: 'PERSONAL_RECORDS',
     SIGNS_POINTS: 'SIGNS_POINTS',
     SIGNS_MARKS: 'SIGNS_MARKS',
     SIGNS_RATING: 'SIGNS_RATING',
@@ -54,8 +59,6 @@ export default class SmartCache {
     TEACH_PLAN: 'TEACH_PLAN',
     TEACHERS: 'TEACHERS',
     TIMETABLE: 'TIMETABLE',
-    CALENDAR_SCHEDULE: 'CALENDAR_SCHEDULE',
-    CERTIFICATE: 'CERTIFICATE',
 
     // Internal keys
     USER: 'USER',
@@ -70,6 +73,7 @@ export default class SmartCache {
       list: new FieldCache<IOrder[]>(this.keys.ORDERS),
       info: new MappedCache<string, string>(this.keys.ORDERS_INFO),
     };
+    this.personalRecords = new FieldCache(this.keys.PERSONAL_RECORDS);
     this.timeTable = new MappedCache(this.keys.TIMETABLE);
     this.teachers = new FieldCache<TeacherType>(this.keys.TEACHERS);
     this.teachPlan = new FieldCache(this.keys.TEACH_PLAN);
@@ -292,7 +296,7 @@ export default class SmartCache {
     await this.student.save();
   }
 
-  async placePartialStudent(data: OptionalStudentInfo) {
+  async placePartialStudent(data: Partial<StudentInfo>) {
     const student = (await this.getStudent()) || ({} as StudentInfo);
 
     Object.entries(data).forEach(([key, value]) => {
@@ -301,6 +305,8 @@ export default class SmartCache {
 
     await this.placeStudent(student);
   }
+
+  // End Student Region
 
   // Calendar Schedule region
 
@@ -315,8 +321,6 @@ export default class SmartCache {
   }
 
   // End Calendar Schedule region
-
-  // End Student Region
 
   // Secure Region
 
@@ -337,6 +341,16 @@ export default class SmartCache {
   // End Secure Region
 
   // Internal Region
+
+  async getPersonalRecords() {
+    if (!this.personalRecords.isReady()) await this.personalRecords.init();
+    return this.personalRecords.get();
+  }
+
+  async placePersonalRecords(data: IPersonalRecord[]) {
+    this.personalRecords.place(data);
+    await this.personalRecords.save();
+  }
 
   async getAppConfig() {
     if (!this.app.isReady()) await this.app.init();
@@ -419,11 +433,13 @@ export default class SmartCache {
 
   // Helper methods
 
-  async clear() {
+  async clear(clearUserData?: boolean) {
+    await this.absences.clear();
     await this.announce.delete();
     await this.messages.clear();
     await this.orders.list.delete();
     await this.orders.info.clear();
+    await this.personalRecords.delete();
     await this.timeTable.clear();
     await this.teachers.delete();
     await this.teachPlan.delete();
@@ -431,10 +447,8 @@ export default class SmartCache {
     await this.signsPoints.clear();
     await this.signsRating.clear();
     await this.student.delete();
-    await this.user.delete();
 
-    // Debug only
-    // await this.app.delete();
+    if (clearUserData) await this.user.delete();
   }
 
   // Legacy
