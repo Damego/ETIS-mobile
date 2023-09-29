@@ -2,10 +2,12 @@ import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { StyleProp, Text, TextStyle, ToastAndroid, TouchableOpacity, View } from 'react-native';
 
-import { cache } from '../../cache/smartCache';
 import Card from '../../components/Card';
+import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
+import { useClient } from '../../data/client';
 import { useAppDispatch, useGlobalStyles } from '../../hooks';
+import useQuery from '../../hooks/useQuery';
 import { IPersonalRecord } from '../../models/personalRecords';
 import { resetForRecord } from '../../redux/reducers/studentSlice';
 import { httpClient } from '../../utils';
@@ -59,14 +61,18 @@ export default function PersonalRecords() {
     { fontWeight: '500', marginBottom: '2%' },
   ];
 
-  const personalRecords = cache.personalRecords.get();
-  const currentRecord = personalRecords.find((record) => !record.id);
-  const activeRecords = personalRecords.filter(
-    (record) => record.status === 'студент' && record.id
-  );
-  const inactiveRecords = personalRecords.filter(
-    (record) => record.status !== 'студент' && record.id
-  );
+  const client = useClient();
+  const { data, isLoading } = useQuery({
+    method: client.getPersonalRecords,
+  });
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
+  const currentRecord = data.find((record) => !record.id);
+  const activeRecords = data.filter((record) => record.status === 'студент' && record.id);
+  const inactiveRecords = data.filter((record) => record.status !== 'студент' && record.id);
 
   return (
     <Screen>
@@ -77,12 +83,12 @@ export default function PersonalRecords() {
       </Text>
       <PersonalRecord record={currentRecord} showStatus={true} />
 
-      {activeRecords.length && <Text style={textStyles}>Активные записи</Text>}
+      {activeRecords.length !== 0 && <Text style={textStyles}>Активные записи</Text>}
       {activeRecords.map((record) => (
         <PersonalRecord record={record} key={record.id + record.index} showStatus={true} />
       ))}
 
-      {inactiveRecords.length && <Text style={textStyles}>Неактивные записи</Text>}
+      {inactiveRecords.length !== 0 && <Text style={textStyles}>Неактивные записи</Text>}
       {inactiveRecords.map((record) => (
         <PersonalRecord record={record} key={record.id + record.index} showStatus={false} />
       ))}
