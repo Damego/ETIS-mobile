@@ -432,7 +432,7 @@ export default class SmartCache {
 
   // Helper methods
 
-  async clear() {
+  async clear(clearUserData?: boolean) {
     await this.absences.clear();
     await this.announce.delete();
     await this.messages.clear();
@@ -446,7 +446,8 @@ export default class SmartCache {
     await this.signsPoints.clear();
     await this.signsRating.clear();
     await this.student.delete();
-    await this.user.delete();
+
+    if (clearUserData) await this.user.delete();
   }
 
   // Legacy

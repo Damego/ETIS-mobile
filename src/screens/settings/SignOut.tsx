@@ -13,7 +13,7 @@ const SignOut = () => {
   const globalStyles = useGlobalStyles();
 
   const doSignOut = async () => {
-    await cache.clear();
+    await cache.clear(true);
     dispatch(signOut({ cleanUserCredentials: true }));
     unregisterBackgroundFetchAsync().catch((error) => error);
   };
