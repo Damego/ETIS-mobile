@@ -30,7 +30,7 @@ const TabNavigator = () => {
   const { messageCount, announceCount } = useAppSelector((state) => state.student);
   const { signNotification, initialPage } = useAppSelector((state) => state.settings);
   const client = useClient();
-  const isDemo = useAppSelector((state) => state.auth.isDemo);
+  const { isDemo, isOfflineMode } = useAppSelector((state) => state.auth);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -43,30 +43,30 @@ const TabNavigator = () => {
     });
   }, []);
 
-  const loadPersonalRecords = async () => {
-    const cached = await client.getPersonalRecords({ requestType: RequestType.forceCache });
-    const fetched = await client.getPersonalRecords({ requestType: RequestType.forceFetch });
-
-    if (!cached.data || !fetched.data) return;
-
-    const cachedCurrentPR = cached.data[cached.data.findIndex((record) => !record.id)];
-    const fetchedCurrentPR = fetched.data[fetched.data.findIndex((record) => !record.id)];
-    if (cachedCurrentPR.index !== fetchedCurrentPR.index) {
-      // Так как кэш содержит данные одной личной записи, а данные пришли из другой, то очищаем кэш, дабы избежать коллизий.
-      await cache.clear();
-      await cache.placePersonalRecords(fetched.data);
-    }
-  };
-
   const loadData = async () => {
-    if (!isDemo) {
-      await loadPersonalRecords();
+    if (isDemo || isOfflineMode) {
+      const result = await client.getStudentInfoData({ requestType: RequestType.forceCache });
+      if (result.data) {
+        dispatch(setStudentState(result.data));
+      }
     }
 
-    const result = await client.getStudentInfoData({ requestType: RequestType.tryFetch });
-    if (result.data) {
-      dispatch(setStudentState(result.data));
+    const cached = await client.getStudentInfoData({ requestType: RequestType.forceCache });
+    const cachedStudent = cached.data?.student ? { ...cached.data.student } : null;
+    const fetched = await client.getStudentInfoData({ requestType: RequestType.forceFetch });
+
+    if (!cached.data && !fetched.data) return; // edge case
+
+    if (
+      cachedStudent &&
+      fetched.data?.student &&
+      cachedStudent.group !== fetched.data.student.group
+    ) {
+      await cache.clear();
+      await cache.placePartialStudent(fetched.data);
     }
+
+    if (fetched.data || cached.data) dispatch(setStudentState(fetched.data || cached.data));
   };
 
   useEffect(() => {
