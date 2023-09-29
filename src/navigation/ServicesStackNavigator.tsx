@@ -15,8 +15,9 @@ import Settings from '../screens/settings/Settings';
 import ShortTeachPlan from '../screens/shortTeachPlan';
 import TeacherTable from '../screens/teachers';
 import { headerParams } from './header';
+import { ServicesNativeStackParamList } from './types';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<ServicesNativeStackParamList>();
 
 function ServicesStackNavigator() {
   const theme = useAppTheme();
@@ -29,9 +30,9 @@ function ServicesStackNavigator() {
       }}
     >
       <Stack.Screen
-        name="Сервисы"
+        name="Services"
         component={Services}
-        options={{ headerRight: () => <SettingButton /> }}
+        options={{ title: 'Сервисы', headerRight: () => <SettingButton /> }}
       />
       <Stack.Screen
         name="TeachPlan"
