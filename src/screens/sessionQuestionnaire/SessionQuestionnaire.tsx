@@ -46,6 +46,12 @@ export default function SessionQuestionnaire({
       requestType: RequestType.forceFetch,
       data: url,
     },
+    after: (result) => {
+      questionCount.current = result.data.themes.reduce(
+        (count, theme) => count + theme.questions.length,
+        0
+      );
+    },
   });
   const { isDemo } = useAppSelector((state) => state.auth);
   const setTeacher = (name: string) => {

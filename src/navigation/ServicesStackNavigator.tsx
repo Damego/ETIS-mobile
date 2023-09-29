@@ -31,7 +31,7 @@ function ServicesStackNavigator() {
       <Stack.Screen
         name="Services"
         component={Services}
-        options={{ headerRight: () => <SettingButton /> }}
+        options={{ title: 'Сервисы', headerRight: () => <SettingButton /> }}
       />
       <Stack.Screen
         name="TeachPlan"

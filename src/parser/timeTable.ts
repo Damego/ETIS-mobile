@@ -14,7 +14,7 @@ import { executeRegex } from '../utils/sentry';
 import { getTextField } from './utils';
 
 const dateRegex = /\d+.\d+.\d+/gm;
-const audienceRegex = /ауд\. (.*) \((.*) корпус(?:, (\d) этаж)?\)/s;
+const audienceRegex = /ауд\. (.*)\/.* \((.*) корпус(?:, (\d) этаж)?\)/s;
 
 const getWeekType = (week: cheerio.Cheerio): WeekTypes => {
   if (week.hasClass('holiday')) {
