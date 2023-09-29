@@ -42,7 +42,7 @@ const PersonalRecord = ({
         </Text>
         {!showStatus && <Text style={globalStyles.textColor}>Статус: {record.status}</Text>}
       </View>
-      {record.id && (
+      {record.id && record.status === 'студент' && (
         <View>
           <TouchableOpacity onPress={changePersonalRecord}>
             <AntDesign name="select1" size={24} color={globalStyles.textColor.color} />
