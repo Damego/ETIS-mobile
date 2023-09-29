@@ -367,6 +367,18 @@ class HTTPClient {
     };
     return this.request('GET', `/cert_pkg.stu_certif`, { params, returnResponse: false });
   }
+
+  getPersonalRecords() {
+    return this.request('GET', '/stu.change_pr_page', { returnResponse: false });
+  }
+
+  async changePersonalRecord(id: string) {
+    const params = {
+      p_pr_id: id,
+    };
+    const response = await this.request('GET', '/stu.change_pr', { params, returnResponse: true });
+    return response.data.status === 200;
+  }
 }
 
 const httpClient = new HTTPClient();
