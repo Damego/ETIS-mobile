@@ -14,7 +14,6 @@ const parsePersonalRecords = (html: string): IPersonalRecord[] => {
 
     const tr = $(trElement);
     const td = tr.find('td');
-    // const record: PersonalRecord = {index: index - 1};
     const fields = [];
     for (let i = 0; i < 5; i += 1) {
       fields.push(getTextField(td.eq(i)));

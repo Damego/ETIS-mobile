@@ -27,9 +27,11 @@ const PersonalRecord = ({
     if (!success) {
       return ToastAndroid.show('Невозможно сменить личную запись', ToastAndroid.LONG);
     }
+
     dispatch(resetForRecord());
     navigation.reset({ index: 0, routes: [{ name: 'TabNavigator' }] });
   };
+
   return (
     <Card style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
       <View>

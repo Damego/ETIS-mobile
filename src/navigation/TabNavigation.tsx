@@ -2,7 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
-import { ActivityIndicator, DeviceEventEmitter, ToastAndroid, View } from 'react-native';
+import { DeviceEventEmitter, ToastAndroid } from 'react-native';
 import { ShortcutItem } from 'react-native-quick-actions';
 
 import { cache } from '../cache/smartCache';
@@ -10,7 +10,7 @@ import { useClient } from '../data/client';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
 import { useAppTheme } from '../hooks/theme';
 import { RequestType } from '../models/results';
-import { setPersonalRecords, setStudentState } from '../redux/reducers/studentSlice';
+import { setStudentState } from '../redux/reducers/studentSlice';
 import Announce from '../screens/announce/Announce';
 import Messages from '../screens/messages/Messages';
 import AboutSignsDetails from '../screens/signs/AboutSignsDetails';
@@ -27,7 +27,7 @@ const TabNavigator = () => {
   const theme = useAppTheme();
 
   const dispatch = useAppDispatch();
-  const { messageCount, announceCount, personalRecords } = useAppSelector((state) => state.student);
+  const { messageCount, announceCount } = useAppSelector((state) => state.student);
   const { signNotification, initialPage } = useAppSelector((state) => state.settings);
   const client = useClient();
   const isDemo = useAppSelector((state) => state.auth.isDemo);
@@ -44,19 +44,24 @@ const TabNavigator = () => {
   }, []);
 
   const loadPersonalRecords = async () => {
-    const result = await client.getPersonalRecords({ requestType: RequestType.tryFetch });
-    const data = result.data;
+    const cached = await client.getPersonalRecords({ requestType: RequestType.forceCache });
+    const fetched = await client.getPersonalRecords({ requestType: RequestType.forceFetch });
 
-    const currentPersonalRecord = data[data.findIndex((record) => !record.id)];
-    await cache.init(currentPersonalRecord.index, data.length);
+    if (!cached.data || !fetched.data) return;
 
-    if (result.data) {
-      dispatch(setPersonalRecords(result.data));
+    const cachedCurrentPR = cached.data[cached.data.findIndex((record) => !record.id)];
+    const fetchedCurrentPR = fetched.data[fetched.data.findIndex((record) => !record.id)];
+    if (cachedCurrentPR.index !== fetchedCurrentPR.index) {
+      // Так как кэш содержит данные одной личной записи, а данные пришли из другой, то очищаем кэш, дабы избежать коллизий.
+      await cache.clear();
+      await cache.placePersonalRecords(fetched.data);
     }
   };
 
   const loadData = async () => {
-    await loadPersonalRecords();
+    if (!isDemo) {
+      await loadPersonalRecords();
+    }
 
     const result = await client.getStudentInfoData({ requestType: RequestType.tryFetch });
     if (result.data) {
@@ -65,18 +70,12 @@ const TabNavigator = () => {
   };
 
   useEffect(() => {
-    if (signNotification && !isDemo) {
-      registerFetch();
-    }
-    loadData();
+    loadData().then(() => {
+      if (signNotification && !isDemo) {
+        registerFetch();
+      }
+    });
   }, []);
-
-  if (!personalRecords)
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size={'large'} />
-      </View>
-    );
 
   return (
     <Tab.Navigator

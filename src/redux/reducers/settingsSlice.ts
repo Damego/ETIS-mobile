@@ -20,7 +20,6 @@ export interface AppConfig {
   introViewed: boolean;
   reviewStep: 'pending' | 'stop' | null;
   privacyPolicyAccepted: boolean;
-  cacheV120Migrated: boolean;
 }
 
 export interface SettingsState {

@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 
 import { IAbsence } from '../models/absences';
@@ -21,8 +20,6 @@ import MappedCache from './mappedCache';
 import SecuredFieldCache from './securedFieldCache';
 
 export default class SmartCache {
-  currentPersonalRecordIndex: number;
-
   absences: MappedCache<number, IAbsence>;
   announce: FieldCache<string[]>;
   messages: MappedCache<number, IMessagesData>;
@@ -30,6 +27,7 @@ export default class SmartCache {
     list: FieldCache<IOrder[]>;
     info: MappedCache<string, string>;
   };
+  personalRecords: FieldCache<IPersonalRecord[]>;
   timeTable: MappedCache<number, ITimeTable>;
   teachers: FieldCache<TeacherType>;
   teachPlan: FieldCache<ISessionTeachPlan[]>;
@@ -41,7 +39,6 @@ export default class SmartCache {
   certificate: FieldCache<ICertificate[]>;
 
   // Internal
-  personalRecords: FieldCache<IPersonalRecord[]>;
   user: SecuredFieldCache<UserCredentials>;
   app: FieldCache<AppConfig>;
 
@@ -68,55 +65,27 @@ export default class SmartCache {
     APP: 'APP',
   };
 
-  private generalKeys = [
-    this.keys.APP,
-    this.keys.USER,
-    this.keys.ANNOUNCES,
-    this.keys.MESSAGES,
-    this.keys.PERSONAL_RECORDS,
-  ];
-
-  private bindRecordKeys = [
-    ...Object.values(this.keys).filter((key) => !this.generalKeys.includes(key)),
-  ];
-
   constructor() {
+    this.absences = new MappedCache<number, IAbsence>(this.keys.ABSENCES);
     this.announce = new FieldCache(this.keys.ANNOUNCES);
     this.messages = new MappedCache<number, IMessagesData>(this.keys.MESSAGES);
+    this.orders = {
+      list: new FieldCache<IOrder[]>(this.keys.ORDERS),
+      info: new MappedCache<string, string>(this.keys.ORDERS_INFO),
+    };
     this.personalRecords = new FieldCache(this.keys.PERSONAL_RECORDS);
+    this.timeTable = new MappedCache(this.keys.TIMETABLE);
+    this.teachers = new FieldCache<TeacherType>(this.keys.TEACHERS);
+    this.teachPlan = new FieldCache(this.keys.TEACH_PLAN);
+    this.signsMarks = new MappedCache(this.keys.SIGNS_MARKS);
+    this.signsPoints = new MappedCache(this.keys.SIGNS_POINTS);
+    this.signsRating = new MappedCache(this.keys.SIGNS_RATING);
+    this.student = new FieldCache<StudentInfo>(this.keys.STUDENT);
+    this.calendarSchedule = new FieldCache(this.keys.CALENDAR_SCHEDULE);
+    this.certificate = new FieldCache(this.keys.CERTIFICATE);
 
     this.user = new SecuredFieldCache<UserCredentials>(this.keys.USER);
     this.app = new FieldCache<AppConfig>(this.keys.APP);
-  }
-
-  buildKey(key: string) {
-    return `PR-${this.currentPersonalRecordIndex}::${key}`;
-  }
-
-  async init(personalRecordIndex: number, personalRecordsCount: number) {
-    // Кэш зависит от текущей учётной записи студента
-    // Сделано это ради того, чтобы не было коллизий с другими записями при сменах,
-    // и при этом не очищать кэш при переходе из одной записи в другую.
-    // Однако, коллизии всё равно могут быть, если сменить запись на сайте, и при этом пользоваться приложением,
-    // но мы с этим ничего не сможем сделать
-    this.currentPersonalRecordIndex = personalRecordIndex;
-
-    await this.migrateToV120(personalRecordsCount);
-
-    this.absences = new MappedCache<number, IAbsence>(this.keys.ABSENCES);
-    this.orders = {
-      list: new FieldCache<IOrder[]>(this.buildKey(this.keys.ORDERS)),
-      info: new MappedCache<string, string>(this.buildKey(this.keys.ORDERS_INFO)),
-    };
-    this.timeTable = new MappedCache(this.buildKey(this.keys.TIMETABLE));
-    this.teachers = new FieldCache<TeacherType>(this.buildKey(this.keys.TEACHERS));
-    this.teachPlan = new FieldCache(this.buildKey(this.keys.TEACH_PLAN));
-    this.signsMarks = new MappedCache(this.buildKey(this.keys.SIGNS_MARKS));
-    this.signsPoints = new MappedCache(this.buildKey(this.keys.SIGNS_POINTS));
-    this.signsRating = new MappedCache(this.buildKey(this.keys.SIGNS_RATING));
-    this.student = new FieldCache<StudentInfo>(this.buildKey(this.keys.STUDENT));
-    this.calendarSchedule = new FieldCache(this.buildKey(this.keys.CALENDAR_SCHEDULE));
-    this.certificate = new FieldCache(this.buildKey(this.keys.CERTIFICATE));
   }
 
   // Absences Region
@@ -381,9 +350,6 @@ export default class SmartCache {
   async placePersonalRecords(data: IPersonalRecord[]) {
     this.personalRecords.place(data);
     await this.personalRecords.save();
-
-    const currentPersonalRecord = data[data.findIndex((record) => !record.id)];
-    await this.init(currentPersonalRecord.index, data.length);
   }
 
   async getAppConfig() {
@@ -462,44 +428,25 @@ export default class SmartCache {
     await this.app.save();
   }
 
-  async placeCacheV120Migrated() {
-    const config = await this.getAppConfig();
-    config.cacheV120Migrated = true;
-    this.app.place(config);
-    await this.app.save();
-  }
-
   // End Internal Region
 
   // Helper methods
 
   async clear() {
-    const personalRecords = await cache.getPersonalRecords();
-
-    for (const record of personalRecords) {
-      this.currentPersonalRecordIndex = record.index;
-      const keys = this.bindRecordKeys.map((key) => this.buildKey(key));
-      await AsyncStorage.multiRemove(keys);
-    }
-    await AsyncStorage.removeItem(this.keys.USER);
-    await AsyncStorage.multiRemove(this.generalKeys.filter((key) => key !== this.keys.APP));
-
-    this.absences = null;
-    this.announce = null;
-    this.messages = null;
-    this.orders.list = null;
-    this.orders.info = null;
-    this.timeTable = null;
-    this.teachers = null;
-    this.teachPlan = null;
-    this.signsMarks = null;
-    this.signsPoints = null;
-    this.signsRating = null;
-    this.student = null;
-    this.user = null;
-    this.certificate = null;
-    this.personalRecords = null;
-    this.calendarSchedule = null;
+    await this.absences.clear();
+    await this.announce.delete();
+    await this.messages.clear();
+    await this.orders.list.delete();
+    await this.orders.info.clear();
+    await this.personalRecords.delete();
+    await this.timeTable.clear();
+    await this.teachers.delete();
+    await this.teachPlan.delete();
+    await this.signsMarks.clear();
+    await this.signsPoints.clear();
+    await this.signsRating.clear();
+    await this.student.delete();
+    await this.user.delete();
   }
 
   // Legacy
@@ -521,29 +468,6 @@ export default class SmartCache {
     SecureStore.deleteItemAsync('userPassword');
 
     return userCredentials;
-  }
-
-  /*
-   * Делает миграцию кэша с v1.1.X до v.1.2.0
-   */
-  async migrateToV120(personalRecordsCount: number) {
-    const app = await this.getAppConfig();
-    if (app.cacheV120Migrated) return;
-
-    console.log('[CACHE] Migrating to v1.2.0...');
-
-    // Мы не знаем, к какой личной записи принадлежат ранее кэшированные данные
-    // поэтому удаляем их, чтобы не было коллизий
-    // А если запись одна, то просто переносим все данные под новые ключи
-    if (personalRecordsCount === 1) {
-      const data = await AsyncStorage.multiGet(this.bindRecordKeys);
-      const updated: [string, string][] = data.map(([key, value]) => [this.buildKey(key), value]);
-      await AsyncStorage.multiSet(updated);
-    }
-    await AsyncStorage.multiRemove(this.bindRecordKeys);
-    await this.placeCacheV120Migrated();
-
-    console.log('[CACHE] Successfully migrated');
   }
 }
 
