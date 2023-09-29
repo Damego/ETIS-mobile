@@ -1,4 +1,4 @@
-import { IAbsence, IAbsenceSession, IGetAbsencesPayload } from '../models/absences';
+import { IAbsence, IAbsenceSession } from '../models/absences';
 import { ICalendarSchedule } from '../models/calendarSchedule';
 import { ICertificateTable } from '../models/certificate';
 import { IMessagesData, MessageType } from '../models/messages';
@@ -36,6 +36,7 @@ export default class DemoClient implements BaseClient {
     ];
     return this.toResult(data);
   }
+
   async getSessionQuestionnaire(): Promise<IGetResult<ISessionQuestionnaire>> {
     const data: ISessionQuestionnaire =
       // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -69,6 +70,7 @@ export default class DemoClient implements BaseClient {
       },
     });
   }
+
   toResult<T>(data: T): IGetResult<T> {
     return {
       type: GetResultType.cached,
@@ -104,7 +106,7 @@ export default class DemoClient implements BaseClient {
       'Суббота',
       'Воскресенье',
     ];
-    for (let i = 1; i <= 7; i++) {
+    for (let i = 1; i <= 7; i += 1) {
       data.days.push({
         date: `${dayOfWeek[i - 1]}, ${i} сентября`,
         pairs:
@@ -664,13 +666,13 @@ export default class DemoClient implements BaseClient {
     return this.toResult(data);
   }
 
-  async getAbsencesData(payload: IGetAbsencesPayload): Promise<IGetResult<IAbsence>> {
+  async getAbsencesData(payload: IGetPayload<number>): Promise<IGetResult<IAbsence>> {
     let currentSession: IAbsenceSession;
-    if (!payload.session || payload.session === 1) {
+    if (!payload.data || payload.data === 1) {
       currentSession = { name: 'Осенний триместр', number: 1 };
-    } else if (payload.session === 2) {
+    } else if (payload.data === 2) {
       currentSession = { name: 'Весенний триместр', number: 2 };
-    } else if (payload.session === 3) {
+    } else if (payload.data === 3) {
       currentSession = { name: 'Летний триместр', number: 3 };
     }
     const data: IAbsence = {

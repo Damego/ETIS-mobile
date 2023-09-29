@@ -9,7 +9,7 @@ import { UploadFile } from '../models/other';
 import { CertificateRequestPayload } from './certificate';
 import { toURLSearchParams } from './encoding';
 import { SessionQuestionnairePayload } from './sessionTest';
-import { getRandomUserAgent } from './userAgents';
+import getRandomUserAgent from './userAgents';
 
 const cyrillicToTranslit = CyrillicToTranslit();
 
@@ -305,15 +305,15 @@ class HTTPClient {
     return this.request('GET', '/stu.teacher_notes', { params, returnResponse: false });
   }
 
-  async replyToMessage(answerID: string, content: string) {
+  replyToMessage(answerID: string, content: string) {
     const data = {
       p_anv_id: answerID,
       p_msg_txt: content,
     };
-    return await this.request('POST', '/stu.send_reply', { data, returnResponse: false });
+    return this.request('POST', '/stu.send_reply', { data, returnResponse: false });
   }
 
-  async attachFileToMessage(messageID: string, answerMessageID: string, file: UploadFile) {
+  attachFileToMessage(messageID: string, answerMessageID: string, file: UploadFile) {
     file.name = cyrillicToTranslit.transform(file.name);
 
     const data = new FormData();
@@ -323,7 +323,7 @@ class HTTPClient {
     // @ts-ignore
     data.append('file', file);
 
-    return await this.request('POST', '/stu.repl_doc_write', { data, returnResponse: false });
+    return this.request('POST', '/stu.repl_doc_write', { data, returnResponse: false });
   }
 
   getBlankPage() {
@@ -356,6 +356,7 @@ class HTTPClient {
   async sendSessionQuestionnaireResult(payload: SessionQuestionnairePayload) {
     return this.request('POST', '/stu.term_test_save', { data: payload, returnResponse: false });
   }
+
   async sendCertificateRequest(payload: CertificateRequestPayload) {
     return this.request('POST', '/cert_pkg.stu_certif', { data: payload, returnResponse: false });
   }

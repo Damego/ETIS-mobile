@@ -3,11 +3,11 @@ import { useRef } from 'react';
 import { cache } from '../cache/smartCache';
 import { useClient } from '../data/client';
 import { composePointsAndMarks } from '../data/signs';
-import { useAppDispatch, useAppSelector } from '../hooks';
-import useQuery from '../hooks/useQuery';
 import { GetResultType, IGetResult, RequestType } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
 import { setCurrentSession } from '../redux/reducers/studentSlice';
+import { useAppDispatch, useAppSelector } from './redux';
+import useQuery from './useQuery';
 
 const useSignsQuery = () => {
   const fetchedSessions = useRef<number[]>([]);
@@ -20,7 +20,7 @@ const useSignsQuery = () => {
     method: client.getSessionSignsData,
     after: async (result) => {
       // Очевидно, что в самом начале мы получаем текущую сессию
-      const currentSession = result.data.currentSession;
+      const { currentSession } = result.data;
       if (!data) {
         dispatch(setCurrentSession(currentSession));
 

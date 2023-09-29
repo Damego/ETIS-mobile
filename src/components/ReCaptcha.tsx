@@ -27,7 +27,7 @@ export default function CustomReCaptcha({
       onVerify={onReceiveToken}
       size={size}
       onClose={onClose}
-      hideBadge={true}
+      hideBadge
       loadingComponent={<></>}
       webViewStyle={size === 'invisible' ? { backgroundColor: undefined } : undefined}
     />

@@ -63,6 +63,7 @@ export class BasicClient<P extends IGetPayload, T> {
     this.httpMethod = httpMethod;
     this.parseMethod = parseMethod;
     this.placeMethod = placeMethod;
+    // eslint-disable-next-line prefer-destructuring
     this.name = this.constructor.name.split('Client')[0];
   }
 
@@ -79,12 +80,12 @@ export class BasicClient<P extends IGetPayload, T> {
     }
   }
 
-  async tryFetch(payload: P): Promise<Response<string>> {
-    return await this.httpMethod(payload);
+  tryFetch(payload: P): Promise<Response<string>> {
+    return this.httpMethod(payload);
   }
 
   /* применяется на сырых данных после tryFetch */
-  async checkLoginPage({ data }: Response<string>): Promise<IGetResult<T>> {
+  checkLoginPage({ data }: Response<string>): IGetResult<T> {
     if (isLoginPage(data)) {
       return loginPageResult;
     }
@@ -113,7 +114,8 @@ export class BasicClient<P extends IGetPayload, T> {
     if (cached?.data) {
       console.log(`[DATA] Retrieved ${this.name} from cache`);
       return cached;
-    } else if (payload.requestType === RequestType.forceCache) {
+    }
+    if (payload.requestType === RequestType.forceCache) {
       return errorResult;
     }
     const fetched = await this.tryFetch(payload);
@@ -123,10 +125,10 @@ export class BasicClient<P extends IGetPayload, T> {
         console.log(`[DATA] Failed to force retrieve ${this.name} from server`);
         return errorResult;
       }
-      return await this.tryCached({ ...payload, requestType: RequestType.forceCache });
+      return this.tryCached({ ...payload, requestType: RequestType.forceCache });
     }
 
-    const loginPage = await this.checkLoginPage(fetched);
+    const loginPage = this.checkLoginPage(fetched);
     if (loginPage) {
       console.log(`[DATA] Retrieved ${this.name} from server, but it's login page`);
       return loginPage;

@@ -19,9 +19,7 @@ export default () => {
       integrations: __DEV__
         ? [
             new SentryExpo.Native.ReactNativeTracing({
-              shouldCreateSpanForRequest: (url) => {
-                return !url.startsWith(`http://`);
-              },
+              shouldCreateSpanForRequest: (url) => !url.startsWith(`http://`),
             }),
           ]
         : [],
@@ -37,7 +35,7 @@ export const checkSubjectNames = (teachPlan: ISessionTeachPlan[]) => {
     ?.map((session) => session.disciplines.map((discipline) => discipline.name))
     .flat()
     .filter((name) => !subjectRegex.test(name));
-  if (incorrectDisciplines?.length != 0) {
+  if (incorrectDisciplines?.length !== 0) {
     SentryExpo.React.captureMessage(
       `Disciplines mismatched w/ regex: ${JSON.stringify(incorrectDisciplines)}`,
       'error'

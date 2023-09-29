@@ -19,7 +19,7 @@ export default function parseShortTeachPlan(html) {
 
       // Со знака "{" начинаются дисциплины по выбору https://github.com/Damego/ETIS-mobile/issues/99
       let electiveOffset = 0;
-      while (getTextField(td.eq(electiveOffset)) === '{') electiveOffset++;
+      while (getTextField(td.eq(electiveOffset)) === '{') electiveOffset += 1;
 
       const fields = [];
       for (let i = 0; i < FIELDS_NUM + electiveOffset; i += 1) {

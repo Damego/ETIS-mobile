@@ -57,7 +57,7 @@ export const defineFetchTask = () =>
         requestType: RequestType.forceFetch,
       }),
     ]);
-    let result;
+    let result: BackgroundFetch.BackgroundFetchResult;
 
     if (onlineResult.type === GetResultType.loginPage) {
       console.log('[FETCH] Token is expired. Canceling fetch...'); // TODO: re-actualize token

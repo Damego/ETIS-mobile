@@ -17,8 +17,7 @@ export default function parseSessionPoints(html): ISessionPoints {
 
     const trs = table.find('tr');
     trs.each((i, trElement) => {
-      // @ts-ignore
-      const tr = $(trElement, trs);
+      const tr = $(trElement);
       if (tr.find('th').length !== 0) {
         return;
       }

@@ -58,6 +58,5 @@ export const registerForPushNotificationsAsync = async () => {
   }
   if (finalStatus !== 'granted') {
     console.warn('Failed to get permissions for push notification!');
-    return;
   }
 };

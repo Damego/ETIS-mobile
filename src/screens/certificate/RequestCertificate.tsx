@@ -152,6 +152,7 @@ export default function RequestCertificate() {
   );
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     !currentCertificate?.place && setPlace('');
   }, [currentId]);
 
@@ -202,7 +203,7 @@ export default function RequestCertificate() {
         })
       );
     } catch (e) {
-      ToastAndroid.show('Ошибка: ' + e, ToastAndroid.LONG);
+      ToastAndroid.show(`Ошибка: ${e}`, ToastAndroid.LONG);
     }
   };
 

@@ -24,14 +24,15 @@ const ToggleSignNotification = () => {
   const signNotification = useAppSelector((state) => state.settings.signNotification);
   const globalStyles = useGlobalStyles();
   const isDemo = useAppSelector((state) => state.auth.isDemo);
-  const changeSignNotification = (signNotification: boolean) => {
-    if (signNotification && !isDemo) {
+
+  const changeSignNotification = (hasSignNotification: boolean) => {
+    if (hasSignNotification && !isDemo) {
       registerFetch();
     } else {
       unregisterBackgroundFetchAsync();
     }
-    dispatch(setSignNotification(signNotification));
-    cache.placeSignNotification(signNotification);
+    dispatch(setSignNotification(hasSignNotification));
+    cache.placeSignNotification(hasSignNotification);
   };
 
   return (

@@ -44,7 +44,7 @@ export default function parseRating(html: string) {
       const innerTds = $$('td', innerElement);
 
       const pre: string[] = [];
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 5; i += 1) {
         pre.push(getTextField(innerTds.eq(i)));
       }
       const [discipline, controlPoints, passedControlPoints, points, rawRating] = pre;

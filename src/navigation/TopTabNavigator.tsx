@@ -1,4 +1,5 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import React from 'react';
 
 import { useAppTheme } from '../hooks/theme';
 import Signs from '../screens/signs';

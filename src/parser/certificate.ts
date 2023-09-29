@@ -37,8 +37,8 @@ function parseCertificates(html: string): ICertificate[] {
 const parseAnnounceText = (item: cheerio.Cheerio) =>
   item
     .contents()
-    .map(function (index, element) {
-      if (element.name === 'br' && element.next.name === 'br') return '\n';
+    .map((_index, element: cheerio.TagElement) => {
+      if (element.name === 'br' && (element.next as cheerio.TagElement).name === 'br') return '\n';
       return item.find(element).text();
     })
     .toArray()

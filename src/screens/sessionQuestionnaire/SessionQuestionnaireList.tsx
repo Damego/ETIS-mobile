@@ -1,5 +1,5 @@
 import { useIsFocused } from '@react-navigation/native';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Text, View } from 'react-native';
 
 import Card from '../../components/Card';
