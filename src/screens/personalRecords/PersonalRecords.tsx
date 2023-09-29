@@ -1,5 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import React from 'react';
 import { StyleProp, Text, TextStyle, ToastAndroid, TouchableOpacity, View } from 'react-native';
 
 import Card from '../../components/Card';
@@ -9,6 +10,7 @@ import { useClient } from '../../data/client';
 import { useAppDispatch, useGlobalStyles } from '../../hooks';
 import useQuery from '../../hooks/useQuery';
 import { IPersonalRecord } from '../../models/personalRecords';
+import { RootStackNavigationProp } from '../../navigation/types';
 import { resetForRecord } from '../../redux/reducers/studentSlice';
 import { httpClient } from '../../utils';
 import { fontSize } from '../../utils/texts';
@@ -21,7 +23,7 @@ const PersonalRecord = ({
   showStatus: boolean;
 }) => {
   const globalStyles = useGlobalStyles();
-  const navigation = useNavigation();
+  const navigation = useNavigation<RootStackNavigationProp>(); // what?
   const dispatch = useAppDispatch();
 
   const changePersonalRecord = async () => {
@@ -81,11 +83,11 @@ export default function PersonalRecords() {
       >
         Текущая запись
       </Text>
-      <PersonalRecord record={currentRecord} showStatus={true} />
+      <PersonalRecord record={currentRecord} showStatus />
 
       {activeRecords.length !== 0 && <Text style={textStyles}>Активные записи</Text>}
       {activeRecords.map((record) => (
-        <PersonalRecord record={record} key={record.id + record.index} showStatus={true} />
+        <PersonalRecord record={record} key={record.id + record.index} showStatus />
       ))}
 
       {inactiveRecords.length !== 0 && <Text style={textStyles}>Неактивные записи</Text>}
