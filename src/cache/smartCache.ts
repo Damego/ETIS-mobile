@@ -12,7 +12,7 @@ import { ISessionPoints } from '../models/sessionPoints';
 import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
 import { ITimeTable } from '../models/timeTable';
-import { OptionalStudentInfo, StudentInfo } from '../parser/menu';
+import { StudentInfo } from '../parser/menu';
 import { UserCredentials } from '../redux/reducers/authSlice';
 import { AppConfig, ThemeType } from '../redux/reducers/settingsSlice';
 import FieldCache from './fieldCache';
@@ -296,7 +296,7 @@ export default class SmartCache {
     await this.student.save();
   }
 
-  async placePartialStudent(data: OptionalStudentInfo) {
+  async placePartialStudent(data: Partial<StudentInfo>) {
     const student = (await this.getStudent()) || ({} as StudentInfo);
 
     Object.entries(data).forEach(([key, value]) => {
