@@ -1,6 +1,6 @@
 import { useIsFocused } from '@react-navigation/native';
 import React, { useEffect } from 'react';
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 
 import Card from '../../components/Card';
 import ClickableText from '../../components/ClickableText';
@@ -29,42 +29,56 @@ export default function SessionQuestionnaireList({ navigation }: RootStackScreen
 
   useEffect(() => {
     // Если пользователь пройдёт тест, то список не обновится при нажатии кнопки "назад"
-    if (isFocused) refresh();
+    if (!isLoading && isFocused) refresh();
   }, [isFocused]);
 
   if (isLoading) return <LoadingScreen />;
   if (!data) return <NoData onRefresh={refresh} />;
 
+  const available = data.filter((link) => link.url);
+  const passed = data.filter((link) => !link.url);
+
   return (
     <Screen>
-      <View>
-        <Text style={[globalStyles.textColor, fontSize.large, { fontWeight: '500' }]}>
+      {available.length !== 0 && (
+        <Text
+          style={[
+            globalStyles.textColor,
+            fontSize.large,
+            { fontWeight: '500', marginBottom: '2%' },
+          ]}
+        >
           Доступные
         </Text>
-        {data
-          .filter((link) => link.url)
-          .map((link) => (
-            <Card key={link.name}>
-              <ClickableText
-                text={link.name}
-                onPress={() => {
-                  navigation.navigate('SessionQuestionnaire', { url: link.url });
-                }}
-                textStyle={[globalStyles.textColor, fontSize.small]}
-              />
-            </Card>
-          ))}
-        <Text style={[globalStyles.textColor, fontSize.large, { fontWeight: '500' }]}>
+      )}
+      {available.map((link) => (
+        <Card key={link.name}>
+          <ClickableText
+            text={link.name}
+            onPress={() => {
+              navigation.navigate('SessionQuestionnaire', { url: link.url });
+            }}
+            textStyle={[globalStyles.textColor, fontSize.small]}
+          />
+        </Card>
+      ))}
+
+      {passed.length !== 0 && (
+        <Text
+          style={[
+            globalStyles.textColor,
+            fontSize.large,
+            { fontWeight: '500', marginBottom: '2%' },
+          ]}
+        >
           Пройденные
         </Text>
-        {data
-          .filter((link) => !link.url)
-          .map((link) => (
-            <Card key={link.name}>
-              <Text style={[globalStyles.textColor, fontSize.small]}>{link.name}</Text>
-            </Card>
-          ))}
-      </View>
+      )}
+      {passed.map((link) => (
+        <Card key={link.name}>
+          <Text style={[globalStyles.textColor, fontSize.small]}>{link.name}</Text>
+        </Card>
+      ))}
     </Screen>
   );
 }
