@@ -33,6 +33,9 @@ const getSubjectPointsStyle = (
         textStyle = styles.colorMark2;
         return false;
       }
+      if (!checkPoint.hasPoints) {
+        textStyle = defaultTextStyle;
+      }
     }
     return true;
   });
