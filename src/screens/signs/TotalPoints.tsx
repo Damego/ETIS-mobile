@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
 
 import { useGlobalStyles } from '../../hooks';
 import { ISubject } from '../../models/sessionPoints';
@@ -20,10 +20,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const getSubjectPointsStyle = (subject: ISubject, defaultTextColor) => {
-  if (subject.checkPoints.length === 0) return defaultTextColor;
+const getSubjectPointsStyle = (
+  subject: ISubject,
+  defaultTextStyle: StyleProp<TextStyle>
+): StyleProp<TextStyle> => {
+  if (subject.checkPoints.length === 0) return defaultTextStyle;
 
-  let textStyle;
+  let textStyle: StyleProp<TextStyle>;
   subject.checkPoints.every((checkPoint) => {
     if (!checkPoint.isIntroductionWork) {
       if (checkPoint.failed) {
@@ -36,7 +39,7 @@ const getSubjectPointsStyle = (subject: ISubject, defaultTextColor) => {
 
   if (textStyle) return textStyle;
 
-  if (subject.totalPoints === 0) return defaultTextColor;
+  if (subject.totalPoints === 0) return defaultTextStyle;
   if (subject.totalPoints < 61) return styles.colorMark3;
   if (subject.totalPoints < 81) return styles.colorMark4;
   return styles.colorMark5;
