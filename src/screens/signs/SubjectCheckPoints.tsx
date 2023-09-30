@@ -23,13 +23,19 @@ export const getCheckPointScore = (checkPoint: ICheckPoint) => {
   return checkPoint.isIntroductionWork ? checkPoint.points : checkPoint.currentScore;
 };
 
+const getPointsString = (checkPoint: ICheckPoint, number: number): string => {
+  const checkPointName = `КТ ${number}`;
+  const scoreText: string | number = getCheckPointScore(checkPoint);
+
+  if (checkPoint.isIntroductionWork) return `${checkPointName}: ${scoreText}`;
+  return `${checkPointName}: ${scoreText} из ${checkPoint.maxScore}`;
+};
+
 const SubjectCheckPoints = ({ data }: { data: ICheckPoint[] }): React.ReactNode => {
   const globalStyles = useGlobalStyles();
 
   return data.map((checkPoint, index) => {
-    const checkPointName = `КТ ${index + 1}`;
-    const scoreText: string | number = getCheckPointScore(checkPoint);
-    const pointsString = `${checkPointName}: ${scoreText} из ${checkPoint.maxScore}`;
+    const pointsString = getPointsString(checkPoint, index + 1);
 
     return (
       <Text
