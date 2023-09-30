@@ -23,7 +23,7 @@ export interface WeekInfo {
   selected: number;
   last: number;
   type: WeekTypes;
-  dates: WeekDates;
+  dates?: WeekDates;
   holidayDates?: WeekDates;
 }
 

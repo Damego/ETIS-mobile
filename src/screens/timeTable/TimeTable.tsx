@@ -1,5 +1,4 @@
 import React from 'react';
-import { Text, View } from 'react-native';
 
 import LoadingScreen, { LoadingContainer } from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
@@ -8,7 +7,7 @@ import Screen from '../../components/Screen';
 import { useGlobalStyles } from '../../hooks';
 import useTimeTableQuery from '../../hooks/useTimeTableQuery';
 import { WeekTypes } from '../../models/timeTable';
-import { fontSize } from '../../utils/texts';
+import DatesContainer from './DatesContainer';
 import DayArray from './DayArray';
 import HolidayView from './HolidayView';
 
@@ -41,13 +40,7 @@ const TimeTable = () => {
         <LoadingContainer />
       ) : (
         <>
-          {data.weekInfo.dates && (
-            <View style={{ marginTop: '2%', justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={[fontSize.medium, globalStyles.textColor, { fontWeight: '500' }]}>
-                {data.weekInfo.dates.start} - {data.weekInfo.dates.end}
-              </Text>
-            </View>
-          )}
+          <DatesContainer dates={data.weekInfo.dates} />
 
           {data.weekInfo.type === WeekTypes.holiday ? (
             <HolidayView holidayInfo={data.weekInfo.holidayDates} />
