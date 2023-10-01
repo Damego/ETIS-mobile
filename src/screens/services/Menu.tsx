@@ -24,8 +24,10 @@ const styles = StyleSheet.create({
   rowView: {
     marginVertical: '1%',
     flexDirection: 'row',
-    justifyContent: 'flex-start',
-    marginBottom: '5%',
+    justifyContent: 'space-around',
+  },
+  menuContainer: {
+    gap: 8,
   },
 });
 
@@ -56,6 +58,15 @@ function Button({
   );
 }
 
+// Для того чтобы были одинаковые отступы
+function InvisibleButton() {
+  return (
+    <View style={styles.buttonView}>
+      <View style={styles.buttonView} />
+    </View>
+  );
+}
+
 function Row({ children }) {
   return <View style={styles.rowView}>{children}</View>;
 }
@@ -66,7 +77,7 @@ function Menu() {
   const iconColor = globalStyles.textColor.color;
 
   return (
-    <View>
+    <View style={styles.menuContainer}>
       <Row>
         <Button
           text="Учебный план"
@@ -114,6 +125,9 @@ function Menu() {
           link={TELEGRAM_URL}
           icon={<FontAwesome5 name="telegram" size={iconSize} color={iconColor} />}
         />
+
+        {/* Удалить, если собрались добавлять новую кнопку */}
+        <InvisibleButton />
       </Row>
     </View>
   );
