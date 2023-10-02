@@ -34,7 +34,11 @@ const Button = ({
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.6}
-      style={[styles.container, globalStyles.primaryBackgroundColor]}
+      style={[
+        styles.container,
+        globalStyles.primaryBackgroundColor,
+        disabled ? { opacity: 0.5 } : undefined,
+      ]}
       disabled={disabled}
     >
       <Text style={styles.text}>{text}</Text>
