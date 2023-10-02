@@ -5,6 +5,7 @@ export interface ITheme {
     primary: string;
     border: string;
     text: string;
+    inputPlaceholder: string;
     block: string;
     card: string;
     shadow: string;
@@ -19,6 +20,7 @@ export const LightTheme: ITheme = {
     primary: '#C62E3E',
     border: '#EAEAEA',
     text: '#000000',
+    inputPlaceholder: '#A9A9AC',
     block: '#FFFFFF',
     card: '#FFFFFF',
     shadow: '#000000',
@@ -33,6 +35,7 @@ export const DarkTheme: ITheme = {
     primary: '#C62E3E',
     border: '#3B3B3B',
     text: '#DDDDDD',
+    inputPlaceholder: '#A9A9AC',
     block: '#222222',
     card: '#222222',
     shadow: '#FFFFFF',
