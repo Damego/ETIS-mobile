@@ -6,10 +6,8 @@ import { fontSize } from '../utils/texts';
 
 export const styles = StyleSheet.create({
   container: {
-    height: '12%',
     width: '90%',
-    marginTop: '5%',
-    paddingHorizontal: '5%',
+    paddingVertical: '3%',
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',

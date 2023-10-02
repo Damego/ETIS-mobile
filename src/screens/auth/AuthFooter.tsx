@@ -8,7 +8,7 @@ import { fontSize } from '../../utils/texts';
 const styles = StyleSheet.create({
   view: {
     alignItems: 'center',
-    paddingTop: '5%',
+    paddingBottom: '4%',
   },
   infoText: {
     textAlign: 'center',
