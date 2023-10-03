@@ -671,7 +671,7 @@ export default class DemoClient implements BaseClient {
       currentSession = { name: 'Летний триместр', number: 3 };
     }
     const data: IAbsence = {
-      overallMissed: 2,
+      overallMissed: 3,
       currentSession,
       sessions: [
         { name: 'Осенний триместр', number: 1 },
@@ -691,6 +691,17 @@ export default class DemoClient implements BaseClient {
             {
               date: '20.09.2023',
               isCovered: true,
+            },
+          ],
+        },
+        {
+          subject: 'Физиологический анализ',
+          type: 'Проведение практический занятий семинаров',
+          teacher: 'Иванов Иван Иванович',
+          dates: [
+            {
+              date: '21.09.2023',
+              isCovered: false,
             },
           ],
         },
