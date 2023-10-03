@@ -3,6 +3,7 @@ import { ICalendarSchedule } from '../models/calendarSchedule';
 import { ICertificateTable } from '../models/certificate';
 import { IMessagesData, MessageType } from '../models/messages';
 import { IOrder } from '../models/order';
+import { IPersonalRecord } from '../models/personalRecords';
 import { ISessionRating } from '../models/rating';
 import { GetResultType, IGetPayload, IGetResult } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
@@ -505,13 +506,7 @@ export default class DemoClient implements BaseClient {
 
   async getStudentInfoData(): Promise<IGetResult<StudentInfo>> {
     const data: StudentInfo = {
-      student: {
-        name: 'Лейбниц Готфрид Вильгельм',
-        group: 'Математика-1',
-        speciality: 'Математика',
-        educationForm: 'Очная',
-        year: '1675',
-      },
+      student: (await this.getPersonalRecords())[0].data,
       announceCount: 2,
       messageCount: 1,
       sessionTestID: '',
@@ -703,5 +698,42 @@ export default class DemoClient implements BaseClient {
     };
 
     return this.toResult(data);
+  }
+
+  async getPersonalRecords(): Promise<IGetResult<IPersonalRecord[]>> {
+    return this.toResult([
+      {
+        index: 0,
+        status: 'студент',
+        name: 'Лейбниц Готфрид Вильгельм',
+        group: 'Математика-1',
+        speciality: 'Математика',
+        educationForm: 'Очная',
+        faculty: 'Математический',
+        year: '1675',
+      },
+      {
+        id: '0',
+        index: 1,
+        status: 'студент',
+        name: 'Лейбниц Готфрид Вильгельм',
+        group: 'Математика-1',
+        speciality: 'Механика',
+        educationForm: 'Очная',
+        faculty: 'Математический',
+        year: '1685',
+      },
+      {
+        id: '1',
+        index: 2,
+        status: 'отчислен',
+        name: 'Лейбниц Готфрид Вильгельм',
+        group: 'Математика-1',
+        speciality: 'Арифметика',
+        educationForm: 'Очная',
+        faculty: 'Математический',
+        year: '1665',
+      },
+    ]);
   }
 }
