@@ -9,6 +9,7 @@ import { IAbsenceDate, IDisciplineAbsences } from '../../models/absences';
 const AbsencesCard = ({ disciplineAbsences }: { disciplineAbsences: IDisciplineAbsences }) => {
   const globalStyles = useGlobalStyles();
   const [isOpened, setOpened] = useState(false);
+  const covered = disciplineAbsences.dates.filter((date) => date.isCovered).length;
 
   return (
     <CardHeaderOut topText={disciplineAbsences.subject}>
@@ -34,11 +35,9 @@ const AbsencesCard = ({ disciplineAbsences }: { disciplineAbsences: IDisciplineA
           <Text style={globalStyles.textColor}>
             {`Пропущенных занятий: ${disciplineAbsences.dates.length}`}
           </Text>
-          <Text style={globalStyles.textColor}>
-            {`Из них по уважительной причине: ${
-              disciplineAbsences.dates.filter((date) => date.isCovered).length
-            }`}
-          </Text>
+          {!!covered && (
+            <Text style={globalStyles.textColor}>{`По уважительной причине: ${covered}`}</Text>
+          )}
           {isOpened && (
             <>
               <Text style={globalStyles.textColor}>
