@@ -74,6 +74,7 @@ function Row({ children }) {
 function Menu() {
   const globalStyles = useGlobalStyles();
   const { sessionTestID } = useAppSelector((state) => state.student);
+  const isDemo = useAppSelector((state) => state.auth.isDemo);
   const iconColor = globalStyles.textColor.color;
 
   return (
@@ -96,7 +97,7 @@ function Menu() {
         />
       </Row>
       <Row>
-        {sessionTestID && (
+        {(sessionTestID || isDemo) && (
           <Button
             icon={<AntDesign name="copy1" size={iconSize} color={iconColor} />}
             text="Анкетирование"
