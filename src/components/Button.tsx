@@ -23,7 +23,7 @@ const Button = ({
   text,
   onPress,
   disabled,
-  showLoading
+  showLoading,
 }: {
   text: string;
   onPress(): void;
@@ -33,7 +33,7 @@ const Button = ({
   const globalStyles = useGlobalStyles();
 
   if (showLoading) {
-    return <LoadingButton />
+    return <LoadingButton />;
   }
 
   return (

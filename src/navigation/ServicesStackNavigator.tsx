@@ -6,6 +6,7 @@ import About from '../screens/about/About';
 import AbsencesTable from '../screens/absences';
 import CertificateTable from '../screens/certificate/CertificateTable';
 import RequestCertificate from '../screens/certificate/RequestCertificate';
+import ChangePassword from '../screens/changeCredentials/ChangePassword';
 import OrderTable from '../screens/orders';
 import PersonalRecords from '../screens/personalRecords/PersonalRecords';
 import Services from '../screens/services';
@@ -67,6 +68,11 @@ function ServicesStackNavigator() {
         name={'PersonalRecords'}
         component={PersonalRecords}
         options={{ title: 'Личные записи' }}
+      />
+      <Stack.Screen
+        name={'ChangePassword'}
+        component={ChangePassword}
+        options={{ title: 'Аккаунт' }}
       />
     </Stack.Navigator>
   );

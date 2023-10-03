@@ -35,6 +35,7 @@ export type ServicesNativeStackParamList = {
   AboutApp: undefined;
   SessionQuestionnaireList: undefined;
   PersonalRecords: undefined;
+  ChangePassword: undefined;
 };
 
 export type SignsTopTabsParamsList = {
