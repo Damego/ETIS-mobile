@@ -23,12 +23,18 @@ const Button = ({
   text,
   onPress,
   disabled,
+  showLoading
 }: {
   text: string;
   onPress(): void;
   disabled?: boolean;
+  showLoading?: boolean;
 }) => {
   const globalStyles = useGlobalStyles();
+
+  if (showLoading) {
+    return <LoadingButton />
+  }
 
   return (
     <TouchableOpacity
