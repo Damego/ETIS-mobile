@@ -7,6 +7,7 @@ import Screen from '../../components/Screen';
 import { useGlobalStyles } from '../../hooks';
 import { fontSize } from '../../utils/texts';
 import AboutAppButton from './AboutApp';
+import ChangePasswordSetting from './ChangePasswordSetting';
 import ChangePersonalRecord from './ChangePersonalRecord';
 import ResetIntroSetting from './ResetIntroSetting';
 import SignOut from './SignOut';
@@ -39,6 +40,7 @@ export default function Settings() {
       >
         Аккаунт
       </Text>
+      <ChangePasswordSetting />
       <Card>
         <ChangePersonalRecord />
       </Card>

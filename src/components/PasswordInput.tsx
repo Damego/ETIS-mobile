@@ -10,16 +10,18 @@ const styles = StyleSheet.create({
   iconContainer: {
     position: 'absolute',
     marginRight: '1%',
-    right: 0
-  }
+    right: 0,
+  },
 });
 
-interface ExtendedTextInputProps extends TextInputProps {
+interface PasswordInputProps extends TextInputProps {
   autoComplete: 'password' | 'password-new';
+  iconColor: string;
 }
 
-const PasswordInput = (props: ExtendedTextInputProps) => {
+const PasswordInput = (props: PasswordInputProps) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const { iconColor } = props;
 
   return (
     <View style={styles.container}>
@@ -29,7 +31,11 @@ const PasswordInput = (props: ExtendedTextInputProps) => {
         style={styles.iconContainer}
         onPress={() => setShowPassword((prev) => !prev)}
       >
-        <MaterialCommunityIcons name={showPassword ? 'eye-off-outline' : 'eye-outline'} size={24} />
+        <MaterialCommunityIcons
+          name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+          size={24}
+          color={iconColor}
+        />
       </TouchableOpacity>
     </View>
   );

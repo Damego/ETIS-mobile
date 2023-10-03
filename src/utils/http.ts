@@ -380,6 +380,16 @@ class HTTPClient {
     const response = await this.request('GET', '/stu.change_pr', { params, returnResponse: true });
     return response.data.status === 200;
   }
+
+  changePassword(oldPassword: string, newPassword: string) {
+    const data = {
+      p_old: oldPassword,
+      p_new: newPassword,
+      p_new_confirm: newPassword,
+    };
+
+    return this.request('POST', '/stu.change_pass', { data, returnResponse: false });
+  }
 }
 
 const httpClient = new HTTPClient();
