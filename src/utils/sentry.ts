@@ -29,7 +29,7 @@ export default () => {
   }
 };
 
-const subjectRegex = /([а-яА-Я\w\s":.,+#-]+(?: \([а-яА-Я\w\s]+\))?(?: \[[а-яА-Я\w\s,]+])?)/s;
+const subjectRegex = /([а-яА-Я\w\s":.,+#-]+(?: \([а-яА-Я\w\s]+\))?(?: \[[а-яА-Я\w\s,]+])*)/s;
 export const checkSubjectNames = (teachPlan: ISessionTeachPlan[]) => {
   const incorrectDisciplines = teachPlan
     ?.map((session) => session.disciplines.map((discipline) => discipline.name))
