@@ -1,7 +1,7 @@
 import * as SentryExpo from 'sentry-expo';
 
 import { ISessionTeachPlan } from '../models/teachPlan';
-import { alertParserBugReport } from './debug';
+import alertParserBugReport from './debug';
 
 let isDebug = false;
 export default () => {
