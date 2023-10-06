@@ -8,11 +8,11 @@ const styles = StyleSheet.create({
   cardView: {
     alignItems: 'center',
     marginBottom: '2%',
-    padding: '2%'
+    padding: '2%',
   },
   text: {
     fontWeight: '500',
-    color: '#FFFFFF'
+    color: '#FFFFFF',
   },
 });
 

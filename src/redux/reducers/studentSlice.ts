@@ -10,7 +10,7 @@ const initialState: StudentState = {
   sessionTestID: null,
   currentSession: null,
   currentWeek: null,
-  hasUnverifiedEmail: false
+  hasUnverifiedEmail: false,
 };
 
 const studentSlice = createSlice({

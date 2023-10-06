@@ -7,13 +7,13 @@ import Screen from '../../components/Screen';
 import { useGlobalStyles } from '../../hooks';
 import { fontSize } from '../../utils/texts';
 import AboutAppButton from './AboutApp';
+import ChangeEmailSetting from './ChangeEmailSetting';
 import ChangePasswordSetting from './ChangePasswordSetting';
 import ChangePersonalRecord from './ChangePersonalRecord';
 import ResetIntroSetting from './ResetIntroSetting';
 import SignOut from './SignOut';
 import ToggleSignNotification from './ToggleSignNotification';
 import ToggleThemeSetting from './ToggleThemeSetting';
-import ChangeEmailSetting from './ChangeEmailSetting';
 
 export default function Settings() {
   const globalStyles = useGlobalStyles();

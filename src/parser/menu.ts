@@ -30,12 +30,12 @@ export default function parseMenu(html: string, parseGroupJournal = false): Stud
     },
   };
 
-  const content = $('.span9')
+  const content = $('.span9');
 
   if (content.length === 2) {
     const message = content.eq(0);
     if (getTextField(message).startsWith('Для получения оповещений')) {
-      data.hasUnverifiedEmail = true
+      data.hasUnverifiedEmail = true;
     }
   }
 

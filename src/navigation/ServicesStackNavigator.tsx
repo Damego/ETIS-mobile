@@ -6,6 +6,7 @@ import About from '../screens/about/About';
 import AbsencesTable from '../screens/absences';
 import CertificateTable from '../screens/certificate/CertificateTable';
 import RequestCertificate from '../screens/certificate/RequestCertificate';
+import ChangeEmail from '../screens/changeCredentials/ChangeEmail';
 import ChangePassword from '../screens/changeCredentials/ChangePassword';
 import OrderTable from '../screens/orders';
 import PersonalRecords from '../screens/personalRecords/PersonalRecords';
@@ -17,7 +18,6 @@ import ShortTeachPlan from '../screens/shortTeachPlan';
 import TeacherTable from '../screens/teachers';
 import { headerParams } from './header';
 import { ServicesNativeStackParamList } from './types';
-import ChangeEmail from '../screens/changeCredentials/ChangeEmail';
 
 const Stack = createNativeStackNavigator<ServicesNativeStackParamList>();
 
@@ -75,11 +75,7 @@ function ServicesStackNavigator() {
         component={ChangePassword}
         options={{ title: 'Аккаунт' }}
       />
-      <Stack.Screen
-        name={'ChangeEmail'}
-        component={ChangeEmail}
-        options={{ title: 'Аккаунт' }}
-      />
+      <Stack.Screen name={'ChangeEmail'} component={ChangeEmail} options={{ title: 'Аккаунт' }} />
     </Stack.Navigator>
   );
 }
