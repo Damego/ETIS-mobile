@@ -27,7 +27,7 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
   const theme = useAppTheme();
 
   const dispatch = useAppDispatch();
-  const { messageCount, announceCount } = useAppSelector((state) => state.student);
+  const { messageCount, announceCount, hasUnverifiedEmail } = useAppSelector((state) => state.student);
   const { signNotification, initialPage } = useAppSelector((state) => state.settings);
   const client = useClient();
   const { isDemo, isOfflineMode } = useAppSelector((state) => state.auth);
@@ -143,6 +143,7 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
           tabBarIcon: ({ size, color }) => (
             <AntDesign name="appstore-o" size={size} color={color} />
           ),
+          tabBarBadge: hasUnverifiedEmail ? '!' : undefined
         }}
       />
     </Tab.Navigator>

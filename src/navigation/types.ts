@@ -1,6 +1,9 @@
 import type { BottomTabNavigationProp, BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import type { CompositeNavigationProp, CompositeScreenProps } from '@react-navigation/native';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack';
 import type { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 
 import { IMessage } from '../models/messages';
@@ -36,6 +39,7 @@ export type ServicesNativeStackParamList = {
   SessionQuestionnaireList: undefined;
   PersonalRecords: undefined;
   ChangePassword: undefined;
+  ChangeEmail: { sendVerificationMail: boolean };
 };
 
 export type SignsTopTabsParamsList = {
@@ -45,8 +49,16 @@ export type SignsTopTabsParamsList = {
 
 export type RootStackScreenProps<ScreenName extends keyof RootStackParamList = undefined> =
   StackScreenProps<RootStackParamList, ScreenName>;
+
 export type BottomTabsScreenProps<ScreenName extends keyof BottomTabsParamList = undefined> =
   CompositeScreenProps<BottomTabScreenProps<BottomTabsParamList, ScreenName>, RootStackScreenProps>;
+
+export type ServiceNativeStackScreenProps<
+  ScreenName extends keyof ServicesNativeStackParamList = undefined,
+> = CompositeScreenProps<
+  NativeStackScreenProps<ServicesNativeStackParamList, ScreenName>,
+  BottomTabsScreenProps
+>;
 
 export type RootStackNavigationProp = StackNavigationProp<RootStackParamList>;
 export type BottomTabsNavigationProp = CompositeNavigationProp<

@@ -17,6 +17,7 @@ import ShortTeachPlan from '../screens/shortTeachPlan';
 import TeacherTable from '../screens/teachers';
 import { headerParams } from './header';
 import { ServicesNativeStackParamList } from './types';
+import ChangeEmail from '../screens/changeCredentials/ChangeEmail';
 
 const Stack = createNativeStackNavigator<ServicesNativeStackParamList>();
 
@@ -72,6 +73,11 @@ function ServicesStackNavigator() {
       <Stack.Screen
         name={'ChangePassword'}
         component={ChangePassword}
+        options={{ title: 'Аккаунт' }}
+      />
+      <Stack.Screen
+        name={'ChangeEmail'}
+        component={ChangeEmail}
         options={{ title: 'Аккаунт' }}
       />
     </Stack.Navigator>
