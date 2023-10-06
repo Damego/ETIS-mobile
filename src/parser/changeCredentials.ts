@@ -3,9 +3,9 @@ import * as cheerio from 'cheerio';
 import { getTextField } from './utils';
 
 /*
-* Парсит страницу для изменения электронной почты.
-* Возвращает ошибку в виде строки
-*/
+ * Парсит страницу для изменения электронной почты.
+ * Возвращает ошибку в виде строки
+ */
 export const parseChangeEmailPage = (email: string): string => {
   const $ = cheerio.load(email);
 
