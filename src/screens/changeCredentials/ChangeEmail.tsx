@@ -51,7 +51,7 @@ const Form = ({
       </Text>
       <Text style={globalStyles.textColor}>
         Адрес электронной почты используется Вами как логин для входа, а также он нужен при
-        восстановлении пароля, а также как адрес обратной связи преподавателями с вами
+        восстановлении пароля и как адрес обратной связи преподавателями с вами
       </Text>
       <TextInput
         style={[
@@ -80,7 +80,7 @@ const Form = ({
 };
 
 export default function ChangeEmail({ route }: ServiceNativeStackScreenProps<'ChangeEmail'>) {
-  const { sendVerificationMail } = route.params;
+  const sendVerificationMail = route.params?.sendVerificationMail;
 
   const dispatch = useAppDispatch();
   const [isLoading, setLoading] = useState(false);
