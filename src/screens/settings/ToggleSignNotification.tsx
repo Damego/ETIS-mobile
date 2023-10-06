@@ -42,7 +42,7 @@ const ToggleSignNotification = () => {
       </Text>
       <TouchableOpacity onPress={() => Linking.openURL(NOTIFICATION_GUIDE_URL)}>
         <AntDesign // TODO: make as modal w/ blur
-          name="infocirlce"
+          name="infocirlceo"
           size={24}
           color={useAppColorScheme() === 'light' ? 'black' : 'white'}
         />
