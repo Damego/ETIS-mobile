@@ -14,8 +14,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
+        # with:
+        #   ref: ${{ github.event.pull_request.head.ref }}
 
       # - name: Installing Bun
       #   uses: oven-sh/setup-bun@v1
