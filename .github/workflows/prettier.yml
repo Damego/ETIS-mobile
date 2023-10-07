@@ -16,10 +16,10 @@ jobs:
       #   uses: actions/checkout@v4
       - run: |
           git clone ${{ github.event.pull_request.head.repo.clone_url }}
+      # - run: |
+      #     git remote add origin ${{ github.event.pull_request.head.repo.clone_url }}
       - run: |
-          git remote add origin ${{ github.event.pull_request.head.repo.clone_url }}
-      - run: |
-          git switch origin ${{ github.event.pull_request.head.ref }}
+          git checkout ${{ github.event.pull_request.head.ref }}
       
       #   with:
       #     ref: ${{ github.event.pull_request.head.sha }}
