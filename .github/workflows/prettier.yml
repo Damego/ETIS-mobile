@@ -17,16 +17,16 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
 
-      - name: Installing Bun
-        uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: latest
-      # github actions env sucks
-      - name: Install dependencies
-        run: |
-          bun install --dev
+      # - name: Installing Bun
+      #   uses: oven-sh/setup-bun@v1
+      #   with:
+      #     bun-version: latest
+      # # github actions env sucks
+      # - name: Install dependencies
+      #   run: |
+      #     bun install --dev
       - name: Prettier Action
-        uses: Damego/prettier_action@5.3
+        uses: creyD/prettier_action@v4.3
         with:
           # This part is also where you can pass other options, for example:
           prettier_plugins: '@trivago/prettier-plugin-sort-imports'
