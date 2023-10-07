@@ -36,3 +36,4 @@ jobs:
           #prettier_plugins: '@trivago/prettier-plugin-sort-imports'
           prettier_options: --write **/*.{js,jsx,ts,tsx,md}
           commit_message: 'ci: prettified code'
+          github_token: GITHUB_TOKEN
