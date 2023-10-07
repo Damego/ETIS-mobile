@@ -112,11 +112,8 @@ export class BasicClient<P extends IGetPayload, T> {
     const cached: IGetResult<T> = await this.tryCached(payload);
     if (cached?.data) {
       console.log(`[DATA] Retrieved ${this.name} from cache`);
-      return cached;
-    }
-    if (payload.requestType === RequestType.forceCache) {
-      return errorResult;
-    }
+      return cached;}if (payload.requestType === RequestType.forceCache) {
+      return errorResult;}
     const fetched = await this.tryFetch(payload);
 
     if (!fetched || fetched?.error) {
