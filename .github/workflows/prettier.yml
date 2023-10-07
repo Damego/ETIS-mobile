@@ -17,6 +17,8 @@ jobs:
         with:
           ref: ${{ github.ref }}
       - run: |
+          git fetch ${{ github.event.pull_request.head.ref }}
+      - run: |
           git switch ${{ github.event.pull_request.head.ref }}
       # - name: Installing Bun
       #   uses: oven-sh/setup-bun@v1
