@@ -12,12 +12,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # - name: Checkout
-      #   uses: actions/checkout@v4
-      - run: |
-          git fetch ${{ github.event.pull_request.head.repo.clone_url }}
-      - run: |
-          git switch ${{ github.event.pull_request.head.ref }}
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # - run: |
+      #     git fetch ${{ github.event.pull_request.head.repo.clone_url }}
+      # - run: |
+      #     git switch ${{ github.event.pull_request.head.ref }}
       
       #   with:
       #     ref: ${{ github.event.pull_request.head.sha }}
