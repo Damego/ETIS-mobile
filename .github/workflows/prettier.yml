@@ -12,17 +12,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      
-      - run: |
-          git clone ${{ github.event.pull_request.head.repo.clone_url }}
-      - name: Checkout
-        uses: actions/checkout@v4
-        with: 
-          ref: ${{ github.event.pull_request.head.ref }}
+      # - name: Checkout
+      #   uses: actions/checkout@v4
+      - run: git clone ${{ github.event.pull_request.head.repo.clone_url }}
+      - run: cd ${{ github.event.pull_request.head.repo.name }}
+      - run: ls
       # - run: |
       #     git remote add origin ${{ github.event.pull_request.head.repo.clone_url }}
-      # - run: |
-      #     git checkout ${{ github.event.pull_request.head.ref }}
+      - run: git switch ${{ github.event.pull_request.head.ref }}
       
       #   with:
       #     ref: ${{ github.event.pull_request.head.sha }}
