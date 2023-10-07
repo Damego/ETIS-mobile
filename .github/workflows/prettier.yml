@@ -15,9 +15,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.ref }}
-      - run: |
-          git fetch ${{ github.event.pull_request.head.ref }}
+          ref: ${{ github.event.pull_request.head }}
+      # - run: |
+      #     git fetch ${{ github.event.pull_request.head.ref }}
       - run: |
           git switch ${{ github.event.pull_request.head.ref }}
       # - name: Installing Bun
