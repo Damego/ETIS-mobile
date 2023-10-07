@@ -18,8 +18,8 @@ jobs:
           git clone ${{ github.event.pull_request.head.repo.clone_url }}
       # - run: |
       #     git remote add origin ${{ github.event.pull_request.head.repo.clone_url }}
-      - run: |
-          git checkout ${{ github.event.pull_request.head.ref }}
+      # - run: |
+      #     git checkout ${{ github.event.pull_request.head.ref }}
       
       #   with:
       #     ref: ${{ github.event.pull_request.head.sha }}
