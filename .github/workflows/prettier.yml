@@ -15,9 +15,9 @@ jobs:
       # - name: Checkout
       #   uses: actions/checkout@v4
       - run: |
-          gh pr checkout ${{ github.event.pull_request.head.repo.clone_url }}
-        env: 
-          GH_TOKEN: ${{ github.token }}
+          git fetch ${{ github.event.pull_request.head.repo.clone_url }}
+      - run: |
+          git switch ${{ github.event.pull_request.head.ref }}
       
       #   with:
       #     ref: ${{ github.event.pull_request.head.sha }}
@@ -25,8 +25,7 @@ jobs:
       #     ref: ${{ github.event.pull_request.head }}
       # # - run: |
       # #     git fetch ${{ github.event.pull_request.head.ref }}
-      # - run: |
-      #     git switch ${{ github.event.pull_request.head.ref }}
+      # 
       # - name: Installing Bun
       #   uses: oven-sh/setup-bun@v1
       #   with:
