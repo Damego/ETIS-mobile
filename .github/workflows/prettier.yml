@@ -14,6 +14,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - run: |
+          git config user.name github-actions 
+      - run: |
+          git config user.email github-actions@github.com
       #   with:
       #     ref: ${{ github.event.pull_request.head }}
       # # - run: |
