@@ -13,13 +13,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head }}
+        uses: actions/checkout@v4
+      #   with:
+      #     ref: ${{ github.event.pull_request.head }}
+      # # - run: |
+      # #     git fetch ${{ github.event.pull_request.head.ref }}
       # - run: |
-      #     git fetch ${{ github.event.pull_request.head.ref }}
-      - run: |
-          git switch ${{ github.event.pull_request.head.ref }}
+      #     git switch ${{ github.event.pull_request.head.ref }}
       # - name: Installing Bun
       #   uses: oven-sh/setup-bun@v1
       #   with:
