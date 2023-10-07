@@ -429,6 +429,18 @@ export default class SmartCache {
     await this.app.save();
   }
 
+  async getSentryEnabled() {
+    const config = await this.getAppConfig();
+    return config.sentryEnabled;
+  }
+
+  async setSentryEnabled(enabled: boolean) {
+    const config = await this.getAppConfig();
+    config.sentryEnabled = enabled;
+    this.app.place(config);
+    await this.app.save();
+  }
+
   // End Internal Region
 
   // Helper methods

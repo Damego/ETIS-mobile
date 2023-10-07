@@ -20,6 +20,7 @@ export interface AppConfig {
   introViewed: boolean;
   reviewStep: 'pending' | 'stop' | null;
   privacyPolicyAccepted: boolean;
+  sentryEnabled: boolean;
 }
 
 export interface SettingsState {
@@ -28,6 +29,7 @@ export interface SettingsState {
   signNotification: boolean;
   appIsReady: boolean;
   initialPage: PageType;
+  sentryEnabled: boolean;
 }
 
 const initialState: SettingsState = {
@@ -36,6 +38,7 @@ const initialState: SettingsState = {
   signNotification: true,
   appIsReady: false,
   initialPage: PageType.timeTable,
+  sentryEnabled: true,
 };
 
 const settingsSlice = createSlice({
@@ -53,6 +56,9 @@ const settingsSlice = createSlice({
 
       if (config.introViewed !== undefined) state.viewedIntro = config.introViewed;
       else state.viewedIntro = false;
+
+      if (config.sentryEnabled !== undefined) state.sentryEnabled = config.sentryEnabled;
+      else state.sentryEnabled = true;
     },
     changeTheme(state, action: PayloadAction<ThemeType>) {
       state.theme = action.payload;
@@ -69,6 +75,9 @@ const settingsSlice = createSlice({
     setInitialPage(state, action: PayloadAction<PageType>) {
       state.initialPage = action.payload;
     },
+    setSentryEnabled(state, action: PayloadAction<boolean>) {
+      state.sentryEnabled = action.payload;
+    },
   },
 });
 
@@ -80,4 +89,5 @@ export const {
   setSignNotification,
   setAppReady,
   setInitialPage,
+  setSentryEnabled,
 } = settingsSlice.actions;

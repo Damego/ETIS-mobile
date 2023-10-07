@@ -11,6 +11,7 @@ import ChangePasswordSetting from './ChangePasswordSetting';
 import ChangePersonalRecord from './ChangePersonalRecord';
 import ResetIntroSetting from './ResetIntroSetting';
 import SignOut from './SignOut';
+import ToggleSentrySetting from './ToggleSentrySetting';
 import ToggleSignNotification from './ToggleSignNotification';
 import ToggleThemeSetting from './ToggleThemeSetting';
 
@@ -31,6 +32,7 @@ export default function Settings() {
       <CardHeaderOut topText={'Приложение'}>
         <AboutAppButton />
       </CardHeaderOut>
+      <ToggleSentrySetting />
       <Text
         style={[
           fontSize.medium,
