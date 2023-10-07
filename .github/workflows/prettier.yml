@@ -12,22 +12,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # - name: Checkout
-      #   uses: actions/checkout@v4
-      - run: git clone ${{ github.event.pull_request.head.repo.clone_url }}
-      - run: cd ${{ github.event.pull_request.head.repo.name }}
-      - run: ls
-      # - run: |
-      #     git remote add origin ${{ github.event.pull_request.head.repo.clone_url }}
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - run: git remote remove origin
+      - run: git remote add origin ${{ github.event.pull_request.head.repo.clone_url }}
+      - run: git fetch origin
       - run: git switch ${{ github.event.pull_request.head.ref }}
       
-      #   with:
-      #     ref: ${{ github.event.pull_request.head.sha }}
-      #   with:
-      #     ref: ${{ github.event.pull_request.head }}
-      # # - run: |
-      # #     git fetch ${{ github.event.pull_request.head.ref }}
-      # 
       # - name: Installing Bun
       #   uses: oven-sh/setup-bun@v1
       #   with:
