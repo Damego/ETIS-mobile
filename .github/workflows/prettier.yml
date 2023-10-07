@@ -14,11 +14,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with: 
+          ref: ${{ github.event.pull_request.head.ref }}
 
-      - run: git remote remove origin
-      - run: git remote add origin ${{ github.event.pull_request.head.repo.clone_url }}
-      - run: git fetch origin
-      - run: git switch ${{ github.event.pull_request.head.ref }}
+      # - run: git remote remove origin
+      # - run: git remote add origin ${{ github.event.pull_request.head.repo.clone_url }}
+      # - run: git fetch origin
+      # - run: git switch ${{ github.event.pull_request.head.ref }}
 
       
       # - name: Installing Bun
