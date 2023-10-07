@@ -17,6 +17,8 @@ jobs:
           git clone ${{ github.event.pull_request.head.repo.clone_url }}
       - name: Checkout
         uses: actions/checkout@v4
+        with: 
+          ref: ${{ github.event.pull_request.head.ref }}
       # - run: |
       #     git remote add origin ${{ github.event.pull_request.head.repo.clone_url }}
       # - run: |
