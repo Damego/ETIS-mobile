@@ -1,4 +1,5 @@
 import { AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useMemo, useState } from 'react';
 import {
   Alert,
@@ -90,8 +91,10 @@ export default function RequestCertificate() {
   const [quantity, setQuantity] = useState<string>();
   const [delivery, setDelivery] = useState<string>();
   const [keyboardOpen, setKeyboardOpen] = useState<boolean>(false);
+  const [requestSent, setRequestSent] = useState<boolean>(false);
   const schemeColor = useAppColorScheme() === 'light' ? 'black' : 'white';
   const appTheme = useAppTheme();
+  const navigator = useNavigation();
 
   Keyboard.addListener('keyboardDidShow', () => {
     setKeyboardOpen(true);
@@ -189,6 +192,7 @@ export default function RequestCertificate() {
   const submitRequest = async () => {
     if (isDemo) {
       ToastAndroid.show('Запросы в демо режиме невозможны!', ToastAndroid.LONG);
+      setRequestSent(true);
       return;
     }
 
@@ -202,6 +206,7 @@ export default function RequestCertificate() {
           delivery,
         })
       );
+      setRequestSent(true);
     } catch (e) {
       ToastAndroid.show(`Ошибка: ${e}`, ToastAndroid.LONG);
     }
@@ -219,6 +224,32 @@ export default function RequestCertificate() {
     ]);
   };
 
+  if (requestSent) {
+    return (
+      <Screen>
+        <View style={{ flex: 1, alignItems: 'center', top: '35%' }}>
+          <Text
+            style={[
+              globalStyles.textColor,
+              fontSize.xxlarge,
+              { fontWeight: '800', textAlign: 'center' },
+            ]}
+          >
+            Запрос успешно отправлен!
+          </Text>
+        </View>
+        <View style={{ position: 'absolute', left: 0, right: 0, bottom: '1%' }}>
+          <TouchableOpacity
+            onPress={() => navigator.goBack()}
+            activeOpacity={0.6}
+            style={[styles.buttonContainer, globalStyles.primaryBackgroundColor]}
+          >
+            <Text style={styles.text}>Вернуться назад</Text>
+          </TouchableOpacity>
+        </View>
+      </Screen>
+    );
+  }
   return (
     <Screen>
       <Card>
