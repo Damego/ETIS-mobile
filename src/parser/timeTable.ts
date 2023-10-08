@@ -15,6 +15,7 @@ import { getTextField } from './utils';
 
 const dateRegex = /\d+.\d+.\d+/gm;
 const audienceRegex = /ауд\. (.*)\/.* \((.*) корпус(?:, (\d) этаж)?\)/s;
+const idRegex = /[a-z]*\.[a-z]*\?\#([0-9]*)/s;
 
 const getWeekType = (week: cheerio.Cheerio): WeekTypes => {
   if (week.hasClass('holiday')) {
@@ -127,6 +128,9 @@ export default function parseTimeTable(html: string) {
             }
           }
 
+          const teacher_anchor = lesson.find('.teacher').find('a');
+          const [, teacherId] = executeRegex(idRegex, teacher_anchor.attr('href'));
+
           lessons.push({
             audienceText,
             audience: audienceNumber,
@@ -135,6 +139,7 @@ export default function parseTimeTable(html: string) {
             subject,
             isDistance: audienceNumber === 'Дистанционно' || !!distancePlatform,
             distancePlatform,
+            teacherId: Number(teacherId),
           });
         });
 
