@@ -42,7 +42,7 @@ export interface ILesson {
   floor?: string;
   isDistance: boolean;
   distancePlatform?: DistancePlatform;
-  teacherId: number;
+  teacherId: string;
 }
 
 export interface IPair {

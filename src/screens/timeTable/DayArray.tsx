@@ -6,16 +6,16 @@ import { TeacherType } from '../../models/teachers';
 
 interface IDayArrayProps {
   data: ITimeTableDay[];
-  teachers_data: TeacherType;
+  teachersData: TeacherType;
 }
 
-const DayArray = ({ data, teachers_data }: IDayArrayProps) => (
+const DayArray = ({ data, teachersData }: IDayArrayProps) => (
   <>
     {data.map((day) =>
       day.pairs.length === 0 ? (
-        <EmptyDay key={day.date} data={day} teachers_data={teachers_data} />
+        <EmptyDay key={day.date} data={day} teachersData={teachersData} />
       ) : (
-        <Day key={day.date} data={day} teachers_data={teachers_data} />
+        <Day key={day.date} data={day} teachersData={teachersData} />
       )
     )}
   </>

@@ -17,12 +17,12 @@ const TimeTable = () => {
   const globalStyles = useGlobalStyles();
   const client = useClient();
   const { data, isLoading, refresh, loadWeek, currentWeek } = useTimeTableQuery();
-  const { data: teachers_data, isLoading: teachers_isLoading } = useQuery({
+  const { data: teachersData, isLoading: teachersIsLoading } = useQuery({
     method: client.getTeacherData,
   });
 
-  if ((isLoading || teachers_isLoading) && (!data || !teachers_data)) return <LoadingScreen onRefresh={refresh} />;
-  if (!data || !teachers_data) return <NoData onRefresh={refresh} />;
+  if ((isLoading || teachersIsLoading) && (!data || !teachersData)) return <LoadingScreen onRefresh={refresh} />;
+  if (!data || !teachersData) return <NoData onRefresh={refresh} />;
 
   return (
     <Screen onUpdate={refresh}>
@@ -42,7 +42,7 @@ const TimeTable = () => {
         }}
       />
 
-      {isLoading || teachers_isLoading ? (
+      {isLoading || teachersIsLoading ? (
         <LoadingContainer />
       ) : (
         <>
@@ -51,7 +51,7 @@ const TimeTable = () => {
           {data.weekInfo.type === WeekTypes.holiday ? (
             <HolidayView holidayInfo={data.weekInfo.holidayDates} />
           ) : (
-            <DayArray data={data.days} teachers_data={teachers_data} />
+            <DayArray data={data.days} teachersData={teachersData} />
           )}
         </>
       )}

@@ -7,7 +7,7 @@ import { ITeacher, TeacherType } from '../../models/teachers';
 import { ILesson, IPair } from '../../models/timeTable';
 import { fontSize } from '../../utils/texts';
 
-export default function Pair({ pair, teachers_data }: { pair: IPair; teachers_data: TeacherType }) {
+export default function Pair({ pair, teachersData }: { pair: IPair; teachersData: TeacherType }) {
   const globalStyles = useGlobalStyles();
   const pairText = `${pair.position} пара`;
 
@@ -20,14 +20,14 @@ export default function Pair({ pair, teachers_data }: { pair: IPair; teachers_da
 
       <View style={{ flexDirection: 'column', flex: 1 }}>
         {pair.lessons.map((lesson, ind) => (
-          <Lesson data={lesson} key={lesson.subject + ind} teachers_data={teachers_data} />
+          <Lesson data={lesson} key={lesson.subject + ind} teachersData={teachersData} />
         ))}
       </View>
     </View>
   );
 }
 
-const Lesson = ({ data, teachers_data }: { data: ILesson; teachers_data: TeacherType }) => {
+const Lesson = ({ data, teachersData }: { data: ILesson; teachersData: TeacherType }) => {
   const globalStyles = useGlobalStyles();
   const location =
     data.audience && data.building && data.floor
@@ -36,7 +36,7 @@ const Lesson = ({ data, teachers_data }: { data: ILesson; teachers_data: Teacher
   const audience = data.isDistance ? data.audience : location;
 
   let teacherName: string;
-  teachers_data.map((value: [string, ITeacher[]], index: number) => {
+  teachersData.forEach((value: [string, ITeacher[]], index: number) => {
     const teacher = value[1][0];
     if (teacher.id == data.teacherId)
       teacherName = teacher.name;

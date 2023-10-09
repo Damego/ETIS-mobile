@@ -27,7 +27,7 @@ export default function parseTeachers(html): TeacherType {
 
   $('.teacher_info', html).each((index, element) => {
     const teacherEl = $(element);
-    const id = Number(teacherEl.attr('id'));
+    const id = teacherEl.attr('id');
     const photo = teacherEl.find('img').attr('src');
     const photoTitle = teacherEl.find('img').attr('title');
     const name = getTextField(teacherEl.find('.teacher_name'));

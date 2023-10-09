@@ -128,8 +128,8 @@ export default function parseTimeTable(html: string) {
             }
           }
 
-          const teacher_anchor = lesson.find('.teacher').find('a');
-          const [, teacherId] = executeRegex(idRegex, teacher_anchor.attr('href'));
+          const teacherAnchor = lesson.find('.teacher').find('a');
+          const [, teacherId] = executeRegex(idRegex, teacherAnchor.attr('href'));
 
           lessons.push({
             audienceText,
@@ -139,7 +139,7 @@ export default function parseTimeTable(html: string) {
             subject,
             isDistance: audienceNumber === 'Дистанционно' || !!distancePlatform,
             distancePlatform,
-            teacherId: Number(teacherId),
+            teacherId,
           });
         });
 
