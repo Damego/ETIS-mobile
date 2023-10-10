@@ -227,18 +227,19 @@ export default function RequestCertificate() {
   if (requestSent) {
     return (
       <Screen>
-        <View style={{ flex: 1, alignItems: 'center', top: '35%' }}>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <Text
             style={[
               globalStyles.textColor,
-              fontSize.xxlarge,
-              { fontWeight: '800', textAlign: 'center' },
+              fontSize.xlarge,
+              { fontWeight: '500', textAlign: 'center' },
             ]}
           >
             Запрос успешно отправлен!
           </Text>
         </View>
         <View style={{ position: 'absolute', left: 0, right: 0, bottom: '1%' }}>
+          {/* TODO: Replace with Button component */}
           <TouchableOpacity
             onPress={() => navigator.goBack()}
             activeOpacity={0.6}
