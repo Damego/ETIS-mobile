@@ -29,6 +29,7 @@ export default function parseTeachers(html: string): TeacherType {
 
   $('.teacher_info', html).each((index, element) => {
     const teacherEl = $(element);
+    const id = teacherEl.attr('id');
     const photo = teacherEl.find('img').attr('src');
     const photoTitle = teacherEl.find('img').attr('title');
     const teacherName = teacherEl.find('.teacher_name');
@@ -43,6 +44,7 @@ export default function parseTeachers(html: string): TeacherType {
       .forEach((subject) => {
         const [, subjectUntyped, subjectType] = executeRegex(subjectRegex, subject);
         data.push({
+          id,
           photo,
           name,
           cathedra,
