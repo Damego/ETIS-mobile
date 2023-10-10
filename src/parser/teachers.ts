@@ -32,9 +32,7 @@ export default function parseTeachers(html: string): TeacherType {
     const id = teacherEl.attr('id');
     const photo = teacherEl.find('img').attr('src');
     const photoTitle = teacherEl.find('img').attr('title');
-    const teacherName = teacherEl.find('.teacher_name');
-    const name = getTextField(teacherName);
-    const [teacherId] = executeRegex(numberRegex, teacherName.find('img').attr('onclick'));
+    const name = getTextField(teacherEl.find('.teacher_name'));
     const cathedraTag = teacherEl.find('.chair');
     const cathedra = getTextField(cathedraTag);
     const [cathedraId] = executeRegex(numberRegex, cathedraTag.find('img').attr('onclick'));
@@ -51,7 +49,6 @@ export default function parseTeachers(html: string): TeacherType {
           subjectUntyped,
           subjectType,
           photoTitle,
-          id: teacherId,
           cathedraId,
         });
       });
