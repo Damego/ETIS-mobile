@@ -8,6 +8,8 @@ import { getTextField } from './utils';
 /* duplicated in sentry.ts */
 const subjectRegex =
   /([а-яА-Я\w\s":.,+#-]+ (?:\([а-яА-Я\w\s]+\) )?(?:\[[а-яА-Я\w\s,]+] )*)\(([а-яА-Я\s,.-]+)\)/s;
+const numberRegex = /(\d+)/s;
+
 const groupTeachers = (data: ITeacher[]) => {
   const dataGrouped = {};
   data.forEach((val) => {
@@ -21,7 +23,7 @@ const groupTeachers = (data: ITeacher[]) => {
   return Object.entries<ITeacher[]>(dataGrouped);
 };
 
-export default function parseTeachers(html): TeacherType {
+export default function parseTeachers(html: string): TeacherType {
   const $ = load(html);
   const data: ITeacher[] = [];
 
@@ -29,8 +31,12 @@ export default function parseTeachers(html): TeacherType {
     const teacherEl = $(element);
     const photo = teacherEl.find('img').attr('src');
     const photoTitle = teacherEl.find('img').attr('title');
-    const name = getTextField(teacherEl.find('.teacher_name'));
-    const cathedra = getTextField(teacherEl.find('.chair'));
+    const teacherName = teacherEl.find('.teacher_name');
+    const name = getTextField(teacherName);
+    const [teacherId] = executeRegex(numberRegex, teacherName.find('img').attr('onclick'));
+    const cathedraTag = teacherEl.find('.chair');
+    const cathedra = getTextField(cathedraTag);
+    const [cathedraId] = executeRegex(numberRegex, cathedraTag.find('img').attr('onclick'));
 
     getTextField(teacherEl.find('.dis'))
       .split('\n')
@@ -43,6 +49,8 @@ export default function parseTeachers(html): TeacherType {
           subjectUntyped,
           subjectType,
           photoTitle,
+          id: teacherId,
+          cathedraId,
         });
       });
   });

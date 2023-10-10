@@ -3,7 +3,7 @@ import {
   Image,
   StyleSheet,
   Text,
-  ToastAndroid,
+  ToastAndroid, TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
@@ -11,6 +11,8 @@ import {
 import { useGlobalStyles } from '../../hooks';
 import { ITeacher } from '../../models/teachers';
 import { fontSize } from '../../utils/texts';
+import { useNavigation } from '@react-navigation/native';
+import { ServicesNavigationProp } from '../../navigation/types';
 
 const styles = StyleSheet.create({
   container: {
@@ -38,34 +40,41 @@ interface TeacherProps {
 
 const Teacher = ({ data }: TeacherProps) => {
   const globalStyles = useGlobalStyles();
+  const navigation = useNavigation<ServicesNavigationProp>()
 
   return (
-    <View style={styles.container}>
-      <View style={styles.teacherInfo}>
-        <View style={styles.teacherNameView}>
-          <Text style={[fontSize.medium, styles.fontW500, globalStyles.textColor]}>
-            {data.name}
-          </Text>
-          <Text style={[fontSize.medium, globalStyles.textColor]}>{data.subjectType}</Text>
+    <View>
+      <View style={styles.container}>
+        <View style={styles.teacherInfo}>
+          <View style={styles.teacherNameView}>
+            <Text style={[fontSize.medium, styles.fontW500, globalStyles.textColor]}>
+              {data.name}
+            </Text>
+            <Text style={[fontSize.medium, globalStyles.textColor]}>{data.subjectType}</Text>
+          </View>
+
+          <View style={styles.subjectInfoView}>
+            <Text style={[fontSize.small, globalStyles.textColor]}>{data.cathedra}</Text>
+          </View>
         </View>
 
-        <View style={styles.subjectInfoView}>
-          <Text style={[fontSize.small, globalStyles.textColor]}>{data.cathedra}</Text>
-        </View>
+        {/* Фотография загружена... */}
+        <TouchableWithoutFeedback
+          style={styles.photoContainer}
+          onPress={() => ToastAndroid.show(data.photoTitle, ToastAndroid.SHORT)}
+        >
+          <Image
+            style={styles.photoStyle}
+            source={{
+              uri: `https://student.psu.ru/pls/stu_cus_et/${data.photo}`,
+            }}
+          />
+        </TouchableWithoutFeedback>
       </View>
 
-      {/* Фотография загружена... */}
-      <TouchableWithoutFeedback
-        style={styles.photoContainer}
-        onPress={() => ToastAndroid.show(data.photoTitle, ToastAndroid.SHORT)}
-      >
-        <Image
-          style={styles.photoStyle}
-          source={{
-            uri: `https://student.psu.ru/pls/stu_cus_et/${data.photo}`,
-          }}
-        />
-      </TouchableWithoutFeedback>
+      <TouchableOpacity onPress={() => navigation.navigate('CathedraTimetable', {teacherId: data.id})}>
+        <Text>Расписание преподавателя</Text>
+      </TouchableOpacity>
     </View>
   );
 };

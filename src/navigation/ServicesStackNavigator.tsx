@@ -4,6 +4,8 @@ import React from 'react';
 import { useAppTheme } from '../hooks/theme';
 import About from '../screens/about/About';
 import AbsencesTable from '../screens/absences';
+import CathedraTimetable from '../screens/cathedraTimetable/CathedraTimetable';
+import CathedraTimetablePairs from '../screens/cathedraTimetablePairs/CathedraTimetablePairs';
 import CertificateTable from '../screens/certificate/CertificateTable';
 import RequestCertificate from '../screens/certificate/RequestCertificate';
 import ChangePassword from '../screens/changeCredentials/ChangePassword';
@@ -73,6 +75,11 @@ function ServicesStackNavigator() {
         name={'ChangePassword'}
         component={ChangePassword}
         options={{ title: 'Аккаунт' }}
+      />
+      <Stack.Screen
+        name={'CathedraTimetable'}
+        component={CathedraTimetable}
+        options={{ title: 'Расписание' }}
       />
     </Stack.Navigator>
   );

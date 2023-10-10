@@ -14,6 +14,7 @@ interface Query<P, R> {
   refresh: () => void;
   update: (payload: IGetPayload<P>) => void;
   get: (payload: IGetPayload<P>) => Promise<IGetResult<R>>;
+  initialPayload: P;
 }
 
 const useQuery = <P, R>({
@@ -107,6 +108,7 @@ const useQuery = <P, R>({
     refresh,
     update: (payload) => loadData(payload),
     get,
+    initialPayload: payloadData.current,
   };
 };
 
