@@ -5,7 +5,6 @@ import { useAppTheme } from '../hooks/theme';
 import About from '../screens/about/About';
 import AbsencesTable from '../screens/absences';
 import CathedraTimetable from '../screens/cathedraTimetable/CathedraTimetable';
-import CathedraTimetablePairs from '../screens/cathedraTimetablePairs/CathedraTimetablePairs';
 import CertificateTable from '../screens/certificate/CertificateTable';
 import RequestCertificate from '../screens/certificate/RequestCertificate';
 import ChangePassword from '../screens/changeCredentials/ChangePassword';
