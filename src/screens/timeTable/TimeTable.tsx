@@ -21,7 +21,8 @@ const TimeTable = () => {
     method: client.getTeacherData,
   });
 
-  if ((isLoading || teachersIsLoading) && (!data || !teachersData)) return <LoadingScreen onRefresh={refresh} />;
+  if ((isLoading || teachersIsLoading) && (!data || !teachersData))
+    return <LoadingScreen onRefresh={refresh} />;
   if (!data || !teachersData) return <NoData onRefresh={refresh} />;
 
   return (
