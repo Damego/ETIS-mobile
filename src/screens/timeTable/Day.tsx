@@ -7,9 +7,11 @@ import { useGlobalStyles } from '../../hooks';
 import { ITimeTableDay } from '../../models/timeTable';
 import { fontSize } from '../../utils/texts';
 import Pair from './Pair';
+import { TeacherType } from '../../models/teachers';
 
 interface DayData {
   data: ITimeTableDay;
+  teachersData: TeacherType;
 }
 
 const responses = ['Пар нет', 'Отдых', '💤', '😴', '🎮', '(๑ᵕ⌓ᵕ̤)'];
@@ -31,14 +33,14 @@ const EmptyDay = ({ data }: DayData) => {
   );
 };
 
-const Day = ({ data }: DayData) => {
+const Day = ({ data, teachersData }: DayData) => {
   const { date, pairs } = data;
 
   return (
     <CardHeaderOut topText={date}>
       {pairs.map((pair, index) => (
         <View key={index + pair.time}>
-          <Pair pair={pair} />
+          <Pair pair={pair} teachersData={teachersData}/>
           {index !== pairs.length - 1 && <BorderLine />}
         </View>
       ))}
