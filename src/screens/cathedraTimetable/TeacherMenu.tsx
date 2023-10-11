@@ -1,13 +1,13 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import ButtonMenu from '../../components/ModalMenu';
+import ButtonMenu from '../../components/ButtonMenu';
 import { useGlobalStyles } from '../../hooks';
 import { ITeacherTimetable } from '../../models/cathedraTimetable';
 import { fontSize } from '../../utils/texts';
 import { generateOptionsFromTeachers } from './utils';
 
-const TeacherDropdown = ({
+const TeacherMenu = ({
   currentTeacherName,
   timetable,
   onSelect,
@@ -32,4 +32,4 @@ const TeacherDropdown = ({
   return <ButtonMenu options={options} onSelect={onSelect} />;
 };
 
-export default TeacherDropdown;
+export default TeacherMenu;

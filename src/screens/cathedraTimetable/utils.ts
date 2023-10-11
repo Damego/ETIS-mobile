@@ -1,4 +1,4 @@
-import { ButtonMenuOption } from '../../components/ModalMenu';
+import { ButtonMenuOption } from '../../components/ButtonMenu';
 import { ITeacherTimetable } from '../../models/cathedraTimetable';
 
 export const DAYS = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];

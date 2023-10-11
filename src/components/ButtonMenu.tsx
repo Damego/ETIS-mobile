@@ -39,7 +39,7 @@ const ModalMenu = ({
           globalStyles.shadow,
         ]}
       >
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text
             style={[
               globalStyles.textColor,

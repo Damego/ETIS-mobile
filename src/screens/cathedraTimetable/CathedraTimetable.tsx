@@ -3,7 +3,6 @@ import { View } from 'react-native';
 
 import CardHeaderOut from '../../components/CardHeaderOut';
 import LoadingScreen from '../../components/LoadingScreen';
-import ButtonMenu from '../../components/ModalMenu';
 import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
 import { useClient } from '../../data/client';
@@ -13,7 +12,7 @@ import { RequestType } from '../../models/results';
 import { ServiceNativeStackScreenProps } from '../../navigation/types';
 import Navigation, { NavigationTypeDropdown } from './Navigation';
 import Pairs from './Pairs';
-import TeacherDropdown from './TeacherDropdown';
+import TeacherMenu from './TeacherMenu';
 import { DAYS } from './utils';
 
 const CathedraTimetable = ({ route }: ServiceNativeStackScreenProps<'CathedraTimetable'>) => {
@@ -65,7 +64,7 @@ const CathedraTimetable = ({ route }: ServiceNativeStackScreenProps<'CathedraTim
         <Navigation data={data} onChange={onChange} type={type} />
       </View>
 
-      <TeacherDropdown
+      <TeacherMenu
         currentTeacherName={teacherTimetable.teacherName}
         timetable={data.timetable}
         onSelect={onTeacherSelect}
