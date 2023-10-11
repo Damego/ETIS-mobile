@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import Dropdown from '../../components/Dropdown';
+import ButtonMenu from '../../components/ModalMenu';
 import { useGlobalStyles } from '../../hooks';
 import { ITeacherTimetable } from '../../models/cathedraTimetable';
 import { fontSize } from '../../utils/texts';
@@ -27,25 +27,9 @@ const TeacherDropdown = ({
       </View>
     );
 
-  return (
-    <View
-      style={{
-        marginLeft: 0,
-        marginRight: 'auto',
-        zIndex: 1,
-      }}
-    >
-      <Dropdown
-        selectedOption={{
-          label: currentTeacherName,
-          value: currentTeacherName,
-          current: false,
-        }}
-        options={generateOptionsFromTeachers(timetable, currentTeacherName)}
-        onSelect={onSelect}
-      />
-    </View>
-  );
+  const options = generateOptionsFromTeachers(timetable, currentTeacherName);
+
+  return <ButtonMenu options={options} onSelect={onSelect} />;
 };
 
 export default TeacherDropdown;

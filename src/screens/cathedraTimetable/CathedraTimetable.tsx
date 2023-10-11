@@ -14,6 +14,7 @@ import Navigation, { NavigationTypeDropdown } from './Navigation';
 import Pairs from './Pairs';
 import TeacherDropdown from './TeacherDropdown';
 import { DAYS } from './utils';
+import ButtonMenu from '../../components/ModalMenu';
 
 const CathedraTimetable = ({ route }: ServiceNativeStackScreenProps<'CathedraTimetable'>) => {
 

@@ -1,3 +1,4 @@
+import { ButtonMenuOption } from '../../components/ModalMenu';
 import { ITeacherTimetable } from '../../models/cathedraTimetable';
 
 export const DAYS = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
@@ -5,9 +6,9 @@ export const DAYS = ['Понедельник', 'Вторник', 'Среда', '
 export const generateOptionsFromTeachers = (
   teacherTimetable: ITeacherTimetable[],
   currentTeacherName: string
-) =>
+): ButtonMenuOption[] =>
   teacherTimetable.map((timetable) => ({
-    label: timetable.teacherName,
+    name: timetable.teacherName,
     value: timetable.teacherName,
-    current: timetable.teacherName === currentTeacherName,
+    isCurrent: timetable.teacherName === currentTeacherName,
   }));
