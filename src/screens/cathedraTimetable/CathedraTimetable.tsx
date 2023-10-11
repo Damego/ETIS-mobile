@@ -3,6 +3,7 @@ import { View } from 'react-native';
 
 import CardHeaderOut from '../../components/CardHeaderOut';
 import LoadingScreen from '../../components/LoadingScreen';
+import ButtonMenu from '../../components/ModalMenu';
 import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
 import { useClient } from '../../data/client';
@@ -14,10 +15,8 @@ import Navigation, { NavigationTypeDropdown } from './Navigation';
 import Pairs from './Pairs';
 import TeacherDropdown from './TeacherDropdown';
 import { DAYS } from './utils';
-import ButtonMenu from '../../components/ModalMenu';
 
 const CathedraTimetable = ({ route }: ServiceNativeStackScreenProps<'CathedraTimetable'>) => {
-
   const client = useClient();
   const { data, isLoading, refresh, update, initialPayload } = useQuery({
     method: client.getCathedraTimetable,

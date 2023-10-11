@@ -6,7 +6,6 @@ import PageNavigator from '../../components/PageNavigator';
 import { useAppSelector, useGlobalStyles } from '../../hooks';
 import { ICathedraTimetable, TimetableTypes } from '../../models/cathedraTimetable';
 
-
 export const NavigationTypeDropdown = ({
   type,
   onSelect,
@@ -78,16 +77,18 @@ const Navigation = ({
 
   const currentSession = data.sessions.find((session) => session.isCurrent);
   let currentOption;
-  if (currentSession) currentOption = {
-    label: currentSession.name,
-    value: currentSession.number,
-    current: false,
-  };
-  else currentOption = {
-    label: 'Выберите период',
-    value: '',
-    current: false
-  }
+  if (currentSession)
+    currentOption = {
+      label: currentSession.name,
+      value: currentSession.number,
+      current: false,
+    };
+  else
+    currentOption = {
+      label: 'Выберите период',
+      value: '',
+      current: false,
+    };
   const options = data.sessions.map((session) => ({
     label: session.name,
     value: session.number,

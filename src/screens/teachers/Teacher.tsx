@@ -1,18 +1,19 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {
   Image,
   StyleSheet,
   Text,
-  ToastAndroid, TouchableOpacity,
+  ToastAndroid,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
 
 import { useGlobalStyles } from '../../hooks';
 import { ITeacher } from '../../models/teachers';
-import { fontSize } from '../../utils/texts';
-import { useNavigation } from '@react-navigation/native';
 import { ServicesNavigationProp } from '../../navigation/types';
+import { fontSize } from '../../utils/texts';
 
 const styles = StyleSheet.create({
   container: {
@@ -40,7 +41,7 @@ interface TeacherProps {
 
 const Teacher = ({ data }: TeacherProps) => {
   const globalStyles = useGlobalStyles();
-  const navigation = useNavigation<ServicesNavigationProp>()
+  const navigation = useNavigation<ServicesNavigationProp>();
 
   return (
     <View>
@@ -72,7 +73,9 @@ const Teacher = ({ data }: TeacherProps) => {
         </TouchableWithoutFeedback>
       </View>
 
-      <TouchableOpacity onPress={() => navigation.navigate('CathedraTimetable', {teacherId: data.id})}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('CathedraTimetable', { teacherId: data.id })}
+      >
         <Text>Расписание преподавателя</Text>
       </TouchableOpacity>
     </View>

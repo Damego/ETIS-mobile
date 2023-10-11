@@ -14,7 +14,7 @@ const parseSessionsAndWeeks = ($: cheerio.Root) => {
     sessions: [],
     timetable: [],
     weekInfo: null,
-    type: null
+    type: null,
   };
   let sessionNumber = 1;
   const $spanList = $('body').children().filter('span');
