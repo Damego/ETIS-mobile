@@ -3,7 +3,6 @@ import React from 'react';
 import { TeacherType } from '../../models/teachers';
 import { ITimeTableDay } from '../../models/timeTable';
 import { Day, EmptyDay } from './Day';
-import { TeacherType } from '../../models/teachers';
 
 interface IDayArrayProps {
   data: ITimeTableDay[];

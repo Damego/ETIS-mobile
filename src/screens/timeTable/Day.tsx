@@ -8,7 +8,6 @@ import { TeacherType } from '../../models/teachers';
 import { ITimeTableDay } from '../../models/timeTable';
 import { fontSize } from '../../utils/texts';
 import Pair from './Pair';
-import { TeacherType } from '../../models/teachers';
 
 interface DayData {
   data: ITimeTableDay;
