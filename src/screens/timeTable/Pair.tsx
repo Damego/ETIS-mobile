@@ -38,10 +38,8 @@ const Lesson = ({ data, teachersData }: { data: ILesson; teachersData: TeacherTy
   let teacherName: string;
   teachersData.forEach((value: [string, ITeacher[]], index: number) => {
     const teacher = value[1][0];
-    if (teacher.id == data.teacherId)
-      teacherName = teacher.name;
+    if (teacher.id == data.teacherId) teacherName = teacher.name;
   });
-  
 
   return (
     <View style={styles.lessonContainer}>

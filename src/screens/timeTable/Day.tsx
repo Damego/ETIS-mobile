@@ -4,6 +4,7 @@ import { Text, View } from 'react-native';
 import BorderLine from '../../components/BorderLine';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import { useGlobalStyles } from '../../hooks';
+import { TeacherType } from '../../models/teachers';
 import { ITimeTableDay } from '../../models/timeTable';
 import { fontSize } from '../../utils/texts';
 import Pair from './Pair';
@@ -40,7 +41,7 @@ const Day = ({ data, teachersData }: DayData) => {
     <CardHeaderOut topText={date}>
       {pairs.map((pair, index) => (
         <View key={index + pair.time}>
-          <Pair pair={pair} teachersData={teachersData}/>
+          <Pair pair={pair} teachersData={teachersData} />
           {index !== pairs.length - 1 && <BorderLine />}
         </View>
       ))}
