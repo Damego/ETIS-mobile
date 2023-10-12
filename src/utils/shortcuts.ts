@@ -3,7 +3,7 @@ import QuickActions, { ShortcutItem } from 'react-native-quick-actions';
 import { BottomTabsParamList } from '../navigation/types';
 
 export interface AppShortcutItem extends ShortcutItem {
-  type: keyof BottomTabsParamList | 'debug';
+  type: keyof BottomTabsParamList;
 }
 
 const SHORTCUTS_ITEMS: AppShortcutItem[] = [
@@ -25,7 +25,6 @@ const SHORTCUTS_ITEMS: AppShortcutItem[] = [
     icon: 'announce',
     userInfo: { url: '' },
   },
-  { type: 'debug', title: 'Отладочный запуск', icon: 'debug', userInfo: { url: '' } },
 ];
 
 export const addShortcuts = () => {

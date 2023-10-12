@@ -25,7 +25,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const StackNavigator = () => {
   const { isSignedIn } = useAppSelector((state) => state.auth);
-  const { viewedIntro, appIsReady } = useAppSelector((state) => state.settings);
+  const { viewedIntro, appIsReady, sentryEnabled } = useAppSelector((state) => state.settings);
   const theme = useAppTheme();
   const dispatch = useAppDispatch();
 
@@ -33,25 +33,22 @@ const StackNavigator = () => {
     try {
       const data = await QuickActions.popInitialAction();
       if (data?.type) {
-        if (data.type === 'debug') {
-          InitSentry();
-        } else {
-          dispatch(setInitialPage(data.type as PageType));
-        }
+        dispatch(setInitialPage(data.type as PageType));
       }
     } catch (e) {
       // ignore
     }
   };
 
-  useEffect(() => {
-    const wrapper = async () => {
-      if (!(await cache.hasAcceptedPrivacyPolicy())) {
-        showPrivacyPolicy();
-      }
-    };
+  const bumpPrivacyPolicy = async () => {
+    if (!(await cache.hasAcceptedPrivacyPolicy())) {
+      showPrivacyPolicy();
+    }
+  };
 
-    wrapper();
+  useEffect(() => {
+    bumpPrivacyPolicy();
+    if (sentryEnabled) InitSentry();
     dispatchInitialPage();
   }, []);
 

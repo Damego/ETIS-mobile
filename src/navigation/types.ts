@@ -52,6 +52,12 @@ export type RootStackScreenProps<ScreenName extends keyof RootStackParamList = u
 
 export type BottomTabsScreenProps<ScreenName extends keyof BottomTabsParamList = undefined> =
   CompositeScreenProps<BottomTabScreenProps<BottomTabsParamList, ScreenName>, RootStackScreenProps>;
+export type ServiceNativeStackScreenProps<
+  ScreenName extends keyof ServicesNativeStackParamList = undefined,
+> = CompositeScreenProps<
+  NativeStackScreenProps<ServicesNativeStackParamList, ScreenName>,
+  BottomTabsScreenProps
+>;
 
 export type ServiceNativeStackScreenProps<
   ScreenName extends keyof ServicesNativeStackParamList = undefined,

@@ -96,8 +96,7 @@ export class BasicClient<P extends IGetPayload, T> {
     try {
       parsedData = this.parseMethod(data);
     } catch (e) {
-      console.warn(`[PARSER] Ignoring a error from ${this.name}`);
-      console.trace(e);
+      console.error(`[PARSER] Ignoring an error from ${this.name}`, e.stack || e);
       reportParserError(e);
     }
     if (!parsedData) return failedResult;

@@ -1,12 +1,9 @@
 import * as SentryExpo from 'sentry-expo';
 
 import { ISessionTeachPlan } from '../models/teachPlan';
-import alertParserBugReport from './debug';
 
-let isDebug = false;
 export default () => {
   console.log('[SENTRY] Initializing...');
-  isDebug = true;
 
   const dsn = process.env.EXPO_PUBLIC_SENTRY_DSN;
 
@@ -44,8 +41,7 @@ export const checkSubjectNames = (teachPlan: ISessionTeachPlan[]) => {
 };
 
 export const reportParserError = (error) => {
-  if (isDebug) SentryExpo.React.captureException(error);
-  else alertParserBugReport();
+  if (!__DEV__) SentryExpo.React.captureException(error);
 };
 
 export const executeRegex = (regex: RegExp, str: string): RegExpExecArray => {
