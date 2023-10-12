@@ -5,10 +5,10 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import BorderLine from '../../components/BorderLine';
 import Card from '../../components/Card';
 import CardHeaderOut from '../../components/CardHeaderOut';
+import { useGlobalStyles } from '../../hooks';
 import { ITeacher } from '../../models/teachers';
 import { ServicesNavigationProp } from '../../navigation/types';
 import Teacher from './Teacher';
-import { useGlobalStyles } from '../../hooks';
 
 interface TeacherCardProps {
   discipline: string;
