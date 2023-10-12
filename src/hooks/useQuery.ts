@@ -35,7 +35,7 @@ const useQuery = <P, R>({
   const payloadData = useRef<P>(payload.data);
   const skippedInitialGet = useRef<boolean>(false);
   const fromFail = useRef<boolean>(false);
-  const { isAuthorizing } = useAppSelector((state) => state.auth);
+  const { isAuthorizing, isOfflineMode } = useAppSelector((state) => state.auth);
 
   const [data, setData] = useState<R>();
   const [isLoading, setLoading] = useState<boolean>(true);
@@ -94,6 +94,9 @@ const useQuery = <P, R>({
     loadData({ requestType: RequestType.forceFetch, data: payloadData.current });
 
   const get = async (payload: IGetPayload<P>): Promise<IGetResult<R>> => {
+    if (isOfflineMode) {
+      payload.requestType = RequestType.forceCache;
+    }
     payloadData.current = payload.data;
     const result = await method(payload);
 
