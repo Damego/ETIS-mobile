@@ -59,13 +59,6 @@ export type ServiceNativeStackScreenProps<
   BottomTabsScreenProps
 >;
 
-export type ServiceNativeStackScreenProps<
-  ScreenName extends keyof ServicesNativeStackParamList = undefined,
-> = CompositeScreenProps<
-  NativeStackScreenProps<ServicesNativeStackParamList, ScreenName>,
-  BottomTabsScreenProps
->;
-
 export type RootStackNavigationProp = StackNavigationProp<RootStackParamList>;
 export type BottomTabsNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<BottomTabsParamList>,
