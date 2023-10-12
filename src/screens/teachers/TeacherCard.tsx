@@ -8,6 +8,7 @@ import CardHeaderOut from '../../components/CardHeaderOut';
 import { ITeacher } from '../../models/teachers';
 import { ServicesNavigationProp } from '../../navigation/types';
 import Teacher from './Teacher';
+import { useGlobalStyles } from '../../hooks';
 
 interface TeacherCardProps {
   discipline: string;
@@ -16,6 +17,7 @@ interface TeacherCardProps {
 
 const TeacherCard = ({ discipline, teachers }: TeacherCardProps) => {
   const navigation = useNavigation<ServicesNavigationProp>();
+  const globalStyles = useGlobalStyles();
 
   return (
     <CardHeaderOut topText={discipline}>
@@ -33,7 +35,7 @@ const TeacherCard = ({ discipline, teachers }: TeacherCardProps) => {
         }
       >
         <Card style={{ alignItems: 'center', marginTop: '2%' }}>
-          <Text style={{ fontWeight: '500' }}>Расписание кафедры</Text>
+          <Text style={[globalStyles.textColor, { fontWeight: '500' }]}>Расписание кафедры</Text>
         </Card>
       </TouchableOpacity>
     </CardHeaderOut>

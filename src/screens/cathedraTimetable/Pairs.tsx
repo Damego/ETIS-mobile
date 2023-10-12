@@ -40,7 +40,9 @@ const Pair = ({ pair, index }: { pair: IPair; index: number }) => {
   return (
     <View style={styles.pairContainer}>
       <View style={styles.pairTimeContainer}>
-        <Text style={[fontSize.mini, globalStyles.textColor]}>{pairText}</Text>
+        <Text style={[globalStyles.textColor, fontSize.mini, globalStyles.textColor]}>
+          {pairText}
+        </Text>
         <Text style={globalStyles.textColor}>{pair.time}</Text>
       </View>
 
@@ -62,7 +64,7 @@ const LessonWithPopover = ({ lesson }: { lesson: ILesson }) => {
       placement={PopoverPlacement.FLOATING}
       from={(_, showPopover) => (
         <TouchableOpacity onPress={showPopover}>
-          <Text style={styles.lessonInfoText} key={lesson.discipline}>
+          <Text style={[globalStyles.textColor, styles.lessonInfoText]} key={lesson.discipline}>
             {lesson.discipline}
           </Text>
         </TouchableOpacity>
@@ -84,10 +86,12 @@ const LessonWithPopover = ({ lesson }: { lesson: ILesson }) => {
 };
 
 const Pairs = ({ pairs }: { pairs: IPair[] }) => {
+  const globalStyles = useGlobalStyles();
+
   if (!pairs.length) {
     return (
       <View style={styles.noPairsContainer}>
-        <Text style={styles.lessonInfoText}>Пар нет</Text>
+        <Text style={[globalStyles.textColor, styles.lessonInfoText]}>Пар нет</Text>
       </View>
     );
   }
