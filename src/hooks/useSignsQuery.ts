@@ -4,10 +4,10 @@ import { cache } from '../cache/smartCache';
 import { useClient } from '../data/client';
 import { composePointsAndMarks } from '../data/signs';
 import { GetResultType, RequestType } from '../models/results';
+import { ISessionPoints } from '../models/sessionPoints';
 import { setCurrentSession } from '../redux/reducers/studentSlice';
 import { useAppDispatch, useAppSelector } from './redux';
 import useQuery from './useQuery';
-import { ISessionPoints } from '../models/sessionPoints';
 
 const useSignsQuery = () => {
   const fetchedSessions = useRef<number[]>([]);
@@ -16,7 +16,12 @@ const useSignsQuery = () => {
   const client = useClient();
   const [data, setData] = useState<ISessionPoints>(null);
 
-  const { data: pointsData, isLoading, update, refresh } = useQuery({
+  const {
+    data: pointsData,
+    isLoading,
+    update,
+    refresh,
+  } = useQuery({
     method: client.getSessionSignsData,
     after: async (result) => {
       // Очевидно, что в самом начале мы получаем текущую сессию
@@ -45,7 +50,7 @@ const useSignsQuery = () => {
 
   const marksQuery = useQuery({
     method: client.getSessionMarksData,
-  })
+  });
 
   useEffect(() => {
     if (pointsData && marksQuery.data) setData(composePointsAndMarks(pointsData, marksQuery.data));
