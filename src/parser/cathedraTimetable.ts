@@ -164,6 +164,5 @@ export default function parseCathedraTimetable(html: string) {
     });
   });
 
-  // console.log(JSON.stringify(data));
   return data;
 }
