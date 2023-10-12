@@ -76,7 +76,9 @@ const Teacher = ({ data }: TeacherProps) => {
       <TouchableOpacity
         onPress={() => navigation.navigate('CathedraTimetable', { teacherId: data.id })}
       >
-        <Text style={[globalStyles.textColor, { fontWeight: '500' }]}>
+        <Text
+          style={[globalStyles.textColor, { fontWeight: '500', textDecorationLine: 'underline' }]}
+        >
           Расписание преподавателя
         </Text>
       </TouchableOpacity>
