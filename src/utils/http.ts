@@ -419,7 +419,6 @@ class HTTPClient {
     };
 
     return this.request('GET', '/tt_pkg.show_prep', { params, returnResponse: false });
-
   }
 }
 
