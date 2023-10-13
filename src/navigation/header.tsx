@@ -54,7 +54,7 @@ export type HeaderParamList = {
 
 export const headerParams = (theme: ITheme): HeaderParamList => ({
   headerStyle: {
-    backgroundColor: theme.colors.background,
+    backgroundColor: 'transparent',
   },
   headerTitleStyle: {
     color: theme.colors.primary,

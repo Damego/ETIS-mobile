@@ -7,6 +7,7 @@ import React, { useEffect } from 'react';
 import QuickActions from 'react-native-quick-actions';
 
 import { cache } from '../cache/smartCache';
+import GradientContainer from '../components/GradientContainer';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { useAppTheme } from '../hooks/theme';
 import { PageType, setInitialPage } from '../redux/reducers/settingsSlice';
@@ -98,15 +99,20 @@ const StackNavigator = () => {
     );
 
   return (
-    <NavigationContainer theme={theme}>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        {component}
-      </Stack.Navigator>
-    </NavigationContainer>
+    <GradientContainer
+      disabled={!theme.colors.backgroundGradient}
+      colors={theme.colors.backgroundGradient}
+    >
+      <NavigationContainer theme={theme}>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          {component}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </GradientContainer>
   );
 };
 

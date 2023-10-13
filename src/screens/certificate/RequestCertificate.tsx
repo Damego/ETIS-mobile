@@ -114,7 +114,7 @@ export default function RequestCertificate() {
               <AntDesign name="infocirlceo" size={24} color={schemeColor} />
             </TouchableOpacity>
           )}
-          popoverStyle={[styles.popover, { backgroundColor: appTheme.colors.background }]}
+          popoverStyle={[styles.popover, { backgroundColor: appTheme.colors.block }]}
         >
           <Text style={[fontSize.medium, globalStyles.textColor]}>{text}</Text>
         </Popover>

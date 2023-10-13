@@ -12,6 +12,7 @@ import { ServiceNativeStackScreenProps, ServicesNavigationProp } from '../../nav
 import { fontSize } from '../../utils/texts';
 import Menu from './Menu';
 import UserInfo from './UserInfo';
+import { useAppTheme } from '../../hooks/theme';
 
 const styles = StyleSheet.create({
   textTitle: {
@@ -23,6 +24,7 @@ const styles = StyleSheet.create({
 
 export const SettingButton = () => {
   const navigation = useNavigation<ServicesNavigationProp>();
+  const theme = useAppTheme();
 
   return (
     <TouchableOpacity
@@ -31,7 +33,7 @@ export const SettingButton = () => {
       }}
       style={{ justifyContent: 'center' }}
     >
-      <AntDesign name="setting" size={28} color={'#C62E3E'} />
+      <AntDesign name="setting" size={28} color={theme.colors.primary} />
     </TouchableOpacity>
   );
 };
