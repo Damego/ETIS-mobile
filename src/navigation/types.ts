@@ -40,6 +40,7 @@ export type ServicesNativeStackParamList = {
   PersonalRecords: undefined;
   ChangePassword: undefined;
   ChangeEmail: { sendVerificationMail: boolean };
+  CathedraTimetable: { teacherId?: string; cathedraId?: string };
 };
 
 export type SignsTopTabsParamsList = {

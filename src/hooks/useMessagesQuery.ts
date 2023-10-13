@@ -21,6 +21,12 @@ const useMessagesQuery = () => {
         dispatch(setMessageCount(null));
       }
     },
+    onFail: () => {
+      update({
+        data: 1,
+        requestType: RequestType.forceCache,
+      });
+    },
   });
 
   const loadPage = (page: number) => {

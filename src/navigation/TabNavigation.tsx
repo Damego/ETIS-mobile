@@ -46,6 +46,7 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
       if (result.data) {
         dispatch(setStudentState(result.data));
       }
+      return;
     }
 
     const cached = await client.getStudentInfoData({ requestType: RequestType.forceCache });

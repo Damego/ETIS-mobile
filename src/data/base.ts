@@ -1,5 +1,6 @@
 import { IAbsence } from '../models/absences';
 import { ICalendarSchedule } from '../models/calendarSchedule';
+import { ICathedraTimetable, ICathedraTimetablePayload } from '../models/cathedraTimetable';
 import { ICertificateTable } from '../models/certificate';
 import { IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
@@ -44,6 +45,9 @@ export interface BaseClient {
   ): Promise<IGetResult<ISessionQuestionnaireLink[]>>;
   getSessionQuestionnaire(payload: IGetPayload<string>): Promise<IGetResult<ISessionQuestionnaire>>;
   getPersonalRecords(payload: IGetPayload): Promise<IGetResult<IPersonalRecord[]>>;
+  getCathedraTimetable(
+    payload: IGetPayload<ICathedraTimetablePayload>
+  ): Promise<IGetResult<ICathedraTimetable>>;
 }
 
 export class BasicClient<P extends IGetPayload, T> {
