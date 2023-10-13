@@ -3,29 +3,25 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { useGlobalStyles } from '../hooks';
 import { fontSize } from '../utils/texts';
+import Card from './Card';
 
 const styles = StyleSheet.create({
   cardView: {
-    padding: '2%',
     alignItems: 'center',
-    flex: 1,
-    display: 'flex',
-    backgroundColor: '#FFEB3B',
-    marginBottom: '3%',
-    borderRadius: 10,
   },
   text: {
-    fontWeight: 'bold',
+    fontWeight: '500',
+    color: '#FFFFFF',
   },
 });
 
-const WarningCard = ({ text }) => {
+const WarningCard = ({ text }: { text: string }) => {
   const globalStyles = useGlobalStyles();
 
   return (
-    <View style={[styles.cardView, globalStyles.shadow]}>
+    <Card style={[globalStyles.primaryBackgroundColor, styles.cardView]}>
       <Text style={[fontSize.medium, styles.text]}>{text}</Text>
-    </View>
+    </Card>
   );
 };
 

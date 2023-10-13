@@ -39,6 +39,7 @@ export type ServicesNativeStackParamList = {
   SessionQuestionnaireList: undefined;
   PersonalRecords: undefined;
   ChangePassword: undefined;
+  ChangeEmail: { sendVerificationMail: boolean };
   CathedraTimetable: { teacherId?: string; cathedraId?: string };
 };
 
@@ -49,6 +50,7 @@ export type SignsTopTabsParamsList = {
 
 export type RootStackScreenProps<ScreenName extends keyof RootStackParamList = undefined> =
   StackScreenProps<RootStackParamList, ScreenName>;
+
 export type BottomTabsScreenProps<ScreenName extends keyof BottomTabsParamList = undefined> =
   CompositeScreenProps<BottomTabScreenProps<BottomTabsParamList, ScreenName>, RootStackScreenProps>;
 export type ServiceNativeStackScreenProps<

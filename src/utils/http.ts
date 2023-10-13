@@ -393,6 +393,21 @@ class HTTPClient {
     return this.request('POST', '/stu.change_pass', { data, returnResponse: false });
   }
 
+  changeEmail(email: string) {
+    const data = {
+      p_step: 1,
+      p_email: email,
+    };
+
+    return this.request('POST', '/stu_email_pkg.change_email', { data, returnResponse: false });
+  }
+
+  sendVerificationMail() {
+    const data = {
+      p_step: 1,
+    };
+    return this.request('POST', '/stu_email_pkg.send_v_email', { data, returnResponse: false });
+
   getCathedraTimetable({ session, week, teacherId, cathedraId }: ICathedraTimetablePayload) {
     const params = {
       p_term: session,
@@ -403,6 +418,7 @@ class HTTPClient {
     };
 
     return this.request('GET', '/tt_pkg.show_prep', { params, returnResponse: false });
+
   }
 }
 

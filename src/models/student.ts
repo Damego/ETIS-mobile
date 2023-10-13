@@ -13,4 +13,5 @@ export interface StudentState {
   sessionTestID: string;
   currentWeek?: number;
   currentSession?: number;
+  hasUnverifiedEmail: boolean;
 }
