@@ -407,6 +407,7 @@ class HTTPClient {
       p_step: 1,
     };
     return this.request('POST', '/stu_email_pkg.send_v_email', { data, returnResponse: false });
+  }
 
   getCathedraTimetable({ session, week, teacherId, cathedraId }: ICathedraTimetablePayload) {
     const params = {
