@@ -1,10 +1,13 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
+import { isHalloween } from '../../utils/events';
+
 export enum ThemeType {
   auto = 'auto',
   light = 'light',
   dark = 'dark',
   black = 'black',
+  halloween = 'halloween',
 }
 
 export enum PageType {
@@ -47,8 +50,11 @@ const settingsSlice = createSlice({
   reducers: {
     setConfig(state, action: PayloadAction<AppConfig>) {
       const config = action.payload;
-      if (config.theme !== undefined) state.theme = config.theme;
-      else state.theme = ThemeType.auto;
+      if (config.theme !== undefined) {
+        // TODO: Remove Halloween
+        if (!isHalloween() && config.theme === ThemeType.halloween) state.theme = ThemeType.auto;
+        else state.theme = config.theme;
+      } else state.theme = ThemeType.auto;
 
       if (config.signNotificationEnabled !== undefined)
         state.signNotification = config.signNotificationEnabled;

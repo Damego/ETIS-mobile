@@ -5,6 +5,7 @@ import { cache } from '../../cache/smartCache';
 import Dropdown from '../../components/Dropdown';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { ThemeType, changeTheme } from '../../redux/reducers/settingsSlice';
+import { isHalloween } from '../../utils/events';
 import { fontSize } from '../../utils/texts';
 
 const options = [
@@ -25,6 +26,12 @@ const options = [
     value: ThemeType.black,
   },
 ];
+
+if (isHalloween())
+  options.push({
+    label: 'Хэллоуин',
+    value: ThemeType.halloween,
+  });
 
 const styles = StyleSheet.create({
   cardView: {

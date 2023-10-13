@@ -14,7 +14,6 @@ import { fontSize } from '../../utils/texts';
 const AboutSentryPopover = () => {
   const globalStyles = useGlobalStyles();
   const appTheme = useAppTheme();
-  const appColorScheme = useAppColorScheme();
 
   return (
     <Popover
@@ -24,14 +23,14 @@ const AboutSentryPopover = () => {
           <AntDesign
             name={'infocirlceo'}
             size={24}
-            color={appColorScheme === 'light' ? 'black' : 'white'}
+            color={appTheme.colors.text}
           />
         </TouchableOpacity>
       )}
       popoverStyle={{
         borderRadius: globalStyles.border.borderRadius,
         padding: '2%',
-        backgroundColor: appTheme.colors.background,
+        backgroundColor: appTheme.colors.block,
       }}
     >
       <Text

@@ -57,7 +57,7 @@ const ButtonWithPopover = ({
         popoverStyle={{
           borderRadius: globalStyles.border.borderRadius,
           padding: '2%',
-          backgroundColor: appTheme.colors.background,
+          backgroundColor: appTheme.colors.block,
         }}
       >
         <Text
