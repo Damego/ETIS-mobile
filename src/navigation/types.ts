@@ -39,6 +39,7 @@ export type ServicesNativeStackParamList = {
   SessionQuestionnaireList: undefined;
   PersonalRecords: undefined;
   ChangePassword: undefined;
+  CathedraTimetable: { teacherId?: string; cathedraId?: string };
 };
 
 export type SignsTopTabsParamsList = {

@@ -3,6 +3,8 @@ import * as SentryExpo from 'sentry-expo';
 import { ISessionTeachPlan } from '../models/teachPlan';
 
 export default () => {
+  if (__DEV__) return;
+
   console.log('[SENTRY] Initializing...');
 
   const dsn = process.env.EXPO_PUBLIC_SENTRY_DSN;
