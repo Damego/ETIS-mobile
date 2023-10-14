@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
+import { IThemeColors } from './themes';
 
-const getGlobalStyles = ({ colors }) =>
+const getGlobalStyles = ({ colors }: {colors: IThemeColors}) =>
   StyleSheet.create({
     shadow: {
       shadowColor: colors.shadow,
@@ -12,6 +13,9 @@ const getGlobalStyles = ({ colors }) =>
       shadowRadius: 6,
       elevation: 5,
     },
+    borderRadius: {
+      borderRadius: 10
+    },
     border: {
       borderRadius: 10,
       borderWidth: 1,
@@ -22,6 +26,18 @@ const getGlobalStyles = ({ colors }) =>
     },
     primaryBackgroundColor: {
       backgroundColor: colors.primary,
+    },
+    fontColorForPrimary: {
+      color: colors.textForPrimary
+    },
+    fontColorForSecondary: {
+      color: colors.textForSecondary
+    },
+    secondaryFontColor: {
+      color: colors.secondary
+    },
+    secondaryBackgroundColor: {
+      backgroundColor: colors.secondary,
     },
     block: {
       backgroundColor: colors.block,
