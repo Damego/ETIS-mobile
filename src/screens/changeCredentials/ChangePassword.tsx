@@ -116,6 +116,7 @@ const Form = ({
         onPress={preSubmit}
         disabled={!passwordHasEightSymbols || !passwordConfirmed}
         showLoading={showLoading}
+        variant={'secondary'}
       />
     </View>
   );

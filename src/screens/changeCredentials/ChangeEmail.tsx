@@ -74,6 +74,7 @@ const Form = ({
         onPress={() => onSubmit(email)}
         disabled={!email || !emailRegex.test(email)}
         showLoading={showLoading}
+        variant={'secondary'}
       />
     </View>
   );

@@ -109,7 +109,9 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
         />
       </View>
 
-      <Button text="Войти" onPress={() => onSubmit(login, password)} />
+      <View style={{width: '90%'}}>
+        <Button text="Войти" onPress={() => onSubmit(login, password)} variant={'secondary'} />
+      </View>
     </View>
   );
 };
