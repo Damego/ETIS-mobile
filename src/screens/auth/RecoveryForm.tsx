@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Image, Text, TextInput, View } from 'react-native';
 
-import { Button, LoadingButton } from '../../components/Button';
+import { Button } from '../../components/Button';
 import ClickableText from '../../components/ClickableText';
 import { useGlobalStyles } from '../../hooks';
 import { useAppTheme } from '../../hooks/theme';
@@ -35,15 +35,15 @@ const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequ
         onSubmitEditing={() => onSubmit(login)}
       />
 
-      {isLoading ? (
-        <LoadingButton />
-      ) : (
+      <View style={{ width: '90%' }}>
         <Button
           text="Отправить письмо"
           onPress={() => onSubmit(login)}
           disabled={disabledRequestButton}
+          showLoading={isLoading}
+          variant={'secondary'}
         />
-      )}
+      </View>
 
       <ClickableText
         textStyle={[fontSize.large, globalStyles.textColor]}

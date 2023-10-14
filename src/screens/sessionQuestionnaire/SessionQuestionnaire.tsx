@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
-import { Button, ToastAndroid, View } from 'react-native';
+import { ToastAndroid, View } from 'react-native';
 
+import { Button } from '../../components/Button';
 import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
@@ -131,11 +132,7 @@ export default function SessionQuestionnaire({
 
       {!hideButton && (
         <View style={{ marginVertical: '5%' }}>
-          <Button
-            onPress={onButtonClick}
-            title={'Далее'}
-            color={globalStyles.primaryFontColor.color}
-          />
+          <Button onPress={onButtonClick} text={'Далее'} variant={'secondary'} />
         </View>
       )}
     </Screen>
