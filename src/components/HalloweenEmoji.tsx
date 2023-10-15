@@ -3,7 +3,6 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { useAppSelector } from '../hooks';
 import { ThemeType } from '../redux/reducers/settingsSlice';
-import { isHalloween } from '../utils/events';
 import { getRandomItem } from '../utils/utils';
 
 const EMOJI = ['🎃', '👻', '🕷', '🕸'];
@@ -30,7 +29,7 @@ const emojiStyles = StyleSheet.create({
 const HalloweenEmoji = () => {
   const { theme } = useAppSelector((state) => state.settings);
 
-  if (!isHalloween() || theme !== ThemeType.halloween) return;
+  if (theme !== ThemeType.halloween) return;
 
   return (
     <>
