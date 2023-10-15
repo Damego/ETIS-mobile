@@ -25,7 +25,7 @@ import { RootStackParamList } from './types';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const StackNavigator = () => {
-  const { isSignedIn } = useAppSelector((state) => state.auth);
+  const isSignedIn = useAppSelector((state) => state.auth.isSignedIn);
   const { viewedIntro, appIsReady, sentryEnabled } = useAppSelector((state) => state.settings);
   const theme = useAppTheme();
   const dispatch = useAppDispatch();
