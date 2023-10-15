@@ -1,5 +1,13 @@
 import { StatusBarStyle } from 'expo-status-bar/src/StatusBar.types';
 
+export enum ThemeType {
+  auto = 'auto',
+  light = 'light',
+  dark = 'dark',
+  black = 'black',
+  halloween = 'halloween',
+}
+
 export interface IThemeColors {
   // Цвет для заднего фона
   background: string;

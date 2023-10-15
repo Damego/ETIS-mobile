@@ -7,7 +7,7 @@ import ClickableText from '../../components/ClickableText';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { useAppTheme } from '../../hooks/theme';
 import { setSaveUserCredentials } from '../../redux/reducers/authSlice';
-import { ThemeType } from '../../redux/reducers/settingsSlice';
+import { ThemeType } from '../../styles/themes';
 import { fontSize } from '../../utils/texts';
 
 export const styles = StyleSheet.create({

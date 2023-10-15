@@ -4,7 +4,6 @@ import { Linking, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react
 
 import { cache } from '../../cache/smartCache';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
-import { useAppColorScheme } from '../../hooks/theme';
 import { setSignNotification } from '../../redux/reducers/settingsSlice';
 import { registerFetch, unregisterBackgroundFetchAsync } from '../../tasks/signs';
 import { NOTIFICATION_GUIDE_URL } from '../../utils';
