@@ -16,7 +16,8 @@ const emojiStyles = StyleSheet.create({
     transform: [{ rotate: '40deg' }],
   },
   text: {
-    fontSize: 50,
+    fontSize: 200,
+    opacity: 0.3
   },
 });
 
