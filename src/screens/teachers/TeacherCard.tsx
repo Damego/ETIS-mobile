@@ -1,10 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 
 import BorderLine from '../../components/BorderLine';
 import { Button } from '../../components/Button';
-import Card from '../../components/Card';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import { useGlobalStyles } from '../../hooks';
 import { ITeacher } from '../../models/teachers';
@@ -19,7 +18,6 @@ interface TeacherCardProps {
 
 const TeacherCard = ({ discipline, teachers }: TeacherCardProps) => {
   const navigation = useNavigation<ServicesNavigationProp>();
-  const globalStyles = useGlobalStyles();
 
   return (
     <CardHeaderOut topText={discipline}>

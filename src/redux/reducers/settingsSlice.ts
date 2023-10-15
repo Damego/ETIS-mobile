@@ -1,14 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { isHalloween } from '../../utils/events';
-
-export enum ThemeType {
-  auto = 'auto',
-  light = 'light',
-  dark = 'dark',
-  black = 'black',
-  halloween = 'halloween',
-}
+import { ThemeType } from '../../styles/themes';
+import { Events } from '../../utils/events';
 
 export enum PageType {
   timeTable = 'Timetable',
@@ -24,6 +17,7 @@ export interface AppConfig {
   reviewStep: 'pending' | 'stop' | null;
   privacyPolicyAccepted: boolean;
   sentryEnabled: boolean;
+  events: Events;
 }
 
 export interface SettingsState {
@@ -50,11 +44,8 @@ const settingsSlice = createSlice({
   reducers: {
     setConfig(state, action: PayloadAction<AppConfig>) {
       const config = action.payload;
-      if (config.theme !== undefined) {
-        // TODO: Remove Halloween
-        if (!isHalloween() && config.theme === ThemeType.halloween) state.theme = ThemeType.auto;
-        else state.theme = config.theme;
-      } else state.theme = ThemeType.auto;
+      if (config.theme !== undefined) state.theme = config.theme;
+      else state.theme = ThemeType.auto;
 
       if (config.signNotificationEnabled !== undefined)
         state.signNotification = config.signNotificationEnabled;

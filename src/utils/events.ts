@@ -1,5 +1,13 @@
+import { ThemeType } from '../styles/themes';
+
+export interface Events {
+  halloween2023?: {
+    suggestedTheme: boolean;
+    previousTheme: ThemeType;
+  };
+}
+
 export const isHalloween = () => {
-  return true;
   const currentDate = Date.now();
   const year = new Date().getFullYear();
 

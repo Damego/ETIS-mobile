@@ -31,7 +31,6 @@ enum Steps {
 export default function SessionQuestionnaire({
   route,
 }: RootStackScreenProps<'SessionQuestionnaire'>) {
-  const globalStyles = useGlobalStyles();
   const { url } = route.params;
   const [step, setStep] = useState<Steps>(1);
   const [themeIndex, setThemeIndex] = useState(0);

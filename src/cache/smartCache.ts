@@ -14,7 +14,8 @@ import { TeacherType } from '../models/teachers';
 import { ITimeTable } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
 import { UserCredentials } from '../redux/reducers/authSlice';
-import { AppConfig, ThemeType } from '../redux/reducers/settingsSlice';
+import { AppConfig } from '../redux/reducers/settingsSlice';
+import {ThemeType} from '../styles/themes';
 import FieldCache from './fieldCache';
 import MappedCache from './mappedCache';
 import SecuredFieldCache from './securedFieldCache';
@@ -357,16 +358,22 @@ export default class SmartCache {
     return this.app.get() || ({} as AppConfig);
   }
 
+  async updateAppConfig(config: AppConfig) {
+    await this.app.init();
+
+    this.app.place(config);
+    await this.app.save();
+  }
+
   async getTheme() {
     const data = await this.getAppConfig();
     return data.theme;
   }
 
   async placeTheme(theme: ThemeType) {
-    const data = await this.getAppConfig();
-    data.theme = theme;
-    this.app.place(data);
-    await this.app.save();
+    const config = await this.getAppConfig();
+    config.theme = theme;
+    await this.updateAppConfig(config);
   }
 
   async getSignNotification() {
@@ -375,10 +382,9 @@ export default class SmartCache {
   }
 
   async placeSignNotification(enabled: boolean) {
-    const data = await this.getAppConfig();
-    data.signNotificationEnabled = enabled;
-    this.app.place(data);
-    await this.app.save();
+    const config = await this.getAppConfig();
+    config.signNotificationEnabled = enabled;
+    await this.updateAppConfig(config);
   }
 
   async getIntroViewed() {
@@ -387,10 +393,9 @@ export default class SmartCache {
   }
 
   async placeIntroViewed(status: boolean) {
-    const data = await this.getAppConfig();
-    data.introViewed = status;
-    this.app.place(data);
-    await this.app.save();
+    const config = await this.getAppConfig();
+    config.introViewed = status;
+    await this.updateAppConfig(config);
   }
 
   async getReviewStep() {
@@ -401,8 +406,7 @@ export default class SmartCache {
   async setReviewStep(step: 'pending' | 'stop') {
     const config = await this.getAppConfig();
     config.reviewStep = step;
-    this.app.place(config);
-    await this.app.save();
+    await this.updateAppConfig(config);
   }
 
   async bumpReviewRequest() {
@@ -425,8 +429,7 @@ export default class SmartCache {
   async setPrivacyPolicyStatus(status: boolean) {
     const config = await this.getAppConfig();
     config.privacyPolicyAccepted = status;
-    this.app.place(config);
-    await this.app.save();
+    await this.updateAppConfig(config);
   }
 
   async getSentryEnabled() {
@@ -437,8 +440,16 @@ export default class SmartCache {
   async setSentryEnabled(enabled: boolean) {
     const config = await this.getAppConfig();
     config.sentryEnabled = enabled;
-    this.app.place(config);
-    await this.app.save();
+    await this.updateAppConfig(config);
+  }
+
+  async getEvents() {
+    const config = await this.getAppConfig();
+    if (!config.events) {
+      config.events = {};
+      await this.updateAppConfig(config);
+    }
+    return config.events;
   }
 
   // End Internal Region

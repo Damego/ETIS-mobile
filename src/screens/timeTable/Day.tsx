@@ -6,8 +6,8 @@ import CardHeaderOut from '../../components/CardHeaderOut';
 import { useAppSelector, useGlobalStyles } from '../../hooks';
 import { TeacherType } from '../../models/teachers';
 import { ITimeTableDay } from '../../models/timeTable';
-import { ThemeType } from '../../redux/reducers/settingsSlice';
-import { halloweenEmptyDayResponses, isHalloween } from '../../utils/events';
+import { ThemeType } from '../../styles/themes';
+import { halloweenEmptyDayResponses } from '../../utils/events';
 import { fontSize } from '../../utils/texts';
 import { getRandomItem } from '../../utils/utils';
 import Pair from './Pair';
@@ -20,7 +20,7 @@ interface DayData {
 const responses = ['Пар нет', 'Отдых', '💤', '😴', '🎮', '(๑ᵕ⌓ᵕ̤)'];
 
 const getRandomResponse = (hasHalloweenTheme: boolean) => {
-  if (isHalloween() && hasHalloweenTheme) return getRandomItem(halloweenEmptyDayResponses);
+  if (hasHalloweenTheme) return getRandomItem(halloweenEmptyDayResponses);
   return getRandomItem(responses);
 };
 

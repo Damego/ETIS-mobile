@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { useAppSelector } from '../hooks';
-import { ThemeType } from '../redux/reducers/settingsSlice';
+import { ThemeType } from '../styles/themes';
 import { getRandomItem } from '../utils/utils';
 
 const EMOJI = ['🎃', '👻', '🕷', '🕸'];
