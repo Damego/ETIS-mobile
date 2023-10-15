@@ -95,6 +95,7 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
       <View style={styles.authPropContainer}>
         <View style={styles.checkboxContainer}>
           <Checkbox
+            color={theme.colors.secondary}
             style={styles.checkbox}
             value={saveUserCredentials}
             onValueChange={toggleSaveUserCredentials}
