@@ -9,11 +9,17 @@ import { getRandomItem } from '../utils/utils';
 const EMOJI = ['🎃', '👻', '🕷', '🕸'];
 
 const emojiStyles = StyleSheet.create({
-  container: {
+  topContainer: {
     position: 'absolute',
     right: 10,
     top: 10,
     transform: [{ rotate: '40deg' }],
+  },
+  bottomContainer: {
+    position: 'absolute',
+    left: 10,
+    bottom: 10,
+    transform: [{ rotate: '320deg' }],
   },
   text: {
     fontSize: 200,
@@ -27,9 +33,14 @@ const HalloweenEmoji = () => {
   if (!isHalloween() || theme !== ThemeType.halloween) return;
 
   return (
-    <View style={emojiStyles.container}>
-      <Text style={emojiStyles.text}>{getRandomItem(EMOJI)}</Text>
-    </View>
+    <>
+      <View style={emojiStyles.topContainer}>
+        <Text style={emojiStyles.text}>{getRandomItem(EMOJI)}</Text>
+      </View>
+      <View style={emojiStyles.bottomContainer}>
+        <Text style={emojiStyles.text}>{getRandomItem(EMOJI)}</Text>
+      </View>
+    </>
   );
 };
 
