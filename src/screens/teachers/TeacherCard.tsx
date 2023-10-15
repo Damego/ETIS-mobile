@@ -3,11 +3,13 @@ import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
 import BorderLine from '../../components/BorderLine';
+import { Button } from '../../components/Button';
 import Card from '../../components/Card';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import { useGlobalStyles } from '../../hooks';
 import { ITeacher } from '../../models/teachers';
 import { ServicesNavigationProp } from '../../navigation/types';
+import { fontSize } from '../../utils/texts';
 import Teacher from './Teacher';
 
 interface TeacherCardProps {
@@ -28,16 +30,14 @@ const TeacherCard = ({ discipline, teachers }: TeacherCardProps) => {
         </View>
       ))}
       <BorderLine />
-      <TouchableOpacity
-        activeOpacity={0.7}
+      <Button
+        text={'Расписание кафедры'}
         onPress={() =>
           navigation.navigate('CathedraTimetable', { cathedraId: teachers[0].cathedraId })
         }
-      >
-        <Card style={{ alignItems: 'center', marginTop: '2%' }}>
-          <Text style={[globalStyles.textColor, { fontWeight: '500' }]}>Расписание кафедры</Text>
-        </Card>
-      </TouchableOpacity>
+        variant={'card'}
+        fontStyle={fontSize.medium}
+      />
     </CardHeaderOut>
   );
 };

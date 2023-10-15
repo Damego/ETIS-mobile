@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
 
 import { useGlobalStyles } from '../hooks';
 import { fontSize } from '../utils/texts';
@@ -19,19 +19,25 @@ const Button = ({
   disabled,
   showLoading,
   variant,
+  fontStyle,
 }: {
   text: string;
   onPress(): void;
   disabled?: boolean;
   showLoading?: boolean;
   variant: 'primary' | 'secondary' | 'card';
+  fontStyle?: StyleProp<TextStyle>;
 }) => {
   const globalStyles = useGlobalStyles();
 
   const styles = {
     primary: {
       textColor: globalStyles.textColor.color,
-      text: [globalStyles.fontColorForPrimary, { fontWeight: '500' }, fontSize.xlarge],
+      text: [
+        globalStyles.fontColorForPrimary,
+        { fontWeight: '500' },
+        fontStyle || fontSize.xlarge,
+      ],
       view: [
         defaultStyles.container,
         globalStyles.primaryBackgroundColor,
@@ -40,7 +46,11 @@ const Button = ({
     },
     secondary: {
       textColor: globalStyles.textColor.color,
-      text: [globalStyles.fontColorForSecondary, { fontWeight: '500' }, fontSize.xlarge],
+      text: [
+        globalStyles.fontColorForSecondary,
+        { fontWeight: '500' },
+        fontStyle || fontSize.xlarge,
+      ],
       view: [
         defaultStyles.container,
         globalStyles.secondaryBackgroundColor,
@@ -49,7 +59,7 @@ const Button = ({
     },
     card: {
       textColor: globalStyles.textColor.color,
-      text: [globalStyles.textColor, { fontWeight: '500' }, fontSize.xlarge],
+      text: [globalStyles.textColor, { fontWeight: '500' }, fontSize || fontSize.xlarge],
       view: [defaultStyles.container, globalStyles.block, globalStyles.border],
     },
   };
