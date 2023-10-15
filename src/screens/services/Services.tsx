@@ -8,11 +8,11 @@ import ReviewBox from '../../components/ReviewBox';
 import Screen from '../../components/Screen';
 import WarningCard from '../../components/WarningCard';
 import { useAppSelector, useGlobalStyles } from '../../hooks';
+import { useAppTheme } from '../../hooks/theme';
 import { ServiceNativeStackScreenProps, ServicesNavigationProp } from '../../navigation/types';
 import { fontSize } from '../../utils/texts';
 import Menu from './Menu';
 import UserInfo from './UserInfo';
-import { useAppTheme } from '../../hooks/theme';
 
 const styles = StyleSheet.create({
   textTitle: {

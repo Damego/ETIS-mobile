@@ -15,7 +15,7 @@ import { ITimeTable } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
 import { UserCredentials } from '../redux/reducers/authSlice';
 import { AppConfig } from '../redux/reducers/settingsSlice';
-import {ThemeType} from '../styles/themes';
+import { ThemeType } from '../styles/themes';
 import FieldCache from './fieldCache';
 import MappedCache from './mappedCache';
 import SecuredFieldCache from './securedFieldCache';

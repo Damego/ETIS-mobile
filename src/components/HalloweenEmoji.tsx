@@ -22,7 +22,7 @@ const emojiStyles = StyleSheet.create({
   },
   text: {
     fontSize: 200,
-    opacity: 0.3
+    opacity: 0.3,
   },
 });
 
