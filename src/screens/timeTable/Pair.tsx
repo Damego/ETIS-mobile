@@ -36,9 +36,9 @@ const Lesson = ({ data, teachersData }: { data: ILesson; teachersData: TeacherTy
   const audience = data.isDistance ? data.audience : location;
 
   let teacherName: string;
-  teachersData.forEach((value: [string, ITeacher[]], index: number) => {
-    const teacher = value[1][0];
-    if (teacher.id == data.teacherId) teacherName = teacher.name;
+  teachersData.forEach(([, teachers]) => {
+    const teacher = teachers.find((teacher) => teacher.id === data.teacherId);
+    if (teacher) teacherName = teacher.name;
   });
 
   return (
@@ -60,7 +60,7 @@ const Lesson = ({ data, teachersData }: { data: ILesson; teachersData: TeacherTy
       ) : (
         <>
           <Text style={globalStyles.textColor}>{audience}</Text>
-          <Text style={globalStyles.textColor}>{teacherName}</Text>
+          {teacherName && <Text style={globalStyles.textColor}>{teacherName}</Text>}
         </>
       )}
     </View>
