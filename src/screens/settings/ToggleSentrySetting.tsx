@@ -20,11 +20,7 @@ const AboutSentryPopover = () => {
       placement={PopoverPlacement.FLOATING}
       from={(_, toggleShow) => (
         <TouchableOpacity onPress={toggleShow}>
-          <AntDesign
-            name={'infocirlceo'}
-            size={24}
-            color={appTheme.colors.text}
-          />
+          <AntDesign name={'infocirlceo'} size={24} color={appTheme.colors.text} />
         </TouchableOpacity>
       )}
       popoverStyle={{

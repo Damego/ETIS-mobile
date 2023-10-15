@@ -33,11 +33,7 @@ const Button = ({
   const styles = {
     primary: {
       textColor: globalStyles.textColor.color,
-      text: [
-        globalStyles.fontColorForPrimary,
-        { fontWeight: '500' },
-        fontStyle || fontSize.xlarge,
-      ],
+      text: [globalStyles.fontColorForPrimary, { fontWeight: '500' }, fontStyle || fontSize.xlarge],
       view: [
         defaultStyles.container,
         globalStyles.primaryBackgroundColor,
