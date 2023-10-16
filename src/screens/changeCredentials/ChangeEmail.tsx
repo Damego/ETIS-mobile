@@ -69,13 +69,15 @@ const Form = ({
         selectionColor={theme.colors.primary}
         autoCapitalize="none"
       />
-      <Button
-        text={'Сменить'}
-        onPress={() => onSubmit(email)}
-        disabled={!email || !emailRegex.test(email)}
-        showLoading={showLoading}
-        variant={'secondary'}
-      />
+      <View style={{ width: '90%' }}>
+        <Button
+          text={'Сменить'}
+          onPress={() => onSubmit(email)}
+          disabled={!email || !emailRegex.test(email)}
+          showLoading={showLoading}
+          variant={'secondary'}
+        />
+      </View>
     </View>
   );
 };
