@@ -116,10 +116,12 @@ export default function parseTimeTable(html: string) {
           let building: string;
           let audienceNumber: string;
           let distancePlatform: DistancePlatform;
+          let announceHTML: string;
 
           const platform = audience.find('a');
           if (platform.length === 1) {
-            distancePlatform = getDistancePlatform(platform);
+            if (platform.attr('data-context')) announceHTML = platform.attr('data-context');
+            else distancePlatform = getDistancePlatform(platform);
           } else {
             audienceText = getTextField(audience);
             const regexResult = executeRegex(audienceRegex, audienceText);
@@ -140,6 +142,7 @@ export default function parseTimeTable(html: string) {
             isDistance: audienceNumber === 'Дистанционно' || !!distancePlatform,
             distancePlatform,
             teacherId,
+            announceHTML,
           });
         });
 
