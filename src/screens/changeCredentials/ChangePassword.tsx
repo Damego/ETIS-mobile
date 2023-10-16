@@ -111,13 +111,15 @@ const Form = ({
         iconColor={theme.colors.text}
       />
 
-      <Button
-        text={'Сменить'}
-        onPress={preSubmit}
-        disabled={!passwordHasEightSymbols || !passwordConfirmed}
-        showLoading={showLoading}
-        variant={'secondary'}
-      />
+      <View style={{ width: '90%' }}>
+        <Button
+          text={'Сменить'}
+          onPress={preSubmit}
+          disabled={!passwordHasEightSymbols || !passwordConfirmed}
+          showLoading={showLoading}
+          variant={'secondary'}
+        />
+      </View>
     </View>
   );
 };
