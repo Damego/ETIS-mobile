@@ -1,13 +1,18 @@
 import QuickActions, { ShortcutItem } from 'react-native-quick-actions';
 
-const SHORTCUTS_ITEMS: ShortcutItem[] = [
+import { BottomTabsParamList } from '../navigation/types';
+
+export interface AppShortcutItem extends ShortcutItem {
+  type: keyof BottomTabsParamList;
+}
+
+const SHORTCUTS_ITEMS: AppShortcutItem[] = [
   {
     type: 'SignsNavigator',
     title: 'Оценки',
     icon: 'signs',
     userInfo: { url: '' },
   },
-
   {
     type: 'Messages',
     title: 'Сообщения',
@@ -20,7 +25,6 @@ const SHORTCUTS_ITEMS: ShortcutItem[] = [
     icon: 'announce',
     userInfo: { url: '' },
   },
-  { type: 'debug', title: 'Отладочный запуск', icon: 'debug', userInfo: { url: '' } },
 ];
 
 export const addShortcuts = () => {

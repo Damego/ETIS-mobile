@@ -1,4 +1,4 @@
-import { load } from 'cheerio';
+import * as cheerio from 'cheerio';
 
 import {
   DistancePlatform,
@@ -10,11 +10,12 @@ import {
   WeekTypes,
 } from '../models/timeTable';
 import { httpClient } from '../utils';
-import { getTextField } from './utils';
 import { executeRegex } from '../utils/sentry';
+import { getTextField } from './utils';
 
 const dateRegex = /\d+.\d+.\d+/gm;
-const audienceRegex = /ауд\. (.*) \((.*) корпус(?:, (\d) этаж)?\)/s;
+const audienceRegex = /ауд\. (.*)\/.* \((.*) корпус(?:, (\d) этаж)?\)/s;
+const idRegex = /[a-z]*\.[a-z]*\?\#([0-9]*)/s;
 
 const getWeekType = (week: cheerio.Cheerio): WeekTypes => {
   if (week.hasClass('holiday')) {
@@ -36,16 +37,16 @@ const getDistancePlatformType = (platform: cheerio.Cheerio): DistancePlatformTyp
   const title = platform.find('img').attr('title');
 
   if (title === 'bbb.psu.ru') return DistancePlatformTypes.bbb;
-  else if (title === 'zoom.us') return DistancePlatformTypes.zoom; // maybe...
-  else if (platform.attr('href').includes('skype')) return DistancePlatformTypes.skype;
+  if (title === 'zoom.us') return DistancePlatformTypes.zoom; // maybe...
+  if (platform.attr('href').includes('skype')) return DistancePlatformTypes.skype;
 
   return DistancePlatformTypes.unknown;
 };
 
 const getDistancePlatformName = (platform: cheerio.Cheerio, type: DistancePlatformTypes) => {
   if (type === DistancePlatformTypes.zoom) return 'Платформа Zoom';
-  else if (type === DistancePlatformTypes.bbb) return 'Платформа BBB';
-  else if (type === DistancePlatformTypes.skype) return 'Skype';
+  if (type === DistancePlatformTypes.bbb) return 'Платформа BBB';
+  if (type === DistancePlatformTypes.skype) return 'Skype';
 
   const image = platform.find('img');
 
@@ -65,7 +66,7 @@ const getDistancePlatform = (platform: cheerio.Cheerio): DistancePlatform => {
 };
 
 export default function parseTimeTable(html: string) {
-  const $ = load(html);
+  const $ = cheerio.load(html);
   const week = $('.week');
   const currentWeek = $('.week.current');
 
@@ -107,23 +108,30 @@ export default function parseTimeTable(html: string) {
         const pair = $(tr);
         const pairInfo = pair.find('.pair_info');
         pairInfo.children().each((lessonIndex, lessonElement) => {
-          const lesson = pairInfo.find(lessonElement);
+          const lesson = $(lessonElement);
           const subject = getTextField(lesson.find('.dis'));
           const audience = lesson.find('.aud');
-          let audienceText: string, floor: string, building: string, audienceNumber: string;
+          let audienceText: string;
+          let floor: string;
+          let building: string;
+          let audienceNumber: string;
           let distancePlatform: DistancePlatform;
+          let announceHTML: string;
 
           const platform = audience.find('a');
           if (platform.length === 1) {
-            distancePlatform = getDistancePlatform(platform);
+            if (platform.attr('data-context')) announceHTML = platform.attr('data-context');
+            else distancePlatform = getDistancePlatform(platform);
           } else {
             audienceText = getTextField(audience);
             const regexResult = executeRegex(audienceRegex, audienceText);
             if (regexResult) {
-              let _;
-              [_, audienceNumber, building, floor] = regexResult;
+              [, audienceNumber, building, floor] = regexResult;
             }
           }
+
+          const teacherAnchor = lesson.find('.teacher').find('a');
+          const [, teacherId] = executeRegex(idRegex, teacherAnchor.attr('href'));
 
           lessons.push({
             audienceText,
@@ -133,6 +141,8 @@ export default function parseTimeTable(html: string) {
             subject,
             isDistance: audienceNumber === 'Дистанционно' || !!distancePlatform,
             distancePlatform,
+            teacherId,
+            announceHTML,
           });
         });
 

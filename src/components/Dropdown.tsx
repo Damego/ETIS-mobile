@@ -5,6 +5,12 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useGlobalStyles } from '../hooks';
 import { fontSize } from '../utils/texts';
 
+interface IDropdownOption {
+  label: string;
+  value: unknown;
+  current: boolean;
+}
+
 const styles = StyleSheet.create({
   dropdownView: {
     position: 'relative',
@@ -23,7 +29,6 @@ const styles = StyleSheet.create({
   },
   menuView: {
     position: 'absolute',
-    top: '100%',
     width: '100%',
     elevation: 10,
   },
@@ -36,44 +41,65 @@ const styles = StyleSheet.create({
   },
 });
 
-const SelectOption = ({ label, current }) => {
+const SelectOption = ({
+  option,
+  onSelect,
+}: {
+  option: IDropdownOption;
+  onSelect: (value: unknown) => void;
+}) => {
   const globalStyles = useGlobalStyles();
 
   return (
-    <View style={styles.optionView}>
+    <TouchableOpacity
+      onPress={() => onSelect(option.value)}
+      key={`pressable-${option.label}`}
+      activeOpacity={0.7}
+      disabled={option.current}
+      style={styles.optionView}
+    >
       <Text
         style={[
           fontSize.medium,
           styles.optionText,
-          current ? globalStyles.primaryFontColor : globalStyles.textColor,
+          option.current ? globalStyles.primaryFontColor : globalStyles.textColor,
         ]}
       >
-        {label}
+        {option.label}
       </Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
-function Menu({ options, onSelect }) {
+function Menu({
+  options,
+  onSelect,
+}: {
+  options: IDropdownOption[];
+  onSelect: (value: unknown) => void;
+}) {
   const globalStyles = useGlobalStyles();
 
   return (
-    <View style={[styles.menuView, globalStyles.border, globalStyles.block]}>
-      {options.map(({ label, value, current }) => (
-        <TouchableOpacity
-          onPress={() => onSelect(value)}
-          key={`pressable-${label}`}
-          activeOpacity={0.9}
-          disabled={current}
-        >
-          <SelectOption label={label} key={label} current={current} />
-        </TouchableOpacity>
-      ))}
+    <View>
+      <View style={[styles.menuView, globalStyles.border, globalStyles.block]}>
+        {options.map((option) => (
+          <SelectOption option={option} onSelect={onSelect} key={option.label} />
+        ))}
+      </View>
     </View>
   );
 }
 
-function Select({ selectedOption, isOpened, toggleOpened }) {
+function Select({
+  selectedOption,
+  isOpened,
+  toggleOpened,
+}: {
+  selectedOption: string;
+  isOpened: boolean;
+  toggleOpened: () => void;
+}) {
   const globalStyles = useGlobalStyles();
 
   return (
@@ -94,7 +120,15 @@ function Select({ selectedOption, isOpened, toggleOpened }) {
   );
 }
 
-export default function Dropdown({ selectedOption, options, onSelect }) {
+export default function Dropdown({
+  selectedOption,
+  options,
+  onSelect,
+}: {
+  selectedOption: IDropdownOption;
+  options: IDropdownOption[];
+  onSelect: (value: unknown) => void;
+}) {
   const [isOpened, setOpened] = useState(false);
 
   const toggleOpened = () => {

@@ -1,8 +1,11 @@
+import { IAbsence } from '../models/absences';
 import { ICalendarSchedule } from '../models/calendarSchedule';
+import { ICathedraTimetable, ICathedraTimetablePayload } from '../models/cathedraTimetable';
 import { ICertificateTable } from '../models/certificate';
-import { IGetMessagesPayload, IMessagesData } from '../models/messages';
+import { IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
-import { IGetRatingPayload, ISessionRating } from '../models/rating';
+import { IPersonalRecord } from '../models/personalRecords';
+import { ISessionRating } from '../models/rating';
 import {
   GetResultType,
   IGetPayload,
@@ -14,27 +17,23 @@ import {
 } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
-import {
-  IGetStringPayload,
-  ISessionQuestionnaire,
-  ISessionQuestionnaireLink,
-} from '../models/sessionQuestionnaire';
-import { IGetSignsPayload } from '../models/signs';
+import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
 import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
-import { ITimeTable, ITimeTableGetProps } from '../models/timeTable';
+import { ITimeTable } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
 import { isLoginPage } from '../parser/utils';
 import { Response } from '../utils/http';
 import { reportParserError } from '../utils/sentry';
 
 export interface BaseClient {
+  getAbsencesData(payload: IGetPayload<number>): Promise<IGetResult<IAbsence>>;
   getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>>;
-  getTimeTableData(payload: ITimeTableGetProps): Promise<IGetResult<ITimeTable>>;
-  getMessagesData(payload: IGetMessagesPayload): Promise<IGetResult<IMessagesData>>;
+  getTimeTableData(payload: IGetPayload<number>): Promise<IGetResult<ITimeTable>>;
+  getMessagesData(payload: IGetPayload<number>): Promise<IGetResult<IMessagesData>>;
   getOrdersData(payload: IGetPayload): Promise<IGetResult<IOrder[]>>;
-  getRatingData(payload: IGetRatingPayload): Promise<IGetResult<ISessionRating>>;
-  getSessionSignsData(payload: IGetSignsPayload): Promise<IGetResult<ISessionPoints>>;
+  getRatingData(payload: IGetPayload<number>): Promise<IGetResult<ISessionRating>>;
+  getSessionSignsData(payload: IGetPayload<number>): Promise<IGetResult<ISessionPoints>>;
   getSessionMarksData(payload: IGetPayload): Promise<IGetResult<ISessionMarks[]>>;
   getStudentInfoData(payload: IGetPayload): Promise<IGetResult<StudentInfo>>;
   getTeacherData(payload: IGetPayload): Promise<IGetResult<TeacherType>>;
@@ -42,9 +41,13 @@ export interface BaseClient {
   getCalendarScheduleData(payload: IGetPayload): Promise<IGetResult<ICalendarSchedule>>;
   getCertificateData(payload: IGetPayload): Promise<IGetResult<ICertificateTable>>;
   getSessionQuestionnaireList(
-    payload: IGetStringPayload
+    payload: IGetPayload<string>
   ): Promise<IGetResult<ISessionQuestionnaireLink[]>>;
-  getSessionQuestionnaire(payload: IGetStringPayload): Promise<IGetResult<ISessionQuestionnaire>>;
+  getSessionQuestionnaire(payload: IGetPayload<string>): Promise<IGetResult<ISessionQuestionnaire>>;
+  getPersonalRecords(payload: IGetPayload): Promise<IGetResult<IPersonalRecord[]>>;
+  getCathedraTimetable(
+    payload: IGetPayload<ICathedraTimetablePayload>
+  ): Promise<IGetResult<ICathedraTimetable>>;
 }
 
 export class BasicClient<P extends IGetPayload, T> {
@@ -64,6 +67,7 @@ export class BasicClient<P extends IGetPayload, T> {
     this.httpMethod = httpMethod;
     this.parseMethod = parseMethod;
     this.placeMethod = placeMethod;
+    // eslint-disable-next-line prefer-destructuring
     this.name = this.constructor.name.split('Client')[0];
   }
 
@@ -80,12 +84,12 @@ export class BasicClient<P extends IGetPayload, T> {
     }
   }
 
-  async tryFetch(payload: P): Promise<Response<string>> {
-    return await this.httpMethod(payload);
+  tryFetch(payload: P): Promise<Response<string>> {
+    return this.httpMethod(payload);
   }
 
   /* применяется на сырых данных после tryFetch */
-  async checkLoginPage({ data }: Response<string>): Promise<IGetResult<T>> {
+  checkLoginPage({ data }: Response<string>): IGetResult<T> {
     if (isLoginPage(data)) {
       return loginPageResult;
     }
@@ -96,8 +100,7 @@ export class BasicClient<P extends IGetPayload, T> {
     try {
       parsedData = this.parseMethod(data);
     } catch (e) {
-      console.warn(`[PARSER] Ignoring a error from ${this.name}`);
-      console.trace(e);
+      console.error(`[PARSER] Ignoring an error from ${this.name}`, e.stack || e);
       reportParserError(e);
     }
     if (!parsedData) return failedResult;
@@ -114,7 +117,8 @@ export class BasicClient<P extends IGetPayload, T> {
     if (cached?.data) {
       console.log(`[DATA] Retrieved ${this.name} from cache`);
       return cached;
-    } else if (payload.requestType === RequestType.forceCache) {
+    }
+    if (payload.requestType === RequestType.forceCache) {
       return errorResult;
     }
     const fetched = await this.tryFetch(payload);
@@ -124,10 +128,10 @@ export class BasicClient<P extends IGetPayload, T> {
         console.log(`[DATA] Failed to force retrieve ${this.name} from server`);
         return errorResult;
       }
-      return await this.tryCached({ ...payload, requestType: RequestType.forceCache });
+      return this.tryCached({ ...payload, requestType: RequestType.forceCache });
     }
 
-    const loginPage = await this.checkLoginPage(fetched);
+    const loginPage = this.checkLoginPage(fetched);
     if (loginPage) {
       console.log(`[DATA] Retrieved ${this.name} from server, but it's login page`);
       return loginPage;

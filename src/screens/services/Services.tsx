@@ -6,7 +6,10 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { cache } from '../../cache/smartCache';
 import ReviewBox from '../../components/ReviewBox';
 import Screen from '../../components/Screen';
+import WarningCard from '../../components/WarningCard';
 import { useAppSelector, useGlobalStyles } from '../../hooks';
+import { useAppTheme } from '../../hooks/theme';
+import { ServiceNativeStackScreenProps, ServicesNavigationProp } from '../../navigation/types';
 import { fontSize } from '../../utils/texts';
 import Menu from './Menu';
 import UserInfo from './UserInfo';
@@ -20,7 +23,8 @@ const styles = StyleSheet.create({
 });
 
 export const SettingButton = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<ServicesNavigationProp>();
+  const theme = useAppTheme();
 
   return (
     <TouchableOpacity
@@ -29,15 +33,15 @@ export const SettingButton = () => {
       }}
       style={{ justifyContent: 'center' }}
     >
-      <AntDesign name="setting" size={28} color={'#C62E3E'} />
+      <AntDesign name="setting" size={28} color={theme.colors.primary} />
     </TouchableOpacity>
   );
 };
 
-const Services = () => {
+const Services = ({ navigation }: ServiceNativeStackScreenProps<'Services'>) => {
   const globalStyles = useGlobalStyles();
 
-  const studentInfo = useAppSelector((state) => state.student.info);
+  const { hasUnverifiedEmail, info } = useAppSelector((state) => state.student);
   const [showReviewModal, setShowReviewModal] = useState(false);
 
   useEffect(() => {
@@ -46,8 +50,15 @@ const Services = () => {
 
   return (
     <Screen>
+      {hasUnverifiedEmail && (
+        <TouchableOpacity
+          onPress={() => navigation.navigate('ChangeEmail', { sendVerificationMail: true })}
+        >
+          <WarningCard text={'Подтвердите адрес электронной почты!'} />
+        </TouchableOpacity>
+      )}
       <View>
-        <UserInfo data={studentInfo} />
+        <UserInfo data={info} />
 
         <Text style={[styles.textTitle, globalStyles.textColor]}>Меню</Text>
         <Menu />

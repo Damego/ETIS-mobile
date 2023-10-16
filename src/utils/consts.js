@@ -5,3 +5,4 @@ export const NOTIFICATION_GUIDE_URL = `${TELEGRAM_URL}/12`;
 export const DEBUG_GUIDE_URL = `${TELEGRAM_URL}/37`;
 
 export const GITHUB_URL = 'https://github.com/damego/ETIS-mobile';
+export const SENTRY_PULL_REQUEST = `${GITHUB_URL}/pull/72`;

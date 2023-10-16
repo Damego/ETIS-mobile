@@ -35,6 +35,7 @@ async function copyFolderRecursiveSync(source, target) {
 
   const files = readdirSync(source);
 
+  // eslint-disable-next-line no-restricted-syntax
   for (const file of files) {
     const sourcePath = join(source, file);
     const targetPath = join(target, file);

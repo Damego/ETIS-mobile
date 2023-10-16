@@ -1,67 +1,78 @@
 import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
-import { DeviceEventEmitter, ToastAndroid } from 'react-native';
-import { ShortcutItem } from 'react-native-quick-actions';
+import { DeviceEventEmitter } from 'react-native';
 
-import { getWrappedClient } from '../data/client';
+import { cache } from '../cache/smartCache';
+import { useClient } from '../data/client';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
 import { useAppTheme } from '../hooks/theme';
-import { GetResultType, RequestType } from '../models/results';
-import { setAuthorizing } from '../redux/reducers/authSlice';
+import { RequestType } from '../models/results';
 import { setStudentState } from '../redux/reducers/studentSlice';
 import Announce from '../screens/announce/Announce';
 import Messages from '../screens/messages/Messages';
+import AboutSignsDetails from '../screens/signs/AboutSignsDetails';
 import TimeTablePage from '../screens/timeTable/TimeTable';
 import { registerFetch } from '../tasks/signs';
+import { AppShortcutItem } from '../utils/shortcuts';
 import ServicesStackNavigator from './ServicesStackNavigator';
 import SignsTopTabNavigator from './TopTabNavigator';
 import { headerParams } from './header';
+import { BottomTabsParamList, BottomTabsScreenProps } from './types';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<BottomTabsParamList>();
 
-const TabNavigator = () => {
+const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
   const globalStyles = useGlobalStyles();
   const theme = useAppTheme();
 
   const dispatch = useAppDispatch();
-  const { messageCount, announceCount } = useAppSelector((state) => state.student);
+  const { messageCount, announceCount, hasUnverifiedEmail } = useAppSelector(
+    (state) => state.student
+  );
   const { signNotification, initialPage } = useAppSelector((state) => state.settings);
-  const client = getWrappedClient();
-  const isDemo = useAppSelector((state) => state.auth.isDemo);
-  const navigation = useNavigation();
+  const client = useClient();
+  const { isDemo, isOfflineMode } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
-    DeviceEventEmitter.addListener('quickActionShortcut', (data: ShortcutItem) => {
-      if (data.type !== 'debug') {
-        navigation.navigate(data.type);
-      } else {
-        ToastAndroid.show('Перезапустите приложение через ярлык', ToastAndroid.LONG);
-      }
+    DeviceEventEmitter.addListener('quickActionShortcut', (data: AppShortcutItem) => {
+      navigation.navigate(data.type);
     });
   }, []);
 
   const loadData = async () => {
-    const result = await client.getStudentInfoData({ requestType: RequestType.tryFetch });
-
-    if (result.type === GetResultType.loginPage) {
-      dispatch(setAuthorizing(true));
+    if (isDemo || isOfflineMode) {
+      const result = await client.getStudentInfoData({ requestType: RequestType.forceCache });
+      if (result.data) {
+        dispatch(setStudentState(result.data));
+      }
       return;
     }
 
-    const data = result.data;
+    const cached = await client.getStudentInfoData({ requestType: RequestType.forceCache });
+    const cachedStudent = cached.data?.student ? { ...cached.data.student } : null;
+    const fetched = await client.getStudentInfoData({ requestType: RequestType.forceFetch });
 
-    if (data) {
-      dispatch(setStudentState(data));
+    if (!cached.data && !fetched.data) return; // edge case
+
+    if (
+      cachedStudent &&
+      fetched.data?.student &&
+      cachedStudent.group !== fetched.data.student.group
+    ) {
+      await cache.clear();
+      await cache.placePartialStudent(fetched.data);
     }
+
+    if (fetched.data || cached.data) dispatch(setStudentState(fetched.data || cached.data));
   };
 
   useEffect(() => {
-    if (signNotification && !isDemo) {
-      registerFetch();
-    }
-    loadData();
+    loadData().then(() => {
+      if (signNotification && !isDemo) {
+        registerFetch();
+      }
+    });
   }, []);
 
   return (
@@ -99,6 +110,7 @@ const TabNavigator = () => {
         options={{
           title: 'Оценки',
           tabBarIcon: ({ size, color }) => <AntDesign name="barschart" size={size} color={color} />,
+          headerRight: () => <AboutSignsDetails />,
         }}
       />
       <Tab.Screen
@@ -122,7 +134,7 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Services"
+        name="ServicesNavigator"
         component={ServicesStackNavigator}
         options={{
           headerShown: false,
@@ -130,6 +142,7 @@ const TabNavigator = () => {
           tabBarIcon: ({ size, color }) => (
             <AntDesign name="appstore-o" size={size} color={color} />
           ),
+          tabBarBadge: hasUnverifiedEmail ? '!' : undefined,
         }}
       />
     </Tab.Navigator>

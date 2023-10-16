@@ -4,10 +4,9 @@ import { Linking, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react
 
 import { cache } from '../../cache/smartCache';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
-import { useAppColorScheme } from '../../hooks/theme';
 import { setSignNotification } from '../../redux/reducers/settingsSlice';
 import { registerFetch, unregisterBackgroundFetchAsync } from '../../tasks/signs';
-import { NOTIFICATION_GUIDE_URL, storage } from '../../utils';
+import { NOTIFICATION_GUIDE_URL } from '../../utils';
 import { fontSize } from '../../utils/texts';
 
 const styles = StyleSheet.create({
@@ -24,14 +23,15 @@ const ToggleSignNotification = () => {
   const signNotification = useAppSelector((state) => state.settings.signNotification);
   const globalStyles = useGlobalStyles();
   const isDemo = useAppSelector((state) => state.auth.isDemo);
-  const changeSignNotification = (signNotification: boolean) => {
-    if (signNotification && !isDemo) {
+
+  const changeSignNotification = (hasSignNotification: boolean) => {
+    if (hasSignNotification && !isDemo) {
       registerFetch();
     } else {
       unregisterBackgroundFetchAsync();
     }
-    dispatch(setSignNotification(signNotification));
-    cache.placeSignNotification(signNotification);
+    dispatch(setSignNotification(hasSignNotification));
+    cache.placeSignNotification(hasSignNotification);
   };
 
   return (
@@ -41,9 +41,9 @@ const ToggleSignNotification = () => {
       </Text>
       <TouchableOpacity onPress={() => Linking.openURL(NOTIFICATION_GUIDE_URL)}>
         <AntDesign // TODO: make as modal w/ blur
-          name="infocirlce"
+          name="infocirlceo"
           size={24}
-          color={useAppColorScheme() === 'light' ? 'black' : 'white'}
+          color={globalStyles.textColor.color}
         />
       </TouchableOpacity>
       <Switch

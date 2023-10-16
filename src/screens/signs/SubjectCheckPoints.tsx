@@ -15,25 +15,27 @@ const styles = StyleSheet.create({
   },
 });
 
-const getCheckPointScore = (checkPoint: ICheckPoint) => {
+export const getCheckPointScore = (checkPoint: ICheckPoint) => {
   if (checkPoint.isAbsent) return 'н';
-  else if (Number.isNaN(checkPoint.points) || !checkPoint.points) return '-';
+  if (Number.isNaN(checkPoint.points) || !checkPoint.points) return '-';
 
   // Вводные работы в рейтинге не показываются, поэтому выводим просто полученные баллы
   return checkPoint.isIntroductionWork ? checkPoint.points : checkPoint.currentScore;
 };
 
-interface SubjectCheckPointsProps {
-  data: ICheckPoint[];
-}
+const getPointsString = (checkPoint: ICheckPoint, number: number): string => {
+  const checkPointName = `КТ ${number}`;
+  const scoreText: string | number = getCheckPointScore(checkPoint);
 
-const SubjectCheckPoints = ({ data }: SubjectCheckPointsProps): React.ReactNode => {
+  if (checkPoint.isIntroductionWork) return `${checkPointName}: ${scoreText}`;
+  return `${checkPointName}: ${scoreText} из ${checkPoint.maxScore}`;
+};
+
+const SubjectCheckPoints = ({ data }: { data: ICheckPoint[] }): React.ReactNode => {
   const globalStyles = useGlobalStyles();
 
   return data.map((checkPoint, index) => {
-    const checkPointName = `КТ ${index + 1}`;
-    const scoreText: string | number = getCheckPointScore(checkPoint);
-    const pointsString = `${checkPointName}: ${scoreText} / ${checkPoint.passScore} / ${checkPoint.maxScore}`;
+    const pointsString = getPointsString(checkPoint, index + 1);
 
     return (
       <Text

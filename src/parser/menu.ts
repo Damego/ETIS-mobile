@@ -3,15 +3,6 @@ import { load } from 'cheerio';
 import { StudentData } from '../models/student';
 import { getTextField } from './utils';
 
-export interface OptionalStudentInfo {
-  announceCount?: number;
-  messageCount?: number;
-  student?: StudentData;
-  sessionTestID?: string;
-  currentWeek?: number;
-  currentSession?: number;
-}
-
 export interface StudentInfo {
   announceCount: number;
   messageCount: number;
@@ -19,6 +10,7 @@ export interface StudentInfo {
   sessionTestID: string;
   currentWeek?: number;
   currentSession?: number;
+  hasUnverifiedEmail: boolean;
 }
 
 export default function parseMenu(html: string, parseGroupJournal = false): StudentInfo {
@@ -28,6 +20,7 @@ export default function parseMenu(html: string, parseGroupJournal = false): Stud
     announceCount: null,
     messageCount: null,
     sessionTestID: null,
+    hasUnverifiedEmail: false,
     student: {
       name: null,
       speciality: null,
@@ -36,6 +29,15 @@ export default function parseMenu(html: string, parseGroupJournal = false): Stud
       group: null,
     },
   };
+
+  const content = $('.span9');
+
+  if (content.length === 2) {
+    const message = content.eq(0);
+    if (getTextField(message).startsWith('Для получения оповещений')) {
+      data.hasUnverifiedEmail = true;
+    }
+  }
 
   // Получение информации о студенте
   const rawData = getTextField($('.span12'));
@@ -61,10 +63,10 @@ export default function parseMenu(html: string, parseGroupJournal = false): Stud
 
   // Получение группы студента
   if (parseGroupJournal) {
-    data.student.group = $('.span9').find('h3').text().split(' ').at(1);
+    data.student.group = content.find('h3').text().split(' ').at(1);
   }
 
-  // Получения количества новых уведомлений
+  // Получение количества новых уведомлений
   menuBlocks
     .first()
     .find('.badge')

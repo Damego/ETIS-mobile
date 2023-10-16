@@ -27,13 +27,19 @@ const EmptyCard = () => {
   );
 };
 
-const LoadingScreen = ({ onRefresh }: { onRefresh?(): Promise<void> }) => (
-  <Screen onUpdate={onRefresh}>
+export const LoadingContainer = () => (
+  <>
     <View style={{ marginTop: '10%' }} />
     <EmptyCard />
     <EmptyCard />
     <EmptyCard />
     <EmptyCard />
+  </>
+);
+
+const LoadingScreen = ({ onRefresh }: { onRefresh?(): void }) => (
+  <Screen onUpdate={onRefresh}>
+    <LoadingContainer />
   </Screen>
 );
 

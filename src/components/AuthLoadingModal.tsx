@@ -11,7 +11,7 @@ import {
   signOut,
 } from '../redux/reducers/authSlice';
 import { httpClient } from '../utils';
-import { isDemoCredentials } from '../utils/demo';
+import isDemoCredentials from '../utils/demo';
 import CustomReCaptcha from './ReCaptcha';
 
 const styles = StyleSheet.create({

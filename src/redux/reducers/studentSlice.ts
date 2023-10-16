@@ -10,17 +10,19 @@ const initialState: StudentState = {
   sessionTestID: null,
   currentSession: null,
   currentWeek: null,
+  hasUnverifiedEmail: false,
 };
 
 const studentSlice = createSlice({
   name: 'student',
-  initialState: initialState,
+  initialState,
   reducers: {
     setStudentState(state, action: PayloadAction<StudentInfo>) {
       state.info = action.payload.student;
       state.sessionTestID = action.payload.sessionTestID;
       state.announceCount = action.payload.announceCount;
       state.messageCount = action.payload.messageCount;
+      state.hasUnverifiedEmail = action.payload.hasUnverifiedEmail;
     },
     setStudentInfo(state, action: PayloadAction<StudentData>) {
       state.info = action.payload;
@@ -40,6 +42,14 @@ const studentSlice = createSlice({
     setCurrentSession(state, action: PayloadAction<number>) {
       state.currentSession = action.payload;
     },
+    resetForRecord(state) {
+      state.info = null;
+      state.messageCount = null;
+      state.announceCount = null;
+      state.sessionTestID = null;
+      state.currentSession = null;
+      state.currentWeek = null;
+    },
   },
 });
 
@@ -51,4 +61,5 @@ export const {
   setAnnounceCount,
   setCurrentWeek,
   setCurrentSession,
+  resetForRecord,
 } = studentSlice.actions;

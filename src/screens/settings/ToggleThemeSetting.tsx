@@ -4,7 +4,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import { cache } from '../../cache/smartCache';
 import Dropdown from '../../components/Dropdown';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
-import { ThemeType, changeTheme } from '../../redux/reducers/settingsSlice';
+import { changeTheme } from '../../redux/reducers/settingsSlice';
+import { ThemeType } from '../../styles/themes';
+import { isHalloween } from '../../utils/events';
 import { fontSize } from '../../utils/texts';
 
 const options = [
@@ -25,6 +27,12 @@ const options = [
     value: ThemeType.black,
   },
 ];
+
+if (isHalloween())
+  options.push({
+    label: 'Хэллоуин',
+    value: ThemeType.halloween,
+  });
 
 const styles = StyleSheet.create({
   cardView: {

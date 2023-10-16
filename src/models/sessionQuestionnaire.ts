@@ -1,5 +1,3 @@
-import { IGetPayload } from './results';
-
 export interface IDefaultTeacher {
   name: string;
   id: string;
@@ -39,8 +37,4 @@ export interface ISessionQuestionnaire {
 export interface ISessionQuestionnaireLink {
   name: string;
   url?: string;
-}
-
-export interface IGetStringPayload extends IGetPayload {
-  data: string;
 }

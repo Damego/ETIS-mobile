@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ToastAndroid } from 'react-native';
+import { ToastAndroid, View } from 'react-native';
 
 import { cache } from '../../cache/smartCache';
 import Screen from '../../components/Screen';
@@ -53,7 +53,9 @@ const AuthScreen = () => {
 
   return (
     <Screen>
-      <Form onSubmit={onFormSubmit} errorMessage={message} setShowRecovery={setShowRecovery} />
+      <View style={{ flex: 1 }}>
+        <Form onSubmit={onFormSubmit} errorMessage={message} setShowRecovery={setShowRecovery} />
+      </View>
       <Footer />
     </Screen>
   );

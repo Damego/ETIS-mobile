@@ -4,6 +4,7 @@ import React from 'react';
 import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { useAppSelector, useGlobalStyles } from '../../hooks';
+import { ServicesNativeStackParamList, ServicesNavigationProp } from '../../navigation/types';
 import { GITHUB_URL, TELEGRAM_URL } from '../../utils';
 import { fontSize } from '../../utils/texts';
 
@@ -23,8 +24,10 @@ const styles = StyleSheet.create({
   rowView: {
     marginVertical: '1%',
     flexDirection: 'row',
-    justifyContent: 'flex-start',
-    marginBottom: '5%',
+    justifyContent: 'space-around',
+  },
+  menuContainer: {
+    gap: 8,
   },
 });
 
@@ -36,10 +39,10 @@ function Button({
 }: {
   icon: React.ReactNode;
   text: string;
-  page?: string;
+  page?: keyof ServicesNativeStackParamList;
   link?: string;
 }) {
-  const navigation = useNavigation();
+  const navigation = useNavigation<ServicesNavigationProp>();
   const globalStyles = useGlobalStyles();
 
   const changePage = () => {
@@ -50,8 +53,17 @@ function Button({
   return (
     <TouchableOpacity style={styles.buttonView} onPress={changePage} activeOpacity={0.9}>
       <View style={[styles.buttonContainer, globalStyles.border, globalStyles.block]}>{icon}</View>
-      <Text style={[fontSize.mini, globalStyles.textColor]}>{text}</Text>
+      <Text style={[fontSize.mini, globalStyles.textColor, { textAlign: 'center' }]}>{text}</Text>
     </TouchableOpacity>
+  );
+}
+
+// Для того чтобы были одинаковые отступы
+function InvisibleButton() {
+  return (
+    <View style={styles.buttonView}>
+      <View style={styles.buttonView} />
+    </View>
   );
 }
 
@@ -62,10 +74,11 @@ function Row({ children }) {
 function Menu() {
   const globalStyles = useGlobalStyles();
   const { sessionTestID } = useAppSelector((state) => state.student);
+  const isDemo = useAppSelector((state) => state.auth.isDemo);
   const iconColor = globalStyles.textColor.color;
 
   return (
-    <View>
+    <View style={styles.menuContainer}>
       <Row>
         <Button
           text="Учебный план"
@@ -84,18 +97,22 @@ function Menu() {
         />
       </Row>
       <Row>
-        {sessionTestID && (
+        {(sessionTestID || isDemo) && (
           <Button
             icon={<AntDesign name="copy1" size={iconSize} color={iconColor} />}
             text="Анкетирование"
             page="SessionQuestionnaireList"
           />
         )}
-
         <Button
           text="Справки"
           icon={<AntDesign name="book" size={iconSize} color={iconColor} />}
           page="Certificate"
+        />
+        <Button
+          text="Пропущенные занятия"
+          icon={<AntDesign name={'paperclip'} size={iconSize} color={iconColor} />}
+          page="Absences"
         />
       </Row>
       <Row>
@@ -109,6 +126,9 @@ function Menu() {
           link={TELEGRAM_URL}
           icon={<FontAwesome5 name="telegram" size={iconSize} color={iconColor} />}
         />
+
+        {/* Удалить, если собрались добавлять новую кнопку */}
+        <InvisibleButton />
       </Row>
     </View>
   );

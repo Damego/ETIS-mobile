@@ -42,14 +42,14 @@ function Message({ message }: { message: IMessage }) {
   const formattedTime = time.format('DD.MM.YYYY HH:mm');
   const hasFiles = message.files && message.files.length !== 0;
 
-  let cardTopText;
+  let cardTopText: string;
   if ([MessageType.message, MessageType.teacherReply].includes(message.type))
     cardTopText = `Преподаватель`;
   else if (message.type === MessageType.studentReply) cardTopText = `Вы`;
 
   return (
     <CardHeaderOut topText={cardTopText}>
-      <Text style={[styles.text, globalStyles.textColor]} selectable selectionColor={'#ade1f5'}>
+      <Text style={globalStyles.textColor} selectable selectionColor={'#ade1f5'}>
         {message.content}
       </Text>
       {hasFiles ? <AttachedFiles files={message.files} /> : ''}

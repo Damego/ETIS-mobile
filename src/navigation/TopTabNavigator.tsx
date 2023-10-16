@@ -1,10 +1,12 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import React from 'react';
 
 import { useAppTheme } from '../hooks/theme';
 import Signs from '../screens/signs';
 import RatingPage from '../screens/signs/RatingPage';
+import { SignsTopTabsParamsList } from './types';
 
-const Tab = createMaterialTopTabNavigator();
+const Tab = createMaterialTopTabNavigator<SignsTopTabsParamsList>();
 
 export default function SignsTopTabNavigator() {
   const theme = useAppTheme();

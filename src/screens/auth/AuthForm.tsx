@@ -5,7 +5,9 @@ import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Button } from '../../components/Button';
 import ClickableText from '../../components/ClickableText';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
+import { useAppTheme } from '../../hooks/theme';
 import { setSaveUserCredentials } from '../../redux/reducers/authSlice';
+import { ThemeType } from '../../styles/themes';
 import { fontSize } from '../../utils/texts';
 
 export const styles = StyleSheet.create({
@@ -13,11 +15,12 @@ export const styles = StyleSheet.create({
     marginTop: '15%',
     flexDirection: 'column',
     alignItems: 'center',
+    paddingVertical: '4%',
+    gap: 16,
   },
   logoImage: {
-    width: 150,
-    height: 150,
-    marginVertical: '3%',
+    width: 130,
+    height: 130,
   },
   checkboxContainer: {
     flexDirection: 'row',
@@ -29,14 +32,11 @@ export const styles = StyleSheet.create({
   },
   input: {
     ...fontSize.large,
-    paddingLeft: 5,
-    height: '12%',
-    marginVertical: '1%',
-    marginHorizontal: '5%',
+    paddingLeft: '2%',
+    paddingVertical: '3%',
     width: '90%',
   },
   authPropContainer: {
-    marginTop: '4%',
     flexDirection: 'row',
     width: '90%',
     paddingHorizontal: 5,
@@ -52,17 +52,24 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
   const dispatch = useAppDispatch();
   const { saveUserCredentials } = useAppSelector((state) => state.auth);
   const globalStyles = useGlobalStyles();
+  const theme = useAppTheme();
+  const themeType = useAppSelector((state) => state.settings.theme);
 
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
 
-  const toggleSaveUserCredentials = (value) => {
+  const toggleSaveUserCredentials = (value: boolean) => {
     dispatch(setSaveUserCredentials(value));
   };
 
   return (
     <View style={[styles.container, globalStyles.border, globalStyles.block]}>
-      <Image style={styles.logoImage} source={require('../../../assets/logo_red.png')} />
+      {/* TODO: Remove Halloween */}
+      {themeType === ThemeType.halloween ? (
+        <Image style={styles.logoImage} source={require('../../../assets/pumkin.gif')} />
+      ) : (
+        <Image style={styles.logoImage} source={require('../../../assets/logo_red.png')} />
+      )}
 
       <Text style={globalStyles.textColor}>{errorMessage}</Text>
 
@@ -71,12 +78,12 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
         onChangeText={(newLogin) => {
           setLogin(newLogin);
         }}
-        placeholder="Эл. почта"
-        placeholderTextColor={globalStyles.textColor.color}
+        placeholder="Эл. почта / фамилия"
+        placeholderTextColor={theme.colors.inputPlaceholder}
         autoComplete="email"
         inputMode="email"
         keyboardType="email-address"
-        selectionColor="#C62E3E"
+        selectionColor={theme.colors.primary}
         autoCapitalize="none"
       />
       <TextInput
@@ -85,16 +92,17 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
           setPassword(newPassword);
         }}
         placeholder="Пароль"
-        placeholderTextColor={globalStyles.textColor.color}
+        placeholderTextColor={theme.colors.inputPlaceholder}
         secureTextEntry
         autoComplete="password"
-        selectionColor="#C62E3E"
+        selectionColor={theme.colors.primary}
         onSubmitEditing={() => onSubmit(login, password)}
       />
 
       <View style={styles.authPropContainer}>
         <View style={styles.checkboxContainer}>
           <Checkbox
+            color={theme.colors.secondary}
             style={styles.checkbox}
             value={saveUserCredentials}
             onValueChange={toggleSaveUserCredentials}
@@ -109,7 +117,9 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
         />
       </View>
 
-      <Button text="Войти" onPress={() => onSubmit(login, password)} />
+      <View style={{ width: '90%' }}>
+        <Button text="Войти" onPress={() => onSubmit(login, password)} variant={'secondary'} />
+      </View>
     </View>
   );
 };

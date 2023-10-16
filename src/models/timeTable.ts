@@ -1,10 +1,8 @@
-import { IGetPayload } from './results';
-
 export enum DistancePlatformTypes {
   unknown,
   bbb,
   zoom,
-  skype
+  skype,
 }
 
 export enum WeekTypes {
@@ -25,7 +23,7 @@ export interface WeekInfo {
   selected: number;
   last: number;
   type: WeekTypes;
-  dates: WeekDates;
+  dates?: WeekDates;
   holidayDates?: WeekDates;
 }
 
@@ -44,6 +42,8 @@ export interface ILesson {
   floor?: string;
   isDistance: boolean;
   distancePlatform?: DistancePlatform;
+  teacherId: string;
+  announceHTML?: string;
 }
 
 export interface IPair {
@@ -60,8 +60,4 @@ export interface ITimeTableDay {
 export interface ITimeTable {
   weekInfo: WeekInfo;
   days: ITimeTableDay[];
-}
-
-export interface ITimeTableGetProps extends IGetPayload {
-  week?: number;
 }

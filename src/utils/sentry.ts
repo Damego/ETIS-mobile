@@ -1,12 +1,11 @@
 import * as SentryExpo from 'sentry-expo';
 
 import { ISessionTeachPlan } from '../models/teachPlan';
-import { alertParserBugReport } from './debug';
 
-let isDebug = false;
 export default () => {
+  if (__DEV__) return;
+
   console.log('[SENTRY] Initializing...');
-  isDebug = true;
 
   const dsn = process.env.EXPO_PUBLIC_SENTRY_DSN;
 
@@ -19,9 +18,7 @@ export default () => {
       integrations: __DEV__
         ? [
             new SentryExpo.Native.ReactNativeTracing({
-              shouldCreateSpanForRequest: (url) => {
-                return !url.startsWith(`http://`);
-              },
+              shouldCreateSpanForRequest: (url) => !url.startsWith(`http://`),
             }),
           ]
         : [],
@@ -31,13 +28,13 @@ export default () => {
   }
 };
 
-const subjectRegex = /([а-яА-Я\w\s":.,+#-]+(?: \([а-яА-Я\w\s]+\))?(?: \[[а-яА-Я\w\s,]+])?)/s;
+const subjectRegex = /([а-яА-Я\w\s":.,+#-]+(?: \([а-яА-Я\w\s]+\))?(?: \[[а-яА-Я\w\s,]+])*)/s;
 export const checkSubjectNames = (teachPlan: ISessionTeachPlan[]) => {
   const incorrectDisciplines = teachPlan
     ?.map((session) => session.disciplines.map((discipline) => discipline.name))
     .flat()
     .filter((name) => !subjectRegex.test(name));
-  if (incorrectDisciplines?.length != 0) {
+  if (incorrectDisciplines?.length !== 0) {
     SentryExpo.React.captureMessage(
       `Disciplines mismatched w/ regex: ${JSON.stringify(incorrectDisciplines)}`,
       'error'
@@ -46,16 +43,13 @@ export const checkSubjectNames = (teachPlan: ISessionTeachPlan[]) => {
 };
 
 export const reportParserError = (error) => {
-  if (isDebug) SentryExpo.React.captureException(error);
-  else alertParserBugReport();
+  if (!__DEV__) SentryExpo.React.captureException(error);
 };
 
 export const executeRegex = (regex: RegExp, str: string): RegExpExecArray => {
   const result = regex.exec(str);
   if (!result) {
-    SentryExpo.React.captureMessage(
-      `String ${str} mismatched with regex ${regex}`, 'error'
-    );
+    SentryExpo.React.captureMessage(`String ${str} mismatched with regex ${regex}`, 'error');
   }
   return result;
 };

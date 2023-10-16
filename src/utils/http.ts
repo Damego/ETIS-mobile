@@ -3,13 +3,15 @@ import * as cheerio from 'cheerio';
 import CyrillicToTranslit from 'cyrillic-to-translit-js';
 import { documentDirectory, downloadAsync } from 'expo-file-system';
 import { getNetworkStateAsync } from 'expo-network';
+import moment from 'moment/moment';
 
+import { ICathedraTimetablePayload } from '../models/cathedraTimetable';
 import { ICertificate } from '../models/certificate';
 import { UploadFile } from '../models/other';
 import { CertificateRequestPayload } from './certificate';
 import { toURLSearchParams } from './encoding';
 import { SessionQuestionnairePayload } from './sessionTest';
-import { getRandomUserAgent } from './userAgents';
+import getRandomUserAgent from './userAgents';
 
 const cyrillicToTranslit = CyrillicToTranslit();
 
@@ -53,7 +55,7 @@ class HTTPClient {
 
   constructor() {
     this.sessionID = null;
-    this.siteURL = 'https://student.psu.ru'
+    this.siteURL = 'https://student.psu.ru';
     this.baseURL = `${this.siteURL}/pls/stu_cus_et`;
     this.instance = axios.create({
       baseURL: this.baseURL,
@@ -274,16 +276,19 @@ class HTTPClient {
   }
 
   /*
-  `trimester`:
+  `session`:
     - 1: осенний
     - 2: весенний
-    - 3: летний
+    - 3: летний (если студент учится по триместрам)
    */
-  getAbsences(trimester: number) {
-    return this.request('GET', '/stu.absence', {
-      params: { p_term: trimester },
-      returnResponse: false,
-    });
+  getAbsences(session?: number) {
+    const params: { p_term?: number } = {};
+
+    if (session) {
+      params.p_term = session;
+    }
+
+    return this.request('GET', '/stu.absence', { params, returnResponse: false });
   }
 
   getTeachers() {
@@ -302,15 +307,15 @@ class HTTPClient {
     return this.request('GET', '/stu.teacher_notes', { params, returnResponse: false });
   }
 
-  async replyToMessage(answerID: string, content: string) {
+  replyToMessage(answerID: string, content: string) {
     const data = {
       p_anv_id: answerID,
       p_msg_txt: content,
     };
-    return await this.request('POST', '/stu.send_reply', { data, returnResponse: false });
+    return this.request('POST', '/stu.send_reply', { data, returnResponse: false });
   }
 
-  async attachFileToMessage(messageID: string, answerMessageID: string, file: UploadFile) {
+  attachFileToMessage(messageID: string, answerMessageID: string, file: UploadFile) {
     file.name = cyrillicToTranslit.transform(file.name);
 
     const data = new FormData();
@@ -320,7 +325,7 @@ class HTTPClient {
     // @ts-ignore
     data.append('file', file);
 
-    return await this.request('POST', '/stu.repl_doc_write', { data, returnResponse: false });
+    return this.request('POST', '/stu.repl_doc_write', { data, returnResponse: false });
   }
 
   getBlankPage() {
@@ -353,21 +358,67 @@ class HTTPClient {
   async sendSessionQuestionnaireResult(payload: SessionQuestionnairePayload) {
     return this.request('POST', '/stu.term_test_save', { data: payload, returnResponse: false });
   }
+
   async sendCertificateRequest(payload: CertificateRequestPayload) {
     return this.request('POST', '/cert_pkg.stu_certif', { data: payload, returnResponse: false });
   }
 
-  async getCertificateHTML(certificate: ICertificate): Promise<string> {
-    const fetched = await httpClient.request(
-      'GET',
-      `/cert_pkg.stu_certif?p_creq_id=${certificate.id}&p_action=VIEW`,
-      { returnResponse: false }
-    );
-    if (fetched.error) return;
+  async getCertificateHTML(certificate: ICertificate) {
+    const params = {
+      p_creq_id: certificate.id,
+      p_action: 'VIEW',
+    };
+    return this.request('GET', `/cert_pkg.stu_certif`, { params, returnResponse: false });
+  }
 
-    console.log('[DATA] fetched certificate html');
+  getPersonalRecords() {
+    return this.request('GET', '/stu.change_pr_page', { returnResponse: false });
+  }
 
-    return fetched.data;
+  async changePersonalRecord(id: string) {
+    const params = {
+      p_pr_id: id,
+    };
+    const response = await this.request('GET', '/stu.change_pr', { params, returnResponse: true });
+    return response.data.status === 200;
+  }
+
+  changePassword(oldPassword: string, newPassword: string) {
+    const data = {
+      p_old: oldPassword,
+      p_new: newPassword,
+      p_new_confirm: newPassword,
+    };
+
+    return this.request('POST', '/stu.change_pass', { data, returnResponse: false });
+  }
+
+  changeEmail(email: string) {
+    const data = {
+      p_step: 1,
+      p_email: email,
+    };
+
+    return this.request('POST', '/stu_email_pkg.change_email', { data, returnResponse: false });
+  }
+
+  sendVerificationMail() {
+    const data = {
+      p_step: 1,
+    };
+    return this.request('POST', '/stu_email_pkg.send_v_email', { data, returnResponse: false });
+  }
+
+  getCathedraTimetable({ session, week, teacherId, cathedraId }: ICathedraTimetablePayload) {
+    const params = {
+      p_term: session,
+      p_week: week,
+      p_sdiv_id: cathedraId,
+      p_peo_id: teacherId,
+      p_ty_id: moment().year(),
+    };
+
+    return this.request('GET', '/tt_pkg.show_prep', { params, returnResponse: false });
   }
 }
 

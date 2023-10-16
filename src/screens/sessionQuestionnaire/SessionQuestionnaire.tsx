@@ -1,14 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Button, ToastAndroid, View } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { ToastAndroid, View } from 'react-native';
 
+import { Button } from '../../components/Button';
 import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
-import { getWrappedClient } from '../../data/client';
-import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
-import { GetResultType, RequestType } from '../../models/results';
-import { IAnswer, ISessionQuestionnaire } from '../../models/sessionQuestionnaire';
-import { setAuthorizing } from '../../redux/reducers/authSlice';
+import { useClient } from '../../data/client';
+import { useAppSelector, useGlobalStyles } from '../../hooks';
+import useQuery from '../../hooks/useQuery';
+import { RequestType } from '../../models/results';
+import { IAnswer } from '../../models/sessionQuestionnaire';
+import { RootStackScreenProps } from '../../navigation/types';
 import { httpClient } from '../../utils';
 import toSessionTestPayload from '../../utils/sessionTest';
 import AdditionalComment from './AdditionalComment';
@@ -26,51 +28,32 @@ enum Steps {
   resultSent,
 }
 
-export default function SessionQuestionnaire({ route }) {
-  const globalStyles = useGlobalStyles();
-  const dispatch = useAppDispatch();
+export default function SessionQuestionnaire({
+  route,
+}: RootStackScreenProps<'SessionQuestionnaire'>) {
   const { url } = route.params;
-  const [data, setData] = useState<ISessionQuestionnaire>();
-  const [isLoading, setLoading] = useState(false);
   const [step, setStep] = useState<Steps>(1);
   const [themeIndex, setThemeIndex] = useState(0);
   const teacherRef = useRef<string>();
   const answersRef = useRef<IAnswer[]>([]);
   const additionalCommentRef = useRef<string>();
   const questionCount = useRef(0);
-  const client = getWrappedClient();
-  const { isDemo } = useAppSelector((state) => state.auth);
 
-  const loadData = async () => {
-    setLoading(true);
-    const result = await client.getSessionQuestionnaire({
+  const client = useClient();
+  const { data, isLoading, refresh } = useQuery({
+    method: client.getSessionQuestionnaire,
+    payload: {
       requestType: RequestType.forceFetch,
       data: url,
-    });
-
-    if (result.type === GetResultType.loginPage) {
-      return dispatch(setAuthorizing(false));
-    }
-
-    if (!result.data) {
-      setLoading(false);
-      ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
-      return;
-    }
-
-    setData(result.data);
-    setLoading(false);
-
-    questionCount.current = result.data.themes.reduce(
-      (count, theme) => count + theme.questions.length,
-      0
-    );
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
+    },
+    after: (result) => {
+      questionCount.current = result.data.themes.reduce(
+        (count, theme) => count + theme.questions.length,
+        0
+      );
+    },
+  });
+  const { isDemo } = useAppSelector((state) => state.auth);
   const setTeacher = (name: string) => {
     teacherRef.current = name;
   };
@@ -113,7 +96,7 @@ export default function SessionQuestionnaire({ route }) {
   };
 
   if (isLoading) return <LoadingScreen />;
-  if (!data) return <NoData onRefresh={loadData} />;
+  if (!data) return <NoData onRefresh={refresh} />;
 
   let component: React.ReactNode;
   if (step === Steps.inputTeacher) {
@@ -148,11 +131,7 @@ export default function SessionQuestionnaire({ route }) {
 
       {!hideButton && (
         <View style={{ marginVertical: '5%' }}>
-          <Button
-            onPress={onButtonClick}
-            title={'Далее'}
-            color={globalStyles.primaryFontColor.color}
-          />
+          <Button onPress={onButtonClick} text={'Далее'} variant={'secondary'} />
         </View>
       )}
     </Screen>

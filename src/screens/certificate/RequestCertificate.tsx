@@ -1,4 +1,5 @@
 import { AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useMemo, useState } from 'react';
 import {
   Alert,
@@ -13,6 +14,7 @@ import {
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 import { RadioButtonProps, RadioGroup } from 'react-native-radio-buttons-group';
 
+import { Button } from '../../components/Button';
 import Card from '../../components/Card';
 import Screen from '../../components/Screen';
 import { useAppSelector, useGlobalStyles } from '../../hooks';
@@ -90,8 +92,10 @@ export default function RequestCertificate() {
   const [quantity, setQuantity] = useState<string>();
   const [delivery, setDelivery] = useState<string>();
   const [keyboardOpen, setKeyboardOpen] = useState<boolean>(false);
+  const [requestSent, setRequestSent] = useState<boolean>(false);
   const schemeColor = useAppColorScheme() === 'light' ? 'black' : 'white';
   const appTheme = useAppTheme();
+  const navigator = useNavigation();
 
   Keyboard.addListener('keyboardDidShow', () => {
     setKeyboardOpen(true);
@@ -111,7 +115,7 @@ export default function RequestCertificate() {
               <AntDesign name="infocirlceo" size={24} color={schemeColor} />
             </TouchableOpacity>
           )}
-          popoverStyle={[styles.popover, { backgroundColor: appTheme.colors.background }]}
+          popoverStyle={[styles.popover, { backgroundColor: appTheme.colors.block }]}
         >
           <Text style={[fontSize.medium, globalStyles.textColor]}>{text}</Text>
         </Popover>
@@ -152,6 +156,7 @@ export default function RequestCertificate() {
   );
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     !currentCertificate?.place && setPlace('');
   }, [currentId]);
 
@@ -188,6 +193,7 @@ export default function RequestCertificate() {
   const submitRequest = async () => {
     if (isDemo) {
       ToastAndroid.show('Запросы в демо режиме невозможны!', ToastAndroid.LONG);
+      setRequestSent(true);
       return;
     }
 
@@ -201,8 +207,9 @@ export default function RequestCertificate() {
           delivery,
         })
       );
+      setRequestSent(true);
     } catch (e) {
-      ToastAndroid.show('Ошибка: ' + e, ToastAndroid.LONG);
+      ToastAndroid.show(`Ошибка: ${e}`, ToastAndroid.LONG);
     }
   };
 
@@ -218,6 +225,30 @@ export default function RequestCertificate() {
     ]);
   };
 
+  if (requestSent) {
+    return (
+      <Screen>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <Text
+            style={[
+              globalStyles.textColor,
+              fontSize.xlarge,
+              { fontWeight: '500', textAlign: 'center' },
+            ]}
+          >
+            Запрос успешно отправлен!
+          </Text>
+        </View>
+        <View style={{ position: 'absolute', left: 0, right: 0, bottom: '1%' }}>
+          <Button
+            text={'Вернуться назад'}
+            onPress={() => navigator.goBack()}
+            variant={'secondary'}
+          />
+        </View>
+      </Screen>
+    );
+  }
   return (
     <Screen>
       <Card>
@@ -278,13 +309,7 @@ export default function RequestCertificate() {
 
       {applicable && (
         <View style={{ position: 'absolute', left: 0, right: 0, bottom: '1%' }}>
-          <TouchableOpacity
-            onPress={confirmSubmit}
-            activeOpacity={0.6}
-            style={[styles.buttonContainer, globalStyles.primaryBackgroundColor]}
-          >
-            <Text style={styles.text}>Заказать</Text>
-          </TouchableOpacity>
+          <Button text={'Заказать'} onPress={confirmSubmit} variant={'secondary'} />
         </View>
       )}
     </Screen>

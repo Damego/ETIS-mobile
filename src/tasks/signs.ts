@@ -49,15 +49,15 @@ export const defineFetchTask = () =>
   TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
     const [cachedResult, onlineResult] = await Promise.all([
       await client.getSessionSignsData({
-        session: currentSession,
+        data: currentSession,
         requestType: RequestType.forceCache,
       }),
       await client.getSessionSignsData({
-        session: currentSession,
+        data: currentSession,
         requestType: RequestType.forceFetch,
       }),
     ]);
-    let result;
+    let result: BackgroundFetch.BackgroundFetchResult;
 
     if (onlineResult.type === GetResultType.loginPage) {
       console.log('[FETCH] Token is expired. Canceling fetch...'); // TODO: re-actualize token

@@ -1,5 +1,6 @@
 // TODO: Refactor this component
 import React, { useState } from 'react';
+import { View } from 'react-native';
 
 import CustomReCaptcha from '../../components/ReCaptcha';
 import Screen from '../../components/Screen';
@@ -58,13 +59,15 @@ const Recovery = ({ setShowModal }) => {
         />
       )}
 
-      <RecoveryForm
-        onSubmit={(mail) => makeRequest({ mail })}
-        isLoading={isLoading}
-        message={message}
-        setShowModal={setShowModal}
-        disabledRequestButton={disabledRequestButton}
-      />
+      <View style={{ flex: 1 }}>
+        <RecoveryForm
+          onSubmit={(mail) => makeRequest({ mail })}
+          isLoading={isLoading}
+          message={message}
+          setShowModal={setShowModal}
+          disabledRequestButton={disabledRequestButton}
+        />
+      </View>
       <Footer />
     </Screen>
   );

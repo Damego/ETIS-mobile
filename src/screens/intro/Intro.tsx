@@ -113,14 +113,14 @@ const Intro = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <StatusBar translucent={true} />
+      <StatusBar translucent />
 
       <AppIntroSlider
         nextLabel={'Дальше'}
         onDone={onIntroDone}
         doneLabel={'Вперёд!'}
         data={slides}
-        renderItem={(item) => renderItem(item)}
+        renderItem={(item: SlideItem) => renderItem(item)}
         bottomButton
       />
     </View>

@@ -37,8 +37,8 @@ function parseCertificates(html: string): ICertificate[] {
 const parseAnnounceText = (item: cheerio.Cheerio) =>
   item
     .contents()
-    .map(function (index, element) {
-      if (element.name === 'br' && element.next.name === 'br') return '\n';
+    .map((_index, element: cheerio.TagElement) => {
+      if (element.name === 'br' && (element.next as cheerio.TagElement).name === 'br') return '\n';
       return item.find(element).text();
     })
     .toArray()
@@ -47,7 +47,12 @@ const parseAnnounceText = (item: cheerio.Cheerio) =>
 
 function parseAnnounces(html: string): ICertificateAnnounce {
   const $ = cheerio.load(html);
-  const selector = $('.span9').children().filter('font');
+  const content = $('.span9');
+  let selector: cheerio.Cheerio;
+  // Объявление с подтверждением почты похожа по структуре на объявления на странице заказа справок
+  // поэтому просто игнорим
+  if (content.length === 2) selector = content.eq(1).children().filter('font');
+  else selector = content;
 
   const firstItem = selector.eq(0);
   const lastItem = selector.eq(1);
