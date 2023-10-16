@@ -101,9 +101,9 @@ export default function ChangeEmail({ route }: ServiceNativeStackScreenProps<'Ch
 
     setMailSent(true);
 
-    const userCredentials = await cache.getUserCredentials();
+    let userCredentials = await cache.getUserCredentials();
     if (emailRegex.test(userCredentials.login)) {
-      userCredentials.login = email;
+      userCredentials = {...userCredentials, login: email};
       cache.placeUserCredentials(userCredentials);
       dispatch(setUserCredentials({ userCredentials, fromStorage: true }));
     }
