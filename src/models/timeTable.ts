@@ -43,6 +43,7 @@ export interface ILesson {
   isDistance: boolean;
   distancePlatform?: DistancePlatform;
   teacherId: string;
+  announceHTML?: string;
 }
 
 export interface IPair {
