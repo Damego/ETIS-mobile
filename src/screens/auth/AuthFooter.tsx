@@ -33,7 +33,9 @@ const AuthFooter = () => {
         Приложение ЕТИС мобайл является неофициальным мобильным приложением для ЕТИС ПГНИУ
       </Text>
       <TouchableOpacity onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}>
-        <Text style={[styles.privacyPolicyText, globalStyles.primaryFontColor]}>Политика конфиденциальности</Text>
+        <Text style={[styles.privacyPolicyText, globalStyles.primaryFontColor]}>
+          Политика конфиденциальности
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => Linking.openURL(TELEGRAM_URL)}>
