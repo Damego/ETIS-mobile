@@ -66,7 +66,7 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
     <View style={[styles.container, globalStyles.border, globalStyles.block]}>
       {/* TODO: Remove Halloween */}
       {themeType === ThemeType.halloween ? (
-        <Text style={{ fontSize: 98 }}>🎃</Text>
+        <Image style={styles.logoImage} source={require('../../../assets/pumkin.gif')} />
       ) : (
         <Image style={styles.logoImage} source={require('../../../assets/logo_red.png')} />
       )}
