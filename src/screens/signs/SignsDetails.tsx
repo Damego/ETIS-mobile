@@ -55,9 +55,12 @@ export default function SignsDetails({ route }: RootStackScreenProps<'SignsDetai
         <TotalPoints subject={subject} style={{ alignItems: 'center' }} />
       </View>
 
-      {subject.checkPoints.map((checkPoint: ICheckPoint, index: number) => (
+      {subject.checkPoints.map((checkPoint: ICheckPoint, index: number) => {
+        const checkPointScore = getCheckPointScore(checkPoint);
+        const score = checkPointScore === 0 && checkPoint.points !== 0 ? checkPoint.points : checkPointScore; 
+        return (
         <CardHeaderIn key={index} topText={getCheckpointTitle(checkPoint.theme, index + 1)}>
-          <Row first={'Оценка:'} second={getCheckPointScore(checkPoint)} />
+          <Row first={'Оценка:'} second={score} />
           <Row first={'Проходной балл:'} second={checkPoint.passScore} />
           <Row first={'Текущий балл:'} second={checkPoint.currentScore} />
           <Row first={'Максимальный балл:'} second={checkPoint.maxScore} />
@@ -83,7 +86,7 @@ export default function SignsDetails({ route }: RootStackScreenProps<'SignsDetai
             />
           </View>
         </CardHeaderIn>
-      ))}
+      )})}
     </Screen>
   );
 }
