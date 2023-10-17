@@ -14,6 +14,7 @@ interface Query<P, R> {
   refresh: () => void;
   update: (payload: IGetPayload<P>) => void;
   get: (payload: IGetPayload<P>) => Promise<IGetResult<R>>;
+  initialPayload: P;
 }
 
 const useQuery = <P, R>({
@@ -35,7 +36,7 @@ const useQuery = <P, R>({
   const payloadData = useRef<P>(payload.data);
   const skippedInitialGet = useRef<boolean>(false);
   const fromFail = useRef<boolean>(false);
-  const { isAuthorizing } = useAppSelector((state) => state.auth);
+  const { isAuthorizing, isOfflineMode } = useAppSelector((state) => state.auth);
 
   const [data, setData] = useState<R>();
   const [isLoading, setLoading] = useState<boolean>(true);
@@ -94,6 +95,9 @@ const useQuery = <P, R>({
     loadData({ requestType: RequestType.forceFetch, data: payloadData.current });
 
   const get = async (payload: IGetPayload<P>): Promise<IGetResult<R>> => {
+    if (isOfflineMode) {
+      payload.requestType = RequestType.forceCache;
+    }
     payloadData.current = payload.data;
     const result = await method(payload);
 
@@ -107,6 +111,7 @@ const useQuery = <P, R>({
     refresh,
     update: (payload) => loadData(payload),
     get,
+    initialPayload: payloadData.current,
   };
 };
 

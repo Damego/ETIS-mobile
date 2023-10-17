@@ -4,8 +4,10 @@ import React from 'react';
 import { useAppTheme } from '../hooks/theme';
 import About from '../screens/about/About';
 import AbsencesTable from '../screens/absences';
+import CathedraTimetable from '../screens/cathedraTimetable/CathedraTimetable';
 import CertificateTable from '../screens/certificate/CertificateTable';
 import RequestCertificate from '../screens/certificate/RequestCertificate';
+import ChangeEmail from '../screens/changeCredentials/ChangeEmail';
 import ChangePassword from '../screens/changeCredentials/ChangePassword';
 import OrderTable from '../screens/orders';
 import PersonalRecords from '../screens/personalRecords/PersonalRecords';
@@ -73,6 +75,12 @@ function ServicesStackNavigator() {
         name={'ChangePassword'}
         component={ChangePassword}
         options={{ title: 'Аккаунт' }}
+      />
+      <Stack.Screen name={'ChangeEmail'} component={ChangeEmail} options={{ title: 'Аккаунт' }} />
+      <Stack.Screen
+        name={'CathedraTimetable'}
+        component={CathedraTimetable}
+        options={{ title: 'Расписание' }}
       />
     </Stack.Navigator>
   );

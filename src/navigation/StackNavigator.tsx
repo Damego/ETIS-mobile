@@ -7,14 +7,17 @@ import React, { useEffect } from 'react';
 import QuickActions from 'react-native-quick-actions';
 
 import { cache } from '../cache/smartCache';
+import GradientContainer from '../components/GradientContainer';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { useAppTheme } from '../hooks/theme';
-import { PageType, setInitialPage } from '../redux/reducers/settingsSlice';
+import { PageType, changeTheme, setInitialPage } from '../redux/reducers/settingsSlice';
 import AuthPage from '../screens/auth/Auth';
 import Intro from '../screens/intro/Intro';
 import MessageHistory from '../screens/messages/MessageHistory';
 import SessionQuestionnaire from '../screens/sessionQuestionnaire/SessionQuestionnaire';
 import SignsDetails from '../screens/signs/SignsDetails';
+import { ThemeType } from '../styles/themes';
+import { isHalloween } from '../utils/events';
 import showPrivacyPolicy from '../utils/privacyPolicy';
 import InitSentry from '../utils/sentry';
 import TabNavigator from './TabNavigation';
@@ -24,8 +27,13 @@ import { RootStackParamList } from './types';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const StackNavigator = () => {
-  const { isSignedIn } = useAppSelector((state) => state.auth);
-  const { viewedIntro, appIsReady, sentryEnabled } = useAppSelector((state) => state.settings);
+  const isSignedIn = useAppSelector((state) => state.auth.isSignedIn);
+  const {
+    viewedIntro,
+    appIsReady,
+    sentryEnabled,
+    theme: themeType,
+  } = useAppSelector((state) => state.settings);
   const theme = useAppTheme();
   const dispatch = useAppDispatch();
 
@@ -46,7 +54,25 @@ const StackNavigator = () => {
     }
   };
 
+  const checkEventTheme = async () => {
+    const $isHalloween = isHalloween();
+    const events = await cache.getEvents();
+    if ($isHalloween && !events.halloween2023?.suggestedTheme) {
+      events.halloween2023 = {
+        suggestedTheme: true,
+        previousTheme: themeType,
+      };
+      dispatch(changeTheme(ThemeType.halloween));
+      cache.placeTheme(ThemeType.halloween);
+    }
+    if (!$isHalloween && themeType === ThemeType.halloween) {
+      dispatch(changeTheme(events.halloween2023.previousTheme));
+      cache.placeTheme(events.halloween2023.previousTheme);
+    }
+  };
+
   useEffect(() => {
+    checkEventTheme();
     bumpPrivacyPolicy();
     if (sentryEnabled) InitSentry();
     dispatchInitialPage();
@@ -98,15 +124,20 @@ const StackNavigator = () => {
     );
 
   return (
-    <NavigationContainer theme={theme}>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        {component}
-      </Stack.Navigator>
-    </NavigationContainer>
+    <GradientContainer
+      disabled={!theme.colors.backgroundGradient}
+      colors={theme.colors.backgroundGradient}
+    >
+      <NavigationContainer theme={theme}>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          {component}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </GradientContainer>
   );
 };
 

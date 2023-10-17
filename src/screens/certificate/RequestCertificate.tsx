@@ -14,6 +14,7 @@ import {
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 import { RadioButtonProps, RadioGroup } from 'react-native-radio-buttons-group';
 
+import { Button } from '../../components/Button';
 import Card from '../../components/Card';
 import Screen from '../../components/Screen';
 import { useAppSelector, useGlobalStyles } from '../../hooks';
@@ -114,7 +115,7 @@ export default function RequestCertificate() {
               <AntDesign name="infocirlceo" size={24} color={schemeColor} />
             </TouchableOpacity>
           )}
-          popoverStyle={[styles.popover, { backgroundColor: appTheme.colors.background }]}
+          popoverStyle={[styles.popover, { backgroundColor: appTheme.colors.block }]}
         >
           <Text style={[fontSize.medium, globalStyles.textColor]}>{text}</Text>
         </Popover>
@@ -239,14 +240,11 @@ export default function RequestCertificate() {
           </Text>
         </View>
         <View style={{ position: 'absolute', left: 0, right: 0, bottom: '1%' }}>
-          {/* TODO: Replace with Button component */}
-          <TouchableOpacity
+          <Button
+            text={'Вернуться назад'}
             onPress={() => navigator.goBack()}
-            activeOpacity={0.6}
-            style={[styles.buttonContainer, globalStyles.primaryBackgroundColor]}
-          >
-            <Text style={styles.text}>Вернуться назад</Text>
-          </TouchableOpacity>
+            variant={'secondary'}
+          />
         </View>
       </Screen>
     );
@@ -311,13 +309,7 @@ export default function RequestCertificate() {
 
       {applicable && (
         <View style={{ position: 'absolute', left: 0, right: 0, bottom: '1%' }}>
-          <TouchableOpacity
-            onPress={confirmSubmit}
-            activeOpacity={0.6}
-            style={[styles.buttonContainer, globalStyles.primaryBackgroundColor]}
-          >
-            <Text style={styles.text}>Заказать</Text>
-          </TouchableOpacity>
+          <Button text={'Заказать'} onPress={confirmSubmit} variant={'secondary'} />
         </View>
       )}
     </Screen>

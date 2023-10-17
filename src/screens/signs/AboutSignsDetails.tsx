@@ -25,13 +25,13 @@ const AboutSignsDetails = () => {
           }}
           activeOpacity={0.45}
         >
-          <AntDesign name="questioncircleo" size={28} color={'#C62E3E'} />
+          <AntDesign name="questioncircleo" size={28} color={appTheme.colors.primary} />
         </TouchableOpacity>
       )}
       popoverStyle={{
         borderRadius: globalStyles.border.borderRadius,
         padding: '2%',
-        backgroundColor: appTheme.colors.background,
+        backgroundColor: appTheme.colors.block,
       }}
     >
       <Text textBreakStrategy={'simple'} style={[fontSize.medium, globalStyles.textColor]}>

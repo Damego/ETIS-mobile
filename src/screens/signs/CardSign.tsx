@@ -45,15 +45,13 @@ const CardSign = ({ subject }: { subject: ISubject }) => {
         </TouchableOpacity>
         <TotalPoints subject={subject} style={styles.totalPoints} />
       </View>
-      <View style={styles.pointsView}>
-        {subject.mark !== null && (
-          <View style={styles.markView}>
-            <Text style={[fontSize.medium, styles.markWordText, globalStyles.textColor]}>
-              Оценка: {subject.mark}
-            </Text>
-          </View>
-        )}
-      </View>
+      {subject.mark !== null && (
+        <View style={styles.markView}>
+          <Text style={[fontSize.medium, styles.markWordText, globalStyles.textColor]}>
+            Оценка: {subject.mark}
+          </Text>
+        </View>
+      )}
     </CardHeaderIn>
   );
 };

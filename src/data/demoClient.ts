@@ -1,5 +1,10 @@
 import { IAbsence, IAbsenceSession } from '../models/absences';
 import { ICalendarSchedule } from '../models/calendarSchedule';
+import {
+  ICathedraTimetable,
+  ICathedraTimetablePayload,
+  TimetableTypes,
+} from '../models/cathedraTimetable';
 import { ICertificateTable } from '../models/certificate';
 import { IMessagesData, MessageType } from '../models/messages';
 import { IOrder } from '../models/order';
@@ -124,6 +129,7 @@ export default class DemoClient implements BaseClient {
                       building: '2',
                       isDistance: false,
                       subject: 'Математический анализ (лек)',
+                      teacherId: '0',
                     },
                   ],
                 },
@@ -138,6 +144,7 @@ export default class DemoClient implements BaseClient {
                       building: '2',
                       isDistance: false,
                       subject: 'Комплексный анализ (лек)',
+                      teacherId: '0',
                     },
                   ],
                 },
@@ -152,6 +159,7 @@ export default class DemoClient implements BaseClient {
                       building: '2',
                       isDistance: false,
                       subject: 'Функциональный анализ (лек)',
+                      teacherId: '0',
                     },
                     {
                       audienceText: 'ауд. Дистанционно (on-line корпус)',
@@ -160,6 +168,7 @@ export default class DemoClient implements BaseClient {
                       building: 'on-line',
                       isDistance: true,
                       subject: 'Программный анализ (лек)',
+                      teacherId: '0',
                     },
                   ],
                 },
@@ -506,7 +515,9 @@ export default class DemoClient implements BaseClient {
 
   async getStudentInfoData(): Promise<IGetResult<StudentInfo>> {
     const data: StudentInfo = {
-      student: (await this.getPersonalRecords())[0].data,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      student: (await this.getPersonalRecords()).data[0],
       announceCount: 2,
       messageCount: 1,
       sessionTestID: '',
@@ -559,6 +570,8 @@ export default class DemoClient implements BaseClient {
         'Математический анализ',
         [
           {
+            id: '0',
+            cathedraId: '0',
             photo: 'img_peo_pkg.get_d_img',
             name: 'Иванов Иван Петрович',
             cathedra: 'Кафедра фундаментальной математики',
@@ -567,6 +580,8 @@ export default class DemoClient implements BaseClient {
             photoTitle: 'Фотография загружена 01.01.2000',
           },
           {
+            id: '0',
+            cathedraId: '0',
             photo: 'img_peo_pkg.get_d_img',
             name: 'Иванов Петр Иванович',
             cathedra: 'Кафедра фундаментальной математики',
@@ -580,6 +595,8 @@ export default class DemoClient implements BaseClient {
         'Комплексный анализ',
         [
           {
+            id: '0',
+            cathedraId: '0',
             photo: 'img_peo_pkg.get_d_img',
             name: 'Иванов Иван Петрович',
             cathedra: 'Кафедра фундаментальной математики',
@@ -588,6 +605,8 @@ export default class DemoClient implements BaseClient {
             photoTitle: 'Фотография загружена 01.01.2000',
           },
           {
+            id: '0',
+            cathedraId: '0',
             photo: 'img_peo_pkg.get_d_img',
             name: 'Иванов Петр Иванович',
             cathedra: 'Кафедра фундаментальной математики',
@@ -601,6 +620,8 @@ export default class DemoClient implements BaseClient {
         'Функциональный анализ',
         [
           {
+            id: '0',
+            cathedraId: '0',
             photo: 'img_peo_pkg.get_d_img',
             name: 'Иванов Иван Петрович',
             cathedra: 'Кафедра фундаментальной математики',
@@ -746,5 +767,26 @@ export default class DemoClient implements BaseClient {
         year: '1665',
       },
     ]);
+  }
+
+  async getCathedraTimetable(
+    payload: IGetPayload<ICathedraTimetablePayload>
+  ): Promise<IGetResult<ICathedraTimetable>> {
+    // eslint-disable-next-line import/no-dynamic-require
+    let data: ICathedraTimetable;
+    if (payload.data.teacherId) data = require('./teacherTimetable.json');
+    else data = require('./cathedraTimetable.json');
+
+    if (payload.data.session) {
+      data.type = TimetableTypes.sessions;
+      data.sessions.forEach((session) => {
+        session.isCurrent = session.number === payload.data.session;
+      });
+    } else if (payload.data.week) {
+      data.type = TimetableTypes.weeks;
+      data.weekInfo.selected = payload.data.week;
+    }
+
+    return this.toResult(data);
   }
 }

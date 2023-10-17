@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 
 import { useAppSelector } from '../hooks';
-import { useAppColorScheme } from '../hooks/theme';
+import { useAppTheme } from '../hooks/theme';
 import AuthLoadingModal from './AuthLoadingModal';
 
 const styles = StyleSheet.create({
@@ -24,6 +24,7 @@ const Screen = ({ onUpdate, children, startScrollFromBottom }: ScreenProps) => {
   const { isAuthorizing } = useAppSelector((state) => state.auth);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const scrollRef = useRef<ScrollView>();
+  const theme = useAppTheme();
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -35,7 +36,7 @@ const Screen = ({ onUpdate, children, startScrollFromBottom }: ScreenProps) => {
     <View style={{ flex: 1 }}>
       {isAuthorizing && <AuthLoadingModal />}
 
-      <StatusBar style={useAppColorScheme() === 'light' ? 'dark' : 'light'} />
+      <StatusBar style={theme.statusBarStyle} />
 
       <ScrollView
         ref={scrollRef}

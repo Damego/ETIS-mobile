@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
   privacyPolicyText: {
     ...fontSize.small,
     fontWeight: 'bold',
-    color: '#C62E3E',
   },
   telegramText: {
     fontWeight: 'bold',
@@ -34,7 +33,9 @@ const AuthFooter = () => {
         Приложение ЕТИС мобайл является неофициальным мобильным приложением для ЕТИС ПГНИУ
       </Text>
       <TouchableOpacity onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}>
-        <Text style={styles.privacyPolicyText}>Политика конфиденциальности</Text>
+        <Text style={[styles.privacyPolicyText, globalStyles.primaryFontColor]}>
+          Политика конфиденциальности
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => Linking.openURL(TELEGRAM_URL)}>

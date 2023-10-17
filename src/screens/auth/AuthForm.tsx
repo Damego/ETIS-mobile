@@ -7,6 +7,7 @@ import ClickableText from '../../components/ClickableText';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { useAppTheme } from '../../hooks/theme';
 import { setSaveUserCredentials } from '../../redux/reducers/authSlice';
+import { ThemeType } from '../../styles/themes';
 import { fontSize } from '../../utils/texts';
 
 export const styles = StyleSheet.create({
@@ -52,6 +53,7 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
   const { saveUserCredentials } = useAppSelector((state) => state.auth);
   const globalStyles = useGlobalStyles();
   const theme = useAppTheme();
+  const themeType = useAppSelector((state) => state.settings.theme);
 
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
@@ -62,7 +64,12 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
 
   return (
     <View style={[styles.container, globalStyles.border, globalStyles.block]}>
-      <Image style={styles.logoImage} source={require('../../../assets/logo_red.png')} />
+      {/* TODO: Remove Halloween */}
+      {themeType === ThemeType.halloween ? (
+        <Image style={styles.logoImage} source={require('../../../assets/pumkin.gif')} />
+      ) : (
+        <Image style={styles.logoImage} source={require('../../../assets/logo_red.png')} />
+      )}
 
       <Text style={globalStyles.textColor}>{errorMessage}</Text>
 
@@ -95,6 +102,7 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
       <View style={styles.authPropContainer}>
         <View style={styles.checkboxContainer}>
           <Checkbox
+            color={theme.colors.secondary}
             style={styles.checkbox}
             value={saveUserCredentials}
             onValueChange={toggleSaveUserCredentials}
@@ -109,7 +117,9 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
         />
       </View>
 
-      <Button text="Войти" onPress={() => onSubmit(login, password)} />
+      <View style={{ width: '90%' }}>
+        <Button text="Войти" onPress={() => onSubmit(login, password)} variant={'secondary'} />
+      </View>
     </View>
   );
 };

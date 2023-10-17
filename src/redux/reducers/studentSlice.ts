@@ -10,6 +10,7 @@ const initialState: StudentState = {
   sessionTestID: null,
   currentSession: null,
   currentWeek: null,
+  hasUnverifiedEmail: false,
 };
 
 const studentSlice = createSlice({
@@ -21,6 +22,7 @@ const studentSlice = createSlice({
       state.sessionTestID = action.payload.sessionTestID;
       state.announceCount = action.payload.announceCount;
       state.messageCount = action.payload.messageCount;
+      state.hasUnverifiedEmail = action.payload.hasUnverifiedEmail;
     },
     setStudentInfo(state, action: PayloadAction<StudentData>) {
       state.info = action.payload;

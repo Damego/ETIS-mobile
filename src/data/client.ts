@@ -4,6 +4,7 @@ import { cache } from '../cache/smartCache';
 import { useAppSelector } from '../hooks';
 import { IAbsence } from '../models/absences';
 import { ICalendarSchedule } from '../models/calendarSchedule';
+import { ICathedraTimetable, ICathedraTimetablePayload } from '../models/cathedraTimetable';
 import { ICertificateTable } from '../models/certificate';
 import { IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
@@ -28,6 +29,7 @@ import {
   parseTimeTable,
 } from '../parser';
 import parseCalendarSchedule from '../parser/calendar';
+import parseCathedraTimetable from '../parser/cathedraTimetable';
 import { parseCertificateTable } from '../parser/certificate';
 import { StudentInfo } from '../parser/menu';
 import parseOrders from '../parser/order';
@@ -66,6 +68,10 @@ class SessionQuestionnaireListClient extends BasicClient<
   ISessionQuestionnaireLink[]
 > {}
 class PersonalRecordsClient extends BasicClient<IGetPayload, IPersonalRecord[]> {}
+class CathedraTimetableClient extends BasicClient<
+  IGetPayload<ICathedraTimetablePayload>,
+  ICathedraTimetable
+> {}
 
 export default class Client implements BaseClient {
   private absencesClient: AbsencesClient;
@@ -84,6 +90,7 @@ export default class Client implements BaseClient {
   private sessionQuestionnaireClient: SessionQuestionnaireClient;
   private sessionQuestionnaireListClient: SessionQuestionnaireListClient;
   private personalRecordsClient: PersonalRecordsClient;
+  private cathedraTimetableClient: CathedraTimetableClient;
 
   constructor() {
     this.absencesClient = new AbsencesClient(
@@ -182,6 +189,12 @@ export default class Client implements BaseClient {
       parsePersonalRecords,
       (data) => cache.placePersonalRecords(data)
     );
+    this.cathedraTimetableClient = new CathedraTimetableClient(
+      emptyFunction,
+      (payload) => httpClient.getCathedraTimetable(payload.data),
+      parseCathedraTimetable,
+      emptyFunction
+    );
 
     bind(this, Client);
   }
@@ -265,5 +278,11 @@ export default class Client implements BaseClient {
 
   async getPersonalRecords(payload: IGetPayload): Promise<IGetResult<IPersonalRecord[]>> {
     return this.personalRecordsClient.getData(payload);
+  }
+
+  getCathedraTimetable(
+    payload: IGetPayload<ICathedraTimetablePayload>
+  ): Promise<IGetResult<ICathedraTimetable>> {
+    return this.cathedraTimetableClient.getData(payload);
   }
 }

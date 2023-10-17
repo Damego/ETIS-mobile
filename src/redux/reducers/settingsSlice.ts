@@ -1,11 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-export enum ThemeType {
-  auto = 'auto',
-  light = 'light',
-  dark = 'dark',
-  black = 'black',
-}
+import { ThemeType } from '../../styles/themes';
+import { Events } from '../../utils/events';
 
 export enum PageType {
   timeTable = 'Timetable',
@@ -21,6 +17,7 @@ export interface AppConfig {
   reviewStep: 'pending' | 'stop' | null;
   privacyPolicyAccepted: boolean;
   sentryEnabled: boolean;
+  events: Events;
 }
 
 export interface SettingsState {
