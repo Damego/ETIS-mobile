@@ -125,12 +125,9 @@ export default function parseTimeTable(html: string) {
           } else {
             audienceText = getTextField(audienceElement);
 
-            // Sentry is not used here because the result is part of branching system
-            // and thus doesn't have to be present
-            //
-            // The audience, building, floor variables will be left undefined if
-            // the regex fails, they are checked in Pair.tsx: line 67
-            const regexResult = audienceRegex.exec(audienceText);
+            // Sentry здесь неактивно так как результат выполнения регулярки
+            // является частью ветвления и потому его отсуствие != ошибке
+            const regexResult = executeRegex(audienceRegex, audienceText, /* sendReport: */ false);
             if (regexResult) {
               [, audience, building, floor] = regexResult;
             }
