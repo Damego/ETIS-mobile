@@ -19,7 +19,7 @@ interface Query<P, R> {
 
 const useQuery = <P, R>({
   method,
-  payload,
+  payload = { requestType: RequestType.tryFetch },
   after,
   onFail,
   skipInitialGet,
@@ -30,8 +30,6 @@ const useQuery = <P, R>({
   onFail?: (result: IGetResult<R>) => void;
   skipInitialGet?: boolean;
 }): Query<P, R> => {
-  payload = payload || { requestType: RequestType.tryFetch };
-
   const dispatch = useAppDispatch();
   const payloadData = useRef<P>(payload.data);
   const skippedInitialGet = useRef<boolean>(false);
