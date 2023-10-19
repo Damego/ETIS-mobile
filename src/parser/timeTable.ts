@@ -127,7 +127,7 @@ export default function parseTimeTable(html: string) {
 
             // Sentry здесь неактивно так как результат выполнения регулярки
             // является частью ветвления и потому его отсуствие != ошибке
-            const regexResult = executeRegex(audienceRegex, audienceText, /* sendReport: */ false);
+            const regexResult = executeRegex(audienceRegex, audienceText, false);
             if (regexResult) {
               [, audience, building, floor] = regexResult;
             }
