@@ -53,12 +53,3 @@ export const executeRegex = (regex: RegExp, str: string): RegExpExecArray => {
   }
   return result;
 };
-
-export const reportReturn = (
-  sentryMessage: string,
-  returnValue: any,
-  messageType?: SentryExpo.Browser.SeverityLevel
-) => {
-  SentryExpo.React.captureMessage(sentryMessage, messageType ? messageType : 'error');
-  return returnValue;
-};

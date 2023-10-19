@@ -10,7 +10,7 @@ import {
   WeekTypes,
 } from '../models/timeTable';
 import { httpClient } from '../utils';
-import { executeRegex, reportReturn } from '../utils/sentry';
+import { executeRegex } from '../utils/sentry';
 import { getTextField } from './utils';
 
 const dateRegex = /\d+.\d+.\d+/gm;
@@ -66,15 +66,14 @@ const getDistancePlatform = (platform: cheerio.Cheerio): DistancePlatform => {
 };
 
 const getTeacherId = (lesson: cheerio.Cheerio): string => {
-  const teacherAnchor = lesson.find('.teacher').find('a');
-  if (!teacherAnchor) return '-1';
+  const teacherAnchor = lesson.find('.teacher').find('a').first();
+  if (!teacherAnchor.length) return undefined;
 
   const teacherAnchorHref = teacherAnchor.attr('href');
-  if (!teacherAnchorHref)
-    return reportReturn(`TeacherAnchor doesn\'t have attribute href. HTML: ${lesson.html()}`, '-1');
+  if (!teacherAnchorHref) return getTextField(teacherAnchor);
 
   const [, teacherId] = executeRegex(idRegex, teacherAnchorHref);
-  if (!teacherId) return '-1';
+  if (!teacherId) return undefined;
 
   return teacherId;
 };
