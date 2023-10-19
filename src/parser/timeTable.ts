@@ -107,26 +107,29 @@ export default function parseTimeTable(html: string) {
         const lessons: ILesson[] = [];
         const pair = $(tr);
         const pairInfo = pair.find('.pair_info');
-        pairInfo.children().each((lessonIndex, lessonElement) => {
+        pairInfo.children().each((_, lessonElement) => {
           const lesson = $(lessonElement);
           const subject = getTextField(lesson.find('.dis'));
-          const audience = lesson.find('.aud');
+          const audienceElement = lesson.find('.aud');
           let audienceText: string;
           let floor: string;
           let building: string;
-          let audienceNumber: string;
+          let audience: string;
           let distancePlatform: DistancePlatform;
           let announceHTML: string;
 
-          const platform = audience.find('a');
+          const platform = audienceElement.find('a');
           if (platform.length === 1) {
             if (platform.attr('data-context')) announceHTML = platform.attr('data-context');
             else distancePlatform = getDistancePlatform(platform);
           } else {
-            audienceText = getTextField(audience);
-            const regexResult = executeRegex(audienceRegex, audienceText);
+            audienceText = getTextField(audienceElement);
+
+            // Sentry здесь неактивно так как результат выполнения регулярки
+            // является частью ветвления и потому его отсуствие != ошибке
+            const regexResult = executeRegex(audienceRegex, audienceText, false);
             if (regexResult) {
-              [, audienceNumber, building, floor] = regexResult;
+              [, audience, building, floor] = regexResult;
             }
           }
 
@@ -135,11 +138,11 @@ export default function parseTimeTable(html: string) {
 
           lessons.push({
             audienceText,
-            audience: audienceNumber,
+            audience,
             building,
             floor,
             subject,
-            isDistance: audienceNumber === 'Дистанционно' || !!distancePlatform,
+            isDistance: audience === 'Дистанционно' || !!distancePlatform,
             distancePlatform,
             teacherId,
             announceHTML,
