@@ -50,6 +50,10 @@ export type HeaderParamList = {
       color?: string;
     }
   >;
+  /*
+  * Whether to show the shadow of the header
+  */
+  headerShadowVisible?: boolean;
 };
 
 export const headerParams = (theme: ITheme): HeaderParamList => ({
@@ -61,5 +65,6 @@ export const headerParams = (theme: ITheme): HeaderParamList => ({
     fontWeight: '600',
     fontSize: 24,
   },
-  headerBackground: () => <></>,
+  headerBackground: null,
+  headerShadowVisible: false
 });
