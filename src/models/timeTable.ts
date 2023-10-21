@@ -34,6 +34,11 @@ export interface DistancePlatform {
   imageUrl: string;
 }
 
+export interface ITeacher {
+  id?: string;
+  name: string;
+}
+
 export interface ILesson {
   subject: string;
   audienceText?: string;
@@ -42,7 +47,7 @@ export interface ILesson {
   floor?: string;
   isDistance: boolean;
   distancePlatform?: DistancePlatform;
-  teacherId: string;
+  teacher?: ITeacher;
   announceHTML?: string;
 }
 

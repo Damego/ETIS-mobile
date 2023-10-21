@@ -76,11 +76,7 @@ export default function SignsDetails({ route }: RootStackScreenProps<'SignsDetai
               <ClickableText
                 text={cutTypeControl(checkPoint.typeControl)}
                 onPress={() => {
-                  ToastAndroid.showWithGravity(
-                    checkPoint.typeControl,
-                    ToastAndroid.SHORT,
-                    ToastAndroid.CENTER
-                  );
+                  ToastAndroid.show(checkPoint.typeControl, ToastAndroid.LONG);
                 }}
                 textStyle={[rowTextStyle, { textDecorationLine: 'underline' }]}
               />

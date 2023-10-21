@@ -5,6 +5,7 @@ import {
   DistancePlatformTypes,
   ILesson,
   IPair,
+  ITeacher,
   ITimeTable,
   WeekInfo,
   WeekTypes,
@@ -65,6 +66,22 @@ const getDistancePlatform = (platform: cheerio.Cheerio): DistancePlatform => {
   };
 };
 
+const getTeacher = (lesson: cheerio.Cheerio): ITeacher => {
+  // TODO: parse list of teachers
+  const teacherAnchor = lesson.find('.teacher').find('a').first();
+  if (!teacherAnchor.length) return;
+
+  const teacherAnchorHref = teacherAnchor.attr('href');
+  const name = getTextField(teacherAnchor);
+
+  if (!teacherAnchorHref) return { name };
+
+  const [, id] = executeRegex(idRegex, teacherAnchorHref);
+  if (!id) return { name };
+
+  return { name, id };
+};
+
 export default function parseTimeTable(html: string) {
   const $ = cheerio.load(html);
   const week = $('.week');
@@ -107,41 +124,41 @@ export default function parseTimeTable(html: string) {
         const lessons: ILesson[] = [];
         const pair = $(tr);
         const pairInfo = pair.find('.pair_info');
-        pairInfo.children().each((lessonIndex, lessonElement) => {
+        pairInfo.children().each((_, lessonElement) => {
           const lesson = $(lessonElement);
           const subject = getTextField(lesson.find('.dis'));
-          const audience = lesson.find('.aud');
+          const audienceElement = lesson.find('.aud');
           let audienceText: string;
           let floor: string;
           let building: string;
-          let audienceNumber: string;
+          let audience: string;
           let distancePlatform: DistancePlatform;
           let announceHTML: string;
 
-          const platform = audience.find('a');
+          const platform = audienceElement.find('a');
           if (platform.length === 1) {
             if (platform.attr('data-context')) announceHTML = platform.attr('data-context');
             else distancePlatform = getDistancePlatform(platform);
           } else {
-            audienceText = getTextField(audience);
-            const regexResult = executeRegex(audienceRegex, audienceText);
+            audienceText = getTextField(audienceElement);
+
+            // Sentry здесь неактивно так как результат выполнения регулярки
+            // является частью ветвления и потому его отсуствие != ошибке
+            const regexResult = executeRegex(audienceRegex, audienceText, false);
             if (regexResult) {
-              [, audienceNumber, building, floor] = regexResult;
+              [, audience, building, floor] = regexResult;
             }
           }
 
-          const teacherAnchor = lesson.find('.teacher').find('a');
-          const [, teacherId] = executeRegex(idRegex, teacherAnchor.attr('href'));
-
           lessons.push({
             audienceText,
-            audience: audienceNumber,
+            audience,
             building,
             floor,
             subject,
-            isDistance: audienceNumber === 'Дистанционно' || !!distancePlatform,
+            isDistance: audience === 'Дистанционно' || !!distancePlatform,
             distancePlatform,
-            teacherId,
+            teacher: getTeacher(lesson),
             announceHTML,
           });
         });
