@@ -19,7 +19,7 @@ interface Query<P, R> {
 
 const useQuery = <P, R>({
   method,
-  payload = { requestType: RequestType.tryFetch },
+  payload: { requestType, data: initialData } = { requestType: RequestType.tryFetch },
   after,
   onFail,
   skipInitialGet,
@@ -31,7 +31,7 @@ const useQuery = <P, R>({
   skipInitialGet?: boolean;
 }): Query<P, R> => {
   const dispatch = useAppDispatch();
-  const payloadData = useRef<P>(payload.data);
+  const payloadData = useRef<P>(initialData);
   const skippedInitialGet = useRef<boolean>(false);
   const fromFail = useRef<boolean>(false);
   const calledAuthorizing = useRef<boolean>(false);
@@ -56,7 +56,8 @@ const useQuery = <P, R>({
     if (!calledAuthorizing.current && didInitialGet.current) return;
 
     // Странная вещь, но после входа, стейт isAuthorizing равен true на экране с расписанием
-    if (!isAuthorizing || !didInitialGet.current) loadData(payload);
+    if (!isAuthorizing || !didInitialGet.current)
+      loadData({ requestType, data: payloadData.current });
     else return;
 
     if (calledAuthorizing.current) calledAuthorizing.current = false;
