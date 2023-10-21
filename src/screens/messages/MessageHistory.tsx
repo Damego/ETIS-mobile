@@ -83,7 +83,12 @@ export default function MessageHistory({ route, navigation }: RootStackScreenPro
   };
 
   const onSubmit = async (text: string) => {
-    setUploading(true); // TODO: block replying on demo account
+    if (isDemo) {
+      ToastAndroid.show('Отправка сообщение в демо невозможна', ToastAndroid.LONG);
+      return;
+    }
+
+    setUploading(true);
     const response = await httpClient.replyToMessage(firstMessage.answerID, text);
 
     if (response.error) {
