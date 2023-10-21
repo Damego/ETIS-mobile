@@ -15,8 +15,9 @@ import Message from './Message';
 import MessageInput, { FilesPreview } from './MessageInput';
 
 const formatTeacherName = (name: string): string => {
-  const [name1, name2, name3] = name.split(' ');
-  return `${name1} ${name2.charAt(0)}. ${name3.charAt(0)}.`;
+  const [firstName, ...otherNames] = name.split(' ');
+  const otherNameLetters = otherNames.map(name => `${name.charAt(0)}.`).join(' ');
+  return `${firstName} ${otherNameLetters}`;
 };
 
 const compareMessages = (first: IMessage, second: IMessage) => {
