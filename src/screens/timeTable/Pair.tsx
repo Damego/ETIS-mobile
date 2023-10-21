@@ -78,7 +78,6 @@ const Lesson = ({ data, teachersData }: { data: ILesson; teachersData: TeacherTy
     });
   } else teacherName = data.teacher?.name;
 
-
   return (
     <View style={styles.lessonContainer}>
       <Text style={[fontSize.medium, styles.lessonInfoText, globalStyles.textColor]}>
