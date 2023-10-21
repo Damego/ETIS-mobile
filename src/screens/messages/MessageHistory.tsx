@@ -7,7 +7,7 @@ import { useAppSelector } from '../../hooks';
 import useQuery from '../../hooks/useQuery';
 import { IMessage } from '../../models/messages';
 import { UploadFile } from '../../models/other';
-import { RequestType } from '../../models/results';
+import { IGetPayload, RequestType } from '../../models/results';
 import { RootStackScreenProps } from '../../navigation/types';
 import { parseDate } from '../../parser/utils';
 import { httpClient } from '../../utils';
@@ -47,7 +47,22 @@ export default function MessageHistory({ route, navigation }: RootStackScreenPro
   });
 
   const loadData = async () => {
-    const result = await query.get({ data: pageRef.current, requestType: RequestType.tryFetch });
+    const payload: IGetPayload<number> = {
+      requestType: RequestType.forceFetch,
+    };
+    if (pageRef.current) {
+      payload.data = pageRef.current;
+    }
+
+    const result = await query.get(payload);
+
+    if (!result.data) {
+      ToastAndroid.show(
+        'Не удалось обновить сообщения. Проверьте интернет-соединение',
+        ToastAndroid.LONG
+      );
+      return;
+    }
 
     const $messages = findMessageBlockById(result.data.messages, firstMessage.messageID);
     setMessages($messages);
