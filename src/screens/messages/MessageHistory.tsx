@@ -16,7 +16,7 @@ import MessageInput, { FilesPreview } from './MessageInput';
 
 const formatTeacherName = (name: string): string => {
   const [firstName, ...otherNames] = name.split(' ');
-  const otherNameLetters = otherNames.map(name => `${name.charAt(0)}.`).join(' ');
+  const otherNameLetters = otherNames.map((name) => `${name.charAt(0)}.`).join(' ');
   return `${firstName} ${otherNameLetters}`;
 };
 
