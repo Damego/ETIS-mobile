@@ -17,7 +17,7 @@ export const getPointsWord = (points: number) => {
 export const formatCheckPointScore = (checkPoint: ICheckPoint) => {
   if (checkPoint.isAbsent) return 'н';
   if (Number.isNaN(checkPoint.points) || !checkPoint.points) return '-';
-}
+};
 
 export const fontSize = {
   micro: {
