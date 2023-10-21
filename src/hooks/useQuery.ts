@@ -34,6 +34,8 @@ const useQuery = <P, R>({
   const payloadData = useRef<P>(payload.data);
   const skippedInitialGet = useRef<boolean>(false);
   const fromFail = useRef<boolean>(false);
+  const calledAuthorizing = useRef<boolean>(false);
+  const didInitialGet = useRef<boolean>(false);
   const { isAuthorizing, isOfflineMode } = useAppSelector((state) => state.auth);
 
   const [data, setData] = useState<R>();
@@ -47,7 +49,18 @@ const useQuery = <P, R>({
       skippedInitialGet.current = true;
       return;
     }
-    if (!isAuthorizing) loadData(payload);
+
+    // При получении страницы логина, все хуки useQuery в активных экранах
+    // начинают делать повторную загрузку данных, что как бы и не нужно,
+    // кроме хука, который и получил страницу логина
+    if (!calledAuthorizing.current && didInitialGet.current) return;
+
+    // Странная вещь, но после входа, стейт isAuthorizing равен true на экране с расписанием
+    if (!isAuthorizing || !didInitialGet.current) loadData(payload);
+    else return;
+
+    if (calledAuthorizing.current) calledAuthorizing.current = false;
+    if (!didInitialGet.current) didInitialGet.current = true;
   }, [isAuthorizing]);
 
   const handleAfter = async (result: IGetResult<R>) => {
@@ -68,7 +81,10 @@ const useQuery = <P, R>({
   };
 
   const checkLoginPage = (result: IGetResult<R>) => {
-    if (result.type === GetResultType.loginPage) dispatch(setAuthorizing(true));
+    if (result.type === GetResultType.loginPage) {
+      calledAuthorizing.current = true;
+      dispatch(setAuthorizing(true));
+    }
   };
 
   const loadData = async (payload: IGetPayload<P>) => {
