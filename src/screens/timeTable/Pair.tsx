@@ -70,13 +70,14 @@ const Lesson = ({ data, teachersData }: { data: ILesson; teachersData: TeacherTy
   const audience = data.isDistance ? data.audience : location;
 
   let teacherName: string;
-  if (!data.teacherId) teacherName = undefined;
-  else if (isNaN(parseInt(data.teacherId))) teacherName = data.teacherId;
-  else
+
+  if (data.teacher?.id) {
     teachersData.forEach(([, teachers]) => {
-      const teacher = teachers.find((teacher) => teacher.id === data.teacherId);
+      const teacher = teachers.find((teacher) => teacher.id === data.teacher.id);
       if (teacher) teacherName = teacher.name;
     });
+  } else teacherName = data.teacher?.name;
+
 
   return (
     <View style={styles.lessonContainer}>

@@ -5,6 +5,7 @@ import {
   DistancePlatformTypes,
   ILesson,
   IPair,
+  ITeacher,
   ITimeTable,
   WeekInfo,
   WeekTypes,
@@ -65,17 +66,20 @@ const getDistancePlatform = (platform: cheerio.Cheerio): DistancePlatform => {
   };
 };
 
-const getTeacherId = (lesson: cheerio.Cheerio): string => {
+const getTeacher = (lesson: cheerio.Cheerio): ITeacher => {
+  // TODO: parse list of teachers
   const teacherAnchor = lesson.find('.teacher').find('a').first();
-  if (!teacherAnchor.length) return undefined;
+  if (!teacherAnchor.length) return;
 
   const teacherAnchorHref = teacherAnchor.attr('href');
-  if (!teacherAnchorHref) return getTextField(teacherAnchor);
+  const name = getTextField(teacherAnchor);
 
-  const [, teacherId] = executeRegex(idRegex, teacherAnchorHref);
-  if (!teacherId) return undefined;
+  if (!teacherAnchorHref) return { name };
 
-  return teacherId;
+  const [, id] = executeRegex(idRegex, teacherAnchorHref);
+  if (!id) return { name };
+
+  return { name, id };
 };
 
 export default function parseTimeTable(html: string) {
@@ -143,8 +147,6 @@ export default function parseTimeTable(html: string) {
             }
           }
 
-          const teacherId = getTeacherId(lesson);
-
           lessons.push({
             audienceText,
             audience: audienceNumber,
@@ -153,7 +155,7 @@ export default function parseTimeTable(html: string) {
             subject,
             isDistance: audienceNumber === 'Дистанционно' || !!distancePlatform,
             distancePlatform,
-            teacherId,
+            teacher: getTeacher(lesson),
             announceHTML,
           });
         });
