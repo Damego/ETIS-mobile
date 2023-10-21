@@ -68,17 +68,15 @@ const useQuery = <P, R>({
   };
 
   const checkLoginPage = (result: IGetResult<R>) => {
-    if (result.type === GetResultType.loginPage) {
-      dispatch(setAuthorizing(true));
-      return true;
-    }
-    return false;
+    if (result.type === GetResultType.loginPage) dispatch(setAuthorizing(true));
   };
 
   const loadData = async (payload: IGetPayload<P>) => {
     enableLoading();
 
     const result = await get(payload);
+
+    if (result.type === GetResultType.loginPage) return;
 
     if (!result.data) {
       if (onFail) handleFailedQuery(result);
@@ -99,7 +97,7 @@ const useQuery = <P, R>({
     payloadData.current = payload.data;
     const result = await method(payload);
 
-    if (checkLoginPage(result)) return;
+    checkLoginPage(result);
     return result;
   };
 
