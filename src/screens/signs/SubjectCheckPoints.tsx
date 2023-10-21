@@ -3,7 +3,7 @@ import { StyleSheet, Text } from 'react-native';
 
 import { useGlobalStyles } from '../../hooks';
 import { ICheckPoint } from '../../models/sessionPoints';
-import { fontSize } from '../../utils/texts';
+import { fontSize, formatCheckPointScore } from '../../utils/texts';
 
 const styles = StyleSheet.create({
   markNeutral: {
@@ -16,8 +16,8 @@ const styles = StyleSheet.create({
 });
 
 export const getCheckPointScore = (checkPoint: ICheckPoint) => {
-  if (checkPoint.isAbsent) return 'н';
-  if (Number.isNaN(checkPoint.points) || !checkPoint.points) return '-';
+  const formatted = formatCheckPointScore(checkPoint);
+  if (formatted) return formatted;
 
   // Вводные работы в рейтинге не показываются, поэтому выводим просто полученные баллы
   return checkPoint.isIntroductionWork ? checkPoint.points : checkPoint.currentScore;

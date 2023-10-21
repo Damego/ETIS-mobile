@@ -7,8 +7,7 @@ import Screen from '../../components/Screen';
 import { useGlobalStyles } from '../../hooks';
 import { ICheckPoint } from '../../models/sessionPoints';
 import { RootStackScreenProps } from '../../navigation/types';
-import { fontSize } from '../../utils/texts';
-import { getCheckPointScore } from './SubjectCheckPoints';
+import { fontSize, formatCheckPointScore } from '../../utils/texts';
 import TotalPoints from './TotalPoints';
 
 const styles = StyleSheet.create({
@@ -55,31 +54,36 @@ export default function SignsDetails({ route }: RootStackScreenProps<'SignsDetai
         <TotalPoints subject={subject} style={{ alignItems: 'center' }} />
       </View>
 
-      {subject.checkPoints.map((checkPoint: ICheckPoint, index: number) => (
-        <CardHeaderIn key={index} topText={getCheckpointTitle(checkPoint.theme, index + 1)}>
-          <Row first={'Оценка:'} second={getCheckPointScore(checkPoint)} />
-          <Row first={'Проходной балл:'} second={checkPoint.passScore} />
-          <Row first={'Текущий балл:'} second={checkPoint.currentScore} />
-          <Row first={'Максимальный балл:'} second={checkPoint.maxScore} />
-          {checkPoint.teacher && (
-            <>
-              <Row first={'Преподаватель:'} second={checkPoint.teacher} />
-              <Row first={'Дата:'} second={checkPoint.date} />
-            </>
-          )}
-          <Row first={'Вид работы:'} second={checkPoint.typeWork} />
-          <View style={styles.row}>
-            <Text style={rowTextStyle}>{'Вид контроля:'}</Text>
-            <ClickableText
-              text={cutTypeControl(checkPoint.typeControl)}
-              onPress={() => {
-                ToastAndroid.show(checkPoint.typeControl, ToastAndroid.LONG);
-              }}
-              textStyle={[rowTextStyle, { textDecorationLine: 'underline' }]}
-            />
-          </View>
-        </CardHeaderIn>
-      ))}
+      {subject.checkPoints.map((checkPoint: ICheckPoint, index: number) => {
+        let scoreText: string | number = formatCheckPointScore(checkPoint);
+        if (!scoreText) scoreText = checkPoint.points;
+
+        return (
+          <CardHeaderIn key={index} topText={getCheckpointTitle(checkPoint.theme, index + 1)}>
+            <Row first={'Оценка:'} second={scoreText} />
+            <Row first={'Проходной балл:'} second={checkPoint.passScore} />
+            <Row first={'Текущий балл:'} second={checkPoint.currentScore} />
+            <Row first={'Максимальный балл:'} second={checkPoint.maxScore} />
+            {checkPoint.teacher && (
+              <>
+                <Row first={'Преподаватель:'} second={checkPoint.teacher} />
+                <Row first={'Дата:'} second={checkPoint.date} />
+              </>
+            )}
+            <Row first={'Вид работы:'} second={checkPoint.typeWork} />
+            <View style={styles.row}>
+              <Text style={rowTextStyle}>{'Вид контроля:'}</Text>
+              <ClickableText
+                text={cutTypeControl(checkPoint.typeControl)}
+                onPress={() => {
+                  ToastAndroid.show(checkPoint.typeControl, ToastAndroid.LONG);
+                }}
+                textStyle={[rowTextStyle, { textDecorationLine: 'underline' }]}
+              />
+            </View>
+          </CardHeaderIn>
+        );
+      })}
     </Screen>
   );
 }
