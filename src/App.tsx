@@ -14,7 +14,7 @@ import { checkUpdate } from './utils/inappUpdate';
 import { registerForPushNotificationsAsync, setNotificationHandler } from './utils/notifications';
 import { addShortcuts } from './utils/shortcuts';
 
-SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync().catch((e) => e);
 
 const store = setupStore();
 store.dispatch(loadStorage());
