@@ -20,13 +20,21 @@ const emojiStyles = StyleSheet.create({
     bottom: 10,
     transform: [{ rotate: '320deg' }],
   },
-  text: {
+  bigEmoji: {
     fontSize: 200,
+    opacity: 0.3,
+  },
+  littleEmoji: {
+    fontSize: 100,
     opacity: 0.3,
   },
 });
 
-const HalloweenEmoji = () => {
+export const HalloweenEmoji = () => (
+  <Text style={emojiStyles.littleEmoji}>{getRandomItem(EMOJI)}</Text>
+);
+
+export const HalloweenDecoration = () => {
   const { theme } = useAppSelector((state) => state.settings);
 
   if (theme !== ThemeType.halloween) return;
@@ -34,13 +42,11 @@ const HalloweenEmoji = () => {
   return (
     <>
       <View style={emojiStyles.topContainer}>
-        <Text style={emojiStyles.text}>{getRandomItem(EMOJI)}</Text>
+        <Text style={emojiStyles.bigEmoji}>{getRandomItem(EMOJI)}</Text>
       </View>
       <View style={emojiStyles.bottomContainer}>
-        <Text style={emojiStyles.text}>{getRandomItem(EMOJI)}</Text>
+        <Text style={emojiStyles.bigEmoji}>{getRandomItem(EMOJI)}</Text>
       </View>
     </>
   );
 };
-
-export default HalloweenEmoji;
