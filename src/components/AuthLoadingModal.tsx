@@ -182,7 +182,7 @@ const AuthLoadingModal = () => {
         onReceiveToken={onReceiveToken}
         size={isInvisibleRecaptcha ? 'invisible' : 'normal'}
         onClose={onRecaptchaModalClose}
-      /> 
+      />
       <View
         style={[
           styles.modalContainer,
@@ -204,7 +204,7 @@ const AuthLoadingModal = () => {
               />
             </View>
           )}
-        </View> 
+        </View>
       </View>
     </View>
   );
