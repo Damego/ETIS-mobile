@@ -79,12 +79,12 @@ const StackNavigator = () => {
   }, []);
 
   useEffect(() => {
-    setBackgroundNavigationBarColorAsync(theme.colors.card);
-    setBackgroundColorAsync(theme.colors.background);
+    setBackgroundNavigationBarColorAsync(theme.colors.card).catch((e) => e);
+    setBackgroundColorAsync(theme.colors.background).catch((e) => e);
   }, [theme]);
 
   useEffect(() => {
-    if (appIsReady) SplashScreen.hideAsync();
+    if (appIsReady) SplashScreen.hideAsync().catch((e) => e /* huh? */);
   }, [appIsReady]);
 
   let component;

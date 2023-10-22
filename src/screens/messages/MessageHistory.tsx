@@ -7,7 +7,7 @@ import { useAppSelector } from '../../hooks';
 import useQuery from '../../hooks/useQuery';
 import { IMessage } from '../../models/messages';
 import { UploadFile } from '../../models/other';
-import { RequestType } from '../../models/results';
+import { IGetPayload, RequestType } from '../../models/results';
 import { RootStackScreenProps } from '../../navigation/types';
 import { parseDate } from '../../parser/utils';
 import { httpClient } from '../../utils';
@@ -15,8 +15,9 @@ import Message from './Message';
 import MessageInput, { FilesPreview } from './MessageInput';
 
 const formatTeacherName = (name: string): string => {
-  const [name1, name2, name3] = name.split(' ');
-  return `${name1} ${name2.charAt(0)}. ${name3.charAt(0)}.`;
+  const [firstName, ...otherNames] = name.split(' ');
+  const otherNameLetters = otherNames.map((name) => `${name.charAt(0)}.`).join(' ');
+  return `${firstName} ${otherNameLetters}`;
 };
 
 const compareMessages = (first: IMessage, second: IMessage) => {
@@ -47,7 +48,22 @@ export default function MessageHistory({ route, navigation }: RootStackScreenPro
   });
 
   const loadData = async () => {
-    const result = await query.get({ data: pageRef.current, requestType: RequestType.tryFetch });
+    const payload: IGetPayload<number> = {
+      requestType: RequestType.forceFetch,
+    };
+    if (pageRef.current) {
+      payload.data = pageRef.current;
+    }
+
+    const result = await query.get(payload);
+
+    if (!result.data) {
+      ToastAndroid.show(
+        'Не удалось обновить сообщения. Проверьте интернет-соединение',
+        ToastAndroid.LONG
+      );
+      return;
+    }
 
     const $messages = findMessageBlockById(result.data.messages, firstMessage.messageID);
     setMessages($messages);
@@ -68,7 +84,12 @@ export default function MessageHistory({ route, navigation }: RootStackScreenPro
   };
 
   const onSubmit = async (text: string) => {
-    setUploading(true); // TODO: block replying on demo account
+    if (isDemo) {
+      ToastAndroid.show('Отправка сообщение в демо невозможна', ToastAndroid.LONG);
+      return;
+    }
+
+    setUploading(true);
     const response = await httpClient.replyToMessage(firstMessage.answerID, text);
 
     if (response.error) {

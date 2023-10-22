@@ -19,7 +19,7 @@ interface Query<P, R> {
 
 const useQuery = <P, R>({
   method,
-  payload,
+  payload: { requestType, data: initialData } = { requestType: RequestType.tryFetch },
   after,
   onFail,
   skipInitialGet,
@@ -30,12 +30,12 @@ const useQuery = <P, R>({
   onFail?: (result: IGetResult<R>) => void;
   skipInitialGet?: boolean;
 }): Query<P, R> => {
-  payload = payload || { requestType: RequestType.tryFetch };
-
   const dispatch = useAppDispatch();
-  const payloadData = useRef<P>(payload.data);
+  const payloadData = useRef<P>(initialData);
   const skippedInitialGet = useRef<boolean>(false);
   const fromFail = useRef<boolean>(false);
+  const calledAuthorizing = useRef<boolean>(false);
+  const didInitialGet = useRef<boolean>(false);
   const { isAuthorizing, isOfflineMode } = useAppSelector((state) => state.auth);
 
   const [data, setData] = useState<R>();
@@ -49,7 +49,19 @@ const useQuery = <P, R>({
       skippedInitialGet.current = true;
       return;
     }
-    if (!isAuthorizing) loadData(payload);
+
+    // При получении страницы логина, все хуки useQuery в активных экранах
+    // начинают делать повторную загрузку данных, что как бы и не нужно,
+    // кроме хука, который и получил страницу логина
+    if (!calledAuthorizing.current && didInitialGet.current) return;
+
+    // Странная вещь, но после входа, стейт isAuthorizing равен true на экране с расписанием
+    if (!isAuthorizing || !didInitialGet.current)
+      loadData({ requestType, data: payloadData.current });
+    else return;
+
+    if (calledAuthorizing.current) calledAuthorizing.current = false;
+    if (!didInitialGet.current) didInitialGet.current = true;
   }, [isAuthorizing]);
 
   const handleAfter = async (result: IGetResult<R>) => {
@@ -71,16 +83,17 @@ const useQuery = <P, R>({
 
   const checkLoginPage = (result: IGetResult<R>) => {
     if (result.type === GetResultType.loginPage) {
+      calledAuthorizing.current = true;
       dispatch(setAuthorizing(true));
-      return true;
     }
-    return false;
   };
 
   const loadData = async (payload: IGetPayload<P>) => {
     enableLoading();
 
     const result = await get(payload);
+
+    if (result.type === GetResultType.loginPage) return;
 
     if (!result.data) {
       if (onFail) handleFailedQuery(result);
@@ -101,7 +114,7 @@ const useQuery = <P, R>({
     payloadData.current = payload.data;
     const result = await method(payload);
 
-    if (checkLoginPage(result)) return;
+    checkLoginPage(result);
     return result;
   };
 

@@ -4,7 +4,6 @@ import React from 'react';
 import { StyleSheet, Text, ToastAndroid, TouchableOpacity } from 'react-native';
 
 import { downloadFile, saveFile } from '../utils';
-import { getPointsWord } from '../utils/texts';
 
 const defaultStyle = StyleSheet.create({
   text: {
@@ -30,7 +29,7 @@ const FileTextLink = ({ src, fileName, style, children }) => {
       ToastAndroid.show('Невозможно скачать файл в указанную папку', ToastAndroid.SHORT);
       console.log(e);
     }
-    await shareAsync(fileData.uri);
+    shareAsync(fileData.uri).catch((e) => e);
   };
 
   return (

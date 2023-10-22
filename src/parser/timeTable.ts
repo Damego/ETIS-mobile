@@ -5,6 +5,7 @@ import {
   DistancePlatformTypes,
   ILesson,
   IPair,
+  ITeacher,
   ITimeTable,
   WeekInfo,
   WeekTypes,
@@ -63,6 +64,22 @@ const getDistancePlatform = (platform: cheerio.Cheerio): DistancePlatform => {
     type,
     imageUrl: httpClient.getSiteURL() + image.attr('src'),
   };
+};
+
+const getTeacher = (lesson: cheerio.Cheerio): ITeacher => {
+  // TODO: parse list of teachers
+  const teacherAnchor = lesson.find('.teacher').find('a').first();
+  if (!teacherAnchor.length) return;
+
+  const teacherAnchorHref = teacherAnchor.attr('href');
+  const name = getTextField(teacherAnchor);
+
+  if (!teacherAnchorHref) return { name };
+
+  const [, id] = executeRegex(idRegex, teacherAnchorHref);
+  if (!id) return { name };
+
+  return { name, id };
 };
 
 export default function parseTimeTable(html: string) {
@@ -127,14 +144,11 @@ export default function parseTimeTable(html: string) {
 
             // Sentry здесь неактивно так как результат выполнения регулярки
             // является частью ветвления и потому его отсуствие != ошибке
-            const regexResult = executeRegex(audienceRegex, audienceText, /* sendReport: */ false);
+            const regexResult = executeRegex(audienceRegex, audienceText, false);
             if (regexResult) {
               [, audience, building, floor] = regexResult;
             }
           }
-
-          const teacherAnchor = lesson.find('.teacher').find('a');
-          const [, teacherId] = executeRegex(idRegex, teacherAnchor.attr('href'));
 
           lessons.push({
             audienceText,
@@ -144,7 +158,7 @@ export default function parseTimeTable(html: string) {
             subject,
             isDistance: audience === 'Дистанционно' || !!distancePlatform,
             distancePlatform,
-            teacherId,
+            teacher: getTeacher(lesson),
             announceHTML,
           });
         });
