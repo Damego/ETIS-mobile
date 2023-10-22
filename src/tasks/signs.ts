@@ -98,7 +98,11 @@ export async function unregisterBackgroundFetchAsync() {
 
 export const registerFetch = async () => {
   client = new Client();
-  currentSession = (await client.getSessionSignsData({ requestType: RequestType.forceFetch })).data
-    .currentSession;
+  currentSession = (await client.getSessionSignsData({ requestType: RequestType.forceFetch })).data?.currentSession;
+
+  if (!currentSession) {
+    console.warn('[FETCH] Unable to access current session. Task registering canceled.');
+    return;
+  }
   registerBackgroundFetchAsync().then(() => console.log('[FETCH] Signs fetch task registered'));
 };
