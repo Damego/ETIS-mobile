@@ -183,7 +183,6 @@ const AuthLoadingModal = () => {
         size={isInvisibleRecaptcha ? 'invisible' : 'normal'}
         onClose={onRecaptchaModalClose}
       /> 
-      { isInvisibleRecaptcha && 
       <View
         style={[
           styles.modalContainer,
@@ -206,7 +205,7 @@ const AuthLoadingModal = () => {
             </View>
           )}
         </View> 
-      </View> }
+      </View>
     </View>
   );
 };
