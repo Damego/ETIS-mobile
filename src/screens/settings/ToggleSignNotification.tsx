@@ -1,6 +1,14 @@
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
-import { Linking, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Linking,
+  StyleSheet,
+  Switch,
+  Text,
+  ToastAndroid,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import { cache } from '../../cache/smartCache';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
@@ -22,10 +30,15 @@ const ToggleSignNotification = () => {
   const dispatch = useAppDispatch();
   const signNotification = useAppSelector((state) => state.settings.signNotification);
   const globalStyles = useGlobalStyles();
-  const isDemo = useAppSelector((state) => state.auth.isDemo);
+  const { isDemo, isOfflineMode } = useAppSelector((state) => state.auth);
 
   const changeSignNotification = (hasSignNotification: boolean) => {
-    if (hasSignNotification && !isDemo) {
+    if (isDemo || isOfflineMode) {
+      ToastAndroid.show('Невозможно изменить в демо или оффлайн режимах', ToastAndroid.LONG);
+      return;
+    }
+
+    if (hasSignNotification) {
       registerFetch();
     } else {
       unregisterBackgroundFetchAsync();

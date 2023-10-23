@@ -69,7 +69,7 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
 
   useEffect(() => {
     loadData().then(() => {
-      if (signNotification && !isDemo) {
+      if (signNotification && !isDemo && !isOfflineMode) {
         registerFetch();
       }
     });

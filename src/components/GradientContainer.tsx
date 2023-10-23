@@ -1,7 +1,7 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 
-import HalloweenEmoji from './HalloweenEmoji';
+import { HalloweenDecoration } from './HalloweenDecoration';
 
 const GradientContainer = ({
   disabled,
@@ -17,7 +17,7 @@ const GradientContainer = ({
   return (
     <LinearGradient colors={colors} style={{ flex: 1 }}>
       {/* TODO: Remove after halloween */}
-      <HalloweenEmoji />
+      <HalloweenDecoration />
       {children}
     </LinearGradient>
   );

@@ -1,3 +1,5 @@
+import { ICheckPoint } from '../models/sessionPoints';
+
 export const getPointsWord = (points: number) => {
   let pointsWord = 'балл';
 
@@ -10,6 +12,11 @@ export const getPointsWord = (points: number) => {
   else if ([2, 3, 4].includes(numEnd)) pointsWord += 'а';
 
   return pointsWord;
+};
+
+export const formatCheckPointScore = (checkPoint: ICheckPoint) => {
+  if (checkPoint.isAbsent) return 'н';
+  if (Number.isNaN(checkPoint.points) || !checkPoint.points) return '-';
 };
 
 export const fontSize = {

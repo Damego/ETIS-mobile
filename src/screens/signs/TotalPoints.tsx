@@ -1,8 +1,18 @@
-import React from 'react';
-import { StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
+import React, { useState } from 'react';
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
 
-import { useGlobalStyles } from '../../hooks';
+import { HalloweenEmoji } from '../../components/HalloweenDecoration';
+import { useAppSelector, useGlobalStyles } from '../../hooks';
 import { ISubject } from '../../models/sessionPoints';
+import { ThemeType } from '../../styles/themes';
 import { fontSize, getPointsWord } from '../../utils/texts';
 
 const styles = StyleSheet.create({
@@ -50,11 +60,13 @@ const getSubjectPointsStyle = (
 
 const TotalPoints = ({ subject, style }: { subject: ISubject; style?: StyleProp<ViewStyle> }) => {
   const globalStyles = useGlobalStyles();
+  const { theme } = useAppSelector((state) => state.settings);
+  const [showPoint, setShowPoint] = useState<boolean>(theme !== ThemeType.halloween);
 
   const textStyle = getSubjectPointsStyle(subject, globalStyles.textColor);
   const pointsWord = getPointsWord(subject.totalPoints);
 
-  return (
+  return showPoint ? (
     <View style={style}>
       <Text style={[fontSize.xxlarge, { fontWeight: '600' }, textStyle]}>
         {subject.totalPoints}
@@ -63,6 +75,10 @@ const TotalPoints = ({ subject, style }: { subject: ISubject; style?: StyleProp<
         {pointsWord}
       </Text>
     </View>
+  ) : (
+    <TouchableOpacity style={style} onPress={() => setShowPoint(true)}>
+      <HalloweenEmoji />
+    </TouchableOpacity>
   );
 };
 

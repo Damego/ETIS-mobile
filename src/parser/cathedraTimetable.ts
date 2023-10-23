@@ -104,14 +104,17 @@ export default function parseCathedraTimetable(html: string) {
     if (index === 0) return;
 
     const tag = $(element);
-    if (!getTextField(tag).trim()) return;
+    if (!getTextField(tag)) return;
 
     const tdList = tag.children();
+    const firstTdTag = tdList.eq(0);
+    const firstFieldIsTeacher = firstTdTag.attr('rowspan') === '10';
+
     // 8 - препод + расписание для 1й пары
-    // 7 - расписание для 2+ пары
-    // 2 - препод и нет расписания
-    if (tdList.length === 2) {
-      const teacher = tdList.eq(0).contents().eq(0);
+    // 2 - препод и нет расписания или время + 1 пара
+    // 2+ - время и произвольное количество блоков с парами (обычно равно 7)
+    if (tdList.length === 2 && firstFieldIsTeacher) {
+      const teacher = firstTdTag.contents().eq(0);
       teacherIndex += 1;
       data.timetable[teacherIndex] = {
         teacherName: getTextField(teacher),
@@ -120,8 +123,7 @@ export default function parseCathedraTimetable(html: string) {
       return;
     }
     if (tdList.length === 8) {
-      const teacher = tdList.eq(0).contents().eq(0);
-
+      const teacher = firstTdTag.contents().eq(0);
       teacherIndex += 1;
       dayIndex = -1;
 
@@ -136,14 +138,14 @@ export default function parseCathedraTimetable(html: string) {
           { pairs: [] },
         ],
       };
-    } else if (tdList.length === 7) {
+    } else if (tdList.length >= 2) {
       dayIndex = -1;
     }
 
     tdList.each((tdIndex, tdElement) => {
       if (
         (tdList.length === 8 && (tdIndex === 0 || tdIndex === 1)) ||
-        (tdList.length === 7 && tdIndex === 0)
+        (tdList.length >= 2 && tdIndex === 0)
       )
         return;
 

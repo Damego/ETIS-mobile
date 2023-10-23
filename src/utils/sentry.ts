@@ -1,7 +1,5 @@
 import * as SentryExpo from 'sentry-expo';
 
-import { ISessionTeachPlan } from '../models/teachPlan';
-
 export default () => {
   if (__DEV__) return;
 
@@ -27,28 +25,17 @@ export default () => {
     });
   }
 };
-
-const subjectRegex = /([а-яА-Я\w\s":.,+#-]+(?: \([а-яА-Я\w\s]+\))?(?: \[[а-яА-Я\w\s,]+])*)/s;
-export const checkSubjectNames = (teachPlan: ISessionTeachPlan[]) => {
-  const incorrectDisciplines = teachPlan
-    ?.map((session) => session.disciplines.map((discipline) => discipline.name))
-    .flat()
-    .filter((name) => !subjectRegex.test(name));
-  if (incorrectDisciplines?.length !== 0) {
-    SentryExpo.React.captureMessage(
-      `Disciplines mismatched w/ regex: ${JSON.stringify(incorrectDisciplines)}`,
-      'error'
-    );
-  }
-};
-
 export const reportParserError = (error) => {
   if (!__DEV__) SentryExpo.React.captureException(error);
 };
 
-export const executeRegex = (regex: RegExp, str: string): RegExpExecArray => {
+export const executeRegex = (
+  regex: RegExp,
+  str: string,
+  sendReport: boolean = true
+): RegExpExecArray => {
   const result = regex.exec(str);
-  if (!result) {
+  if (!result && sendReport) {
     SentryExpo.React.captureMessage(`String ${str} mismatched with regex ${regex}`, 'error');
   }
   return result;

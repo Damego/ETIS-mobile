@@ -3,6 +3,8 @@ import { load } from 'cheerio';
 import { StudentData } from '../models/student';
 import { getTextField } from './utils';
 
+const nameWithBirthDateRegex = /([а-яА-ЯёЁ\s\w]+) \((\d{2}\.\d{2}\.\d{4}) г\.р\.\)/s;
+
 export interface StudentInfo {
   announceCount: number;
   messageCount: number;
@@ -41,13 +43,17 @@ export default function parseMenu(html: string, parseGroupJournal = false): Stud
 
   // Получение информации о студенте
   const rawData = getTextField($('.span12'));
-  const [rawName, speciality, form, year] = rawData.split('\n').map((string) => string.trim());
-  const [name1, name2, name3] = rawName.split(' ');
+  const [nameWithBirthDate, speciality, educationForm, year] = rawData
+    .split('\n')
+    .map((string) => string.trim());
+
+  // Дата рождения игнорится для будущего возможного функционала (поздравление к примеру)
+  const [, name] = nameWithBirthDateRegex.exec(nameWithBirthDate);
 
   data.student = {
-    name: `${name1} ${name2} ${name3}`,
+    name,
     speciality,
-    educationForm: form,
+    educationForm,
     year,
     group: null,
   };

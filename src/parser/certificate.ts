@@ -52,7 +52,7 @@ function parseAnnounces(html: string): ICertificateAnnounce {
   // Объявление с подтверждением почты похожа по структуре на объявления на странице заказа справок
   // поэтому просто игнорим
   if (content.length === 2) selector = content.eq(1).children().filter('font');
-  else selector = content;
+  else selector = content.children().filter('font');
 
   const firstItem = selector.eq(0);
   const lastItem = selector.eq(1);

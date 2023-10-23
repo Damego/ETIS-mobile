@@ -178,6 +178,11 @@ const AuthLoadingModal = () => {
 
   return (
     <View style={styles.modalWrapper}>
+      <CustomReCaptcha
+        onReceiveToken={onReceiveToken}
+        size={isInvisibleRecaptcha ? 'invisible' : 'normal'}
+        onClose={onRecaptchaModalClose}
+      />
       <View
         style={[
           styles.modalContainer,
@@ -199,11 +204,6 @@ const AuthLoadingModal = () => {
               />
             </View>
           )}
-          <CustomReCaptcha
-            onReceiveToken={onReceiveToken}
-            size={isInvisibleRecaptcha ? 'invisible' : 'normal'}
-            onClose={onRecaptchaModalClose}
-          />
         </View>
       </View>
     </View>

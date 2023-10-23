@@ -78,8 +78,13 @@ class HTTPClient {
   }
 
   async isInternetReachable() {
-    const networkState = await getNetworkStateAsync();
-    return networkState.isInternetReachable;
+    try {
+      const networkState = await getNetworkStateAsync();
+      return networkState.isInternetReachable;
+    } catch (e) {
+      console.warn('[HTTP] Cannot get network state');
+      return true;
+    }
   }
 
   async request(
