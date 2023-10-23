@@ -3,7 +3,7 @@ import { load } from 'cheerio';
 import { StudentData } from '../models/student';
 import { getTextField } from './utils';
 
-const nameWithBirthDateRegex = /([а-яА-ЯёЁ\s\w]+) \((\d{2}.\d{2}.\d{4}) г.р.\)/s;
+const nameWithBirthDateRegex = /([а-яА-ЯёЁ\s\w]+) \((\d{2}\.\d{2}\.\d{4}) г\.р\.\)/s;
 
 export interface StudentInfo {
   announceCount: number;
