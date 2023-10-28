@@ -11,7 +11,7 @@ import CardSign from './CardSign';
 const Signs = () => {
   const { data, isLoading, refresh, loadSession } = useSignsQuery();
 
-  if (isLoading) return <LoadingScreen onRefresh={refresh} />;
+  if (isLoading && !data) return <LoadingScreen onRefresh={refresh} />;
   if (!data) return <NoData onRefresh={refresh} />;
 
   return (
