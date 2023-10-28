@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
 
 import { useGlobalStyles } from '../hooks';
@@ -56,6 +56,7 @@ const PageNavigator = ({
 }) => {
   const globalStyles = useGlobalStyles();
   const [pages, setPages] = useState<number[]>([]);
+  const ref = useRef<ScrollView>();
 
   const generateButtons = () => {
     const array: number[] = [];
@@ -69,9 +70,20 @@ const PageNavigator = ({
     generateButtons();
   }, []);
 
+  useEffect(() => {
+    if (!pages.length) return;
+
+    const x =
+      (currentPage - firstPage) * styles.button.width +
+      (currentPage - firstPage) * styles.scrollContainer.gap;
+
+    ref.current.scrollTo({ x });
+  }, [pages]);
+
   return (
     <View style={styles.view}>
       <ScrollView
+        ref={ref}
         horizontal
         contentContainerStyle={styles.scrollContainer}
         showsHorizontalScrollIndicator={false}
