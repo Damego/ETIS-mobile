@@ -79,7 +79,7 @@ export default function parseMenu(html: string, parseGroupJournal = false): Stud
     .each((i, el) => {
       const span = $(el);
       const href = span.parent().attr('href');
-      if (href === 'stu.announce') {
+      if (href === 'stu_ann.announces') {
         data.announceCount = parseInt(getTextField(span));
       } else if (href === 'stu.teacher_notes') {
         data.messageCount = parseInt(getTextField(span));
