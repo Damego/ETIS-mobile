@@ -26,6 +26,10 @@ const options = [
     label: 'Чёрная',
     value: ThemeType.black,
   },
+  {
+    label: 'Зимняя',
+    value: ThemeType.winter
+  }
 ];
 
 if (isHalloween())

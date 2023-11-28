@@ -6,6 +6,9 @@ export enum ThemeType {
   dark = 'dark',
   black = 'black',
   halloween = 'halloween',
+  winter = 'winter',
+  lightWinter = 'lightWinter',
+  darkWinter = 'darkWinter'
 }
 
 export interface IThemeColors {
@@ -113,9 +116,53 @@ export const HalloweenTheme: ITheme = {
   },
 };
 
+export const LightWinterTheme: ITheme = {
+  dark: false,
+  statusBarStyle: 'dark',
+  disabledCardBorder: false,
+  colors: {
+    background: 'transparent',
+    backgroundGradient: ['#E7EFEF', '#E7EFEF'], // hack to prevent whole navigation rerender
+    primary: '#028b81',
+    secondary: '#c42e21',
+    border: '#EAEAEA',
+    text: '#000000',
+    textForPrimary: '#000000',
+    textForSecondary: '#FFFFFF',
+    inputPlaceholder: '#6A5787',
+    block: '#fafbfb',
+    card: '#FFFFFF',
+    shadow: '#000000',
+    notification: '#EAEAEA',
+  },
+}
+
+export const DarkWinterTheme: ITheme = {
+  dark: true,
+  statusBarStyle: 'light',
+  disabledCardBorder: false,
+  colors: {
+    background: 'transparent',
+    backgroundGradient: ['#181f32', '#131723'],
+    primary: '#409ad4',
+    secondary: '#c42e21',
+    border: '#181f32',
+    text: '#FFFFFF',
+    textForPrimary: '#000000',
+    textForSecondary: '#FFFFFF',
+    inputPlaceholder: '#6A5787',
+    block: '#1c2439',
+    card: '#181f32',
+    shadow: '#000000',
+    notification: '#EAEAEA',
+  },
+}
+
 export const APP_THEMES = {
   light: LightTheme,
   dark: DarkTheme,
   black: BlackTheme,
   halloween: HalloweenTheme,
+  lightWinter: LightWinterTheme,
+  darkWinter: DarkWinterTheme
 };

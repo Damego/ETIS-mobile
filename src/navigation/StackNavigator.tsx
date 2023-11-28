@@ -10,7 +10,7 @@ import { cache } from '../cache/smartCache';
 import GradientContainer from '../components/GradientContainer';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { useAppTheme } from '../hooks/theme';
-import { PageType, changeTheme, setInitialPage } from '../redux/reducers/settingsSlice';
+import { changeTheme, PageType, setInitialPage } from '../redux/reducers/settingsSlice';
 import AuthPage from '../screens/auth/Auth';
 import Intro from '../screens/intro/Intro';
 import MessageHistory from '../screens/messages/MessageHistory';
