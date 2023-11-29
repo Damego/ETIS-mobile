@@ -8,7 +8,7 @@ import {
   Text,
   TextInput,
   ToastAndroid,
-  TouchableOpacity,
+  TouchableOpacity, useColorScheme,
   View,
 } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
@@ -18,7 +18,7 @@ import { Button } from '../../components/Button';
 import Card from '../../components/Card';
 import Screen from '../../components/Screen';
 import { useAppSelector, useGlobalStyles } from '../../hooks';
-import { useAppColorScheme, useAppTheme } from '../../hooks/theme';
+import { useAppTheme } from '../../hooks/theme';
 import { CertificateParam } from '../../models/certificateRequest';
 import { httpClient } from '../../utils';
 import { toCertificatePayload } from '../../utils/certificate';
@@ -93,7 +93,7 @@ export default function RequestCertificate() {
   const [delivery, setDelivery] = useState<string>();
   const [keyboardOpen, setKeyboardOpen] = useState<boolean>(false);
   const [requestSent, setRequestSent] = useState<boolean>(false);
-  const schemeColor = useAppColorScheme() === 'light' ? 'black' : 'white';
+  const schemeColor = useColorScheme() === 'light' ? 'black' : 'white';
   const appTheme = useAppTheme();
   const navigator = useNavigation();
 
