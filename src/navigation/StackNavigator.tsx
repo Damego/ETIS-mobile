@@ -1,5 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { ImageBackground } from 'expo-image';
 import { setBackgroundColorAsync as setBackgroundNavigationBarColorAsync } from 'expo-navigation-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import { setBackgroundColorAsync } from 'expo-system-ui';
@@ -128,15 +129,17 @@ const StackNavigator = () => {
       disabled={!theme.colors.backgroundGradient}
       colors={theme.colors.backgroundGradient}
     >
-      <NavigationContainer theme={theme}>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          {component}
-        </Stack.Navigator>
-      </NavigationContainer>
+      <ImageBackground source={theme.backgroundImage} style={{ flex: 1 }}>
+        <NavigationContainer theme={theme}>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            {component}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ImageBackground>
     </GradientContainer>
   );
 };

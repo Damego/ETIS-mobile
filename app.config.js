@@ -13,7 +13,7 @@ export default {
     splash: {
       image: './assets/splash.png',
       resizeMode: 'contain',
-      backgroundColor: '#CE2539',
+      backgroundColor: '#9b1b2a',
     },
     updates: {
       fallbackToCacheTimeout: 0,
@@ -26,7 +26,7 @@ export default {
       versionCode: 10202000,
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#9B1B2A',
       },
       package: IS_DEV ? 'dev.damego.etismobile' : 'com.damego.etismobile',
       playStoreUrl: 'https://play.google.com/store/apps/details?id=com.damego.etismobile',
