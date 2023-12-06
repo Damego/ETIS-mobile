@@ -118,7 +118,7 @@ export const HalloweenTheme: ITheme = {
 export const NewYearTheme: ITheme = {
   dark: false,
   statusBarStyle: 'light',
-  disabledCardBorder: true,
+  disabledCardBorder: false,
   backgroundImage: require("../../assets/background.png"),
   colors: {
     background: 'transparent',
