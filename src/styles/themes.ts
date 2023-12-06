@@ -6,9 +6,7 @@ export enum ThemeType {
   dark = 'dark',
   black = 'black',
   halloween = 'halloween',
-  winter = 'winter',
-  lightWinter = 'lightWinter',
-  darkWinter = 'darkWinter'
+  newYear = 'newYear',
 }
 
 export interface IThemeColors {
@@ -44,6 +42,7 @@ export interface ITheme {
   dark: boolean;
   statusBarStyle: StatusBarStyle;
   disabledCardBorder?: boolean;
+  backgroundImage?: any;
   colors: IThemeColors;
 }
 
@@ -116,43 +115,23 @@ export const HalloweenTheme: ITheme = {
   },
 };
 
-export const LightWinterTheme: ITheme = {
+export const NewYearTheme: ITheme = {
   dark: false,
-  statusBarStyle: 'dark',
-  disabledCardBorder: false,
-  colors: {
-    background: 'transparent',
-    backgroundGradient: ['#E7EFEF', '#E7EFEF'], // hack to prevent whole navigation rerender
-    primary: '#028b81',
-    secondary: '#c42e21',
-    border: '#EAEAEA',
-    text: '#000000',
-    textForPrimary: '#000000',
-    textForSecondary: '#FFFFFF',
-    inputPlaceholder: '#6A5787',
-    block: '#fafbfb',
-    card: '#FFFFFF',
-    shadow: '#000000',
-    notification: '#EAEAEA',
-  },
-}
-
-export const DarkWinterTheme: ITheme = {
-  dark: true,
   statusBarStyle: 'light',
-  disabledCardBorder: false,
+  disabledCardBorder: true,
+  backgroundImage: require("../../assets/background.png"),
   colors: {
     background: 'transparent',
-    backgroundGradient: ['#181f32', '#131723'],
-    primary: '#409ad4',
-    secondary: '#c42e21',
-    border: '#181f32',
+    backgroundGradient: ['#9b1b2a', '#9b1b2a'],
+    primary: '#FFC63E',
+    secondary: '#FFC63E',
+    border: '#FFC63E',
     text: '#FFFFFF',
-    textForPrimary: '#000000',
+    textForPrimary: '#FFFFFF',
     textForSecondary: '#FFFFFF',
     inputPlaceholder: '#6A5787',
-    block: '#1c2439',
-    card: '#181f32',
+    block: '#CE2539',
+    card: '#9b1b2a',
     shadow: '#000000',
     notification: '#EAEAEA',
   },
@@ -163,6 +142,5 @@ export const APP_THEMES = {
   dark: DarkTheme,
   black: BlackTheme,
   halloween: HalloweenTheme,
-  lightWinter: LightWinterTheme,
-  darkWinter: DarkWinterTheme
+  newYear: NewYearTheme
 };
