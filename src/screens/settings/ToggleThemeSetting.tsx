@@ -27,8 +27,8 @@ const options = [
     value: ThemeType.black,
   },
   {
-    label: 'Зимняя',
-    value: ThemeType.winter
+    label: 'Новогодняя',
+    value: ThemeType.newYear
   }
 ];
 
