@@ -1,23 +1,20 @@
 import { useColorScheme } from 'react-native';
 
-import { APP_THEMES, ThemeType } from '../styles/themes';
+import { APP_THEMES, ITheme, ThemeType } from '../styles/themes';
 import { useAppSelector } from './redux';
 
-export const useAppColorScheme = () => {
+export const useAppTheme = (): ITheme => {
   const themeType = useAppSelector((state) => state.settings.theme);
   const scheme = useColorScheme();
 
-  if (themeType === ThemeType.winter) {
-    if (scheme === 'light') return ThemeType.lightWinter
-    return ThemeType.darkWinter;
+  if (themeType === ThemeType.auto) {
+    return APP_THEMES[scheme];
   }
 
-  if (themeType !== ThemeType.auto) return themeType;
+  const theme = APP_THEMES[themeType];
+  if (theme.light && theme.dark) {
+    return theme[scheme];
+  }
 
-  return ThemeType[scheme];
-};
-
-export const useAppTheme = () => {
-  const scheme = useAppColorScheme();
-  return APP_THEMES[scheme];
+  return theme;
 };
