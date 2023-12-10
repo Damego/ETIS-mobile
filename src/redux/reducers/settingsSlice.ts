@@ -27,6 +27,7 @@ export interface SettingsState {
   appIsReady: boolean;
   initialPage: PageType;
   sentryEnabled: boolean;
+  events: Events;
 }
 
 const initialState: SettingsState = {
@@ -36,6 +37,7 @@ const initialState: SettingsState = {
   appIsReady: false,
   initialPage: PageType.timeTable,
   sentryEnabled: true,
+  events: {},
 };
 
 const settingsSlice = createSlice({
@@ -56,6 +58,8 @@ const settingsSlice = createSlice({
 
       if (config.sentryEnabled !== undefined) state.sentryEnabled = config.sentryEnabled;
       else state.sentryEnabled = true;
+
+      state.events = config.events;
     },
     changeTheme(state, action: PayloadAction<ThemeType>) {
       state.theme = action.payload;
@@ -75,6 +79,9 @@ const settingsSlice = createSlice({
     setSentryEnabled(state, action: PayloadAction<boolean>) {
       state.sentryEnabled = action.payload;
     },
+    setEvents(state, action: PayloadAction<Events>) {
+      state.events = action.payload;
+    },
   },
 });
 
@@ -87,4 +94,5 @@ export const {
   setAppReady,
   setInitialPage,
   setSentryEnabled,
+  setEvents,
 } = settingsSlice.actions;

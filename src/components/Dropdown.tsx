@@ -1,9 +1,10 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { useGlobalStyles } from '../hooks';
 import { fontSize } from '../utils/texts';
+import Text from './Text';
 
 interface IDropdownOption {
   label: string;
@@ -38,6 +39,7 @@ const styles = StyleSheet.create({
   },
   optionText: {
     fontWeight: '500',
+    ...fontSize.medium,
   },
 });
 
@@ -59,11 +61,8 @@ const SelectOption = ({
       style={styles.optionView}
     >
       <Text
-        style={[
-          fontSize.medium,
-          styles.optionText,
-          option.current ? globalStyles.primaryFontColor : globalStyles.textColor,
-        ]}
+        style={styles.optionText}
+        colorVariant={option.current ? 'primary' : 'block'}
       >
         {option.label}
       </Text>
@@ -108,13 +107,13 @@ function Select({
       onPress={toggleOpened}
       activeOpacity={0.9}
     >
-      <Text style={[fontSize.medium, styles.selectText, globalStyles.textColor]}>
+      <Text style={[fontSize.medium, styles.selectText]} colorVariant={'block'}>
         {selectedOption}
       </Text>
       <AntDesign
         name={isOpened ? 'caretup' : 'caretdown'}
         size={14}
-        color={globalStyles.textColor.color}
+        color={globalStyles.fontColorForBlock.color}
       />
     </TouchableOpacity>
   );

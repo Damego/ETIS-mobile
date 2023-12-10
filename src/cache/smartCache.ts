@@ -19,6 +19,7 @@ import { ThemeType } from '../styles/themes';
 import FieldCache from './fieldCache';
 import MappedCache from './mappedCache';
 import SecuredFieldCache from './securedFieldCache';
+import { Events } from '../utils/events';
 
 export default class SmartCache {
   absences: MappedCache<number, IAbsence>;
@@ -450,6 +451,12 @@ export default class SmartCache {
       await this.updateAppConfig(config);
     }
     return config.events;
+  }
+
+  async placeEvents(events: Events) {
+    const config = await this.getAppConfig();
+    config.events = events;
+    await this.updateAppConfig(config);
   }
 
   // End Internal Region
