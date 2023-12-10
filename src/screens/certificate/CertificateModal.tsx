@@ -36,13 +36,14 @@ export default function CertificateModal({ html, closeModal }) {
           source={{ html }}
           scalesPageToFit
           style={{ marginHorizontal: '20%', marginVertical: '3%' }}
-          customStyle={getStyles(globalStyles.textColor.color)}
+          customStyle={getStyles(globalStyles.fontColorForBlock.color)}
         />
         <ClickableText
           text={'Закрыть'}
           onPress={closeModal}
-          textStyle={[fontSize.large, globalStyles.textColor]}
+          textStyle={fontSize.large}
           viewStyle={{ marginBottom: '2%' }}
+          colorVariant={'block'}
         />
       </View>
     </Modal>

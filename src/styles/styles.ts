@@ -34,6 +34,9 @@ const getGlobalStyles = ({ colors }: { colors: IThemeColors }) =>
     fontColorForSecondary: {
       color: colors.textForSecondary,
     },
+    fontColorForBlock: {
+      color: colors.textForBlock,
+    },
     secondaryFontColor: {
       color: colors.secondary,
     },
@@ -46,6 +49,9 @@ const getGlobalStyles = ({ colors }: { colors: IThemeColors }) =>
     textColor: {
       color: colors.text,
     },
+    inputPlaceholder: {
+      color: colors.inputPlaceholder
+    }
   });
 
 export default getGlobalStyles;

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Text } from 'react-native';
 
 import Card from '../../components/Card';
 import CardHeaderOut from '../../components/CardHeaderOut';
@@ -16,9 +15,9 @@ import ToggleSentrySetting from './ToggleSentrySetting';
 import ToggleSignNotification from './ToggleSignNotification';
 import ToggleThemeSetting from './ToggleThemeSetting';
 
-export default function Settings() {
-  const globalStyles = useGlobalStyles();
+import Text from '../../components/Text';
 
+export default function Settings() {
   return (
     <Screen>
       <Card style={{ zIndex: 1 }}>
@@ -38,7 +37,6 @@ export default function Settings() {
         style={[
           fontSize.medium,
           { fontWeight: 'bold', marginBottom: '2%' },
-          globalStyles.textColor,
         ]}
       >
         Аккаунт

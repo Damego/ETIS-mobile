@@ -1,13 +1,14 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 import CardHeaderOut from '../../components/CardHeaderOut';
-import { useGlobalStyles } from '../../hooks';
+import Text from '../../components/Text';
+import { useAppTheme } from '../../hooks/theme';
 import { IAbsenceDate, IDisciplineAbsences } from '../../models/absences';
 
 const AbsencesCard = ({ disciplineAbsences }: { disciplineAbsences: IDisciplineAbsences }) => {
-  const globalStyles = useGlobalStyles();
+  const theme = useAppTheme();
   const [isOpened, setOpened] = useState(false);
   const covered = disciplineAbsences.dates.filter((date) => date.isCovered).length;
 
@@ -22,28 +23,20 @@ const AbsencesCard = ({ disciplineAbsences }: { disciplineAbsences: IDisciplineA
           {disciplineAbsences.dates.map((date: IAbsenceDate, index: number) => (
             <Text
               key={index}
-              style={[
-                { fontWeight: '500' },
-                date.isCovered ? globalStyles.textColor : globalStyles.primaryFontColor,
-              ]}
+              style={{ fontWeight: '500' }}
+              colorVariant={date.isCovered ? undefined : 'primary'}
             >
               {date.date}
             </Text>
           ))}
         </View>
         <View style={{ flex: 1 }}>
-          <Text style={globalStyles.textColor}>
-            {`Пропущенных занятий: ${disciplineAbsences.dates.length}`}
-          </Text>
-          {!!covered && (
-            <Text style={globalStyles.textColor}>{`По уважительной причине: ${covered}`}</Text>
-          )}
+          <Text>{`Пропущенных занятий: ${disciplineAbsences.dates.length}`}</Text>
+          {!!covered && <Text>{`По уважительной причине: ${covered}`}</Text>}
           {isOpened && (
             <>
-              <Text style={globalStyles.textColor}>
-                {`Преподаватель: ${disciplineAbsences.teacher}`}
-              </Text>
-              <Text style={globalStyles.textColor}>{`Вид работы: ${disciplineAbsences.type}`}</Text>
+              <Text>{`Преподаватель: ${disciplineAbsences.teacher}`}</Text>
+              <Text>{`Вид работы: ${disciplineAbsences.type}`}</Text>
             </>
           )}
         </View>
@@ -52,7 +45,7 @@ const AbsencesCard = ({ disciplineAbsences }: { disciplineAbsences: IDisciplineA
           <AntDesign
             name={isOpened ? 'up' : 'down'}
             size={18}
-            color={globalStyles.textColor.color}
+            color={theme.colors.text}
           />
         </View>
       </TouchableOpacity>

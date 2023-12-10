@@ -1,8 +1,9 @@
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 
+import Text from '../../components/Text';
 import { useGlobalStyles } from '../../hooks';
 import { useAppTheme } from '../../hooks/theme';
 import { fontSize } from '../../utils/texts';
@@ -34,7 +35,7 @@ const AboutSignsDetails = () => {
         backgroundColor: appTheme.colors.block,
       }}
     >
-      <Text textBreakStrategy={'simple'} style={[fontSize.medium, globalStyles.textColor]}>
+      <Text textBreakStrategy={'simple'} style={fontSize.medium} colorVariant={'block'}>
         Нажмите на блок контрольных точек для открытия подробной информации о каждой из них
       </Text>
     </Popover>

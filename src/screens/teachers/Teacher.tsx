@@ -1,16 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import {
-  Image,
-  StyleSheet,
-  Text,
-  ToastAndroid,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import { Image, StyleSheet, ToastAndroid, TouchableWithoutFeedback, View } from 'react-native';
 
-import { useGlobalStyles } from '../../hooks';
+import ClickableText from '../../components/ClickableText';
+import Text from '../../components/Text';
 import { ITeacher } from '../../models/teachers';
 import { ServicesNavigationProp } from '../../navigation/types';
 import { fontSize } from '../../utils/texts';
@@ -20,7 +13,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   teacherNameView: {},
-  fontW500: {
+  textTitle: {
     fontWeight: '500',
   },
   subjectInfoView: {},
@@ -33,6 +26,7 @@ const styles = StyleSheet.create({
   teacherInfo: {
     flex: 2,
   },
+  teacherTimetableButton: { fontWeight: '500', textDecorationLine: 'underline' },
 });
 
 interface TeacherProps {
@@ -40,22 +34,25 @@ interface TeacherProps {
 }
 
 const Teacher = ({ data }: TeacherProps) => {
-  const globalStyles = useGlobalStyles();
   const navigation = useNavigation<ServicesNavigationProp>();
 
   return (
-    <View>
+    <>
       <View style={styles.container}>
         <View style={styles.teacherInfo}>
           <View style={styles.teacherNameView}>
-            <Text style={[fontSize.medium, styles.fontW500, globalStyles.textColor]}>
+            <Text style={[fontSize.medium, styles.textTitle]} colorVariant={'block'}>
               {data.name}
             </Text>
-            <Text style={[fontSize.medium, globalStyles.textColor]}>{data.subjectType}</Text>
+            <Text style={fontSize.medium} colorVariant={'block'}>
+              {data.subjectType}
+            </Text>
           </View>
 
           <View style={styles.subjectInfoView}>
-            <Text style={[fontSize.small, globalStyles.textColor]}>{data.cathedra}</Text>
+            <Text style={fontSize.small} colorVariant={'block'}>
+              {data.cathedra}
+            </Text>
           </View>
         </View>
 
@@ -73,16 +70,13 @@ const Teacher = ({ data }: TeacherProps) => {
         </TouchableWithoutFeedback>
       </View>
 
-      <TouchableOpacity
+      <ClickableText
+        text={'Расписание преподавателя'}
         onPress={() => navigation.navigate('CathedraTimetable', { teacherId: data.id })}
-      >
-        <Text
-          style={[globalStyles.textColor, { fontWeight: '500', textDecorationLine: 'underline' }]}
-        >
-          Расписание преподавателя
-        </Text>
-      </TouchableOpacity>
-    </View>
+        textStyle={styles.teacherTimetableButton}
+        colorVariant={'block'}
+      />
+    </>
   );
 };
 

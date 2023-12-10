@@ -1,10 +1,11 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
 import Dropdown from '../../components/Dropdown';
 import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
+import Text from '../../components/Text';
 import { useClient } from '../../data/client';
 import { useGlobalStyles } from '../../hooks';
 import useQuery from '../../hooks/useQuery';
@@ -12,7 +13,6 @@ import { RequestType } from '../../models/results';
 import AbsencesCard from './AbsencesCard';
 
 const AbsencesTable = () => {
-  const globalStyles = useGlobalStyles();
   const client = useClient();
   const { data, isLoading, refresh, update } = useQuery({
     method: client.getAbsencesData,
@@ -55,9 +55,7 @@ const AbsencesTable = () => {
           {data.absences.map((absences, index) => (
             <AbsencesCard key={index} disciplineAbsences={absences} />
           ))}
-          <Text
-            style={globalStyles.textColor}
-          >{`Всего пропущено занятий: ${data.overallMissed}`}</Text>
+          <Text>{`Всего пропущено занятий: ${data.overallMissed}`}</Text>
         </>
       ) : (
         <NoData text="Нет пропущенных занятий!" />

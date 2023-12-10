@@ -1,8 +1,9 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import BorderLine from '../../components/BorderLine';
+import Text from '../../components/Text';
 import { useGlobalStyles } from '../../hooks';
 import { ITeachPlanDiscipline } from '../../models/teachPlan';
 import { fontSize } from '../../utils/texts';
@@ -18,6 +19,7 @@ const styles = StyleSheet.create({
   },
   subjectNameText: {
     fontWeight: '500',
+    ...fontSize.medium,
   },
   boldText: {
     fontWeight: '500',
@@ -34,7 +36,7 @@ const DisciplineWorkHours = ({
   totalWorkHours: number;
 }) => {
   const globalStyles = useGlobalStyles();
-  const textStyles = [fontSize.medium, globalStyles.textColor];
+  const textStyles = [fontSize.medium, globalStyles.fontColorForBlock];
 
   return (
     <>
@@ -70,16 +72,20 @@ const Subject = ({
         style={styles.subjectDropdownView}
         activeOpacity={0.45}
       >
-        <View style={[styles.subjectTitleView]}>
-          <Text style={[fontSize.medium, styles.subjectNameText, globalStyles.textColor]}>
+        <View style={styles.subjectTitleView}>
+          <Text style={styles.subjectNameText} colorVariant={'block'}>
             {data.name}
           </Text>
-          <Text style={[fontSize.medium, globalStyles.textColor]}>
+          <Text style={fontSize.medium} colorVariant={'block'}>
             Отчётность: {data.reporting}
           </Text>
         </View>
 
-        <AntDesign name={isOpened ? 'up' : 'down'} size={18} color={globalStyles.textColor.color} />
+        <AntDesign
+          name={isOpened ? 'up' : 'down'}
+          size={18}
+          color={globalStyles.fontColorForBlock.color}
+        />
       </TouchableOpacity>
 
       {isOpened && (

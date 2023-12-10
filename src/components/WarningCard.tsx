@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { useGlobalStyles } from '../hooks';
 import { fontSize } from '../utils/texts';
 import Card from './Card';
+import Text from './Text';
 
 const styles = StyleSheet.create({
   cardView: {
@@ -11,7 +12,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontWeight: '500',
-    color: '#FFFFFF',
+    ...fontSize.medium,
   },
 });
 
@@ -20,7 +21,7 @@ const WarningCard = ({ text }: { text: string }) => {
 
   return (
     <Card style={[globalStyles.primaryBackgroundColor, styles.cardView]}>
-      <Text style={[fontSize.medium, styles.text]}>{text}</Text>
+      <Text style={styles.text} colorVariant={'primaryBlock'}>{text}</Text>
     </Card>
   );
 };

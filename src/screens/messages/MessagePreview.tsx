@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import CardHeaderOut from '../../components/CardHeaderOut';
+import Text from '../../components/Text';
 import { useGlobalStyles } from '../../hooks';
 import { IMessage } from '../../models/messages';
 import { BottomTabsNavigationProp } from '../../navigation/types';
@@ -12,11 +13,11 @@ import { fontSize } from '../../utils/texts';
 const styles = StyleSheet.create({
   textBold: {
     fontWeight: '600',
+    ...fontSize.medium,
   },
 });
 
 const MessagePreview = ({ data, page }: { data: IMessage[]; page: number }) => {
-  const globalStyles = useGlobalStyles();
   const navigation = useNavigation<BottomTabsNavigationProp>();
   const [mainMessage] = data;
   const { author, subject, theme } = mainMessage;
@@ -25,10 +26,12 @@ const MessagePreview = ({ data, page }: { data: IMessage[]; page: number }) => {
   return (
     <CardHeaderOut topText={author}>
       <TouchableOpacity onPress={() => navigation.navigate('History', { data, page })}>
-        <Text style={[styles.textBold, fontSize.medium, globalStyles.textColor]}>{subject}</Text>
-        <Text style={globalStyles.textColor}>{theme}</Text>
+        <Text style={styles.textBold} colorVariant={'block'}>
+          {subject}
+        </Text>
+        <Text colorVariant={'block'}>{theme}</Text>
         <View style={{ alignItems: 'flex-end' }}>
-          <Text style={globalStyles.textColor}>{time.format('DD.MM.YYYY HH:mm')}</Text>
+          <Text colorVariant={'block'}>{time.format('DD.MM.YYYY HH:mm')}</Text>
         </View>
       </TouchableOpacity>
     </CardHeaderOut>

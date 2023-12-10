@@ -1,9 +1,10 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
 import BorderLine from '../../components/BorderLine';
 import CardHeaderOut from '../../components/CardHeaderOut';
-import { useAppSelector, useGlobalStyles } from '../../hooks';
+import Text from '../../components/Text';
+import { useAppSelector } from '../../hooks';
 import { TeacherType } from '../../models/teachers';
 import { ITimeTableDay } from '../../models/timeTable';
 import { ThemeType } from '../../styles/themes';
@@ -26,13 +27,12 @@ const getRandomResponse = (hasHalloweenTheme: boolean) => {
 
 const EmptyDay = ({ data }: DayData) => {
   const { date } = data;
-  const globalStyles = useGlobalStyles();
   const { theme } = useAppSelector((state) => state.settings);
 
   return (
     <CardHeaderOut topText={date}>
       <View style={{ alignItems: 'center' }}>
-        <Text style={{ ...fontSize.medium, fontWeight: '600', ...globalStyles.textColor }}>
+        <Text style={{ ...fontSize.medium, fontWeight: '600' }} colorVariant={'block'}>
           {getRandomResponse(theme === ThemeType.halloween)}
         </Text>
       </View>
