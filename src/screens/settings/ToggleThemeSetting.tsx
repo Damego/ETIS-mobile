@@ -6,7 +6,7 @@ import Dropdown from '../../components/Dropdown';
 import Text from '../../components/Text';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { changeTheme, setEvents } from '../../redux/reducers/settingsSlice';
-import { ThemeType } from '../../styles/themes';
+import { ThemeType, isNewYearTheme } from '../../styles/themes';
 import { isHalloween, isNewYear } from '../../utils/events';
 import { fontSize } from '../../utils/texts';
 
@@ -55,11 +55,11 @@ const styles = StyleSheet.create({
 
 const ToggleThemeSetting = () => {
   const dispatch = useAppDispatch();
-  const {events, theme: themeType} = useAppSelector((state) => state.settings);
+  const { events, theme: themeType } = useAppSelector((state) => state.settings);
 
   const changeAppTheme = (selectedTheme: ThemeType) => {
     if (selectedTheme === ThemeType.newYear) {
-      const $events = {...events};
+      const $events = { ...events };
       $events.newYear2024 = {
         suggestedTheme: false,
         previousTheme: events.newYear2024.previousTheme,
@@ -72,17 +72,18 @@ const ToggleThemeSetting = () => {
     }
   };
 
+  const getCurrentTheme = () => {
+    const $themeType = isNewYearTheme(themeType) ? ThemeType.newYear : themeType;
+    return options.find((option) => option.value === $themeType);
+  };
+
   return (
     <View style={styles.cardView}>
       <Text style={styles.settingTitle} colorVariant={'block'}>
         Тема
       </Text>
       <View style={{ width: '60%' }}>
-        <Dropdown
-          options={options}
-          selectedOption={options.find((option) => option.value === themeType)}
-          onSelect={changeAppTheme}
-        />
+        <Dropdown options={options} selectedOption={getCurrentTheme()} onSelect={changeAppTheme} />
       </View>
     </View>
   );
