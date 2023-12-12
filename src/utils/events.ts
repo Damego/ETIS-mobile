@@ -58,5 +58,5 @@ export const newYearEmptyDayResponse = [
   '🎅',
   '❄️',
   '☃️',
-  '🎉'
+  '🎉',
 ];

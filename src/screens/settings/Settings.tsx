@@ -8,6 +8,7 @@ import { useGlobalStyles } from '../../hooks';
 import { fontSize } from '../../utils/texts';
 import AboutAppButton from './AboutApp';
 import ChangeEmailSetting from './ChangeEmailSetting';
+import ChangeNewYearTheme from './ChangeNewYearTheme';
 import ChangePasswordSetting from './ChangePasswordSetting';
 import ChangePersonalRecord from './ChangePersonalRecord';
 import ResetIntroSetting from './ResetIntroSetting';
@@ -15,7 +16,6 @@ import SignOut from './SignOut';
 import ToggleSentrySetting from './ToggleSentrySetting';
 import ToggleSignNotification from './ToggleSignNotification';
 import ToggleThemeSetting from './ToggleThemeSetting';
-import ChangeNewYearTheme from './ChangeNewYearTheme';
 
 export default function Settings() {
   return (
