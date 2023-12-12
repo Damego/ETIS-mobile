@@ -77,7 +77,7 @@ const StackNavigator = () => {
   };
 
   const $isNewYear = useMemo(() => isNewYear(), []);
-  const shouldRemoveNewYearTheme = () => {
+  const checkNewYearEvent = () => {
     if (!$isNewYear && isNewYearTheme(themeType)) {
       let returnTheme: ThemeType;
       if (events.newYear2024?.previousTheme && isNewYearTheme(events.newYear2024.previousTheme))
@@ -90,7 +90,7 @@ const StackNavigator = () => {
 
   const checkEventTheme = async () => {
     await checkHalloweenEvent();
-    shouldRemoveNewYearTheme();
+    checkNewYearEvent();
   };
 
   useEffect(() => {
@@ -109,7 +109,7 @@ const StackNavigator = () => {
     if (appIsReady) SplashScreen.hideAsync().catch((e) => e /* huh? */);
   }, [appIsReady]);
 
-  console.log(events)
+
   let component: React.ReactNode;
   if (!viewedIntro) component = <Stack.Screen name="Onboarding" component={Intro} />;
   else if ($isNewYear && !events.newYear2024?.suggestedTheme)
