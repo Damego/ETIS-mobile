@@ -39,7 +39,7 @@ const ReviewBox = ({ setReviewed, setViewed }) => {
       <Text
         style={[
           fontSize.large,
-          globalStyles.textColor,
+          globalStyles.fontColorForBlock,
           {
             fontWeight: '600',
           },

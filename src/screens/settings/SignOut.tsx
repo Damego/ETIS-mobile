@@ -3,14 +3,13 @@ import { Alert } from 'react-native';
 
 import { cache } from '../../cache/smartCache';
 import ClickableText from '../../components/ClickableText';
-import { useAppDispatch, useGlobalStyles } from '../../hooks';
+import { useAppDispatch } from '../../hooks';
 import { signOut } from '../../redux/reducers/authSlice';
 import { unregisterBackgroundFetchAsync } from '../../tasks/signs';
 import { fontSize } from '../../utils/texts';
 
 const SignOut = () => {
   const dispatch = useAppDispatch();
-  const globalStyles = useGlobalStyles();
 
   const doSignOut = async () => {
     await cache.clear(true);
@@ -37,8 +36,9 @@ const SignOut = () => {
   return (
     <ClickableText
       text="Выйти из аккаунта"
-      textStyle={[fontSize.medium, { fontWeight: '500' }, globalStyles.primaryFontColor]}
+      textStyle={[fontSize.medium, { fontWeight: '500' }]}
       onPress={confirmSignOut}
+      colorVariant={'primary'}
     />
   );
 };

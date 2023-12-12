@@ -1,9 +1,11 @@
 import { Checkbox } from 'expo-checkbox';
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Image, StyleSheet, TextInput, View } from 'react-native';
 
 import { Button } from '../../components/Button';
 import ClickableText from '../../components/ClickableText';
+import PasswordInput from '../../components/PasswordInput';
+import Text from '../../components/Text';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { useAppTheme } from '../../hooks/theme';
 import { setSaveUserCredentials } from '../../redux/reducers/authSlice';
@@ -42,10 +44,6 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 5,
     justifyContent: 'space-between',
   },
-  forgotButton: {
-    ...fontSize.small,
-    color: '#427ADE',
-  },
 });
 
 const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
@@ -71,10 +69,10 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
         <Image style={styles.logoImage} source={require('../../../assets/logo_red.png')} />
       )}
 
-      <Text style={globalStyles.textColor}>{errorMessage}</Text>
+      <Text colorVariant={'block'}>{errorMessage}</Text>
 
       <TextInput
-        style={[styles.input, globalStyles.border, globalStyles.textColor]}
+        style={[styles.input, globalStyles.border, globalStyles.fontColorForBlock]}
         onChangeText={(newLogin) => {
           setLogin(newLogin);
         }}
@@ -86,17 +84,16 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
         selectionColor={theme.colors.primary}
         autoCapitalize="none"
       />
-      <TextInput
-        style={[styles.input, globalStyles.border, globalStyles.textColor]}
-        onChangeText={(newPassword) => {
-          setPassword(newPassword);
-        }}
+      <PasswordInput
+        style={[styles.input, globalStyles.border, globalStyles.fontColorForBlock]}
+        onChangeText={setPassword}
         placeholder="Пароль"
         placeholderTextColor={theme.colors.inputPlaceholder}
-        secureTextEntry
         autoComplete="password"
         selectionColor={theme.colors.primary}
         onSubmitEditing={() => onSubmit(login, password)}
+        iconColor={theme.colors.textForBlock}
+        autoCapitalize={'none'}
       />
 
       <View style={styles.authPropContainer}>
@@ -107,13 +104,16 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
             value={saveUserCredentials}
             onValueChange={toggleSaveUserCredentials}
           />
-          <Text style={[fontSize.small, globalStyles.textColor]}>Запомнить пароль?</Text>
+          <Text style={fontSize.small} colorVariant={'block'}>
+            Запомнить пароль?
+          </Text>
         </View>
 
         <ClickableText
-          textStyle={styles.forgotButton}
+          textStyle={fontSize.small}
           text="Забыли пароль?"
           onPress={() => setShowRecovery(true)}
+          colorVariant={'block'}
         />
       </View>
 

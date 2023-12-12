@@ -3,21 +3,22 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { setBackgroundColorAsync as setBackgroundNavigationBarColorAsync } from 'expo-navigation-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import { setBackgroundColorAsync } from 'expo-system-ui';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import QuickActions from 'react-native-quick-actions';
 
 import { cache } from '../cache/smartCache';
-import GradientContainer from '../components/GradientContainer';
+import Background from '../components/Background';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { useAppTheme } from '../hooks/theme';
 import { PageType, changeTheme, setInitialPage } from '../redux/reducers/settingsSlice';
 import AuthPage from '../screens/auth/Auth';
 import Intro from '../screens/intro/Intro';
 import MessageHistory from '../screens/messages/MessageHistory';
+import NewYearThemes from '../screens/newYearThemes/NewYearThemes';
 import SessionQuestionnaire from '../screens/sessionQuestionnaire/SessionQuestionnaire';
 import SignsDetails from '../screens/signs/SignsDetails';
-import { ThemeType } from '../styles/themes';
-import { isHalloween } from '../utils/events';
+import { ThemeType, isNewYearTheme } from '../styles/themes';
+import { isHalloween, isNewYear } from '../utils/events';
 import showPrivacyPolicy from '../utils/privacyPolicy';
 import InitSentry from '../utils/sentry';
 import TabNavigator from './TabNavigation';
@@ -33,7 +34,11 @@ const StackNavigator = () => {
     appIsReady,
     sentryEnabled,
     theme: themeType,
+    events,
   } = useAppSelector((state) => state.settings);
+  // TODO:
+  //  Локальный? стейт для определения, был ли предложен новый год
+  //  Отдельный стейт внутри редакса для снегопада
   const theme = useAppTheme();
   const dispatch = useAppDispatch();
 
@@ -54,7 +59,7 @@ const StackNavigator = () => {
     }
   };
 
-  const checkEventTheme = async () => {
+  const checkHalloweenEvent = async () => {
     const $isHalloween = isHalloween();
     const events = await cache.getEvents();
     if ($isHalloween && !events.halloween2023?.suggestedTheme) {
@@ -69,6 +74,23 @@ const StackNavigator = () => {
       dispatch(changeTheme(events.halloween2023.previousTheme));
       cache.placeTheme(events.halloween2023.previousTheme);
     }
+  };
+
+  const $isNewYear = useMemo(() => isNewYear(), []);
+  const checkNewYearEvent = () => {
+    if (!$isNewYear && isNewYearTheme(themeType)) {
+      let returnTheme: ThemeType;
+      if (events.newYear2024?.previousTheme && isNewYearTheme(events.newYear2024.previousTheme))
+        returnTheme = ThemeType.auto;
+      else returnTheme = events.newYear2024.previousTheme;
+      dispatch(changeTheme(returnTheme));
+      cache.placeTheme(returnTheme);
+    }
+  };
+
+  const checkEventTheme = async () => {
+    await checkHalloweenEvent();
+    checkNewYearEvent();
   };
 
   useEffect(() => {
@@ -87,8 +109,10 @@ const StackNavigator = () => {
     if (appIsReady) SplashScreen.hideAsync().catch((e) => e /* huh? */);
   }, [appIsReady]);
 
-  let component;
+  let component: React.ReactNode;
   if (!viewedIntro) component = <Stack.Screen name="Onboarding" component={Intro} />;
+  else if ($isNewYear && !events.newYear2024?.suggestedTheme)
+    component = <Stack.Screen name={'NewYearTheme'} component={NewYearThemes} />;
   else if (!isSignedIn)
     component = (
       <Stack.Screen
@@ -124,10 +148,7 @@ const StackNavigator = () => {
     );
 
   return (
-    <GradientContainer
-      disabled={!theme.colors.backgroundGradient}
-      colors={theme.colors.backgroundGradient}
-    >
+    <Background theme={theme}>
       <NavigationContainer theme={theme}>
         <Stack.Navigator
           screenOptions={{
@@ -137,7 +158,7 @@ const StackNavigator = () => {
           {component}
         </Stack.Navigator>
       </NavigationContainer>
-    </GradientContainer>
+    </Background>
   );
 };
 

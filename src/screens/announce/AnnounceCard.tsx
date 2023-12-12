@@ -3,6 +3,7 @@ import AutoHeightWebView from 'react-native-autoheight-webview';
 
 import Card from '../../components/Card';
 import { useGlobalStyles } from '../../hooks';
+import { useAppTheme } from '../../hooks/theme';
 import { httpClient } from '../../utils';
 
 const getStyles = (textColor) => `
@@ -20,7 +21,7 @@ a {
 `;
 
 export default function AnnounceCard({ data }) {
-  const globalStyles = useGlobalStyles();
+  const theme = useAppTheme();
 
   return (
     <Card>
@@ -28,7 +29,7 @@ export default function AnnounceCard({ data }) {
         originWhitelist={['*']}
         source={{ html: data }}
         style={{ flex: 0, width: '100%' }}
-        customStyle={getStyles(globalStyles.textColor.color)}
+        customStyle={getStyles(theme.colors.textForBlock)}
         injectedJavaScript={
           `document.cookie = ${httpClient.getSessionID()}` /* Allows download files */
         }

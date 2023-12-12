@@ -16,6 +16,7 @@ export type RootStackParamList = {
   History: { data: IMessage[]; page: number };
   SignsDetails: { subject: ISubject };
   SessionQuestionnaire: { url: string };
+  NewYearTheme: undefined;
 };
 
 export type BottomTabsParamList = {

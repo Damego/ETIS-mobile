@@ -1,9 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import CardHeaderIn from '../../components/CardHeaderIn';
-import { useGlobalStyles } from '../../hooks';
+import Text from '../../components/Text';
 import { ISubject } from '../../models/sessionPoints';
 import { RootStackNavigationProp } from '../../navigation/types';
 import { fontSize } from '../../utils/texts';
@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
 });
 
 const CardSign = ({ subject }: { subject: ISubject }) => {
-  const globalStyles = useGlobalStyles();
   const navigation = useNavigation<RootStackNavigationProp>();
 
   return (
@@ -43,11 +42,11 @@ const CardSign = ({ subject }: { subject: ISubject }) => {
         >
           <SubjectCheckPoints data={subject.checkPoints} />
         </TouchableOpacity>
-        <TotalPoints subject={subject} style={styles.totalPoints} />
+        <TotalPoints subject={subject} style={styles.totalPoints} isInBlock />
       </View>
       {subject.mark !== null && (
         <View style={styles.markView}>
-          <Text style={[fontSize.medium, styles.markWordText, globalStyles.textColor]}>
+          <Text style={[fontSize.medium, styles.markWordText]} colorVariant={'block'}>
             Оценка: {subject.mark}
           </Text>
         </View>

@@ -1,6 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
+import Card from '../../components/Card';
+import Text from '../../components/Text';
 import { useGlobalStyles } from '../../hooks';
 import { ICheckPoint } from '../../models/sessionPoints';
 import { fontSize, formatCheckPointScore } from '../../utils/texts';
@@ -34,22 +36,30 @@ const getPointsString = (checkPoint: ICheckPoint, number: number): string => {
 const SubjectCheckPoints = ({ data }: { data: ICheckPoint[] }): React.ReactNode => {
   const globalStyles = useGlobalStyles();
 
-  return data.map((checkPoint, index) => {
-    const pointsString = getPointsString(checkPoint, index + 1);
+  if (!data.length) return;
 
-    return (
-      <Text
-        style={
-          checkPoint.failed
-            ? [fontSize.medium, styles.markFail]
-            : [fontSize.medium, styles.markNeutral, globalStyles.textColor]
-        }
-        key={checkPoint.theme + index}
-      >
-        {pointsString}
-      </Text>
-    );
-  });
+  return (
+    <Card style={{ justifyContent: 'center', alignItems: 'center' }}>
+      <View>
+        {data.map((checkPoint, index) => {
+          const pointsString = getPointsString(checkPoint, index + 1);
+
+          return (
+            <Text
+              style={
+                checkPoint.failed
+                  ? [fontSize.medium, styles.markFail]
+                  : [fontSize.medium, styles.markNeutral, globalStyles.fontColorForBlock]
+              }
+              key={checkPoint.theme + index}
+            >
+              {pointsString}
+            </Text>
+          );
+        })}
+      </View>
+    </Card>
+  );
 };
 
 export default SubjectCheckPoints;

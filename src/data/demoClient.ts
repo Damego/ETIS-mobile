@@ -85,7 +85,6 @@ export default class DemoClient implements BaseClient {
   }
 
   async getTimeTableData(payload: IGetPayload<number>): Promise<IGetResult<ITimeTable>> {
-    console.log(payload);
     const data: ITimeTable = {
       days: [],
       weekInfo: {

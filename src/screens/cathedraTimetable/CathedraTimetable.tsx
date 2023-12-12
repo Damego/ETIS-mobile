@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 
 import CardHeaderOut from '../../components/CardHeaderOut';
+import CenteredText from '../../components/CenteredText';
 import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
@@ -69,6 +70,8 @@ const CathedraTimetable = ({ route }: ServiceNativeStackScreenProps<'CathedraTim
         timetable={data.timetable}
         onSelect={onTeacherSelect}
       />
+
+      {!teacherTimetable.days.length && <CenteredText>Пар нет</CenteredText>}
 
       {teacherTimetable.days.map((day, index) => (
         <CardHeaderOut topText={DAYS[index]} key={index}>

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Image, Text, TextInput, View } from 'react-native';
+import { Image, TextInput, View } from 'react-native';
 
 import { Button } from '../../components/Button';
 import ClickableText from '../../components/ClickableText';
+import Text from '../../components/Text';
 import { useAppSelector, useGlobalStyles } from '../../hooks';
 import { useAppTheme } from '../../hooks/theme';
 import { ThemeType } from '../../styles/themes';
@@ -25,10 +26,10 @@ const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequ
         <Image style={styles.logoImage} source={require('../../../assets/logo_red.png')} />
       )}
 
-      <Text style={globalStyles.textColor}>{message}</Text>
+      <Text>{message}</Text>
 
       <TextInput
-        style={[styles.input, globalStyles.border, globalStyles.textColor]}
+        style={[styles.input, globalStyles.border, globalStyles.fontColorForBlock]}
         onChangeText={(newLogin) => {
           setLogin(newLogin);
         }}

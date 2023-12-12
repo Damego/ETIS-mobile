@@ -45,7 +45,13 @@ const Screen = ({ onUpdate, children, startScrollFromBottom }: ScreenProps) => {
         showsVerticalScrollIndicator={false}
         overScrollMode="never"
         refreshControl={
-          onUpdate ? <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> : null
+          onUpdate ? (
+            <RefreshControl
+              colors={[theme.colors.primary]}
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          ) : null
         }
         onContentSizeChange={
           startScrollFromBottom ? () => scrollRef.current.scrollToEnd() : undefined

@@ -6,7 +6,7 @@ import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
 import { useClient } from '../../data/client';
-import { useAppSelector, useGlobalStyles } from '../../hooks';
+import { useAppSelector } from '../../hooks';
 import useQuery from '../../hooks/useQuery';
 import { RequestType } from '../../models/results';
 import { IAnswer } from '../../models/sessionQuestionnaire';

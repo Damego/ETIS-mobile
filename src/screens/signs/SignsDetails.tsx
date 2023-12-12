@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, ToastAndroid, View } from 'react-native';
+import { StyleSheet, ToastAndroid, View } from 'react-native';
 
 import CardHeaderIn from '../../components/CardHeaderIn';
 import ClickableText from '../../components/ClickableText';
 import Screen from '../../components/Screen';
+import Text from '../../components/Text';
 import { useGlobalStyles } from '../../hooks';
 import { ICheckPoint } from '../../models/sessionPoints';
 import { RootStackScreenProps } from '../../navigation/types';
@@ -38,19 +39,23 @@ export default function SignsDetails({ route }: RootStackScreenProps<'SignsDetai
   const globalStyles = useGlobalStyles();
   const { subject } = route.params;
 
-  const rowTextStyle = StyleSheet.compose(globalStyles.textColor, { fontSize: 15 });
+  const rowTextStyle = StyleSheet.compose(globalStyles.fontColorForBlock, { fontSize: 15 });
 
   const Row = ({ first, second }: { first: string | number; second: string | number }) => (
     <View style={styles.row}>
-      <Text style={rowTextStyle}>{first}</Text>
-      <Text style={rowTextStyle}>{second}</Text>
+      <Text style={rowTextStyle} colorVariant={'block'}>
+        {first}
+      </Text>
+      <Text style={rowTextStyle} colorVariant={'block'}>
+        {second}
+      </Text>
     </View>
   );
 
   return (
     <Screen>
       <View style={styles.header}>
-        <Text style={[globalStyles.textColor, fontSize.large, { flex: 1 }]}>{subject.name}</Text>
+        <Text style={[fontSize.large, { flex: 1 }]}>{subject.name}</Text>
         <TotalPoints subject={subject} style={{ alignItems: 'center' }} />
       </View>
 
@@ -72,7 +77,9 @@ export default function SignsDetails({ route }: RootStackScreenProps<'SignsDetai
             )}
             <Row first={'Вид работы:'} second={checkPoint.typeWork} />
             <View style={styles.row}>
-              <Text style={rowTextStyle}>{'Вид контроля:'}</Text>
+              <Text style={rowTextStyle} colorVariant={'block'}>
+                {'Вид контроля:'}
+              </Text>
               <ClickableText
                 text={cutTypeControl(checkPoint.typeControl)}
                 onPress={() => {

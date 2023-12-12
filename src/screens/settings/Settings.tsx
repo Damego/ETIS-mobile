@@ -1,13 +1,14 @@
 import React from 'react';
-import { Text } from 'react-native';
 
 import Card from '../../components/Card';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import Screen from '../../components/Screen';
+import Text from '../../components/Text';
 import { useGlobalStyles } from '../../hooks';
 import { fontSize } from '../../utils/texts';
 import AboutAppButton from './AboutApp';
 import ChangeEmailSetting from './ChangeEmailSetting';
+import ChangeNewYearTheme from './ChangeNewYearTheme';
 import ChangePasswordSetting from './ChangePasswordSetting';
 import ChangePersonalRecord from './ChangePersonalRecord';
 import ResetIntroSetting from './ResetIntroSetting';
@@ -17,13 +18,12 @@ import ToggleSignNotification from './ToggleSignNotification';
 import ToggleThemeSetting from './ToggleThemeSetting';
 
 export default function Settings() {
-  const globalStyles = useGlobalStyles();
-
   return (
     <Screen>
       <Card style={{ zIndex: 1 }}>
         <ToggleThemeSetting />
       </Card>
+      <ChangeNewYearTheme />
       <Card>
         <ToggleSignNotification />
       </Card>
@@ -34,15 +34,7 @@ export default function Settings() {
         <AboutAppButton />
       </CardHeaderOut>
       <ToggleSentrySetting />
-      <Text
-        style={[
-          fontSize.medium,
-          { fontWeight: 'bold', marginBottom: '2%' },
-          globalStyles.textColor,
-        ]}
-      >
-        Аккаунт
-      </Text>
+      <Text style={[fontSize.medium, { fontWeight: 'bold', marginBottom: '2%' }]}>Аккаунт</Text>
       <ChangePasswordSetting />
       <ChangeEmailSetting />
       <Card>
