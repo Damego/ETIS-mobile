@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { cache } from '../../cache/smartCache';
+import Card from '../../components/Card';
 import ClickableText from '../../components/ClickableText';
 import Screen from '../../components/Screen';
 import Text from '../../components/Text';
@@ -75,10 +76,19 @@ const NewYearThemes = () => {
   return (
     <Screen>
       <View style={styles.textContainer}>
-        <Text style={[fontSize.xlarge, { fontWeight: '500' }]}>С новым годом!</Text>
-        <Text style={fontSize.large}>
-          В преддверии нового года мы предлагаем вам на выбор одну из предоставленных новогодних тем
-        </Text>
+        <Text style={[fontSize.xlarge, { fontWeight: '500' }]}>С новым годом! 🎉</Text>
+        <Card>
+          <Text style={styles.text} colorVariant={'block'}>
+            Пусть 2024 год будет насыщенным знаниями и яркими впечатлениями!
+          </Text>
+          <Text style={styles.text} colorVariant={'block'}>
+            Для того чтобы встретить новый год в стиле, мы предлагаем вам на выбор одну из
+            предоставленных ниже цветовых тем.
+          </Text>
+          <Text style={styles.text} colorVariant={'block'}>
+            Они будут действовать вплоть до 15 января, а после станут недоступны.
+          </Text>
+        </Card>
       </View>
       <View style={styles.circleButtonList}>
         <CircleButton
@@ -172,5 +182,8 @@ const styles = StyleSheet.create({
     height: 50,
     borderTopRightRadius: 25,
     borderBottomRightRadius: 25,
+  },
+  text: {
+    ...fontSize.large,
   },
 });
