@@ -108,7 +108,8 @@ export default function parseCathedraTimetable(html: string) {
 
     const tdList = tag.children();
     const firstTdTag = tdList.eq(0);
-    const firstFieldIsTeacher = firstTdTag.attr('rowspan') === '10';
+    const firstFieldIsTeacher = firstTdTag.find('a').html();
+    const hasPairs = getTextField(tdList.eq(1)) !== 'Нет занятий';
 
     // 8 - препод + расписание для 1й пары
     // 2 - препод и нет расписания или время + 1 пара
@@ -122,6 +123,9 @@ export default function parseCathedraTimetable(html: string) {
       };
       return;
     }
+
+    if (!hasPairs) return;
+
     if (tdList.length === 8) {
       const teacher = firstTdTag.contents().eq(0);
       teacherIndex += 1;
