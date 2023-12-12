@@ -31,12 +31,12 @@ const AbsencesCard = ({ disciplineAbsences }: { disciplineAbsences: IDisciplineA
           ))}
         </View>
         <View style={{ flex: 1 }}>
-          <Text>{`Пропущенных занятий: ${disciplineAbsences.dates.length}`}</Text>
+          <Text colorVariant={'block'}>{`Пропущенных занятий: ${disciplineAbsences.dates.length}`}</Text>
           {!!covered && <Text>{`По уважительной причине: ${covered}`}</Text>}
           {isOpened && (
             <>
-              <Text>{`Преподаватель: ${disciplineAbsences.teacher}`}</Text>
-              <Text>{`Вид работы: ${disciplineAbsences.type}`}</Text>
+              <Text colorVariant={'block'}>{`Преподаватель: ${disciplineAbsences.teacher}`}</Text>
+              <Text colorVariant={'block'}>{`Вид работы: ${disciplineAbsences.type}`}</Text>
             </>
           )}
         </View>
@@ -45,7 +45,7 @@ const AbsencesCard = ({ disciplineAbsences }: { disciplineAbsences: IDisciplineA
           <AntDesign
             name={isOpened ? 'up' : 'down'}
             size={18}
-            color={theme.colors.text}
+            color={theme.colors.textForBlock}
           />
         </View>
       </TouchableOpacity>

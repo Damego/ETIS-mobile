@@ -7,7 +7,6 @@ import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
 import Text from '../../components/Text';
 import { useClient } from '../../data/client';
-import { useGlobalStyles } from '../../hooks';
 import useQuery from '../../hooks/useQuery';
 import { RequestType } from '../../models/results';
 import AbsencesCard from './AbsencesCard';
