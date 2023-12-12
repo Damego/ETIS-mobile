@@ -15,6 +15,7 @@ import SignOut from './SignOut';
 import ToggleSentrySetting from './ToggleSentrySetting';
 import ToggleSignNotification from './ToggleSignNotification';
 import ToggleThemeSetting from './ToggleThemeSetting';
+import ChangeNewYearTheme from './ChangeNewYearTheme';
 
 export default function Settings() {
   return (
@@ -22,6 +23,7 @@ export default function Settings() {
       <Card style={{ zIndex: 1 }}>
         <ToggleThemeSetting />
       </Card>
+      <ChangeNewYearTheme />
       <Card>
         <ToggleSignNotification />
       </Card>
