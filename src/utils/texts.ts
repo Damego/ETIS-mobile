@@ -1,3 +1,5 @@
+import { StyleSheet } from 'react-native';
+
 import { ICheckPoint } from '../models/sessionPoints';
 
 export const getPointsWord = (points: number) => {
@@ -19,7 +21,7 @@ export const formatCheckPointScore = (checkPoint: ICheckPoint) => {
   if (Number.isNaN(checkPoint.points) || !checkPoint.points) return '-';
 };
 
-export const fontSize = {
+export const fontSize = StyleSheet.create({
   micro: {
     fontSize: 8,
   },
@@ -41,4 +43,4 @@ export const fontSize = {
   xxlarge: {
     fontSize: 36,
   },
-};
+});

@@ -1,19 +1,19 @@
 import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
-import { useTheme } from '@react-navigation/native';
 import { getDocumentAsync } from 'expo-document-picker';
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
 
+import Text from '../../components/Text';
 import { useGlobalStyles } from '../../hooks';
+import { useAppTheme } from '../../hooks/theme';
 import { UploadFile } from '../../models/other';
 import { Response } from '../../utils/http';
 import { fontSize } from '../../utils/texts';
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   fileText: {
     alignSelf: 'flex-end',
     fontWeight: '500',
+    ...fontSize.small,
   },
   wrapperContainer: {},
   scrollContainer: {},
@@ -68,9 +69,11 @@ const File = ({ name, onRemove }) => {
         { borderColor: globalStyles.border.borderColor },
       ]}
     >
-      <Text style={[styles.fileText, fontSize.small, globalStyles.textColor]}>{cutFileName}</Text>
+      <Text style={styles.fileText} colorVariant={'block'}>
+        {cutFileName}
+      </Text>
       <TouchableOpacity style={styles.removeIcon} onPress={() => onRemove(name)}>
-        <AntDesign name="closecircleo" size={20} color={globalStyles.textColor.color} />
+        <AntDesign name="closecircleo" size={20} color={globalStyles.fontColorForBlock.color} />
       </TouchableOpacity>
     </View>
   );
@@ -102,7 +105,7 @@ const MessageInput = ({
   disabled: boolean;
 }) => {
   const globalStyles = useGlobalStyles();
-  const theme = useTheme();
+  const theme = useAppTheme();
   const [value, setValue] = useState<string>('');
 
   const innerSelectFile = async () => {
@@ -141,25 +144,19 @@ const MessageInput = ({
   };
 
   return (
-    <View
-      style={[
-        styles.inputView,
-        globalStyles.block,
-        { borderColor: globalStyles.border.borderColor },
-      ]}
-    >
+    <View style={[styles.inputView, globalStyles.block, { borderColor: theme.colors.border }]}>
       <TouchableOpacity style={styles.iconView} onPress={innerSelectFile}>
-        <Feather name="paperclip" size={24} color={theme.colors.text} />
+        <Feather name="paperclip" size={24} color={theme.colors.textForBlock} />
       </TouchableOpacity>
 
       <TextInput
-        style={[fontSize.medium, styles.input, globalStyles.textColor, globalStyles.block]}
+        style={[fontSize.medium, styles.input, globalStyles.fontColorForBlock, globalStyles.block]}
         onChangeText={(text) => setValue(text)}
         value={value}
         placeholder="Сообщение"
         multiline
         selectionColor="#C62E3E"
-        placeholderTextColor={globalStyles.textColor.color}
+        placeholderTextColor={theme.colors.inputPlaceholder}
         editable={!disabled}
       />
 
@@ -178,7 +175,7 @@ const MessageInput = ({
           <Ionicons
             name="send"
             size={24}
-            color={value ? theme.colors.primary : theme.colors.text}
+            color={value ? theme.colors.primary : theme.colors.textForBlock}
           />
         )}
       </TouchableOpacity>

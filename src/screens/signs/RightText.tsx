@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { useGlobalStyles } from '../../hooks';
+import Text from '../../components/Text';
 import { fontSize } from '../../utils/texts';
 
 const styles = StyleSheet.create({
@@ -11,9 +11,11 @@ const styles = StyleSheet.create({
   },
   topText: {
     fontWeight: '600',
+    ...fontSize.xxlarge,
   },
   bottomText: {
     fontWeight: '600',
+    ...fontSize.medium,
   },
 });
 
@@ -24,12 +26,14 @@ export default function RightText({
   topText: React.ReactNode;
   bottomText: React.ReactNode;
 }) {
-  const globalStyles = useGlobalStyles();
-
   return (
     <View style={styles.container}>
-      <Text style={[fontSize.xxlarge, styles.topText, globalStyles.textColor]}>{topText}</Text>
-      <Text style={[fontSize.medium, styles.bottomText, globalStyles.textColor]}>{bottomText}</Text>
+      <Text style={[styles.topText]} colorVariant={'block'}>
+        {topText}
+      </Text>
+      <Text style={[styles.bottomText]} colorVariant={'block'}>
+        {bottomText}
+      </Text>
     </View>
   );
 }

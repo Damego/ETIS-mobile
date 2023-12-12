@@ -1,15 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { useGlobalStyles } from '../hooks';
 import { fontSize } from '../utils/texts';
+import Text from './Text';
 
 const CenteredText = ({ children }: { children: string }) => {
-  const globalStyles = useGlobalStyles();
-
   return (
     <View style={styles.container}>
-      <Text style={[globalStyles.textColor, fontSize.large, styles.text]}>{children}</Text>
+      <Text style={styles.text}>{children}</Text>
     </View>
   );
 };
@@ -22,6 +20,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontWeight: '500',
+    ...fontSize.large,
   },
 });
 

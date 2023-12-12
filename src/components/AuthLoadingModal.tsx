@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Button, StyleSheet, Text, ToastAndroid, View } from 'react-native';
+import { ActivityIndicator, Button, StyleSheet, ToastAndroid, View } from 'react-native';
 
 import { cache } from '../cache/smartCache';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
@@ -13,6 +13,7 @@ import {
 import { httpClient } from '../utils';
 import isDemoCredentials from '../utils/demo';
 import CustomReCaptcha from './ReCaptcha';
+import Text from './Text';
 
 const styles = StyleSheet.create({
   modalWrapper: {
@@ -193,7 +194,7 @@ const AuthLoadingModal = () => {
       >
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <ActivityIndicator size="large" color={globalStyles.primaryFontColor.color} />
-          <Text style={globalStyles.textColor}>{messageStatus}</Text>
+          <Text style={globalStyles.fontColorForBlock}>{messageStatus}</Text>
 
           {showOfflineButton && (
             <View style={{ marginTop: '15%' }}>

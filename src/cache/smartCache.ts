@@ -16,6 +16,7 @@ import { StudentInfo } from '../parser/menu';
 import { UserCredentials } from '../redux/reducers/authSlice';
 import { AppConfig } from '../redux/reducers/settingsSlice';
 import { ThemeType } from '../styles/themes';
+import { Events } from '../utils/events';
 import FieldCache from './fieldCache';
 import MappedCache from './mappedCache';
 import SecuredFieldCache from './securedFieldCache';
@@ -450,6 +451,12 @@ export default class SmartCache {
       await this.updateAppConfig(config);
     }
     return config.events;
+  }
+
+  async placeEvents(events: Events) {
+    const config = await this.getAppConfig();
+    config.events = events;
+    await this.updateAppConfig(config);
   }
 
   // End Internal Region

@@ -5,11 +5,11 @@ import {
   Alert,
   Keyboard,
   StyleSheet,
-  Text,
   TextInput,
   ToastAndroid,
   TouchableOpacity,
   View,
+  useColorScheme,
 } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 import { RadioButtonProps, RadioGroup } from 'react-native-radio-buttons-group';
@@ -17,8 +17,9 @@ import { RadioButtonProps, RadioGroup } from 'react-native-radio-buttons-group';
 import { Button } from '../../components/Button';
 import Card from '../../components/Card';
 import Screen from '../../components/Screen';
+import Text from '../../components/Text';
 import { useAppSelector, useGlobalStyles } from '../../hooks';
-import { useAppColorScheme, useAppTheme } from '../../hooks/theme';
+import { useAppTheme } from '../../hooks/theme';
 import { CertificateParam } from '../../models/certificateRequest';
 import { httpClient } from '../../utils';
 import { toCertificatePayload } from '../../utils/certificate';
@@ -93,7 +94,7 @@ export default function RequestCertificate() {
   const [delivery, setDelivery] = useState<string>();
   const [keyboardOpen, setKeyboardOpen] = useState<boolean>(false);
   const [requestSent, setRequestSent] = useState<boolean>(false);
-  const schemeColor = useAppColorScheme() === 'light' ? 'black' : 'white';
+  const schemeColor = useColorScheme() === 'light' ? 'black' : 'white';
   const appTheme = useAppTheme();
   const navigator = useNavigation();
 
@@ -117,7 +118,9 @@ export default function RequestCertificate() {
           )}
           popoverStyle={[styles.popover, { backgroundColor: appTheme.colors.block }]}
         >
-          <Text style={[fontSize.medium, globalStyles.textColor]}>{text}</Text>
+          <Text style={fontSize.medium} colorVariant={'block'}>
+            {text}
+          </Text>
         </Popover>
       ),
     []
@@ -127,17 +130,19 @@ export default function RequestCertificate() {
     () =>
       ({ name, placeholder, onUpdate, value, popover }) => (
         <>
-          <Text style={[fontSize.medium, globalStyles.textColor]}>{name}</Text>
+          <Text style={fontSize.medium} colorVariant={'block'}>
+            {name}
+          </Text>
           <View style={styles.inputRow}>
             <TextInput
               style={[
                 fontSize.small,
-                globalStyles.textColor,
+                globalStyles.fontColorForBlock,
                 globalStyles.border,
                 styles.input,
                 styles.width90,
               ]}
-              placeholderTextColor="#837373"
+              placeholderTextColor={globalStyles.inputPlaceholder.color}
               placeholder={placeholder}
               onChangeText={onUpdate}
               value={value}
@@ -171,8 +176,8 @@ export default function RequestCertificate() {
   const radioFactory = (id: string, name: string) => ({
     id,
     label: name,
-    ...globalStyles.textColor,
-    labelStyle: [fontSize.medium, globalStyles.textColor],
+    ...globalStyles.fontColorForBlock,
+    labelStyle: [fontSize.medium, globalStyles.fontColorForBlock],
   });
 
   const certificateRadioButtons: RadioButtonProps[] = useMemo(
@@ -230,11 +235,8 @@ export default function RequestCertificate() {
       <Screen>
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <Text
-            style={[
-              globalStyles.textColor,
-              fontSize.xlarge,
-              { fontWeight: '500', textAlign: 'center' },
-            ]}
+            style={[fontSize.xlarge, { fontWeight: '500', textAlign: 'center' }]}
+            colorVariant={'block'}
           >
             Запрос успешно отправлен!
           </Text>
@@ -252,7 +254,9 @@ export default function RequestCertificate() {
   return (
     <Screen>
       <Card>
-        <Text style={[fontSize.medium, globalStyles.textColor]}>Тип справки</Text>
+        <Text style={fontSize.medium} colorVariant={'block'}>
+          Тип справки
+        </Text>
         <RadioGroup
           radioButtons={certificateRadioButtons}
           onPress={setCurrentId}
@@ -264,14 +268,18 @@ export default function RequestCertificate() {
       {currentId && (
         <>
           <Card>
-            <Text style={[fontSize.medium, globalStyles.textColor]}>Метод вручения</Text>
+            <Text style={fontSize.medium} colorVariant={'block'}>
+              Метод вручения
+            </Text>
             <RadioGroup
               radioButtons={deliveryWayRadioButtons}
               onPress={setDelivery}
               selectedId={delivery}
               containerStyle={styles.alignStart}
             />
-            <Text style={[fontSize.medium, globalStyles.textColor]}>Количество</Text>
+            <Text style={fontSize.medium} colorVariant={'block'}>
+              Количество
+            </Text>
             <RadioGroup
               radioButtons={quantityRadioButtons}
               selectedId={quantity}
