@@ -21,7 +21,9 @@ const WarningCard = ({ text }: { text: string }) => {
 
   return (
     <Card style={[globalStyles.primaryBackgroundColor, styles.cardView]}>
-      <Text style={styles.text} colorVariant={'primaryBlock'}>{text}</Text>
+      <Text style={styles.text} colorVariant={'primaryBlock'}>
+        {text}
+      </Text>
     </Card>
   );
 };

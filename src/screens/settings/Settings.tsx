@@ -3,6 +3,7 @@ import React from 'react';
 import Card from '../../components/Card';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import Screen from '../../components/Screen';
+import Text from '../../components/Text';
 import { useGlobalStyles } from '../../hooks';
 import { fontSize } from '../../utils/texts';
 import AboutAppButton from './AboutApp';
@@ -14,8 +15,6 @@ import SignOut from './SignOut';
 import ToggleSentrySetting from './ToggleSentrySetting';
 import ToggleSignNotification from './ToggleSignNotification';
 import ToggleThemeSetting from './ToggleThemeSetting';
-
-import Text from '../../components/Text';
 
 export default function Settings() {
   return (
@@ -33,14 +32,7 @@ export default function Settings() {
         <AboutAppButton />
       </CardHeaderOut>
       <ToggleSentrySetting />
-      <Text
-        style={[
-          fontSize.medium,
-          { fontWeight: 'bold', marginBottom: '2%' },
-        ]}
-      >
-        Аккаунт
-      </Text>
+      <Text style={[fontSize.medium, { fontWeight: 'bold', marginBottom: '2%' }]}>Аккаунт</Text>
       <ChangePasswordSetting />
       <ChangeEmailSetting />
       <Card>

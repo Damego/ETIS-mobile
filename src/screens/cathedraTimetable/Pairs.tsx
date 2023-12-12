@@ -40,7 +40,9 @@ const Pair = ({ pair, index }: { pair: IPair; index: number }) => {
   return (
     <View style={styles.pairContainer}>
       <View style={styles.pairTimeContainer}>
-        <Text style={fontSize.mini} colorVariant={'block'}>{pairText}</Text>
+        <Text style={fontSize.mini} colorVariant={'block'}>
+          {pairText}
+        </Text>
         <Text colorVariant={'block'}>{pair.time}</Text>
       </View>
 
@@ -75,9 +77,15 @@ const LessonWithPopover = ({ lesson }: { lesson: ILesson }) => {
       <Text style={styles.lessonInfoText} colorVariant={'block'}>
         Аудитория (по неделям):
       </Text>
-      <Text style={fontSize.medium} colorVariant={'block'}>{lesson.audience.standard}</Text>
-      <Text style={styles.lessonInfoText} colorVariant={'block'}>Группы:</Text>
-      <Text style={fontSize.medium} colorVariant={'block'}>{lesson.groups.join('\n')}</Text>
+      <Text style={fontSize.medium} colorVariant={'block'}>
+        {lesson.audience.standard}
+      </Text>
+      <Text style={styles.lessonInfoText} colorVariant={'block'}>
+        Группы:
+      </Text>
+      <Text style={fontSize.medium} colorVariant={'block'}>
+        {lesson.groups.join('\n')}
+      </Text>
     </Popover>
   );
 };
@@ -86,7 +94,9 @@ const Pairs = ({ pairs }: { pairs: IPair[] }) => {
   if (!pairs.length) {
     return (
       <View style={styles.noPairsContainer}>
-        <Text style={styles.lessonInfoText} colorVariant={'block'}>Пар нет</Text>
+        <Text style={styles.lessonInfoText} colorVariant={'block'}>
+          Пар нет
+        </Text>
       </View>
     );
   }

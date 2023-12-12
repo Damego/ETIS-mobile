@@ -18,15 +18,16 @@ export default function Text({ colorVariant, style, ...props }: TextProps) {
   const theme = useAppTheme();
 
   const $style = React.useMemo(() => {
-    const color: string = {
-      primary: theme.colors.primary,
-      primaryBlock: theme.colors.textForPrimary,
-      secondary: theme.colors.secondary,
-      secondaryBlock: theme.colors.textForSecondary,
-      block: theme.colors.textForBlock,
-    }[colorVariant] || theme.colors.text;
+    const color: string =
+      {
+        primary: theme.colors.primary,
+        primaryBlock: theme.colors.textForPrimary,
+        secondary: theme.colors.secondary,
+        secondaryBlock: theme.colors.textForSecondary,
+        block: theme.colors.textForBlock,
+      }[colorVariant] || theme.colors.text;
 
-    return StyleSheet.compose({ color }, style)
+    return StyleSheet.compose({ color }, style);
   }, [colorVariant, style, theme]);
   return <RNText style={$style} {...props} />;
 }

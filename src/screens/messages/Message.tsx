@@ -18,7 +18,9 @@ const styles = StyleSheet.create({
 const AttachedFiles = ({ files }: { files: IMessageFile[] }) => {
   return (
     <View style={{ flexDirection: 'column' }}>
-      <Text style={styles.subjectText} colorVariant={'block'}>Прикреплённые файлы: </Text>
+      <Text style={styles.subjectText} colorVariant={'block'}>
+        Прикреплённые файлы:{' '}
+      </Text>
       {files.map((file, index) => (
         <FileTextLink
           src={file.uri}

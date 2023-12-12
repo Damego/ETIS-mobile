@@ -29,14 +29,20 @@ function UserInfo({ data }) {
       <CardHeaderIn topText={name}>
         {speciality && (
           <Text>
-            <Text style={nameTextStyle} colorVariant={'block'}>Направление: </Text>
-            <Text style={fontSize.medium} colorVariant={'block'}>{speciality}</Text>
+            <Text style={nameTextStyle} colorVariant={'block'}>
+              Направление:{' '}
+            </Text>
+            <Text style={fontSize.medium} colorVariant={'block'}>
+              {speciality}
+            </Text>
           </Text>
         )}
 
         {educationForm && (
           <Text>
-            <Text style={nameTextStyle} colorVariant={'block'}>Форма обучения: </Text>
+            <Text style={nameTextStyle} colorVariant={'block'}>
+              Форма обучения:{' '}
+            </Text>
             <Text style={fontSize.medium} colorVariant={'block'}>
               {educationForm.charAt(0).toUpperCase() + educationForm.slice(1)}
             </Text>
@@ -45,14 +51,22 @@ function UserInfo({ data }) {
 
         {year && (
           <Text>
-            <Text style={nameTextStyle} colorVariant={'block'}>Год: </Text>
-            <Text style={fontSize.medium} colorVariant={'block'}>{year}</Text>
+            <Text style={nameTextStyle} colorVariant={'block'}>
+              Год:{' '}
+            </Text>
+            <Text style={fontSize.medium} colorVariant={'block'}>
+              {year}
+            </Text>
           </Text>
         )}
 
         <Text>
-          <Text style={nameTextStyle} colorVariant={'block'}>Группа: </Text>
-          <Text style={fontSize.medium} colorVariant={'block'}>{group}</Text>
+          <Text style={nameTextStyle} colorVariant={'block'}>
+            Группа:{' '}
+          </Text>
+          <Text style={fontSize.medium} colorVariant={'block'}>
+            {group}
+          </Text>
         </Text>
       </CardHeaderIn>
     </>

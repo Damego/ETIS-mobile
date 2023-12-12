@@ -60,10 +60,7 @@ const SelectOption = ({
       disabled={option.current}
       style={styles.optionView}
     >
-      <Text
-        style={styles.optionText}
-        colorVariant={option.current ? 'primary' : 'block'}
-      >
+      <Text style={styles.optionText} colorVariant={option.current ? 'primary' : 'block'}>
         {option.label}
       </Text>
     </TouchableOpacity>

@@ -43,8 +43,12 @@ export default function SignsDetails({ route }: RootStackScreenProps<'SignsDetai
 
   const Row = ({ first, second }: { first: string | number; second: string | number }) => (
     <View style={styles.row}>
-      <Text style={rowTextStyle} colorVariant={'block'}>{first}</Text>
-      <Text style={rowTextStyle} colorVariant={'block'}>{second}</Text>
+      <Text style={rowTextStyle} colorVariant={'block'}>
+        {first}
+      </Text>
+      <Text style={rowTextStyle} colorVariant={'block'}>
+        {second}
+      </Text>
     </View>
   );
 
@@ -73,7 +77,9 @@ export default function SignsDetails({ route }: RootStackScreenProps<'SignsDetai
             )}
             <Row first={'Вид работы:'} second={checkPoint.typeWork} />
             <View style={styles.row}>
-              <Text style={rowTextStyle} colorVariant={'block'}>{'Вид контроля:'}</Text>
+              <Text style={rowTextStyle} colorVariant={'block'}>
+                {'Вид контроля:'}
+              </Text>
               <ClickableText
                 text={cutTypeControl(checkPoint.typeControl)}
                 onPress={() => {

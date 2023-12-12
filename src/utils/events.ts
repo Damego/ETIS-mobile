@@ -12,11 +12,11 @@ export interface Events {
 
 const isInDateRange = (startDate: Date, endDate: Date) => {
   const currentDateTime = Date.now();
-  const stateDateTime = startDate.getTime()
+  const stateDateTime = startDate.getTime();
   const endDateTime = endDate.getTime();
 
   return currentDateTime > stateDateTime && currentDateTime < endDateTime;
-}
+};
 
 export const isHalloween = () => {
   const year = new Date().getFullYear();
@@ -43,4 +43,4 @@ export const isNewYear = () => {
   const endDate = new Date(year + 1, 0, 15);
 
   return isInDateRange(startDate, endDate);
-}
+};

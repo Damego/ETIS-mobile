@@ -4,13 +4,13 @@ import AutoHeightWebView from 'react-native-autoheight-webview';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 
 import ClickableText from '../../components/ClickableText';
+import Text from '../../components/Text';
 import { useGlobalStyles } from '../../hooks';
+import { useAppTheme } from '../../hooks/theme';
 import { TeacherType } from '../../models/teachers';
 import { ILesson, IPair } from '../../models/timeTable';
 import { fontSize } from '../../utils/texts';
 import { getStyles } from '../../utils/webView';
-import Text from '../../components/Text';
-import { useAppTheme } from '../../hooks/theme';
 
 export default function Pair({ pair, teachersData }: { pair: IPair; teachersData: TeacherType }) {
   const pairText = `${pair.position} пара`;
@@ -18,7 +18,9 @@ export default function Pair({ pair, teachersData }: { pair: IPair; teachersData
   return (
     <View style={styles.pairContainer}>
       <View style={styles.pairTimeContainer}>
-        <Text style={fontSize.mini} colorVariant={'block'}>{pairText}</Text>
+        <Text style={fontSize.mini} colorVariant={'block'}>
+          {pairText}
+        </Text>
         <Text colorVariant={'block'}>{pair.time}</Text>
       </View>
 

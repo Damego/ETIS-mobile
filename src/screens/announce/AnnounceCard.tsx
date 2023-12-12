@@ -3,8 +3,8 @@ import AutoHeightWebView from 'react-native-autoheight-webview';
 
 import Card from '../../components/Card';
 import { useGlobalStyles } from '../../hooks';
-import { httpClient } from '../../utils';
 import { useAppTheme } from '../../hooks/theme';
+import { httpClient } from '../../utils';
 
 const getStyles = (textColor) => `
 * {

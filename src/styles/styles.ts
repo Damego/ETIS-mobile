@@ -50,8 +50,8 @@ const getGlobalStyles = ({ colors }: { colors: IThemeColors }) =>
       color: colors.text,
     },
     inputPlaceholder: {
-      color: colors.inputPlaceholder
-    }
+      color: colors.inputPlaceholder,
+    },
   });
 
 export default getGlobalStyles;

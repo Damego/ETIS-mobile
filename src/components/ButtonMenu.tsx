@@ -42,10 +42,7 @@ const ModalMenu = ({
       >
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text
-            style={[
-              fontSize.large,
-              { fontWeight: '500', marginBottom: '2%' },
-            ]}
+            style={[fontSize.large, { fontWeight: '500', marginBottom: '2%' }]}
             colorVariant={'block'}
           >
             Выбор преподавателя

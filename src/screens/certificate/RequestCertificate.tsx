@@ -118,7 +118,9 @@ export default function RequestCertificate() {
           )}
           popoverStyle={[styles.popover, { backgroundColor: appTheme.colors.block }]}
         >
-          <Text style={fontSize.medium} colorVariant={'block'}>{text}</Text>
+          <Text style={fontSize.medium} colorVariant={'block'}>
+            {text}
+          </Text>
         </Popover>
       ),
     []
@@ -128,7 +130,9 @@ export default function RequestCertificate() {
     () =>
       ({ name, placeholder, onUpdate, value, popover }) => (
         <>
-          <Text style={fontSize.medium} colorVariant={'block'}>{name}</Text>
+          <Text style={fontSize.medium} colorVariant={'block'}>
+            {name}
+          </Text>
           <View style={styles.inputRow}>
             <TextInput
               style={[
@@ -231,10 +235,7 @@ export default function RequestCertificate() {
       <Screen>
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <Text
-            style={[
-              fontSize.xlarge,
-              { fontWeight: '500', textAlign: 'center' },
-            ]}
+            style={[fontSize.xlarge, { fontWeight: '500', textAlign: 'center' }]}
             colorVariant={'block'}
           >
             Запрос успешно отправлен!
@@ -253,7 +254,9 @@ export default function RequestCertificate() {
   return (
     <Screen>
       <Card>
-        <Text style={fontSize.medium} colorVariant={'block'}>Тип справки</Text>
+        <Text style={fontSize.medium} colorVariant={'block'}>
+          Тип справки
+        </Text>
         <RadioGroup
           radioButtons={certificateRadioButtons}
           onPress={setCurrentId}
@@ -265,14 +268,18 @@ export default function RequestCertificate() {
       {currentId && (
         <>
           <Card>
-            <Text style={fontSize.medium} colorVariant={'block'}>Метод вручения</Text>
+            <Text style={fontSize.medium} colorVariant={'block'}>
+              Метод вручения
+            </Text>
             <RadioGroup
               radioButtons={deliveryWayRadioButtons}
               onPress={setDelivery}
               selectedId={delivery}
               containerStyle={styles.alignStart}
             />
-            <Text style={fontSize.medium} colorVariant={'block'}>Количество</Text>
+            <Text style={fontSize.medium} colorVariant={'block'}>
+              Количество
+            </Text>
             <RadioGroup
               radioButtons={quantityRadioButtons}
               selectedId={quantity}

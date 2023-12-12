@@ -10,14 +10,14 @@ import { cache } from '../cache/smartCache';
 import Background from '../components/Background';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { useAppTheme } from '../hooks/theme';
-import { changeTheme, PageType, setInitialPage } from '../redux/reducers/settingsSlice';
+import { PageType, changeTheme, setInitialPage } from '../redux/reducers/settingsSlice';
 import AuthPage from '../screens/auth/Auth';
 import Intro from '../screens/intro/Intro';
 import MessageHistory from '../screens/messages/MessageHistory';
 import NewYearThemes from '../screens/newYearThemes/NewYearThemes';
 import SessionQuestionnaire from '../screens/sessionQuestionnaire/SessionQuestionnaire';
 import SignsDetails from '../screens/signs/SignsDetails';
-import { isNewYearTheme, ThemeType } from '../styles/themes';
+import { ThemeType, isNewYearTheme } from '../styles/themes';
 import { isHalloween, isNewYear } from '../utils/events';
 import showPrivacyPolicy from '../utils/privacyPolicy';
 import InitSentry from '../utils/sentry';
@@ -82,7 +82,7 @@ const StackNavigator = () => {
       let returnTheme: ThemeType;
       if (events.newYear2024?.previousTheme && isNewYearTheme(events.newYear2024.previousTheme))
         returnTheme = ThemeType.auto;
-      else returnTheme = events.newYear2024.previousTheme
+      else returnTheme = events.newYear2024.previousTheme;
       dispatch(changeTheme(returnTheme));
       cache.placeTheme(returnTheme);
     }
@@ -108,7 +108,6 @@ const StackNavigator = () => {
   useEffect(() => {
     if (appIsReady) SplashScreen.hideAsync().catch((e) => e /* huh? */);
   }, [appIsReady]);
-
 
   let component: React.ReactNode;
   if (!viewedIntro) component = <Stack.Screen name="Onboarding" component={Intro} />;

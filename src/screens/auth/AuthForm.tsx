@@ -104,7 +104,9 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
             value={saveUserCredentials}
             onValueChange={toggleSaveUserCredentials}
           />
-          <Text style={fontSize.small} colorVariant={'block'}>Запомнить пароль?</Text>
+          <Text style={fontSize.small} colorVariant={'block'}>
+            Запомнить пароль?
+          </Text>
         </View>
 
         <ClickableText

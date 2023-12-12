@@ -28,8 +28,12 @@ export default function RightText({
 }) {
   return (
     <View style={styles.container}>
-      <Text style={[styles.topText]} colorVariant={'block'}>{topText}</Text>
-      <Text style={[styles.bottomText]} colorVariant={'block'}>{bottomText}</Text>
+      <Text style={[styles.topText]} colorVariant={'block'}>
+        {topText}
+      </Text>
+      <Text style={[styles.bottomText]} colorVariant={'block'}>
+        {bottomText}
+      </Text>
     </View>
   );
 }

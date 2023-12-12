@@ -12,7 +12,7 @@ import OrderModal from './OrderModal';
 const styles = StyleSheet.create({
   textTitle: {
     fontWeight: '500',
-    ...fontSize.small
+    ...fontSize.small,
   },
 });
 

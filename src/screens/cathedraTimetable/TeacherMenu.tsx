@@ -19,9 +19,7 @@ const TeacherMenu = ({
   if (timetable.length === 1)
     return (
       <View style={{ alignItems: 'center', marginBottom: '2%' }}>
-        <Text style={[fontSize.large, { fontWeight: '500' }]}>
-          {currentTeacherName}
-        </Text>
+        <Text style={[fontSize.large, { fontWeight: '500' }]}>{currentTeacherName}</Text>
       </View>
     );
 
