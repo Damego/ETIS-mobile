@@ -44,3 +44,16 @@ export const isNewYear = () => {
 
   return isInDateRange(startDate, endDate);
 };
+
+export const newYearEmptyDayResponse = [
+  'Едим мандарины 🍊',
+  'Наряжаем ёлку 🎄',
+  'Пишем Деду Морозу 🎅',
+  'Ловим снежинки ❄️',
+  'Лепим снеговика ☃️',
+  '🍊',
+  '🎄',
+  '🎅',
+  '❄️',
+  '☃️',
+];

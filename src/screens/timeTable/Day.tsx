@@ -7,8 +7,8 @@ import Text from '../../components/Text';
 import { useAppSelector } from '../../hooks';
 import { TeacherType } from '../../models/teachers';
 import { ITimeTableDay } from '../../models/timeTable';
-import { ThemeType } from '../../styles/themes';
-import { halloweenEmptyDayResponses } from '../../utils/events';
+import { ThemeType, isNewYearTheme } from '../../styles/themes';
+import { halloweenEmptyDayResponses, newYearEmptyDayResponse } from '../../utils/events';
 import { fontSize } from '../../utils/texts';
 import { getRandomItem } from '../../utils/utils';
 import Pair from './Pair';
@@ -20,8 +20,9 @@ interface DayData {
 
 const responses = ['Пар нет', 'Отдых', '💤', '😴', '🎮', '(๑ᵕ⌓ᵕ̤)'];
 
-const getRandomResponse = (hasHalloweenTheme: boolean) => {
-  if (hasHalloweenTheme) return getRandomItem(halloweenEmptyDayResponses);
+const getRandomResponse = (appTheme: ThemeType) => {
+  if (appTheme === ThemeType.halloween) return getRandomItem(halloweenEmptyDayResponses);
+  if (isNewYearTheme(appTheme)) return getRandomItem(newYearEmptyDayResponse);
   return getRandomItem(responses);
 };
 
@@ -33,7 +34,7 @@ const EmptyDay = ({ data }: DayData) => {
     <CardHeaderOut topText={date}>
       <View style={{ alignItems: 'center' }}>
         <Text style={{ ...fontSize.medium, fontWeight: '600' }} colorVariant={'block'}>
-          {getRandomResponse(theme === ThemeType.halloween)}
+          {getRandomResponse(theme)}
         </Text>
       </View>
     </CardHeaderOut>
