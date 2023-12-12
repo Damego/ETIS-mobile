@@ -76,10 +76,12 @@ const getTeacher = (lesson: cheerio.Cheerio): ITeacher => {
 
   if (!teacherAnchorHref) return { name };
 
-  const [, id] = executeRegex(idRegex, teacherAnchorHref);
-  if (!id) return { name };
+  // Ссылка может ввести не на преподавателя, а на форму оценивания занятия
+  // так как преподаватель не стоит к паре
+  const result = idRegex.exec(teacherAnchorHref);
+  if (!result) return { name };
 
-  return { name, id };
+  return { name, id: result.at(1) };
 };
 
 export default function parseTimeTable(html: string) {
