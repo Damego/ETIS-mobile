@@ -10,12 +10,17 @@ export interface Events {
   newYear2024?: EventData;
 }
 
-const isInDateRange = (startDate: Date, endDate: Date) => {
+const isInDateRange = (startDate: Date, endDate: Date, checkCondition: 'and' | 'or' = 'and') => {
   const currentDateTime = Date.now();
   const stateDateTime = startDate.getTime();
   const endDateTime = endDate.getTime();
 
-  return currentDateTime > stateDateTime && currentDateTime < endDateTime;
+  if (checkCondition === 'and')
+    return currentDateTime > stateDateTime && currentDateTime < endDateTime;
+
+  // Применимо исключительно к промежутку, который начинается в одном году, а заканчивается в следующем
+  if (checkCondition === 'or')
+    return currentDateTime > stateDateTime || currentDateTime < endDateTime;
 };
 
 export const isHalloween = () => {
@@ -40,9 +45,11 @@ export const halloweenEmptyDayResponses = [
 export const isNewYear = () => {
   const year = new Date().getFullYear();
   const startDate = new Date(year, 11, 9);
-  const endDate = new Date(year + 1, 0, 15);
-
-  return isInDateRange(startDate, endDate);
+  const endDate = new Date(year, 0, 15);
+  // Новогоднее событие начинается в одном году,
+  // а заканчивается в следующем,
+  // поэтому проверяем только месяц и день, а значение года окончания события является текущим
+  return isInDateRange(startDate, endDate, 'or');
 };
 
 export const newYearEmptyDayResponse = [
