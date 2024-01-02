@@ -158,7 +158,7 @@ export const BlueNewYearTheme: ITheme = {
     backgroundGradient: ['#131723', '#131723'],
     primary: '#409ad4',
     secondary: '#c42e21',
-    border: '#181f32',
+    border: '#2e3c5f',
     text: '#FEFEFE',
     textForPrimary: '#FEFEFE',
     textForSecondary: '#FEFEFE',

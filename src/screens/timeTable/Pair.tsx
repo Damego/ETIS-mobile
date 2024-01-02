@@ -59,15 +59,13 @@ const AnnouncePopover = ({ data }: { data: string }) => {
     >
       <AutoHeightWebView
         source={{ html: data }}
-        customStyle={getStyles(theme.colors.textForBlock)}
+        customStyle={getStyles(theme.colors.textForBlock, theme.colors.primary)}
       />
     </Popover>
   );
 };
 
 const Lesson = ({ data, teachersData }: { data: ILesson; teachersData: TeacherType }) => {
-  const globalStyles = useGlobalStyles();
-
   const location =
     data.audience && data.building && data.floor
       ? `ауд. ${data.audience} (${data.building} корпус, ${data.floor} этаж)`
@@ -95,10 +93,8 @@ const Lesson = ({ data, teachersData }: { data: ILesson; teachersData: TeacherTy
           onPress={() => {
             Linking.openURL(data.distancePlatform.url);
           }}
-          textStyle={[
-            globalStyles.textColor,
-            { textDecorationLine: 'underline', fontWeight: '500' },
-          ]}
+          textStyle={{ textDecorationLine: 'underline', fontWeight: '500' }}
+          colorVariant={'block'}
         />
       ) : audience ? (
         <Text colorVariant={'block'}>{audience}</Text>
