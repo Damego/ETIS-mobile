@@ -10,14 +10,14 @@ import { cache } from '../cache/smartCache';
 import Background from '../components/Background';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { useAppTheme } from '../hooks/theme';
-import { changeTheme, PageType, setEvents, setInitialPage } from '../redux/reducers/settingsSlice';
+import { PageType, changeTheme, setEvents, setInitialPage } from '../redux/reducers/settingsSlice';
 import AuthPage from '../screens/auth/Auth';
 import Intro from '../screens/intro/Intro';
 import MessageHistory from '../screens/messages/MessageHistory';
 import NewYearThemes from '../screens/newYearThemes/NewYearThemes';
 import SessionQuestionnaire from '../screens/sessionQuestionnaire/SessionQuestionnaire';
 import SignsDetails from '../screens/signs/SignsDetails';
-import { isNewYearTheme, ThemeType } from '../styles/themes';
+import { ThemeType, isNewYearTheme } from '../styles/themes';
 import { isHalloween, isNewYear } from '../utils/events';
 import showPrivacyPolicy from '../utils/privacyPolicy';
 import InitSentry from '../utils/sentry';
@@ -58,7 +58,7 @@ const StackNavigator = () => {
   };
 
   const checkHalloweenEvent = async () => {
-    const $events = {...events};
+    const $events = { ...events };
     const $isHalloween = isHalloween();
 
     if ($isHalloween && !$events.halloween2023?.suggestedTheme) {
@@ -68,15 +68,14 @@ const StackNavigator = () => {
       };
       dispatch(changeTheme(ThemeType.halloween));
       cache.placeTheme(ThemeType.halloween);
-      dispatch(setEvents($events))
-      cache.placeEvents($events)
+      dispatch(setEvents($events));
+      cache.placeEvents($events);
     }
     if (!$isHalloween && themeType === ThemeType.halloween) {
       if (!$events.halloween2023) {
         dispatch(changeTheme(ThemeType.auto));
         cache.placeTheme(ThemeType.auto);
-      }
-      else {
+      } else {
         dispatch(changeTheme($events.halloween2023.previousTheme));
         cache.placeTheme($events.halloween2023.previousTheme);
       }
