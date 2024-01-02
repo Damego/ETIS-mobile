@@ -10,7 +10,7 @@ import { cache } from '../cache/smartCache';
 import Background from '../components/Background';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { useAppTheme } from '../hooks/theme';
-import { PageType, changeTheme, setInitialPage } from '../redux/reducers/settingsSlice';
+import { changeTheme, PageType, setEvents, setInitialPage } from '../redux/reducers/settingsSlice';
 import AuthPage from '../screens/auth/Auth';
 import Intro from '../screens/intro/Intro';
 import MessageHistory from '../screens/messages/MessageHistory';
@@ -58,19 +58,28 @@ const StackNavigator = () => {
   };
 
   const checkHalloweenEvent = async () => {
+    const $events = {...events};
     const $isHalloween = isHalloween();
-    const events = await cache.getEvents();
-    if ($isHalloween && !events.halloween2023?.suggestedTheme) {
-      events.halloween2023 = {
+
+    if ($isHalloween && !$events.halloween2023?.suggestedTheme) {
+      $events.halloween2023 = {
         suggestedTheme: true,
         previousTheme: themeType,
       };
       dispatch(changeTheme(ThemeType.halloween));
       cache.placeTheme(ThemeType.halloween);
+      dispatch(setEvents($events))
+      cache.placeEvents($events)
     }
     if (!$isHalloween && themeType === ThemeType.halloween) {
-      dispatch(changeTheme(events.halloween2023.previousTheme));
-      cache.placeTheme(events.halloween2023.previousTheme);
+      if (!$events.halloween2023) {
+        dispatch(changeTheme(ThemeType.auto));
+        cache.placeTheme(ThemeType.auto);
+      }
+      else {
+        dispatch(changeTheme($events.halloween2023.previousTheme));
+        cache.placeTheme($events.halloween2023.previousTheme);
+      }
     }
   };
 
@@ -82,6 +91,7 @@ const StackNavigator = () => {
       if (!events.newYear2024?.previousTheme || isNewYearTheme(events.newYear2024.previousTheme))
         returnTheme = ThemeType.auto;
       else returnTheme = events.newYear2024.previousTheme;
+
       dispatch(changeTheme(returnTheme));
       cache.placeTheme(returnTheme);
     }
