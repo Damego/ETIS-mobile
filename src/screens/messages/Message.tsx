@@ -4,10 +4,10 @@ import { StyleSheet, View } from 'react-native';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import FileTextLink from '../../components/FileTextLink';
 import Text from '../../components/Text';
+import { useAppTheme } from '../../hooks/theme';
 import { IMessage, IMessageFile, MessageType } from '../../models/messages';
 import { parseDate } from '../../parser/utils';
 import { fontSize } from '../../utils/texts';
-import { useAppTheme } from '../../hooks/theme';
 
 const styles = StyleSheet.create({
   subjectText: {
