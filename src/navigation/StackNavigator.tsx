@@ -17,7 +17,7 @@ import MessageHistory from '../screens/messages/MessageHistory';
 import NewYearThemes from '../screens/newYearThemes/NewYearThemes';
 import SessionQuestionnaire from '../screens/sessionQuestionnaire/SessionQuestionnaire';
 import SignsDetails from '../screens/signs/SignsDetails';
-import { ThemeType, isNewYearTheme } from '../styles/themes';
+import { isNewYearTheme, ThemeType } from '../styles/themes';
 import { isHalloween, isNewYear } from '../utils/events';
 import showPrivacyPolicy from '../utils/privacyPolicy';
 import InitSentry from '../utils/sentry';
@@ -36,9 +36,7 @@ const StackNavigator = () => {
     theme: themeType,
     events,
   } = useAppSelector((state) => state.settings);
-  // TODO:
-  //  Локальный? стейт для определения, был ли предложен новый год
-  //  Отдельный стейт внутри редакса для снегопада
+
   const theme = useAppTheme();
   const dispatch = useAppDispatch();
 
@@ -80,7 +78,8 @@ const StackNavigator = () => {
   const checkNewYearEvent = () => {
     if (!$isNewYear && isNewYearTheme(themeType)) {
       let returnTheme: ThemeType;
-      if (events.newYear2024?.previousTheme && isNewYearTheme(events.newYear2024.previousTheme))
+
+      if (!events.newYear2024?.previousTheme || isNewYearTheme(events.newYear2024.previousTheme))
         returnTheme = ThemeType.auto;
       else returnTheme = events.newYear2024.previousTheme;
       dispatch(changeTheme(returnTheme));
@@ -111,7 +110,7 @@ const StackNavigator = () => {
 
   let component: React.ReactNode;
   if (!viewedIntro) component = <Stack.Screen name="Onboarding" component={Intro} />;
-  else if ($isNewYear && !events.newYear2024?.suggestedTheme)
+  else if ($isNewYear && !events?.newYear2024?.suggestedTheme)
     component = <Stack.Screen name={'NewYearTheme'} component={NewYearThemes} />;
   else if (!isSignedIn)
     component = (
