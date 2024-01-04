@@ -9,7 +9,6 @@ import {
   ToastAndroid,
   TouchableOpacity,
   View,
-  useColorScheme,
 } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 import { RadioButtonProps, RadioGroup } from 'react-native-radio-buttons-group';
@@ -94,7 +93,6 @@ export default function RequestCertificate() {
   const [delivery, setDelivery] = useState<string>();
   const [keyboardOpen, setKeyboardOpen] = useState<boolean>(false);
   const [requestSent, setRequestSent] = useState<boolean>(false);
-  const schemeColor = useColorScheme() === 'light' ? 'black' : 'white';
   const appTheme = useAppTheme();
   const navigator = useNavigation();
 
@@ -113,7 +111,7 @@ export default function RequestCertificate() {
           placement={PopoverPlacement.FLOATING}
           from={(_, showPopover) => (
             <TouchableOpacity onPress={showPopover}>
-              <AntDesign name="infocirlceo" size={24} color={schemeColor} />
+              <AntDesign name="infocirlceo" size={24} color={appTheme.colors.textForBlock} />
             </TouchableOpacity>
           )}
           popoverStyle={[styles.popover, { backgroundColor: appTheme.colors.block }]}

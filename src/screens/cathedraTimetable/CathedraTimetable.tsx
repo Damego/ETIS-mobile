@@ -47,7 +47,7 @@ const CathedraTimetable = ({ route }: ServiceNativeStackScreenProps<'CathedraTim
   };
 
   if (isLoading && !data) return <LoadingScreen onRefresh={refresh} />;
-  if (!data) return <NoData />;
+  if (!data || !data.timetable || !data.timetable.length) return <NoData />;
 
   const teacherTimetable =
     data.timetable.find((timetable) => timetable.teacherName === currentTeacher) ||

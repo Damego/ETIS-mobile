@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import FileTextLink from '../../components/FileTextLink';
 import Text from '../../components/Text';
+import { useAppTheme } from '../../hooks/theme';
 import { IMessage, IMessageFile, MessageType } from '../../models/messages';
 import { parseDate } from '../../parser/utils';
 import { fontSize } from '../../utils/texts';
@@ -39,6 +40,7 @@ function Message({ message }: { message: IMessage }) {
   const time = parseDate(message.time);
   const formattedTime = time.format('DD.MM.YYYY HH:mm');
   const hasFiles = message.files && message.files.length !== 0;
+  const theme = useAppTheme();
 
   let cardTopText: string;
   if ([MessageType.message, MessageType.teacherReply].includes(message.type))
@@ -47,7 +49,7 @@ function Message({ message }: { message: IMessage }) {
 
   return (
     <CardHeaderOut topText={cardTopText}>
-      <Text colorVariant={'block'} selectable selectionColor={'#ade1f5'}>
+      <Text colorVariant={'block'} selectable selectionColor={theme.colors.primary}>
         {message.content}
       </Text>
       {hasFiles ? <AttachedFiles files={message.files} /> : ''}

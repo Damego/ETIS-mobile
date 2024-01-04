@@ -4,7 +4,7 @@ export default {
   expo: {
     name: 'ЕТИС мобайл' + (IS_DEV ? ' (DEV)' : ''),
     slug: 'etis-mobile',
-    version: '1.2.3',
+    version: '1.2.4',
     owner: 'damego',
     orientation: 'portrait',
     icon: './assets/icon.png',
@@ -23,7 +23,7 @@ export default {
       supportsTablet: true,
     },
     android: {
-      versionCode: 10203000,
+      versionCode: 10204000,
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
         backgroundColor: '#9B1B2A',
