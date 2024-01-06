@@ -25,6 +25,8 @@ import { StudentInfo } from '../parser/menu';
 import { isLoginPage } from '../parser/utils';
 import { Response } from '../utils/http';
 import { reportParserError } from '../utils/sentry';
+import { IFaculty } from '../models/faculty';
+import { ISpeciality } from '../models/specialty';
 
 export interface BaseClient {
   getAbsencesData(payload: IGetPayload<number>): Promise<IGetResult<IAbsence>>;
@@ -48,6 +50,8 @@ export interface BaseClient {
   getCathedraTimetable(
     payload: IGetPayload<ICathedraTimetablePayload>
   ): Promise<IGetResult<ICathedraTimetable>>;
+  getFaculties(payload: IGetPayload): Promise<IGetResult<IFaculty[]>>
+  getSpecialities(payload: IGetPayload<IFaculty>): Promise<IGetResult<ISpeciality[]>>
 }
 
 export class BasicClient<P extends IGetPayload, T> {

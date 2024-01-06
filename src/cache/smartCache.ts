@@ -20,6 +20,7 @@ import { Events } from '../utils/events';
 import FieldCache from './fieldCache';
 import MappedCache from './mappedCache';
 import SecuredFieldCache from './securedFieldCache';
+import { IFaculty } from '../models/faculty';
 
 export default class SmartCache {
   absences: MappedCache<number, IAbsence>;
@@ -39,6 +40,7 @@ export default class SmartCache {
   student: FieldCache<StudentInfo>;
   calendarSchedule: FieldCache<ICalendarSchedule>;
   certificate: FieldCache<ICertificate[]>;
+  faculties: FieldCache<IFaculty[]>;
 
   // Internal
   user: SecuredFieldCache<UserCredentials>;
@@ -323,6 +325,21 @@ export default class SmartCache {
   }
 
   // End Calendar Schedule region
+
+
+  // OverallTimetable Region
+
+  async getFaculties() {
+    if (!this.faculties.isReady()) await this.faculties.init();
+    return this.faculties.get();
+  }
+
+  async placeFaculties(data: IFaculty[]) {
+    this.faculties.place(data);
+    await this.faculties.save();
+  }
+
+  // End OverallTimetable Region
 
   // Secure Region
 

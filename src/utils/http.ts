@@ -12,6 +12,7 @@ import { CertificateRequestPayload } from './certificate';
 import { toURLSearchParams } from './encoding';
 import { SessionQuestionnairePayload } from './sessionTest';
 import getRandomUserAgent from './userAgents';
+import { IFaculty } from '../models/faculty';
 
 const cyrillicToTranslit = CyrillicToTranslit();
 
@@ -424,6 +425,12 @@ class HTTPClient {
     };
 
     return this.request('GET', '/tt_pkg.show_prep', { params, returnResponse: false });
+  }
+  getFaculties() {
+    return this.request('GET', '/stu.all_timetable', { returnResponse: false });
+  }
+  getFacultyCourses({ id }: IFaculty) {
+    return this.request('GET', `/stu.all_timetable?p_mode=1&p_fac_id=${id}`, { returnResponse: false });
   }
 }
 

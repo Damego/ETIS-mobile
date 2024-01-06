@@ -21,6 +21,8 @@ import { StudentInfo } from '../parser/menu';
 import bind from '../utils/methodBinder';
 import { BaseClient } from './base';
 import { toResult } from './utils';
+import { IFaculty } from '../models/faculty';
+import { ISpeciality } from '../models/specialty';
 
 export default class DemoClient implements BaseClient {
   constructor() {
@@ -788,4 +790,16 @@ export default class DemoClient implements BaseClient {
 
     return this.toResult(data);
   }
+
+
+  // TODO
+  async getFaculties(payload: IGetPayload): Promise<IGetResult<IFaculty[]>> {
+    return Promise.resolve(undefined);
+  }
+
+  async getSpecialities(payload: IGetPayload<IFaculty>): Promise<IGetResult<ISpeciality[]>> {
+    return Promise.resolve(undefined);
+  }
+
+
 }

@@ -41,6 +41,9 @@ import { httpClient } from '../utils';
 import bind from '../utils/methodBinder';
 import { BaseClient, BasicClient } from './base';
 import DemoClient from './demoClient';
+import { IFaculty } from '../models/faculty';
+import { parseFaculties } from '../parser/overallTimeTable';
+import { ISpeciality } from '../models/specialty';
 
 export const useClient: () => BaseClient = () => {
   const { isDemo } = useAppSelector((state) => state.auth);
@@ -72,6 +75,7 @@ class CathedraTimetableClient extends BasicClient<
   IGetPayload<ICathedraTimetablePayload>,
   ICathedraTimetable
 > {}
+class FacultiesClient extends BasicClient<IGetPayload, IFaculty[]> {}
 
 export default class Client implements BaseClient {
   private absencesClient: AbsencesClient;
@@ -91,6 +95,7 @@ export default class Client implements BaseClient {
   private sessionQuestionnaireListClient: SessionQuestionnaireListClient;
   private personalRecordsClient: PersonalRecordsClient;
   private cathedraTimetableClient: CathedraTimetableClient;
+  private facultiesClient: FacultiesClient;
 
   constructor() {
     this.absencesClient = new AbsencesClient(
@@ -195,6 +200,12 @@ export default class Client implements BaseClient {
       parseCathedraTimetable,
       emptyFunction
     );
+    this.facultiesClient = new FacultiesClient(
+      () => cache.getFaculties(),
+      () => httpClient.getFaculties(),
+      parseFaculties,
+      (data) => cache.placeFaculties(data)
+    );
 
     bind(this, Client);
   }
@@ -280,9 +291,18 @@ export default class Client implements BaseClient {
     return this.personalRecordsClient.getData(payload);
   }
 
-  getCathedraTimetable(
+  async getCathedraTimetable(
     payload: IGetPayload<ICathedraTimetablePayload>
   ): Promise<IGetResult<ICathedraTimetable>> {
     return this.cathedraTimetableClient.getData(payload);
   }
+
+  async getFaculties(payload: IGetPayload): Promise<IGetResult<IFaculty[]>> {
+    return this.facultiesClient.getData(payload);
+  }
+
+  async getSpecialities(payload: IGetPayload<IFaculty>): Promise<IGetResult<ISpeciality[]>> {
+    return Promise.resolve(undefined); // TODO
+  }
+
 }
