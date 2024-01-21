@@ -5,7 +5,7 @@ export const getCurrentEducationYear = () => {
   const year = date.year();
 
   // До сентября - старый учебный год
-  if (date.month() < 9) return year - 1;
+  if (date.month() < 8) return year - 1;
 
   // После сентября - новый
   return year;
