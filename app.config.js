@@ -4,7 +4,7 @@ export default {
   expo: {
     name: 'ЕТИС мобайл' + (IS_DEV ? ' (DEV)' : ''),
     slug: 'etis-mobile',
-    version: '1.2.4',
+    version: '1.2.5',
     owner: 'damego',
     orientation: 'portrait',
     icon: './assets/icon.png',
@@ -13,7 +13,7 @@ export default {
     splash: {
       image: './assets/splash.png',
       resizeMode: 'contain',
-      backgroundColor: '#9b1b2a',
+      backgroundColor: '#CE2539',
     },
     updates: {
       fallbackToCacheTimeout: 0,
@@ -23,10 +23,10 @@ export default {
       supportsTablet: true,
     },
     android: {
-      versionCode: 10204000,
+      versionCode: 10205000,
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
-        backgroundColor: '#9B1B2A',
+        backgroundColor: '#FFFFFF',
       },
       package: IS_DEV ? 'dev.damego.etismobile' : 'com.damego.etismobile',
       playStoreUrl: 'https://play.google.com/store/apps/details?id=com.damego.etismobile',
