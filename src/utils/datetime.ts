@@ -9,4 +9,4 @@ export const getCurrentEducationYear = () => {
 
   // После сентября - новый
   return year;
-}
+};
