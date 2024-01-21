@@ -129,7 +129,7 @@ export const NewYearTheme: ITheme = {
   dark: false,
   statusBarStyle: 'light',
   disabledCardBorder: false,
-  backgroundImage: require('../../assets/background.png'),
+  // backgroundImage: require('../../assets/background.png'),
   colors: {
     background: 'transparent',
     backgroundGradient: ['#9b1b2a', '#9b1b2a'],
@@ -152,7 +152,7 @@ export const BlueNewYearTheme: ITheme = {
   dark: false,
   statusBarStyle: 'light',
   disabledCardBorder: false,
-  backgroundImage: require('../../assets/background-blue.png'),
+  // backgroundImage: require('../../assets/background-blue.png'),
   colors: {
     background: 'transparent',
     backgroundGradient: ['#131723', '#131723'],
@@ -175,7 +175,7 @@ export const GreenNewYearTheme: ITheme = {
   dark: false,
   statusBarStyle: 'light',
   disabledCardBorder: false,
-  backgroundImage: require('../../assets/background-green.png'),
+  // backgroundImage: require('../../assets/background-green.png'),
   colors: {
     background: 'transparent',
     backgroundGradient: ['#14413C', '#14413C'],

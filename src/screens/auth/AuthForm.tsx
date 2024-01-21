@@ -9,7 +9,6 @@ import Text from '../../components/Text';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { useAppTheme } from '../../hooks/theme';
 import { setSaveUserCredentials } from '../../redux/reducers/authSlice';
-import { ThemeType } from '../../styles/themes';
 import { fontSize } from '../../utils/texts';
 
 export const styles = StyleSheet.create({
@@ -51,7 +50,6 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
   const { saveUserCredentials } = useAppSelector((state) => state.auth);
   const globalStyles = useGlobalStyles();
   const theme = useAppTheme();
-  const themeType = useAppSelector((state) => state.settings.theme);
 
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
@@ -62,12 +60,7 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
 
   return (
     <View style={[styles.container, globalStyles.border, globalStyles.block]}>
-      {/* TODO: Remove Halloween */}
-      {themeType === ThemeType.halloween ? (
-        <Image style={styles.logoImage} source={require('../../../assets/pumkin.gif')} />
-      ) : (
-        <Image style={styles.logoImage} source={require('../../../assets/logo_red.png')} />
-      )}
+      <Image style={styles.logoImage} source={require('../../../assets/logo_red.png')} />
 
       <Text colorVariant={'block'}>{errorMessage}</Text>
 
