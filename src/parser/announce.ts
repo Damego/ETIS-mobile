@@ -6,7 +6,7 @@ export default function parseAnnounce(html: string): string[] | null {
   const data: string[] = [];
 
   // Let WebView work with this shit
-  $('.nav.msg').each((index, el) => {
+  $('.span9').children().filter('ul').each((_index, el) => {
     // source code is fucked up. WebView is fucked up (it always throws an error if link tag doesn't have a target)
     // So why my code can't be fucked up?
     const messageHtml = $(el)
