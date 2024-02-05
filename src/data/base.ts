@@ -34,6 +34,7 @@ export interface BaseClient {
   getOrdersData(payload: IGetPayload): Promise<IGetResult<IOrder[]>>;
   getRatingData(payload: IGetPayload<number>): Promise<IGetResult<ISessionRating>>;
   getSessionSignsData(payload: IGetPayload<number>): Promise<IGetResult<ISessionPoints>>;
+  getPointUpdates(payload: IGetPayload<string>): Promise<IGetResult<string>>;
   getSessionMarksData(payload: IGetPayload): Promise<IGetResult<ISessionMarks[]>>;
   getStudentInfoData(payload: IGetPayload): Promise<IGetResult<StudentInfo>>;
   getTeacherData(payload: IGetPayload): Promise<IGetResult<TeacherType>>;

@@ -41,6 +41,7 @@ import { httpClient } from '../utils';
 import bind from '../utils/methodBinder';
 import { BaseClient, BasicClient } from './base';
 import DemoClient from './demoClient';
+import parsePointUpdates from '../parser/pointUpdates';
 
 export const useClient: () => BaseClient = () => {
   const { isDemo } = useAppSelector((state) => state.auth);
@@ -56,6 +57,7 @@ class MessageClient extends BasicClient<IGetPayload<number>, IMessagesData> {}
 class OrderClient extends BasicClient<IGetPayload, IOrder[]> {}
 class RatingClient extends BasicClient<IGetPayload<number>, ISessionRating> {}
 class SignsClient extends BasicClient<IGetPayload<number>, ISessionPoints> {}
+class PointUpdatesClient extends BasicClient<IGetPayload<string>, string> {}
 class MarksClient extends BasicClient<IGetPayload, ISessionMarks[]> {}
 class StudentClient extends BasicClient<IGetPayload, StudentInfo> {}
 class TeachersClient extends BasicClient<IGetPayload, TeacherType> {}
@@ -81,6 +83,7 @@ export default class Client implements BaseClient {
   private orderClient: OrderClient;
   private ratingClient: RatingClient;
   private signsClient: SignsClient;
+  private pointUpdatesClient: PointUpdatesClient;
   private marksClient: MarksClient;
   private studentClient: StudentClient;
   private teacherClient: TeachersClient;
@@ -134,6 +137,12 @@ export default class Client implements BaseClient {
       ({ data }) => httpClient.getSigns('current', data),
       parseSessionPoints,
       (data) => cache.placeSessionPoints(data)
+    );
+    this.pointUpdatesClient = new PointUpdatesClient(
+      emptyFunction,
+      (payload) => httpClient.getPointUpdates(payload.data),
+      parsePointUpdates,
+      emptyFunction
     );
     this.marksClient = new MarksClient(
       () => cache.getAllSessionMarks(),
@@ -232,6 +241,10 @@ export default class Client implements BaseClient {
   async getSessionSignsData(payload: IGetPayload<number>): Promise<IGetResult<ISessionPoints>> {
     await cache.signsPoints.init();
     return this.signsClient.getData(payload);
+  }
+
+  async getPointUpdates(payload: IGetPayload<string>): Promise<IGetResult<string>> {
+    return this.pointUpdatesClient.getData(payload);
   }
 
   async getSessionMarksData(payload: IGetPayload): Promise<IGetResult<ISessionMarks[]>> {

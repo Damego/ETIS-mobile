@@ -10,6 +10,9 @@ import { ICheckPoint } from '../../models/sessionPoints';
 import { RootStackScreenProps } from '../../navigation/types';
 import { fontSize, formatCheckPointScore } from '../../utils/texts';
 import TotalPoints from './TotalPoints';
+import useQuery from '../../hooks/useQuery';
+import { useClient } from '../../data/client';
+import { RequestType } from '../../models/results';
 
 const styles = StyleSheet.create({
   row: {
@@ -38,6 +41,7 @@ const cutTypeControl = (typeControl: string): string =>
 export default function SignsDetails({ route }: RootStackScreenProps<'SignsDetails'>) {
   const globalStyles = useGlobalStyles();
   const { subject } = route.params;
+  const client = useClient();
 
   const rowTextStyle = StyleSheet.compose(globalStyles.fontColorForBlock, { fontSize: 15 });
 
@@ -62,6 +66,18 @@ export default function SignsDetails({ route }: RootStackScreenProps<'SignsDetai
       {subject.checkPoints.map((checkPoint: ICheckPoint, index: number) => {
         let scoreText: string | number = formatCheckPointScore(checkPoint);
         if (!scoreText) scoreText = checkPoint.points;
+        const isShowingDate: boolean = checkPoint.teacher ? true : false;
+
+        let lastDate = checkPoint.date;
+        let isLoadingDate = false;
+
+        if (isShowingDate) {
+          const { data, isLoading } = useQuery({
+            method: () => client.getPointUpdates({ data: checkPoint.updatesUrl, requestType: RequestType.forceFetch }),
+          });
+          isLoadingDate = isLoading;
+          if (data && data != "empty") lastDate = data;
+        }
 
         return (
           <CardHeaderIn key={index} topText={getCheckpointTitle(checkPoint.theme, index + 1)}>
@@ -69,10 +85,10 @@ export default function SignsDetails({ route }: RootStackScreenProps<'SignsDetai
             <Row first={'Проходной балл:'} second={checkPoint.passScore} />
             <Row first={'Текущий балл:'} second={checkPoint.currentScore} />
             <Row first={'Максимальный балл:'} second={checkPoint.maxScore} />
-            {checkPoint.teacher && (
+            {isShowingDate && (
               <>
                 <Row first={'Преподаватель:'} second={checkPoint.teacher} />
-                <Row first={'Дата:'} second={checkPoint.date} />
+                <Row first={'Дата:'} second={isLoadingDate ? "Загрузка..." : lastDate} />
               </>
             )}
             <Row first={'Вид работы:'} second={checkPoint.typeWork} />

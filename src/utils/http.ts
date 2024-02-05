@@ -240,6 +240,13 @@ class HTTPClient {
     return null;
   }
 
+  getPointUpdates(url: string): Promise<Response<string>> {
+    return this.request('GET', url, {
+      params: {},
+      returnResponse: false,
+    });
+  }
+
   /*
     `showConsultations`:
     - y: Показывать консультации
