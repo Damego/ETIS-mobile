@@ -97,16 +97,3 @@ export default function CertificateIncome() {
     </Screen>
   );
 }
-
-// лучше оставить на случай разработки под IOS
-// function openMailClientIOS() {
-//   Linking.canOpenURL('message:0')
-//     .then((supported) => {
-//       if (!supported) {
-//         console.log('Cant handle url');
-//       } else {
-//         return Linking.openURL('message:0').catch(this.handleOpenMailClientErrors);
-//       }
-//     })
-//     .catch(this.handleOpenMailClientErrors);
-// }
