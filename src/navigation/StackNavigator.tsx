@@ -4,7 +4,7 @@ import { setBackgroundColorAsync as setBackgroundNavigationBarColorAsync } from 
 import * as SplashScreen from 'expo-splash-screen';
 import { setBackgroundColorAsync } from 'expo-system-ui';
 import React, { useEffect } from 'react';
-import QuickActions from 'react-native-quick-actions';
+import * as QuickActions from 'expo-quick-actions';
 
 import { cache } from '../cache/smartCache';
 import GradientContainer from '../components/GradientContainer';
@@ -39,9 +39,9 @@ const StackNavigator = () => {
 
   const dispatchInitialPage = async () => {
     try {
-      const data = await QuickActions.popInitialAction();
-      if (data?.type) {
-        dispatch(setInitialPage(data.type as PageType));
+      const data = QuickActions.initial;
+      if (data?.id) {
+        dispatch(setInitialPage(data.id as PageType));
       }
     } catch (e) {
       // ignore

@@ -1,7 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { useEffect } from 'react';
-import { DeviceEventEmitter } from 'react-native';
+import * as QuickActions from 'expo-quick-actions';
 
 import { cache } from '../cache/smartCache';
 import { useClient } from '../data/client';
@@ -35,8 +35,8 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
   const { isDemo, isOfflineMode } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
-    DeviceEventEmitter.addListener('quickActionShortcut', (data: AppShortcutItem) => {
-      navigation.navigate(data.type);
+    QuickActions.addListener((data: AppShortcutItem) => {
+      navigation.navigate(data.id);
     });
   }, []);
 
