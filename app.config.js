@@ -55,23 +55,23 @@ export default {
     },
     plugins: [
       [
-        "expo-quick-actions",
+        'expo-quick-actions',
         {
-          "androidIcons": {
-            "signs": {
-              "foregroundImage": "./assets/tab_icons/signs.png",
-              "backgroundColor": "#FFFFFF"
+          androidIcons: {
+            signs: {
+              foregroundImage: './assets/tab_icons/signs.png',
+              backgroundColor: '#FFFFFF',
             },
-            "messages": {
-              "foregroundImage": "./assets/tab_icons/messages.png",
-              "backgroundColor": "#FFFFFF"
+            messages: {
+              foregroundImage: './assets/tab_icons/messages.png',
+              backgroundColor: '#FFFFFF',
             },
-            "announce": {
-              "foregroundImage": "./assets/tab_icons/announce.png",
-              "backgroundColor": "#FFFFFF"
+            announce: {
+              foregroundImage: './assets/tab_icons/announce.png',
+              backgroundColor: '#FFFFFF',
             },
-          }
-        }
+          },
+        },
       ],
       // ['./src/plugins/copyDrawable.ts', './assets/tab_icons'],
       ['./src/plugins/disabledForcedDarkModeAndroid.ts', {}],

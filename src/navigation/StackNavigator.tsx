@@ -1,10 +1,10 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { setBackgroundColorAsync as setBackgroundNavigationBarColorAsync } from 'expo-navigation-bar';
+import * as QuickActions from 'expo-quick-actions';
 import * as SplashScreen from 'expo-splash-screen';
 import { setBackgroundColorAsync } from 'expo-system-ui';
 import React, { useEffect } from 'react';
-import * as QuickActions from 'expo-quick-actions';
 
 import { cache } from '../cache/smartCache';
 import Background from '../components/Background';

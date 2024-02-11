@@ -1,7 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React, { useEffect } from 'react';
 import * as QuickActions from 'expo-quick-actions';
+import React, { useEffect } from 'react';
 
 import { cache } from '../cache/smartCache';
 import { useClient } from '../data/client';
