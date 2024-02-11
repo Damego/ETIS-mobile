@@ -53,8 +53,8 @@ export const TaskContainer = ({
   const handleTaskRemove = (task: DisciplineTask) => {
     removeTask(task).then(() => {
       modalRef.current.dismiss();
-    })
-  }
+    });
+  };
 
   if (!tasks.length) return;
 

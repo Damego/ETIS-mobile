@@ -3,12 +3,12 @@ import React, { useMemo, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import ClickableText from '../../../components/ClickableText';
+import { useGlobalStyles } from '../../../hooks';
 import { DisciplineTask } from '../../../models/disciplinesTasks';
 import { formatTime } from '../../../utils/datetime';
 import { fontSize } from '../../../utils/texts';
 import { groupItems } from '../../../utils/utils';
 import TaskItem from './TaskItem';
-import { useGlobalStyles } from '../../../hooks';
 
 const GroupedTaskList = ({
   tasks,
@@ -100,6 +100,6 @@ const styles = StyleSheet.create({
   },
   showInactiveButton: {
     padding: '2%',
-    marginTop: '2%'
-  }
+    marginTop: '2%',
+  },
 });

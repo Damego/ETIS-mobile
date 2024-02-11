@@ -6,8 +6,8 @@ import {
   writeAsStringAsync,
 } from 'expo-file-system';
 
-import httpClient from './http';
 import { IDisciplineInfo, IDisciplineTask } from '../models/disciplineInfo';
+import httpClient from './http';
 
 const downloadFile = (url, fileName) => httpClient.downloadFile(url, fileName);
 

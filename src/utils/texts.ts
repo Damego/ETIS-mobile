@@ -49,12 +49,11 @@ export const fontSize = StyleSheet.create({
 });
 
 export const disciplineTypeNames = {
-  'лек': 'Лекция',
-  'практ': 'Практика',
-  'лаб': 'Лабораторная',
-  'зачет': 'Зачёт',
-  'экзамен': 'Экзамен'
-}
+  лек: 'Лекция',
+  практ: 'Практика',
+  лаб: 'Лабораторная',
+  зачет: 'Зачёт',
+  экзамен: 'Экзамен',
+};
 
 export const getDisciplineTypeName = (type: string): string => disciplineTypeNames[type] || type;
-

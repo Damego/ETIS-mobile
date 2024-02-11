@@ -52,7 +52,11 @@ const TimeTable = () => {
           {data.weekInfo.type === WeekTypes.holiday ? (
             <HolidayView holidayInfo={data.weekInfo.holidayDates} />
           ) : (
-            <DayArray data={data.days} teachersData={teachersData} weekDates={data.weekInfo.dates} />
+            <DayArray
+              data={data.days}
+              teachersData={teachersData}
+              weekDates={data.weekInfo.dates}
+            />
           )}
         </>
       )}

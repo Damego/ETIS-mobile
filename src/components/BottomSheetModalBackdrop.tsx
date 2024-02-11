@@ -1,6 +1,6 @@
 import { BottomSheetBackdropProps } from '@gorhom/bottom-sheet';
-import Animated, { Extrapolation, interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import React, { useMemo } from 'react';
+import Animated, { Extrapolation, interpolate, useAnimatedStyle } from 'react-native-reanimated';
 
 const BottomSheetModalBackdrop = ({ animatedIndex, style }: BottomSheetBackdropProps) => {
   const containerAnimatedStyle = useAnimatedStyle(() => ({

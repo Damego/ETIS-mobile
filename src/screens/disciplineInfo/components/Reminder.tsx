@@ -3,8 +3,8 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { DisciplineReminder } from '../../../models/disciplinesTasks';
-import { fontSize } from '../../../utils/texts';
 import { formatTime } from '../../../utils/datetime';
+import { fontSize } from '../../../utils/texts';
 
 const Reminder = ({
   reminder,

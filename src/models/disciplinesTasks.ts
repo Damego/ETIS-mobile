@@ -90,7 +90,7 @@ export class DisciplineStorage {
   }
 
   static async removeTask(task: DisciplineTask) {
-    this.tasks = this.tasks.filter($task => $task.id !== task.id);
+    this.tasks = this.tasks.filter(($task) => $task.id !== task.id);
     await this.saveTasks();
     return this.tasks;
   }

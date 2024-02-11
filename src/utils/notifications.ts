@@ -2,8 +2,8 @@ import * as Notifications from 'expo-notifications';
 import { AndroidNotificationPriority } from 'expo-notifications/src/Notifications.types';
 import { Platform } from 'react-native';
 
-import { getPointsWord } from './texts';
 import { DisciplineTask } from '../models/disciplinesTasks';
+import { getPointsWord } from './texts';
 import { getRandomItem } from './utils';
 
 export enum SignType {
@@ -51,7 +51,8 @@ ${getRandomItem(messages[signType])} ${mark} ${getPointsWord(newRes)}!`,
 };
 
 export const sendReminderTaskNotification = (task: DisciplineTask) => {
-  const message = task.description.length < 30 ? task.description : `${task.description.slice(0, 29)}...`;
+  const message =
+    task.description.length < 30 ? task.description : `${task.description.slice(0, 29)}...`;
   Notifications.scheduleNotificationAsync({
     content: {
       title: task.disciplineName,
@@ -59,10 +60,10 @@ export const sendReminderTaskNotification = (task: DisciplineTask) => {
     },
     trigger: {
       seconds: 5,
-      channelId: 'default'
-    }
-  })
-}
+      channelId: 'default',
+    },
+  });
+};
 
 export const setNotificationHandler = () =>
   Notifications.setNotificationHandler({

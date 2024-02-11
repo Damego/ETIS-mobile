@@ -20,7 +20,7 @@ const dateFormat = 'D MMMM';
 const timeFormat = 'HH:mm';
 export const formatTime = (
   date: DateType,
-  { disableTime, disableDate }: IFormatTimeProps = {disableTime: false, disableDate: false}
+  { disableTime, disableDate }: IFormatTimeProps = { disableTime: false, disableDate: false }
 ) => {
   if (disableTime && disableDate) return '';
   date = date.locale('ru') as DateType;
@@ -32,7 +32,6 @@ export const formatTime = (
     return date.format(timeFormat);
   }
   return date.format(`${dateFormat} в ${timeFormat}`);
-
 };
 
 export const getCurrentEducationYear = () => {

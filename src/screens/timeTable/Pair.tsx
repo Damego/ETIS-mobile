@@ -144,7 +144,7 @@ const Lesson = ({
       )}
 
       {teacherName && <Text colorVariant={'block'}>{teacherName}</Text>}
-      </TouchableOpacity>
+    </TouchableOpacity>
   );
 };
 

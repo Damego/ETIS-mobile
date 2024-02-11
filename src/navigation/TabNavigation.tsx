@@ -13,13 +13,13 @@ import Announce from '../screens/announce/Announce';
 import Messages from '../screens/messages/Messages';
 import AboutSignsDetails from '../screens/signs/AboutSignsDetails';
 import TimeTablePage from '../screens/timeTable/TimeTable';
+import { registerReminderTask } from '../tasks/disciplineTasks';
 import { registerSignsFetchTask } from '../tasks/signs';
 import { AppShortcutItem } from '../utils/shortcuts';
 import ServicesStackNavigator from './ServicesStackNavigator';
 import SignsTopTabNavigator from './TopTabNavigator';
 import { headerParams } from './header';
 import { BottomTabsParamList, BottomTabsScreenProps } from './types';
-import { registerReminderTask } from '../tasks/disciplineTasks';
 
 const Tab = createBottomTabNavigator<BottomTabsParamList>();
 

@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
   },
   cardHeaderText: {
     fontWeight: '600',
-    ...fontSize.medium
+    ...fontSize.medium,
   },
 });
 
@@ -19,21 +19,19 @@ const CardHeaderOut = ({
   topText,
   children,
   style,
-  topTextStyle
+  topTextStyle,
 }: {
   topText: string;
   children: React.ReactNode;
   style?: StyleProp<ViewStyle>;
-  topTextStyle?: StyleProp<TextStyle>
+  topTextStyle?: StyleProp<TextStyle>;
 }) => {
   const globalStyles = useGlobalStyles();
 
   return (
     <>
       <View style={styles.cardHeaderView}>
-        <Text style={[styles.cardHeaderText, globalStyles.textColor, topTextStyle]}>
-          {topText}
-        </Text>
+        <Text style={[styles.cardHeaderText, globalStyles.textColor, topTextStyle]}>{topText}</Text>
       </View>
       <Card style={style}>{children}</Card>
     </>

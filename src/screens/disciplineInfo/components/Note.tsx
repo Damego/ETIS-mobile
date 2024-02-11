@@ -15,7 +15,7 @@ const findDiscipline = (disciplineName: string, disciplines: IDisciplineInfo[]) 
   return info;
 };
 
-export const Note = ({disciplineName}: {disciplineName: string}) => {
+export const Note = ({ disciplineName }: { disciplineName: string }) => {
   const globalStyles = useGlobalStyles();
   const [info, setInfo] = useState<IDisciplineInfo>();
   const [isTextChanged, setTextChanged] = useState(false);
