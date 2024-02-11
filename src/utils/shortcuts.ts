@@ -6,7 +6,6 @@ export interface AppShortcutItem extends Action {
   id: keyof BottomTabsParamList;
 }
 
-
 const SHORTCUTS_ITEMS: AppShortcutItem[] = [
   {
     id: 'SignsNavigator',
