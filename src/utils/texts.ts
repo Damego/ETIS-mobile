@@ -32,6 +32,9 @@ export const fontSize = {
   medium: {
     fontSize: 16,
   },
+  big: {
+    fontSize: 18,
+  },
   large: {
     fontSize: 20,
   },
@@ -42,3 +45,13 @@ export const fontSize = {
     fontSize: 36,
   },
 };
+
+export const disciplineTypeNames = {
+  'лек': 'Лекция',
+  'практ': 'Практика',
+  'лаб': 'Лабораторная',
+  'зачет': 'Зачёт',
+  'экзамен': 'Экзамен'
+}
+
+export const getDisciplineTypeName = (type: string): string => disciplineTypeNames[type] || type;

@@ -45,7 +45,7 @@ const differenceSigns = (marks1: ISubject[], marks2: ISubject[]): IDifferentChec
     .flat();
 };
 
-export const defineFetchTask = () =>
+export const defineSignsFetchTask = () =>
   TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
     const [cachedResult, onlineResult] = await Promise.all([
       await client.getSessionSignsData({
@@ -96,7 +96,7 @@ export async function unregisterBackgroundFetchAsync() {
   return BackgroundFetch.unregisterTaskAsync(BACKGROUND_FETCH_TASK);
 }
 
-export const registerFetch = async () => {
+export const registerSignsFetchTask = async () => {
   client = new Client();
   currentSession = (await client.getSessionSignsData({ requestType: RequestType.forceFetch })).data
     ?.currentSession;

@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React from 'react';
 import { Text, View } from 'react-native';
 
@@ -15,6 +16,7 @@ import Pair from './Pair';
 interface DayData {
   data: ITimeTableDay;
   teachersData: TeacherType;
+  date: moment.Moment;
 }
 
 const responses = ['Пар нет', 'Отдых', '💤', '😴', '🎮', '(๑ᵕ⌓ᵕ̤)'];
@@ -24,7 +26,7 @@ const getRandomResponse = (hasHalloweenTheme: boolean) => {
   return getRandomItem(responses);
 };
 
-const EmptyDay = ({ data }: DayData) => {
+const EmptyDay = ({ data }: { data: ITimeTableDay }) => {
   const { date } = data;
   const globalStyles = useGlobalStyles();
   const { theme } = useAppSelector((state) => state.settings);
@@ -40,14 +42,14 @@ const EmptyDay = ({ data }: DayData) => {
   );
 };
 
-const Day = ({ data, teachersData }: DayData) => {
-  const { date, pairs } = data;
+const Day = ({ data, teachersData, date }: DayData) => {
+  const { date: dateString, pairs } = data;
 
   return (
-    <CardHeaderOut topText={date}>
+    <CardHeaderOut topText={dateString}>
       {pairs.map((pair, index) => (
         <View key={index + pair.time}>
-          <Pair pair={pair} teachersData={teachersData} />
+          <Pair pair={pair} teachersData={teachersData} date={date} />
           {index !== pairs.length - 1 && <BorderLine />}
         </View>
       ))}

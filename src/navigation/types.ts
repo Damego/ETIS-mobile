@@ -8,14 +8,19 @@ import type { StackNavigationProp, StackScreenProps } from '@react-navigation/st
 
 import { IMessage } from '../models/messages';
 import { ISubject } from '../models/sessionPoints';
+import { ILesson } from '../models/timeTable';
 
 export type RootStackParamList = {
+  // Group 1
   Onboarding: undefined;
   Auth: undefined;
   TabNavigator: undefined;
   History: { data: IMessage[]; page: number };
   SignsDetails: { subject: ISubject };
   SessionQuestionnaire: { url: string };
+
+  // Group 2
+  DisciplineInfo: { lesson: ILesson; date: string; pairPosition: number };
 };
 
 export type BottomTabsParamList = {
@@ -50,7 +55,6 @@ export type SignsTopTabsParamsList = {
 
 export type RootStackScreenProps<ScreenName extends keyof RootStackParamList = undefined> =
   StackScreenProps<RootStackParamList, ScreenName>;
-
 export type BottomTabsScreenProps<ScreenName extends keyof BottomTabsParamList = undefined> =
   CompositeScreenProps<BottomTabScreenProps<BottomTabsParamList, ScreenName>, RootStackScreenProps>;
 export type ServiceNativeStackScreenProps<

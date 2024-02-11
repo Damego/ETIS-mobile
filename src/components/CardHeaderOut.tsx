@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
 
 import { useGlobalStyles } from '../hooks';
 import { fontSize } from '../utils/texts';
@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
   },
   cardHeaderText: {
     fontWeight: '600',
+    ...fontSize.medium
   },
 });
 
@@ -18,17 +19,19 @@ const CardHeaderOut = ({
   topText,
   children,
   style,
+  topTextStyle
 }: {
   topText: string;
   children: React.ReactNode;
   style?: StyleProp<ViewStyle>;
+  topTextStyle?: StyleProp<TextStyle>
 }) => {
   const globalStyles = useGlobalStyles();
 
   return (
     <>
       <View style={styles.cardHeaderView}>
-        <Text style={[fontSize.medium, styles.cardHeaderText, globalStyles.textColor]}>
+        <Text style={[styles.cardHeaderText, globalStyles.textColor, topTextStyle]}>
           {topText}
         </Text>
       </View>

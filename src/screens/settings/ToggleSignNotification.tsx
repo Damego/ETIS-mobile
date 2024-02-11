@@ -13,7 +13,7 @@ import {
 import { cache } from '../../cache/smartCache';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { setSignNotification } from '../../redux/reducers/settingsSlice';
-import { registerFetch, unregisterBackgroundFetchAsync } from '../../tasks/signs';
+import { registerSignsFetchTask, unregisterBackgroundFetchAsync } from '../../tasks/signs';
 import { NOTIFICATION_GUIDE_URL } from '../../utils';
 import { fontSize } from '../../utils/texts';
 
@@ -39,7 +39,7 @@ const ToggleSignNotification = () => {
     }
 
     if (hasSignNotification) {
-      registerFetch();
+      registerSignsFetchTask();
     } else {
       unregisterBackgroundFetchAsync();
     }

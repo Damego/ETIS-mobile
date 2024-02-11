@@ -1,10 +1,12 @@
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { setBackgroundColorAsync as setBackgroundNavigationBarColorAsync } from 'expo-navigation-bar';
+import * as QuickActions from 'expo-quick-actions';
 import * as SplashScreen from 'expo-splash-screen';
 import { setBackgroundColorAsync } from 'expo-system-ui';
 import React, { useEffect } from 'react';
-import * as QuickActions from 'expo-quick-actions';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { cache } from '../cache/smartCache';
 import GradientContainer from '../components/GradientContainer';
@@ -12,6 +14,7 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { useAppTheme } from '../hooks/theme';
 import { PageType, changeTheme, setInitialPage } from '../redux/reducers/settingsSlice';
 import AuthPage from '../screens/auth/Auth';
+import DisciplineInfo from '../screens/disciplineInfo/DisciplineInfo';
 import Intro from '../screens/intro/Intro';
 import MessageHistory from '../screens/messages/MessageHistory';
 import SessionQuestionnaire from '../screens/sessionQuestionnaire/SessionQuestionnaire';
@@ -124,20 +127,39 @@ const StackNavigator = () => {
     );
 
   return (
-    <GradientContainer
-      disabled={!theme.colors.backgroundGradient}
-      colors={theme.colors.backgroundGradient}
-    >
-      <NavigationContainer theme={theme}>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          {component}
-        </Stack.Navigator>
-      </NavigationContainer>
-    </GradientContainer>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <GradientContainer
+        disabled={!theme.colors.backgroundGradient}
+        colors={theme.colors.backgroundGradient}
+      >
+        <NavigationContainer theme={theme}>
+          <BottomSheetModalProvider>
+            <Stack.Navigator>
+              <Stack.Group
+                screenOptions={{
+                  headerShown: false,
+                }}
+              >
+                {component}
+              </Stack.Group>
+              <Stack.Group
+                screenOptions={{
+                  presentation: 'modal',
+                  headerShown: true,
+                  ...headerParams(theme),
+                }}
+              >
+                <Stack.Screen
+                  name={'DisciplineInfo'}
+                  options={{ title: 'Информация' }}
+                  component={DisciplineInfo}
+                />
+              </Stack.Group>
+            </Stack.Navigator>
+          </BottomSheetModalProvider>
+        </NavigationContainer>
+      </GradientContainer>
+    </GestureHandlerRootView>
   );
 };
 

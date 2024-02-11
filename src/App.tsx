@@ -9,17 +9,19 @@ import { Provider } from 'react-redux';
 import StackNavigator from './navigation/StackNavigator';
 import setupStore from './redux';
 import { loadStorage } from './redux/storageLoader';
-import { defineFetchTask } from './tasks/signs';
+import { defineSignsFetchTask } from './tasks/signs';
 import { checkUpdate } from './utils/inappUpdate';
 import { registerForPushNotificationsAsync, setNotificationHandler } from './utils/notifications';
 import { addShortcuts } from './utils/shortcuts';
+import { defineReminderTask } from './tasks/disciplineTasks';
 
 SplashScreen.preventAutoHideAsync().catch((e) => e);
 
 const store = setupStore();
 store.dispatch(loadStorage());
 
-defineFetchTask();
+defineSignsFetchTask();
+defineReminderTask()
 setNotificationHandler();
 addShortcuts();
 

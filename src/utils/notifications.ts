@@ -3,6 +3,7 @@ import { AndroidNotificationPriority } from 'expo-notifications/src/Notification
 import { Platform } from 'react-native';
 
 import { getPointsWord } from './texts';
+import { DisciplineTask } from '../models/disciplinesTasks';
 
 export const sendNewMarkNotification = (
   subjectName: string,
@@ -30,6 +31,21 @@ ${mark} ${getPointsWord(newRes)}!`,
     },
   });
 };
+
+export const sendReminderTaskNotification = (task: DisciplineTask) => {
+  const message = task.description.length < 30 ? task.description : `${task.description.slice(0, 29)}...`;
+  Notifications.scheduleNotificationAsync({
+    content: {
+      title: task.disciplineName,
+      body: `Напоминание о задании: ${message}`,
+    },
+    trigger: {
+      seconds: 5,
+      channelId: 'default'
+    }
+  })
+}
+
 export const setNotificationHandler = () =>
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -39,6 +55,7 @@ export const setNotificationHandler = () =>
       priority: AndroidNotificationPriority.MAX,
     }),
   });
+
 export const registerForPushNotificationsAsync = async () => {
   if (Platform.OS === 'android') {
     await Notifications.setNotificationChannelAsync('default', {
