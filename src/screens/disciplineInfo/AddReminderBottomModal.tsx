@@ -2,11 +2,12 @@ import { BottomSheetView } from '@gorhom/bottom-sheet';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import React, { useRef, useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import DateTimePicker from 'react-native-ui-datepicker';
 
 import ClickableText from '../../components/ClickableText';
 import { useGlobalStyles } from '../../hooks';
+import { fontSize } from '../../utils/texts';
 
 // У библиотеки react-native-ui-datepicker нереально плохо оптимизирован выбор времени, поэтому используется свой
 const TimePicker = ({
@@ -28,34 +29,16 @@ const TimePicker = ({
   };
 
   return (
-    <View style={{ flexDirection: 'row' }}>
+    <View style={timePickerStyles.container}>
       <TextInput
-        style={[
-          globalStyles.border,
-          {
-            fontSize: 26,
-            paddingVertical: '1%',
-            paddingHorizontal: '2%',
-            alignItems: 'center',
-            justifyContent: 'center',
-          },
-        ]}
+        style={[globalStyles.border, timePickerStyles.textInput]}
         value={value.hour().toString()}
         onChangeText={handleChange('hours')}
         keyboardType={'numeric'}
       />
-      <Text style={{ fontSize: 26 }}>:</Text>
+      <Text style={fontSize.xlarge}>:</Text>
       <TextInput
-        style={[
-          globalStyles.border,
-          {
-            fontSize: 26,
-            paddingVertical: '1%',
-            paddingHorizontal: '2%',
-            alignItems: 'center',
-            justifyContent: 'center',
-          },
-        ]}
+        style={[globalStyles.border, timePickerStyles.textInput]}
         value={value.minute().toString()}
         onChangeText={handleChange('minutes')}
         keyboardType={'numeric'}
@@ -73,7 +56,7 @@ const AddReminderBottomModal = ({ onSubmit }: { onSubmit: (datetime: dayjs.Dayjs
   };
 
   return (
-    <BottomSheetView style={{ marginHorizontal: '2%' }}>
+    <BottomSheetView style={styles.modalView}>
       <DateTimePicker
         date={value}
         onChange={({ date }) => handleDayChange(dayjs(date))}
@@ -82,16 +65,38 @@ const AddReminderBottomModal = ({ onSubmit }: { onSubmit: (datetime: dayjs.Dayjs
         firstDayOfWeek={1}
         mode={'single'}
       />
-      <Text style={{ fontSize: 18, fontWeight: '500' }}>Укажите время</Text>
+      <Text style={styles.text}>Укажите время</Text>
       <TimePicker value={value} onValueChange={setValue} />
       <ClickableText
         text={'Сохранить'}
         onPress={() => onSubmit(value)}
-        viewStyle={{ alignItems: 'flex-end' }}
-        textStyle={{ fontSize: 18, fontWeight: '500' }}
+        viewStyle={styles.saveButton}
+        textStyle={styles.text}
       />
     </BottomSheetView>
   );
 };
 
 export default AddReminderBottomModal;
+
+const timePickerStyles = StyleSheet.create({
+  container: { flexDirection: 'row' },
+  textInput: {
+    fontSize: 26,
+    paddingVertical: '1%',
+    paddingHorizontal: '2%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+
+const styles = StyleSheet.create({
+  modalView: {
+    marginHorizontal: '2%',
+  },
+  text: {
+    fontWeight: '500',
+    ...fontSize.big,
+  },
+  saveButton: { alignItems: 'flex-end' },
+});
