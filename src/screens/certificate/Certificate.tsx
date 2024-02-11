@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, ToastAndroid, TouchableOpacity } from 'react-native';
+import { StyleSheet, ToastAndroid, TouchableOpacity } from 'react-native';
 
 import { cache } from '../../cache/smartCache';
 import CardHeaderIn from '../../components/CardHeaderIn';
+import Text from '../../components/Text';
 import { useGlobalStyles } from '../../hooks';
 import { ICertificate } from '../../models/certificate';
 import { cutCertificateHTML } from '../../parser/certificate';
@@ -11,8 +12,9 @@ import { fontSize } from '../../utils/texts';
 import CertificateModal from './CertificateModal';
 
 const styles = StyleSheet.create({
-  fontW500: {
+  textTitle: {
     fontWeight: '500',
+    ...fontSize.small,
   },
 });
 
@@ -54,7 +56,7 @@ const Certificate = ({ certificate }: { certificate: ICertificate }) => {
 
       <TouchableOpacity onPress={openModal}>
         <CardHeaderIn topText={`№${certificate.id ?? '-'} от ${certificate.date}`}>
-          <Text style={[fontSize.small, styles.fontW500, globalStyles.textColor]}>
+          <Text style={styles.textTitle} colorVariant={'block'}>
             {certificate.name} статус: {certificate.status}
           </Text>
         </CardHeaderIn>

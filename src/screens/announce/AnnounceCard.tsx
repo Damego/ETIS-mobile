@@ -2,25 +2,12 @@ import React from 'react';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 
 import Card from '../../components/Card';
-import { useGlobalStyles } from '../../hooks';
+import { useAppTheme } from '../../hooks/theme';
 import { httpClient } from '../../utils';
-
-const getStyles = (textColor) => `
-* {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  color: ${textColor}
-}
-
-a {
-  text-decoration: none;
-  color: #427ADE
-}
-`;
+import { getStyles } from '../../utils/webView';
 
 export default function AnnounceCard({ data }) {
-  const globalStyles = useGlobalStyles();
+  const theme = useAppTheme();
 
   return (
     <Card>
@@ -28,7 +15,7 @@ export default function AnnounceCard({ data }) {
         originWhitelist={['*']}
         source={{ html: data }}
         style={{ flex: 0, width: '100%' }}
-        customStyle={getStyles(globalStyles.textColor.color)}
+        customStyle={getStyles(theme.colors.textForBlock, theme.colors.primary)}
         injectedJavaScript={
           `document.cookie = ${httpClient.getSessionID()}` /* Allows download files */
         }

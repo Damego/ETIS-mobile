@@ -32,4 +32,16 @@ export const formatTime = (
     return date.format(timeFormat);
   }
   return date.format(`${dateFormat} в ${timeFormat}`);
+
+};
+
+export const getCurrentEducationYear = () => {
+  const date = moment();
+  const year = date.year();
+
+  // До сентября - старый учебный год
+  if (date.month() < 8) return year - 1;
+
+  // После сентября - новый
+  return year;
 };

@@ -4,12 +4,30 @@ import { Platform } from 'react-native';
 
 import { getPointsWord } from './texts';
 import { DisciplineTask } from '../models/disciplinesTasks';
+import { getRandomItem } from './utils';
+
+export enum SignType {
+  ZERO,
+  NEGATIVE,
+  EXACTLY,
+  POSITIVE,
+  FULL,
+}
+
+const messages = {
+  ZERO: ['Даже не близко!', 'Попробуй еще раз!', 'Попробуй в следующий раз нарисовать котенка!'],
+  NEGATIVE: ['Всегда есть пересдача 🙃', 'Анлак'],
+  EXACTLY: ['По грани', 'Идеально', 'В точку'],
+  POSITIVE: ['Хорошая работа!', '👍', '👌', '🤙'],
+  FULL: ['Легенда👍', '🤯', '🤩', '🥳', '🎉'],
+};
 
 export const sendNewMarkNotification = (
   subjectName: string,
   checkPointName: string,
   oldRes: number,
-  newRes: number
+  newRes: number,
+  signType: SignType
 ) => {
   let mark: string;
   if (oldRes === 0.0) mark = `${newRes}`;
@@ -23,7 +41,7 @@ export const sendNewMarkNotification = (
     content: {
       title: 'Выставлена новая оценка!',
       body: `${subjectName}: ${checkPointName}
-${mark} ${getPointsWord(newRes)}!`,
+${getRandomItem(messages[signType])} ${mark} ${getPointsWord(newRes)}!`,
     },
     trigger: {
       seconds: 5,

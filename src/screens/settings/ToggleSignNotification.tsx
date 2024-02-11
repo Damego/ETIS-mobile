@@ -1,16 +1,9 @@
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
-import {
-  Linking,
-  StyleSheet,
-  Switch,
-  Text,
-  ToastAndroid,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Linking, StyleSheet, Switch, ToastAndroid, TouchableOpacity, View } from 'react-native';
 
 import { cache } from '../../cache/smartCache';
+import Text from '../../components/Text';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { setSignNotification } from '../../redux/reducers/settingsSlice';
 import { registerSignsFetchTask, unregisterBackgroundFetchAsync } from '../../tasks/signs';
@@ -23,7 +16,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  header: { fontWeight: '500' },
+  header: { fontWeight: '500', ...fontSize.medium },
 });
 
 const ToggleSignNotification = () => {
@@ -49,18 +42,18 @@ const ToggleSignNotification = () => {
 
   return (
     <View style={styles.cardView}>
-      <Text style={[styles.header, fontSize.medium, globalStyles.textColor]}>
+      <Text style={styles.header} colorVariant={'block'}>
         Уведомлять об оценках
       </Text>
       <TouchableOpacity onPress={() => Linking.openURL(NOTIFICATION_GUIDE_URL)}>
         <AntDesign // TODO: make as modal w/ blur
           name="infocirlceo"
           size={24}
-          color={globalStyles.textColor.color}
+          color={globalStyles.fontColorForBlock.color}
         />
       </TouchableOpacity>
       <Switch
-        trackColor={{ false: 'gray', true: 'teal' }}
+        trackColor={{ false: 'gray', true: globalStyles.fontColorForBlock.color }}
         thumbColor="white"
         onValueChange={(value) => changeSignNotification(value)}
         value={signNotification}

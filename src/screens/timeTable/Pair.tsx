@@ -1,12 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment/moment';
 import React, { useMemo } from 'react';
-import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Linking, StyleSheet, TouchableOpacity, View } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 
 import ClickableText from '../../components/ClickableText';
+import Text from '../../components/Text';
 import { useGlobalStyles } from '../../hooks';
+import { useAppTheme } from '../../hooks/theme';
 import { TeacherType } from '../../models/teachers';
 import { ILesson, IPair } from '../../models/timeTable';
 import { BottomTabsNavigationProp } from '../../navigation/types';
@@ -29,8 +31,10 @@ export default function Pair({
   return (
     <View style={styles.pairContainer}>
       <View style={styles.pairTimeContainer}>
-        <Text style={[fontSize.mini, globalStyles.textColor]}>{pairText}</Text>
-        <Text style={globalStyles.textColor}>{pair.time}</Text>
+        <Text style={fontSize.mini} colorVariant={'block'}>
+          {pairText}
+        </Text>
+        <Text colorVariant={'block'}>{pair.time}</Text>
       </View>
 
       <View style={{ flexDirection: 'column', flex: 1 }}>
@@ -54,6 +58,7 @@ export default function Pair({
 
 const AnnouncePopover = ({ data }: { data: string }) => {
   const globalStyles = useGlobalStyles();
+  const theme = useAppTheme();
 
   return (
     <Popover
@@ -62,7 +67,8 @@ const AnnouncePopover = ({ data }: { data: string }) => {
       from={(_, showPopover) => (
         <TouchableOpacity onPress={showPopover}>
           <Text
-            style={[globalStyles.textColor, { textDecorationLine: 'underline', fontWeight: '500' }]}
+            style={{ textDecorationLine: 'underline', fontWeight: '500' }}
+            colorVariant={'block'}
           >
             Объявление
           </Text>
@@ -76,7 +82,7 @@ const AnnouncePopover = ({ data }: { data: string }) => {
     >
       <AutoHeightWebView
         source={{ html: data }}
-        customStyle={getStyles(globalStyles.textColor.color)}
+        customStyle={getStyles(theme.colors.textForBlock, theme.colors.primary)}
       />
     </Popover>
   );
@@ -118,7 +124,7 @@ const Lesson = ({
         })
       }
     >
-      <Text style={[fontSize.medium, styles.lessonInfoText, globalStyles.textColor]}>
+      <Text style={[fontSize.medium, styles.lessonInfoText]} colorVariant={'block'}>
         {data.subject}
       </Text>
 
@@ -128,19 +134,17 @@ const Lesson = ({
           onPress={() => {
             Linking.openURL(data.distancePlatform.url);
           }}
-          textStyle={[
-            globalStyles.textColor,
-            { textDecorationLine: 'underline', fontWeight: '500' },
-          ]}
+          textStyle={{ textDecorationLine: 'underline', fontWeight: '500' }}
+          colorVariant={'block'}
         />
       ) : audience ? (
-        <Text style={globalStyles.textColor}>{audience}</Text>
+        <Text colorVariant={'block'}>{audience}</Text>
       ) : (
         <AnnouncePopover data={data.announceHTML} />
       )}
 
-      {teacherName && <Text style={globalStyles.textColor}>{teacherName}</Text>}
-    </TouchableOpacity>
+      {teacherName && <Text colorVariant={'block'}>{teacherName}</Text>}
+      </TouchableOpacity>
   );
 };
 

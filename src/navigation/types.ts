@@ -21,6 +21,7 @@ export type RootStackParamList = {
 
   // Group 2
   DisciplineInfo: { lesson: ILesson; date: string; pairPosition: number };
+  NewYearTheme: undefined;
 };
 
 export type BottomTabsParamList = {

@@ -15,17 +15,17 @@ export default function AdditionalComment({ onTextChange }: { onTextChange(text:
 
       <TextInput
         style={[
-          globalStyles.textColor,
+          globalStyles.fontColorForBlock,
           globalStyles.border,
           globalStyles.block,
           { width: '100%', paddingVertical: '2%', paddingHorizontal: '2%' },
         ]}
         onChangeText={onTextChange}
         placeholder="Топ препод"
-        placeholderTextColor={globalStyles.textColor.color}
+        placeholderTextColor={globalStyles.inputPlaceholder.color}
         inputMode="text"
         keyboardType="default"
-        selectionColor="#C62E3E"
+        selectionColor={globalStyles.primaryFontColor.color}
         autoCapitalize={'sentences'}
         multiline
         maxLength={4000}

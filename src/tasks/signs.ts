@@ -5,7 +5,7 @@ import { BaseClient } from '../data/base';
 import Client from '../data/client';
 import { GetResultType, RequestType } from '../models/results';
 import { ICheckPoint, ISubject } from '../models/sessionPoints';
-import { sendNewMarkNotification } from '../utils/notifications';
+import { SignType, sendNewMarkNotification } from '../utils/notifications';
 
 const BACKGROUND_FETCH_TASK = 'signs-fetch';
 let currentSession: number;
@@ -69,11 +69,24 @@ export const defineSignsFetchTask = () =>
       if (difference?.length !== 0) {
         console.log('[FETCH] Fetched new data!');
         difference.forEach((checkPoint) => {
+          let type = SignType.EXACTLY;
+          const differencePoints = checkPoint.newResult.points - checkPoint.newResult.passScore;
+
+          if (differencePoints > 0) {
+            type =
+              checkPoint.newResult.points === checkPoint.newResult.maxScore
+                ? SignType.FULL
+                : SignType.POSITIVE;
+          } else if (differencePoints < 0) {
+            type = checkPoint.newResult.points === 0.0 ? SignType.ZERO : SignType.NEGATIVE;
+          }
+
           sendNewMarkNotification(
             checkPoint.subjectName,
             checkPoint.newResult.theme,
             checkPoint.oldResult.points,
-            checkPoint.newResult.points
+            checkPoint.newResult.points,
+            type
           );
         });
         result = BackgroundFetch.BackgroundFetchResult.NewData;

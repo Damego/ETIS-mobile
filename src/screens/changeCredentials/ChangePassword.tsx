@@ -1,11 +1,12 @@
 import * as cheerio from 'cheerio';
 import React, { useState } from 'react';
-import { Text, ToastAndroid, View } from 'react-native';
+import { ToastAndroid, View } from 'react-native';
 
 import { cache } from '../../cache/smartCache';
 import { Button } from '../../components/Button';
 import PasswordInput from '../../components/PasswordInput';
 import Screen from '../../components/Screen';
+import Text from '../../components/Text';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { useAppTheme } from '../../hooks/theme';
 import { getTextField } from '../../parser/utils';
@@ -67,10 +68,8 @@ const Form = ({
         marginTop: '35%',
       }}
     >
-      <Text style={[globalStyles.textColor, fontSize.xlarge, { fontWeight: '500' }]}>
-        Придумайте пароль
-      </Text>
-      <Text style={[globalStyles.textColor, { textAlign: 'center' }]}>
+      <Text style={[fontSize.xlarge, { fontWeight: '500' }]}>Придумайте пароль</Text>
+      <Text style={{ textAlign: 'center' }}>
         Пароль должен состоять как минимум из 8 символом. Также рекомендуем использовать цифры и
         специальные символы
       </Text>
@@ -79,7 +78,8 @@ const Form = ({
         style={[
           styles.input,
           globalStyles.border,
-          globalStyles.textColor,
+          globalStyles.block,
+          globalStyles.fontColorForBlock,
           newPassword && !passwordHasEightSymbols
             ? { borderColor: theme.colors.primary }
             : undefined,
@@ -90,7 +90,7 @@ const Form = ({
         autoComplete="password-new"
         selectionColor={theme.colors.primary}
         onEndEditing={validateFirstInput}
-        iconColor={theme.colors.text}
+        iconColor={theme.colors.textForBlock}
       />
       {firstInputMessage && (
         <Text style={[globalStyles.primaryFontColor]}>{firstInputMessage}</Text>
@@ -100,7 +100,8 @@ const Form = ({
         style={[
           styles.input,
           globalStyles.border,
-          globalStyles.textColor,
+          globalStyles.block,
+          globalStyles.fontColorForBlock,
           passwordUnconfirmed ? { borderColor: theme.colors.primary } : undefined,
         ]}
         onChangeText={setNewPasswordConfirm}
@@ -108,7 +109,7 @@ const Form = ({
         placeholderTextColor={theme.colors.inputPlaceholder}
         autoComplete="password"
         selectionColor={theme.colors.primary}
-        iconColor={theme.colors.text}
+        iconColor={theme.colors.textForBlock}
       />
 
       <View style={{ width: '90%' }}>

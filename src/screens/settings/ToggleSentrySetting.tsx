@@ -1,10 +1,11 @@
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
-import { Linking, Switch, Text, ToastAndroid, TouchableOpacity } from 'react-native';
+import { Linking, Switch, ToastAndroid, TouchableOpacity } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 
 import { cache } from '../../cache/smartCache';
 import Card from '../../components/Card';
+import Text from '../../components/Text';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
 import { useAppTheme } from '../../hooks/theme';
 import { setSentryEnabled } from '../../redux/reducers/settingsSlice';
@@ -20,7 +21,7 @@ const AboutSentryPopover = () => {
       placement={PopoverPlacement.FLOATING}
       from={(_, toggleShow) => (
         <TouchableOpacity onPress={toggleShow}>
-          <AntDesign name={'infocirlceo'} size={24} color={appTheme.colors.text} />
+          <AntDesign name={'infocirlceo'} size={24} color={appTheme.colors.textForBlock} />
         </TouchableOpacity>
       )}
       popoverStyle={{
@@ -29,21 +30,14 @@ const AboutSentryPopover = () => {
         backgroundColor: appTheme.colors.block,
       }}
     >
-      <Text
-        textBreakStrategy={'simple'}
-        selectable
-        style={[fontSize.medium, globalStyles.textColor]}
-      >
+      <Text textBreakStrategy={'simple'} selectable style={fontSize.medium} colorVariant={'block'}>
         Эта настройка позволяет отправлять ошибки, возникшие в ходе работы приложения, в сервис
         Sentry.
       </Text>
       <Text
         onPress={() => Linking.openURL(SENTRY_PULL_REQUEST)}
-        style={[
-          fontSize.medium,
-          { textDecorationLine: 'underline' },
-          globalStyles.primaryFontColor,
-        ]}
+        style={[fontSize.medium, { textDecorationLine: 'underline' }]}
+        colorVariant={'primary'}
       >
         Подробнее
       </Text>
@@ -66,7 +60,7 @@ const ToggleSentrySetting = () => {
 
   return (
     <Card style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-      <Text style={[{ fontWeight: '500' }, fontSize.medium, globalStyles.textColor]}>
+      <Text style={[{ fontWeight: '500' }, fontSize.medium]} colorVariant={'block'}>
         Отправлять логи об ошибках
       </Text>
 

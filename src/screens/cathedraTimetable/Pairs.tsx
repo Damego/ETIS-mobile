@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 
 import BorderLine from '../../components/BorderLine';
+import Text from '../../components/Text';
 import { useGlobalStyles } from '../../hooks';
 import { useAppTheme } from '../../hooks/theme';
 import { ILesson, IPair } from '../../models/cathedraTimetable';
@@ -34,16 +35,15 @@ const styles = StyleSheet.create({
 });
 
 const Pair = ({ pair, index }: { pair: IPair; index: number }) => {
-  const globalStyles = useGlobalStyles();
   const pairText = `${index + 1} пара`;
 
   return (
     <View style={styles.pairContainer}>
       <View style={styles.pairTimeContainer}>
-        <Text style={[globalStyles.textColor, fontSize.mini, globalStyles.textColor]}>
+        <Text style={fontSize.mini} colorVariant={'block'}>
           {pairText}
         </Text>
-        <Text style={globalStyles.textColor}>{pair.time}</Text>
+        <Text colorVariant={'block'}>{pair.time}</Text>
       </View>
 
       <View style={styles.lessonContainer}>
@@ -57,14 +57,13 @@ const Pair = ({ pair, index }: { pair: IPair; index: number }) => {
 
 const LessonWithPopover = ({ lesson }: { lesson: ILesson }) => {
   const globalStyles = useGlobalStyles();
-  const appTheme = useAppTheme();
 
   return (
     <Popover
       placement={PopoverPlacement.FLOATING}
       from={(_, showPopover) => (
         <TouchableOpacity onPress={showPopover}>
-          <Text style={[globalStyles.textColor, styles.lessonInfoText]} key={lesson.discipline}>
+          <Text style={styles.lessonInfoText} colorVariant={'block'} key={lesson.discipline}>
             {lesson.discipline}
           </Text>
         </TouchableOpacity>
@@ -72,26 +71,32 @@ const LessonWithPopover = ({ lesson }: { lesson: ILesson }) => {
       popoverStyle={{
         borderRadius: globalStyles.border.borderRadius,
         padding: '2%',
-        backgroundColor: appTheme.colors.background,
+        backgroundColor: globalStyles.block.backgroundColor,
       }}
     >
-      <Text style={[fontSize.medium, globalStyles.textColor, { fontWeight: '500' }]}>
+      <Text style={styles.lessonInfoText} colorVariant={'block'}>
         Аудитория (по неделям):
       </Text>
-      <Text style={[fontSize.medium, globalStyles.textColor]}>{lesson.audience.standard}</Text>
-      <Text style={[fontSize.medium, globalStyles.textColor, { fontWeight: '500' }]}>Группы:</Text>
-      <Text style={[fontSize.medium, globalStyles.textColor]}>{lesson.groups.join('\n')}</Text>
+      <Text style={fontSize.medium} colorVariant={'block'}>
+        {lesson.audience.standard}
+      </Text>
+      <Text style={styles.lessonInfoText} colorVariant={'block'}>
+        Группы:
+      </Text>
+      <Text style={fontSize.medium} colorVariant={'block'}>
+        {lesson.groups.join('\n')}
+      </Text>
     </Popover>
   );
 };
 
 const Pairs = ({ pairs }: { pairs: IPair[] }) => {
-  const globalStyles = useGlobalStyles();
-
   if (!pairs.length) {
     return (
       <View style={styles.noPairsContainer}>
-        <Text style={[globalStyles.textColor, styles.lessonInfoText]}>Пар нет</Text>
+        <Text style={styles.lessonInfoText} colorVariant={'block'}>
+          Пар нет
+        </Text>
       </View>
     );
   }

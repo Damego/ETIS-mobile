@@ -54,8 +54,8 @@ const Button = ({
       ],
     },
     card: {
-      textColor: globalStyles.textColor.color,
-      text: [globalStyles.textColor, { fontWeight: '500' }, fontStyle || fontSize.xlarge],
+      textColor: globalStyles.fontColorForBlock.color,
+      text: [globalStyles.fontColorForBlock, { fontWeight: '500' }, fontStyle || fontSize.xlarge],
       view: [defaultStyles.container, globalStyles.block, globalStyles.border],
     },
   };

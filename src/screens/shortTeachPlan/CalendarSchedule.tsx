@@ -1,8 +1,9 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { ActivityIndicator, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, ToastAndroid, TouchableOpacity, View } from 'react-native';
 
 import BorderLine from '../../components/BorderLine';
+import Text from '../../components/Text';
 import { useClient } from '../../data/client';
 import { useAppDispatch, useGlobalStyles } from '../../hooks';
 import { ICalendarSchedule, ISessionSchedule } from '../../models/calendarSchedule';
@@ -27,21 +28,22 @@ const SessionSchedule = ({ session }: { session: ISessionSchedule }) => {
         activeOpacity={0.45}
       >
         <Text
-          style={[
-            { fontWeight: '600', paddingVertical: '2%' },
-            globalStyles.textColor,
-            fontSize.medium,
-          ]}
+          style={[{ fontWeight: '600', paddingVertical: '2%' }, fontSize.medium]}
+          colorVariant={'block'}
         >
           {session.title}
         </Text>
-        <AntDesign name={isOpened ? 'up' : 'down'} size={18} color={globalStyles.textColor.color} />
+        <AntDesign
+          name={isOpened ? 'up' : 'down'}
+          size={18}
+          color={globalStyles.fontColorForBlock.color}
+        />
       </TouchableOpacity>
 
       {isOpened && (
-        <View>
-          <Text style={[globalStyles.textColor, fontSize.medium]}>{session.dates.join('\n')}</Text>
-        </View>
+        <Text style={fontSize.medium} colorVariant={'block'}>
+          {session.dates.join('\n')}
+        </Text>
       )}
     </>
   );
@@ -123,10 +125,14 @@ export default function CalendarSchedule() {
         }}
         activeOpacity={0.45}
       >
-        <Text style={[{ fontWeight: '600' }, fontSize.medium, globalStyles.textColor]}>
+        <Text style={[{ fontWeight: '600' }, fontSize.medium]} colorVariant={'block'}>
           Календарный учебный график
         </Text>
-        <AntDesign name={isOpened ? 'up' : 'down'} size={18} color={globalStyles.textColor.color} />
+        <AntDesign
+          name={isOpened ? 'up' : 'down'}
+          size={18}
+          color={globalStyles.fontColorForBlock.color}
+        />
       </TouchableOpacity>
 
       {isOpened && <CalendarScheduleMenu data={data} />}

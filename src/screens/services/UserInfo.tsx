@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import CardHeaderIn from '../../components/CardHeaderIn';
+import Text from '../../components/Text';
 import { useGlobalStyles } from '../../hooks';
 import { fontSize } from '../../utils/texts';
 
@@ -17,29 +18,32 @@ const styles = StyleSheet.create({
 });
 
 function UserInfo({ data }) {
-  const globalStyles = useGlobalStyles();
-
   if (!data) return;
 
   const { name, speciality, educationForm, year, group } = data;
-  const nameTextStyle = [fontSize.medium, styles.boldText, globalStyles.textColor];
-  const textStyle = [fontSize.medium, globalStyles.textColor];
+  const nameTextStyle = [fontSize.medium, styles.boldText];
 
   return (
     <>
-      <Text style={[styles.textTitle, globalStyles.textColor]}>Студент</Text>
+      <Text style={styles.textTitle}>Студент</Text>
       <CardHeaderIn topText={name}>
         {speciality && (
           <Text>
-            <Text style={nameTextStyle}>Направление: </Text>
-            <Text style={textStyle}>{speciality}</Text>
+            <Text style={nameTextStyle} colorVariant={'block'}>
+              Направление:{' '}
+            </Text>
+            <Text style={fontSize.medium} colorVariant={'block'}>
+              {speciality}
+            </Text>
           </Text>
         )}
 
         {educationForm && (
           <Text>
-            <Text style={nameTextStyle}>Форма обучения: </Text>
-            <Text style={textStyle}>
+            <Text style={nameTextStyle} colorVariant={'block'}>
+              Форма обучения:{' '}
+            </Text>
+            <Text style={fontSize.medium} colorVariant={'block'}>
               {educationForm.charAt(0).toUpperCase() + educationForm.slice(1)}
             </Text>
           </Text>
@@ -47,14 +51,22 @@ function UserInfo({ data }) {
 
         {year && (
           <Text>
-            <Text style={nameTextStyle}>Год: </Text>
-            <Text style={textStyle}>{year}</Text>
+            <Text style={nameTextStyle} colorVariant={'block'}>
+              Год:{' '}
+            </Text>
+            <Text style={fontSize.medium} colorVariant={'block'}>
+              {year}
+            </Text>
           </Text>
         )}
 
         <Text>
-          <Text style={nameTextStyle}>Группа: </Text>
-          <Text style={textStyle}>{group}</Text>
+          <Text style={nameTextStyle} colorVariant={'block'}>
+            Группа:{' '}
+          </Text>
+          <Text style={fontSize.medium} colorVariant={'block'}>
+            {group}
+          </Text>
         </Text>
       </CardHeaderIn>
     </>

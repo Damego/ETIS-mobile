@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import Card from '../../components/Card';
+import Text from '../../components/Text';
 import { useGlobalStyles } from '../../hooks';
 import { ICheckPoint } from '../../models/sessionPoints';
 import { fontSize, formatCheckPointScore } from '../../utils/texts';
@@ -48,7 +49,7 @@ const SubjectCheckPoints = ({ data }: { data: ICheckPoint[] }): React.ReactNode 
               style={
                 checkPoint.failed
                   ? [fontSize.medium, styles.markFail]
-                  : [fontSize.medium, styles.markNeutral, globalStyles.textColor]
+                  : [fontSize.medium, styles.markNeutral, globalStyles.fontColorForBlock]
               }
               key={checkPoint.theme + index}
             >

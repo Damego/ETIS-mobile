@@ -1,14 +1,15 @@
 import moment from 'moment';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
 import BorderLine from '../../components/BorderLine';
 import CardHeaderOut from '../../components/CardHeaderOut';
-import { useAppSelector, useGlobalStyles } from '../../hooks';
+import Text from '../../components/Text';
+import { useAppSelector } from '../../hooks';
 import { TeacherType } from '../../models/teachers';
 import { ITimeTableDay } from '../../models/timeTable';
-import { ThemeType } from '../../styles/themes';
-import { halloweenEmptyDayResponses } from '../../utils/events';
+import { ThemeType, isNewYearTheme } from '../../styles/themes';
+import { halloweenEmptyDayResponses, newYearEmptyDayResponse } from '../../utils/events';
 import { fontSize } from '../../utils/texts';
 import { getRandomItem } from '../../utils/utils';
 import Pair from './Pair';
@@ -21,21 +22,21 @@ interface DayData {
 
 const responses = ['Пар нет', 'Отдых', '💤', '😴', '🎮', '(๑ᵕ⌓ᵕ̤)'];
 
-const getRandomResponse = (hasHalloweenTheme: boolean) => {
-  if (hasHalloweenTheme) return getRandomItem(halloweenEmptyDayResponses);
+const getRandomResponse = (appTheme: ThemeType) => {
+  if (appTheme === ThemeType.halloween) return getRandomItem(halloweenEmptyDayResponses);
+  if (isNewYearTheme(appTheme)) return getRandomItem(newYearEmptyDayResponse);
   return getRandomItem(responses);
 };
 
 const EmptyDay = ({ data }: { data: ITimeTableDay }) => {
   const { date } = data;
-  const globalStyles = useGlobalStyles();
   const { theme } = useAppSelector((state) => state.settings);
 
   return (
     <CardHeaderOut topText={date}>
       <View style={{ alignItems: 'center' }}>
-        <Text style={{ ...fontSize.medium, fontWeight: '600', ...globalStyles.textColor }}>
-          {getRandomResponse(theme === ThemeType.halloween)}
+        <Text style={{ ...fontSize.medium, fontWeight: '600' }} colorVariant={'block'}>
+          {getRandomResponse(theme)}
         </Text>
       </View>
     </CardHeaderOut>
