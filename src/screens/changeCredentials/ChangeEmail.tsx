@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Text, TextInput, ToastAndroid, View } from 'react-native';
+import { TextInput, ToastAndroid, View } from 'react-native';
 
 import { cache } from '../../cache/smartCache';
 import { Button } from '../../components/Button';
 import CenteredText from '../../components/CenteredText';
 import Screen from '../../components/Screen';
+import Text from '../../components/Text';
 import { useAppDispatch, useGlobalStyles } from '../../hooks';
 import { useAppTheme } from '../../hooks/theme';
 import { ServiceNativeStackScreenProps } from '../../navigation/types';
@@ -46,10 +47,8 @@ const Form = ({
         marginTop: '35%',
       }}
     >
-      <Text style={[globalStyles.textColor, fontSize.xlarge, { fontWeight: '600' }]}>
-        Указание почты
-      </Text>
-      <Text style={globalStyles.textColor}>
+      <Text style={[fontSize.xlarge, { fontWeight: '600' }]}>Указание почты</Text>
+      <Text>
         Адрес электронной почты используется Вами как логин для входа, а также он нужен при
         восстановлении пароля и как адрес обратной связи преподавателями с вами
       </Text>
@@ -57,7 +56,8 @@ const Form = ({
         style={[
           styles.input,
           globalStyles.border,
-          globalStyles.textColor,
+          globalStyles.fontColorForBlock,
+          globalStyles.block,
           email && !emailRegex.test(email) ? { borderColor: theme.colors.primary } : undefined,
         ]}
         onChangeText={setEmail}

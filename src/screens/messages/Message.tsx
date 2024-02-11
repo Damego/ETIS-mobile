@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import CardHeaderOut from '../../components/CardHeaderOut';
 import FileTextLink from '../../components/FileTextLink';
-import { useGlobalStyles } from '../../hooks';
+import Text from '../../components/Text';
+import { useAppTheme } from '../../hooks/theme';
 import { IMessage, IMessageFile, MessageType } from '../../models/messages';
 import { parseDate } from '../../parser/utils';
 import { fontSize } from '../../utils/texts';
@@ -16,11 +17,11 @@ const styles = StyleSheet.create({
 });
 
 const AttachedFiles = ({ files }: { files: IMessageFile[] }) => {
-  const globalStyles = useGlobalStyles();
-
   return (
     <View style={{ flexDirection: 'column' }}>
-      <Text style={[styles.subjectText, globalStyles.textColor]}>Прикреплённые файлы: </Text>
+      <Text style={styles.subjectText} colorVariant={'block'}>
+        Прикреплённые файлы:{' '}
+      </Text>
       {files.map((file, index) => (
         <FileTextLink
           src={file.uri}
@@ -36,11 +37,10 @@ const AttachedFiles = ({ files }: { files: IMessageFile[] }) => {
 };
 
 function Message({ message }: { message: IMessage }) {
-  const globalStyles = useGlobalStyles();
-
   const time = parseDate(message.time);
   const formattedTime = time.format('DD.MM.YYYY HH:mm');
   const hasFiles = message.files && message.files.length !== 0;
+  const theme = useAppTheme();
 
   let cardTopText: string;
   if ([MessageType.message, MessageType.teacherReply].includes(message.type))
@@ -49,12 +49,12 @@ function Message({ message }: { message: IMessage }) {
 
   return (
     <CardHeaderOut topText={cardTopText}>
-      <Text style={globalStyles.textColor} selectable selectionColor={'#ade1f5'}>
+      <Text colorVariant={'block'} selectable selectionColor={theme.colors.primary}>
         {message.content}
       </Text>
       {hasFiles ? <AttachedFiles files={message.files} /> : ''}
       <View style={{ alignItems: 'flex-end' }}>
-        <Text style={globalStyles.textColor}>{formattedTime}</Text>
+        <Text colorVariant={'block'}>{formattedTime}</Text>
       </View>
     </CardHeaderOut>
   );

@@ -1,11 +1,12 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { Modal, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Modal, ScrollView, TouchableOpacity, View } from 'react-native';
 
 import { useGlobalStyles } from '../hooks';
 import { fontSize } from '../utils/texts';
 import Card from './Card';
 import ClickableText from './ClickableText';
+import Text from './Text';
 
 export interface ButtonMenuOption {
   name: string;
@@ -41,18 +42,15 @@ const ModalMenu = ({
       >
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text
-            style={[
-              globalStyles.textColor,
-              fontSize.large,
-              { fontWeight: '500', marginBottom: '2%' },
-            ]}
+            style={[fontSize.large, { fontWeight: '500', marginBottom: '2%' }]}
+            colorVariant={'block'}
           >
             Выбор преподавателя
           </Text>
           <AntDesign
             name={'close'}
             size={28}
-            color={globalStyles.textColor.color}
+            color={globalStyles.fontColorForBlock.color}
             onPress={onClose}
           />
         </View>
@@ -69,7 +67,7 @@ const ModalMenu = ({
                     { padding: '2%', alignItems: 'center' },
                   ]}
                 >
-                  <Text style={globalStyles.primaryFontColor}>{option.name}</Text>
+                  <Text colorVariant={'primary'}>{option.name}</Text>
                 </View>
               );
             return (
@@ -77,7 +75,7 @@ const ModalMenu = ({
                 text={option.name}
                 onPress={() => onSelect(option.value)}
                 key={option.name}
-                textStyle={[globalStyles.textColor]}
+                textStyle={globalStyles.fontColorForBlock}
                 viewStyle={[
                   globalStyles.block,
                   globalStyles.border,
@@ -122,10 +120,10 @@ const ButtonMenu = ({
         <Card
           style={{ justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}
         >
-          <Text style={[globalStyles.textColor, fontSize.medium, { fontWeight: '500' }]}>
+          <Text style={[fontSize.medium, { fontWeight: '500' }]} colorVariant={'block'}>
             {selectedOption.name}
           </Text>
-          <AntDesign name={'swap'} size={22} color={globalStyles.textColor.color} />
+          <AntDesign name={'swap'} size={22} color={globalStyles.fontColorForBlock.color} />
         </Card>
       </TouchableOpacity>
     </>

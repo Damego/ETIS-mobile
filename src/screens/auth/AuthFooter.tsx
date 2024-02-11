@@ -1,6 +1,7 @@
 import React from 'react';
-import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Linking, StyleSheet, TouchableOpacity, View } from 'react-native';
 
+import Text from '../../components/Text';
 import { useGlobalStyles } from '../../hooks';
 import { PRIVACY_POLICY_URL, TELEGRAM_URL } from '../../utils';
 import { fontSize } from '../../utils/texts';
@@ -25,15 +26,13 @@ const styles = StyleSheet.create({
 });
 
 const AuthFooter = () => {
-  const globalStyles = useGlobalStyles();
-
   return (
     <View style={styles.view}>
-      <Text style={[styles.infoText, globalStyles.textColor]}>
+      <Text style={styles.infoText}>
         Приложение ЕТИС мобайл является неофициальным мобильным приложением для ЕТИС ПГНИУ
       </Text>
       <TouchableOpacity onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}>
-        <Text style={[styles.privacyPolicyText, globalStyles.primaryFontColor]}>
+        <Text style={styles.privacyPolicyText} colorVariant={'primary'}>
           Политика конфиденциальности
         </Text>
       </TouchableOpacity>

@@ -38,12 +38,12 @@ export default function OrderModal({ html, closeModal }) {
           source={{ html }}
           scalesPageToFit
           style={{ marginHorizontal: '20%' }}
-          customStyle={getStyles(globalStyles.textColor.color)}
+          customStyle={getStyles(globalStyles.fontColorForBlock.color)}
         />
         <ClickableText
           text={'Закрыть'}
           onPress={closeModal}
-          textStyle={[fontSize.large, globalStyles.textColor]}
+          textStyle={[fontSize.large, globalStyles.fontColorForBlock]}
           viewStyle={{ marginBottom: '2%' }}
         />
       </View>

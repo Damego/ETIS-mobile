@@ -1,15 +1,8 @@
 import React, { useState } from 'react';
-import {
-  StyleProp,
-  StyleSheet,
-  Text,
-  TextStyle,
-  TouchableOpacity,
-  View,
-  ViewStyle,
-} from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import { HalloweenEmoji } from '../../components/HalloweenDecoration';
+import Text from '../../components/Text';
 import { useAppSelector, useGlobalStyles } from '../../hooks';
 import { ISubject } from '../../models/sessionPoints';
 import { ThemeType } from '../../styles/themes';
@@ -58,12 +51,23 @@ const getSubjectPointsStyle = (
   return styles.colorMark5;
 };
 
-const TotalPoints = ({ subject, style }: { subject: ISubject; style?: StyleProp<ViewStyle> }) => {
+const TotalPoints = ({
+  subject,
+  style,
+  isInBlock,
+}: {
+  subject: ISubject;
+  style?: StyleProp<ViewStyle>;
+  isInBlock?: boolean;
+}) => {
   const globalStyles = useGlobalStyles();
   const { theme } = useAppSelector((state) => state.settings);
   const [showPoint, setShowPoint] = useState<boolean>(theme !== ThemeType.halloween);
 
-  const textStyle = getSubjectPointsStyle(subject, globalStyles.textColor);
+  const textStyle = getSubjectPointsStyle(
+    subject,
+    isInBlock ? globalStyles.fontColorForBlock : globalStyles.textColor
+  );
   const pointsWord = getPointsWord(subject.totalPoints);
 
   return showPoint ? (
@@ -71,7 +75,10 @@ const TotalPoints = ({ subject, style }: { subject: ISubject; style?: StyleProp<
       <Text style={[fontSize.xxlarge, { fontWeight: '600' }, textStyle]}>
         {subject.totalPoints}
       </Text>
-      <Text style={[fontSize.medium, { fontWeight: '600' }, globalStyles.textColor]}>
+      <Text
+        style={[fontSize.medium, { fontWeight: '600' }]}
+        colorVariant={isInBlock ? 'block' : undefined}
+      >
         {pointsWord}
       </Text>
     </View>

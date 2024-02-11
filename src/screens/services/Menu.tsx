@@ -1,8 +1,9 @@
 import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Linking, StyleSheet, TouchableOpacity, View } from 'react-native';
 
+import Text from '../../components/Text';
 import { useAppSelector, useGlobalStyles } from '../../hooks';
 import { ServicesNativeStackParamList, ServicesNavigationProp } from '../../navigation/types';
 import { GITHUB_URL, TELEGRAM_URL } from '../../utils';
@@ -75,7 +76,7 @@ function Menu() {
   const globalStyles = useGlobalStyles();
   const { sessionTestID } = useAppSelector((state) => state.student);
   const isDemo = useAppSelector((state) => state.auth.isDemo);
-  const iconColor = globalStyles.textColor.color;
+  const iconColor = globalStyles.fontColorForBlock.color;
 
   return (
     <View style={styles.menuContainer}>
@@ -97,12 +98,14 @@ function Menu() {
         />
       </Row>
       <Row>
-        {(sessionTestID || isDemo) && (
+        {sessionTestID || isDemo ? (
           <Button
             icon={<AntDesign name="copy1" size={iconSize} color={iconColor} />}
             text="Анкетирование"
             page="SessionQuestionnaireList"
           />
+        ) : (
+          <InvisibleButton />
         )}
         <Button
           text="Справки"

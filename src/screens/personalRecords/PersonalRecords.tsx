@@ -1,11 +1,12 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { StyleProp, Text, TextStyle, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { StyleProp, TextStyle, ToastAndroid, TouchableOpacity, View } from 'react-native';
 
 import Card from '../../components/Card';
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
+import Text from '../../components/Text';
 import { useClient } from '../../data/client';
 import { useAppDispatch, useGlobalStyles } from '../../hooks';
 import useQuery from '../../hooks/useQuery';
@@ -39,15 +40,15 @@ const PersonalRecord = ({
   return (
     <Card style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
       <View>
-        <Text style={globalStyles.textColor}>
+        <Text colorVariant={'block'}>
           {record.year} {record.speciality}
         </Text>
-        {!showStatus && <Text style={globalStyles.textColor}>Статус: {record.status}</Text>}
+        {!showStatus && <Text colorVariant={'block'}>Статус: {record.status}</Text>}
       </View>
       {record.id && record.status === 'студент' && (
         <View>
           <TouchableOpacity onPress={changePersonalRecord}>
-            <AntDesign name="select1" size={24} color={globalStyles.textColor.color} />
+            <AntDesign name="select1" size={24} color={globalStyles.fontColorForBlock.color} />
           </TouchableOpacity>
         </View>
       )}

@@ -3,12 +3,12 @@ import * as cheerio from 'cheerio';
 import CyrillicToTranslit from 'cyrillic-to-translit-js';
 import { documentDirectory, downloadAsync } from 'expo-file-system';
 import { getNetworkStateAsync } from 'expo-network';
-import moment from 'moment/moment';
 
 import { ICathedraTimetablePayload } from '../models/cathedraTimetable';
 import { ICertificate } from '../models/certificate';
 import { UploadFile } from '../models/other';
 import { CertificateRequestPayload } from './certificate';
+import { getCurrentEducationYear } from './datetime';
 import { toURLSearchParams } from './encoding';
 import { SessionQuestionnairePayload } from './sessionTest';
 import getRandomUserAgent from './userAgents';
@@ -420,7 +420,7 @@ class HTTPClient {
       p_week: week,
       p_sdiv_id: cathedraId,
       p_peo_id: teacherId,
-      p_ty_id: moment().year(),
+      p_ty_id: getCurrentEducationYear(),
     };
 
     return this.request('GET', '/tt_pkg.show_prep', { params, returnResponse: false });

@@ -1,7 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { StyleProp, Text, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
+import { StyleProp, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 
 import BorderLine from '../../components/BorderLine';
@@ -9,6 +9,7 @@ import Card from '../../components/Card';
 import LoadingScreen from '../../components/LoadingScreen';
 import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
+import Text from '../../components/Text';
 import { useClient } from '../../data/client';
 import { useGlobalStyles } from '../../hooks';
 import { useAppTheme } from '../../hooks/theme';
@@ -63,7 +64,8 @@ const ButtonWithPopover = ({
         <Text
           textBreakStrategy={'simple'}
           selectable
-          style={[fontSize.medium, globalStyles.textColor]}
+          style={fontSize.medium}
+          colorVariant={'block'}
         >
           {info}
         </Text>
@@ -86,10 +88,10 @@ const RequestCertificateButton = () => {
         <AntDesign
           name="plus"
           size={iconSize}
-          color={globalStyles.textColor.color}
+          color={globalStyles.fontColorForBlock.color}
           style={{ marginRight: '2%' }}
         />
-        <Text style={[{ fontWeight: '500' }, fontSize.medium, globalStyles.textColor]}>
+        <Text style={[{ fontWeight: '500' }, fontSize.medium, globalStyles.fontColorForBlock]}>
           Заказать справку
         </Text>
       </TouchableOpacity>
@@ -139,13 +141,13 @@ const CertificateTable = () => {
                 fontWeight: '500',
               },
               fontSize.medium,
-              globalStyles.textColor,
+              globalStyles.fontColorForBlock,
             ]}
             icon={
               <AntDesign
                 name="infocirlceo"
                 size={iconSize}
-                color={globalStyles.textColor.color}
+                color={globalStyles.fontColorForBlock.color}
                 style={{ marginRight: '2%' }}
               />
             }

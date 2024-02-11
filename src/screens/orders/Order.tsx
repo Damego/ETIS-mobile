@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, ToastAndroid, TouchableOpacity } from 'react-native';
+import { StyleSheet, ToastAndroid, TouchableOpacity } from 'react-native';
 
 import CardHeaderIn from '../../components/CardHeaderIn';
+import Text from '../../components/Text';
 import { getOrderHTML } from '../../data/orders';
 import { useGlobalStyles } from '../../hooks';
 import { IOrder } from '../../models/order';
@@ -9,14 +10,13 @@ import { fontSize } from '../../utils/texts';
 import OrderModal from './OrderModal';
 
 const styles = StyleSheet.create({
-  fontW500: {
+  textTitle: {
     fontWeight: '500',
+    ...fontSize.small,
   },
 });
 
 const Order = ({ order }: { order: IOrder }) => {
-  const globalStyles = useGlobalStyles();
-
   const [isOpened, setOpened] = useState<boolean>(false);
   const [html, setHTML] = useState<string>();
 
@@ -43,12 +43,12 @@ const Order = ({ order }: { order: IOrder }) => {
 
       <TouchableOpacity onPress={openModal}>
         <CardHeaderIn topText={`№${order.id ?? '-'} от ${order.date}`}>
-          <Text style={[fontSize.small, styles.fontW500, globalStyles.textColor]}>
+          <Text style={styles.textTitle} colorVariant={'block'}>
             {order.name}
           </Text>
 
           {!order.uri && (
-            <Text style={[fontSize.small, styles.fontW500, globalStyles.textColor]}>
+            <Text style={styles.textTitle} colorVariant={'block'}>
               Приказ готовится...
             </Text>
           )}
