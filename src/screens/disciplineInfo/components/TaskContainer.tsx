@@ -38,7 +38,7 @@ export const TaskContainer = ({
       tasks.length, // Логично, не правда ли?
       disciplineName,
       partial.description,
-      dayjs(disciplineDate.toISOString()),
+      disciplineDate.clone(),
       partial.reminders
     );
 
@@ -55,8 +55,6 @@ export const TaskContainer = ({
       modalRef.current.dismiss();
     });
   };
-
-  if (!tasks.length) return;
 
   const currentDate = dayjs();
 
