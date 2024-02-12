@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import dayjs from 'dayjs';
 import React, { useMemo, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -30,7 +31,7 @@ const GroupedTaskList = ({
       <Text style={styles.title}>{time}</Text>
       <View style={styles.taskListContainer}>
         {tasks.map((task) => (
-          <TaskItem task={task} onRequestEdit={onRequestEdit} />
+          <TaskItem task={task} onRequestEdit={onRequestEdit} key={task.id} />
         ))}
       </View>
     </>
@@ -70,10 +71,11 @@ const TaskList = ({
 
       {!!inactiveTasks.length && (
         <ClickableText
-          text={`${showInactiveTasks ? 'Скрыть' : 'Показать'} неактивные`}
+          text={`Прошлые`}
           onPress={() => setShowInactiveTasks((prev) => !prev)}
           textStyle={styles.title}
           viewStyle={[globalStyles.border, styles.showInactiveButton]}
+          icon={<Ionicons name={showInactiveTasks ? 'arrow-up-outline' : 'arrow-down-outline'} size={26} />}
         />
       )}
 
@@ -99,7 +101,9 @@ const styles = StyleSheet.create({
     marginBottom: '2%',
   },
   showInactiveButton: {
-    padding: '2%',
+    paddingVertical: '1%',
+    paddingHorizontal: '2%',
     marginTop: '2%',
+    justifyContent: 'space-between'
   },
 });
