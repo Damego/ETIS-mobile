@@ -75,7 +75,12 @@ const TaskList = ({
           onPress={() => setShowInactiveTasks((prev) => !prev)}
           textStyle={styles.title}
           viewStyle={[globalStyles.border, styles.showInactiveButton]}
-          icon={<Ionicons name={showInactiveTasks ? 'arrow-up-outline' : 'arrow-down-outline'} size={26} />}
+          icon={
+            <Ionicons
+              name={showInactiveTasks ? 'arrow-up-outline' : 'arrow-down-outline'}
+              size={26}
+            />
+          }
         />
       )}
 
@@ -104,6 +109,6 @@ const styles = StyleSheet.create({
     paddingVertical: '1%',
     paddingHorizontal: '2%',
     marginTop: '2%',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
 });
