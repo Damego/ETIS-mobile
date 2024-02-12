@@ -1,20 +1,16 @@
-import { Ionicons } from '@expo/vector-icons';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { cache } from '../../cache/smartCache';
 import BorderLine from '../../components/BorderLine';
 import Screen from '../../components/Screen';
-import { TeacherType } from '../../models/teachers';
-import { ITeacher } from '../../models/timeTable';
 import { RootStackScreenProps } from '../../navigation/types';
 import { disciplineRegex } from '../../parser/regex';
-import { getTeacherName } from '../../utils/teachers';
 import { getDisciplineTypeName } from '../../utils/texts';
 import { Note } from './components/Note';
 import { TaskContainer } from './components/TaskContainer';
+import { AudienceInfo, TeacherInfo, TimeInfo } from './components/info';
 
 const TypeContainer = ({ name, type }: { name: string; type: string }) => {
   const styles = useMemo(
@@ -28,44 +24,6 @@ const TypeContainer = ({ name, type }: { name: string; type: string }) => {
       <Text style={typeContainerStyles.text}>{name}</Text>
     </View>
   );
-};
-
-const IconInfo = ({ icon, text }: { icon: string; text: string }) => (
-  <View style={{ flexDirection: 'row', gap: 8 }}>
-    <Ionicons name={icon} size={30} style={{ alignSelf: 'center' }} />
-    <Text style={{ fontSize: 20 }}>{text}</Text>
-  </View>
-);
-
-const TimeInfo = ({ date, pairPosition }: { date: dayjs.Dayjs; pairPosition: number }) => {
-  date = date.locale('ru');
-  const day = date.format('D MMMM');
-  const startTime = date.format('HH:mm');
-  const endTime = date.clone().add(90, 'minute').format('HH:mm');
-
-  const text = `${day}\n${startTime} – ${endTime} · ${pairPosition}-я пара`;
-
-  return <IconInfo icon={'time-outline'} text={text} />;
-};
-
-const TeacherInfo = ({ teacher }: { teacher?: ITeacher }) => {
-  const [teachers, setTeachers] = useState<TeacherType>();
-
-  useEffect(() => {
-    cache.getTeachers().then((teachers) => {
-      setTeachers(teachers);
-    });
-  }, []);
-
-  if (!teacher || !teachers) return;
-
-  const teacherName = getTeacherName(teachers, teacher);
-  return <IconInfo icon={'school-outline'} text={teacherName} />;
-};
-
-const AudienceInfo = ({ audienceText }: { audienceText: string }) => {
-  // todo: format aud
-  return <IconInfo icon={'business-outline'} text={audienceText} />;
 };
 
 const DisciplineInfo = ({ route }: RootStackScreenProps<'DisciplineInfo'>) => {
