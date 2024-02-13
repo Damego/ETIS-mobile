@@ -51,18 +51,11 @@ const AddTaskModalContent = ({
   };
 
   const removeTask = () => {
-    if (!selectedTask && !description.length && !reminders.length) {
-      bottomSheetModal.dismiss();
-      return;
-    }
     Alert.alert('Удаление задания', 'Вы действительно хотите удалить это задание', [
       { text: 'Отмена' },
       {
         text: 'Удалить',
-        onPress: () => {
-          if (selectedTask) onTaskRemove(selectedTask);
-          else bottomSheetModal.dismiss();
-        },
+        onPress: () => onTaskRemove(selectedTask),
       },
     ]);
   };
@@ -88,11 +81,13 @@ const AddTaskModalContent = ({
       ))}
 
       <View style={styles.buttonsList}>
-        <ClickableText
-          textStyle={[styles.button, globalStyles.primaryFontColor]}
-          text={'Удалить'}
-          onPress={removeTask}
-        />
+        {!!selectedTask && (
+          <ClickableText
+            textStyle={[styles.button, globalStyles.primaryFontColor]}
+            text={'Удалить'}
+            onPress={removeTask}
+          />
+        )}
         {!!description && (
           <ClickableText textStyle={styles.button} text={'Сохранить'} onPress={addTask} />
         )}
