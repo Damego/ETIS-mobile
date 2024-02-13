@@ -19,8 +19,8 @@ import { AppShortcutItem } from '../utils/shortcuts';
 import ServicesStackNavigator from './ServicesStackNavigator';
 import SignsTopTabNavigator from './TopTabNavigator';
 import { headerParams } from './header';
-import { BottomTabsParamList, BottomTabsScreenProps } from './types';
 import DisciplineTasksButton from './headerButtons/DisciplineTasksButton';
+import { BottomTabsParamList, BottomTabsScreenProps } from './types';
 
 const Tab = createBottomTabNavigator<BottomTabsParamList>();
 
@@ -104,7 +104,7 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
         options={{
           title: 'Расписание',
           tabBarIcon: ({ size, color }) => <AntDesign name="calendar" size={size} color={color} />,
-          headerRight: () => <DisciplineTasksButton />
+          headerRight: () => <DisciplineTasksButton />,
         }}
       />
       <Tab.Screen
