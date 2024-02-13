@@ -27,6 +27,7 @@ import InitSentry from '../utils/sentry';
 import TabNavigator from './TabNavigation';
 import { headerParams } from './header';
 import { RootStackParamList } from './types';
+import DisciplinesTasks from '../screens/disciplinesTasks/DisciplinesTasks';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -182,6 +183,11 @@ const StackNavigator = () => {
                   name={'DisciplineInfo'}
                   options={{ title: 'Информация' }}
                   component={DisciplineInfo}
+                />
+                <Stack.Screen
+                  name={'DisciplineTasks'}
+                  options={{ title: 'Задания' }}
+                  component={DisciplinesTasks}
                 />
               </Stack.Group>
             </Stack.Navigator>

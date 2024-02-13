@@ -20,6 +20,7 @@ import ServicesStackNavigator from './ServicesStackNavigator';
 import SignsTopTabNavigator from './TopTabNavigator';
 import { headerParams } from './header';
 import { BottomTabsParamList, BottomTabsScreenProps } from './types';
+import DisciplineTasksButton from './headerButtons/DisciplineTasksButton';
 
 const Tab = createBottomTabNavigator<BottomTabsParamList>();
 
@@ -91,7 +92,6 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
             },
           },
         },
-
         tabBarActiveTintColor: globalStyles.primaryFontColor.color,
         tabBarShowLabel: false,
         tabBarBadgeStyle: globalStyles.primaryBackgroundColor,
@@ -104,6 +104,7 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
         options={{
           title: 'Расписание',
           tabBarIcon: ({ size, color }) => <AntDesign name="calendar" size={size} color={color} />,
+          headerRight: () => <DisciplineTasksButton />
         }}
       />
       <Tab.Screen
