@@ -52,7 +52,7 @@ const TaskList = ({
 
   const currentDate = dayjs();
 
-  const inactiveTasks = tasks.filter((task) => task.datetime < currentDate);
+  const inactiveTasks = tasks.filter((task) => task.datetime < currentDate).reverse();
   const activeTasks = tasks.filter((task) => task.datetime >= currentDate);
   const groupedActiveTasks = useMemo(
     () => groupItems(activeTasks, (task) => task.datetime.toISOString()),
@@ -103,7 +103,6 @@ const styles = StyleSheet.create({
   },
   title: {
     ...fontSize.big,
-    marginBottom: '2%',
   },
   showInactiveButton: {
     paddingVertical: '1%',
