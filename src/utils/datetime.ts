@@ -12,8 +12,8 @@ export const compareTime = (a: DateType, b: DateType): number => {
 };
 
 interface IFormatTimeProps {
-  disableTime: boolean;
-  disableDate: boolean;
+  disableTime?: boolean;
+  disableDate?: boolean;
 }
 
 const dateFormat = 'D MMMM';
