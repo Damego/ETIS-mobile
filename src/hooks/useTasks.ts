@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { DisciplineStorage, DisciplineTask } from '../models/disciplinesTasks';
 
-const useTasks = ({ filter }: { filter?: (task: DisciplineTask) => boolean }) => {
+const useTasks = ({ filter }: { filter?: (task: DisciplineTask) => boolean } = {}) => {
   const [tasks, setTasks] = useState<DisciplineTask[]>([]);
 
   const setTasksWithFilter = (tasks: DisciplineTask[]) => {

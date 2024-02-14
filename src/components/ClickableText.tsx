@@ -10,7 +10,8 @@ interface ClickableTextProps {
   onPress(): void;
   adjustsFontSizeToFit?: boolean;
   colorVariant?: TextColorVariant;
-  icon?: React.ReactNode;
+  iconLeft?: React.ReactNode;
+  iconRight?: React.ReactNode;
 }
 
 const ClickableText = ({
@@ -20,13 +21,15 @@ const ClickableText = ({
   onPress,
   adjustsFontSizeToFit,
   colorVariant,
-  icon,
+  iconLeft,
+  iconRight,
 }: ClickableTextProps) => (
   <TouchableOpacity style={[styles.row, viewStyle]} onPress={onPress}>
+    {iconLeft}
     <Text adjustsFontSizeToFit={adjustsFontSizeToFit} style={textStyle} colorVariant={colorVariant}>
       {text}
     </Text>
-    {icon}
+    {iconRight}
   </TouchableOpacity>
 );
 

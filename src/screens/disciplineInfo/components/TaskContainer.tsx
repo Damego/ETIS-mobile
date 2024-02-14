@@ -1,15 +1,17 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import dayjs from 'dayjs';
 import React, { useRef, useState } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
 import BottomSheetModalBackdrop from '../../../components/BottomSheetModalBackdrop';
+import Text from '../../../components/Text';
 import useTasks from '../../../hooks/useTasks';
 import { DisciplineTask } from '../../../models/disciplinesTasks';
 import { fontSize } from '../../../utils/texts';
 import AddTaskModalContent, { PartialTask } from '../AddTaskBottomModal';
 import AddButton from './AddButton';
 import TaskList from './TaskList';
+import { useAppTheme } from '../../../hooks/theme';
 
 export const TaskContainer = ({
   disciplineName,
@@ -18,6 +20,8 @@ export const TaskContainer = ({
   disciplineName: string;
   disciplineDate: dayjs.Dayjs;
 }) => {
+  const theme = useAppTheme();
+
   const modalRef = useRef<BottomSheetModal>();
   const [selectedTask, setSelectedTask] = useState<DisciplineTask | null>(null);
   const { tasks, addTask, saveTasks, removeTask } = useTasks({
@@ -72,6 +76,7 @@ export const TaskContainer = ({
         enableDynamicSizing
         // snapPoints={['50%', '60%']} // wat?
         backdropComponent={BottomSheetModalBackdrop}
+        backgroundStyle={{backgroundColor: theme.colors.block}}
       >
         <AddTaskModalContent
           onTaskAdd={handleAddTask}

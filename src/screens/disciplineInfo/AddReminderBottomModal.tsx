@@ -2,11 +2,13 @@ import { BottomSheetView } from '@gorhom/bottom-sheet';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import React, { useRef, useState } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput, View } from 'react-native';
 import DateTimePicker from 'react-native-ui-datepicker';
 
 import ClickableText from '../../components/ClickableText';
+import Text from '../../components/Text';
 import { useGlobalStyles } from '../../hooks';
+import { useAppTheme } from '../../hooks/theme';
 import { fontSize } from '../../utils/texts';
 
 // У библиотеки react-native-ui-datepicker нереально плохо оптимизирован выбор времени, поэтому используется свой
@@ -31,15 +33,17 @@ const TimePicker = ({
   return (
     <View style={timePickerStyles.container}>
       <TextInput
-        style={[globalStyles.border, timePickerStyles.textInput]}
-        value={value.hour().toString()}
+        style={[globalStyles.border, timePickerStyles.textInput, globalStyles.fontColorForBlock]}
+        placeholderTextColor={globalStyles.inputPlaceholder.color}
+        value={value.hour().toString().padStart(2, '0')}
         onChangeText={handleChange('hours')}
         keyboardType={'numeric'}
       />
       <Text style={fontSize.xlarge}>:</Text>
       <TextInput
-        style={[globalStyles.border, timePickerStyles.textInput]}
-        value={value.minute().toString()}
+        style={[globalStyles.border, timePickerStyles.textInput, globalStyles.fontColorForBlock]}
+        placeholderTextColor={globalStyles.inputPlaceholder.color}
+        value={value.minute().toString().padStart(2, '0')}
         onChangeText={handleChange('minutes')}
         keyboardType={'numeric'}
       />
@@ -48,6 +52,8 @@ const TimePicker = ({
 };
 
 const AddReminderBottomModal = ({ onSubmit }: { onSubmit: (datetime: dayjs.Dayjs) => void }) => {
+  const theme = useAppTheme();
+
   const [value, setValue] = useState<dayjs.Dayjs>(dayjs());
   const minimumDate = useRef(dayjs());
 
@@ -64,6 +70,12 @@ const AddReminderBottomModal = ({ onSubmit }: { onSubmit: (datetime: dayjs.Dayjs
         minDate={minimumDate.current}
         firstDayOfWeek={1}
         mode={'single'}
+        selectedItemColor={theme.colors.primary}
+        calendarTextStyle={{color: theme.colors.textForBlock}}
+        headerTextStyle={{color: theme.colors.textForBlock}}
+        headerButtonColor={theme.colors.textForBlock}
+        weekDaysTextStyle={{color: theme.colors.textForBlock}}
+        yearContainerStyle={{backgroundColor: theme.colors.block}}
       />
       <Text style={styles.text}>Укажите время</Text>
       <TimePicker value={value} onValueChange={setValue} />
@@ -98,5 +110,5 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     ...fontSize.big,
   },
-  saveButton: { alignItems: 'flex-end' },
+  saveButton: { alignSelf: 'flex-end' },
 });

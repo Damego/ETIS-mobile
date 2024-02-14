@@ -1,14 +1,13 @@
-import { Ionicons } from '@expo/vector-icons';
 import dayjs from 'dayjs';
 import React, { useMemo, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import ClickableText from '../../../components/ClickableText';
-import { useGlobalStyles } from '../../../hooks';
+import Text from '../../../components/Text';
 import { DisciplineTask } from '../../../models/disciplinesTasks';
 import { formatTime } from '../../../utils/datetime';
 import { fontSize } from '../../../utils/texts';
 import { groupItems } from '../../../utils/utils';
+import HistoryButton from '../HistoryButton';
 import TaskItem from './TaskItem';
 
 const GroupedTaskList = ({
@@ -48,7 +47,6 @@ const TaskList = ({
   onRequestEdit: (task: DisciplineTask) => void;
 }) => {
   const [showInactiveTasks, setShowInactiveTasks] = useState<boolean>(false);
-  const globalStyles = useGlobalStyles();
 
   const currentDate = dayjs();
 
@@ -70,17 +68,9 @@ const TaskList = ({
       ))}
 
       {!!inactiveTasks.length && (
-        <ClickableText
-          text={`Прошлые`}
+        <HistoryButton
           onPress={() => setShowInactiveTasks((prev) => !prev)}
-          textStyle={styles.title}
-          viewStyle={[globalStyles.border, styles.showInactiveButton]}
-          icon={
-            <Ionicons
-              name={showInactiveTasks ? 'arrow-up-outline' : 'arrow-down-outline'}
-              size={26}
-            />
-          }
+          showHistory={showInactiveTasks}
         />
       )}
 

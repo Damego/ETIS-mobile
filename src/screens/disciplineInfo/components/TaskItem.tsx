@@ -1,8 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import Card from '../../../components/Card';
+import Text from '../../../components/Text';
+import { useAppTheme } from '../../../hooks/theme';
 import { DisciplineTask } from '../../../models/disciplinesTasks';
 import { fontSize } from '../../../utils/texts';
 
@@ -14,17 +16,21 @@ const TaskItem = ({
   task: DisciplineTask;
   onRequestEdit: (task: DisciplineTask) => void;
   showDisciplineName?: boolean;
-}) => (
-  <>
-    {showDisciplineName && <Text style={styles.disciplineNameText}>{task.disciplineName}</Text>}
-    <Card style={styles.innerContainer}>
-      <Text>{task.description}</Text>
-      <TouchableOpacity onPress={() => onRequestEdit(task)} style={{ alignSelf: 'center' }}>
-        <Ionicons name={'pencil-outline'} size={20} />
-      </TouchableOpacity>
-    </Card>
-  </>
-);
+}) => {
+  const theme = useAppTheme();
+
+  return (
+    <>
+      {showDisciplineName && <Text style={styles.disciplineNameText}>{task.disciplineName}</Text>}
+      <Card style={styles.innerContainer}>
+        <Text>{task.description}</Text>
+        <TouchableOpacity onPress={() => onRequestEdit(task)} style={{ alignSelf: 'center' }}>
+          <Ionicons name={'pencil-outline'} size={20} color={theme.colors.textForBlock} />
+        </TouchableOpacity>
+      </Card>
+    </>
+  );
+};
 
 export default TaskItem;
 

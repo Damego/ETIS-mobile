@@ -1,20 +1,26 @@
 import { Ionicons } from '@expo/vector-icons';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { cache } from '../../../cache/smartCache';
+import Text from '../../../components/Text';
 import { TeacherType } from '../../../models/teachers';
 import { ITeacher } from '../../../models/timeTable';
 import { getTeacherName } from '../../../utils/teachers';
 import { fontSize } from '../../../utils/texts';
+import { useAppTheme } from '../../../hooks/theme';
 
-const IconInfo = ({ icon, text }: { icon: keyof typeof Ionicons.glyphMap; text: string }) => (
-  <View style={styles.container}>
-    <Ionicons name={icon} size={30} style={styles.icon} />
-    <Text style={styles.text}>{text}</Text>
-  </View>
-);
+const IconInfo = ({ icon, text }: { icon: keyof typeof Ionicons.glyphMap; text: string }) => {
+  const theme = useAppTheme();
+
+  return (
+    <View style={styles.container}>
+      <Ionicons name={icon} size={30} style={styles.icon} color={theme.colors.textForBlock} />
+      <Text style={styles.text}>{text}</Text>
+    </View>
+  );
+}
 
 export const TimeInfo = ({ date, pairPosition }: { date: dayjs.Dayjs; pairPosition: number }) => {
   date = date.locale('ru');

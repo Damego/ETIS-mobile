@@ -1,22 +1,22 @@
-import { Ionicons } from '@expo/vector-icons';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useFocusEffect } from '@react-navigation/native';
 import dayjs from 'dayjs';
-import React, { useMemo, useRef, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { BackHandler, StyleSheet } from 'react-native';
 
 import BottomSheetModalBackdrop from '../../components/BottomSheetModalBackdrop';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import CenteredText from '../../components/CenteredText';
-import ClickableText from '../../components/ClickableText';
 import Screen from '../../components/Screen';
-import { useGlobalStyles } from '../../hooks';
 import useTasks from '../../hooks/useTasks';
 import { DisciplineTask } from '../../models/disciplinesTasks';
 import { formatTime } from '../../utils/datetime';
 import { fontSize } from '../../utils/texts';
 import { groupItems } from '../../utils/utils';
 import AddTaskModalContent from '../disciplineInfo/AddTaskBottomModal';
+import HistoryButton from '../disciplineInfo/HistoryButton';
 import TaskItem from '../disciplineInfo/components/TaskItem';
+import { useAppTheme } from '../../hooks/theme';
 
 const TaskGroup = ({
   tasks,
@@ -37,25 +37,43 @@ const TaskGroup = ({
 };
 
 const DisciplinesTasks = () => {
-  const globalStyles = useGlobalStyles();
+  const theme = useAppTheme();
   const { tasks, removeTask } = useTasks();
 
   const [selectedTask, setSelectedTask] = useState<DisciplineTask>();
   const [showInactiveTasks, setShowInactiveTasks] = useState<boolean>(false);
   const modalRef = useRef<BottomSheetModal>();
+  const modalOpened = useRef(false);
 
   const handleAddTask = () => {};
 
   const onRequestEdit = (task: DisciplineTask) => {
     setSelectedTask(task);
     modalRef.current.present(task);
+    modalOpened.current = true;
   };
 
   const handleTaskRemove = (task: DisciplineTask) => {
     removeTask(task).then(() => {
       modalRef.current.dismiss();
+      modalOpened.current = false;
     });
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        if (modalOpened.current) {
+          modalRef.current.dismiss();
+          modalOpened.current = false;
+          return true;
+        }
+        return false;
+      };
+      const sub = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      return () => sub.remove();
+    }, [modalOpened.current])
+  );
 
   const currentDate = dayjs();
 
@@ -81,17 +99,9 @@ const DisciplinesTasks = () => {
       ))}
 
       {!!inactiveTasks.length && (
-        <ClickableText
-          text={`Прошлые`}
+        <HistoryButton
           onPress={() => setShowInactiveTasks((prev) => !prev)}
-          textStyle={styles.title}
-          viewStyle={[globalStyles.border, globalStyles.block, styles.showInactiveButton]}
-          icon={
-            <Ionicons
-              name={showInactiveTasks ? 'arrow-up-outline' : 'arrow-down-outline'}
-              size={26}
-            />
-          }
+          showHistory={showInactiveTasks}
         />
       )}
 
@@ -102,11 +112,16 @@ const DisciplinesTasks = () => {
         enableDynamicSizing
         // snapPoints={['50%', '60%']} // wat?
         backdropComponent={BottomSheetModalBackdrop}
+        backgroundStyle={{backgroundColor: theme.colors.block}}
+        onDismiss={() => {
+          modalOpened.current = false;
+        }}
       >
         <AddTaskModalContent
           onTaskAdd={handleAddTask}
           selectedTask={selectedTask}
           onTaskRemove={handleTaskRemove}
+          showDisciplineInfo
         />
       </BottomSheetModal>
     </Screen>
@@ -126,6 +141,6 @@ const styles = StyleSheet.create({
     paddingVertical: '1%',
     paddingHorizontal: '2%',
     marginTop: '2%',
-    justifyContent: 'space-between',
+    gap: 4,
   },
 });
