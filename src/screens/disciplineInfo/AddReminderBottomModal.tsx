@@ -71,11 +71,11 @@ const AddReminderBottomModal = ({ onSubmit }: { onSubmit: (datetime: dayjs.Dayjs
         firstDayOfWeek={1}
         mode={'single'}
         selectedItemColor={theme.colors.primary}
-        calendarTextStyle={{color: theme.colors.textForBlock}}
-        headerTextStyle={{color: theme.colors.textForBlock}}
+        calendarTextStyle={{ color: theme.colors.textForBlock }}
+        headerTextStyle={{ color: theme.colors.textForBlock }}
         headerButtonColor={theme.colors.textForBlock}
-        weekDaysTextStyle={{color: theme.colors.textForBlock}}
-        yearContainerStyle={{backgroundColor: theme.colors.block}}
+        weekDaysTextStyle={{ color: theme.colors.textForBlock }}
+        yearContainerStyle={{ backgroundColor: theme.colors.block }}
       />
       <Text style={styles.text}>Укажите время</Text>
       <TimePicker value={value} onValueChange={setValue} />

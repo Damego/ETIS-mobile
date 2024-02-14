@@ -69,10 +69,10 @@ export default Note;
 const styles = StyleSheet.create({
   textInput: {
     padding: '2%',
-    ...fontSize.medium
+    ...fontSize.medium,
   },
   text: {
     fontWeight: '500',
-    ...fontSize.large
-  }
-})
+    ...fontSize.large,
+  },
+});

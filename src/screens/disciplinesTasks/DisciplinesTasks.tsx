@@ -8,6 +8,7 @@ import BottomSheetModalBackdrop from '../../components/BottomSheetModalBackdrop'
 import CardHeaderOut from '../../components/CardHeaderOut';
 import CenteredText from '../../components/CenteredText';
 import Screen from '../../components/Screen';
+import { useAppTheme } from '../../hooks/theme';
 import useTasks from '../../hooks/useTasks';
 import { DisciplineTask } from '../../models/disciplinesTasks';
 import { formatTime } from '../../utils/datetime';
@@ -16,7 +17,6 @@ import { groupItems } from '../../utils/utils';
 import AddTaskModalContent from '../disciplineInfo/AddTaskBottomModal';
 import HistoryButton from '../disciplineInfo/HistoryButton';
 import TaskItem from '../disciplineInfo/components/TaskItem';
-import { useAppTheme } from '../../hooks/theme';
 
 const TaskGroup = ({
   tasks,
@@ -112,7 +112,7 @@ const DisciplinesTasks = () => {
         enableDynamicSizing
         // snapPoints={['50%', '60%']} // wat?
         backdropComponent={BottomSheetModalBackdrop}
-        backgroundStyle={{backgroundColor: theme.colors.block}}
+        backgroundStyle={{ backgroundColor: theme.colors.block }}
         onDismiss={() => {
           modalOpened.current = false;
         }}

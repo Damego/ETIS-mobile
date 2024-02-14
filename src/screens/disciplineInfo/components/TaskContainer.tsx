@@ -5,13 +5,13 @@ import { View } from 'react-native';
 
 import BottomSheetModalBackdrop from '../../../components/BottomSheetModalBackdrop';
 import Text from '../../../components/Text';
+import { useAppTheme } from '../../../hooks/theme';
 import useTasks from '../../../hooks/useTasks';
 import { DisciplineTask } from '../../../models/disciplinesTasks';
 import { fontSize } from '../../../utils/texts';
 import AddTaskModalContent, { PartialTask } from '../AddTaskBottomModal';
 import AddButton from './AddButton';
 import TaskList from './TaskList';
-import { useAppTheme } from '../../../hooks/theme';
 
 export const TaskContainer = ({
   disciplineName,
@@ -76,7 +76,7 @@ export const TaskContainer = ({
         enableDynamicSizing
         // snapPoints={['50%', '60%']} // wat?
         backdropComponent={BottomSheetModalBackdrop}
-        backgroundStyle={{backgroundColor: theme.colors.block}}
+        backgroundStyle={{ backgroundColor: theme.colors.block }}
       >
         <AddTaskModalContent
           onTaskAdd={handleAddTask}

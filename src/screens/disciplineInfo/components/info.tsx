@@ -5,11 +5,11 @@ import { StyleSheet, View } from 'react-native';
 
 import { cache } from '../../../cache/smartCache';
 import Text from '../../../components/Text';
+import { useAppTheme } from '../../../hooks/theme';
 import { TeacherType } from '../../../models/teachers';
 import { ITeacher } from '../../../models/timeTable';
 import { getTeacherName } from '../../../utils/teachers';
 import { fontSize } from '../../../utils/texts';
-import { useAppTheme } from '../../../hooks/theme';
 
 const IconInfo = ({ icon, text }: { icon: keyof typeof Ionicons.glyphMap; text: string }) => {
   const theme = useAppTheme();
@@ -20,7 +20,7 @@ const IconInfo = ({ icon, text }: { icon: keyof typeof Ionicons.glyphMap; text: 
       <Text style={styles.text}>{text}</Text>
     </View>
   );
-}
+};
 
 export const TimeInfo = ({ date, pairPosition }: { date: dayjs.Dayjs; pairPosition: number }) => {
   date = date.locale('ru');
