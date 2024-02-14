@@ -15,6 +15,7 @@ import { useAppTheme } from '../hooks/theme';
 import { PageType, changeTheme, setEvents, setInitialPage } from '../redux/reducers/settingsSlice';
 import AuthPage from '../screens/auth/Auth';
 import DisciplineInfo from '../screens/disciplineInfo/DisciplineInfo';
+import DisciplinesTasks from '../screens/disciplinesTasks/DisciplinesTasks';
 import Intro from '../screens/intro/Intro';
 import MessageHistory from '../screens/messages/MessageHistory';
 import NewYearThemes from '../screens/newYearThemes/NewYearThemes';
@@ -27,7 +28,6 @@ import InitSentry from '../utils/sentry';
 import TabNavigator from './TabNavigation';
 import { headerParams } from './header';
 import { RootStackParamList } from './types';
-import DisciplinesTasks from '../screens/disciplinesTasks/DisciplinesTasks';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
