@@ -116,4 +116,9 @@ export class DisciplineStorage {
     await DisciplineStorage.read();
     return DisciplineStorage.info;
   }
+
+  static getNextTaskId() {
+    if (!this.isRead) return null;
+    return this.tasks.length;
+  }
 }
