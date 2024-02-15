@@ -28,7 +28,7 @@ const AddTaskModalContent = ({
   selectedTask,
   showDisciplineInfo,
 }: {
-  onTaskAdd: (task: PartialTask) => void;
+  onTaskAdd?: (task: PartialTask) => void;
   onTaskRemove: (task: DisciplineTask) => void;
   selectedTask?: DisciplineTask;
   showDisciplineInfo?: boolean;
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   },
   disciplineText: {
     fontWeight: '600',
-    ...fontSize.xlarge,
+    ...fontSize.large,
   },
   timeText: {
     ...fontSize.medium,

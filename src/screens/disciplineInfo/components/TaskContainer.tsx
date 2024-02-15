@@ -3,13 +3,12 @@ import dayjs from 'dayjs';
 import React, { useRef, useState } from 'react';
 import { View } from 'react-native';
 
-import BottomSheetModalBackdrop from '../../../components/BottomSheetModalBackdrop';
 import Text from '../../../components/Text';
-import { useAppTheme } from '../../../hooks/theme';
 import useTasks from '../../../hooks/useTasks';
-import { DisciplineTask } from '../../../models/disciplinesTasks';
+import { DisciplineStorage, DisciplineTask } from '../../../models/disciplinesTasks';
 import { fontSize } from '../../../utils/texts';
-import AddTaskModalContent, { PartialTask } from '../AddTaskBottomModal';
+import { PartialTask } from '../AddTaskModalContent';
+import TaskModal from '../TaskModal';
 import AddButton from './AddButton';
 import TaskList from './TaskList';
 
@@ -20,8 +19,6 @@ export const TaskContainer = ({
   disciplineName: string;
   disciplineDate: dayjs.Dayjs;
 }) => {
-  const theme = useAppTheme();
-
   const modalRef = useRef<BottomSheetModal>();
   const [selectedTask, setSelectedTask] = useState<DisciplineTask | null>(null);
   const { tasks, addTask, saveTasks, removeTask } = useTasks({
@@ -39,7 +36,7 @@ export const TaskContainer = ({
       return;
     }
     const task = new DisciplineTask(
-      tasks.length, // Логично, не правда ли?
+      DisciplineStorage.getNextTaskId(), // Логично, не правда ли?
       disciplineName,
       partial.description,
       disciplineDate.clone(),
@@ -71,19 +68,7 @@ export const TaskContainer = ({
 
       <TaskList tasks={tasks} disciplineDate={disciplineDate} onRequestEdit={onRequestEdit} />
 
-      <BottomSheetModal
-        ref={modalRef}
-        enableDynamicSizing
-        // snapPoints={['50%', '60%']} // wat?
-        backdropComponent={BottomSheetModalBackdrop}
-        backgroundStyle={{ backgroundColor: theme.colors.block }}
-      >
-        <AddTaskModalContent
-          onTaskAdd={handleAddTask}
-          selectedTask={selectedTask}
-          onTaskRemove={handleTaskRemove}
-        />
-      </BottomSheetModal>
+      <TaskModal onTaskAdd={handleAddTask} onTaskRemove={handleTaskRemove} task={selectedTask} />
     </View>
   );
 };

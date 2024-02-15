@@ -1,21 +1,20 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useFocusEffect } from '@react-navigation/native';
 import dayjs from 'dayjs';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { BackHandler, StyleSheet } from 'react-native';
 
-import BottomSheetModalBackdrop from '../../components/BottomSheetModalBackdrop';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import CenteredText from '../../components/CenteredText';
 import Screen from '../../components/Screen';
-import { useAppTheme } from '../../hooks/theme';
 import useTasks from '../../hooks/useTasks';
 import { DisciplineTask } from '../../models/disciplinesTasks';
+import { RootStackScreenProps } from '../../navigation/types';
 import { formatTime } from '../../utils/datetime';
 import { fontSize } from '../../utils/texts';
 import { groupItems } from '../../utils/utils';
-import AddTaskModalContent from '../disciplineInfo/AddTaskBottomModal';
 import HistoryButton from '../disciplineInfo/HistoryButton';
+import TaskModal from '../disciplineInfo/TaskModal';
 import TaskItem from '../disciplineInfo/components/TaskItem';
 
 const TaskGroup = ({
@@ -37,15 +36,12 @@ const TaskGroup = ({
 };
 
 const DisciplinesTasks = () => {
-  const theme = useAppTheme();
   const { tasks, removeTask } = useTasks();
 
   const [selectedTask, setSelectedTask] = useState<DisciplineTask>();
   const [showInactiveTasks, setShowInactiveTasks] = useState<boolean>(false);
   const modalRef = useRef<BottomSheetModal>();
   const modalOpened = useRef(false);
-
-  const handleAddTask = () => {};
 
   const onRequestEdit = (task: DisciplineTask) => {
     setSelectedTask(task);
@@ -84,16 +80,14 @@ const DisciplinesTasks = () => {
     [activeTasks]
   );
 
-  if (!tasks.length) {
-    return (
-      <CenteredText>
-        Вы ещё не добавили задания. Нажмите на пару в расписании для подробностей
-      </CenteredText>
-    );
-  }
-
   return (
     <Screen>
+      {!tasks.length && (
+        <CenteredText>
+          Вы ещё не добавили задания. Нажмите на пару в расписании для подробностей
+        </CenteredText>
+      )}
+
       {groupedActiveTasks.map((group) => (
         <TaskGroup key={group[0].id} tasks={group} onRequestEdit={onRequestEdit} />
       ))}
@@ -107,23 +101,13 @@ const DisciplinesTasks = () => {
 
       {showInactiveTasks && <TaskGroup tasks={inactiveTasks} onRequestEdit={onRequestEdit} />}
 
-      <BottomSheetModal
-        ref={modalRef}
-        enableDynamicSizing
-        // snapPoints={['50%', '60%']} // wat?
-        backdropComponent={BottomSheetModalBackdrop}
-        backgroundStyle={{ backgroundColor: theme.colors.block }}
+      <TaskModal
+        onTaskRemove={handleTaskRemove}
         onDismiss={() => {
           modalOpened.current = false;
         }}
-      >
-        <AddTaskModalContent
-          onTaskAdd={handleAddTask}
-          selectedTask={selectedTask}
-          onTaskRemove={handleTaskRemove}
-          showDisciplineInfo
-        />
-      </BottomSheetModal>
+        task={selectedTask}
+      />
     </Screen>
   );
 };
