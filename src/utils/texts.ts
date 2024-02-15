@@ -21,6 +21,7 @@ export const formatCheckPointScore = (checkPoint: ICheckPoint) => {
   if (Number.isNaN(checkPoint.points) || !checkPoint.points) return '-';
 };
 
+// todo: rename every size to character like format
 export const fontSize = StyleSheet.create({
   micro: {
     fontSize: 8,
@@ -39,6 +40,12 @@ export const fontSize = StyleSheet.create({
   },
   large: {
     fontSize: 20,
+  },
+  slarge: {
+    fontSize: 22,
+  },
+  mlarge: {
+    fontSize: 24,
   },
   xlarge: {
     fontSize: 26,
