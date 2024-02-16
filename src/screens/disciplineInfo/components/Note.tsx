@@ -1,8 +1,8 @@
+import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, TextInput, ToastAndroid } from 'react-native';
+import { StyleSheet, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
 
 import BorderLine from '../../../components/BorderLine';
-import ClickableText from '../../../components/ClickableText';
 import Text from '../../../components/Text';
 import { useGlobalStyles } from '../../../hooks';
 import { IDisciplineInfo } from '../../../models/disciplineInfo';
@@ -51,15 +51,21 @@ const Note = ({ disciplineName }: { disciplineName: string }) => {
       <BorderLine />
 
       <Text style={styles.text}>Заметки</Text>
-      <TextInput
-        style={[globalStyles.border, styles.textInput, globalStyles.fontColorForBlock]}
-        value={info.note}
-        onChangeText={handleEditNote}
-        placeholder={'Запишите сюда почту или телефон преподавателя'}
-        multiline
-      />
+      <View style={styles.textInputContainer}>
+        <TextInput
+          style={[globalStyles.border, styles.textInput, globalStyles.fontColorForBlock]}
+          value={info.note}
+          onChangeText={handleEditNote}
+          placeholder={'Запишите сюда почту или телефон преподавателя'}
+          multiline
+        />
 
-      {isTextChanged && <ClickableText text={'Сохранить'} onPress={handleNoteSave} />}
+        {isTextChanged && (
+          <TouchableOpacity style={styles.saveIcon} onPress={handleNoteSave}>
+            <Ionicons name={'save-outline'} size={26} />
+          </TouchableOpacity>
+        )}
+      </View>
     </>
   );
 };
@@ -67,12 +73,23 @@ const Note = ({ disciplineName }: { disciplineName: string }) => {
 export default Note;
 
 const styles = StyleSheet.create({
+  textInputContainer: {
+    flexDirection: 'row',
+  },
   textInput: {
     padding: '2%',
+    paddingRight: '10%',
     ...fontSize.medium,
   },
   text: {
     fontWeight: '500',
     ...fontSize.large,
+  },
+  saveIcon: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    marginRight: '1%',
+    marginBottom: '2%',
   },
 });
