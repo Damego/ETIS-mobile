@@ -61,6 +61,7 @@ const TaskList = ({
     <>
       {groupedActiveTasks.map((group) => (
         <GroupedTaskList
+          key={group[0].id}
           tasks={group}
           onRequestEdit={onRequestEdit}
           disciplineDate={disciplineDate}
@@ -76,6 +77,7 @@ const TaskList = ({
 
       {showInactiveTasks && (
         <GroupedTaskList
+          key={inactiveTasks[0].id}
           tasks={inactiveTasks}
           disciplineDate={disciplineDate}
           onRequestEdit={onRequestEdit}
