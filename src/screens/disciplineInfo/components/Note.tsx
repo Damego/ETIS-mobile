@@ -1,12 +1,15 @@
 import { Ionicons } from '@expo/vector-icons';
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Alert, StyleSheet, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
 
 import BorderLine from '../../../components/BorderLine';
 import Text from '../../../components/Text';
 import { useGlobalStyles } from '../../../hooks';
+import useBackPress from '../../../hooks/useBackPress';
 import { IDisciplineInfo } from '../../../models/disciplineInfo';
 import { DisciplineStorage } from '../../../models/disciplinesTasks';
+import { RootStackNavigationProp } from '../../../navigation/types';
 import { fontSize } from '../../../utils/texts';
 
 const findDiscipline = (disciplineName: string, disciplines: IDisciplineInfo[]) => {
@@ -18,9 +21,11 @@ const findDiscipline = (disciplineName: string, disciplines: IDisciplineInfo[]) 
 };
 
 const Note = ({ disciplineName }: { disciplineName: string }) => {
+  const navigation = useNavigation<RootStackNavigationProp>();
   const globalStyles = useGlobalStyles();
   const [info, setInfo] = useState<IDisciplineInfo>();
   const [isTextChanged, setTextChanged] = useState(false);
+  const [showNote, setShowNote] = useState(true);
 
   useEffect(() => {
     DisciplineStorage.getInfo().then((disciplines) => {
@@ -44,28 +49,57 @@ const Note = ({ disciplineName }: { disciplineName: string }) => {
     });
   };
 
+  useBackPress(() => {
+    if (!isTextChanged) return false;
+    Alert.alert(
+      'Заметка',
+      'У вас есть несохранённые изменения в заметке. Желаете ли вы сохранить?',
+      [
+        {
+          text: 'Выйти',
+          onPress: () => navigation.goBack(),
+        },
+        {
+          text: 'Сохранить и выйти',
+          onPress: () => {
+            handleNoteSave();
+            navigation.goBack();
+          },
+        },
+      ]
+    );
+    return true;
+  });
+
   if (!info) return;
 
   return (
     <>
       <BorderLine />
 
-      <Text style={styles.text}>Заметки</Text>
-      <View style={styles.textInputContainer}>
-        <TextInput
-          style={[globalStyles.border, styles.textInput, globalStyles.fontColorForBlock]}
-          value={info.note}
-          onChangeText={handleEditNote}
-          placeholder={'Запишите сюда почту или телефон преподавателя'}
-          multiline
-        />
-
-        {isTextChanged && (
-          <TouchableOpacity style={styles.saveIcon} onPress={handleNoteSave}>
-            <Ionicons name={'save-outline'} size={26} />
-          </TouchableOpacity>
-        )}
+      <View style={styles.noteContainer}>
+        <Text style={styles.text}>Заметки</Text>
+        <TouchableOpacity onPress={() => setShowNote((prev) => !prev)}>
+          <Ionicons name={showNote ? 'chevron-up-outline' : 'chevron-down-outline'} size={24} />
+        </TouchableOpacity>
       </View>
+      {showNote && (
+        <View style={styles.textInputContainer}>
+          <TextInput
+            style={[globalStyles.border, styles.textInput, globalStyles.fontColorForBlock]}
+            value={info.note}
+            onChangeText={handleEditNote}
+            placeholder={'Запишите сюда почту или телефон преподавателя'}
+            multiline
+          />
+
+          {isTextChanged && (
+            <TouchableOpacity style={styles.saveIcon} onPress={handleNoteSave}>
+              <Ionicons name={'save-outline'} size={26} />
+            </TouchableOpacity>
+          )}
+        </View>
+      )}
     </>
   );
 };
@@ -73,6 +107,10 @@ const Note = ({ disciplineName }: { disciplineName: string }) => {
 export default Note;
 
 const styles = StyleSheet.create({
+  noteContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   textInputContainer: {
     flexDirection: 'row',
   },

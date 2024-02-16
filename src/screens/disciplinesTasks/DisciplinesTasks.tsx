@@ -1,12 +1,12 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { useFocusEffect } from '@react-navigation/native';
 import dayjs from 'dayjs';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { BackHandler, StyleSheet } from 'react-native';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { StyleSheet } from 'react-native';
 
 import CardHeaderOut from '../../components/CardHeaderOut';
 import CenteredText from '../../components/CenteredText';
 import Screen from '../../components/Screen';
+import useBackPress from '../../hooks/useBackPress';
 import useTasks from '../../hooks/useTasks';
 import { DisciplineTask } from '../../models/disciplinesTasks';
 import { RootStackScreenProps } from '../../navigation/types';
@@ -56,19 +56,15 @@ const DisciplinesTasks = () => {
     });
   };
 
-  useFocusEffect(
+  useBackPress(
     useCallback(() => {
-      const onBackPress = () => {
-        if (modalOpened.current) {
-          modalRef.current.dismiss();
-          modalOpened.current = false;
-          return true;
-        }
-        return false;
-      };
-      const sub = BackHandler.addEventListener('hardwareBackPress', onBackPress);
-      return () => sub.remove();
-    }, [modalOpened.current])
+      if (modalOpened.current) {
+        modalRef.current.dismiss();
+        modalOpened.current = false;
+        return true;
+      }
+      return false;
+    }, [])
   );
 
   const currentDate = dayjs();
