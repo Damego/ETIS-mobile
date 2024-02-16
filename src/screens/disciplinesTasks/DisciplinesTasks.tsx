@@ -102,6 +102,7 @@ const DisciplinesTasks = () => {
       {showInactiveTasks && <TaskGroup tasks={inactiveTasks} onRequestEdit={onRequestEdit} />}
 
       <TaskModal
+        ref={modalRef}
         onTaskRemove={handleTaskRemove}
         onDismiss={() => {
           modalOpened.current = false;

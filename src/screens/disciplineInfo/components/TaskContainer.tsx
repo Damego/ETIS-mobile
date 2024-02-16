@@ -68,7 +68,12 @@ export const TaskContainer = ({
 
       <TaskList tasks={tasks} disciplineDate={disciplineDate} onRequestEdit={onRequestEdit} />
 
-      <TaskModal onTaskAdd={handleAddTask} onTaskRemove={handleTaskRemove} task={selectedTask} />
+      <TaskModal
+        ref={modalRef}
+        onTaskAdd={handleAddTask}
+        onTaskRemove={handleTaskRemove}
+        task={selectedTask}
+      />
     </View>
   );
 };
