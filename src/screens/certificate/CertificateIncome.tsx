@@ -86,7 +86,7 @@ export default function CertificateIncome() {
         </Card>
         <Text style={[globalStyles.fontColorForBlock, { fontSize: 16 }]} colorVariant={'block'}>
           Срок изготовления справки - 3 рабочих дня. Студентам первого курса в сентябре месяце
-          справки о доходах не выдаются.
+          справки о доходах не выдаются. Получение справки - в отделе расчёта с обучающимися, 1 корпус, 322 кабинет.
         </Text>
       </View>
       {applicable && (
