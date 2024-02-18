@@ -1,6 +1,6 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import dayjs from 'dayjs';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
 
 import CardHeaderOut from '../../components/CardHeaderOut';
@@ -8,7 +8,7 @@ import CenteredText from '../../components/CenteredText';
 import Screen from '../../components/Screen';
 import useBackPress from '../../hooks/useBackPress';
 import useTasks from '../../hooks/useTasks';
-import { DisciplineTask } from '../../models/disciplinesTasks';
+import { DisciplineStorage, DisciplineTask } from '../../models/disciplinesTasks';
 import { RootStackScreenProps } from '../../navigation/types';
 import { formatTime } from '../../utils/datetime';
 import { fontSize } from '../../utils/texts';
@@ -35,7 +35,7 @@ const TaskGroup = ({
   );
 };
 
-const DisciplinesTasks = () => {
+const DisciplinesTasks = ({ route }: RootStackScreenProps<'DisciplineTasks'>) => {
   const { tasks, removeTask } = useTasks();
 
   const [selectedTask, setSelectedTask] = useState<DisciplineTask>();
@@ -55,6 +55,17 @@ const DisciplinesTasks = () => {
       modalOpened.current = false;
     });
   };
+
+  useEffect(() => {
+    if (route.params?.taskId) {
+      DisciplineStorage.getTasks().then((tasks) => {
+        const task = tasks.find((task) => task.id === route.params?.taskId);
+        setSelectedTask(task);
+        modalRef.current.present();
+        modalOpened.current = true;
+      });
+    }
+  }, [route.params?.taskId]);
 
   useBackPress(
     useCallback(() => {

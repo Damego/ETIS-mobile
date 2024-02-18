@@ -7,6 +7,7 @@ import { cache } from '../cache/smartCache';
 import { useClient } from '../data/client';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
 import { useAppTheme } from '../hooks/theme';
+import useNotification from '../hooks/useNotifications';
 import { RequestType } from '../models/results';
 import { setStudentState } from '../redux/reducers/studentSlice';
 import Announce from '../screens/announce/Announce';
@@ -41,6 +42,12 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
       navigation.navigate(data.id);
     });
   }, []);
+
+  useNotification(async (data) => {
+    if (data.type === 'task-reminder') {
+      navigation.navigate('DisciplineTasks', { taskId: data.data.taskId });
+    }
+  });
 
   const loadData = async () => {
     if (isDemo || isOfflineMode) {

@@ -65,7 +65,7 @@ const AddTaskModalContent = ({
 
   return (
     <BottomSheetView style={styles.modalContainer}>
-      {showDisciplineInfo && (
+      {showDisciplineInfo && selectedTask && (
         <>
           <Text style={styles.disciplineText}>{selectedTask.disciplineName}</Text>
           <Text style={styles.timeText}>{formatTime(selectedTask.datetime)}</Text>

@@ -10,7 +10,8 @@ import { partitionItems } from '../utils/utils';
 const BACKGROUND_FETCH_TASK = 'discipline-tasks-fetch';
 
 const groupReminders = (task: DisciplineTask, datetime: dayjs.Dayjs): DisciplineReminder[][] =>
-  partitionItems(task.reminders, (reminder) => datetime.diff(reminder.datetime, 'minute') > 1);
+  partitionItems(task.reminders, (reminder) => datetime.diff(reminder.datetime, 'minute') >= 0
+  );
 
 export const defineReminderTask = () =>
   TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
@@ -23,7 +24,7 @@ export const defineReminderTask = () =>
     tasks
       .filter((task) => !!task.reminders.length)
       .forEach((task) => {
-        const [futureReminders, oldReminders] = groupReminders(task, datetime);
+        const [oldReminders, futureReminders] = groupReminders(task, datetime);
         oldReminders.forEach(() => {
           sendReminderTaskNotification(task);
         });
