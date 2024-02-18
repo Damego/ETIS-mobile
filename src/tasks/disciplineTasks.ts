@@ -10,8 +10,7 @@ import { partitionItems } from '../utils/utils';
 const BACKGROUND_FETCH_TASK = 'discipline-tasks-fetch';
 
 const groupReminders = (task: DisciplineTask, datetime: dayjs.Dayjs): DisciplineReminder[][] =>
-  partitionItems(task.reminders, (reminder) => datetime.diff(reminder.datetime, 'minute') >= 0
-  );
+  partitionItems(task.reminders, (reminder) => datetime.diff(reminder.datetime, 'minute') >= 0);
 
 export const defineReminderTask = () =>
   TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
