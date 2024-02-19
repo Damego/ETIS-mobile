@@ -4,7 +4,7 @@ import Animated, { Extrapolation, interpolate, useAnimatedStyle } from 'react-na
 
 const BottomSheetModalBackdrop = ({ animatedIndex, style }: BottomSheetBackdropProps) => {
   const containerAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(animatedIndex.value, [0, 1], [0, 0.3], Extrapolation.CLAMP),
+    opacity: interpolate(animatedIndex.value, [-1, 0], [0, 0.3], Extrapolation.CLAMP),
   }));
 
   const containerStyle = useMemo(
