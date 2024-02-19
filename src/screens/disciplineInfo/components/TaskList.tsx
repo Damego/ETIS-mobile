@@ -75,7 +75,7 @@ const TaskList = ({
         />
       )}
 
-      {showInactiveTasks && (
+      {showInactiveTasks && inactiveTasks.length && (
         <GroupedTaskList
           key={inactiveTasks[0].id}
           tasks={inactiveTasks}
