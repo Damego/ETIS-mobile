@@ -14,23 +14,32 @@ interface ClickableTextProps {
   iconRight?: React.ReactNode;
 }
 
-const ClickableText = ({
-  text,
-  textStyle,
-  viewStyle,
-  onPress,
-  adjustsFontSizeToFit,
-  colorVariant,
-  iconLeft,
-  iconRight,
-}: ClickableTextProps) => (
-  <TouchableOpacity style={[styles.row, viewStyle]} onPress={onPress}>
-    {iconLeft}
-    <Text adjustsFontSizeToFit={adjustsFontSizeToFit} style={textStyle} colorVariant={colorVariant}>
-      {text}
-    </Text>
-    {iconRight}
-  </TouchableOpacity>
+const ClickableText = React.forwardRef<TouchableOpacity, ClickableTextProps>(
+  (
+    {
+      text,
+      textStyle,
+      viewStyle,
+      onPress,
+      adjustsFontSizeToFit,
+      colorVariant,
+      iconLeft,
+      iconRight,
+    },
+    ref
+  ) => (
+    <TouchableOpacity style={[styles.row, viewStyle]} onPress={onPress} ref={ref}>
+      {iconLeft}
+      <Text
+        adjustsFontSizeToFit={adjustsFontSizeToFit}
+        style={textStyle}
+        colorVariant={colorVariant}
+      >
+        {text}
+      </Text>
+      {iconRight}
+    </TouchableOpacity>
+  )
 );
 
 export default ClickableText;
