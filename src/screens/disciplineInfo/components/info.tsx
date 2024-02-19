@@ -5,11 +5,27 @@ import { StyleSheet, View } from 'react-native';
 
 import { cache } from '../../../cache/smartCache';
 import Text from '../../../components/Text';
+import { useAppSelector } from '../../../hooks';
 import { useAppTheme } from '../../../hooks/theme';
 import { TeacherType } from '../../../models/teachers';
 import { ITeacher } from '../../../models/timeTable';
 import { getTeacherName } from '../../../utils/teachers';
 import { fontSize } from '../../../utils/texts';
+
+const PAIR_LENGTH = 95;
+const LESSON_LENGTH = 40;
+
+const studentTimeInfo = {
+  length: PAIR_LENGTH,
+  name: 'пара',
+  ending: 'я',
+} as const;
+
+const lyceumTimeInfo = {
+  length: LESSON_LENGTH,
+  name: 'урок',
+  ending: 'й',
+} as const;
 
 const IconInfo = ({ icon, text }: { icon: keyof typeof Ionicons.glyphMap; text: string }) => {
   const theme = useAppTheme();
@@ -23,12 +39,17 @@ const IconInfo = ({ icon, text }: { icon: keyof typeof Ionicons.glyphMap; text: 
 };
 
 export const TimeInfo = ({ date, pairPosition }: { date: dayjs.Dayjs; pairPosition: number }) => {
+  const { isLyceum } = useAppSelector((state) => state.student.info);
+
   date = date.locale('ru');
   const day = date.format('D MMMM');
   const startTime = date.format('HH:mm');
-  const endTime = date.clone().add(90, 'minute').format('HH:mm');
 
-  const text = `${day}\n${startTime} – ${endTime} · ${pairPosition}-я пара`;
+  const { name, length, ending } = isLyceum ? lyceumTimeInfo : studentTimeInfo;
+
+  const endTime = date.clone().add(length, 'minute').format('HH:mm');
+
+  const text = `${day}\n${startTime} – ${endTime} · ${pairPosition}-${ending} ${name}`;
 
   return <IconInfo icon={'time-outline'} text={text} />;
 };

@@ -7,7 +7,7 @@ import Popover, { PopoverPlacement } from 'react-native-popover-view';
 
 import ClickableText from '../../components/ClickableText';
 import Text from '../../components/Text';
-import { useGlobalStyles } from '../../hooks';
+import { useAppSelector, useGlobalStyles } from '../../hooks';
 import { useAppTheme } from '../../hooks/theme';
 import { TeacherType } from '../../models/teachers';
 import { ILesson, IPair } from '../../models/timeTable';
@@ -25,8 +25,8 @@ export default function Pair({
   teachersData: TeacherType;
   date: moment.Moment;
 }) {
-  const globalStyles = useGlobalStyles();
-  const pairText = `${pair.position} пара`;
+  const { isLyceum } = useAppSelector((state) => state.student.info);
+  const pairText = `${pair.position} ${isLyceum ? 'урок' : 'пара'}`;
 
   return (
     <View style={styles.pairContainer}>
@@ -99,7 +99,6 @@ const Lesson = ({
   date: moment.Moment;
   pairPosition: number;
 }) => {
-  const globalStyles = useGlobalStyles();
   const navigation = useNavigation<BottomTabsNavigationProp>();
 
   const location =
