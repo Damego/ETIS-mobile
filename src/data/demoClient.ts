@@ -130,8 +130,8 @@ export default class DemoClient implements BaseClient {
                       subject: 'Математический анализ (лек)',
                       teacher: {
                         id: '0',
-                        name: 'Иванов И.П'
-                      }
+                        name: 'Иванов И.П',
+                      },
                     },
                   ],
                 },
@@ -148,8 +148,8 @@ export default class DemoClient implements BaseClient {
                       subject: 'Комплексный анализ (лек)',
                       teacher: {
                         id: '1',
-                        name: 'Иванов П.И'
-                      }
+                        name: 'Иванов П.И',
+                      },
                     },
                   ],
                 },
@@ -166,8 +166,8 @@ export default class DemoClient implements BaseClient {
                       subject: 'Функциональный анализ (лек)',
                       teacher: {
                         id: '0',
-                        name: 'Иванов И.П'
-                      }
+                        name: 'Иванов И.П',
+                      },
                     },
                     {
                       audienceText: 'ауд. Дистанционно (on-line корпус)',
@@ -178,8 +178,8 @@ export default class DemoClient implements BaseClient {
                       subject: 'Программный анализ (лек)',
                       teacher: {
                         id: '0',
-                        name: 'Иванов И.П'
-                      }
+                        name: 'Иванов И.П',
+                      },
                     },
                   ],
                 },
