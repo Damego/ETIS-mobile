@@ -3,6 +3,7 @@ import 'dayjs/locale/ru';
 import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
+import AnnouncePopover from '../../components/AnnouncePopover';
 import BorderLine from '../../components/BorderLine';
 import Screen from '../../components/Screen';
 import Text from '../../components/Text';
@@ -51,6 +52,8 @@ const DisciplineInfo = ({ route }: RootStackScreenProps<'DisciplineInfo'>) => {
         <TypeContainer name={typeName} type={disciplineType} />
 
         <View />
+
+        {lesson.announceHTML && <AnnouncePopover data={lesson.announceHTML} />}
 
         <TimeInfo date={date} pairPosition={pairPosition} />
         <AudienceInfo lesson={lesson} />

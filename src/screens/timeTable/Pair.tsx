@@ -1,20 +1,15 @@
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment/moment';
-import React, { useMemo } from 'react';
-import { Linking, StyleSheet, TouchableOpacity, View } from 'react-native';
-import AutoHeightWebView from 'react-native-autoheight-webview';
-import Popover, { PopoverPlacement } from 'react-native-popover-view';
+import React from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import ClickableText from '../../components/ClickableText';
 import Text from '../../components/Text';
-import { useAppSelector, useGlobalStyles } from '../../hooks';
-import { useAppTheme } from '../../hooks/theme';
+import { useAppSelector } from '../../hooks';
 import { TeacherType } from '../../models/teachers';
 import { ILesson, IPair } from '../../models/timeTable';
 import { BottomTabsNavigationProp } from '../../navigation/types';
 import { getTeacherName } from '../../utils/teachers';
-import { fontSize } from '../../utils/texts';
-import { getStyles } from '../../utils/webView';
+import { fontSize, formatAudience } from '../../utils/texts';
 
 export default function Pair({
   pair,
@@ -55,38 +50,6 @@ export default function Pair({
     </View>
   );
 }
-
-const AnnouncePopover = ({ data }: { data: string }) => {
-  const globalStyles = useGlobalStyles();
-  const theme = useAppTheme();
-
-  return (
-    <Popover
-      placement={PopoverPlacement.FLOATING}
-      // TODO: Replace with ClickableText in future due to ref issue
-      from={(_, showPopover) => (
-        <TouchableOpacity onPress={showPopover}>
-          <Text
-            style={{ textDecorationLine: 'underline', fontWeight: '500' }}
-            colorVariant={'block'}
-          >
-            Объявление
-          </Text>
-        </TouchableOpacity>
-      )}
-      popoverStyle={{
-        borderRadius: globalStyles.border.borderRadius,
-        backgroundColor: globalStyles.block.backgroundColor,
-        padding: '2%',
-      }}
-    >
-      <AutoHeightWebView
-        source={{ html: data }}
-        customStyle={getStyles(theme.colors.textForBlock, theme.colors.primary)}
-      />
-    </Popover>
-  );
-};
 
 const Lesson = ({
   data,
