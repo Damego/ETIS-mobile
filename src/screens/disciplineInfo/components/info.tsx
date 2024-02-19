@@ -1,17 +1,19 @@
 import { Ionicons } from '@expo/vector-icons';
 import dayjs from 'dayjs';
+import { Image } from 'expo-image';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Linking, StyleSheet, View } from 'react-native';
 
+import ClickableText from '../../../components/ClickableText';
 import Text from '../../../components/Text';
 import { useClient } from '../../../data/client';
 import { useAppSelector } from '../../../hooks';
 import { useAppTheme } from '../../../hooks/theme';
 import useQuery from '../../../hooks/useQuery';
 import { RequestType } from '../../../models/results';
-import { ITeacher } from '../../../models/timeTable';
+import { DistancePlatformTypes, ILesson, ITeacher } from '../../../models/timeTable';
 import { getTeacherName } from '../../../utils/teachers';
-import { fontSize } from '../../../utils/texts';
+import { fontSize, formatAudience } from '../../../utils/texts';
 
 const PAIR_LENGTH = 95;
 const LESSON_LENGTH = 40;
@@ -28,6 +30,16 @@ const lyceumTimeInfo = {
   ending: 'й',
 } as const;
 
+const getAssetByPlatformType = (type: DistancePlatformTypes) => {
+  const platformTypeToAsset = [
+    [DistancePlatformTypes.zoom, require('../../../../assets/platforms/zoom.svg')],
+    [DistancePlatformTypes.bbb, require('../../../../assets/platforms/bigbluebutton.svg')],
+    [DistancePlatformTypes.skype, require('../../../../assets/platforms/skype.svg')],
+  ];
+
+  return platformTypeToAsset.find(([$type]) => type === $type)[1];
+};
+
 const IconInfo = ({ icon, text }: { icon: keyof typeof Ionicons.glyphMap; text: string }) => {
   const theme = useAppTheme();
 
@@ -41,17 +53,14 @@ const IconInfo = ({ icon, text }: { icon: keyof typeof Ionicons.glyphMap; text: 
 
 export const TimeInfo = ({ date, pairPosition }: { date: dayjs.Dayjs; pairPosition: number }) => {
   const { isLyceum } = useAppSelector((state) => state.student.info);
+  const { name, length, ending } = isLyceum ? lyceumTimeInfo : studentTimeInfo;
 
   date = date.locale('ru');
   const day = date.format('D MMMM');
   const startTime = date.format('HH:mm');
-
-  const { name, length, ending } = isLyceum ? lyceumTimeInfo : studentTimeInfo;
-
   const endTime = date.clone().add(length, 'minute').format('HH:mm');
 
   const text = `${day}\n${startTime} – ${endTime} · ${pairPosition}-${ending} ${name}`;
-
   return <IconInfo icon={'time-outline'} text={text} />;
 };
 
@@ -70,9 +79,26 @@ export const TeacherInfo = ({ teacher }: { teacher?: ITeacher }) => {
   return <IconInfo icon={'school-outline'} text={teacherName} />;
 };
 
-export const AudienceInfo = ({ audienceText }: { audienceText: string }) => {
-  // todo: format aud
-  return <IconInfo icon={'business-outline'} text={audienceText} />;
+export const AudienceInfo = ({ lesson }: { lesson: ILesson }) => {
+  if (lesson.distancePlatform) {
+    const asset = getAssetByPlatformType(lesson.distancePlatform.type);
+    return (
+      <View style={styles.container}>
+        <Image source={asset} style={{ height: 30, width: 30 }} />
+        <ClickableText
+          text={lesson.distancePlatform.name}
+          onPress={() => {
+            Linking.openURL(lesson.distancePlatform.url);
+          }}
+          textStyle={styles.text}
+          colorVariant={'block'}
+        />
+      </View>
+    );
+  }
+
+  const audience = formatAudience(lesson);
+  return <IconInfo icon={'business-outline'} text={audience} />;
 };
 
 const styles = StyleSheet.create({

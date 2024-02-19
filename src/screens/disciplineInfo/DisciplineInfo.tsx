@@ -53,7 +53,7 @@ const DisciplineInfo = ({ route }: RootStackScreenProps<'DisciplineInfo'>) => {
         <View />
 
         <TimeInfo date={date} pairPosition={pairPosition} />
-        <AudienceInfo audienceText={lesson.audienceText} />
+        <AudienceInfo lesson={lesson} />
         <TeacherInfo teacher={lesson.teacher} />
 
         <Note disciplineName={disciplineName} />

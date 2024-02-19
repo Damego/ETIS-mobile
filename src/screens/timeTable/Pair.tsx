@@ -101,10 +101,7 @@ const Lesson = ({
 }) => {
   const navigation = useNavigation<BottomTabsNavigationProp>();
 
-  const location =
-    data.audience && data.building && data.floor
-      ? `ауд. ${data.audience} (${data.building} корпус, ${data.floor} этаж)`
-      : data.audienceText;
+  const location = formatAudience(data);
   const audience = data.isDistance ? data.audience : location;
 
   const teacherName = getTeacherName(teachersData, data.teacher);
@@ -124,20 +121,9 @@ const Lesson = ({
         {data.subject}
       </Text>
 
-      {data.distancePlatform ? (
-        <ClickableText
-          text={data.distancePlatform.name}
-          onPress={() => {
-            Linking.openURL(data.distancePlatform.url);
-          }}
-          textStyle={{ textDecorationLine: 'underline', fontWeight: '500' }}
-          colorVariant={'block'}
-        />
-      ) : audience ? (
-        <Text colorVariant={'block'}>{audience}</Text>
-      ) : (
-        <AnnouncePopover data={data.announceHTML} />
-      )}
+      {data.distancePlatform && <Text>{data.distancePlatform.name}</Text>}
+      {!data.distancePlatform && audience && <Text colorVariant={'block'}>{audience}</Text>}
+      {data.announceHTML && <Text colorVariant={'block'}>Объявление</Text>}
 
       {teacherName && <Text colorVariant={'block'}>{teacherName}</Text>}
     </TouchableOpacity>

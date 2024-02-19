@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import { ICheckPoint } from '../models/sessionPoints';
+import { ILesson } from '../models/timeTable';
 
 export const getPointsWord = (points: number) => {
   let pointsWord = 'балл';
@@ -64,3 +65,9 @@ export const disciplineTypeNames = {
 };
 
 export const getDisciplineTypeName = (type: string): string => disciplineTypeNames[type] || type;
+
+export const formatAudience = (lesson: ILesson) => {
+  return lesson.audience && lesson.building && lesson.floor
+    ? `ауд. ${lesson.audience} (${lesson.building} корпус, ${lesson.floor} этаж)`
+    : lesson.audienceText;
+};
