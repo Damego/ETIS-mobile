@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   title: {
+    marginBottom: '2%',
     ...fontSize.big,
   },
   showInactiveButton: {
