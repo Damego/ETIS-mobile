@@ -107,10 +107,7 @@ const Lesson = ({
       : data.audienceText;
   const audience = data.isDistance ? data.audience : location;
 
-  const teacherName = useMemo(
-    () => getTeacherName(teachersData, data.teacher),
-    [teachersData, data]
-  );
+  const teacherName = getTeacherName(teachersData, data.teacher);
 
   return (
     <TouchableOpacity
