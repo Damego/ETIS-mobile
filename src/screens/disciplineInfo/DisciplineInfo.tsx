@@ -43,8 +43,6 @@ const DisciplineInfo = ({ route }: RootStackScreenProps<'DisciplineInfo'>) => {
     return [discipline, type, getDisciplineTypeName(type)];
   }, [lesson]);
 
-  // todo: добавить ссылку на дистант и на всякие объявления
-
   return (
     <Screen>
       <View style={[styles.container, { backgroundColor: theme.colors.block }]}>
