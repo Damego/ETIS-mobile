@@ -1,13 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
 import dayjs from 'dayjs';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { cache } from '../../../cache/smartCache';
 import Text from '../../../components/Text';
+import { useClient } from '../../../data/client';
 import { useAppSelector } from '../../../hooks';
 import { useAppTheme } from '../../../hooks/theme';
-import { TeacherType } from '../../../models/teachers';
+import useQuery from '../../../hooks/useQuery';
+import { RequestType } from '../../../models/results';
 import { ITeacher } from '../../../models/timeTable';
 import { getTeacherName } from '../../../utils/teachers';
 import { fontSize } from '../../../utils/texts';
@@ -55,17 +56,17 @@ export const TimeInfo = ({ date, pairPosition }: { date: dayjs.Dayjs; pairPositi
 };
 
 export const TeacherInfo = ({ teacher }: { teacher?: ITeacher }) => {
-  const [teachers, setTeachers] = useState<TeacherType>();
+  const client = useClient();
+  const { data } = useQuery({
+    method: client.getTeacherData,
+    payload: {
+      requestType: RequestType.tryCache,
+    },
+  });
 
-  useEffect(() => {
-    cache.getTeachers().then((teachers) => {
-      setTeachers(teachers);
-    });
-  }, []);
+  if (!teacher || !data) return;
 
-  if (!teacher || !teachers) return;
-
-  const teacherName = getTeacherName(teachers, teacher);
+  const teacherName = getTeacherName(data, teacher);
   return <IconInfo icon={'school-outline'} text={teacherName} />;
 };
 
