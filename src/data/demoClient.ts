@@ -128,7 +128,10 @@ export default class DemoClient implements BaseClient {
                       building: '2',
                       isDistance: false,
                       subject: 'Математический анализ (лек)',
-                      teacherId: '0',
+                      teacher: {
+                        id: '0',
+                        name: 'Иванов И.П'
+                      }
                     },
                   ],
                 },
@@ -143,7 +146,10 @@ export default class DemoClient implements BaseClient {
                       building: '2',
                       isDistance: false,
                       subject: 'Комплексный анализ (лек)',
-                      teacherId: '0',
+                      teacher: {
+                        id: '1',
+                        name: 'Иванов П.И'
+                      }
                     },
                   ],
                 },
@@ -158,7 +164,10 @@ export default class DemoClient implements BaseClient {
                       building: '2',
                       isDistance: false,
                       subject: 'Функциональный анализ (лек)',
-                      teacherId: '0',
+                      teacher: {
+                        id: '0',
+                        name: 'Иванов И.П'
+                      }
                     },
                     {
                       audienceText: 'ауд. Дистанционно (on-line корпус)',
@@ -167,7 +176,10 @@ export default class DemoClient implements BaseClient {
                       building: 'on-line',
                       isDistance: true,
                       subject: 'Программный анализ (лек)',
-                      teacherId: '0',
+                      teacher: {
+                        id: '0',
+                        name: 'Иванов И.П'
+                      }
                     },
                   ],
                 },
@@ -579,7 +591,7 @@ export default class DemoClient implements BaseClient {
             photoTitle: 'Фотография загружена 01.01.2000',
           },
           {
-            id: '0',
+            id: '1',
             cathedraId: '0',
             photo: 'img_peo_pkg.get_d_img',
             name: 'Иванов Петр Иванович',
@@ -604,7 +616,7 @@ export default class DemoClient implements BaseClient {
             photoTitle: 'Фотография загружена 01.01.2000',
           },
           {
-            id: '0',
+            id: '1',
             cathedraId: '0',
             photo: 'img_peo_pkg.get_d_img',
             name: 'Иванов Петр Иванович',
