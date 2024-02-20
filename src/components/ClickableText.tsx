@@ -1,9 +1,16 @@
 import React from 'react';
-import { StyleProp, StyleSheet, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
+import {
+  StyleProp,
+  StyleSheet,
+  TextStyle,
+  TouchableOpacity,
+  TouchableOpacityProps,
+  ViewStyle,
+} from 'react-native';
 
 import Text, { TextColorVariant } from './Text';
 
-interface ClickableTextProps {
+interface ClickableTextProps extends TouchableOpacityProps {
   text: string | number;
   textStyle?: StyleProp<TextStyle>;
   viewStyle?: StyleProp<ViewStyle>;
@@ -20,15 +27,15 @@ const ClickableText = React.forwardRef<TouchableOpacity, ClickableTextProps>(
       text,
       textStyle,
       viewStyle,
-      onPress,
       adjustsFontSizeToFit,
       colorVariant,
       iconLeft,
       iconRight,
+      ...props
     },
     ref
   ) => (
-    <TouchableOpacity style={[styles.row, viewStyle]} onPress={onPress} ref={ref}>
+    <TouchableOpacity style={[styles.row, viewStyle]} ref={ref} {...props}>
       {iconLeft}
       <Text
         adjustsFontSizeToFit={adjustsFontSizeToFit}
