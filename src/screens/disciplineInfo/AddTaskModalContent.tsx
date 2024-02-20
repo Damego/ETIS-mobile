@@ -36,17 +36,24 @@ const AddTaskModalContent = ({
   const [description, setDescription] = useState(selectedTask?.description || '');
   const [reminders, setReminders] = useState<DisciplineReminder[]>(selectedTask?.reminders || []);
   const globalStyles = useGlobalStyles();
-  const modalRef = useRef<BottomSheetModal>();
+  const reminderModal = useRef<BottomSheetModal>();
+  const reminderModalOpened = useRef(false);
 
-  const openModal = () => modalRef.current?.present();
-  const closeModal = () => modalRef.current?.dismiss();
+  const openReminderModal = () => {
+    reminderModal.current?.present();
+    reminderModalOpened.current = true;
+  };
+  const closeReminderModal = () => {
+    reminderModal.current.close();
+    reminderModalOpened.current = false;
+  };
 
   const removeReminder = (index: number) => () =>
     setReminders((prev) => [...prev.filter((_, ind) => ind !== index)]);
 
   const addReminder = (datetime: dayjs.Dayjs) => {
     setReminders((prev) => [...prev, new DisciplineReminder(datetime)]);
-    closeModal();
+    closeReminderModal();
   };
 
   const addTask = () => {
@@ -86,7 +93,7 @@ const AddTaskModalContent = ({
       <View style={styles.row}>
         <Text style={styles.titleText}>Напоминания</Text>
 
-        <AddButton onPress={openModal} />
+        <AddButton onPress={openReminderModal} />
       </View>
 
       {reminders.length ? (
@@ -113,7 +120,7 @@ const AddTaskModalContent = ({
       </View>
 
       <BottomSheetModal
-        ref={modalRef}
+        ref={reminderModal}
         backdropComponent={BottomSheetModalBackdrop}
         backgroundStyle={{ backgroundColor: globalStyles.block.backgroundColor }}
       >
