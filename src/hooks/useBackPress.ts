@@ -8,8 +8,6 @@ const useBackPress = (callback: () => boolean) => {
       const shouldPrevent = callback();
       if (shouldPrevent) {
         event.preventDefault();
-      } else {
-        navigation.dispatch(event.data.action);
       }
     });
   }, []);
