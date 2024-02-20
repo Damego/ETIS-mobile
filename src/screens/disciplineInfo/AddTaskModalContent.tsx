@@ -37,16 +37,10 @@ const AddTaskModalContent = ({
   const [reminders, setReminders] = useState<DisciplineReminder[]>(selectedTask?.reminders || []);
   const globalStyles = useGlobalStyles();
   const reminderModal = useRef<BottomSheetModal>();
-  const reminderModalOpened = useRef(false);
 
-  const openReminderModal = () => {
-    reminderModal.current?.present();
-    reminderModalOpened.current = true;
-  };
-  const closeReminderModal = () => {
-    reminderModal.current.close();
-    reminderModalOpened.current = false;
-  };
+  const openReminderModal = () => reminderModal.current?.present();
+
+  const closeReminderModal = () => reminderModal.current.close();
 
   const removeReminder = (index: number) => () =>
     setReminders((prev) => [...prev.filter((_, ind) => ind !== index)]);

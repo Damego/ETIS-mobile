@@ -42,7 +42,7 @@ export const TaskContainer = ({
       selectedTask.description = partial.description;
       selectedTask.reminders = partial.reminders;
       saveTasks().then(() => {
-        modalRef.current.dismiss();
+        closeModal();
         setSelectedTask(null);
       });
       return;
@@ -55,20 +55,23 @@ export const TaskContainer = ({
       partial.reminders
     );
 
-    addTask(task).then(() => modalRef.current.dismiss());
+    addTask(task).then(closeModal);
   };
 
   const onRequestEdit = (task: DisciplineTask) => {
     setSelectedTask(task);
-    modalRef.current.present(task);
+    openModal();
   };
 
   const handleTaskRemove = (task: DisciplineTask) => {
-    removeTask(task).then(() => {
-      modalRef.current.dismiss();
-    });
+    removeTask(task).then(closeModal);
   };
 
+  // ВЕЗДЕ ПРОБЛЕМЫ
+  // 1. Библиотека bottom sheet modal не предоставляет информацию о состоянии модалки,
+  // поэтому используется ещё один ref
+  // 2. Ивент навигации внутри useBackPress не триггерится внутри модалки, поэтому,
+  // если выйти из модалки с добавлением напоминания, то она закроется, однако первая не появится :(
   useBackPress(() => {
     if (modalOpened.current) {
       closeModal();
