@@ -1,10 +1,12 @@
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { setBackgroundColorAsync as setBackgroundNavigationBarColorAsync } from 'expo-navigation-bar';
 import * as QuickActions from 'expo-quick-actions';
 import * as SplashScreen from 'expo-splash-screen';
 import { setBackgroundColorAsync } from 'expo-system-ui';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { cache } from '../cache/smartCache';
 import Background from '../components/Background';
@@ -12,6 +14,8 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { useAppTheme } from '../hooks/theme';
 import { PageType, changeTheme, setEvents, setInitialPage } from '../redux/reducers/settingsSlice';
 import AuthPage from '../screens/auth/Auth';
+import DisciplineInfo from '../screens/disciplineInfo/DisciplineInfo';
+import DisciplinesTasks from '../screens/disciplinesTasks/DisciplinesTasks';
 import Intro from '../screens/intro/Intro';
 import MessageHistory from '../screens/messages/MessageHistory';
 import NewYearThemes from '../screens/newYearThemes/NewYearThemes';
@@ -156,17 +160,41 @@ const StackNavigator = () => {
     );
 
   return (
-    <Background theme={theme}>
-      <NavigationContainer theme={theme}>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          {component}
-        </Stack.Navigator>
-      </NavigationContainer>
-    </Background>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Background theme={theme}>
+        <NavigationContainer theme={theme}>
+          <BottomSheetModalProvider>
+            <Stack.Navigator>
+              <Stack.Group
+                screenOptions={{
+                  headerShown: false,
+                }}
+              >
+                {component}
+              </Stack.Group>
+              <Stack.Group
+                screenOptions={{
+                  presentation: 'modal',
+                  headerShown: true,
+                  ...headerParams(theme),
+                }}
+              >
+                <Stack.Screen
+                  name={'DisciplineInfo'}
+                  options={{ title: 'Информация' }}
+                  component={DisciplineInfo}
+                />
+                <Stack.Screen
+                  name={'DisciplineTasks'}
+                  options={{ title: 'Задания' }}
+                  component={DisciplinesTasks}
+                />
+              </Stack.Group>
+            </Stack.Navigator>
+          </BottomSheetModalProvider>
+        </NavigationContainer>
+      </Background>
+    </GestureHandlerRootView>
   );
 };
 
