@@ -115,6 +115,7 @@ const DisciplinesTasks = ({ route }: RootStackScreenProps<'DisciplineTasks'>) =>
           modalOpened.current = false;
         }}
         task={selectedTask}
+        showDisciplineInfo
       />
     </Screen>
   );

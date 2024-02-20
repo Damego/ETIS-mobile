@@ -11,10 +11,11 @@ interface TaskModalProps {
   onTaskRemove: (task: DisciplineTask) => void;
   task?: DisciplineTask;
   onDismiss?: () => void;
+  showDisciplineInfo?: boolean;
 }
 
 const TaskModal = React.forwardRef<BottomSheetModal, TaskModalProps>(
-  ({ onTaskAdd, onTaskRemove, task, onDismiss }, ref) => {
+  ({ onTaskAdd, onTaskRemove, task, onDismiss, showDisciplineInfo }, ref) => {
     const theme = useAppTheme();
 
     return (
@@ -29,7 +30,7 @@ const TaskModal = React.forwardRef<BottomSheetModal, TaskModalProps>(
           onTaskAdd={onTaskAdd}
           selectedTask={task}
           onTaskRemove={onTaskRemove}
-          showDisciplineInfo
+          showDisciplineInfo={showDisciplineInfo}
         />
       </BottomSheetModal>
     );
