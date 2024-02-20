@@ -1,8 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
 import dayjs from 'dayjs';
+import * as Clipboard from 'expo-clipboard';
 import { Image } from 'expo-image';
 import React from 'react';
-import { Linking, StyleSheet, View } from 'react-native';
+import { Linking, StyleSheet, ToastAndroid, View } from 'react-native';
 
 import ClickableText from '../../../components/ClickableText';
 import Text from '../../../components/Text';
@@ -95,6 +96,11 @@ export const AudienceInfo = ({ lesson }: { lesson: ILesson }) => {
           text={lesson.distancePlatform.name}
           onPress={() => {
             Linking.openURL(lesson.distancePlatform.url);
+          }}
+          onLongPress={() => {
+            Clipboard.setStringAsync(lesson.distancePlatform.url).then(() => {
+              ToastAndroid.show('Скопировано в буфер обмена', ToastAndroid.LONG);
+            });
           }}
           textStyle={styles.text}
           colorVariant={'block'}
