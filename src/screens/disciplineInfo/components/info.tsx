@@ -80,11 +80,17 @@ export const TeacherInfo = ({ teacher }: { teacher?: ITeacher }) => {
 };
 
 export const AudienceInfo = ({ lesson }: { lesson: ILesson }) => {
+  const theme = useAppTheme();
+
   if (lesson.distancePlatform) {
     const asset = getAssetByPlatformType(lesson.distancePlatform.type);
     return (
       <View style={styles.container}>
-        <Image source={asset} style={{ height: 30, width: 30 }} />
+        <Image
+          source={asset}
+          style={{ height: 30, width: 30 }}
+          tintColor={theme.colors.textForBlock}
+        />
         <ClickableText
           text={lesson.distancePlatform.name}
           onPress={() => {

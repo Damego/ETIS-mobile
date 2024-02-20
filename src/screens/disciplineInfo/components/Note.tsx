@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
 
 import BorderLine from '../../../components/BorderLine';
@@ -80,7 +80,11 @@ const Note = ({ disciplineName }: { disciplineName: string }) => {
       <View style={styles.noteContainer}>
         <Text style={styles.text}>Заметки</Text>
         <TouchableOpacity onPress={() => setShowNote((prev) => !prev)}>
-          <Ionicons name={showNote ? 'chevron-up-outline' : 'chevron-down-outline'} size={24} />
+          <Ionicons
+            name={showNote ? 'chevron-up-outline' : 'chevron-down-outline'}
+            size={24}
+            color={globalStyles.fontColorForBlock.color}
+          />
         </TouchableOpacity>
       </View>
       {showNote && (
@@ -90,12 +94,13 @@ const Note = ({ disciplineName }: { disciplineName: string }) => {
             value={info.note}
             onChangeText={handleEditNote}
             placeholder={'Запишите сюда почту или телефон преподавателя'}
+            placeholderTextColor={globalStyles.inputPlaceholder.color}
             multiline
           />
 
           {isTextChanged && (
             <TouchableOpacity style={styles.saveIcon} onPress={handleNoteSave}>
-              <Ionicons name={'save-outline'} size={26} />
+              <Ionicons name={'save-outline'} size={26} color={globalStyles.fontColorForBlock.color} />
             </TouchableOpacity>
           )}
         </View>
