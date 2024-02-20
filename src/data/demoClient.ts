@@ -16,7 +16,7 @@ import { ISessionPoints } from '../models/sessionPoints';
 import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
 import { ISessionTeachPlan } from '../models/teachPlan';
 import { TeacherType } from '../models/teachers';
-import { ITimeTable, WeekTypes } from '../models/timeTable';
+import { DistancePlatformTypes, ITimeTable, WeekTypes } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
 import bind from '../utils/methodBinder';
 import { BaseClient } from './base';
@@ -179,6 +179,30 @@ export default class DemoClient implements BaseClient {
                       teacher: {
                         id: '0',
                         name: 'Иванов И.П',
+                      },
+                    },
+                  ],
+                },
+                {
+                  position: 4,
+                  time: '13:30',
+                  lessons: [
+                    {
+                      audienceText: 'ауд. Дистанционно (on-line корпус)',
+                      audience: 'Дистанционно',
+                      floor: undefined,
+                      building: 'on-line',
+                      isDistance: true,
+                      subject: 'Программный анализ (лек)',
+                      teacher: {
+                        id: '0',
+                        name: 'Иванов И.П',
+                      },
+                      distancePlatform: {
+                        name: 'Платформа BBB',
+                        url: 'https://bigbluebutton.org/',
+                        type: DistancePlatformTypes.bbb,
+                        imageUrl: '',
                       },
                     },
                   ],
