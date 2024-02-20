@@ -100,7 +100,11 @@ const Note = ({ disciplineName }: { disciplineName: string }) => {
 
           {isTextChanged && (
             <TouchableOpacity style={styles.saveIcon} onPress={handleNoteSave}>
-              <Ionicons name={'save-outline'} size={26} color={globalStyles.fontColorForBlock.color} />
+              <Ionicons
+                name={'save-outline'}
+                size={26}
+                color={globalStyles.fontColorForBlock.color}
+              />
             </TouchableOpacity>
           )}
         </View>
