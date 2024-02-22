@@ -7,7 +7,7 @@ import { DisciplineTask } from '../../models/disciplinesTasks';
 import AddTaskModalContent, { PartialTask } from './AddTaskModalContent';
 
 interface TaskModalProps {
-  onTaskAdd?: (partialTask: PartialTask) => void;
+  onTaskAdd: (partialTask: PartialTask) => void;
   onTaskRemove: (task: DisciplineTask) => void;
   task?: DisciplineTask;
   onDismiss?: () => void;
