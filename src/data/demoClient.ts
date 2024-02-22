@@ -9,6 +9,7 @@ import { ICertificateTable } from '../models/certificate';
 import { IMessagesData, MessageType } from '../models/messages';
 import { IOrder } from '../models/order';
 import { IPersonalRecord } from '../models/personalRecords';
+import { IPointUpdates } from '../models/pointUpdates';
 import { ISessionRating } from '../models/rating';
 import { GetResultType, IGetPayload, IGetResult } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
@@ -524,8 +525,8 @@ export default class DemoClient implements BaseClient {
     return this.toResult(data);
   }
 
-  async getPointUpdates(payload: IGetPayload<string>): Promise<IGetResult<string>> {
-    return this.toResult('24.12.2023');
+  async getPointUpdates(_: IGetPayload<string>): Promise<IGetResult<IPointUpdates>> {
+    return this.toResult({ url: '', data: '24.12.2023' });
   }
 
   async getStudentInfoData(): Promise<IGetResult<StudentInfo>> {

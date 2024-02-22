@@ -5,6 +5,7 @@ import { ICertificateTable } from '../models/certificate';
 import { IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
 import { IPersonalRecord } from '../models/personalRecords';
+import { IPointUpdates } from '../models/pointUpdates';
 import { ISessionRating } from '../models/rating';
 import {
   GetResultType,
@@ -34,7 +35,7 @@ export interface BaseClient {
   getOrdersData(payload: IGetPayload): Promise<IGetResult<IOrder[]>>;
   getRatingData(payload: IGetPayload<number>): Promise<IGetResult<ISessionRating>>;
   getSessionSignsData(payload: IGetPayload<number>): Promise<IGetResult<ISessionPoints>>;
-  getPointUpdates(payload: IGetPayload<string>): Promise<IGetResult<string>>;
+  getPointUpdates(payload: IGetPayload<string>): Promise<IGetResult<IPointUpdates>>;
   getSessionMarksData(payload: IGetPayload): Promise<IGetResult<ISessionMarks[]>>;
   getStudentInfoData(payload: IGetPayload): Promise<IGetResult<StudentInfo>>;
   getTeacherData(payload: IGetPayload): Promise<IGetResult<TeacherType>>;

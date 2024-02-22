@@ -12,6 +12,7 @@ import { getCurrentEducationYear } from './datetime';
 import { toURLSearchParams } from './encoding';
 import { SessionQuestionnairePayload } from './sessionTest';
 import getRandomUserAgent from './userAgents';
+import { IPointUpdates } from '../models/pointUpdates';
 
 const cyrillicToTranslit = CyrillicToTranslit();
 

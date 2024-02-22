@@ -42,6 +42,7 @@ import bind from '../utils/methodBinder';
 import { BaseClient, BasicClient } from './base';
 import DemoClient from './demoClient';
 import parsePointUpdates from '../parser/pointUpdates';
+import { IPointUpdates } from '../models/pointUpdates';
 
 export const useClient: () => BaseClient = () => {
   const { isDemo } = useAppSelector((state) => state.auth);
@@ -57,7 +58,7 @@ class MessageClient extends BasicClient<IGetPayload<number>, IMessagesData> {}
 class OrderClient extends BasicClient<IGetPayload, IOrder[]> {}
 class RatingClient extends BasicClient<IGetPayload<number>, ISessionRating> {}
 class SignsClient extends BasicClient<IGetPayload<number>, ISessionPoints> {}
-class PointUpdatesClient extends BasicClient<IGetPayload<string>, string> {}
+class PointUpdatesClient extends BasicClient<IGetPayload<string>, IPointUpdates> {}
 class MarksClient extends BasicClient<IGetPayload, ISessionMarks[]> {}
 class StudentClient extends BasicClient<IGetPayload, StudentInfo> {}
 class TeachersClient extends BasicClient<IGetPayload, TeacherType> {}
@@ -139,10 +140,10 @@ export default class Client implements BaseClient {
       (data) => cache.placeSessionPoints(data)
     );
     this.pointUpdatesClient = new PointUpdatesClient(
-      emptyFunction,
-      (payload) => httpClient.getPointUpdates(payload.data),
-      parsePointUpdates,
-      emptyFunction
+      ({ data }) => cache.getPointUpdates(data),
+      ({ data }) => httpClient.getPointUpdates(data),
+      (data) => { return { url: data, data: parsePointUpdates(data)} },
+      (data) => cache.placePointUpdates(data)
     );
     this.marksClient = new MarksClient(
       () => cache.getAllSessionMarks(),
@@ -243,7 +244,7 @@ export default class Client implements BaseClient {
     return this.signsClient.getData(payload);
   }
 
-  async getPointUpdates(payload: IGetPayload<string>): Promise<IGetResult<string>> {
+  async getPointUpdates(payload: IGetPayload<string>): Promise<IGetResult<IPointUpdates>> {
     return this.pointUpdatesClient.getData(payload);
   }
 
