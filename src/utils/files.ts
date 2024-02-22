@@ -45,7 +45,7 @@ const readJSONFromDocuments = async (fileName: string, defaultValue: any) => {
 const saveDisciplineInfo = (data: IDisciplineInfo[]) =>
   saveJSONToDocuments(data, 'discipline_info.json');
 const readDisciplineInfo = (): Promise<IDisciplineInfo[]> =>
-  readJSONFromDocuments('discipline_info.json', {});
+  readJSONFromDocuments('discipline_info.json', []);
 
 const saveDisciplinesTasks = (data: IDisciplineTask[]) =>
   saveJSONToDocuments(data, 'disciplines_tasks.json');
