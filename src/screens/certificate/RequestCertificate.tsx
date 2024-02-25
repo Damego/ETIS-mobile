@@ -260,6 +260,7 @@ export default function RequestCertificate() {
           onPress={setCurrentId}
           selectedId={currentId}
           containerStyle={styles.alignStart}
+          labelStyle={globalStyles.fontColorForBlock}
         />
       </Card>
 
@@ -274,6 +275,7 @@ export default function RequestCertificate() {
               onPress={setDelivery}
               selectedId={delivery}
               containerStyle={styles.alignStart}
+              labelStyle={globalStyles.fontColorForBlock}
             />
             <Text style={fontSize.medium} colorVariant={'block'}>
               Количество
@@ -283,6 +285,7 @@ export default function RequestCertificate() {
               selectedId={quantity}
               onPress={setQuantity}
               containerStyle={styles.alignStart}
+              labelStyle={globalStyles.fontColorForBlock}
             />
           </Card>
 
