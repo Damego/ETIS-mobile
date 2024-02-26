@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   },
   input: { margin: '3%', paddingHorizontal: '2%' },
   inputRow: { flexDirection: 'row', alignItems: 'center' },
-  width90: { width: '85%' }
+  width85: { width: '85%' },
 });
 
 export const PopoverElement = ({ text }) => {
@@ -50,7 +50,7 @@ export const Input = ({ name, placeholder, onUpdate, value, popover }) => {
             globalStyles.fontColorForBlock,
             globalStyles.border,
             styles.input,
-            styles.width90,
+            styles.width85,
           ]}
           placeholderTextColor={globalStyles.inputPlaceholder.color}
           placeholder={placeholder}
