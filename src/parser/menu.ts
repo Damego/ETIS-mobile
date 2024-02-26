@@ -29,6 +29,7 @@ export default function parseMenu(html: string, parseGroupJournal = false): Stud
       educationForm: null,
       year: null,
       group: null,
+      isLyceum: false,
     },
   };
 
@@ -56,6 +57,7 @@ export default function parseMenu(html: string, parseGroupJournal = false): Stud
     educationForm,
     year,
     group: null,
+    isLyceum: speciality.startsWith('Лицей') || speciality.endsWith('класс'), // TODO: Убрать лишнее, как только узнаем правду
   };
 
   const menu = $('.span3');
@@ -70,6 +72,9 @@ export default function parseMenu(html: string, parseGroupJournal = false): Stud
   // Получение группы студента
   if (parseGroupJournal) {
     data.student.group = content.find('h3').text().split(' ').at(1);
+    if (!data.student.isLyceum) {
+      data.student.isLyceum = data.student.group.startsWith('ЛЦ');
+    }
   }
 
   // Получение количества новых уведомлений

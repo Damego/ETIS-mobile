@@ -7,17 +7,20 @@ import { cache } from '../cache/smartCache';
 import { useClient } from '../data/client';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
 import { useAppTheme } from '../hooks/theme';
+import useNotification from '../hooks/useNotifications';
 import { RequestType } from '../models/results';
 import { setStudentState } from '../redux/reducers/studentSlice';
 import Announce from '../screens/announce/Announce';
 import Messages from '../screens/messages/Messages';
 import AboutSignsDetails from '../screens/signs/AboutSignsDetails';
 import TimeTablePage from '../screens/timeTable/TimeTable';
-import { registerFetch } from '../tasks/signs';
+import { registerReminderTask } from '../tasks/disciplineTasks';
+import { registerSignsFetchTask } from '../tasks/signs';
 import { AppShortcutItem } from '../utils/shortcuts';
 import ServicesStackNavigator from './ServicesStackNavigator';
 import SignsTopTabNavigator from './TopTabNavigator';
 import { headerParams } from './header';
+import DisciplineTasksButton from './headerButtons/DisciplineTasksButton';
 import { BottomTabsParamList, BottomTabsScreenProps } from './types';
 
 const Tab = createBottomTabNavigator<BottomTabsParamList>();
@@ -39,6 +42,12 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
       navigation.navigate(data.id);
     });
   }, []);
+
+  useNotification(async (data) => {
+    if (data.type === 'task-reminder') {
+      navigation.navigate('DisciplineTasks', { taskId: data.data.taskId });
+    }
+  });
 
   const loadData = async () => {
     if (isDemo || isOfflineMode) {
@@ -70,9 +79,10 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
   useEffect(() => {
     loadData().then(() => {
       if (signNotification && !isDemo && !isOfflineMode) {
-        registerFetch();
+        registerSignsFetchTask();
       }
     });
+    registerReminderTask();
   }, []);
 
   return (
@@ -89,7 +99,6 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
             },
           },
         },
-
         tabBarActiveTintColor: globalStyles.primaryFontColor.color,
         tabBarShowLabel: false,
         tabBarBadgeStyle: globalStyles.primaryBackgroundColor,
@@ -102,6 +111,7 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
         options={{
           title: 'Расписание',
           tabBarIcon: ({ size, color }) => <AntDesign name="calendar" size={size} color={color} />,
+          headerRight: () => <DisciplineTasksButton />,
         }}
       />
       <Tab.Screen

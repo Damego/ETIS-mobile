@@ -3,7 +3,7 @@ import { shareAsync } from 'expo-sharing';
 import React from 'react';
 import { StyleSheet, Text, ToastAndroid, TouchableOpacity } from 'react-native';
 
-import { downloadFile, saveFile } from '../utils';
+import { downloadFile, saveFileFromCache } from '../utils';
 
 const defaultStyle = StyleSheet.create({
   text: {
@@ -17,7 +17,7 @@ const FileTextLink = ({ src, fileName, style, children }) => {
     const fileData = await downloadFile(src, fileName);
 
     try {
-      await saveFile(fileData, fileName);
+      await saveFileFromCache(fileData, fileName);
       await Notifications.scheduleNotificationAsync({
         content: {
           title: 'Файл скачан',
