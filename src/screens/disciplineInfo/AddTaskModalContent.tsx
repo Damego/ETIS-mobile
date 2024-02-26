@@ -28,7 +28,7 @@ const AddTaskModalContent = ({
   selectedTask,
   showDisciplineInfo,
 }: {
-  onTaskAdd?: (task: PartialTask) => void;
+  onTaskAdd: (task: PartialTask) => void;
   onTaskRemove: (task: DisciplineTask) => void;
   selectedTask?: DisciplineTask;
   showDisciplineInfo?: boolean;

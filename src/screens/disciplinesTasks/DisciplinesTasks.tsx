@@ -13,6 +13,7 @@ import { RootStackScreenProps } from '../../navigation/types';
 import { formatTime } from '../../utils/datetime';
 import { fontSize } from '../../utils/texts';
 import { groupItems } from '../../utils/utils';
+import { PartialTask } from '../disciplineInfo/AddTaskModalContent';
 import HistoryButton from '../disciplineInfo/HistoryButton';
 import TaskModal from '../disciplineInfo/TaskModal';
 import TaskItem from '../disciplineInfo/components/TaskItem';
@@ -36,23 +37,42 @@ const TaskGroup = ({
 };
 
 const DisciplinesTasks = ({ route }: RootStackScreenProps<'DisciplineTasks'>) => {
-  const { tasks, removeTask } = useTasks();
+  const { tasks, saveTasks, removeTask } = useTasks();
 
   const [selectedTask, setSelectedTask] = useState<DisciplineTask>();
   const [showInactiveTasks, setShowInactiveTasks] = useState<boolean>(false);
   const modalRef = useRef<BottomSheetModal>();
   const modalOpened = useRef(false);
 
+  const openModal = () => {
+    modalRef.current.present();
+    modalOpened.current = true;
+  };
+
+  const closeModal = () => {
+    modalRef.current.dismiss();
+    modalOpened.current = false;
+  };
+
   const onRequestEdit = (task: DisciplineTask) => {
     setSelectedTask(task);
-    modalRef.current.present(task);
-    modalOpened.current = true;
+    openModal();
+  };
+
+  const handleTaskAdd = (partial: PartialTask) => {
+    if (!selectedTask) return; // impossible in this case;
+
+    selectedTask.description = partial.description;
+    selectedTask.reminders = partial.reminders;
+    saveTasks().then(() => {
+      closeModal();
+      setSelectedTask(null);
+    });
   };
 
   const handleTaskRemove = (task: DisciplineTask) => {
     removeTask(task).then(() => {
-      modalRef.current.dismiss();
-      modalOpened.current = false;
+      closeModal();
     });
   };
 
@@ -61,8 +81,7 @@ const DisciplinesTasks = ({ route }: RootStackScreenProps<'DisciplineTasks'>) =>
       DisciplineStorage.getTasks().then((tasks) => {
         const task = tasks.find((task) => task.id === route.params?.taskId);
         setSelectedTask(task);
-        modalRef.current.present();
-        modalOpened.current = true;
+        openModal();
       });
     }
   }, [route.params?.taskId]);
@@ -70,8 +89,7 @@ const DisciplinesTasks = ({ route }: RootStackScreenProps<'DisciplineTasks'>) =>
   useBackPress(
     useCallback(() => {
       if (modalOpened.current) {
-        modalRef.current.dismiss();
-        modalOpened.current = false;
+        closeModal();
         return true;
       }
       return false;
@@ -110,6 +128,7 @@ const DisciplinesTasks = ({ route }: RootStackScreenProps<'DisciplineTasks'>) =>
 
       <TaskModal
         ref={modalRef}
+        onTaskAdd={handleTaskAdd}
         onTaskRemove={handleTaskRemove}
         onDismiss={() => {
           modalOpened.current = false;
