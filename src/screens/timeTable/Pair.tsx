@@ -38,7 +38,7 @@ export default function Pair({
 
           return (
             <Lesson
-              key={lesson.subject + ind}
+              key={lesson.subject.string + ind}
               data={lesson}
               teachersData={teachersData}
               date={date.clone().set({ hour: time.hour(), minute: time.minutes() })}
@@ -64,9 +64,7 @@ const Lesson = ({
 }) => {
   const navigation = useNavigation<BottomTabsNavigationProp>();
 
-  const location = formatAudience(data);
-  const audience = data.isDistance ? data.audience : location;
-
+  const audience = formatAudience(data);
   const teacherName = getTeacherName(teachersData, data.teacher);
 
   return (
@@ -81,7 +79,7 @@ const Lesson = ({
       }
     >
       <Text style={[fontSize.medium, styles.lessonInfoText]} colorVariant={'block'}>
-        {data.subject}
+        {data.subject.string}
       </Text>
 
       {data.distancePlatform && <Text>{data.distancePlatform.name}</Text>}

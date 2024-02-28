@@ -170,6 +170,7 @@ export default class SmartCache {
   }
 
   async clearTimeTable() {
+    await this.timeTable.init();
     await this.timeTable.clear();
     await this.timeTable.save();
   }
@@ -501,6 +502,27 @@ export default class SmartCache {
 
     return userCredentials;
   }
+
+  runMigrations() {
+    this.migrateToV1_3_0();
+  }
+
+  /*
+  Изменились структуры некоторых данных (расписание)
+  */
+  private async migrateToV1_3_0() {
+    const appConfig = await this.getAppConfig();
+    if (!appConfig.cacheMigrations) {
+      appConfig.cacheMigrations = {};
+    }
+    if (appConfig.cacheMigrations.v1_3_0) return;
+
+    await this.clearTimeTable()
+
+    appConfig.cacheMigrations.v1_3_0 = true;
+    await this.updateAppConfig(appConfig);
+  }
 }
 
 export const cache = new SmartCache();
+cache.runMigrations();

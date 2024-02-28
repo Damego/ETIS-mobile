@@ -10,6 +10,10 @@ export enum PageType {
   announces = 'Announces',
 }
 
+export interface CacheMigrations {
+  v1_3_0?: boolean;
+}
+
 export interface AppConfig {
   theme: ThemeType;
   signNotificationEnabled: boolean;
@@ -18,6 +22,7 @@ export interface AppConfig {
   privacyPolicyAccepted: boolean;
   sentryEnabled: boolean;
   events: Events;
+  cacheMigrations: CacheMigrations;
 }
 
 export interface SettingsState {

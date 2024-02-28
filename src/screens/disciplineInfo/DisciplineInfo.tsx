@@ -9,7 +9,6 @@ import Screen from '../../components/Screen';
 import Text from '../../components/Text';
 import { useAppTheme } from '../../hooks/theme';
 import { RootStackScreenProps } from '../../navigation/types';
-import { disciplineRegex } from '../../parser/regex';
 import { fontSize, getDisciplineTypeName } from '../../utils/texts';
 import Note from './components/Note';
 import { TaskContainer } from './components/TaskContainer';
@@ -34,20 +33,15 @@ const DisciplineInfo = ({ route }: RootStackScreenProps<'DisciplineInfo'>) => {
   const theme = useAppTheme();
 
   // React navigation не позволяет передавать функции и экземпляры классов,
-  // поэтому пришлось преобразовать Moment в строку, а сейчас обратно
-  const date = useMemo(() => dayjs(stringDate), [stringDate]);
-
-  // TODO: move type parse in parser
-  const [disciplineName, disciplineType, typeName] = useMemo(() => {
-    const [, discipline, type] = disciplineRegex.exec(lesson.subject);
-    return [discipline, type, getDisciplineTypeName(type)];
-  }, [lesson]);
+  // поэтому пришлось преобразовать dayjs в строку, а сейчас обратно
+  const date = dayjs(stringDate);
+  const typeName = getDisciplineTypeName(lesson.subject.type)
 
   return (
     <Screen>
       <View style={[styles.container, { backgroundColor: theme.colors.block }]}>
-        <Text style={styles.text}>{disciplineName}</Text>
-        <TypeContainer name={typeName} type={disciplineType} />
+        <Text style={styles.text}>{lesson.subject.discipline}</Text>
+        {lesson.subject?.type && <TypeContainer name={typeName} type={lesson.subject.type} />}
 
         <View />
 
@@ -57,9 +51,9 @@ const DisciplineInfo = ({ route }: RootStackScreenProps<'DisciplineInfo'>) => {
         <AudienceInfo lesson={lesson} />
         <TeacherInfo teacher={lesson.teacher} />
 
-        <Note disciplineName={disciplineName} />
+        <Note disciplineName={lesson.subject.discipline} />
         <BorderLine />
-        <TaskContainer disciplineName={disciplineName} disciplineDate={date} />
+        <TaskContainer disciplineName={lesson.subject.discipline} disciplineDate={date} />
       </View>
     </Screen>
   );
