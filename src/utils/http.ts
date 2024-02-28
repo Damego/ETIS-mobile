@@ -34,7 +34,7 @@ interface Payload {
 interface PayloadWithResponse {
   params?: unknown;
   data?: unknown;
-  returnResponse?: true;
+  returnResponse: true;
 }
 interface PayloadWithString {
   params?: unknown;
@@ -90,13 +90,13 @@ class HTTPClient {
   async request(
     method: string,
     endpoint: string,
-    { params, data, returnResponse }?: PayloadWithResponse
+    { params, data, returnResponse }: PayloadWithResponse
   ): Promise<Response<AxiosResponse>>;
 
   async request(
     method: string,
     endpoint: string,
-    { params, data, returnResponse }?: PayloadWithString
+    { params, data, returnResponse }: PayloadWithString
   ): Promise<Response<string>>;
 
   async request(method: string, endpoint: string): Promise<Response<string>>;
@@ -224,7 +224,6 @@ class HTTPClient {
 
     const response = await this.request('POST', '/stu_email_pkg.send_r_email', {
       data,
-      returnResponse: false,
     });
 
     if (response.error) return null;
@@ -254,14 +253,12 @@ class HTTPClient {
 
     return this.request('GET', '/stu.timetable', {
       params: { p_cons: showConsultationsParam, p_week: week },
-      returnResponse: false,
     });
   }
 
   getTeachPlan(mode?: string) {
     return this.request('GET', '/stu.teach_plan', {
       params: { p_mode: mode },
-      returnResponse: false,
     });
   }
 
@@ -279,7 +276,7 @@ class HTTPClient {
       params.p_term = trimester;
     }
 
-    return this.request('GET', '/stu.signs', { params, returnResponse: false });
+    return this.request('GET', '/stu.signs', { params });
   }
 
   /*
@@ -295,7 +292,7 @@ class HTTPClient {
       params.p_term = session;
     }
 
-    return this.request('GET', '/stu.absence', { params, returnResponse: false });
+    return this.request('GET', '/stu.absence', { params });
   }
 
   getTeachers() {
@@ -311,7 +308,7 @@ class HTTPClient {
     if (page !== undefined) {
       params = { p_page: page };
     }
-    return this.request('GET', '/stu.teacher_notes', { params, returnResponse: false });
+    return this.request('GET', '/stu.teacher_notes', { params });
   }
 
   replyToMessage(answerID: string, content: string) {
@@ -319,7 +316,7 @@ class HTTPClient {
       p_anv_id: answerID,
       p_msg_txt: content,
     };
-    return this.request('POST', '/stu.send_reply', { data, returnResponse: false });
+    return this.request('POST', '/stu.send_reply', { data });
   }
 
   attachFileToMessage(messageID: string, answerMessageID: string, file: UploadFile) {
@@ -332,7 +329,7 @@ class HTTPClient {
     // @ts-ignore
     data.append('file', file);
 
-    return this.request('POST', '/stu.repl_doc_write', { data, returnResponse: false });
+    return this.request('POST', '/stu.repl_doc_write', { data });
   }
 
   getBlankPage() {
@@ -354,7 +351,6 @@ class HTTPClient {
   getSessionQuestionnaireList(id: string | number) {
     return this.request('GET', '/stu.term_test', {
       params: { p_toes_id: id },
-      returnResponse: false,
     });
   }
 
@@ -363,11 +359,11 @@ class HTTPClient {
   }
 
   async sendSessionQuestionnaireResult(payload: SessionQuestionnairePayload) {
-    return this.request('POST', '/stu.term_test_save', { data: payload, returnResponse: false });
+    return this.request('POST', '/stu.term_test_save', { data: payload });
   }
 
   async sendCertificateRequest(payload: CertificateRequestPayload) {
-    return this.request('POST', '/cert_pkg.stu_certif', { data: payload, returnResponse: false });
+    return this.request('POST', '/cert_pkg.stu_certif', { data: payload });
   }
 
   async getCertificateHTML(certificate: ICertificate) {
@@ -375,7 +371,7 @@ class HTTPClient {
       p_creq_id: certificate.id,
       p_action: 'VIEW',
     };
-    return this.request('GET', `/cert_pkg.stu_certif`, { params, returnResponse: false });
+    return this.request('GET', `/cert_pkg.stu_certif`, { params });
   }
 
   getPersonalRecords() {
@@ -397,7 +393,7 @@ class HTTPClient {
       p_new_confirm: newPassword,
     };
 
-    return this.request('POST', '/stu.change_pass', { data, returnResponse: false });
+    return this.request('POST', '/stu.change_pass', { data });
   }
 
   changeEmail(email: string) {
@@ -406,14 +402,14 @@ class HTTPClient {
       p_email: email,
     };
 
-    return this.request('POST', '/stu_email_pkg.change_email', { data, returnResponse: false });
+    return this.request('POST', '/stu_email_pkg.change_email', { data });
   }
 
   sendVerificationMail() {
     const data = {
       p_step: 1,
     };
-    return this.request('POST', '/stu_email_pkg.send_v_email', { data, returnResponse: false });
+    return this.request('POST', '/stu_email_pkg.send_v_email', { data });
   }
 
   getCathedraTimetable({ session, week, teacherId, cathedraId }: ICathedraTimetablePayload) {
@@ -425,7 +421,7 @@ class HTTPClient {
       p_ty_id: getCurrentEducationYear(),
     };
 
-    return this.request('GET', '/tt_pkg.show_prep', { params, returnResponse: false });
+    return this.request('GET', '/tt_pkg.show_prep', { params });
   }
 }
 
