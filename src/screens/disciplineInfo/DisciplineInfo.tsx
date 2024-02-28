@@ -35,7 +35,7 @@ const DisciplineInfo = ({ route }: RootStackScreenProps<'DisciplineInfo'>) => {
   // React navigation не позволяет передавать функции и экземпляры классов,
   // поэтому пришлось преобразовать dayjs в строку, а сейчас обратно
   const date = dayjs(stringDate);
-  const typeName = getDisciplineTypeName(lesson.subject.type)
+  const typeName = getDisciplineTypeName(lesson.subject.type);
 
   return (
     <Screen>

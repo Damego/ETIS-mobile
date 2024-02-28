@@ -517,7 +517,7 @@ export default class SmartCache {
     }
     if (appConfig.cacheMigrations.v1_3_0) return;
 
-    await this.clearTimeTable()
+    await this.clearTimeTable();
 
     appConfig.cacheMigrations.v1_3_0 = true;
     await this.updateAppConfig(appConfig);
