@@ -99,6 +99,8 @@ class HTTPClient {
     { params, data, returnResponse }?: PayloadWithString
   ): Promise<Response<string>>;
 
+  async request(method: string, endpoint: string): Promise<Response<string>>;
+
   async request(
     method: string,
     endpoint: string,
@@ -297,11 +299,11 @@ class HTTPClient {
   }
 
   getTeachers() {
-    return this.request('GET', '/stu.teachers', { returnResponse: false });
+    return this.request('GET', '/stu.teachers');
   }
 
   getAnnounce() {
-    return this.request('GET', '/stu.announce', { returnResponse: false });
+    return this.request('GET', '/stu.announce');
   }
 
   getMessages(page: number) {
@@ -334,19 +336,19 @@ class HTTPClient {
   }
 
   getBlankPage() {
-    return this.request('GET', '/stu.blank_page', { returnResponse: false });
+    return this.request('GET', '/stu.blank_page');
   }
 
   getGroupJournal() {
-    return this.request('GET', '/stu_jour.group_tt', { returnResponse: false });
+    return this.request('GET', '/stu_jour.group_tt');
   }
 
   getOrders() {
-    return this.request('GET', '/stu.orders', { returnResponse: false });
+    return this.request('GET', '/stu.orders');
   }
 
   getCertificate() {
-    return this.request('GET', '/cert_pkg.stu_certif', { returnResponse: false });
+    return this.request('GET', '/cert_pkg.stu_certif');
   }
 
   getSessionQuestionnaireList(id: string | number) {
@@ -357,7 +359,7 @@ class HTTPClient {
   }
 
   getSessionQuestionnaire(url: string) {
-    return this.request('GET', url, { returnResponse: false });
+    return this.request('GET', url);
   }
 
   async sendSessionQuestionnaireResult(payload: SessionQuestionnairePayload) {
@@ -377,7 +379,7 @@ class HTTPClient {
   }
 
   getPersonalRecords() {
-    return this.request('GET', '/stu.change_pr_page', { returnResponse: false });
+    return this.request('GET', '/stu.change_pr_page');
   }
 
   async changePersonalRecord(id: string) {
