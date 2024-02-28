@@ -12,6 +12,7 @@ export interface StudentInfo {
   sessionTestID: string;
   currentWeek?: number;
   currentSession?: number;
+  firstWeek?: number;
   hasUnverifiedEmail: boolean;
 }
 

@@ -169,8 +169,8 @@ export default class SmartCache {
     await this.timeTable.save();
   }
 
-  async deleteTimeTable(week: number) {
-    this.timeTable.delete(week);
+  async clearTimeTable() {
+    await this.timeTable.clear();
     await this.timeTable.save();
   }
 
