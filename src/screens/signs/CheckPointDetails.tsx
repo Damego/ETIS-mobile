@@ -44,7 +44,7 @@ const CheckPointDetails = ({
 
   if (isShowingDate) {
     const { data, isLoading } = useQuery({
-      method: () => client.getPointUpdates({ data: checkPoint.updatesUrl, requestType: RequestType.tryCache }),
+      method: () => client.getPointUpdates({ data: checkPoint.updatesUrl, requestType: RequestType.forceFetch }),
     });
     isLoadingDate = isLoading;
     if (data && data.data) lastDate = data.data;
