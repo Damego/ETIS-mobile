@@ -4,7 +4,7 @@ export default {
   expo: {
     name: 'ЕТИС мобайл' + (IS_DEV ? ' (DEV)' : ''),
     slug: 'etis-mobile',
-    version: '1.2.5',
+    version: '1.3.0-beta.2',
     owner: 'damego',
     orientation: 'portrait',
     icon: './assets/icon.png',
@@ -23,7 +23,7 @@ export default {
       supportsTablet: true,
     },
     android: {
-      versionCode: 10205000,
+      versionCode: 10300002,
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
         backgroundColor: '#FFFFFF',
@@ -54,9 +54,27 @@ export default {
       ],
     },
     plugins: [
-      ['./src/plugins/copyDrawable.ts', './assets/tab_icons'],
+      [
+        'expo-quick-actions',
+        {
+          androidIcons: {
+            signs: {
+              foregroundImage: './assets/tab_icons/signs.png',
+              backgroundColor: '#FFFFFF',
+            },
+            messages: {
+              foregroundImage: './assets/tab_icons/messages.png',
+              backgroundColor: '#FFFFFF',
+            },
+            announce: {
+              foregroundImage: './assets/tab_icons/announce.png',
+              backgroundColor: '#FFFFFF',
+            },
+          },
+        },
+      ],
+      // ['./src/plugins/copyDrawable.ts', './assets/tab_icons'],
       ['./src/plugins/disabledForcedDarkModeAndroid.ts', {}],
-      '@config-plugins/react-native-quick-actions',
       'sentry-expo',
     ],
   },

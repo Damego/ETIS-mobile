@@ -2,6 +2,7 @@ import * as Notifications from 'expo-notifications';
 import { AndroidNotificationPriority } from 'expo-notifications/src/Notifications.types';
 import { Platform } from 'react-native';
 
+import { DisciplineTask } from '../models/disciplinesTasks';
 import { getPointsWord } from './texts';
 import { getRandomItem } from './utils';
 
@@ -48,6 +49,29 @@ ${getRandomItem(messages[signType])} ${mark} ${getPointsWord(newRes)}!`,
     },
   });
 };
+
+export const sendReminderTaskNotification = (task: DisciplineTask) => {
+  console.log('[NOTIF] Sending task reminder notification...');
+  const message =
+    task.description.length < 30 ? task.description : `${task.description.slice(0, 29)}...`;
+  Notifications.scheduleNotificationAsync({
+    content: {
+      title: task.disciplineName,
+      body: `Напоминание о задании: ${message}`,
+      data: {
+        type: 'task-reminder',
+        data: {
+          taskId: task.id,
+        },
+      },
+    },
+    trigger: {
+      seconds: 5,
+      channelId: 'default',
+    },
+  });
+};
+
 export const setNotificationHandler = () =>
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -57,6 +81,7 @@ export const setNotificationHandler = () =>
       priority: AndroidNotificationPriority.MAX,
     }),
   });
+
 export const registerForPushNotificationsAsync = async () => {
   if (Platform.OS === 'android') {
     await Notifications.setNotificationChannelAsync('default', {
@@ -78,3 +103,17 @@ export const registerForPushNotificationsAsync = async () => {
     console.warn('Failed to get permissions for push notification!');
   }
 };
+
+interface IBaseNotificationData {
+  type: string;
+  data: unknown;
+}
+
+interface ITaskReminderNotificationData extends IBaseNotificationData {
+  type: 'task-reminder';
+  data: {
+    taskId: number;
+  };
+}
+
+export interface INotificationData extends ITaskReminderNotificationData {}
