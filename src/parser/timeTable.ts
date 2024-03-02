@@ -3,8 +3,10 @@ import * as cheerio from 'cheerio';
 import {
   DistancePlatform,
   DistancePlatformTypes,
+  IAudience,
   ILesson,
   IPair,
+  ISubject,
   ITeacher,
   ITimeTable,
   WeekInfo,
@@ -12,6 +14,7 @@ import {
 } from '../models/timeTable';
 import { httpClient } from '../utils';
 import { executeRegex } from '../utils/sentry';
+import { disciplineRegex } from './regex';
 import { getTextField } from './utils';
 
 const dateRegex = /\d+.\d+.\d+/gm;
@@ -128,12 +131,22 @@ export default function parseTimeTable(html: string) {
         const pairInfo = pair.find('.pair_info');
         pairInfo.children().each((_, lessonElement) => {
           const lesson = $(lessonElement);
-          const subject = getTextField(lesson.find('.dis'));
+
+          const stringSubject = getTextField(lesson.find('.dis'));
+          const execArr = disciplineRegex.exec(stringSubject);
+          const subject: ISubject = {
+            string: stringSubject,
+          };
+          if (execArr) {
+            const [, discipline, type] = execArr;
+            subject.discipline = discipline;
+            subject.type = type;
+          }
           const audienceElement = lesson.find('.aud');
           let audienceText: string;
           let floor: string;
           let building: string;
-          let audience: string;
+          let number: string;
           let distancePlatform: DistancePlatform;
           let announceHTML: string;
 
@@ -148,17 +161,21 @@ export default function parseTimeTable(html: string) {
             // является частью ветвления и потому его отсуствие != ошибке
             const regexResult = executeRegex(audienceRegex, audienceText, false);
             if (regexResult) {
-              [, audience, building, floor] = regexResult;
+              [, number, building, floor] = regexResult;
             }
           }
 
-          lessons.push({
-            audienceText,
-            audience,
+          const audience: IAudience = {
+            string: audienceText,
+            number,
             building,
             floor,
+          };
+
+          lessons.push({
             subject,
-            isDistance: audience === 'Дистанционно' || !!distancePlatform,
+            audience,
+            isDistance: audience.number === 'Дистанционно' || !!distancePlatform,
             distancePlatform,
             teacher: getTeacher(lesson),
             announceHTML,

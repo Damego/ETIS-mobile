@@ -39,12 +39,22 @@ export interface ITeacher {
   name: string;
 }
 
-export interface ILesson {
-  subject: string;
-  audienceText?: string;
-  audience?: string;
+export interface ISubject {
+  string: string;
+  discipline?: string;
+  type?: string;
+}
+
+export interface IAudience {
+  string: string;
+  number?: string;
   building?: string;
   floor?: string;
+}
+
+export interface ILesson {
+  subject: ISubject;
+  audience: IAudience;
   isDistance: boolean;
   distancePlatform?: DistancePlatform;
   teacher?: ITeacher;

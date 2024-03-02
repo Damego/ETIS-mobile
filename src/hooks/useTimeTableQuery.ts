@@ -2,7 +2,7 @@ import { useRef } from 'react';
 
 import { cache } from '../cache/smartCache';
 import { useClient } from '../data/client';
-import { RequestType } from '../models/results';
+import { GetResultType, RequestType } from '../models/results';
 import { setCurrentWeek } from '../redux/reducers/studentSlice';
 import { useAppDispatch, useAppSelector } from './redux';
 import useQuery from './useQuery';
@@ -24,12 +24,20 @@ const useTimeTableQuery = () => {
         data: student.currentWeek,
       });
     },
-    after: (result) => {
-      const selectedWeek = result.data.weekInfo.selected;
+    after: async (result) => {
+      const { first: firstWeek, selected: selectedWeek } = result.data.weekInfo;
 
+      if (result.type !== GetResultType.cached) {
+        const cachedStudent = await cache.getStudent();
+        if (cachedStudent.firstWeek !== undefined && cachedStudent.firstWeek !== firstWeek) {
+          // Начался новый период учёбы, кэшированные ранее недели больше не нужны.
+          await cache.clearTimeTable();
+          await cache.placePartialStudent({ firstWeek });
+        }
+      }
       if (!data) {
         dispatch(setCurrentWeek(selectedWeek));
-        cache.placePartialStudent({ currentWeek: selectedWeek });
+        cache.placePartialStudent({ currentWeek: selectedWeek, firstWeek });
       }
 
       if (!fetchedWeeks.current.includes(selectedWeek)) {
