@@ -561,8 +561,8 @@ export default class DemoClient implements BaseClient {
     return this.toResult(data);
   }
 
-  async getPointUpdates(_: IGetPayload<string>): Promise<IGetResult<IPointUpdates>> {
-    return this.toResult({ url: '', data: '24.12.2023' });
+  async getPointUpdates(): Promise<IGetResult<IPointUpdates>> {
+    return this.toResult({ url: '', date: '24.12.2023' });
   }
 
   async getStudentInfoData(): Promise<IGetResult<StudentInfo>> {
