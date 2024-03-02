@@ -36,7 +36,7 @@ const CheckPointDetails = ({ checkPoint, index }: { checkPoint: ICheckPoint; ind
       data: checkPoint.updatesUrl,
       requestType: RequestType.tryFetch,
     },
-    skipInitialGet: !checkPoint.teacher,
+    skipInitialGet: !checkPoint.teacher || !checkPoint.updatesUrl,
   });
 
   let scoreText: string | number = formatCheckPointScore(checkPoint) || checkPoint.points;
