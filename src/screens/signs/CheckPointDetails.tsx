@@ -1,14 +1,15 @@
+import React from 'react';
 import { StyleSheet, ToastAndroid, View } from 'react-native';
 
-import { RequestType } from '../../models/results';
-import useQuery from '../../hooks/useQuery';
 import CardHeaderIn from '../../components/CardHeaderIn';
 import ClickableText from '../../components/ClickableText';
-import { formatCheckPointScore } from '../../utils/texts';
-import { ICheckPoint } from '../../models/sessionPoints';
+import Text from '../../components/Text';
 import { useClient } from '../../data/client';
 import { useGlobalStyles } from '../../hooks';
-import Text from '../../components/Text';
+import useQuery from '../../hooks/useQuery';
+import { RequestType } from '../../models/results';
+import { ICheckPoint } from '../../models/sessionPoints';
+import { formatCheckPointScore } from '../../utils/texts';
 
 const getCheckpointTitle = (theme: string, number: number) => `КТ ${number}: ${theme}`;
 
@@ -26,32 +27,22 @@ const styles = StyleSheet.create({
   },
 });
 
-const CheckPointDetails = ({
-  checkPoint,
-  index
-}: {
-  checkPoint: ICheckPoint,
-  index: number
-}) => {
+const CheckPointDetails = ({ checkPoint, index }: { checkPoint: ICheckPoint; index: number }) => {
   const client = useClient();
   const globalStyles = useGlobalStyles();
-  let scoreText: string | number = formatCheckPointScore(checkPoint);
-  if (!scoreText) scoreText = checkPoint.points;
-  const isShowingDate: boolean = checkPoint.teacher ? true : false;
+  const { data, isLoading } = useQuery({
+    method: client.getPointUpdates,
+    payload: {
+      data: checkPoint.updatesUrl,
+      requestType: RequestType.tryFetch,
+    },
+    skipInitialGet: !checkPoint.teacher,
+  });
 
-  let lastDate = checkPoint.date;
-  let isLoadingDate = false;
-
-  if (isShowingDate) {
-    const { data, isLoading } = useQuery({
-      method: () => client.getPointUpdates({ data: checkPoint.updatesUrl, requestType: RequestType.forceFetch }),
-    });
-    isLoadingDate = isLoading;
-    if (data && data.data) lastDate = data.data;
-  }
+  let scoreText: string | number = formatCheckPointScore(checkPoint) || checkPoint.points;
+  const lastDate = data && data.date ? data.date : checkPoint.date;
 
   const rowTextStyle = StyleSheet.compose(globalStyles.fontColorForBlock, { fontSize: 15 });
-
   const Row = ({ first, second }: { first: string | number; second: string | number }) => (
     <View style={styles.row}>
       <Text style={rowTextStyle} colorVariant={'block'}>
@@ -69,10 +60,10 @@ const CheckPointDetails = ({
       <Row first={'Проходной балл:'} second={checkPoint.passScore} />
       <Row first={'Текущий балл:'} second={checkPoint.currentScore} />
       <Row first={'Максимальный балл:'} second={checkPoint.maxScore} />
-      {isShowingDate && (
+      {!!checkPoint.teacher && (
         <>
           <Row first={'Преподаватель:'} second={checkPoint.teacher} />
-          <Row first={'Дата:'} second={isLoadingDate ? "Загрузка..." : lastDate} />
+          <Row first={'Дата:'} second={isLoading ? 'Загрузка...' : lastDate} />
         </>
       )}
       <Row first={'Вид работы:'} second={checkPoint.typeWork} />
@@ -90,6 +81,6 @@ const CheckPointDetails = ({
       </View>
     </CardHeaderIn>
   );
-}
+};
 
 export default CheckPointDetails;
