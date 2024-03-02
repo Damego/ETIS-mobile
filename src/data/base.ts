@@ -53,14 +53,14 @@ export interface BaseClient {
 export class BasicClient<P extends IGetPayload, T> {
   cacheMethod: (payload?: P) => Promise<T>;
   httpMethod: (payload?: P) => Promise<Response<string>>;
-  parseMethod: (data: string) => T;
+  parseMethod: (data: string, payload?: P) => T;
   placeMethod: (data: T) => void;
   name: string;
 
   constructor(
     cacheMethod: (payload?: P) => Promise<T>,
     httpMethod: (payload?: P) => Promise<Response<string>>,
-    parseMethod: (data: string) => T,
+    parseMethod: (data: string, payload?: P) => T,
     placeMethod: (data: T) => void
   ) {
     this.cacheMethod = cacheMethod;
@@ -95,10 +95,10 @@ export class BasicClient<P extends IGetPayload, T> {
     }
   }
 
-  async tryParse({ data }: Response<string>): Promise<IGetResult<T>> {
+  async tryParse({ data }: Response<string>, payload: P): Promise<IGetResult<T>> {
     let parsedData: T;
     try {
-      parsedData = this.parseMethod(data);
+      parsedData = this.parseMethod(data, payload);
     } catch (e) {
       console.error(`[PARSER] Ignoring an error from ${this.name}`, e.stack || e);
       reportParserError(e);
@@ -136,7 +136,7 @@ export class BasicClient<P extends IGetPayload, T> {
       console.log(`[DATA] Retrieved ${this.name} from server, but it's login page`);
       return loginPage;
     }
-    const parsed = await this.tryParse(fetched);
+    const parsed = await this.tryParse(fetched, payload);
     if (parsed === failedResult) {
       console.log(`[DATA] Retrieved ${this.name} from server, but failed to parse`);
       return parsed;
