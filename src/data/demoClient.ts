@@ -122,12 +122,18 @@ export default class DemoClient implements BaseClient {
                   time: '8:00',
                   lessons: [
                     {
-                      audienceText: 'ауд. 411/2 (2 корпус, 3 этаж)',
-                      audience: '411/2',
-                      floor: '3',
-                      building: '2',
+                      audience: {
+                        string: 'ауд. 411/2 (2 корпус, 3 этаж)',
+                        number: '411/2',
+                        floor: '3',
+                        building: '2',
+                      },
+                      subject: {
+                        string: 'Математический анализ (лек)',
+                        discipline: 'Математический анализ',
+                        type: 'лек',
+                      },
                       isDistance: false,
-                      subject: 'Математический анализ (лек)',
                       teacher: {
                         id: '0',
                         name: 'Иванов И.П',
@@ -140,12 +146,18 @@ export default class DemoClient implements BaseClient {
                   time: '9:45',
                   lessons: [
                     {
-                      audienceText: 'ауд. 411/2 (2 корпус, 3 этаж)',
-                      audience: '411/2',
-                      floor: '3',
-                      building: '2',
+                      audience: {
+                        string: 'ауд. 411/2 (2 корпус, 3 этаж)',
+                        number: '411/2',
+                        floor: '3',
+                        building: '2',
+                      },
+                      subject: {
+                        string: 'Комплексный анализ (лек)',
+                        discipline: 'Комплексный анализ',
+                        type: 'лек',
+                      },
                       isDistance: false,
-                      subject: 'Комплексный анализ (лек)',
                       teacher: {
                         id: '1',
                         name: 'Иванов П.И',
@@ -158,24 +170,36 @@ export default class DemoClient implements BaseClient {
                   time: '11: 30',
                   lessons: [
                     {
-                      audienceText: 'ауд. 411/2 (2 корпус, 3 этаж)',
-                      audience: '411/2',
-                      floor: '3',
-                      building: '2',
+                      audience: {
+                        string: 'ауд. 411/2 (2 корпус, 3 этаж)',
+                        number: '411/2',
+                        floor: '3',
+                        building: '2',
+                      },
+                      subject: {
+                        string: 'Функциональный анализ (лек)',
+                        discipline: 'Функциональный анализ',
+                        type: 'лек',
+                      },
                       isDistance: false,
-                      subject: 'Функциональный анализ (лек)',
                       teacher: {
                         id: '0',
                         name: 'Иванов И.П',
                       },
                     },
                     {
-                      audienceText: 'ауд. Дистанционно (on-line корпус)',
-                      audience: 'Дистанционно',
-                      floor: undefined,
-                      building: 'on-line',
+                      audience: {
+                        string: 'ауд. Дистанционно (on-line корпус)',
+                        number: 'Дистанционно',
+                        floor: undefined,
+                        building: 'on-line',
+                      },
+                      subject: {
+                        string: 'Программный анализ (лек)',
+                        discipline: 'Программный анализ',
+                        type: 'лек',
+                      },
                       isDistance: true,
-                      subject: 'Программный анализ (лек)',
                       teacher: {
                         id: '0',
                         name: 'Иванов И.П',
@@ -188,12 +212,18 @@ export default class DemoClient implements BaseClient {
                   time: '13:30',
                   lessons: [
                     {
-                      audienceText: 'ауд. Дистанционно (on-line корпус)',
-                      audience: 'Дистанционно',
-                      floor: undefined,
-                      building: 'on-line',
+                      audience: {
+                        string: 'ауд. Дистанционно (on-line корпус)',
+                        number: 'Дистанционно',
+                        floor: undefined,
+                        building: 'on-line',
+                      },
+                      subject: {
+                        string: 'Программный анализ (лек)',
+                        discipline: 'Программный анализ',
+                        type: 'лек',
+                      },
                       isDistance: true,
-                      subject: 'Программный анализ (лек)',
                       teacher: {
                         id: '0',
                         name: 'Иванов И.П',
