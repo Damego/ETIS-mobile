@@ -9,6 +9,7 @@ import { ICertificateTable } from '../models/certificate';
 import { IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
 import { IPersonalRecord } from '../models/personalRecords';
+import { IPointUpdates } from '../models/pointUpdates';
 import { ISessionRating } from '../models/rating';
 import { IGetPayload, IGetResult } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
@@ -34,6 +35,7 @@ import { parseCertificateTable } from '../parser/certificate';
 import { StudentInfo } from '../parser/menu';
 import parseOrders from '../parser/order';
 import parsePersonalRecords from '../parser/personalRecords';
+import parsePointUpdates from '../parser/pointUpdates';
 import parseRating from '../parser/rating';
 import parseSessionQuestionnaire from '../parser/sessionQuestionnaire';
 import parseSessionQuestionnaireList from '../parser/sessionQuestionnaireList';
@@ -41,8 +43,6 @@ import { httpClient } from '../utils';
 import bind from '../utils/methodBinder';
 import { BaseClient, BasicClient } from './base';
 import DemoClient from './demoClient';
-import parsePointUpdates from '../parser/pointUpdates';
-import { IPointUpdates } from '../models/pointUpdates';
 
 export const useClient: () => BaseClient = () => {
   const { isDemo } = useAppSelector((state) => state.auth);
@@ -142,7 +142,7 @@ export default class Client implements BaseClient {
     this.pointUpdatesClient = new PointUpdatesClient(
       ({ data }) => cache.getPointUpdates(data),
       ({ data }) => httpClient.getPointUpdates(data),
-      (data) => { return { url: data, data: parsePointUpdates(data)} },
+      (data, { data: url }) => parsePointUpdates(data, url),
       (data) => cache.placePointUpdates(data)
     );
     this.marksClient = new MarksClient(
