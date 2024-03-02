@@ -6,6 +6,7 @@ import { ICertificate, ICertificateTable } from '../models/certificate';
 import { IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
 import { IPersonalRecord } from '../models/personalRecords';
+import { IPointUpdates } from '../models/pointUpdates';
 import { ISessionRating } from '../models/rating';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
@@ -20,7 +21,6 @@ import { Events } from '../utils/events';
 import FieldCache from './fieldCache';
 import MappedCache from './mappedCache';
 import SecuredFieldCache from './securedFieldCache';
-import { IPointUpdates } from '../models/pointUpdates';
 
 export default class SmartCache {
   absences: MappedCache<number, IAbsence>;
@@ -34,7 +34,7 @@ export default class SmartCache {
   timeTable: MappedCache<number, ITimeTable>;
   teachers: FieldCache<TeacherType>;
   teachPlan: FieldCache<ISessionTeachPlan[]>;
-  pointUpdates: MappedCache<string, string>;
+  pointUpdates: MappedCache<string, IPointUpdates>;
   signsMarks: MappedCache<number, ISessionMarks>;
   signsPoints: MappedCache<number, ISessionPoints>;
   signsRating: MappedCache<number, ISessionRating>;
@@ -214,16 +214,16 @@ export default class SmartCache {
   // End TeachPlan Region
 
   // Region Signs
-  
+
   // // PointUpdates Region
 
   async getPointUpdates(url: string): Promise<IPointUpdates> {
     if (!this.pointUpdates.isReady()) await this.pointUpdates.init();
-    return { url, data: this.pointUpdates.get(url) };
+    return this.pointUpdates.get(url);
   }
 
-  async placePointUpdates(d: IPointUpdates) {
-    this.pointUpdates.place(d.url, d.data);
+  async placePointUpdates(data: IPointUpdates) {
+    this.pointUpdates.place(data.url, data);
     await this.pointUpdates.save();
   }
 
