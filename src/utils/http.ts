@@ -12,6 +12,7 @@ import { getCurrentEducationYear } from './datetime';
 import { toURLSearchParams } from './encoding';
 import { SessionQuestionnairePayload } from './sessionTest';
 import getRandomUserAgent from './userAgents';
+import { IPointUpdates } from '../models/pointUpdates';
 
 const cyrillicToTranslit = CyrillicToTranslit();
 
@@ -239,6 +240,13 @@ class HTTPClient {
     }
 
     return null;
+  }
+
+  getPointUpdates(url: string): Promise<Response<string>> {
+    return this.request('GET', url, {
+      params: {},
+      returnResponse: false,
+    });
   }
 
   /*

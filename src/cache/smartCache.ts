@@ -6,6 +6,7 @@ import { ICertificate, ICertificateTable } from '../models/certificate';
 import { IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
 import { IPersonalRecord } from '../models/personalRecords';
+import { IPointUpdates } from '../models/pointUpdates';
 import { ISessionRating } from '../models/rating';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
@@ -33,6 +34,7 @@ export default class SmartCache {
   timeTable: MappedCache<number, ITimeTable>;
   teachers: FieldCache<TeacherType>;
   teachPlan: FieldCache<ISessionTeachPlan[]>;
+  pointUpdates: MappedCache<string, IPointUpdates>;
   signsMarks: MappedCache<number, ISessionMarks>;
   signsPoints: MappedCache<number, ISessionPoints>;
   signsRating: MappedCache<number, ISessionRating>;
@@ -54,6 +56,7 @@ export default class SmartCache {
     ORDERS: 'ORDERS',
     ORDERS_INFO: 'ORDERS_INFO',
     PERSONAL_RECORDS: 'PERSONAL_RECORDS',
+    POINT_UPDATES: 'POINT_UPDATES',
     SIGNS_POINTS: 'SIGNS_POINTS',
     SIGNS_MARKS: 'SIGNS_MARKS',
     SIGNS_RATING: 'SIGNS_RATING',
@@ -79,6 +82,7 @@ export default class SmartCache {
     this.timeTable = new MappedCache(this.keys.TIMETABLE);
     this.teachers = new FieldCache<TeacherType>(this.keys.TEACHERS);
     this.teachPlan = new FieldCache(this.keys.TEACH_PLAN);
+    this.pointUpdates = new MappedCache(this.keys.POINT_UPDATES);
     this.signsMarks = new MappedCache(this.keys.SIGNS_MARKS);
     this.signsPoints = new MappedCache(this.keys.SIGNS_POINTS);
     this.signsRating = new MappedCache(this.keys.SIGNS_RATING);
@@ -210,6 +214,20 @@ export default class SmartCache {
   // End TeachPlan Region
 
   // Region Signs
+
+  // // PointUpdates Region
+
+  async getPointUpdates(url: string): Promise<IPointUpdates> {
+    if (!this.pointUpdates.isReady()) await this.pointUpdates.init();
+    return this.pointUpdates.get(url);
+  }
+
+  async placePointUpdates(data: IPointUpdates) {
+    this.pointUpdates.place(data.url, data);
+    await this.pointUpdates.save();
+  }
+
+  // // End PointUpdates Region
 
   // // Marks Region
 

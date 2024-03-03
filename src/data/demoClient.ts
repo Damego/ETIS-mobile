@@ -9,6 +9,7 @@ import { ICertificateTable } from '../models/certificate';
 import { IMessagesData, MessageType } from '../models/messages';
 import { IOrder } from '../models/order';
 import { IPersonalRecord } from '../models/personalRecords';
+import { IPointUpdates } from '../models/pointUpdates';
 import { ISessionRating } from '../models/rating';
 import { GetResultType, IGetPayload, IGetResult } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
@@ -375,6 +376,7 @@ export default class DemoClient implements BaseClient {
               maxScore: 30,
               isIntroductionWork: false,
               date: '01.10.2023',
+              updatesUrl: '',
               teacher: 'Иванов И. И.',
               hasPoints: true,
               failed: false,
@@ -390,6 +392,7 @@ export default class DemoClient implements BaseClient {
               maxScore: 30,
               isIntroductionWork: false,
               date: '01.10.2023',
+              updatesUrl: '',
               teacher: 'Иванов И. И.',
               hasPoints: true,
               failed: false,
@@ -405,6 +408,7 @@ export default class DemoClient implements BaseClient {
               maxScore: 40,
               isIntroductionWork: false,
               date: '05.10.2023',
+              updatesUrl: '',
               teacher: 'Иванов И. И.',
               hasPoints: true,
               failed: false,
@@ -427,6 +431,7 @@ export default class DemoClient implements BaseClient {
               maxScore: 20,
               isIntroductionWork: false,
               date: '01.10.2023',
+              updatesUrl: '',
               teacher: 'Иванов И. И.',
               hasPoints: true,
               failed: false,
@@ -442,6 +447,7 @@ export default class DemoClient implements BaseClient {
               maxScore: 30,
               isIntroductionWork: false,
               date: '01.10.2023',
+              updatesUrl: '',
               teacher: 'Иванов И. И.',
               hasPoints: true,
               failed: false,
@@ -457,6 +463,7 @@ export default class DemoClient implements BaseClient {
               maxScore: 40,
               isIntroductionWork: false,
               date: '05.10.2023',
+              updatesUrl: '',
               teacher: 'Иванов И. И.',
               hasPoints: true,
               failed: false,
@@ -479,6 +486,7 @@ export default class DemoClient implements BaseClient {
               maxScore: 20,
               isIntroductionWork: false,
               date: '01.10.2023',
+              updatesUrl: '',
               teacher: 'Иванов И. И.',
               hasPoints: true,
               failed: false,
@@ -494,6 +502,7 @@ export default class DemoClient implements BaseClient {
               maxScore: 30,
               isIntroductionWork: false,
               date: '01.10.2023',
+              updatesUrl: '',
               teacher: 'Иванов И. И.',
               hasPoints: true,
               failed: false,
@@ -509,6 +518,7 @@ export default class DemoClient implements BaseClient {
               maxScore: 40,
               isIntroductionWork: false,
               date: '01.10.2023',
+              updatesUrl: '',
               teacher: 'Иванов И. И.',
               hasPoints: true,
               failed: false,
@@ -531,6 +541,7 @@ export default class DemoClient implements BaseClient {
               maxScore: 20,
               isIntroductionWork: false,
               date: '01.10.2023',
+              updatesUrl: '',
               teacher: 'Иванов И. И.',
               hasPoints: false,
               failed: false,
@@ -546,6 +557,7 @@ export default class DemoClient implements BaseClient {
               maxScore: 30,
               isIntroductionWork: false,
               date: '01.10.2023',
+              updatesUrl: '',
               teacher: 'Иванов И. И.',
               hasPoints: false,
               failed: true,
@@ -561,6 +573,7 @@ export default class DemoClient implements BaseClient {
               maxScore: 40,
               isIntroductionWork: false,
               date: '01.10.2023',
+              updatesUrl: '',
               teacher: 'Иванов И. И.',
               hasPoints: false,
               failed: true,
@@ -576,6 +589,10 @@ export default class DemoClient implements BaseClient {
       sessionName: 'триместр',
     };
     return this.toResult(data);
+  }
+
+  async getPointUpdates(): Promise<IGetResult<IPointUpdates>> {
+    return this.toResult({ url: '', date: '24.12.2023' });
   }
 
   async getStudentInfoData(): Promise<IGetResult<StudentInfo>> {
