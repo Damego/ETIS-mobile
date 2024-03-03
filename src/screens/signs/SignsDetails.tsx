@@ -6,8 +6,8 @@ import Text from '../../components/Text';
 import { ICheckPoint } from '../../models/sessionPoints';
 import { RootStackScreenProps } from '../../navigation/types';
 import { fontSize } from '../../utils/texts';
-import TotalPoints from './TotalPoints';
 import CheckPointDetails from './CheckPointDetails';
+import TotalPoints from './TotalPoints';
 
 const styles = StyleSheet.create({
   header: {
@@ -30,9 +30,9 @@ export default function SignsDetails({ route }: RootStackScreenProps<'SignsDetai
         <TotalPoints subject={subject} style={{ alignItems: 'center' }} />
       </View>
 
-      {subject.checkPoints.map((checkPoint: ICheckPoint, index: number) =>
-        <CheckPointDetails checkPoint={checkPoint} index={index} key={index}/>
-      )}
+      {subject.checkPoints.map((checkPoint: ICheckPoint, index: number) => (
+        <CheckPointDetails checkPoint={checkPoint} index={index} key={index} />
+      ))}
     </Screen>
   );
 }
