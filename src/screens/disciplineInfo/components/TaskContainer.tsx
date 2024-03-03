@@ -1,9 +1,10 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import dayjs from 'dayjs';
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import Text from '../../../components/Text';
+import TaskContext from '../../../context/taskContext';
 import useBackPress from '../../../hooks/useBackPress';
 import useTasks from '../../../hooks/useTasks';
 import { DisciplineStorage, DisciplineTask } from '../../../models/disciplinesTasks';
@@ -47,24 +48,31 @@ export const TaskContainer = ({
       });
       return;
     }
+    console.log('linked', partial.isLinkedToPair);
     const task = new DisciplineTask(
       DisciplineStorage.getNextTaskId(), // Логично, не правда ли?
       disciplineName,
       partial.description,
-      disciplineDate.clone(),
-      partial.reminders
+      partial.isLinkedToPair ? disciplineDate.clone() : null,
+      partial.reminders,
+      false
     );
 
     addTask(task).then(closeModal);
   };
 
-  const onRequestEdit = (task: DisciplineTask) => {
+  const onRequestEdit = useCallback((task: DisciplineTask) => {
     setSelectedTask(task);
     openModal();
-  };
+  }, []);
 
   const handleTaskRemove = (task: DisciplineTask) => {
     removeTask(task).then(closeModal);
+  };
+
+  const onTaskComplete = (task: DisciplineTask) => {
+    task.isComplete = !task.isComplete;
+    saveTasks();
   };
 
   // ВЕЗДЕ ПРОБЛЕМЫ
@@ -86,10 +94,17 @@ export const TaskContainer = ({
     <View>
       <View style={styles.taskContainer}>
         <Text style={styles.taskText}>Задания</Text>
-        {disciplineDate > currentDate && <AddButton onPress={openModal} />}
+        <AddButton onPress={openModal} />
       </View>
 
-      <TaskList tasks={tasks} disciplineDate={disciplineDate} onRequestEdit={onRequestEdit} />
+      <TaskContext.Provider
+        value={useMemo(
+          () => ({ onRequestEdit, disciplineDate, onComplete: onTaskComplete }),
+          [disciplineDate]
+        )}
+      >
+        <TaskList tasks={tasks} />
+      </TaskContext.Provider>
 
       <TaskModal
         ref={modalRef}
@@ -99,6 +114,7 @@ export const TaskContainer = ({
         onDismiss={() => {
           modalOpened.current = false;
         }}
+        disableCheckbox={currentDate > disciplineDate}
       />
     </View>
   );

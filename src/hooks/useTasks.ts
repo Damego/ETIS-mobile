@@ -1,26 +1,39 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { DisciplineStorage, DisciplineTask } from '../models/disciplinesTasks';
 
 const useTasks = ({ filter }: { filter?: (task: DisciplineTask) => boolean } = {}) => {
   const [tasks, setTasks] = useState<DisciplineTask[]>([]);
 
-  const setTasksWithFilter = (tasks: DisciplineTask[]) => {
-    if (filter) setTasks(tasks.filter(filter));
-    else setTasks(tasks);
-  };
+  const setTasksWithFilter = useCallback(
+    (tasks: DisciplineTask[]) => {
+      if (filter) setTasks(tasks.filter(filter));
+      else setTasks(tasks);
+    },
+    [filter]
+  );
 
   useEffect(() => {
     DisciplineStorage.getTasks().then(setTasksWithFilter);
   }, []);
 
-  const addTask = (task: DisciplineTask) =>
-    DisciplineStorage.addTask(task).then(setTasksWithFilter);
+  const addTask = useCallback(
+    (task: DisciplineTask) => DisciplineStorage.addTask(task).then(setTasksWithFilter),
+    []
+  );
 
-  const removeTask = (task: DisciplineTask) =>
-    DisciplineStorage.removeTask(task).then(setTasksWithFilter);
+  const removeTask = useCallback(
+    (task: DisciplineTask) => DisciplineStorage.removeTask(task).then(setTasksWithFilter),
+    []
+  );
 
-  const saveTasks = () => DisciplineStorage.saveTasks();
+  const saveTasks = useCallback(
+    () =>
+      DisciplineStorage.saveTasks().then(() =>
+        DisciplineStorage.getTasks().then(setTasksWithFilter)
+      ),
+    []
+  );
 
   return { tasks, addTask, removeTask, saveTasks };
 };

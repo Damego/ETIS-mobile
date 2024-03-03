@@ -30,21 +30,24 @@ export class DisciplineTask {
   id: number;
   disciplineName: string;
   description: string;
-  datetime: dayjs.Dayjs;
+  datetime: dayjs.Dayjs | null;
   reminders: DisciplineReminder[];
+  isComplete: boolean;
 
   constructor(
     id: number,
     disciplineName: string,
     description: string,
-    datetime: dayjs.Dayjs,
-    reminders: DisciplineReminder[]
+    datetime: dayjs.Dayjs | null,
+    reminders: DisciplineReminder[],
+    isComplete: boolean
   ) {
     this.id = id;
     this.disciplineName = disciplineName;
     this.description = description;
     this.datetime = datetime;
     this.reminders = reminders;
+    this.isComplete = isComplete;
   }
 
   toJSON(): IDisciplineTask {
@@ -52,8 +55,9 @@ export class DisciplineTask {
       id: this.id,
       disciplineName: this.disciplineName,
       description: this.description,
-      datetime: this.datetime.toISOString(),
+      datetime: this.datetime ? this.datetime.toISOString() : null,
       reminders: this.reminders.map((rem) => rem.toJSON()),
+      isComplete: this.isComplete,
     };
   }
 
@@ -62,8 +66,9 @@ export class DisciplineTask {
       data.id,
       data.disciplineName,
       data.description,
-      dayjs(data.datetime),
-      data.reminders.map((rem) => DisciplineReminder.fromJSON(rem))
+      data.datetime ? dayjs(data.datetime) : null,
+      data.reminders.map((rem) => DisciplineReminder.fromJSON(rem)),
+      data.isComplete
     );
   }
 }
@@ -101,10 +106,6 @@ export class DisciplineStorage {
 
   static async saveInfo() {
     return saveDisciplineInfo(DisciplineStorage.info);
-  }
-
-  static async saveAll() {
-    await Promise.all([this.saveTasks(), this.saveInfo()]);
   }
 
   static async getTasks(): Promise<DisciplineTask[]> {

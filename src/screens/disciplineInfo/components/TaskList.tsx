@@ -1,28 +1,23 @@
 import dayjs from 'dayjs';
-import React, { useMemo, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import Text from '../../../components/Text';
+import TaskContext from '../../../context/taskContext';
 import { DisciplineTask } from '../../../models/disciplinesTasks';
 import { formatTime } from '../../../utils/datetime';
 import { fontSize } from '../../../utils/texts';
-import { groupItems } from '../../../utils/utils';
 import HistoryButton from '../HistoryButton';
+import getGroupedTasks from '../getGroupedTasks';
 import TaskItem from './TaskItem';
 
-const GroupedTaskList = ({
-  tasks,
-  disciplineDate,
-  onRequestEdit,
-}: {
-  tasks: DisciplineTask[];
-  disciplineDate: dayjs.Dayjs;
-  onRequestEdit: (task: DisciplineTask) => void;
-}) => {
+const GroupedTaskList = ({ tasks }: { tasks: DisciplineTask[] }) => {
+  const { disciplineDate } = useContext(TaskContext);
   const { datetime } = tasks[0];
   let time: string;
 
-  if (disciplineDate.isSame(datetime)) time = 'На эту пару';
+  if (tasks[0].datetime === null) time = 'Без даты';
+  else if (disciplineDate.isSame(datetime)) time = 'На эту пару';
   else time = formatTime(datetime);
 
   return (
@@ -30,42 +25,26 @@ const GroupedTaskList = ({
       <Text style={styles.title}>{time}</Text>
       <View style={styles.taskListContainer}>
         {tasks.map((task) => (
-          <TaskItem task={task} onRequestEdit={onRequestEdit} key={task.id} />
+          <TaskItem task={task} key={task.id} />
         ))}
       </View>
     </>
   );
 };
 
-const TaskList = ({
-  tasks,
-  disciplineDate,
-  onRequestEdit,
-}: {
-  tasks: DisciplineTask[];
-  disciplineDate: dayjs.Dayjs;
-  onRequestEdit: (task: DisciplineTask) => void;
-}) => {
+const TaskList = ({ tasks }: { tasks: DisciplineTask[] }) => {
   const [showInactiveTasks, setShowInactiveTasks] = useState<boolean>(false);
 
   const currentDate = dayjs();
-
-  const inactiveTasks = tasks.filter((task) => task.datetime < currentDate).reverse();
-  const activeTasks = tasks.filter((task) => task.datetime >= currentDate);
-  const groupedActiveTasks = useMemo(
-    () => groupItems(activeTasks, (task) => task.datetime.toISOString()),
-    [activeTasks]
+  const { groupedActiveTasks, inactiveTasks } = useMemo(
+    () => getGroupedTasks(tasks, currentDate),
+    [currentDate]
   );
 
   return (
     <>
       {groupedActiveTasks.map((group) => (
-        <GroupedTaskList
-          key={group[0].id}
-          tasks={group}
-          onRequestEdit={onRequestEdit}
-          disciplineDate={disciplineDate}
-        />
+        <GroupedTaskList key={group[0].id} tasks={group} />
       ))}
 
       {!!inactiveTasks.length && (
@@ -76,12 +55,7 @@ const TaskList = ({
       )}
 
       {showInactiveTasks && inactiveTasks.length && (
-        <GroupedTaskList
-          key={inactiveTasks[0].id}
-          tasks={inactiveTasks}
-          disciplineDate={disciplineDate}
-          onRequestEdit={onRequestEdit}
-        />
+        <GroupedTaskList key={inactiveTasks[0].id} tasks={inactiveTasks} />
       )}
     </>
   );

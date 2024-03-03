@@ -6,31 +6,26 @@ import { StyleSheet } from 'react-native';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import CenteredText from '../../components/CenteredText';
 import Screen from '../../components/Screen';
+import TaskContext, { ITaskContext } from '../../context/taskContext';
 import useBackPress from '../../hooks/useBackPress';
 import useTasks from '../../hooks/useTasks';
 import { DisciplineStorage, DisciplineTask } from '../../models/disciplinesTasks';
 import { RootStackScreenProps } from '../../navigation/types';
 import { formatTime } from '../../utils/datetime';
 import { fontSize } from '../../utils/texts';
-import { groupItems } from '../../utils/utils';
 import { PartialTask } from '../disciplineInfo/AddTaskModalContent';
 import HistoryButton from '../disciplineInfo/HistoryButton';
 import TaskModal from '../disciplineInfo/TaskModal';
 import TaskItem from '../disciplineInfo/components/TaskItem';
+import getGroupedTasks from '../disciplineInfo/getGroupedTasks';
 
-const TaskGroup = ({
-  tasks,
-  onRequestEdit,
-}: {
-  tasks: DisciplineTask[];
-  onRequestEdit: (task: DisciplineTask) => void;
-}) => {
+const TaskGroup = ({ tasks }: { tasks: DisciplineTask[] }) => {
   const time = formatTime(tasks[0].datetime, { disableTime: true });
 
   return (
     <CardHeaderOut topText={time} style={styles.taskListContainer}>
       {tasks.map((task) => (
-        <TaskItem task={task} onRequestEdit={onRequestEdit} key={task.id} showDisciplineName />
+        <TaskItem task={task} key={task.id} showDisciplineName />
       ))}
     </CardHeaderOut>
   );
@@ -54,10 +49,10 @@ const DisciplinesTasks = ({ route }: RootStackScreenProps<'DisciplineTasks'>) =>
     modalOpened.current = false;
   };
 
-  const onRequestEdit = (task: DisciplineTask) => {
+  const onRequestEdit = useCallback((task: DisciplineTask) => {
     setSelectedTask(task);
     openModal();
-  };
+  }, []);
 
   const handleTaskAdd = (partial: PartialTask) => {
     if (!selectedTask) return; // impossible in this case;
@@ -74,6 +69,11 @@ const DisciplinesTasks = ({ route }: RootStackScreenProps<'DisciplineTasks'>) =>
     removeTask(task).then(() => {
       closeModal();
     });
+  };
+
+  const onTaskComplete = (task: DisciplineTask) => {
+    task.isComplete = !task.isComplete;
+    saveTasks();
   };
 
   useEffect(() => {
@@ -97,12 +97,14 @@ const DisciplinesTasks = ({ route }: RootStackScreenProps<'DisciplineTasks'>) =>
   );
 
   const currentDate = dayjs();
+  const { groupedActiveTasks, inactiveTasks } = useMemo(
+    () => getGroupedTasks(tasks, currentDate),
+    [currentDate]
+  );
 
-  const inactiveTasks = tasks.filter((task) => task.datetime < currentDate).reverse();
-  const activeTasks = tasks.filter((task) => task.datetime >= currentDate);
-  const groupedActiveTasks = useMemo(
-    () => groupItems(activeTasks, (task) => task.datetime.toISOString()),
-    [activeTasks]
+  const context: ITaskContext = useMemo(
+    () => ({ onRequestEdit, onComplete: onTaskComplete }),
+    [onRequestEdit]
   );
 
   return (
@@ -113,9 +115,11 @@ const DisciplinesTasks = ({ route }: RootStackScreenProps<'DisciplineTasks'>) =>
         </CenteredText>
       )}
 
-      {groupedActiveTasks.map((group) => (
-        <TaskGroup key={group[0].id} tasks={group} onRequestEdit={onRequestEdit} />
-      ))}
+      <TaskContext.Provider value={context}>
+        {groupedActiveTasks.map((group) => (
+          <TaskGroup key={group[0].id} tasks={group} />
+        ))}
+      </TaskContext.Provider>
 
       {!!inactiveTasks.length && (
         <HistoryButton
@@ -124,7 +128,9 @@ const DisciplinesTasks = ({ route }: RootStackScreenProps<'DisciplineTasks'>) =>
         />
       )}
 
-      {showInactiveTasks && <TaskGroup tasks={inactiveTasks} onRequestEdit={onRequestEdit} />}
+      <TaskContext.Provider value={context}>
+        {showInactiveTasks && <TaskGroup tasks={inactiveTasks} />}
+      </TaskContext.Provider>
 
       <TaskModal
         ref={modalRef}
