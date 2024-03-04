@@ -53,7 +53,7 @@ const IconInfo = ({ icon, text }: { icon: keyof typeof Ionicons.glyphMap; text: 
 };
 
 export const TimeInfo = ({ date, pairPosition }: { date: dayjs.Dayjs; pairPosition: number }) => {
-  const { isLyceum } = useAppSelector((state) => state.student.info);
+  const isLyceum = useAppSelector((state) => state.student.info?.isLyceum);
   const { name, length, ending } = isLyceum ? lyceumTimeInfo : studentTimeInfo;
 
   date = date.locale('ru');
