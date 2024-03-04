@@ -1,4 +1,6 @@
 import dayjs from 'dayjs';
+import 'react-native-get-random-values';
+import { v4 as uuid4 } from 'uuid';
 
 import {
   readDisciplineInfo,
@@ -48,6 +50,23 @@ export class DisciplineTask {
     this.datetime = datetime;
     this.reminders = reminders;
     this.isComplete = isComplete;
+  }
+
+  static create(
+    disciplineName: string,
+    description: string,
+    datetime: dayjs.Dayjs | null,
+    reminders: DisciplineReminder[],
+    isComplete: boolean
+  ) {
+    return new DisciplineTask(
+      uuid4(),
+      disciplineName,
+      description,
+      datetime,
+      reminders,
+      isComplete
+    );
   }
 
   toJSON(): IDisciplineTask {
@@ -116,10 +135,5 @@ export class DisciplineStorage {
   static async getInfo(): Promise<IDisciplineInfo[]> {
     await DisciplineStorage.read();
     return DisciplineStorage.info;
-  }
-
-  static getNextTaskId() {
-    if (!this.isRead) return null;
-    return this.tasks.length;
   }
 }

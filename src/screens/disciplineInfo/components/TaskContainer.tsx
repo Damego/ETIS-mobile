@@ -38,23 +38,21 @@ export const TaskContainer = ({
     modalOpened.current = false;
   };
 
-  const handleAddTask = (partial: PartialTask) => {
+  const handleAddTask = ({description, reminders, isLinkedToPair}: PartialTask) => {
     if (selectedTask) {
-      selectedTask.description = partial.description;
-      selectedTask.reminders = partial.reminders;
+      selectedTask.description = description;
+      selectedTask.reminders = reminders;
       saveTasks().then(() => {
         closeModal();
         setSelectedTask(null);
       });
       return;
     }
-    console.log('linked', partial.isLinkedToPair);
-    const task = new DisciplineTask(
-      DisciplineStorage.getNextTaskId(), // Логично, не правда ли?
+    const task = DisciplineTask.create(
       disciplineName,
-      partial.description,
-      partial.isLinkedToPair ? disciplineDate.clone() : null,
-      partial.reminders,
+      description,
+      isLinkedToPair ? disciplineDate.clone() : null,
+      reminders,
       false
     );
 
