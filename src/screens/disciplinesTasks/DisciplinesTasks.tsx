@@ -110,7 +110,7 @@ const DisciplinesTasks = ({ route }: RootStackScreenProps<'DisciplineTasks'>) =>
   const currentDate = dayjs();
   const { groupedActiveTasks, groupedInactiveTasks } = useMemo(
     () => getGroupedTasks(tasks, currentDate),
-    [currentDate]
+    [tasks, currentDate]
   );
 
   const context: ITaskContext = useMemo(

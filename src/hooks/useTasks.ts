@@ -7,8 +7,8 @@ const useTasks = ({ filter }: { filter?: (task: DisciplineTask) => boolean } = {
 
   const setTasksWithFilter = useCallback(
     (tasks: DisciplineTask[]) => {
-      if (filter) setTasks(tasks.filter(filter));
-      else setTasks(tasks);
+      if (filter) setTasks([...tasks].filter(filter));
+      else setTasks([...tasks]);
     },
     [filter]
   );
