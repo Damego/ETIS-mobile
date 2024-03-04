@@ -36,7 +36,7 @@ const TaskList = ({ tasks }: { tasks: DisciplineTask[] }) => {
   const [showInactiveTasks, setShowInactiveTasks] = useState<boolean>(false);
 
   const currentDate = dayjs();
-  const { groupedActiveTasks, inactiveTasks } = useMemo(
+  const { groupedActiveTasks, groupedInactiveTasks } = useMemo(
     () => getGroupedTasks(tasks, currentDate),
     [currentDate]
   );
@@ -47,16 +47,15 @@ const TaskList = ({ tasks }: { tasks: DisciplineTask[] }) => {
         <GroupedTaskList key={group[0].id} tasks={group} />
       ))}
 
-      {!!inactiveTasks.length && (
+      {!!groupedInactiveTasks.length && (
         <HistoryButton
           onPress={() => setShowInactiveTasks((prev) => !prev)}
           showHistory={showInactiveTasks}
         />
       )}
 
-      {showInactiveTasks && inactiveTasks.length && (
-        <GroupedTaskList key={inactiveTasks[0].id} tasks={inactiveTasks} />
-      )}
+      {showInactiveTasks &&
+        groupedInactiveTasks.map((group) => <GroupedTaskList key={group[0].id} tasks={group} />)}
     </>
   );
 };

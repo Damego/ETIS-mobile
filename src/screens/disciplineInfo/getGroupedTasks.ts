@@ -15,6 +15,10 @@ const getGroupedTasks = (tasks: DisciplineTask[], currentDate: dayjs.Dayjs) => {
   const inactiveTasks = tasks
     .filter((task) => (task.datetime && task.datetime < currentDate) || task.isComplete)
     .reverse();
+  const groupedInactiveTasks = groupItems(inactiveTasks, (task) =>
+    task.datetime ? task.datetime.toISOString() : 'no-datetime'
+  ).sort(sortTaskGroups);
+
   const activeTasks = tasks.filter(
     (task) => (task.datetime && task.datetime >= currentDate) || !task.isComplete
   );
@@ -22,7 +26,7 @@ const getGroupedTasks = (tasks: DisciplineTask[], currentDate: dayjs.Dayjs) => {
     task.datetime ? task.datetime.toISOString() : 'no-datetime'
   ).sort(sortTaskGroups);
 
-  return {groupedActiveTasks, inactiveTasks};
+  return {groupedActiveTasks, groupedInactiveTasks};
 };
 
 export default getGroupedTasks;

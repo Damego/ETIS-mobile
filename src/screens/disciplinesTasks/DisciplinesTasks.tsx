@@ -97,7 +97,7 @@ const DisciplinesTasks = ({ route }: RootStackScreenProps<'DisciplineTasks'>) =>
   );
 
   const currentDate = dayjs();
-  const { groupedActiveTasks, inactiveTasks } = useMemo(
+  const { groupedActiveTasks, groupedInactiveTasks } = useMemo(
     () => getGroupedTasks(tasks, currentDate),
     [currentDate]
   );
@@ -119,17 +119,16 @@ const DisciplinesTasks = ({ route }: RootStackScreenProps<'DisciplineTasks'>) =>
         {groupedActiveTasks.map((group) => (
           <TaskGroup key={group[0].id} tasks={group} />
         ))}
-      </TaskContext.Provider>
 
-      {!!inactiveTasks.length && (
-        <HistoryButton
-          onPress={() => setShowInactiveTasks((prev) => !prev)}
-          showHistory={showInactiveTasks}
-        />
-      )}
+        {!!groupedInactiveTasks.length && (
+          <HistoryButton
+            onPress={() => setShowInactiveTasks((prev) => !prev)}
+            showHistory={showInactiveTasks}
+          />
+        )}
 
-      <TaskContext.Provider value={context}>
-        {showInactiveTasks && <TaskGroup tasks={inactiveTasks} />}
+        {showInactiveTasks &&
+          groupedInactiveTasks.map((group) => <TaskGroup key={group[0].id} tasks={group} />)}
       </TaskContext.Provider>
 
       <TaskModal
