@@ -13,6 +13,5 @@
   "importOrder": ["<THIRD_PARTY_MODULES>", "^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
-  "plugins": ["@trivago/prettier-plugin-sort-imports"],
-  "endOfLine": "crlf"
+  "plugins": ["@trivago/prettier-plugin-sort-imports"]
 }
