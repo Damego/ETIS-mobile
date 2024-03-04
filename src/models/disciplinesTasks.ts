@@ -62,7 +62,7 @@ export class DisciplineTask {
     return new DisciplineTask(
       uuid4(),
       disciplineName,
-      description,
+      description.trim(),
       datetime,
       reminders,
       isComplete
