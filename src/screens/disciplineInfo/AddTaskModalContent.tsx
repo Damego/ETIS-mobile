@@ -103,7 +103,6 @@ const AddTaskModalContent = ({
 
       <View style={styles.row}>
         <Text style={styles.titleText}>Напоминания</Text>
-
         <AddButton onPress={openReminderModal} />
       </View>
 
@@ -168,6 +167,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
     gap: 8,
+    padding: '2%'
   },
   button: {
     fontWeight: '500',

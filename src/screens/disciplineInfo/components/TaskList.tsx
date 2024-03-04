@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import React, { useContext, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
+import BorderLine from '../../../components/BorderLine';
 import Text from '../../../components/Text';
 import TaskContext from '../../../context/taskContext';
 import { DisciplineTask } from '../../../models/disciplinesTasks';
@@ -24,8 +25,11 @@ const GroupedTaskList = ({ tasks }: { tasks: DisciplineTask[] }) => {
     <>
       <Text style={styles.title}>{time}</Text>
       <View style={styles.taskListContainer}>
-        {tasks.map((task) => (
-          <TaskItem task={task} key={task.id} />
+        {tasks.map((task, index) => (
+          <>
+            <TaskItem task={task} key={task.id} />
+            {tasks.length - 1 !== index && <BorderLine key={index} />}
+          </>
         ))}
       </View>
     </>

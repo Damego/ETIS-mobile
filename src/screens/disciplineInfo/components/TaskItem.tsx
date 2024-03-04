@@ -3,7 +3,6 @@ import { Checkbox } from 'expo-checkbox';
 import React, { useContext } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import Card from '../../../components/Card';
 import Text from '../../../components/Text';
 import TaskContext from '../../../context/taskContext';
 import { useAppTheme } from '../../../hooks/theme';
@@ -22,8 +21,8 @@ const TaskItem = ({
   return (
     <>
       {showDisciplineName && <Text style={styles.disciplineNameText}>{task.disciplineName}</Text>}
-      <Card style={styles.innerContainer}>
-        <View style={{ flexDirection: 'row', gap: 8 }}>
+      <View style={styles.container}>
+        <View style={[styles.checkbox, styles.align]}>
           <Checkbox
             value={task.isComplete}
             onValueChange={() => onComplete(task)}
@@ -31,10 +30,10 @@ const TaskItem = ({
           />
           <Text>{task.description}</Text>
         </View>
-        <TouchableOpacity onPress={() => onRequestEdit(task)} style={{ alignSelf: 'center' }}>
+        <TouchableOpacity onPress={() => onRequestEdit(task)} style={styles.align}>
           <Ionicons name={'pencil-outline'} size={20} color={theme.colors.textForBlock} />
         </TouchableOpacity>
-      </Card>
+      </View>
     </>
   );
 };
@@ -47,12 +46,16 @@ const styles = StyleSheet.create({
     ...fontSize.medium,
     marginBottom: '1%',
   },
-  outerContainer: {
-    padding: '2%',
-  },
-  innerContainer: {
+  container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 0,
+  },
+  checkbox: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  align: {
+    alignSelf: 'center',
+    alignItems: 'center'
   },
 });

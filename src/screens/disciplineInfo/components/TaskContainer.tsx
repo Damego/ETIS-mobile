@@ -7,7 +7,7 @@ import Text from '../../../components/Text';
 import TaskContext from '../../../context/taskContext';
 import useBackPress from '../../../hooks/useBackPress';
 import useTasks from '../../../hooks/useTasks';
-import { DisciplineStorage, DisciplineTask } from '../../../models/disciplinesTasks';
+import { DisciplineTask } from '../../../models/disciplinesTasks';
 import { fontSize } from '../../../utils/texts';
 import { PartialTask } from '../AddTaskModalContent';
 import TaskModal from '../TaskModal';
