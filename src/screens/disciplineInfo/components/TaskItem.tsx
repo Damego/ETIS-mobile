@@ -9,32 +9,23 @@ import { useAppTheme } from '../../../hooks/theme';
 import { DisciplineTask } from '../../../models/disciplinesTasks';
 import { fontSize } from '../../../utils/texts';
 
-const TaskItem = ({
-  task,
-  showDisciplineName,
-}: {
-  task: DisciplineTask;
-  showDisciplineName?: boolean;
-}) => {
+const TaskItem = ({ task }: { task: DisciplineTask }) => {
   const theme = useAppTheme();
   const { onRequestEdit, onComplete } = useContext(TaskContext);
   return (
-    <>
-      {showDisciplineName && <Text style={styles.disciplineNameText}>{task.disciplineName}</Text>}
-      <View style={styles.container}>
-        <View style={[styles.checkbox, styles.align]}>
-          <Checkbox
-            value={task.isComplete}
-            onValueChange={() => onComplete(task)}
-            color={theme.colors.primary}
-          />
-          <Text>{task.description}</Text>
-        </View>
-        <TouchableOpacity onPress={() => onRequestEdit(task)} style={styles.align}>
-          <Ionicons name={'pencil-outline'} size={20} color={theme.colors.textForBlock} />
-        </TouchableOpacity>
+    <View style={styles.container}>
+      <View style={[styles.checkbox, styles.align]}>
+        <Checkbox
+          value={task.isComplete}
+          onValueChange={() => onComplete(task)}
+          color={theme.colors.primary}
+        />
+        <Text>{task.description}</Text>
       </View>
-    </>
+      <TouchableOpacity onPress={() => onRequestEdit(task)} style={styles.align}>
+        <Ionicons name={'pencil-outline'} size={20} color={theme.colors.textForBlock} />
+      </TouchableOpacity>
+    </View>
   );
 };
 
