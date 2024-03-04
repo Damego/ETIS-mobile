@@ -6,6 +6,7 @@ import { StyleSheet } from 'react-native';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import CenteredText from '../../components/CenteredText';
 import Screen from '../../components/Screen';
+import Text from '../../components/Text';
 import TaskContext, { ITaskContext } from '../../context/taskContext';
 import useBackPress from '../../hooks/useBackPress';
 import useTasks from '../../hooks/useTasks';
@@ -13,6 +14,7 @@ import { DisciplineStorage, DisciplineTask } from '../../models/disciplinesTasks
 import { RootStackScreenProps } from '../../navigation/types';
 import { formatTime } from '../../utils/datetime';
 import { fontSize } from '../../utils/texts';
+import { groupItems } from '../../utils/utils';
 import { PartialTask } from '../disciplineInfo/AddTaskModalContent';
 import HistoryButton from '../disciplineInfo/HistoryButton';
 import TaskModal from '../disciplineInfo/TaskModal';
@@ -20,12 +22,21 @@ import TaskItem from '../disciplineInfo/components/TaskItem';
 import getGroupedTasks from '../disciplineInfo/getGroupedTasks';
 
 const TaskGroup = ({ tasks }: { tasks: DisciplineTask[] }) => {
-  const time = formatTime(tasks[0].datetime, { disableTime: true });
+  const date = tasks[0].datetime
+    ? formatTime(tasks[0].datetime, { disableTime: true })
+    : 'Без даты';
+
+  const innerGroup = groupItems(tasks, (task) => task.disciplineName);
 
   return (
-    <CardHeaderOut topText={time} style={styles.taskListContainer}>
-      {tasks.map((task) => (
-        <TaskItem task={task} key={task.id} showDisciplineName />
+    <CardHeaderOut topText={date} style={styles.taskListContainer}>
+      {innerGroup.map((group) => (
+        <>
+          <Text style={styles.disciplineNameText}>{group[0].disciplineName}</Text>
+          {group.map((task) => (
+            <TaskItem task={task} key={task.id} />
+          ))}
+        </>
       ))}
     </CardHeaderOut>
   );
@@ -159,5 +170,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: '2%',
     marginTop: '2%',
     gap: 4,
+  },
+  disciplineNameText: {
+    fontWeight: '500',
+    ...fontSize.medium,
+    marginBottom: '1%',
   },
 });
