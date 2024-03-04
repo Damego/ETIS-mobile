@@ -26,7 +26,7 @@ const getGroupedTasks = (tasks: DisciplineTask[], currentDate: dayjs.Dayjs) => {
     task.datetime ? task.datetime.toISOString() : 'no-datetime'
   ).sort(sortTaskGroups);
 
-  return {groupedActiveTasks, groupedInactiveTasks};
+  return { groupedActiveTasks, groupedInactiveTasks };
 };
 
 export default getGroupedTasks;

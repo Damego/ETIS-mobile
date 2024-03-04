@@ -38,7 +38,7 @@ export const TaskContainer = ({
     modalOpened.current = false;
   };
 
-  const handleAddTask = ({description, reminders, isLinkedToPair}: PartialTask) => {
+  const handleAddTask = ({ description, reminders, isLinkedToPair }: PartialTask) => {
     if (selectedTask) {
       selectedTask.description = description;
       selectedTask.reminders = reminders;

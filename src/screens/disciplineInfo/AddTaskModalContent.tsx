@@ -181,5 +181,5 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     ...fontSize.medium,
   },
-  checkboxContainer: { flexDirection: 'row', gap: 8 }
+  checkboxContainer: { flexDirection: 'row', gap: 8 },
 });
