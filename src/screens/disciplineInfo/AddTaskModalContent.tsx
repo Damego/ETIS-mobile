@@ -90,15 +90,16 @@ const AddTaskModalContent = ({
         autoComplete={'off'}
       />
 
-      <View style={{ flexDirection: 'row', gap: 8 }}>
-        <Checkbox
-          value={isLinkedToPair}
-          onValueChange={setLinkedToPair}
-          color={globalStyles.primaryFontColor.color}
-          disabled={disableCheckbox}
-        />
-        <Text>Привязать задание к этой паре</Text>
-      </View>
+      {!disableCheckbox && (
+        <View style={styles.checkboxContainer}>
+          <Checkbox
+            value={isLinkedToPair}
+            onValueChange={setLinkedToPair}
+            color={globalStyles.primaryFontColor.color}
+          />
+          <Text>Привязать задание к этой паре</Text>
+        </View>
+      )}
 
       <View style={styles.row}>
         <Text style={styles.titleText}>Напоминания</Text>
@@ -180,4 +181,5 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     ...fontSize.medium,
   },
+  checkboxContainer: { flexDirection: 'row', gap: 8 }
 });
