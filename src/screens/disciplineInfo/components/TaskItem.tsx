@@ -56,6 +56,6 @@ const styles = StyleSheet.create({
   },
   align: {
     alignSelf: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 });

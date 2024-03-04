@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
     gap: 8,
-    padding: '2%'
+    padding: '2%',
   },
   button: {
     fontWeight: '500',
