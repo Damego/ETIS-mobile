@@ -1,4 +1,7 @@
 import * as Sentry from '@sentry/react-native';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
+import weekday from 'dayjs/plugin/weekday';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import 'moment/locale/ru';
@@ -15,6 +18,7 @@ import { checkUpdate } from './utils/inappUpdate';
 import { registerForPushNotificationsAsync, setNotificationHandler } from './utils/notifications';
 import { addShortcuts } from './utils/shortcuts';
 
+dayjs.extend(weekday);
 SplashScreen.preventAutoHideAsync().catch((e) => e);
 
 const store = setupStore();

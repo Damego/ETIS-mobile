@@ -10,11 +10,12 @@ import useTasks from '../../hooks/useTasks';
 import { RootStackNavigationProp } from '../types';
 
 const DisciplineTasksButton = () => {
-  const date = dayjs().startOf('day');
+  const currentDate = dayjs().weekday(1).startOf('day');
+  const weekEnd = currentDate.clone().endOf('week');
   const { tasks } = useTasks({
     filter: (task) => {
       if (!task.datetime) return false;
-      return task.datetime.diff(date, 'day') === 1;
+      return task.datetime >= currentDate && task.datetime <= weekEnd;
     },
   });
   const navigation = useNavigation<RootStackNavigationProp>();
