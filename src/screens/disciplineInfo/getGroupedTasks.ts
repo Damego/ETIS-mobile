@@ -21,8 +21,7 @@ const getGroupedTasks = (tasks: DisciplineTask[], currentDate: dayjs.Dayjs) => {
 
   const activeTasks = tasks.filter(
     (task) =>
-      (task.datetime && task.datetime >= currentDate) ||
-      (!task.datetime && !task.isComplete)
+      (task.datetime && task.datetime >= currentDate) || (!task.datetime && !task.isComplete)
   );
   const groupedActiveTasks = groupItems(activeTasks, (task) =>
     task.datetime ? task.datetime.toISOString() : 'no-datetime'
