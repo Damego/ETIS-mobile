@@ -75,7 +75,9 @@ const AddTaskModalContent = ({
       {showDisciplineInfo && selectedTask && (
         <>
           <Text style={styles.disciplineText}>{selectedTask.disciplineName}</Text>
-          <Text style={styles.timeText}>{formatTime(selectedTask.datetime)}</Text>
+          {selectedTask.datetime && (
+            <Text style={styles.timeText}>{formatTime(selectedTask.datetime)}</Text>
+          )}
         </>
       )}
       {/* BottomSheetTextInput просто закрывается при открытии клавиатуры */}
@@ -90,7 +92,11 @@ const AddTaskModalContent = ({
         autoComplete={'off'}
       />
 
-      {!disableCheckbox && (
+      {/*
+      Выставить привязку к паре можно только во время создания задания,
+      во время редактирования этого сделать нельзя
+      */}
+      {(!disableCheckbox || !selectedTask?.datetime) && !showDisciplineInfo && (
         <View style={styles.checkboxContainer}>
           <Checkbox
             value={isLinkedToPair}
