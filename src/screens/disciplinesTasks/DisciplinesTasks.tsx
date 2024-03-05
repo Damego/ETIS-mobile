@@ -22,9 +22,7 @@ import TaskItem from '../disciplineInfo/components/TaskItem';
 import getGroupedTasks from '../disciplineInfo/getGroupedTasks';
 
 const TaskGroup = ({ tasks }: { tasks: DisciplineTask[] }) => {
-  const date = tasks[0].datetime
-    ? formatTime(tasks[0].datetime, { disableTime: true })
-    : 'Без даты';
+  const date = tasks[0].datetime ? formatTime(tasks[0].datetime, { disableTime: true }) : null;
 
   const innerGroup = groupItems(tasks, (task) => task.disciplineName);
 

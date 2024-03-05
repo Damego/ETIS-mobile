@@ -17,19 +17,16 @@ const GroupedTaskList = ({ tasks }: { tasks: DisciplineTask[] }) => {
   const { datetime } = tasks[0];
   let time: string;
 
-  if (tasks[0].datetime === null) time = 'Без даты';
+  if (tasks[0].datetime === null) time = null;
   else if (disciplineDate.isSame(datetime)) time = 'На эту пару';
   else time = formatTime(datetime);
 
   return (
     <>
-      <Text style={styles.title}>{time}</Text>
+      {time && <Text style={styles.title}>{time}</Text>}
       <View style={styles.taskListContainer}>
-        {tasks.map((task, index) => (
-          <>
-            <TaskItem task={task} key={task.id} />
-            {tasks.length - 1 !== index && <BorderLine key={index} />}
-          </>
+        {tasks.map((task) => (
+          <TaskItem task={task} key={task.id} />
         ))}
       </View>
     </>
@@ -47,8 +44,11 @@ const TaskList = ({ tasks }: { tasks: DisciplineTask[] }) => {
 
   return (
     <>
-      {groupedActiveTasks.map((group) => (
-        <GroupedTaskList key={group[0].id} tasks={group} />
+      {groupedActiveTasks.map((group, index) => (
+        <>
+          <GroupedTaskList key={group[0].id} tasks={group} />
+          {groupedActiveTasks.length - 1 !== index && <BorderLine key={index} />}
+        </>
       ))}
 
       {!!groupedInactiveTasks.length && (
@@ -59,7 +59,12 @@ const TaskList = ({ tasks }: { tasks: DisciplineTask[] }) => {
       )}
 
       {showInactiveTasks &&
-        groupedInactiveTasks.map((group) => <GroupedTaskList key={group[0].id} tasks={group} />)}
+        groupedInactiveTasks.map((group, index) => (
+          <>
+            <GroupedTaskList key={group[0].id} tasks={group} />
+            {groupedInactiveTasks.length - 1 !== index && <BorderLine key={index} />}
+          </>
+        ))}
     </>
   );
 };
