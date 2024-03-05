@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingVertical: '1%',
   },
   checkbox: {
     flexDirection: 'row',
