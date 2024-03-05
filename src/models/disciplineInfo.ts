@@ -10,10 +10,12 @@ export interface IDisciplineTask {
   // Название дисциплины
   description: string;
   // Описание задания
-  datetime: string;
+  datetime: string | null;
   // Дата и время пары, к которому было создано задание в формате ISO
   reminders: IDisciplineReminder[];
   // Список напоминаний к заданию
+  isComplete: boolean;
+  // Является ли задание выполненным
 }
 
 export interface IDisciplineInfo {

@@ -1,4 +1,6 @@
 import dayjs from 'dayjs';
+import 'react-native-get-random-values';
+import { v4 as uuid4 } from 'uuid';
 
 import {
   readDisciplineInfo,
@@ -30,21 +32,41 @@ export class DisciplineTask {
   id: number;
   disciplineName: string;
   description: string;
-  datetime: dayjs.Dayjs;
+  datetime: dayjs.Dayjs | null;
   reminders: DisciplineReminder[];
+  isComplete: boolean;
 
   constructor(
     id: number,
     disciplineName: string,
     description: string,
-    datetime: dayjs.Dayjs,
-    reminders: DisciplineReminder[]
+    datetime: dayjs.Dayjs | null,
+    reminders: DisciplineReminder[],
+    isComplete: boolean
   ) {
     this.id = id;
     this.disciplineName = disciplineName;
     this.description = description;
     this.datetime = datetime;
     this.reminders = reminders;
+    this.isComplete = isComplete;
+  }
+
+  static create(
+    disciplineName: string,
+    description: string,
+    datetime: dayjs.Dayjs | null,
+    reminders: DisciplineReminder[],
+    isComplete: boolean
+  ) {
+    return new DisciplineTask(
+      uuid4(),
+      disciplineName,
+      description.trim(),
+      datetime,
+      reminders,
+      isComplete
+    );
   }
 
   toJSON(): IDisciplineTask {
@@ -52,8 +74,9 @@ export class DisciplineTask {
       id: this.id,
       disciplineName: this.disciplineName,
       description: this.description,
-      datetime: this.datetime.toISOString(),
+      datetime: this.datetime ? this.datetime.toISOString() : null,
       reminders: this.reminders.map((rem) => rem.toJSON()),
+      isComplete: this.isComplete,
     };
   }
 
@@ -62,8 +85,9 @@ export class DisciplineTask {
       data.id,
       data.disciplineName,
       data.description,
-      dayjs(data.datetime),
-      data.reminders.map((rem) => DisciplineReminder.fromJSON(rem))
+      data.datetime ? dayjs(data.datetime) : null,
+      data.reminders.map((rem) => DisciplineReminder.fromJSON(rem)),
+      data.isComplete
     );
   }
 }
@@ -103,10 +127,6 @@ export class DisciplineStorage {
     return saveDisciplineInfo(DisciplineStorage.info);
   }
 
-  static async saveAll() {
-    await Promise.all([this.saveTasks(), this.saveInfo()]);
-  }
-
   static async getTasks(): Promise<DisciplineTask[]> {
     await DisciplineStorage.read();
     return DisciplineStorage.tasks;
@@ -115,10 +135,5 @@ export class DisciplineStorage {
   static async getInfo(): Promise<IDisciplineInfo[]> {
     await DisciplineStorage.read();
     return DisciplineStorage.info;
-  }
-
-  static getNextTaskId() {
-    if (!this.isRead) return null;
-    return this.tasks.length;
   }
 }

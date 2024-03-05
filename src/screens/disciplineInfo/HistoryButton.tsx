@@ -14,7 +14,7 @@ const HistoryButton = ({ onPress, showHistory }: { onPress: () => void; showHist
       text={`История заданий`}
       onPress={onPress}
       textStyle={fontSize.big}
-      viewStyle={[globalStyles.border, globalStyles.block, styles.showInactiveButton]}
+      viewStyle={styles.showInactiveButton}
       iconLeft={
         <Ionicons name={'time-outline'} size={26} color={globalStyles.fontColorForBlock.color} />
       }
@@ -35,7 +35,6 @@ export default HistoryButton;
 const styles = StyleSheet.create({
   showInactiveButton: {
     paddingVertical: '1%',
-    paddingHorizontal: '2%',
     marginTop: '2%',
     gap: 4,
   },
