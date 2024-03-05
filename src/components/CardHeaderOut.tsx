@@ -21,7 +21,7 @@ const CardHeaderOut = ({
   style,
   topTextStyle,
 }: {
-  topText: string;
+  topText?: string;
   children: React.ReactNode;
   style?: StyleProp<ViewStyle>;
   topTextStyle?: StyleProp<TextStyle>;
@@ -30,9 +30,13 @@ const CardHeaderOut = ({
 
   return (
     <>
-      <View style={styles.cardHeaderView}>
-        <Text style={[styles.cardHeaderText, globalStyles.textColor, topTextStyle]}>{topText}</Text>
-      </View>
+      {topText && (
+        <View style={styles.cardHeaderView}>
+          <Text style={[styles.cardHeaderText, globalStyles.textColor, topTextStyle]}>
+            {topText}
+          </Text>
+        </View>
+      )}
       <Card style={style}>{children}</Card>
     </>
   );
