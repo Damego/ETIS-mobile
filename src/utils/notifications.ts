@@ -24,7 +24,6 @@ export const sendReminderTaskNotification = (task: DisciplineTask) => {
   });
 };
 
-
 interface IBaseNotificationData {
   type: string;
   data: unknown;

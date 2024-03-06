@@ -52,7 +52,7 @@ const buildMessage = (difference: IDifferentCheckPoint) => {
   const signType = getSignType(difference);
   const message = getRandomItem(messages[signType]);
   const pointsString = getPointsWord(newPoints);
-  return `${difference.subjectName}: ${checkpointTheme}\n${message} ${mark} ${pointsString}!`
+  return `${difference.subjectName}: ${checkpointTheme}\n${message} ${mark} ${pointsString}!`;
 };
 
 export const displaySignNotification = async (difference: IDifferentCheckPoint) => {
@@ -63,7 +63,6 @@ export const displaySignNotification = async (difference: IDifferentCheckPoint) 
     importance: AndroidImportance.HIGH,
     sound: 'default',
     lightColor: '#FF231F7C',
-
   });
 
   const message = buildMessage(difference);
@@ -77,8 +76,8 @@ export const displaySignNotification = async (difference: IDifferentCheckPoint) 
       },
       style: {
         type: AndroidStyle.BIGTEXT,
-        text: message
-      }
+        text: message,
+      },
     },
   });
 };
