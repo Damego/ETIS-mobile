@@ -5,6 +5,8 @@ import {
   readAsStringAsync,
   writeAsStringAsync,
 } from 'expo-file-system';
+import * as FileSystem from 'expo-file-system';
+import * as IntentLauncher from 'expo-intent-launcher';
 
 import { IDisciplineInfo, IDisciplineTask } from '../models/disciplineInfo';
 import httpClient from './http';
@@ -52,6 +54,15 @@ const saveDisciplinesTasks = (data: IDisciplineTask[]) =>
 const readDisciplinesTasks = (): Promise<IDisciplineTask[]> =>
   readJSONFromDocuments('disciplines_tasks.json', []);
 
+const openFile = (uri: string) => {
+  FileSystem.getContentUriAsync(uri).then((contentUri) =>
+    IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
+      data: contentUri,
+      flags: 1,
+    })
+  );
+};
+
 export {
   downloadFile,
   saveFileFromCache,
@@ -61,4 +72,5 @@ export {
   readDisciplineInfo,
   saveDisciplinesTasks,
   readDisciplinesTasks,
+  openFile,
 };

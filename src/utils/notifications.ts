@@ -23,17 +23,3 @@ export const sendReminderTaskNotification = (task: DisciplineTask) => {
     },
   });
 };
-
-interface IBaseNotificationData {
-  type: string;
-  data: unknown;
-}
-
-interface ITaskReminderNotificationData extends IBaseNotificationData {
-  type: 'task-reminder';
-  data: {
-    taskId: number;
-  };
-}
-
-export interface INotificationData extends ITaskReminderNotificationData {}

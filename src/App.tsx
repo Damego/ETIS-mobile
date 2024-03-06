@@ -1,4 +1,3 @@
-import notifee from '@notifee/react-native';
 import * as Sentry from '@sentry/react-native';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
@@ -11,6 +10,7 @@ import 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
 
 import StackNavigator from './navigation/StackNavigator';
+import './notifications/handler';
 import requestNotificationPermission from './notifications/permission';
 import setupStore from './redux';
 import { loadStorage } from './redux/storageLoader';
@@ -28,10 +28,6 @@ store.dispatch(loadStorage());
 defineSignsFetchTask();
 defineReminderTask();
 addShortcuts();
-
-notifee.onBackgroundEvent(async (data) => {
-  console.log(data);
-});
 
 const App = () => {
   const [fontsLoaded] = useFonts({
