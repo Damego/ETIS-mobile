@@ -73,9 +73,17 @@ export default {
           },
         },
       ],
-      // ['./src/plugins/copyDrawable.ts', './assets/tab_icons'],
       ['./src/plugins/disabledForcedDarkModeAndroid.ts', {}],
       'sentry-expo',
+      [
+        'expo-build-properties',
+        {
+          android: {
+            // Без этого билд будет крашиться
+            extraMavenRepos: ['../../node_modules/@notifee/react-native/android/libs'],
+          },
+        },
+      ],
     ],
   },
 };
