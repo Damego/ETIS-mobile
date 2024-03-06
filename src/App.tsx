@@ -1,3 +1,4 @@
+import notifee from '@notifee/react-native';
 import * as Sentry from '@sentry/react-native';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
@@ -10,12 +11,12 @@ import 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
 
 import StackNavigator from './navigation/StackNavigator';
+import requestNotificationPermission from './notifications/permission';
 import setupStore from './redux';
 import { loadStorage } from './redux/storageLoader';
 import { defineReminderTask } from './tasks/disciplineTasks';
-import { defineSignsFetchTask } from './tasks/signs';
+import { defineSignsFetchTask } from './tasks/signs/signs';
 import { checkUpdate } from './utils/inappUpdate';
-import { registerForPushNotificationsAsync, setNotificationHandler } from './utils/notifications';
 import { addShortcuts } from './utils/shortcuts';
 
 dayjs.extend(weekday);
@@ -26,8 +27,11 @@ store.dispatch(loadStorage());
 
 defineSignsFetchTask();
 defineReminderTask();
-setNotificationHandler();
 addShortcuts();
+
+notifee.onBackgroundEvent(async (data) => {
+  console.log(data);
+});
 
 const App = () => {
   const [fontsLoaded] = useFonts({
@@ -38,7 +42,7 @@ const App = () => {
   });
 
   useEffect(() => {
-    registerForPushNotificationsAsync();
+    requestNotificationPermission();
     checkUpdate();
   }, []);
 

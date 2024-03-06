@@ -5,7 +5,7 @@ import { cache } from '../../cache/smartCache';
 import ClickableText from '../../components/ClickableText';
 import { useAppDispatch } from '../../hooks';
 import { signOut } from '../../redux/reducers/authSlice';
-import { unregisterBackgroundFetchAsync } from '../../tasks/signs';
+import { unregisterBackgroundFetchAsync } from '../../tasks/signs/signs';
 import { fontSize } from '../../utils/texts';
 
 const SignOut = () => {
