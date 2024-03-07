@@ -1,4 +1,4 @@
-import notifee from '@notifee/react-native';
+import notifee, { AndroidStyle } from '@notifee/react-native';
 
 export const startDownloadNotification = async (fileName: string) => {
   const channelId = await notifee.createChannel({
@@ -47,6 +47,34 @@ export const finishDownloadNotification = async ({
       progress: {
         indeterminate: false,
       },
+    },
+  });
+};
+
+export const errorDownloadNotification = async ({
+  id,
+  channelId,
+  fileName,
+}: {
+  id: string;
+  channelId: string;
+  fileName: string;
+}) => {
+  const message = `Не удалось скачать файл ${fileName}`;
+
+  await notifee.displayNotification({
+    id,
+    title: 'Ошибка скачивания',
+    body: message,
+    android: {
+      channelId,
+      progress: {
+        indeterminate: false,
+      },
+      style: {
+        type: AndroidStyle.BIGTEXT,
+        text: message,
+      }
     },
   });
 };
