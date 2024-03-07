@@ -4,7 +4,7 @@ import { BackgroundFetchResult } from 'expo-background-fetch';
 import * as TaskManager from 'expo-task-manager';
 
 import { DisciplineReminder, DisciplineStorage, DisciplineTask } from '../models/disciplinesTasks';
-import { sendReminderTaskNotification } from '../utils/notifications';
+import { sendReminderTaskNotification } from '../notifications/taskReminder';
 import { partitionItems } from '../utils/utils';
 
 const BACKGROUND_FETCH_TASK = 'discipline-tasks-fetch';
