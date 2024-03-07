@@ -1,4 +1,4 @@
-import moment from 'moment/moment';
+import dayjs from 'dayjs';
 import React from 'react';
 import { Text, View } from 'react-native';
 
@@ -10,8 +10,8 @@ const DatesContainer = ({ dates }: { dates: WeekDates }) => {
   const globalStyles = useGlobalStyles();
   if (!dates) return;
 
-  const startDate = moment(dates.start, 'DD.MM.YYYY').format('D MMMM');
-  const endDate = moment(dates.end, 'DD.MM.YYYY').format('D MMMM');
+  const startDate = dayjs(dates.start, 'DD.MM.YYYY').format('D MMMM');
+  const endDate = dayjs(dates.end, 'DD.MM.YYYY').format('D MMMM');
 
   return (
     <View style={{ marginTop: '2%', justifyContent: 'center', alignItems: 'center' }}>

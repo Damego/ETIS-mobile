@@ -1,10 +1,10 @@
 import * as Sentry from '@sentry/react-native';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import weekday from 'dayjs/plugin/weekday';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import 'moment/locale/ru';
 import React, { useEffect } from 'react';
 import 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
@@ -19,7 +19,9 @@ import { defineSignsFetchTask } from './tasks/signs/signs';
 import { checkUpdate } from './utils/inappUpdate';
 import { addShortcuts } from './utils/shortcuts';
 
+dayjs.locale('ru');
 dayjs.extend(weekday);
+dayjs.extend(customParseFormat);
 SplashScreen.preventAutoHideAsync().catch((e) => e);
 
 const store = setupStore();

@@ -1,9 +1,7 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
-import moment from 'moment';
-import 'moment/locale/ru';
 
-type DateType = moment.Moment | dayjs.Dayjs;
+type DateType = dayjs.Dayjs;
 
 export const compareTime = (a: DateType, b: DateType): number => {
   if (a > b) return 1;
@@ -35,7 +33,7 @@ export const formatTime = (
 };
 
 export const getCurrentEducationYear = () => {
-  const date = moment();
+  const date = dayjs();
   const year = date.year();
 
   // До сентября - старый учебный год

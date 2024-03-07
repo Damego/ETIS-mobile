@@ -1,9 +1,9 @@
 import * as cheerio from 'cheerio';
-import moment from 'moment/moment';
+import dayjs from 'dayjs';
 
 export const getTextField = (component: cheerio.Cheerio): string => component.text().trim();
 
-export const parseDate = (date: string) => moment(date, 'DD.MM.YYYY HH:mm:ss');
+export const parseDate = (date: string) => dayjs(date, 'DD.MM.YYYY HH:mm:ss');
 
 export const getAsNumber = (str: string, defaultValue: number = null): number | null => {
   const number = parseFloat(str);

@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import moment from 'moment/moment';
+import dayjs from 'dayjs';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
@@ -18,7 +18,7 @@ export default function Pair({
 }: {
   pair: IPair;
   teachersData: TeacherType;
-  date: moment.Moment;
+  date: dayjs.Dayjs;
 }) {
   const { isLyceum } = useAppSelector((state) => state.student.info);
   const pairText = `${pair.position} ${isLyceum ? 'урок' : 'пара'}`;
@@ -34,14 +34,15 @@ export default function Pair({
 
       <View style={{ flexDirection: 'column', flex: 1 }}>
         {pair.lessons.map((lesson, ind) => {
-          const time = moment(pair.time, 'HH:mm');
+          const time = dayjs(pair.time, 'HH:mm');
+          const cloned = date.clone().set('hour', time.hour()).set('minute', time.minute());
 
           return (
             <Lesson
               key={lesson.subject.string + ind}
               data={lesson}
               teachersData={teachersData}
-              date={date.clone().set({ hour: time.hour(), minute: time.minutes() })}
+              date={cloned}
               pairPosition={pair.position}
             />
           );
@@ -59,7 +60,7 @@ const Lesson = ({
 }: {
   data: ILesson;
   teachersData: TeacherType;
-  date: moment.Moment;
+  date: dayjs.Dayjs;
   pairPosition: number;
 }) => {
   const navigation = useNavigation<BottomTabsNavigationProp>();

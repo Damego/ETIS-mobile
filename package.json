@@ -51,7 +51,6 @@
     "expo-system-ui": "~2.9.3",
     "expo-task-manager": "~11.7.2",
     "iconv-lite": "^0.6.3",
-    "moment": "^2.29.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.73.4",

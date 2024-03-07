@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React from 'react';
 
 import { TeacherType } from '../../models/teachers';
@@ -12,7 +12,7 @@ interface IDayArrayProps {
 }
 
 const DayArray = ({ data, teachersData, weekDates }: IDayArrayProps) => {
-  let date = moment(weekDates.start, 'DD.MM.YYYY');
+  let date = dayjs(weekDates.start, 'DD.MM.YYYY');
 
   const bumpDate = () => {
     const prev = date.clone();

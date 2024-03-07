@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React from 'react';
 import { View } from 'react-native';
 
@@ -17,7 +17,7 @@ import Pair from './Pair';
 interface DayData {
   data: ITimeTableDay;
   teachersData: TeacherType;
-  date: moment.Moment;
+  date: dayjs.Dayjs;
 }
 
 const responses = ['Пар нет', 'Отдых', '💤', '😴', '🎮', '(๑ᵕ⌓ᵕ̤)'];
