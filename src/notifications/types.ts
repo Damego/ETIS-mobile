@@ -1,4 +1,3 @@
-
 interface IBaseNotificationData {
   type: string;
   data: unknown;

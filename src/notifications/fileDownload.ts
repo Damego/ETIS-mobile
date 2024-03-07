@@ -74,7 +74,7 @@ export const errorDownloadNotification = async ({
       style: {
         type: AndroidStyle.BIGTEXT,
         text: message,
-      }
+      },
     },
   });
 };
