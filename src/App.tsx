@@ -10,12 +10,13 @@ import 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
 
 import StackNavigator from './navigation/StackNavigator';
+import './notifications/handler';
+import requestNotificationPermission from './notifications/permission';
 import setupStore from './redux';
 import { loadStorage } from './redux/storageLoader';
 import { defineReminderTask } from './tasks/disciplineTasks';
-import { defineSignsFetchTask } from './tasks/signs';
+import { defineSignsFetchTask } from './tasks/signs/signs';
 import { checkUpdate } from './utils/inappUpdate';
-import { registerForPushNotificationsAsync, setNotificationHandler } from './utils/notifications';
 import { addShortcuts } from './utils/shortcuts';
 
 dayjs.extend(weekday);
@@ -26,7 +27,6 @@ store.dispatch(loadStorage());
 
 defineSignsFetchTask();
 defineReminderTask();
-setNotificationHandler();
 addShortcuts();
 
 const App = () => {
@@ -38,7 +38,7 @@ const App = () => {
   });
 
   useEffect(() => {
-    registerForPushNotificationsAsync();
+    requestNotificationPermission();
     checkUpdate();
   }, []);
 
