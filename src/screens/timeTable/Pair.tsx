@@ -4,19 +4,13 @@ import React, { useContext } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import Text from '../../components/Text';
+import TimeTableContext from '../../context/timetableContext';
 import { useAppSelector } from '../../hooks';
 import { ILesson, IPair } from '../../models/timeTable';
 import { BottomTabsNavigationProp } from '../../navigation/types';
 import { getTeacherName } from '../../utils/teachers';
-import TimeTableContext from '../../context/timetableContext';
 
-export default function Pair({
-  pair,
-  date,
-}: {
-  pair: IPair;
-  date: dayjs.Dayjs;
-}) {
+export default function Pair({ pair, date }: { pair: IPair; date: dayjs.Dayjs }) {
   const { isLyceum } = useAppSelector((state) => state.student.info);
   const pairText = `${pair.position} ${isLyceum ? 'урок' : 'пара'}`;
 
@@ -58,7 +52,7 @@ const Lesson = ({
   pairPosition: number;
 }) => {
   const navigation = useNavigation<BottomTabsNavigationProp>();
-  const {teachers} = useContext(TimeTableContext);
+  const { teachers } = useContext(TimeTableContext);
 
   const audience = formatAudience(data);
   const teacherName = getTeacherName(teachers, data.teacher);
