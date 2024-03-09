@@ -4,6 +4,7 @@ import LoadingScreen, { LoadingContainer } from '../../components/LoadingScreen'
 import NoData from '../../components/NoData';
 import PageNavigator from '../../components/PageNavigator';
 import Screen from '../../components/Screen';
+import TimeTableContext from '../../context/timetableContext';
 import { useClient } from '../../data/client';
 import { useGlobalStyles } from '../../hooks';
 import useQuery from '../../hooks/useQuery';
@@ -49,15 +50,13 @@ const TimeTable = () => {
         <>
           <DatesContainer dates={data.weekInfo.dates} />
 
-          {data.weekInfo.type === WeekTypes.holiday ? (
-            <HolidayView holidayInfo={data.weekInfo.holidayDates} />
-          ) : (
-            <DayArray
-              data={data.days}
-              teachersData={teachersData}
-              weekDates={data.weekInfo.dates}
-            />
-          )}
+          <TimeTableContext.Provider value={{ teachers: teachersData }}>
+            {data.weekInfo.type === WeekTypes.holiday ? (
+              <HolidayView holidayInfo={data.weekInfo.holidayDates} />
+            ) : (
+              <DayArray data={data.days} weekDates={data.weekInfo.dates} />
+            )}
+          </TimeTableContext.Provider>
         </>
       )}
     </Screen>
