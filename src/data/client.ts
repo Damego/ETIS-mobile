@@ -16,7 +16,7 @@ import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
 import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
 import { ISessionTeachPlan } from '../models/teachPlan';
-import { TeacherType } from '../models/teachers';
+import { ITeacher } from '../models/teachers';
 import { ITimeTable } from '../models/timeTable';
 import {
   parseAbsenses,
@@ -61,7 +61,7 @@ class SignsClient extends BasicClient<IGetPayload<number>, ISessionPoints> {}
 class PointUpdatesClient extends BasicClient<IGetPayload<string>, IPointUpdates> {}
 class MarksClient extends BasicClient<IGetPayload, ISessionMarks[]> {}
 class StudentClient extends BasicClient<IGetPayload, StudentInfo> {}
-class TeachersClient extends BasicClient<IGetPayload, TeacherType> {}
+class TeachersClient extends BasicClient<IGetPayload, ITeacher[]> {}
 class TeachPlanClient extends BasicClient<IGetPayload, ISessionTeachPlan[]> {}
 class CalendarScheduleClient extends BasicClient<IGetPayload, ICalendarSchedule> {}
 class CertificateClient extends BasicClient<IGetPayload, ICertificateTable> {}
@@ -258,7 +258,7 @@ export default class Client implements BaseClient {
     return this.studentClient.getData(payload);
   }
 
-  async getTeacherData(payload: IGetPayload): Promise<IGetResult<TeacherType>> {
+  async getTeacherData(payload: IGetPayload): Promise<IGetResult<ITeacher[]>> {
     await cache.teachers.init();
     return this.teacherClient.getData(payload);
   }
