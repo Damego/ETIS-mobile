@@ -6,7 +6,6 @@ import BorderLine from '../../components/BorderLine';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import Text from '../../components/Text';
 import { useAppSelector } from '../../hooks';
-import { TeacherType } from '../../models/teachers';
 import { ITimeTableDay } from '../../models/timeTable';
 import { ThemeType, isNewYearTheme } from '../../styles/themes';
 import { halloweenEmptyDayResponses, newYearEmptyDayResponse } from '../../utils/events';
@@ -16,7 +15,6 @@ import Pair from './Pair';
 
 interface DayData {
   data: ITimeTableDay;
-  teachersData: TeacherType;
   date: dayjs.Dayjs;
 }
 
@@ -43,14 +41,14 @@ const EmptyDay = ({ data }: { data: ITimeTableDay }) => {
   );
 };
 
-const Day = ({ data, teachersData, date }: DayData) => {
+const Day = ({ data, date }: DayData) => {
   const { date: dateString, pairs } = data;
 
   return (
     <CardHeaderOut topText={dateString}>
       {pairs.map((pair, index) => (
         <View key={index + pair.time}>
-          <Pair pair={pair} teachersData={teachersData} date={date} />
+          <Pair pair={pair} date={date} />
           {index !== pairs.length - 1 && <BorderLine />}
         </View>
       ))}

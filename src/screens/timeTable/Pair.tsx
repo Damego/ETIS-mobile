@@ -1,23 +1,20 @@
 import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import Text from '../../components/Text';
 import { useAppSelector } from '../../hooks';
-import { TeacherType } from '../../models/teachers';
 import { ILesson, IPair } from '../../models/timeTable';
 import { BottomTabsNavigationProp } from '../../navigation/types';
 import { getTeacherName } from '../../utils/teachers';
-import { fontSize, formatAudience } from '../../utils/texts';
+import TimeTableContext from '../../context/timetableContext';
 
 export default function Pair({
   pair,
-  teachersData,
   date,
 }: {
   pair: IPair;
-  teachersData: TeacherType;
   date: dayjs.Dayjs;
 }) {
   const { isLyceum } = useAppSelector((state) => state.student.info);
@@ -41,7 +38,6 @@ export default function Pair({
             <Lesson
               key={lesson.subject.string + ind}
               data={lesson}
-              teachersData={teachersData}
               date={cloned}
               pairPosition={pair.position}
             />
@@ -54,19 +50,18 @@ export default function Pair({
 
 const Lesson = ({
   data,
-  teachersData,
   date,
   pairPosition,
 }: {
   data: ILesson;
-  teachersData: TeacherType;
   date: dayjs.Dayjs;
   pairPosition: number;
 }) => {
   const navigation = useNavigation<BottomTabsNavigationProp>();
+  const {teachers} = useContext(TimeTableContext);
 
   const audience = formatAudience(data);
-  const teacherName = getTeacherName(teachersData, data.teacher);
+  const teacherName = getTeacherName(teachers, data.teacher);
 
   return (
     <TouchableOpacity

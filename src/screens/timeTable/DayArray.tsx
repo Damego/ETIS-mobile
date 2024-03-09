@@ -1,17 +1,15 @@
 import dayjs from 'dayjs';
 import React from 'react';
 
-import { TeacherType } from '../../models/teachers';
 import { ITimeTableDay, WeekDates } from '../../models/timeTable';
 import { Day, EmptyDay } from './Day';
 
 interface IDayArrayProps {
   data: ITimeTableDay[];
-  teachersData: TeacherType;
   weekDates: WeekDates;
 }
 
-const DayArray = ({ data, teachersData, weekDates }: IDayArrayProps) => {
+const DayArray = ({ data, weekDates }: IDayArrayProps) => {
   let date = dayjs(weekDates.start, 'DD.MM.YYYY');
 
   const bumpDate = () => {
@@ -27,7 +25,7 @@ const DayArray = ({ data, teachersData, weekDates }: IDayArrayProps) => {
         return day.pairs.length === 0 ? (
           <EmptyDay key={day.date} data={day} />
         ) : (
-          <Day key={day.date} data={day} teachersData={teachersData} date={date} />
+          <Day key={day.date} data={day} date={date} />
         );
       })}
     </>
