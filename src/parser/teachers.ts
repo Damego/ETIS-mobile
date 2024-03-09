@@ -23,9 +23,7 @@ export default function parseTeachers(html: string): ITeacher[] {
       .split('\n')
       .forEach((subject) => {
         const [, discipline, typesString] = executeRegex(disciplineRegex, subject);
-        const types = typesString
-          ? typesString.split(',').map((s) => s.trim())
-          : [];
+        const types = typesString ? typesString.split(',').map((s) => s.trim()) : [];
         data.push({
           id,
           photo,

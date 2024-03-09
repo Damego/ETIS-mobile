@@ -45,7 +45,7 @@ const Teacher = ({ data }: TeacherProps) => {
             <Text style={[fontSize.medium, styles.textTitle]} colorVariant={'block'}>
               {data.name}
             </Text>
-            <View style={{flexDirection: 'row', gap: 4}}>
+            <View style={{ flexDirection: 'row', gap: 4 }}>
               {<Text>{data.subject.types.join(', ')}</Text>}
             </View>
           </View>

@@ -5,8 +5,8 @@ import NoData from '../../components/NoData';
 import Screen from '../../components/Screen';
 import { useClient } from '../../data/client';
 import useQuery from '../../hooks/useQuery';
-import TeacherCard from './TeacherCard';
 import { ITeacher } from '../../models/teachers';
+import TeacherCard from './TeacherCard';
 
 const groupTeachers = (data: ITeacher[]) => {
   if (!data) return;
