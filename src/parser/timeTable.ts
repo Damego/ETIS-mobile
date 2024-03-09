@@ -15,7 +15,7 @@ import {
 import { httpClient } from '../utils';
 import { executeRegex } from '../utils/sentry';
 import { disciplineRegex } from './regex';
-import { getTextField } from './utils';
+import { getDisciplineType, getTextField } from './utils';
 
 const dateRegex = /\d+.\d+.\d+/gm;
 const audienceRegex = /ауд\. (.*)\/.* \((.*) корпус(?:, (\d) этаж)?\)/s;
@@ -140,7 +140,7 @@ export default function parseTimeTable(html: string) {
           if (execArr) {
             const [, discipline, type] = execArr;
             subject.discipline = discipline;
-            subject.type = type;
+            subject.type = getDisciplineType(type);
           }
           const audienceElement = lesson.find('.aud');
           let audienceText: string;

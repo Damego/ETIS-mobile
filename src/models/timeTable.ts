@@ -1,3 +1,5 @@
+import { DisciplineTypes } from './other';
+
 export enum DistancePlatformTypes {
   unknown,
   bbb,
@@ -42,7 +44,7 @@ export interface ITeacher {
 export interface ISubject {
   string: string;
   discipline?: string;
-  type?: string;
+  type?: DisciplineTypes;
 }
 
 export interface IAudience {

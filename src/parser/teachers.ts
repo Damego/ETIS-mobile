@@ -3,7 +3,7 @@ import { load } from 'cheerio';
 import { ITeacher } from '../models/teachers';
 import { executeRegex } from '../utils/sentry';
 import { disciplineRegex, numberRegex } from './regex';
-import { getTextField } from './utils';
+import { getDisciplineType, getTextField } from './utils';
 
 export default function parseTeachers(html: string): ITeacher[] {
   const $ = load(html);
@@ -24,7 +24,7 @@ export default function parseTeachers(html: string): ITeacher[] {
       .forEach((subject) => {
         const [, discipline, typesString] = executeRegex(disciplineRegex, subject);
         const types = typesString
-          ? typesString.split(',').map((s) => s.trim())
+          ? typesString.split(',').map((s) => getDisciplineType(s.trim()))
           : [];
         data.push({
           id,
