@@ -3,10 +3,11 @@ import React from 'react';
 import { Image, StyleSheet, ToastAndroid, TouchableWithoutFeedback, View } from 'react-native';
 
 import ClickableText from '../../components/ClickableText';
+import DisciplineType from '../../components/DisciplineType';
 import Text from '../../components/Text';
 import { ITeacher } from '../../models/teachers';
 import { ServicesNavigationProp } from '../../navigation/types';
-import { fontSize } from '../../utils/texts';
+import { fontSize, getDisciplineTypeName } from '../../utils/texts';
 
 const styles = StyleSheet.create({
   container: {
@@ -44,9 +45,9 @@ const Teacher = ({ data }: TeacherProps) => {
             <Text style={[fontSize.medium, styles.textTitle]} colorVariant={'block'}>
               {data.name}
             </Text>
-            <Text style={fontSize.medium} colorVariant={'block'}>
-              {data.subjectType}
-            </Text>
+            <View style={{flexDirection: 'row', gap: 4}}>
+              {<Text>{data.subject.types.join(', ')}</Text>}
+            </View>
           </View>
 
           <View style={styles.subjectInfoView}>

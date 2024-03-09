@@ -5,8 +5,8 @@ export interface ITeacher {
   photoTitle: string;
   name: string;
   cathedra: string;
-  subjectUntyped: string;
-  subjectType: string;
+  subject: {
+    discipline: string;
+    types: string[];
+  };
 }
-
-export type TeacherType = [string, ITeacher[]][];

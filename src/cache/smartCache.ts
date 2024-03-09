@@ -11,7 +11,7 @@ import { ISessionRating } from '../models/rating';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
 import { ISessionTeachPlan } from '../models/teachPlan';
-import { TeacherType } from '../models/teachers';
+import { ITeacher } from '../models/teachers';
 import { ITimeTable } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
 import { UserCredentials } from '../redux/reducers/authSlice';
@@ -32,7 +32,7 @@ export default class SmartCache {
   };
   personalRecords: FieldCache<IPersonalRecord[]>;
   timeTable: MappedCache<number, ITimeTable>;
-  teachers: FieldCache<TeacherType>;
+  teachers: FieldCache<ITeacher[]>;
   teachPlan: FieldCache<ISessionTeachPlan[]>;
   pointUpdates: MappedCache<string, IPointUpdates>;
   signsMarks: MappedCache<number, ISessionMarks>;
@@ -80,7 +80,7 @@ export default class SmartCache {
     };
     this.personalRecords = new FieldCache(this.keys.PERSONAL_RECORDS);
     this.timeTable = new MappedCache(this.keys.TIMETABLE);
-    this.teachers = new FieldCache<TeacherType>(this.keys.TEACHERS);
+    this.teachers = new FieldCache(this.keys.TEACHERS);
     this.teachPlan = new FieldCache(this.keys.TEACH_PLAN);
     this.pointUpdates = new MappedCache(this.keys.POINT_UPDATES);
     this.signsMarks = new MappedCache(this.keys.SIGNS_MARKS);
@@ -188,11 +188,11 @@ export default class SmartCache {
   // Teachers Region
 
   async getTeachers() {
-    if (!this.teachers.isReady()) await this.teachers.init();
+    await this.teachers.init();
     return this.teachers.get();
   }
 
-  async placeTeachers(data: TeacherType) {
+  async placeTeachers(data: ITeacher[]) {
     this.teachers.place(data);
     await this.teachers.save();
   }
@@ -536,6 +536,9 @@ export default class SmartCache {
     if (appConfig.cacheMigrations.v1_3_0) return;
 
     await this.clearTimeTable();
+    await this.teachers.init();
+    await this.teachers.delete();
+    await this.teachers.save();
 
     appConfig.cacheMigrations.v1_3_0 = true;
     await this.updateAppConfig(appConfig);

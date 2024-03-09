@@ -1,24 +1,11 @@
 import { load } from 'cheerio';
 
-import { ITeacher, TeacherType } from '../models/teachers';
+import { ITeacher } from '../models/teachers';
 import { executeRegex } from '../utils/sentry';
 import { disciplineRegex, numberRegex } from './regex';
 import { getTextField } from './utils';
 
-const groupTeachers = (data: ITeacher[]) => {
-  const dataGrouped = {};
-  data.forEach((val) => {
-    if (dataGrouped[val.subjectUntyped]) {
-      dataGrouped[val.subjectUntyped].push(val);
-    } else {
-      dataGrouped[val.subjectUntyped] = [val];
-    }
-  });
-
-  return Object.entries<ITeacher[]>(dataGrouped);
-};
-
-export default function parseTeachers(html: string): TeacherType {
+export default function parseTeachers(html: string): ITeacher[] {
   const $ = load(html);
   const data: ITeacher[] = [];
 
@@ -35,19 +22,24 @@ export default function parseTeachers(html: string): TeacherType {
     getTextField(teacherEl.find('.dis'))
       .split('\n')
       .forEach((subject) => {
-        const [, subjectUntyped, subjectType] = executeRegex(disciplineRegex, subject);
+        const [, discipline, typesString] = executeRegex(disciplineRegex, subject);
+        const types = typesString
+          ? typesString.split(',').map((s) => s.trim())
+          : [];
         data.push({
           id,
           photo,
           name,
           cathedra,
-          subjectUntyped,
-          subjectType,
+          subject: {
+            discipline,
+            types,
+          },
           photoTitle,
           cathedraId,
         });
       });
   });
 
-  return groupTeachers(data);
+  return data;
 }

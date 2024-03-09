@@ -20,7 +20,7 @@ import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
 import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
 import { ISessionTeachPlan } from '../models/teachPlan';
-import { TeacherType } from '../models/teachers';
+import { ITeacher } from '../models/teachers';
 import { ITimeTable } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
 import { isLoginPage } from '../parser/utils';
@@ -38,7 +38,7 @@ export interface BaseClient {
   getPointUpdates(payload: IGetPayload<string>): Promise<IGetResult<IPointUpdates>>;
   getSessionMarksData(payload: IGetPayload): Promise<IGetResult<ISessionMarks[]>>;
   getStudentInfoData(payload: IGetPayload): Promise<IGetResult<StudentInfo>>;
-  getTeacherData(payload: IGetPayload): Promise<IGetResult<TeacherType>>;
+  getTeacherData(payload: IGetPayload): Promise<IGetResult<ITeacher[]>>;
   getTeachPlanData(payload: IGetPayload): Promise<IGetResult<ISessionTeachPlan[]>>;
   getCalendarScheduleData(payload: IGetPayload): Promise<IGetResult<ICalendarSchedule>>;
   getCertificateData(payload: IGetPayload): Promise<IGetResult<ICertificateTable>>;
