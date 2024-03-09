@@ -46,7 +46,10 @@ const Teacher = ({ data }: TeacherProps) => {
               {data.name}
             </Text>
             <View style={{flexDirection: 'row', gap: 4}}>
-              {<Text>{data.subject.types.join(', ')}</Text>}
+              {data.subject.types.map((type) => {
+                const typeName = getDisciplineTypeName(type);
+                return <DisciplineType key={type} name={typeName} type={type} size={'small'} />;
+              })}
             </View>
           </View>
 
