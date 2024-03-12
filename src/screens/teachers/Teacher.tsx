@@ -7,7 +7,7 @@ import DisciplineType from '../../components/DisciplineType';
 import Text from '../../components/Text';
 import { ITeacher } from '../../models/teachers';
 import { ServicesNavigationProp } from '../../navigation/types';
-import { fontSize } from '../../utils/texts';
+import { fontSize, getDisciplineTypeName } from '../../utils/texts';
 
 const styles = StyleSheet.create({
   container: {

@@ -10,7 +10,6 @@ import { useAppSelector } from '../../hooks';
 import { ILesson, IPair } from '../../models/timeTable';
 import { BottomTabsNavigationProp } from '../../navigation/types';
 import { getTeacherName } from '../../utils/teachers';
-import { fontSize, formatAudience } from '../../utils/texts';
 
 export default function Pair({ pair, date }: { pair: IPair; date: dayjs.Dayjs }) {
   const { isLyceum } = useAppSelector((state) => state.student.info);
