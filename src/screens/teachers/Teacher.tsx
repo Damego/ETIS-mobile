@@ -7,7 +7,7 @@ import DisciplineType from '../../components/DisciplineType';
 import Text from '../../components/Text';
 import { ITeacher } from '../../models/teachers';
 import { ServicesNavigationProp } from '../../navigation/types';
-import { fontSize, getDisciplineTypeName } from '../../utils/texts';
+import { fontSize } from '../../utils/texts';
 
 const styles = StyleSheet.create({
   container: {
@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
   teacherNameView: {},
   textTitle: {
     fontWeight: '500',
+    ...fontSize.medium,
   },
   subjectInfoView: {},
   photoContainer: {},
@@ -28,6 +29,10 @@ const styles = StyleSheet.create({
     flex: 2,
   },
   teacherTimetableButton: { fontWeight: '500', textDecorationLine: 'underline' },
+  typesContainer: {
+    flexDirection: 'row',
+    gap: 4,
+  },
 });
 
 interface TeacherProps {
@@ -42,14 +47,13 @@ const Teacher = ({ data }: TeacherProps) => {
       <View style={styles.container}>
         <View style={styles.teacherInfo}>
           <View style={styles.teacherNameView}>
-            <Text style={[fontSize.medium, styles.textTitle]} colorVariant={'block'}>
+            <Text style={styles.textTitle} colorVariant={'block'}>
               {data.name}
             </Text>
-            <View style={{flexDirection: 'row', gap: 4}}>
-              {data.subject.types.map((type) => {
-                const typeName = getDisciplineTypeName(type);
-                return <DisciplineType key={type} name={typeName} type={type} size={'small'} />;
-              })}
+            <View style={styles.typesContainer}>
+              {data.subject.types.map((type) => (
+                <DisciplineType key={type} type={type} size={'small'} />
+              ))}
             </View>
           </View>
 

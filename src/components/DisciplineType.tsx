@@ -3,13 +3,12 @@ import { StyleSheet, View } from 'react-native';
 
 import { DisciplineTypes } from '../models/other';
 import Text from './Text';
+import { getDisciplineTypeName } from '../utils/texts';
 
 const DisciplineType = ({
-  name,
   type,
   size = 'standard',
 }: {
-  name: string;
   type: DisciplineTypes;
   size?: 'small' | 'standard';
 }) => {
@@ -17,6 +16,7 @@ const DisciplineType = ({
     () => StyleSheet.compose(styles.base, disciplineTypeStyles[type]),
     [type]
   );
+  const name = getDisciplineTypeName(type);
 
   return (
     <View style={composed}>

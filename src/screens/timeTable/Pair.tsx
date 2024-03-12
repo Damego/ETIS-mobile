@@ -10,7 +10,7 @@ import { useAppSelector } from '../../hooks';
 import { ILesson, IPair } from '../../models/timeTable';
 import { BottomTabsNavigationProp } from '../../navigation/types';
 import { getTeacherName } from '../../utils/teachers';
-import { fontSize, formatAudience, getDisciplineTypeName } from '../../utils/texts';
+import { fontSize, formatAudience } from '../../utils/texts';
 
 export default function Pair({ pair, date }: { pair: IPair; date: dayjs.Dayjs }) {
   const { isLyceum } = useAppSelector((state) => state.student.info);
@@ -58,7 +58,6 @@ const Lesson = ({
 
   const audience = formatAudience(data);
   const teacherName = getTeacherName(teachers, data.teacher);
-  const typeName = getDisciplineTypeName(data.subject.type);
 
   return (
     <TouchableOpacity
@@ -74,9 +73,7 @@ const Lesson = ({
       <Text style={[fontSize.medium, styles.lessonInfoText]} colorVariant={'block'}>
         {data.subject.discipline ?? data.subject.string}
       </Text>
-      {data.subject.type && (
-        <DisciplineType name={typeName} type={data.subject.type} size={'small'} />
-      )}
+      {data.subject.type && <DisciplineType type={data.subject.type} size={'small'} />}
 
       {data.distancePlatform && <Text>{data.distancePlatform.name}</Text>}
       {!data.distancePlatform && audience && <Text colorVariant={'block'}>{audience}</Text>}
