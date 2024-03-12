@@ -5,7 +5,6 @@ import { View } from 'react-native';
 import BorderLine from '../../components/BorderLine';
 import { Button } from '../../components/Button';
 import CardHeaderOut from '../../components/CardHeaderOut';
-import { useGlobalStyles } from '../../hooks';
 import { ITeacher } from '../../models/teachers';
 import { ServicesNavigationProp } from '../../navigation/types';
 import { fontSize } from '../../utils/texts';
@@ -23,7 +22,7 @@ const TeacherCard = ({ discipline, teachers }: TeacherCardProps) => {
     <CardHeaderOut topText={discipline}>
       {teachers.map((teacher, index) => (
         <View key={teacher.name}>
-          <Teacher data={teacher} />
+          <Teacher discipline={discipline} data={teacher} />
           {index !== teachers.length - 1 ? <BorderLine /> : ''}
         </View>
       ))}

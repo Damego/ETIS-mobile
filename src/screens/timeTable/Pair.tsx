@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import React, { useContext } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
+import DisciplineType from '../../components/DisciplineType';
 import Text from '../../components/Text';
 import TimeTableContext from '../../context/timetableContext';
 import { useAppSelector } from '../../hooks';
@@ -70,8 +71,9 @@ const Lesson = ({
       }
     >
       <Text style={[fontSize.medium, styles.lessonInfoText]} colorVariant={'block'}>
-        {data.subject.string}
+        {data.subject.discipline ?? data.subject.string}
       </Text>
+      {data.subject.type && <DisciplineType type={data.subject.type} size={'small'} />}
 
       {data.distancePlatform && <Text>{data.distancePlatform.name}</Text>}
       {!data.distancePlatform && audience && <Text colorVariant={'block'}>{audience}</Text>}

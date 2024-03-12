@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+import { DisciplineTypes } from '../models/other';
 import { ICheckPoint } from '../models/sessionPoints';
 import { ILesson } from '../models/timeTable';
 
@@ -56,12 +57,12 @@ export const fontSize = StyleSheet.create({
   },
 });
 
-export const disciplineTypeNames = {
-  лек: 'Лекция',
-  практ: 'Практика',
-  лаб: 'Лабораторная',
-  зачет: 'Зачёт',
-  экзамен: 'Экзамен',
+export const disciplineTypeNames: { [key in DisciplineTypes]: string } = {
+  LECTURE: 'Лекция',
+  PRACTICE: 'Практика',
+  LABORATORY: 'Лабораторная',
+  TEST: 'Зачёт',
+  EXAM: 'Экзамен',
 };
 
 export const getDisciplineTypeName = (type: string): string => disciplineTypeNames[type] || type;
