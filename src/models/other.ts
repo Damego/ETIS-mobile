@@ -9,5 +9,5 @@ export enum DisciplineTypes {
   PRACTICE = 'PRACTICE',
   LABORATORY = 'LABORATORY',
   EXAM = 'EXAM',
-  TEST = 'TEST'
+  TEST = 'TEST',
 }
