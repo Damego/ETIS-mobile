@@ -10,7 +10,6 @@ import TeacherCard from './TeacherCard';
 
 const groupTeachers = (teachers: ITeacher[]) => {
   if (!teachers) return;
-  console.log(teachers);
 
   const dataGrouped = {};
   teachers.forEach((teacher) => {
