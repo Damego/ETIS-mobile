@@ -1,9 +1,9 @@
 import { load } from 'cheerio';
 
-import { ITeacher } from '../models/teachers';
+import { ITeacher, ITeacherSubject } from '../models/teachers';
 import { executeRegex } from '../utils/sentry';
 import { disciplineRegex, numberRegex } from './regex';
-import { getTextField } from './utils';
+import { getDisciplineType, getTextField } from './utils';
 
 export default function parseTeachers(html: string): ITeacher[] {
   const $ = load(html);
@@ -19,24 +19,26 @@ export default function parseTeachers(html: string): ITeacher[] {
     const cathedra = getTextField(cathedraTag);
     const [cathedraId] = executeRegex(numberRegex, cathedraTag.find('img').attr('onclick'));
 
+    const subjects: ITeacherSubject[] = [];
     getTextField(teacherEl.find('.dis'))
       .split('\n')
       .forEach((subject) => {
         const [, discipline, typesString] = executeRegex(disciplineRegex, subject);
-        const types = typesString ? typesString.split(',').map((s) => s.trim()) : [];
-        data.push({
-          id,
-          photo,
-          name,
-          cathedra,
-          subject: {
-            discipline,
-            types,
-          },
-          photoTitle,
-          cathedraId,
-        });
+        const types = typesString
+          ? typesString.split(',').map((s) => getDisciplineType(s.trim()))
+          : [];
+        subjects.push({ discipline, types });
       });
+
+    data.push({
+      id,
+      photo,
+      name,
+      cathedra,
+      subjects,
+      photoTitle,
+      cathedraId,
+    });
   });
 
   return data;

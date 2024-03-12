@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
   teacherNameView: {},
   textTitle: {
     fontWeight: '500',
+    ...fontSize.medium,
   },
   subjectInfoView: {},
   photoContainer: {},
@@ -28,25 +29,33 @@ const styles = StyleSheet.create({
     flex: 2,
   },
   teacherTimetableButton: { fontWeight: '500', textDecorationLine: 'underline' },
+  typesContainer: {
+    flexDirection: 'row',
+    gap: 4,
+  },
 });
 
 interface TeacherProps {
+  discipline: string;
   data: ITeacher;
 }
 
-const Teacher = ({ data }: TeacherProps) => {
+const Teacher = ({ discipline, data }: TeacherProps) => {
   const navigation = useNavigation<ServicesNavigationProp>();
+  const subject = data.subjects.find((sub) => sub.discipline === discipline);
 
   return (
     <>
       <View style={styles.container}>
         <View style={styles.teacherInfo}>
           <View style={styles.teacherNameView}>
-            <Text style={[fontSize.medium, styles.textTitle]} colorVariant={'block'}>
+            <Text style={styles.textTitle} colorVariant={'block'}>
               {data.name}
             </Text>
-            <View style={{ flexDirection: 'row', gap: 4 }}>
-              {<Text>{data.subject.types.join(', ')}</Text>}
+            <View style={styles.typesContainer}>
+              {subject.types.map((type) => (
+                <DisciplineType key={type} type={type} size={'small'} />
+              ))}
             </View>
           </View>
 
