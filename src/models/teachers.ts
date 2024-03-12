@@ -1,5 +1,10 @@
 import { DisciplineTypes } from './other';
 
+export interface ITeacherSubject {
+  discipline: string;
+  types: DisciplineTypes[];
+}
+
 export interface ITeacher {
   id: string;
   cathedraId: string;
@@ -7,8 +12,5 @@ export interface ITeacher {
   photoTitle: string;
   name: string;
   cathedra: string;
-  subject: {
-    discipline: string;
-    types: DisciplineTypes[];
-  };
+  subjects: ITeacherSubject[];
 }

@@ -1,6 +1,6 @@
 import { load } from 'cheerio';
 
-import { ITeacher } from '../models/teachers';
+import { ITeacher, ITeacherSubject } from '../models/teachers';
 import { executeRegex } from '../utils/sentry';
 import { disciplineRegex, numberRegex } from './regex';
 import { getDisciplineType, getTextField } from './utils';
@@ -19,6 +19,7 @@ export default function parseTeachers(html: string): ITeacher[] {
     const cathedra = getTextField(cathedraTag);
     const [cathedraId] = executeRegex(numberRegex, cathedraTag.find('img').attr('onclick'));
 
+    const subjects: ITeacherSubject[] = [];
     getTextField(teacherEl.find('.dis'))
       .split('\n')
       .forEach((subject) => {
@@ -26,19 +27,18 @@ export default function parseTeachers(html: string): ITeacher[] {
         const types = typesString
           ? typesString.split(',').map((s) => getDisciplineType(s.trim()))
           : [];
-        data.push({
-          id,
-          photo,
-          name,
-          cathedra,
-          subject: {
-            discipline,
-            types,
-          },
-          photoTitle,
-          cathedraId,
-        });
+        subjects.push({ discipline, types });
       });
+
+    data.push({
+      id,
+      photo,
+      name,
+      cathedra,
+      subjects,
+      photoTitle,
+      cathedraId,
+    });
   });
 
   return data;

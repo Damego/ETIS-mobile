@@ -8,16 +8,19 @@ import useQuery from '../../hooks/useQuery';
 import TeacherCard from './TeacherCard';
 import { ITeacher } from '../../models/teachers';
 
-const groupTeachers = (data: ITeacher[]) => {
-  if (!data) return;
+const groupTeachers = (teachers: ITeacher[]) => {
+  if (!teachers) return;
+  console.log(teachers);
 
   const dataGrouped = {};
-  data.forEach((val) => {
-    if (dataGrouped[val.subject.discipline]) {
-      dataGrouped[val.subject.discipline].push(val);
-    } else {
-      dataGrouped[val.subject.discipline] = [val];
-    }
+  teachers.forEach((teacher) => {
+    teacher.subjects.forEach((subject) => {
+      if (dataGrouped[subject.discipline]) {
+        dataGrouped[subject.discipline].push(teacher);
+      } else {
+        dataGrouped[subject.discipline] = [teacher];
+      }
+    });
   });
 
   return Object.entries<ITeacher[]>(dataGrouped);

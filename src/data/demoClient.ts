@@ -8,6 +8,7 @@ import {
 import { ICertificateTable } from '../models/certificate';
 import { IMessagesData, MessageType } from '../models/messages';
 import { IOrder } from '../models/order';
+import { DisciplineTypes } from '../models/other';
 import { IPersonalRecord } from '../models/personalRecords';
 import { IPointUpdates } from '../models/pointUpdates';
 import { ISessionRating } from '../models/rating';
@@ -16,7 +17,7 @@ import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
 import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
 import { ISessionTeachPlan } from '../models/teachPlan';
-import { TeacherType } from '../models/teachers';
+import { ITeacher } from '../models/teachers';
 import { DistancePlatformTypes, ITimeTable, WeekTypes } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
 import bind from '../utils/methodBinder';
@@ -132,7 +133,7 @@ export default class DemoClient implements BaseClient {
                       subject: {
                         string: 'Математический анализ (лек)',
                         discipline: 'Математический анализ',
-                        type: 'лек',
+                        type: DisciplineTypes.LECTURE,
                       },
                       isDistance: false,
                       teacher: {
@@ -154,9 +155,9 @@ export default class DemoClient implements BaseClient {
                         building: '2',
                       },
                       subject: {
-                        string: 'Комплексный анализ (лек)',
+                        string: 'Комплексный анализ (практ)',
                         discipline: 'Комплексный анализ',
-                        type: 'лек',
+                        type: DisciplineTypes.PRACTICE,
                       },
                       isDistance: false,
                       teacher: {
@@ -178,9 +179,9 @@ export default class DemoClient implements BaseClient {
                         building: '2',
                       },
                       subject: {
-                        string: 'Функциональный анализ (лек)',
+                        string: 'Функциональный анализ (лаб)',
                         discipline: 'Функциональный анализ',
-                        type: 'лек',
+                        type: DisciplineTypes.LABORATORY,
                       },
                       isDistance: false,
                       teacher: {
@@ -198,7 +199,7 @@ export default class DemoClient implements BaseClient {
                       subject: {
                         string: 'Программный анализ (лек)',
                         discipline: 'Программный анализ',
-                        type: 'лек',
+                        type: DisciplineTypes.LECTURE,
                       },
                       isDistance: true,
                       teacher: {
@@ -222,7 +223,7 @@ export default class DemoClient implements BaseClient {
                       subject: {
                         string: 'Программный анализ (лек)',
                         discipline: 'Программный анализ',
-                        type: 'лек',
+                        type: DisciplineTypes.LECTURE,
                       },
                       isDistance: true,
                       teacher: {
@@ -646,73 +647,44 @@ export default class DemoClient implements BaseClient {
     return this.toResult(data);
   }
 
-  async getTeacherData(): Promise<IGetResult<TeacherType>> {
-    const data: TeacherType = [
-      [
-        'Математический анализ',
-        [
+  async getTeacherData(): Promise<IGetResult<ITeacher[]>> {
+    const data: ITeacher[] = [
+      {
+        id: '0',
+        cathedraId: '0',
+        photo: 'img_peo_pkg.get_d_img',
+        name: 'Иванов Иван Петрович',
+        cathedra: 'Кафедра фундаментальной математики',
+        subjects: [
           {
-            id: '0',
-            cathedraId: '0',
-            photo: 'img_peo_pkg.get_d_img',
-            name: 'Иванов Иван Петрович',
-            cathedra: 'Кафедра фундаментальной математики',
-            subjectUntyped: 'Математический анализ',
-            subjectType: 'лек, практ',
-            photoTitle: 'Фотография загружена 01.01.2000',
+            discipline: 'Математический анализ',
+            types: [DisciplineTypes.LECTURE, DisciplineTypes.PRACTICE],
           },
           {
-            id: '1',
-            cathedraId: '0',
-            photo: 'img_peo_pkg.get_d_img',
-            name: 'Иванов Петр Иванович',
-            cathedra: 'Кафедра фундаментальной математики',
-            subjectUntyped: 'Математический анализ',
-            subjectType: 'экзамен',
-            photoTitle: 'Фотография загружена 01.01.2000',
+            discipline: 'Комплексный анализ',
+            types: [DisciplineTypes.LECTURE, DisciplineTypes.PRACTICE],
           },
         ],
-      ],
-      [
-        'Комплексный анализ',
-        [
+        photoTitle: 'Фотография загружена 01.01.2000',
+      },
+      {
+        id: '1',
+        cathedraId: '0',
+        photo: 'img_peo_pkg.get_d_img',
+        name: 'Иванов Петр Иванович',
+        cathedra: 'Кафедра фундаментальной математики',
+        subjects: [
           {
-            id: '0',
-            cathedraId: '0',
-            photo: 'img_peo_pkg.get_d_img',
-            name: 'Иванов Иван Петрович',
-            cathedra: 'Кафедра фундаментальной математики',
-            subjectUntyped: 'Комплексный анализ',
-            subjectType: 'практ',
-            photoTitle: 'Фотография загружена 01.01.2000',
+            discipline: 'Математический анализ',
+            types: [DisciplineTypes.EXAM],
           },
           {
-            id: '1',
-            cathedraId: '0',
-            photo: 'img_peo_pkg.get_d_img',
-            name: 'Иванов Петр Иванович',
-            cathedra: 'Кафедра фундаментальной математики',
-            subjectUntyped: 'Комплексный анализ',
-            subjectType: 'лек, зачет',
-            photoTitle: 'Фотография загружена 01.01.2000',
+            discipline: 'Комплексный анализ',
+            types: [DisciplineTypes.LECTURE, DisciplineTypes.TEST],
           },
         ],
-      ],
-      [
-        'Функциональный анализ',
-        [
-          {
-            id: '0',
-            cathedraId: '0',
-            photo: 'img_peo_pkg.get_d_img',
-            name: 'Иванов Иван Петрович',
-            cathedra: 'Кафедра фундаментальной математики',
-            subjectUntyped: 'Комплексный анализ',
-            subjectType: 'лек, практ, зачет',
-            photoTitle: 'Фотография загружена 01.01.2000',
-          },
-        ],
-      ],
+        photoTitle: 'Фотография загружена 01.01.2000',
+      },
     ];
     return this.toResult(data);
   }

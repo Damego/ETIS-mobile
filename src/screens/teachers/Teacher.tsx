@@ -36,11 +36,13 @@ const styles = StyleSheet.create({
 });
 
 interface TeacherProps {
+  discipline: string;
   data: ITeacher;
 }
 
-const Teacher = ({ data }: TeacherProps) => {
+const Teacher = ({ discipline, data }: TeacherProps) => {
   const navigation = useNavigation<ServicesNavigationProp>();
+  const subject = data.subjects.find((sub) => sub.discipline === discipline);
 
   return (
     <>
@@ -51,7 +53,7 @@ const Teacher = ({ data }: TeacherProps) => {
               {data.name}
             </Text>
             <View style={styles.typesContainer}>
-              {data.subject.types.map((type) => (
+              {subject.types.map((type) => (
                 <DisciplineType key={type} type={type} size={'small'} />
               ))}
             </View>
