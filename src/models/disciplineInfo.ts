@@ -1,10 +1,12 @@
 export interface IDisciplineReminder {
   datetime: string;
   // Дата и время напоминания в формате ISO
+  notificationId: string;
+  // Идентификатор запланированного уведомления
 }
 
 export interface IDisciplineTask {
-  id: number;
+  id: string;
   // Id задания
   disciplineName: string;
   // Название дисциплины

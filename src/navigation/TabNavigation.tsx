@@ -14,7 +14,6 @@ import Announce from '../screens/announce/Announce';
 import Messages from '../screens/messages/Messages';
 import AboutSignsDetails from '../screens/signs/AboutSignsDetails';
 import TimeTablePage from '../screens/timeTable/TimeTable';
-import { registerReminderTask } from '../tasks/disciplineTasks';
 import { registerSignsFetchTask } from '../tasks/signs/signs';
 import { AppShortcutItem } from '../utils/shortcuts';
 import ServicesStackNavigator from './ServicesStackNavigator';
@@ -82,7 +81,6 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
         registerSignsFetchTask();
       }
     });
-    registerReminderTask();
   }, []);
 
   return (

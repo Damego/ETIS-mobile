@@ -6,7 +6,7 @@ interface IBaseNotificationData {
 interface ITaskReminderNotificationData extends IBaseNotificationData {
   type: 'task-reminder';
   data: {
-    taskId: number;
+    taskId: string;
   };
 }
 

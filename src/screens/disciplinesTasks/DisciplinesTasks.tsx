@@ -12,6 +12,10 @@ import useBackPress from '../../hooks/useBackPress';
 import useTasks from '../../hooks/useTasks';
 import { DisciplineStorage, DisciplineTask } from '../../models/disciplinesTasks';
 import { RootStackScreenProps } from '../../navigation/types';
+import {
+  cancelScheduledTaskNotifications,
+  rescheduleTaskNotifications,
+} from '../../notifications/taskReminder';
 import { formatTime } from '../../utils/datetime';
 import { fontSize } from '../../utils/texts';
 import { groupItems } from '../../utils/utils';
@@ -65,21 +69,23 @@ const DisciplinesTasks = ({ route }: RootStackScreenProps<'DisciplineTasks'>) =>
     openModal();
   }, []);
 
-  const handleTaskAdd = (partial: PartialTask) => {
+  const handleTaskAdd = async (partial: PartialTask) => {
     if (!selectedTask) return; // impossible in this case;
-
+    const notificationIds = selectedTask.reminders.map((rem) => rem.notificationId);
     selectedTask.description = partial.description;
     selectedTask.reminders = partial.reminders;
-    saveTasks().then(() => {
-      closeModal();
-      setSelectedTask(null);
-    });
+
+    await rescheduleTaskNotifications(notificationIds, selectedTask);
+    await saveTasks();
+
+    closeModal();
+    setSelectedTask(null);
   };
 
-  const handleTaskRemove = (task: DisciplineTask) => {
-    removeTask(task).then(() => {
-      closeModal();
-    });
+  const handleTaskRemove = async (task: DisciplineTask) => {
+    await cancelScheduledTaskNotifications({ task });
+    await removeTask(task);
+    closeModal();
   };
 
   const onTaskComplete = (task: DisciplineTask) => {
