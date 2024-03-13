@@ -12,24 +12,27 @@ import { IDisciplineInfo, IDisciplineReminder, IDisciplineTask } from './discipl
 
 export class DisciplineReminder {
   datetime: dayjs.Dayjs;
+  notificationId?: string;
 
-  constructor(datetime: dayjs.Dayjs) {
+  constructor(datetime: dayjs.Dayjs, notificationId?: string) {
     this.datetime = datetime;
+    this.notificationId = notificationId;
   }
 
   toJSON(): IDisciplineReminder {
     return {
       datetime: this.datetime.toISOString(),
+      notificationId: this.notificationId,
     };
   }
 
   static fromJSON(data: IDisciplineReminder) {
-    return new DisciplineReminder(dayjs(data.datetime));
+    return new DisciplineReminder(dayjs(data.datetime), data.notificationId);
   }
 }
 
 export class DisciplineTask {
-  id: number;
+  id: string;
   disciplineName: string;
   description: string;
   datetime: dayjs.Dayjs | null;
@@ -37,7 +40,7 @@ export class DisciplineTask {
   isComplete: boolean;
 
   constructor(
-    id: number,
+    id: string,
     disciplineName: string,
     description: string,
     datetime: dayjs.Dayjs | null,
@@ -104,6 +107,7 @@ export class DisciplineStorage {
 
     if (tasks) DisciplineStorage.tasks = tasks.map((task) => DisciplineTask.fromJSON(task));
     if (info) DisciplineStorage.info = info;
+
     DisciplineStorage.isRead = true;
   }
 
@@ -135,5 +139,10 @@ export class DisciplineStorage {
   static async getInfo(): Promise<IDisciplineInfo[]> {
     await DisciplineStorage.read();
     return DisciplineStorage.info;
+  }
+
+  static async getTaskById(id: string): Promise<DisciplineTask> {
+    const tasks = await this.getTasks();
+    return tasks.find((task) => task.id === id);
   }
 }

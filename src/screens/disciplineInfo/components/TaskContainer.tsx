@@ -8,6 +8,11 @@ import TaskContext from '../../../context/taskContext';
 import useBackPress from '../../../hooks/useBackPress';
 import useTasks from '../../../hooks/useTasks';
 import { DisciplineTask } from '../../../models/disciplinesTasks';
+import {
+  cancelScheduledTaskNotifications,
+  rescheduleTaskNotifications,
+  scheduleTaskNotifications,
+} from '../../../notifications/taskReminder';
 import { fontSize } from '../../../utils/texts';
 import { PartialTask } from '../AddTaskModalContent';
 import TaskModal from '../TaskModal';
@@ -41,13 +46,16 @@ export const TaskContainer = ({
   const handleAddTask = ({ description, reminders, isLinkedToPair }: PartialTask) => {
     if (selectedTask) {
       selectedTask.description = description;
+      const notificationIds = selectedTask.reminders.map((rem) => rem.notificationId);
       selectedTask.reminders = reminders;
+      rescheduleTaskNotifications(notificationIds, selectedTask);
       saveTasks().then(() => {
         closeModal();
         setSelectedTask(null);
       });
       return;
     }
+
     const task = DisciplineTask.create(
       disciplineName,
       description,
@@ -55,7 +63,7 @@ export const TaskContainer = ({
       reminders,
       false
     );
-
+    scheduleTaskNotifications(task);
     addTask(task).then(closeModal);
   };
 
@@ -65,6 +73,7 @@ export const TaskContainer = ({
   }, []);
 
   const handleTaskRemove = (task: DisciplineTask) => {
+    cancelScheduledTaskNotifications({ task });
     removeTask(task).then(closeModal);
   };
 
