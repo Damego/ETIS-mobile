@@ -1,8 +1,8 @@
 import { BottomSheetView } from '@gorhom/bottom-sheet';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
-import React, { useRef, useState } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, TextInput, ToastAndroid, View } from 'react-native';
 import DateTimePicker from 'react-native-ui-datepicker';
 
 import ClickableText from '../../components/ClickableText';
@@ -52,13 +52,22 @@ const TimePicker = ({
 };
 
 const AddReminderBottomModal = ({ onSubmit }: { onSubmit: (datetime: dayjs.Dayjs) => void }) => {
-  const theme = useAppTheme();
+  const minimumDate = dayjs().add(5, 'minute');
 
-  const [value, setValue] = useState<dayjs.Dayjs>(dayjs());
-  const minimumDate = useRef(dayjs());
+  const theme = useAppTheme();
+  const [value, setValue] = useState<dayjs.Dayjs>(minimumDate);
 
   const handleDayChange = (date: dayjs.Dayjs) => {
     setValue((prevDate) => date.set('hour', prevDate.hour()).set('minute', prevDate.minute()));
+  };
+
+  const preSubmit = () => {
+    if (minimumDate > value) {
+      setValue(minimumDate);
+      ToastAndroid.show('Невозможно установить дату ниже текущей', ToastAndroid.LONG);
+      return;
+    }
+    onSubmit(value);
   };
 
   return (
@@ -67,7 +76,7 @@ const AddReminderBottomModal = ({ onSubmit }: { onSubmit: (datetime: dayjs.Dayjs
         date={value}
         onChange={({ date }) => handleDayChange(dayjs(date))}
         locale={'ru'}
-        minDate={minimumDate.current}
+        minDate={minimumDate}
         firstDayOfWeek={1}
         mode={'single'}
         selectedItemColor={theme.colors.primary}
@@ -81,7 +90,7 @@ const AddReminderBottomModal = ({ onSubmit }: { onSubmit: (datetime: dayjs.Dayjs
       <TimePicker value={value} onValueChange={setValue} />
       <ClickableText
         text={'Сохранить'}
-        onPress={() => onSubmit(value)}
+        onPress={preSubmit}
         viewStyle={styles.saveButton}
         textStyle={styles.text}
       />
