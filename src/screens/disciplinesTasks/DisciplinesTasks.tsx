@@ -30,7 +30,9 @@ const TaskGroup = ({ tasks }: { tasks: DisciplineTask[] }) => {
     <CardHeaderOut topText={date} style={styles.taskListContainer}>
       {innerGroup.map((group) => (
         <>
-          <Text style={styles.disciplineNameText}>{group[0].disciplineName}</Text>
+          <Text style={styles.disciplineNameText} key={group[0].disciplineName}>
+            {group[0].disciplineName}
+          </Text>
           {group.map((task) => (
             <TaskItem task={task} key={task.id} />
           ))}

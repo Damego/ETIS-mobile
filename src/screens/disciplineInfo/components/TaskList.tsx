@@ -45,10 +45,10 @@ const TaskList = ({ tasks }: { tasks: DisciplineTask[] }) => {
   return (
     <>
       {groupedActiveTasks.map((group, index) => (
-        <>
-          <GroupedTaskList key={group[0].id} tasks={group} />
-          {groupedActiveTasks.length - 1 !== index && <BorderLine key={index} />}
-        </>
+        <View key={group[0].id}>
+          <GroupedTaskList tasks={group} />
+          {groupedActiveTasks.length - 1 !== index && <BorderLine />}
+        </View>
       ))}
 
       {!!groupedInactiveTasks.length && (
@@ -60,10 +60,10 @@ const TaskList = ({ tasks }: { tasks: DisciplineTask[] }) => {
 
       {showInactiveTasks &&
         groupedInactiveTasks.map((group, index) => (
-          <>
-            <GroupedTaskList key={group[0].id} tasks={group} />
-            {groupedInactiveTasks.length - 1 !== index && <BorderLine key={index} />}
-          </>
+          <View key={group[0].id}>
+            <GroupedTaskList tasks={group} />
+            {groupedInactiveTasks.length - 1 !== index && <BorderLine />}
+          </View>
         ))}
     </>
   );
