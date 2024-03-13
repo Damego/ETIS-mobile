@@ -96,7 +96,7 @@ const AddTaskModalContent = ({
       Выставить привязку к паре можно только во время создания задания,
       во время редактирования этого сделать нельзя
       */}
-      {(!disableCheckbox || !selectedTask?.datetime) && !showDisciplineInfo && (
+      {!disableCheckbox && (
         <View style={styles.checkboxContainer}>
           <Checkbox
             value={isLinkedToPair}

@@ -112,7 +112,7 @@ export const TaskContainer = ({
         onDismiss={() => {
           modalOpened.current = false;
         }}
-        disableCheckbox={currentDate > disciplineDate}
+        disableCheckbox={currentDate > disciplineDate || (selectedTask && !selectedTask.datetime)}
       />
     </View>
   );

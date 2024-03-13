@@ -149,6 +149,7 @@ const DisciplinesTasks = ({ route }: RootStackScreenProps<'DisciplineTasks'>) =>
         }}
         task={selectedTask}
         showDisciplineInfo
+        disableCheckbox
       />
     </Screen>
   );
