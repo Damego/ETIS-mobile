@@ -15,7 +15,7 @@ const DisciplineTasksButton = () => {
   const { tasks } = useTasks({
     filter: (task) => {
       if (!task.datetime) return false;
-      return task.datetime >= currentDate && task.datetime <= weekEnd;
+      return task.datetime >= currentDate && task.datetime <= weekEnd && !task.isComplete;
     },
   });
   const navigation = useNavigation<RootStackNavigationProp>();
