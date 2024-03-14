@@ -46,7 +46,7 @@ const IconInfo = ({ icon, text }: { icon: keyof typeof Ionicons.glyphMap; text: 
 
   return (
     <View style={styles.container}>
-      <Ionicons name={icon} size={30} style={styles.icon} color={theme.colors.textForBlock} />
+      <Ionicons name={icon} size={28} style={styles.icon} color={theme.colors.textForBlock} />
       <Text style={styles.text}>{text}</Text>
     </View>
   );
@@ -123,6 +123,6 @@ const styles = StyleSheet.create({
   },
   text: {
     flexShrink: 1,
-    ...fontSize.large,
+    ...fontSize.big,
   },
 });

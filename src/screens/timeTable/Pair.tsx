@@ -75,7 +75,7 @@ const Lesson = ({
       </Text>
       {data.subject.type && <DisciplineType type={data.subject.type} size={'small'} />}
 
-      {data.distancePlatform && <Text>{data.distancePlatform.name}</Text>}
+      {data.distancePlatform && <Text colorVariant={'block'}>{data.distancePlatform.name}</Text>}
       {!data.distancePlatform && audience && <Text colorVariant={'block'}>{audience}</Text>}
       {data.announceHTML && <Text colorVariant={'block'}>Объявление</Text>}
 

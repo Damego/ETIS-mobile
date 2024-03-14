@@ -14,7 +14,7 @@ const DatesContainer = ({ dates }: { dates: WeekDates }) => {
   const endDate = dayjs(dates.end, 'DD.MM.YYYY').format('D MMMM');
 
   return (
-    <View style={{ marginTop: '2%', justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ marginVertical: '2%', justifyContent: 'center', alignItems: 'center' }}>
       <Text style={[fontSize.medium, globalStyles.textColor, { fontWeight: '500' }]}>
         {startDate} - {endDate}
       </Text>
