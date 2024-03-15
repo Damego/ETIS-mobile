@@ -13,7 +13,7 @@ import { getTeacherName } from '../../utils/teachers';
 import { fontSize, formatAudience } from '../../utils/texts';
 
 export default function Pair({ pair, date }: { pair: IPair; date: dayjs.Dayjs }) {
-  const { isLyceum } = useAppSelector((state) => state.student.info);
+  const isLyceum = useAppSelector((state) => state.student.info?.isLyceum);
   const pairText = `${pair.position} ${isLyceum ? 'урок' : 'пара'}`;
 
   return (
