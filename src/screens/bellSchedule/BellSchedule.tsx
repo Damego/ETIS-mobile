@@ -18,7 +18,8 @@ const Line = () => {
 const PairSchedule = ({ schedule, isPair }: { schedule: IBellSchedulePair; isPair: boolean }) => (
   <View style={styles.pairView}>
     <Text style={styles.pairNumber}>
-      {schedule.number}{isPair ? '-я пара' : '-й урок'}
+      {schedule.number}
+      {isPair ? '-я пара' : '-й урок'}
     </Text>
     <Text style={styles.timeText}>
       {schedule.start} - {schedule.end}
