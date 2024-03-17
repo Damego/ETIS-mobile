@@ -60,9 +60,7 @@ const useSignsQuery = () => {
     const hasDuty = marksQuery.data.find(
       (sessionMarks) =>
         sessionMarks.session === session &&
-        !!sessionMarks.disciplines.find(
-          (discipline) => ['2', 'незачет'].includes(discipline.mark)
-        )
+        !!sessionMarks.disciplines.find((discipline) => ['2', 'незачет'].includes(discipline.mark))
     );
 
     update({
