@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import React from 'react';
 
 import LoadingScreen, { LoadingContainer } from '../../components/LoadingScreen';
@@ -9,10 +10,22 @@ import { useClient } from '../../data/client';
 import { useGlobalStyles } from '../../hooks';
 import useQuery from '../../hooks/useQuery';
 import useTimeTableQuery from '../../hooks/useTimeTableQuery';
-import { WeekTypes } from '../../models/timeTable';
+import { WeekInfo, WeekTypes } from '../../models/timeTable';
 import DatesContainer from './DatesContainer';
 import DayArray from './DayArray';
 import HolidayView from './HolidayView';
+
+const isHolidayWeek = (weekInfo: WeekInfo) => {
+  if (weekInfo.type !== WeekTypes.holiday) return false;
+
+  const weekStart = dayjs(weekInfo.dates.start, 'DD.MM.YYYY');
+  const holidayStart = dayjs(weekInfo.holidayDates.start, 'DD.MM.YYYY');
+
+  // Если каникулы заканчиваются на следующей неделе от её начала,
+  // то тип недели уже не является каникулами,
+  // поэтому нет смысла проверять отдельно на конец недели
+  return weekStart >= holidayStart;
+};
 
 const TimeTable = () => {
   const globalStyles = useGlobalStyles();
@@ -51,7 +64,7 @@ const TimeTable = () => {
           <DatesContainer dates={data.weekInfo.dates} />
 
           <TimeTableContext.Provider value={{ teachers: teachersData }}>
-            {data.weekInfo.type === WeekTypes.holiday ? (
+            {isHolidayWeek(data.weekInfo) ? (
               <HolidayView holidayInfo={data.weekInfo.holidayDates} />
             ) : (
               <DayArray data={data.days} weekDates={data.weekInfo.dates} />
