@@ -117,6 +117,11 @@ function Menu() {
           icon={<AntDesign name={'paperclip'} size={iconSize} color={iconColor} />}
           page="Absences"
         />
+        <Button
+          text="Расписание звонков"
+          icon={<AntDesign name={'bells'} size={iconSize} color={iconColor} />}
+          page="BellSchedule"
+        />
       </Row>
       <Row>
         <Button

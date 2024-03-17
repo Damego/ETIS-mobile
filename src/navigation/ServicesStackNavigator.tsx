@@ -4,6 +4,7 @@ import React from 'react';
 import { useAppTheme } from '../hooks/theme';
 import About from '../screens/about/About';
 import AbsencesTable from '../screens/absences';
+import BellSchedule from '../screens/bellSchedule/BellSchedule';
 import CathedraTimetable from '../screens/cathedraTimetable/CathedraTimetable';
 import CertificateTable from '../screens/certificate/CertificateTable';
 import RequestCertificate from '../screens/certificate/RequestCertificate';
@@ -81,6 +82,11 @@ function ServicesStackNavigator() {
         name={'CathedraTimetable'}
         component={CathedraTimetable}
         options={{ title: 'Расписание' }}
+      />
+      <Stack.Screen
+        name={'BellSchedule'}
+        component={BellSchedule}
+        options={{ title: 'Расписание звонков' }}
       />
     </Stack.Navigator>
   );
