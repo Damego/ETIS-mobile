@@ -57,10 +57,18 @@ const useSignsQuery = () => {
   }, [pointsData, marksQuery.data]);
 
   const loadSession = (session: number) => {
+    const hasDuty = marksQuery.data.find(
+      (sessionMarks) =>
+        sessionMarks.session === session &&
+        !!sessionMarks.disciplines.find(
+          (discipline) => ['2', 'незачет'].includes(discipline.mark)
+        )
+    );
+
     update({
       data: session,
       requestType:
-        session < currentSession || fetchedSessions.current.includes(session)
+        (session < currentSession || fetchedSessions.current.includes(session)) && !hasDuty
           ? RequestType.tryCache
           : RequestType.tryFetch,
     });
