@@ -34,11 +34,13 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const StackNavigator = () => {
   const isSignedIn = useAppSelector((state) => state.auth.isSignedIn);
   const {
-    viewedIntro,
+    config: {
+      introViewed,
+      sentryEnabled,
+      theme: themeType,
+      events
+    },
     appIsReady,
-    sentryEnabled,
-    theme: themeType,
-    events,
   } = useAppSelector((state) => state.settings);
 
   const theme = useAppTheme();
@@ -122,7 +124,7 @@ const StackNavigator = () => {
   }, [appIsReady]);
 
   let component: React.ReactNode;
-  if (!viewedIntro) component = <Stack.Screen name="Onboarding" component={Intro} />;
+  if (!introViewed) component = <Stack.Screen name="Onboarding" component={Intro} />;
   else if ($isNewYear && !events?.newYear2024?.suggestedTheme)
     component = <Stack.Screen name={'NewYearTheme'} component={NewYearThemes} />;
   else if (!isSignedIn)

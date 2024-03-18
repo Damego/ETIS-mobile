@@ -28,7 +28,7 @@ const getRandomResponse = (appTheme: ThemeType) => {
 
 const EmptyDay = ({ data }: { data: ITimeTableDay }) => {
   const { date } = data;
-  const { theme } = useAppSelector((state) => state.settings);
+  const { theme } = useAppSelector((state) => state.settings.config);
 
   return (
     <CardHeaderOut topText={date}>

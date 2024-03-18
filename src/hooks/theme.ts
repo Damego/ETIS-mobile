@@ -4,7 +4,7 @@ import { APP_THEMES, ITheme, ThemeType } from '../styles/themes';
 import { useAppSelector } from './redux';
 
 export const useAppTheme = (): ITheme => {
-  const themeType = useAppSelector((state) => state.settings.theme);
+  const themeType = useAppSelector((state) => state.settings.config.theme);
   const scheme = useColorScheme();
 
   if (themeType === ThemeType.auto) {

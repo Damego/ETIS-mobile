@@ -48,7 +48,7 @@ const CircleButton = ({
 const NewYearThemes = () => {
   const dispatch = useAppDispatch();
   const theme = useAppTheme();
-  const { events, theme: themeType } = useAppSelector((state) => state.settings);
+  const { events, theme: themeType } = useAppSelector((state) => state.settings.config);
   const preThemeType = useMemo(() => themeType, []);
 
   const handleThemeChange = async (type: ThemeType) => {
