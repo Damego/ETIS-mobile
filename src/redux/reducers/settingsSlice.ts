@@ -14,6 +14,11 @@ export interface CacheMigrations {
   v1_3_0?: boolean;
 }
 
+export interface UIConfig {
+  showPastWeekDays: boolean;
+  highlightCurrentDay: boolean;
+}
+
 export interface AppConfig {
   theme: ThemeType;
   signNotificationEnabled: boolean;
@@ -23,11 +28,12 @@ export interface AppConfig {
   sentryEnabled: boolean;
   events: Events;
   cacheMigrations: CacheMigrations;
+  ui: UIConfig;
 }
 
 export interface SettingsState {
   appIsReady: boolean;
-  initialPage: PageType,
+  initialPage: PageType;
   config: AppConfig;
 }
 
@@ -37,10 +43,14 @@ const initialConfig: AppConfig = {
   signNotificationEnabled: true,
   sentryEnabled: true,
   events: {},
+  ui: {
+    showPastWeekDays: true,
+    highlightCurrentDay: false,
+  },
   cacheMigrations: {},
   reviewStep: 'pending',
-  privacyPolicyAccepted: false
-}
+  privacyPolicyAccepted: false,
+};
 
 const initialState: SettingsState = {
   appIsReady: false,
@@ -53,7 +63,7 @@ const settingsSlice = createSlice({
   initialState,
   reducers: {
     setConfig(state, action: PayloadAction<AppConfig>) {
-      state.config = action.payload;
+      state.config = { ...initialConfig, ...action.payload };
     },
     changeTheme(state, action: PayloadAction<ThemeType>) {
       state.config.theme = action.payload;
@@ -76,6 +86,9 @@ const settingsSlice = createSlice({
     setEvents(state, action: PayloadAction<Events>) {
       state.config.events = action.payload;
     },
+    setUIConfig(state, action: PayloadAction<Partial<UIConfig>>) {
+      state.config.ui = { ...state.config.ui, ...action.payload };
+    },
   },
 });
 
@@ -89,4 +102,5 @@ export const {
   setInitialPage,
   setSentryEnabled,
   setEvents,
+  setUIConfig,
 } = settingsSlice.actions;

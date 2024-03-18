@@ -6,6 +6,7 @@ import Screen from '../../components/Screen';
 import Text from '../../components/Text';
 import { fontSize } from '../../utils/texts';
 import AboutAppButton from './components/AboutApp';
+import ChangeAppUI from './components/ChangeAppUI';
 import ChangeEmailSetting from './components/ChangeEmailSetting';
 import ChangeNewYearTheme from './components/ChangeNewYearTheme';
 import ChangePasswordSetting from './components/ChangePasswordSetting';
@@ -22,6 +23,7 @@ export default function Settings() {
       <Card style={{ zIndex: 1 }}>
         <ToggleThemeSetting />
       </Card>
+      <ChangeAppUI />
       <ChangeNewYearTheme />
       <Card>
         <ToggleSignNotification />

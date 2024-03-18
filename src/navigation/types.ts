@@ -49,6 +49,7 @@ export type ServicesNativeStackParamList = {
   ChangeEmail: { sendVerificationMail: boolean };
   CathedraTimetable: { teacherId?: string; cathedraId?: string };
   BellSchedule: undefined;
+  ChangeAppUI: undefined;
 };
 
 export type SignsTopTabsParamsList = {
