@@ -4,18 +4,17 @@ import Card from '../../components/Card';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import Screen from '../../components/Screen';
 import Text from '../../components/Text';
-import { useGlobalStyles } from '../../hooks';
 import { fontSize } from '../../utils/texts';
-import AboutAppButton from './AboutApp';
-import ChangeEmailSetting from './ChangeEmailSetting';
-import ChangeNewYearTheme from './ChangeNewYearTheme';
-import ChangePasswordSetting from './ChangePasswordSetting';
-import ChangePersonalRecord from './ChangePersonalRecord';
-import ResetIntroSetting from './ResetIntroSetting';
-import SignOut from './SignOut';
-import ToggleSentrySetting from './ToggleSentrySetting';
-import ToggleSignNotification from './ToggleSignNotification';
-import ToggleThemeSetting from './ToggleThemeSetting';
+import AboutAppButton from './components/AboutApp';
+import ChangeEmailSetting from './components/ChangeEmailSetting';
+import ChangeNewYearTheme from './components/ChangeNewYearTheme';
+import ChangePasswordSetting from './components/ChangePasswordSetting';
+import ChangePersonalRecord from './components/ChangePersonalRecord';
+import ResetIntroSetting from './components/ResetIntroSetting';
+import SignOut from './components/SignOut';
+import ToggleSentrySetting from './components/ToggleSentrySetting';
+import ToggleSignNotification from './components/ToggleSignNotification';
+import ToggleThemeSetting from './components/ToggleThemeSetting';
 
 export default function Settings() {
   return (
