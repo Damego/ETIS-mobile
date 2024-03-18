@@ -34,12 +34,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const StackNavigator = () => {
   const isSignedIn = useAppSelector((state) => state.auth.isSignedIn);
   const {
-    config: {
-      introViewed,
-      sentryEnabled,
-      theme: themeType,
-      events
-    },
+    config: { introViewed, sentryEnabled, theme: themeType, events },
     appIsReady,
   } = useAppSelector((state) => state.settings);
 
