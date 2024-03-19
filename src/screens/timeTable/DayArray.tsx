@@ -1,8 +1,9 @@
 import dayjs from 'dayjs';
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 
 import { Button } from '../../components/Button';
 import CenteredText from '../../components/CenteredText';
+import TimeTableContext from '../../context/timetableContext';
 import { useAppSelector } from '../../hooks';
 import { ITimeTableDay, WeekDates } from '../../models/timeTable';
 import { fontSize } from '../../utils/texts';
@@ -17,9 +18,10 @@ const DayArray = ({ data, weekDates }: IDayArrayProps) => {
   const { showPastWeekDays } = useAppSelector((state) => state.settings.config.ui);
   const [localShowPastWeekDays, setShowPastWeekDays] = useState(showPastWeekDays);
 
+  const { currentDate } = useContext(TimeTableContext);
+
   const date = useRef(dayjs(weekDates.start, 'DD.MM.YYYY'));
   const weekEndDate = useRef(dayjs(weekDates.end, 'DD.MM.YYYY'));
-  const currentDate = useRef(dayjs().startOf('day'));
 
   const showPastDays = () => setShowPastWeekDays(true);
 
@@ -34,15 +36,11 @@ const DayArray = ({ data, weekDates }: IDayArrayProps) => {
       const date = bumpDate();
       if (
         !localShowPastWeekDays &&
-        currentDate.current > date &&
-        currentDate.current < weekEndDate.current
+        currentDate > date &&
+        currentDate < weekEndDate.current
       )
         return null;
-      return day.pairs.length === 0 ? (
-        <EmptyDay key={day.date} data={day} />
-      ) : (
-        <Day key={day.date} data={day} date={date} />
-      );
+      return <Day key={day.date} data={day} date={date} />;
     })
     .filter((comp) => comp !== null);
 
