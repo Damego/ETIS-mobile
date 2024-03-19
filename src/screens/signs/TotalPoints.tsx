@@ -61,7 +61,7 @@ const TotalPoints = ({
   isInBlock?: boolean;
 }) => {
   const globalStyles = useGlobalStyles();
-  const { theme } = useAppSelector((state) => state.settings);
+  const { theme } = useAppSelector((state) => state.settings.config);
   const [showPoint, setShowPoint] = useState<boolean>(theme !== ThemeType.halloween);
 
   const textStyle = getSubjectPointsStyle(

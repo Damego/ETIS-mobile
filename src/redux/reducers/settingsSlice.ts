@@ -14,6 +14,11 @@ export interface CacheMigrations {
   v1_3_0?: boolean;
 }
 
+export interface UIConfig {
+  showPastWeekDays: boolean;
+  highlightCurrentDay: boolean;
+}
+
 export interface AppConfig {
   theme: ThemeType;
   signNotificationEnabled: boolean;
@@ -23,26 +28,34 @@ export interface AppConfig {
   sentryEnabled: boolean;
   events: Events;
   cacheMigrations: CacheMigrations;
+  ui: UIConfig;
 }
 
 export interface SettingsState {
-  theme: ThemeType;
-  viewedIntro: boolean;
-  signNotification: boolean;
   appIsReady: boolean;
   initialPage: PageType;
-  sentryEnabled: boolean;
-  events: Events;
+  config: AppConfig;
 }
 
-const initialState: SettingsState = {
+const initialConfig: AppConfig = {
   theme: ThemeType.auto,
-  viewedIntro: false,
-  signNotification: true,
-  appIsReady: false,
-  initialPage: PageType.timeTable,
+  introViewed: false,
+  signNotificationEnabled: true,
   sentryEnabled: true,
   events: {},
+  ui: {
+    showPastWeekDays: true,
+    highlightCurrentDay: false,
+  },
+  cacheMigrations: {},
+  reviewStep: 'pending',
+  privacyPolicyAccepted: false,
+};
+
+const initialState: SettingsState = {
+  appIsReady: false,
+  initialPage: PageType.timeTable,
+  config: initialConfig,
 };
 
 const settingsSlice = createSlice({
@@ -50,30 +63,16 @@ const settingsSlice = createSlice({
   initialState,
   reducers: {
     setConfig(state, action: PayloadAction<AppConfig>) {
-      const config = action.payload;
-      if (config.theme !== undefined) state.theme = config.theme;
-      else state.theme = ThemeType.auto;
-
-      if (config.signNotificationEnabled !== undefined)
-        state.signNotification = config.signNotificationEnabled;
-      else state.signNotification = false;
-
-      if (config.introViewed !== undefined) state.viewedIntro = config.introViewed;
-      else state.viewedIntro = false;
-
-      if (config.sentryEnabled !== undefined) state.sentryEnabled = config.sentryEnabled;
-      else state.sentryEnabled = true;
-
-      state.events = config.events;
+      state.config = { ...initialConfig, ...action.payload };
     },
     changeTheme(state, action: PayloadAction<ThemeType>) {
-      state.theme = action.payload;
+      state.config.theme = action.payload;
     },
     setIntroViewed(state, action: PayloadAction<boolean>) {
-      state.viewedIntro = action.payload;
+      state.config.introViewed = action.payload;
     },
     setSignNotification(state, action: PayloadAction<boolean>) {
-      state.signNotification = action.payload;
+      state.config.signNotificationEnabled = action.payload;
     },
     setAppReady(state, action: PayloadAction<boolean>) {
       state.appIsReady = action.payload;
@@ -82,10 +81,13 @@ const settingsSlice = createSlice({
       state.initialPage = action.payload;
     },
     setSentryEnabled(state, action: PayloadAction<boolean>) {
-      state.sentryEnabled = action.payload;
+      state.config.sentryEnabled = action.payload;
     },
     setEvents(state, action: PayloadAction<Events>) {
-      state.events = action.payload;
+      state.config.events = action.payload;
+    },
+    setUIConfig(state, action: PayloadAction<Partial<UIConfig>>) {
+      state.config.ui = { ...state.config.ui, ...action.payload };
     },
   },
 });
@@ -100,4 +102,5 @@ export const {
   setInitialPage,
   setSentryEnabled,
   setEvents,
+  setUIConfig,
 } = settingsSlice.actions;

@@ -3,14 +3,14 @@ import React from 'react';
 import { Linking, Switch, ToastAndroid, TouchableOpacity } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 
-import { cache } from '../../cache/smartCache';
-import Card from '../../components/Card';
-import Text from '../../components/Text';
-import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../hooks';
-import { useAppTheme } from '../../hooks/theme';
-import { setSentryEnabled } from '../../redux/reducers/settingsSlice';
-import { SENTRY_PULL_REQUEST } from '../../utils/consts';
-import { fontSize } from '../../utils/texts';
+import { cache } from '../../../cache/smartCache';
+import Card from '../../../components/Card';
+import Text from '../../../components/Text';
+import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../../hooks';
+import { useAppTheme } from '../../../hooks/theme';
+import { setSentryEnabled } from '../../../redux/reducers/settingsSlice';
+import { SENTRY_PULL_REQUEST } from '../../../utils/consts';
+import { fontSize } from '../../../utils/texts';
 
 const AboutSentryPopover = () => {
   const globalStyles = useGlobalStyles();
@@ -47,9 +47,7 @@ const AboutSentryPopover = () => {
 
 const ToggleSentrySetting = () => {
   const dispatch = useAppDispatch();
-  const { sentryEnabled } = useAppSelector((state) => state.settings);
-
-  const globalStyles = useGlobalStyles();
+  const { sentryEnabled } = useAppSelector((state) => state.settings.config);
 
   const toggleSentryEnabled = (value: boolean) => {
     dispatch(setSentryEnabled(value));

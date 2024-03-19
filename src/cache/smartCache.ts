@@ -15,7 +15,7 @@ import { ITeacher } from '../models/teachers';
 import { ITimeTable } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
 import { UserCredentials } from '../redux/reducers/authSlice';
-import { AppConfig } from '../redux/reducers/settingsSlice';
+import { AppConfig, UIConfig } from '../redux/reducers/settingsSlice';
 import { ThemeType } from '../styles/themes';
 import { Events } from '../utils/events';
 import FieldCache from './fieldCache';
@@ -476,6 +476,12 @@ export default class SmartCache {
     const config = await this.getAppConfig();
     config.events = events;
     await this.updateAppConfig(config);
+  }
+
+  async setUIConfig(config: Partial<UIConfig>) {
+    const appConfig = await this.getAppConfig();
+    appConfig.ui = { ...appConfig.ui, ...config };
+    await this.updateAppConfig(appConfig);
   }
 
   // End Internal Region

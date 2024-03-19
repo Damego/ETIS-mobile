@@ -32,7 +32,10 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
   const { messageCount, announceCount, hasUnverifiedEmail } = useAppSelector(
     (state) => state.student
   );
-  const { signNotification, initialPage } = useAppSelector((state) => state.settings);
+  const {
+    config: { signNotificationEnabled },
+    initialPage,
+  } = useAppSelector((state) => state.settings);
   const client = useClient();
   const { isDemo, isOfflineMode } = useAppSelector((state) => state.auth);
 
@@ -77,7 +80,7 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
 
   useEffect(() => {
     loadData().then(() => {
-      if (signNotification && !isDemo && !isOfflineMode) {
+      if (signNotificationEnabled && !isDemo && !isOfflineMode) {
         registerSignsFetchTask();
       }
     });

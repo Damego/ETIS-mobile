@@ -39,6 +39,8 @@ const TimeTable = () => {
     return <LoadingScreen onRefresh={refresh} />;
   if (!data || !teachersData) return <NoData onRefresh={refresh} />;
 
+  const currentDate = dayjs().startOf('day');
+
   return (
     <Screen onUpdate={refresh}>
       <PageNavigator
@@ -63,7 +65,7 @@ const TimeTable = () => {
         <>
           <DatesContainer dates={data.weekInfo.dates} />
 
-          <TimeTableContext.Provider value={{ teachers: teachersData }}>
+          <TimeTableContext.Provider value={{ teachers: teachersData, currentDate }}>
             {isHolidayWeek(data.weekInfo) ? (
               <HolidayView holidayInfo={data.weekInfo.holidayDates} />
             ) : (

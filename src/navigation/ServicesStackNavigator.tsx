@@ -16,6 +16,7 @@ import Services from '../screens/services';
 import { SettingButton } from '../screens/services/Services';
 import SessionQuestionnaireList from '../screens/sessionQuestionnaire/SessionQuestionnaireList';
 import Settings from '../screens/settings/Settings';
+import ChangeAppUI from '../screens/settings/uiSettings/ChangeAppUI';
 import ShortTeachPlan from '../screens/shortTeachPlan';
 import TeacherTable from '../screens/teachers';
 import { headerParams } from './header';
@@ -88,6 +89,7 @@ function ServicesStackNavigator() {
         component={BellSchedule}
         options={{ title: 'Расписание звонков' }}
       />
+      <Stack.Screen name={'ChangeAppUI'} component={ChangeAppUI} options={{ title: 'Интерфейс' }} />
     </Stack.Navigator>
   );
 }
