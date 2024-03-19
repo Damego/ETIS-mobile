@@ -27,22 +27,7 @@ const getRandomResponse = (appTheme: ThemeType) => {
   return getRandomItem(responses);
 };
 
-const EmptyDay = ({ data }: { data: ITimeTableDay }) => {
-  const { date } = data;
-  const { theme } = useAppSelector((state) => state.settings.config);
-
-  return (
-    <CardHeaderOut topText={date}>
-      <View style={{ alignItems: 'center' }}>
-        <Text style={{ ...fontSize.medium, fontWeight: '600' }} colorVariant={'block'}>
-          {getRandomResponse(theme)}
-        </Text>
-      </View>
-    </CardHeaderOut>
-  );
-};
-
-const Day = ({ data, date }: DayData) => {
+export const Day = ({ data, date }: DayData) => {
   const { date: dateString, pairs } = data;
   const {
     theme,
@@ -77,5 +62,3 @@ const Day = ({ data, date }: DayData) => {
     </CardHeaderOut>
   );
 };
-
-export { Day, EmptyDay };
