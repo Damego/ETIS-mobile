@@ -1,13 +1,15 @@
 import dayjs from 'dayjs';
 import React, { useContext, useRef, useState } from 'react';
+import { View } from 'react-native';
 
 import { Button } from '../../components/Button';
 import CenteredText from '../../components/CenteredText';
+import Text from '../../components/Text';
 import TimeTableContext from '../../context/timetableContext';
 import { useAppSelector } from '../../hooks';
 import { ITimeTableDay, WeekDates } from '../../models/timeTable';
 import { fontSize } from '../../utils/texts';
-import { Day, EmptyDay } from './Day';
+import { Day } from './Day';
 
 interface IDayArrayProps {
   data: ITimeTableDay[];
@@ -34,19 +36,28 @@ const DayArray = ({ data, weekDates }: IDayArrayProps) => {
   const components = data
     .map((day) => {
       const date = bumpDate();
-      if (
-        !localShowPastWeekDays &&
-        currentDate > date &&
-        currentDate < weekEndDate.current
-      )
+      if (!localShowPastWeekDays && currentDate > date && currentDate < weekEndDate.current)
         return null;
       return <Day key={day.date} data={day} date={date} />;
     })
     .filter((comp) => comp !== null);
 
   if (components.length === 0) {
-    // todo: btn to show tt
-    return <CenteredText>Неделя подошла к концу. Приятных выходных! :)</CenteredText>;
+    return (
+      <>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={[fontSize.large, { fontWeight: '500' }]}>
+            Неделя подошла к концу. {'\n'}Приятных выходных! :)
+          </Text>
+          <Button
+            text={'Показать прошедшие дни'}
+            onPress={showPastDays}
+            variant={'card'}
+            fontStyle={fontSize.medium}
+          />
+        </View>
+      </>
+    );
   }
 
   return (
