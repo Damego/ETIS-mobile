@@ -66,7 +66,6 @@ const TimeTable = () => {
           <DatesContainer dates={data.weekInfo.dates} />
 
           <TimeTableContext.Provider value={{ teachers: teachersData, currentDate }}>
-
             {isHolidayWeek(data.weekInfo) ? (
               <HolidayView holidayInfo={data.weekInfo.holidayDates} />
             ) : (
