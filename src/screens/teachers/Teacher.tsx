@@ -3,10 +3,11 @@ import React from 'react';
 import { Image, StyleSheet, ToastAndroid, TouchableWithoutFeedback, View } from 'react-native';
 
 import ClickableText from '../../components/ClickableText';
+import DisciplineType from '../../components/DisciplineType';
 import Text from '../../components/Text';
 import { ITeacher } from '../../models/teachers';
 import { ServicesNavigationProp } from '../../navigation/types';
-import { fontSize } from '../../utils/texts';
+import { fontSize, getDisciplineTypeName } from '../../utils/texts';
 
 const styles = StyleSheet.create({
   container: {
@@ -15,6 +16,7 @@ const styles = StyleSheet.create({
   teacherNameView: {},
   textTitle: {
     fontWeight: '500',
+    ...fontSize.medium,
   },
   subjectInfoView: {},
   photoContainer: {},
@@ -27,26 +29,34 @@ const styles = StyleSheet.create({
     flex: 2,
   },
   teacherTimetableButton: { fontWeight: '500', textDecorationLine: 'underline' },
+  typesContainer: {
+    flexDirection: 'row',
+    gap: 4,
+  },
 });
 
 interface TeacherProps {
+  discipline: string;
   data: ITeacher;
 }
 
-const Teacher = ({ data }: TeacherProps) => {
+const Teacher = ({ discipline, data }: TeacherProps) => {
   const navigation = useNavigation<ServicesNavigationProp>();
+  const subject = data.subjects.find((sub) => sub.discipline === discipline);
 
   return (
     <>
       <View style={styles.container}>
         <View style={styles.teacherInfo}>
           <View style={styles.teacherNameView}>
-            <Text style={[fontSize.medium, styles.textTitle]} colorVariant={'block'}>
+            <Text style={styles.textTitle} colorVariant={'block'}>
               {data.name}
             </Text>
-            <Text style={fontSize.medium} colorVariant={'block'}>
-              {data.subjectType}
-            </Text>
+            <View style={styles.typesContainer}>
+              {subject.types.map((type) => (
+                <DisciplineType key={type} type={type} size={'small'} />
+              ))}
+            </View>
           </View>
 
           <View style={styles.subjectInfoView}>

@@ -1,26 +1,19 @@
 import { useNavigation } from '@react-navigation/native';
-import moment from 'moment/moment';
-import React from 'react';
+import dayjs from 'dayjs';
+import React, { useContext } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
+import DisciplineType from '../../components/DisciplineType';
 import Text from '../../components/Text';
+import TimeTableContext from '../../context/timetableContext';
 import { useAppSelector } from '../../hooks';
-import { TeacherType } from '../../models/teachers';
 import { ILesson, IPair } from '../../models/timeTable';
 import { BottomTabsNavigationProp } from '../../navigation/types';
 import { getTeacherName } from '../../utils/teachers';
 import { fontSize, formatAudience } from '../../utils/texts';
 
-export default function Pair({
-  pair,
-  teachersData,
-  date,
-}: {
-  pair: IPair;
-  teachersData: TeacherType;
-  date: moment.Moment;
-}) {
-  const { isLyceum } = useAppSelector((state) => state.student.info);
+export default function Pair({ pair, date }: { pair: IPair; date: dayjs.Dayjs }) {
+  const isLyceum = useAppSelector((state) => state.student.info?.isLyceum);
   const pairText = `${pair.position} ${isLyceum ? 'урок' : 'пара'}`;
 
   return (
@@ -34,14 +27,14 @@ export default function Pair({
 
       <View style={{ flexDirection: 'column', flex: 1 }}>
         {pair.lessons.map((lesson, ind) => {
-          const time = moment(pair.time, 'HH:mm');
+          const time = dayjs(pair.time, 'HH:mm');
+          const cloned = date.clone().set('hour', time.hour()).set('minute', time.minute());
 
           return (
             <Lesson
-              key={lesson.subject + ind}
+              key={lesson.subject.string + ind}
               data={lesson}
-              teachersData={teachersData}
-              date={date.clone().set({ hour: time.hour(), minute: time.minutes() })}
+              date={cloned}
               pairPosition={pair.position}
             />
           );
@@ -53,21 +46,18 @@ export default function Pair({
 
 const Lesson = ({
   data,
-  teachersData,
   date,
   pairPosition,
 }: {
   data: ILesson;
-  teachersData: TeacherType;
-  date: moment.Moment;
+  date: dayjs.Dayjs;
   pairPosition: number;
 }) => {
   const navigation = useNavigation<BottomTabsNavigationProp>();
+  const { teachers } = useContext(TimeTableContext);
 
-  const location = formatAudience(data);
-  const audience = data.isDistance ? data.audience : location;
-
-  const teacherName = getTeacherName(teachersData, data.teacher);
+  const audience = formatAudience(data);
+  const teacherName = getTeacherName(teachers, data.teacher);
 
   return (
     <TouchableOpacity
@@ -81,10 +71,11 @@ const Lesson = ({
       }
     >
       <Text style={[fontSize.medium, styles.lessonInfoText]} colorVariant={'block'}>
-        {data.subject}
+        {data.subject.discipline ?? data.subject.string}
       </Text>
+      {data.subject.type && <DisciplineType type={data.subject.type} size={'small'} />}
 
-      {data.distancePlatform && <Text>{data.distancePlatform.name}</Text>}
+      {data.distancePlatform && <Text colorVariant={'block'}>{data.distancePlatform.name}</Text>}
       {!data.distancePlatform && audience && <Text colorVariant={'block'}>{audience}</Text>}
       {data.announceHTML && <Text colorVariant={'block'}>Объявление</Text>}
 

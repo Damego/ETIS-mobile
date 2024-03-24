@@ -1,14 +1,12 @@
-import { TeacherType } from '../models/teachers';
-import { ITeacher } from '../models/timeTable';
+import { ITeacher } from '../models/teachers';
+import { ITeacher as ITimeTableTeacher } from '../models/timeTable';
 
-export const getTeacherName = (teacherGroups: TeacherType, teacher: ITeacher) => {
+export const getTeacherName = (teachers: ITeacher[], teacher: ITimeTableTeacher) => {
   let teacherName: string;
 
   if (teacher.id) {
-    teacherGroups.forEach(([, teachers]) => {
-      const $teacher = teachers.find(($teacher) => $teacher.id === teacher.id);
-      if ($teacher) teacherName = $teacher.name;
-    });
+    const $teacher = teachers.find(($teacher) => $teacher.id === teacher.id);
+    if ($teacher) teacherName = $teacher.name;
   }
   if (!teacherName) teacherName = teacher.name;
 

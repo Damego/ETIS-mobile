@@ -35,7 +35,7 @@ export const HalloweenEmoji = () => (
 );
 
 export const HalloweenDecoration = () => {
-  const { theme } = useAppSelector((state) => state.settings);
+  const { theme } = useAppSelector((state) => state.settings.config);
 
   if (theme !== ThemeType.halloween) return;
 

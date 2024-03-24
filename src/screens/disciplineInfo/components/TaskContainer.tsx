@@ -1,12 +1,18 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import dayjs from 'dayjs';
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import Text from '../../../components/Text';
+import TaskContext from '../../../context/taskContext';
 import useBackPress from '../../../hooks/useBackPress';
 import useTasks from '../../../hooks/useTasks';
-import { DisciplineStorage, DisciplineTask } from '../../../models/disciplinesTasks';
+import { DisciplineTask } from '../../../models/disciplinesTasks';
+import {
+  cancelScheduledTaskNotifications,
+  rescheduleTaskNotifications,
+  scheduleTaskNotifications,
+} from '../../../notifications/taskReminder';
 import { fontSize } from '../../../utils/texts';
 import { PartialTask } from '../AddTaskModalContent';
 import TaskModal from '../TaskModal';
@@ -37,34 +43,43 @@ export const TaskContainer = ({
     modalOpened.current = false;
   };
 
-  const handleAddTask = (partial: PartialTask) => {
+  const handleAddTask = ({ description, reminders, isLinkedToPair }: PartialTask) => {
     if (selectedTask) {
-      selectedTask.description = partial.description;
-      selectedTask.reminders = partial.reminders;
+      selectedTask.description = description;
+      const notificationIds = selectedTask.reminders.map((rem) => rem.notificationId);
+      selectedTask.reminders = reminders;
+      rescheduleTaskNotifications(notificationIds, selectedTask);
       saveTasks().then(() => {
         closeModal();
         setSelectedTask(null);
       });
       return;
     }
-    const task = new DisciplineTask(
-      DisciplineStorage.getNextTaskId(), // Логично, не правда ли?
-      disciplineName,
-      partial.description,
-      disciplineDate.clone(),
-      partial.reminders
-    );
 
+    const task = DisciplineTask.create(
+      disciplineName,
+      description,
+      isLinkedToPair ? disciplineDate.clone() : null,
+      reminders,
+      false
+    );
+    scheduleTaskNotifications(task);
     addTask(task).then(closeModal);
   };
 
-  const onRequestEdit = (task: DisciplineTask) => {
+  const onRequestEdit = useCallback((task: DisciplineTask) => {
     setSelectedTask(task);
     openModal();
-  };
+  }, []);
 
   const handleTaskRemove = (task: DisciplineTask) => {
+    cancelScheduledTaskNotifications({ task });
     removeTask(task).then(closeModal);
+  };
+
+  const onTaskComplete = (task: DisciplineTask) => {
+    task.isComplete = !task.isComplete;
+    saveTasks();
   };
 
   // ВЕЗДЕ ПРОБЛЕМЫ
@@ -86,10 +101,17 @@ export const TaskContainer = ({
     <View>
       <View style={styles.taskContainer}>
         <Text style={styles.taskText}>Задания</Text>
-        {disciplineDate > currentDate && <AddButton onPress={openModal} />}
+        <AddButton onPress={openModal} />
       </View>
 
-      <TaskList tasks={tasks} disciplineDate={disciplineDate} onRequestEdit={onRequestEdit} />
+      <TaskContext.Provider
+        value={useMemo(
+          () => ({ onRequestEdit, disciplineDate, onComplete: onTaskComplete }),
+          [disciplineDate]
+        )}
+      >
+        <TaskList tasks={tasks} />
+      </TaskContext.Provider>
 
       <TaskModal
         ref={modalRef}
@@ -99,6 +121,7 @@ export const TaskContainer = ({
         onDismiss={() => {
           modalOpened.current = false;
         }}
+        disableCheckbox={currentDate > disciplineDate || (selectedTask && !selectedTask.datetime)}
       />
     </View>
   );

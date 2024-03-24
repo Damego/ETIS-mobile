@@ -7,6 +7,7 @@ export interface ICheckPoint {
   currentScore: number;
   maxScore: number;
   date: string;
+  updatesUrl: string;
   teacher: string;
   isAbsent: boolean;
   isIntroductionWork: boolean;

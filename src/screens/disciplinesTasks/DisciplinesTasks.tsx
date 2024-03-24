@@ -6,10 +6,16 @@ import { StyleSheet } from 'react-native';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import CenteredText from '../../components/CenteredText';
 import Screen from '../../components/Screen';
+import Text from '../../components/Text';
+import TaskContext, { ITaskContext } from '../../context/taskContext';
 import useBackPress from '../../hooks/useBackPress';
 import useTasks from '../../hooks/useTasks';
 import { DisciplineStorage, DisciplineTask } from '../../models/disciplinesTasks';
 import { RootStackScreenProps } from '../../navigation/types';
+import {
+  cancelScheduledTaskNotifications,
+  rescheduleTaskNotifications,
+} from '../../notifications/taskReminder';
 import { formatTime } from '../../utils/datetime';
 import { fontSize } from '../../utils/texts';
 import { groupItems } from '../../utils/utils';
@@ -17,20 +23,24 @@ import { PartialTask } from '../disciplineInfo/AddTaskModalContent';
 import HistoryButton from '../disciplineInfo/HistoryButton';
 import TaskModal from '../disciplineInfo/TaskModal';
 import TaskItem from '../disciplineInfo/components/TaskItem';
+import getGroupedTasks from '../disciplineInfo/getGroupedTasks';
 
-const TaskGroup = ({
-  tasks,
-  onRequestEdit,
-}: {
-  tasks: DisciplineTask[];
-  onRequestEdit: (task: DisciplineTask) => void;
-}) => {
-  const time = formatTime(tasks[0].datetime, { disableTime: true });
+const TaskGroup = ({ tasks }: { tasks: DisciplineTask[] }) => {
+  const date = tasks[0].datetime ? formatTime(tasks[0].datetime, { disableTime: true }) : null;
+
+  const innerGroup = groupItems(tasks, (task) => task.disciplineName);
 
   return (
-    <CardHeaderOut topText={time} style={styles.taskListContainer}>
-      {tasks.map((task) => (
-        <TaskItem task={task} onRequestEdit={onRequestEdit} key={task.id} showDisciplineName />
+    <CardHeaderOut topText={date} style={styles.taskListContainer}>
+      {innerGroup.map((group) => (
+        <>
+          <Text style={styles.disciplineNameText} key={group[0].disciplineName}>
+            {group[0].disciplineName}
+          </Text>
+          {group.map((task) => (
+            <TaskItem task={task} key={task.id} />
+          ))}
+        </>
       ))}
     </CardHeaderOut>
   );
@@ -54,26 +64,33 @@ const DisciplinesTasks = ({ route }: RootStackScreenProps<'DisciplineTasks'>) =>
     modalOpened.current = false;
   };
 
-  const onRequestEdit = (task: DisciplineTask) => {
+  const onRequestEdit = useCallback((task: DisciplineTask) => {
     setSelectedTask(task);
     openModal();
-  };
+  }, []);
 
-  const handleTaskAdd = (partial: PartialTask) => {
+  const handleTaskAdd = async (partial: PartialTask) => {
     if (!selectedTask) return; // impossible in this case;
-
+    const notificationIds = selectedTask.reminders.map((rem) => rem.notificationId);
     selectedTask.description = partial.description;
     selectedTask.reminders = partial.reminders;
-    saveTasks().then(() => {
-      closeModal();
-      setSelectedTask(null);
-    });
+
+    await rescheduleTaskNotifications(notificationIds, selectedTask);
+    await saveTasks();
+
+    closeModal();
+    setSelectedTask(null);
   };
 
-  const handleTaskRemove = (task: DisciplineTask) => {
-    removeTask(task).then(() => {
-      closeModal();
-    });
+  const handleTaskRemove = async (task: DisciplineTask) => {
+    await cancelScheduledTaskNotifications({ task });
+    await removeTask(task);
+    closeModal();
+  };
+
+  const onTaskComplete = (task: DisciplineTask) => {
+    task.isComplete = !task.isComplete;
+    saveTasks();
   };
 
   useEffect(() => {
@@ -97,12 +114,14 @@ const DisciplinesTasks = ({ route }: RootStackScreenProps<'DisciplineTasks'>) =>
   );
 
   const currentDate = dayjs();
+  const { groupedActiveTasks, groupedInactiveTasks } = useMemo(
+    () => getGroupedTasks(tasks, currentDate),
+    [tasks, currentDate]
+  );
 
-  const inactiveTasks = tasks.filter((task) => task.datetime < currentDate).reverse();
-  const activeTasks = tasks.filter((task) => task.datetime >= currentDate);
-  const groupedActiveTasks = useMemo(
-    () => groupItems(activeTasks, (task) => task.datetime.toISOString()),
-    [activeTasks]
+  const context: ITaskContext = useMemo(
+    () => ({ onRequestEdit, onComplete: onTaskComplete }),
+    [onRequestEdit]
   );
 
   return (
@@ -113,18 +132,21 @@ const DisciplinesTasks = ({ route }: RootStackScreenProps<'DisciplineTasks'>) =>
         </CenteredText>
       )}
 
-      {groupedActiveTasks.map((group) => (
-        <TaskGroup key={group[0].id} tasks={group} onRequestEdit={onRequestEdit} />
-      ))}
+      <TaskContext.Provider value={context}>
+        {groupedActiveTasks.map((group) => (
+          <TaskGroup key={group[0].id} tasks={group} />
+        ))}
 
-      {!!inactiveTasks.length && (
-        <HistoryButton
-          onPress={() => setShowInactiveTasks((prev) => !prev)}
-          showHistory={showInactiveTasks}
-        />
-      )}
+        {!!groupedInactiveTasks.length && (
+          <HistoryButton
+            onPress={() => setShowInactiveTasks((prev) => !prev)}
+            showHistory={showInactiveTasks}
+          />
+        )}
 
-      {showInactiveTasks && <TaskGroup tasks={inactiveTasks} onRequestEdit={onRequestEdit} />}
+        {showInactiveTasks &&
+          groupedInactiveTasks.map((group) => <TaskGroup key={group[0].id} tasks={group} />)}
+      </TaskContext.Provider>
 
       <TaskModal
         ref={modalRef}
@@ -135,6 +157,7 @@ const DisciplinesTasks = ({ route }: RootStackScreenProps<'DisciplineTasks'>) =>
         }}
         task={selectedTask}
         showDisciplineInfo
+        disableCheckbox
       />
     </Screen>
   );
@@ -154,5 +177,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: '2%',
     marginTop: '2%',
     gap: 4,
+  },
+  disciplineNameText: {
+    fontWeight: '500',
+    ...fontSize.medium,
+    marginBottom: '1%',
   },
 });

@@ -1,6 +1,7 @@
 import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
+import { Checkbox } from 'expo-checkbox';
 import React, { useRef, useState } from 'react';
 import { Alert, StyleSheet, TextInput, View } from 'react-native';
 
@@ -20,6 +21,8 @@ export interface PartialTask {
   // Описание задачи
   reminders: DisciplineReminder[];
   // Список напоминаний к задаче
+  isLinkedToPair: boolean;
+  // Привязано ли задание к паре
 }
 
 const AddTaskModalContent = ({
@@ -27,14 +30,17 @@ const AddTaskModalContent = ({
   onTaskRemove,
   selectedTask,
   showDisciplineInfo,
+  disableCheckbox,
 }: {
   onTaskAdd: (task: PartialTask) => void;
   onTaskRemove: (task: DisciplineTask) => void;
   selectedTask?: DisciplineTask;
   showDisciplineInfo?: boolean;
+  disableCheckbox?: boolean;
 }) => {
   const [description, setDescription] = useState(selectedTask?.description || '');
   const [reminders, setReminders] = useState<DisciplineReminder[]>(selectedTask?.reminders || []);
+  const [isLinkedToPair, setLinkedToPair] = useState(!disableCheckbox);
   const globalStyles = useGlobalStyles();
   const reminderModal = useRef<BottomSheetModal>();
 
@@ -51,7 +57,7 @@ const AddTaskModalContent = ({
   };
 
   const addTask = () => {
-    onTaskAdd({ description, reminders });
+    onTaskAdd({ description, reminders, isLinkedToPair });
   };
 
   const removeTask = () => {
@@ -69,7 +75,9 @@ const AddTaskModalContent = ({
       {showDisciplineInfo && selectedTask && (
         <>
           <Text style={styles.disciplineText}>{selectedTask.disciplineName}</Text>
-          <Text style={styles.timeText}>{formatTime(selectedTask.datetime)}</Text>
+          {selectedTask.datetime && (
+            <Text style={styles.timeText}>{formatTime(selectedTask.datetime)}</Text>
+          )}
         </>
       )}
       {/* BottomSheetTextInput просто закрывается при открытии клавиатуры */}
@@ -84,9 +92,23 @@ const AddTaskModalContent = ({
         autoComplete={'off'}
       />
 
+      {/*
+      Выставить привязку к паре можно только во время создания задания,
+      во время редактирования этого сделать нельзя
+      */}
+      {!disableCheckbox && (
+        <View style={styles.checkboxContainer}>
+          <Checkbox
+            value={isLinkedToPair}
+            onValueChange={setLinkedToPair}
+            color={globalStyles.primaryFontColor.color}
+          />
+          <Text>Привязать задание к этой паре</Text>
+        </View>
+      )}
+
       <View style={styles.row}>
         <Text style={styles.titleText}>Напоминания</Text>
-
         <AddButton onPress={openReminderModal} />
       </View>
 
@@ -151,6 +173,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
     gap: 8,
+    padding: '2%',
   },
   button: {
     fontWeight: '500',
@@ -164,4 +187,5 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     ...fontSize.medium,
   },
+  checkboxContainer: { flexDirection: 'row', gap: 8 },
 });

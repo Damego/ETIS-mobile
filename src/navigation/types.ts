@@ -22,7 +22,7 @@ export type RootStackParamList = {
 
   // Group 2
   DisciplineInfo: { lesson: ILesson; date: string; pairPosition: number };
-  DisciplineTasks?: { taskId?: number };
+  DisciplineTasks?: { taskId?: string };
   NewYearTheme: undefined;
 };
 
@@ -49,6 +49,8 @@ export type ServicesNativeStackParamList = {
   ChangePassword: undefined;
   ChangeEmail: { sendVerificationMail: boolean };
   CathedraTimetable: { teacherId?: string; cathedraId?: string };
+  BellSchedule: undefined;
+  ChangeAppUI: undefined;
 };
 
 export type SignsTopTabsParamsList = {

@@ -9,13 +9,14 @@ import { ICertificateTable } from '../models/certificate';
 import { IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
 import { IPersonalRecord } from '../models/personalRecords';
+import { IPointUpdates } from '../models/pointUpdates';
 import { ISessionRating } from '../models/rating';
 import { IGetPayload, IGetResult } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
 import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
 import { ISessionTeachPlan } from '../models/teachPlan';
-import { TeacherType } from '../models/teachers';
+import { ITeacher } from '../models/teachers';
 import { ITimeTable } from '../models/timeTable';
 import {
   parseAbsenses,
@@ -34,6 +35,7 @@ import { parseCertificateTable } from '../parser/certificate';
 import { StudentInfo } from '../parser/menu';
 import parseOrders from '../parser/order';
 import parsePersonalRecords from '../parser/personalRecords';
+import parsePointUpdates from '../parser/pointUpdates';
 import parseRating from '../parser/rating';
 import parseSessionQuestionnaire from '../parser/sessionQuestionnaire';
 import parseSessionQuestionnaireList from '../parser/sessionQuestionnaireList';
@@ -56,9 +58,10 @@ class MessageClient extends BasicClient<IGetPayload<number>, IMessagesData> {}
 class OrderClient extends BasicClient<IGetPayload, IOrder[]> {}
 class RatingClient extends BasicClient<IGetPayload<number>, ISessionRating> {}
 class SignsClient extends BasicClient<IGetPayload<number>, ISessionPoints> {}
+class PointUpdatesClient extends BasicClient<IGetPayload<string>, IPointUpdates> {}
 class MarksClient extends BasicClient<IGetPayload, ISessionMarks[]> {}
 class StudentClient extends BasicClient<IGetPayload, StudentInfo> {}
-class TeachersClient extends BasicClient<IGetPayload, TeacherType> {}
+class TeachersClient extends BasicClient<IGetPayload, ITeacher[]> {}
 class TeachPlanClient extends BasicClient<IGetPayload, ISessionTeachPlan[]> {}
 class CalendarScheduleClient extends BasicClient<IGetPayload, ICalendarSchedule> {}
 class CertificateClient extends BasicClient<IGetPayload, ICertificateTable> {}
@@ -81,6 +84,7 @@ export default class Client implements BaseClient {
   private orderClient: OrderClient;
   private ratingClient: RatingClient;
   private signsClient: SignsClient;
+  private pointUpdatesClient: PointUpdatesClient;
   private marksClient: MarksClient;
   private studentClient: StudentClient;
   private teacherClient: TeachersClient;
@@ -134,6 +138,12 @@ export default class Client implements BaseClient {
       ({ data }) => httpClient.getSigns('current', data),
       parseSessionPoints,
       (data) => cache.placeSessionPoints(data)
+    );
+    this.pointUpdatesClient = new PointUpdatesClient(
+      ({ data }) => cache.getPointUpdates(data),
+      ({ data }) => httpClient.getPointUpdates(data),
+      (data, { data: url }) => parsePointUpdates(data, url),
+      (data) => cache.placePointUpdates(data)
     );
     this.marksClient = new MarksClient(
       () => cache.getAllSessionMarks(),
@@ -234,6 +244,10 @@ export default class Client implements BaseClient {
     return this.signsClient.getData(payload);
   }
 
+  async getPointUpdates(payload: IGetPayload<string>): Promise<IGetResult<IPointUpdates>> {
+    return this.pointUpdatesClient.getData(payload);
+  }
+
   async getSessionMarksData(payload: IGetPayload): Promise<IGetResult<ISessionMarks[]>> {
     await cache.signsMarks.init();
     return this.marksClient.getData(payload);
@@ -244,7 +258,7 @@ export default class Client implements BaseClient {
     return this.studentClient.getData(payload);
   }
 
-  async getTeacherData(payload: IGetPayload): Promise<IGetResult<TeacherType>> {
+  async getTeacherData(payload: IGetPayload): Promise<IGetResult<ITeacher[]>> {
     await cache.teachers.init();
     return this.teacherClient.getData(payload);
   }

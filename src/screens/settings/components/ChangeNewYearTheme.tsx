@@ -1,16 +1,16 @@
 import React from 'react';
 
-import { cache } from '../../cache/smartCache';
-import Card from '../../components/Card';
-import ClickableText from '../../components/ClickableText';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setEvents } from '../../redux/reducers/settingsSlice';
-import { ThemeType, isNewYearTheme } from '../../styles/themes';
-import { fontSize } from '../../utils/texts';
+import { cache } from '../../../cache/smartCache';
+import Card from '../../../components/Card';
+import ClickableText from '../../../components/ClickableText';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
+import { setEvents } from '../../../redux/reducers/settingsSlice';
+import { isNewYearTheme } from '../../../styles/themes';
+import { fontSize } from '../../../utils/texts';
 
 const ChangeNewYearTheme = () => {
   const dispatch = useAppDispatch();
-  const { events, theme } = useAppSelector((state) => state.settings);
+  const { events, theme } = useAppSelector((state) => state.settings.config);
 
   const clearEvent = () => {
     const $events = { ...events };

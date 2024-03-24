@@ -4,6 +4,7 @@ import React from 'react';
 import { useAppTheme } from '../hooks/theme';
 import About from '../screens/about/About';
 import AbsencesTable from '../screens/absences';
+import BellSchedule from '../screens/bellSchedule/BellSchedule';
 import CathedraTimetable from '../screens/cathedraTimetable/CathedraTimetable';
 import CertificateTable from '../screens/certificate/CertificateTable';
 import RequestCertificate from '../screens/certificate/RequestCertificate';
@@ -15,6 +16,7 @@ import Services from '../screens/services';
 import { SettingButton } from '../screens/services/Services';
 import SessionQuestionnaireList from '../screens/sessionQuestionnaire/SessionQuestionnaireList';
 import Settings from '../screens/settings/Settings';
+import ChangeAppUI from '../screens/settings/uiSettings/ChangeAppUI';
 import ShortTeachPlan from '../screens/shortTeachPlan';
 import TeacherTable from '../screens/teachers';
 import { headerParams } from './header';
@@ -82,6 +84,12 @@ function ServicesStackNavigator() {
         component={CathedraTimetable}
         options={{ title: 'Расписание' }}
       />
+      <Stack.Screen
+        name={'BellSchedule'}
+        component={BellSchedule}
+        options={{ title: 'Расписание звонков' }}
+      />
+      <Stack.Screen name={'ChangeAppUI'} component={ChangeAppUI} options={{ title: 'Интерфейс' }} />
     </Stack.Navigator>
   );
 }

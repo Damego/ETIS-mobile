@@ -14,8 +14,7 @@ import Announce from '../screens/announce/Announce';
 import Messages from '../screens/messages/Messages';
 import AboutSignsDetails from '../screens/signs/AboutSignsDetails';
 import TimeTablePage from '../screens/timeTable/TimeTable';
-import { registerReminderTask } from '../tasks/disciplineTasks';
-import { registerSignsFetchTask } from '../tasks/signs';
+import { registerSignsFetchTask } from '../tasks/signs/signs';
 import { AppShortcutItem } from '../utils/shortcuts';
 import ServicesStackNavigator from './ServicesStackNavigator';
 import SignsTopTabNavigator from './TopTabNavigator';
@@ -33,7 +32,10 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
   const { messageCount, announceCount, hasUnverifiedEmail } = useAppSelector(
     (state) => state.student
   );
-  const { signNotification, initialPage } = useAppSelector((state) => state.settings);
+  const {
+    config: { signNotificationEnabled },
+    initialPage,
+  } = useAppSelector((state) => state.settings);
   const client = useClient();
   const { isDemo, isOfflineMode } = useAppSelector((state) => state.auth);
 
@@ -78,11 +80,10 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
 
   useEffect(() => {
     loadData().then(() => {
-      if (signNotification && !isDemo && !isOfflineMode) {
+      if (signNotificationEnabled && !isDemo && !isOfflineMode) {
         registerSignsFetchTask();
       }
     });
-    registerReminderTask();
   }, []);
 
   return (

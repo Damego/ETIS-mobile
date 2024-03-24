@@ -6,15 +6,16 @@ import { ICertificate, ICertificateTable } from '../models/certificate';
 import { IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
 import { IPersonalRecord } from '../models/personalRecords';
+import { IPointUpdates } from '../models/pointUpdates';
 import { ISessionRating } from '../models/rating';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
 import { ISessionTeachPlan } from '../models/teachPlan';
-import { TeacherType } from '../models/teachers';
+import { ITeacher } from '../models/teachers';
 import { ITimeTable } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
 import { UserCredentials } from '../redux/reducers/authSlice';
-import { AppConfig } from '../redux/reducers/settingsSlice';
+import { AppConfig, UIConfig } from '../redux/reducers/settingsSlice';
 import { ThemeType } from '../styles/themes';
 import { Events } from '../utils/events';
 import FieldCache from './fieldCache';
@@ -31,8 +32,9 @@ export default class SmartCache {
   };
   personalRecords: FieldCache<IPersonalRecord[]>;
   timeTable: MappedCache<number, ITimeTable>;
-  teachers: FieldCache<TeacherType>;
+  teachers: FieldCache<ITeacher[]>;
   teachPlan: FieldCache<ISessionTeachPlan[]>;
+  pointUpdates: MappedCache<string, IPointUpdates>;
   signsMarks: MappedCache<number, ISessionMarks>;
   signsPoints: MappedCache<number, ISessionPoints>;
   signsRating: MappedCache<number, ISessionRating>;
@@ -54,6 +56,7 @@ export default class SmartCache {
     ORDERS: 'ORDERS',
     ORDERS_INFO: 'ORDERS_INFO',
     PERSONAL_RECORDS: 'PERSONAL_RECORDS',
+    POINT_UPDATES: 'POINT_UPDATES',
     SIGNS_POINTS: 'SIGNS_POINTS',
     SIGNS_MARKS: 'SIGNS_MARKS',
     SIGNS_RATING: 'SIGNS_RATING',
@@ -77,8 +80,9 @@ export default class SmartCache {
     };
     this.personalRecords = new FieldCache(this.keys.PERSONAL_RECORDS);
     this.timeTable = new MappedCache(this.keys.TIMETABLE);
-    this.teachers = new FieldCache<TeacherType>(this.keys.TEACHERS);
+    this.teachers = new FieldCache(this.keys.TEACHERS);
     this.teachPlan = new FieldCache(this.keys.TEACH_PLAN);
+    this.pointUpdates = new MappedCache(this.keys.POINT_UPDATES);
     this.signsMarks = new MappedCache(this.keys.SIGNS_MARKS);
     this.signsPoints = new MappedCache(this.keys.SIGNS_POINTS);
     this.signsRating = new MappedCache(this.keys.SIGNS_RATING);
@@ -169,8 +173,9 @@ export default class SmartCache {
     await this.timeTable.save();
   }
 
-  async deleteTimeTable(week: number) {
-    this.timeTable.delete(week);
+  async clearTimeTable() {
+    await this.timeTable.init();
+    await this.timeTable.clear();
     await this.timeTable.save();
   }
 
@@ -183,11 +188,11 @@ export default class SmartCache {
   // Teachers Region
 
   async getTeachers() {
-    if (!this.teachers.isReady()) await this.teachers.init();
+    await this.teachers.init();
     return this.teachers.get();
   }
 
-  async placeTeachers(data: TeacherType) {
+  async placeTeachers(data: ITeacher[]) {
     this.teachers.place(data);
     await this.teachers.save();
   }
@@ -209,6 +214,20 @@ export default class SmartCache {
   // End TeachPlan Region
 
   // Region Signs
+
+  // // PointUpdates Region
+
+  async getPointUpdates(url: string): Promise<IPointUpdates> {
+    if (!this.pointUpdates.isReady()) await this.pointUpdates.init();
+    return this.pointUpdates.get(url);
+  }
+
+  async placePointUpdates(data: IPointUpdates) {
+    this.pointUpdates.place(data.url, data);
+    await this.pointUpdates.save();
+  }
+
+  // // End PointUpdates Region
 
   // // Marks Region
 
@@ -459,6 +478,12 @@ export default class SmartCache {
     await this.updateAppConfig(config);
   }
 
+  async setUIConfig(config: Partial<UIConfig>) {
+    const appConfig = await this.getAppConfig();
+    appConfig.ui = { ...appConfig.ui, ...config };
+    await this.updateAppConfig(appConfig);
+  }
+
   // End Internal Region
 
   // Helper methods
@@ -501,6 +526,30 @@ export default class SmartCache {
 
     return userCredentials;
   }
+
+  runMigrations() {
+    this.migrateToV1_3_0();
+  }
+
+  /*
+  Изменились структуры некоторых данных (расписание)
+  */
+  private async migrateToV1_3_0() {
+    const appConfig = await this.getAppConfig();
+    if (!appConfig.cacheMigrations) {
+      appConfig.cacheMigrations = {};
+    }
+    if (appConfig.cacheMigrations.v1_3_0) return;
+
+    await this.clearTimeTable();
+    await this.teachers.init();
+    await this.teachers.delete();
+    await this.teachers.save();
+
+    appConfig.cacheMigrations.v1_3_0 = true;
+    await this.updateAppConfig(appConfig);
+  }
 }
 
 export const cache = new SmartCache();
+cache.runMigrations();

@@ -1,9 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 
-import ClickableText from '../../components/ClickableText';
-import { ServicesNavigationProp } from '../../navigation/types';
-import { fontSize } from '../../utils/texts';
+import ClickableText from '../../../components/ClickableText';
+import { ServicesNavigationProp } from '../../../navigation/types';
+import { fontSize } from '../../../utils/texts';
 
 const AboutAppButton = () => {
   const navigation = useNavigation<ServicesNavigationProp>();

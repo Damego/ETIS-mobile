@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+import { DisciplineTypes } from '../models/other';
 import { ICheckPoint } from '../models/sessionPoints';
 import { ILesson } from '../models/timeTable';
 
@@ -56,18 +57,22 @@ export const fontSize = StyleSheet.create({
   },
 });
 
-export const disciplineTypeNames = {
-  лек: 'Лекция',
-  практ: 'Практика',
-  лаб: 'Лабораторная',
-  зачет: 'Зачёт',
-  экзамен: 'Экзамен',
+export const disciplineTypeNames: { [key in DisciplineTypes]: string } = {
+  LECTURE: 'Лекция',
+  PRACTICE: 'Практика',
+  LABORATORY: 'Лабораторная',
+  TEST: 'Зачёт',
+  EXAM: 'Экзамен',
 };
 
 export const getDisciplineTypeName = (type: string): string => disciplineTypeNames[type] || type;
 
 export const formatAudience = (lesson: ILesson) => {
-  return lesson.audience && lesson.building && lesson.floor
-    ? `ауд. ${lesson.audience} (${lesson.building} корпус, ${lesson.floor} этаж)`
-    : lesson.audienceText;
+  const { audience } = lesson;
+
+  if (lesson.isDistance) return 'Дистанционно';
+
+  return audience.number && audience.building && audience.floor
+    ? `ауд. ${audience.number} (${audience.building} корпус, ${audience.floor} этаж)`
+    : audience.string;
 };

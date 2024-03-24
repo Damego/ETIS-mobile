@@ -5,6 +5,7 @@ import { ICertificateTable } from '../models/certificate';
 import { IMessagesData } from '../models/messages';
 import { IOrder } from '../models/order';
 import { IPersonalRecord } from '../models/personalRecords';
+import { IPointUpdates } from '../models/pointUpdates';
 import { ISessionRating } from '../models/rating';
 import {
   GetResultType,
@@ -19,7 +20,7 @@ import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
 import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
 import { ISessionTeachPlan } from '../models/teachPlan';
-import { TeacherType } from '../models/teachers';
+import { ITeacher } from '../models/teachers';
 import { ITimeTable } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
 import { isLoginPage } from '../parser/utils';
@@ -34,9 +35,10 @@ export interface BaseClient {
   getOrdersData(payload: IGetPayload): Promise<IGetResult<IOrder[]>>;
   getRatingData(payload: IGetPayload<number>): Promise<IGetResult<ISessionRating>>;
   getSessionSignsData(payload: IGetPayload<number>): Promise<IGetResult<ISessionPoints>>;
+  getPointUpdates(payload: IGetPayload<string>): Promise<IGetResult<IPointUpdates>>;
   getSessionMarksData(payload: IGetPayload): Promise<IGetResult<ISessionMarks[]>>;
   getStudentInfoData(payload: IGetPayload): Promise<IGetResult<StudentInfo>>;
-  getTeacherData(payload: IGetPayload): Promise<IGetResult<TeacherType>>;
+  getTeacherData(payload: IGetPayload): Promise<IGetResult<ITeacher[]>>;
   getTeachPlanData(payload: IGetPayload): Promise<IGetResult<ISessionTeachPlan[]>>;
   getCalendarScheduleData(payload: IGetPayload): Promise<IGetResult<ICalendarSchedule>>;
   getCertificateData(payload: IGetPayload): Promise<IGetResult<ICertificateTable>>;
@@ -53,14 +55,14 @@ export interface BaseClient {
 export class BasicClient<P extends IGetPayload, T> {
   cacheMethod: (payload?: P) => Promise<T>;
   httpMethod: (payload?: P) => Promise<Response<string>>;
-  parseMethod: (data: string) => T;
+  parseMethod: (data: string, payload?: P) => T;
   placeMethod: (data: T) => void;
   name: string;
 
   constructor(
     cacheMethod: (payload?: P) => Promise<T>,
     httpMethod: (payload?: P) => Promise<Response<string>>,
-    parseMethod: (data: string) => T,
+    parseMethod: (data: string, payload?: P) => T,
     placeMethod: (data: T) => void
   ) {
     this.cacheMethod = cacheMethod;
@@ -95,10 +97,10 @@ export class BasicClient<P extends IGetPayload, T> {
     }
   }
 
-  async tryParse({ data }: Response<string>): Promise<IGetResult<T>> {
+  async tryParse({ data }: Response<string>, payload: P): Promise<IGetResult<T>> {
     let parsedData: T;
     try {
-      parsedData = this.parseMethod(data);
+      parsedData = this.parseMethod(data, payload);
     } catch (e) {
       console.error(`[PARSER] Ignoring an error from ${this.name}`, e.stack || e);
       reportParserError(e);
@@ -136,7 +138,7 @@ export class BasicClient<P extends IGetPayload, T> {
       console.log(`[DATA] Retrieved ${this.name} from server, but it's login page`);
       return loginPage;
     }
-    const parsed = await this.tryParse(fetched);
+    const parsed = await this.tryParse(fetched, payload);
     if (parsed === failedResult) {
       console.log(`[DATA] Retrieved ${this.name} from server, but failed to parse`);
       return parsed;
