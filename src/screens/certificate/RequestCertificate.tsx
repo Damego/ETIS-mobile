@@ -1,12 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useMemo, useState } from 'react';
-import {
-  Alert,
-  Keyboard,
-  StyleSheet,
-  ToastAndroid,
-  View,
-} from 'react-native';
+import { Alert, Keyboard, StyleSheet, ToastAndroid, View } from 'react-native';
 import { RadioButtonProps, RadioGroup } from 'react-native-radio-buttons-group';
 
 import { Button } from '../../components/Button';
@@ -15,14 +9,16 @@ import Screen from '../../components/Screen';
 import Text from '../../components/Text';
 import { useAppSelector, useGlobalStyles } from '../../hooks';
 import { CertificateParam } from '../../models/certificateRequest';
+import { RootStackNavigationProp, RootStackParamList } from '../../navigation/types';
 import { httpClient } from '../../utils';
 import { toCertificatePayload } from '../../utils/certificate';
 import { fontSize } from '../../utils/texts';
-import { RootStackNavigationProp } from '../../navigation/types';
-import { PopoverElement, Input } from './CertificateComponents';
+import { Input, PopoverElement } from './CertificateComponents';
 
 const deliveryMethods = [{ id: '1', name: 'лично (в отделе кадров обучающихся)' }];
-const specialCerts = [{ id: '-1', screen: 'CertificateIncome' }];
+const specialCerts: [{ id: string; screen: keyof RootStackParamList }] = [
+  { id: '-1', screen: 'CertificateIncome' },
+];
 
 const certificateType: CertificateParam[] = [
   {
@@ -63,8 +59,8 @@ const certificateType: CertificateParam[] = [
     note: false,
     maxQuantity: 0,
     place: false,
-    deliveryMethod: []
-  }
+    deliveryMethod: [],
+  },
 ];
 
 export const styles = StyleSheet.create({
@@ -270,8 +266,11 @@ export default function RequestCertificate() {
 
       {specialCert && (
         <View style={{ position: 'absolute', left: 0, right: 0, bottom: '1%' }}>
-          {  /* @ts-ignore Навигатор хочет, чтобы я явно указал экран */ } 
-          <Button text={'Продолжить'} onPress={() => navigator.navigate(specialCert.screen)} variant={'secondary'} />
+          <Button
+            text={'Продолжить'}
+            onPress={() => navigator.navigate(specialCert.screen)}
+            variant={'secondary'}
+          />
         </View>
       )}
 

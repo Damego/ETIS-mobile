@@ -1,14 +1,16 @@
-import * as MailComposer from 'expo-mail-composer';
-import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 
 import { Button } from '../../components/Button';
 import Card from '../../components/Card';
 import Screen from '../../components/Screen';
 import Text from '../../components/Text';
+import { useClient } from '../../data/client';
 import { useAppSelector, useGlobalStyles } from '../../hooks';
+import { RequestType } from '../../models/results';
 import { getStudentYear } from '../../utils/datetime';
 import composeMail from '../../utils/email';
+import { fontSize } from '../../utils/texts';
 import { Input, PopoverElement } from './CertificateComponents';
 
 const stipEmail = 'stip@psu.ru';
@@ -24,20 +26,27 @@ const makeMailOptions = ({
   year: string;
   certPeriod: string;
 }) => {
-  let options: MailComposer.MailComposerOptions = {};
-  options.recipients = [stipEmail];
-  options.subject = 'Справка о доходах';
-  options.body = `1. ФИО: ${fio}\n2. Факультет: ${faculty}, курс: ${year}\n3. Период в месяцах: ${certPeriod}`;
-  return options;
+  return {
+    recipients: [stipEmail],
+    subject: 'Справка о доходах',
+    body: `1. ФИО: ${fio}\n2. Факультет: ${faculty}, курс: ${year}\n3. Период в месяцах: ${certPeriod}`,
+  };
 };
 
+const btnCompose: ViewStyle = { position: 'absolute', left: 0, right: 0, bottom: '1%' };
+
 const styles = StyleSheet.create({
-  btnDisabled: { opacity: 0.25 },
-  btnCompose: { position: 'absolute', left: 0, right: 0, bottom: '1%' },
+  btnCompose: btnCompose,
+  btnComposeDisabled: {
+    ...btnCompose,
+    opacity: 0.75,
+  },
 });
 
 export default function CertificateIncome() {
   const globalStyles = useGlobalStyles();
+  const client = useClient();
+
   const { info } = useAppSelector((state) => state.student);
   const [fio, setFio] = useState<string>(info.name);
   const [faculty, setFaculty] = useState<string>();
@@ -46,14 +55,22 @@ export default function CertificateIncome() {
 
   const applicable: boolean = !!fio && !!faculty && !!year && !!certPeriod;
 
-  const btnComposeStyles = applicable
-    ? styles.btnCompose
-    : StyleSheet.compose(styles.btnCompose, styles.btnDisabled);
+  useEffect(() => {
+    const fetchFaculty = async () => {
+      try {
+        const data = await client.getPersonalRecords({ requestType: RequestType.tryFetch });
+        setFaculty(data.data.filter((record) => record.isCurrent)[0].faculty);
+      } catch (e) { }
+    };
+    fetchFaculty();
+  });
+
+  const btnComposeStyles = applicable ? styles.btnCompose : styles.btnComposeDisabled;
 
   return (
     <Screen>
       <View>
-        <Text style={[globalStyles.fontColorForBlock, { fontSize: 16 }]} colorVariant={'block'}>
+        <Text style={[globalStyles.fontColorForBlock, fontSize.medium]} colorVariant={'block'}>
           Справки о доходах (стипендии) можно заказать по телефону 239-65-34 или по электронной
           почте stip@psu.ru, необходимо указать следующие данные:
         </Text>
@@ -83,7 +100,7 @@ export default function CertificateIncome() {
             }
           />
         </Card>
-        <Text style={[globalStyles.fontColorForBlock, { fontSize: 16 }]} colorVariant={'block'}>
+        <Text style={[globalStyles.fontColorForBlock, fontSize.medium]} colorVariant={'block'}>
           Срок изготовления справки - 3 рабочих дня. Справки выдаются только за прошедшие месяцы -
           студентам первого курса в сентябре месяце справки о доходах не выдаются. {'\n\n'}
           Получение справки - в отделе расчёта с обучающимися, 1 корпус, 322 кабинет.
@@ -91,7 +108,7 @@ export default function CertificateIncome() {
       </View>
       <View style={btnComposeStyles}>
         <Button
-          text={'Составить e-mail'}
+          text={'Составить письмо'}
           onPress={() =>
             composeMail(
               makeMailOptions({
