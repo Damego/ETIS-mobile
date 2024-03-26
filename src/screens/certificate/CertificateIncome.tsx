@@ -58,12 +58,12 @@ export default function CertificateIncome() {
   useEffect(() => {
     const fetchFaculty = async () => {
       try {
-        const data = await client.getPersonalRecords({ requestType: RequestType.tryFetch });
-        setFaculty(data.data.filter((record) => record.isCurrent)[0].faculty);
+        const response = await client.getPersonalRecords({ requestType: RequestType.tryCache });
+        setFaculty(response.data.find((record) => record.isCurrent).faculty);
       } catch (e) { }
     };
     fetchFaculty();
-  });
+  }, []);
 
   const btnComposeStyles = applicable ? styles.btnCompose : styles.btnComposeDisabled;
 
