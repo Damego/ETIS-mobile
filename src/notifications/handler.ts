@@ -1,7 +1,7 @@
 import notifee, { Event, EventType } from '@notifee/react-native';
 
 import { openFile } from '../utils/files';
-import { invalidateOutdatedTaskNotifications } from './taskReminder';
+import { rescheduleAllTaskNotifications } from './taskReminder';
 import { INotificationData } from './types';
 
 // Если для уведомления не требуется доступ к UI приложения,
@@ -15,7 +15,7 @@ const handleEvent = async (event: Event) => {
     openFile(data.data.uri);
   }
   if (data.type === 'task-reminder') {
-    invalidateOutdatedTaskNotifications({ taskId: data.data.taskId });
+    rescheduleAllTaskNotifications({ taskId: data.data.taskId });
   }
 };
 

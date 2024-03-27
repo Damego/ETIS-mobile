@@ -11,7 +11,6 @@ export const scheduleTaskNotifications = async (task: DisciplineTask) => {
   });
 
   task.reminders.map(async (reminder) => {
-    console.log(reminder.datetime.toDate().getTime());
     reminder.notificationId = await notifee.createTriggerNotification(
       {
         title: 'Напоминание о задании',
@@ -58,17 +57,26 @@ export const rescheduleTaskNotifications = async (previous: string[], task: Disc
   scheduleTaskNotifications(task);
 };
 
-export const invalidateOutdatedTaskNotifications = async ({
+const getTasks = async ({
+  task,
+  taskId,
+}: {
+  task?: DisciplineTask;
+  taskId?: string;
+} = {}): Promise<DisciplineTask[]> => {
+  if (task) return [task];
+  if (taskId) return [await DisciplineStorage.getTaskById(taskId)];
+  return DisciplineStorage.getTasks();
+};
+
+export const rescheduleAllTaskNotifications = async ({
   task,
   taskId,
 }: {
   task?: DisciplineTask;
   taskId?: string;
 } = {}) => {
-  let tasks: DisciplineTask[] = [];
-  if (task) tasks.push(task);
-  else if (taskId) tasks.push(await DisciplineStorage.getTaskById(taskId));
-  else tasks = await DisciplineStorage.getTasks();
+  const tasks = await getTasks({ task, taskId });
   const currentDate = dayjs();
 
   tasks.forEach((task) => {
@@ -77,8 +85,8 @@ export const invalidateOutdatedTaskNotifications = async ({
       (reminder) => currentDate.diff(reminder.datetime, 'minute') >= 0
     );
     const notificationIds = oldReminders.map((rem) => rem.notificationId);
-    cancelScheduledTaskNotifications({ notificationIds });
     task.reminders = futureReminders;
-    DisciplineStorage.saveTasks();
+
+    rescheduleTaskNotifications(notificationIds, task).then(() => DisciplineStorage.saveTasks());
   });
 };

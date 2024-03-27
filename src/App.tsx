@@ -12,7 +12,7 @@ import { Provider } from 'react-redux';
 import StackNavigator from './navigation/StackNavigator';
 import './notifications/handler';
 import requestNotificationPermission from './notifications/permission';
-import { invalidateOutdatedTaskNotifications } from './notifications/taskReminder';
+import { rescheduleAllTaskNotifications } from './notifications/taskReminder';
 import setupStore from './redux';
 import { loadStorage } from './redux/storageLoader';
 import { defineSignsFetchTask } from './tasks/signs/signs';
@@ -29,7 +29,7 @@ store.dispatch(loadStorage());
 
 defineSignsFetchTask();
 addShortcuts();
-invalidateOutdatedTaskNotifications();
+rescheduleAllTaskNotifications();
 
 const App = () => {
   const [fontsLoaded] = useFonts({
