@@ -6,4 +6,5 @@ export interface IPersonalRecord {
   faculty: string;
   educationForm: string;
   status: string;
+  isCurrent: boolean;
 }

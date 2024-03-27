@@ -42,3 +42,7 @@ export const getCurrentEducationYear = () => {
   // После сентября - новый
   return year;
 };
+
+export const getStudentYear = (entryYear: number): string => {
+  return String(getCurrentEducationYear() - entryYear + 1);
+};

@@ -21,6 +21,7 @@ import MessageHistory from '../screens/messages/MessageHistory';
 import NewYearThemes from '../screens/newYearThemes/NewYearThemes';
 import SessionQuestionnaire from '../screens/sessionQuestionnaire/SessionQuestionnaire';
 import SignsDetails from '../screens/signs/SignsDetails';
+import CertificateIncome from '../screens/certificate/CertificateIncome';
 import { ThemeType, isNewYearTheme } from '../styles/themes';
 import { isHalloween, isNewYear } from '../utils/events';
 import showPrivacyPolicy from '../utils/privacyPolicy';
@@ -147,6 +148,11 @@ const StackNavigator = () => {
           name="SignsDetails"
           component={SignsDetails}
           options={{ title: 'Подробности', headerShown: true, ...headerParams(theme) }}
+        />
+        <Stack.Screen
+          name="CertificateIncome"
+          component={CertificateIncome}
+          options={{ title: 'Справка о доходах', headerShown: true, ...headerParams(theme) }}
         />
         <Stack.Screen
           name={'SessionQuestionnaire'}

@@ -17,6 +17,7 @@ export type RootStackParamList = {
   TabNavigator: undefined;
   History: { data: IMessage[]; page: number };
   SignsDetails: { subject: ISubject };
+  CertificateIncome: undefined;
   SessionQuestionnaire: { url: string };
 
   // Group 2
