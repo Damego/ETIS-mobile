@@ -52,11 +52,15 @@ const disciplineTypeStyles: { [key in DisciplineTypes] } = StyleSheet.create({
     backgroundColor: '#C62E3E',
   },
   PRACTICE: {
-    backgroundColor: '#0053cd',
+    backgroundColor: '#0053CD',
   },
   LABORATORY: {
     backgroundColor: '#4CAF50',
   },
-  EXAM: styles.base,
-  TEST: styles.base,
+  EXAM: {
+    backgroundColor: '#512DA8',
+  },
+  TEST: {
+    backgroundColor: '#FBC02D',
+  },
 });

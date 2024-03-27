@@ -7,7 +7,6 @@ import { getNetworkStateAsync } from 'expo-network';
 import { ICathedraTimetablePayload } from '../models/cathedraTimetable';
 import { ICertificate } from '../models/certificate';
 import { UploadFile } from '../models/other';
-import { IPointUpdates } from '../models/pointUpdates';
 import { CertificateRequestPayload } from './certificate';
 import { getCurrentEducationYear } from './datetime';
 import { toURLSearchParams } from './encoding';
