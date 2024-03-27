@@ -60,7 +60,7 @@ export default function CertificateIncome() {
       try {
         const response = await client.getPersonalRecords({ requestType: RequestType.tryCache });
         setFaculty(response.data.find((record) => record.isCurrent).faculty);
-      } catch (e) { }
+      } catch (e) {}
     };
     fetchFaculty();
   }, []);

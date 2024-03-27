@@ -3,9 +3,9 @@ import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 
 import Text from '../../components/Text';
+import { useGlobalStyles } from '../../hooks';
 import { useAppTheme } from '../../hooks/theme';
 import { fontSize } from '../../utils/texts';
-import { useGlobalStyles } from '../../hooks';
 
 const styles = StyleSheet.create({
   popover: {
