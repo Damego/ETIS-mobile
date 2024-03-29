@@ -10,7 +10,7 @@ import useTasks from '../../hooks/useTasks';
 import { RootStackNavigationProp } from '../types';
 
 const DisciplineTasksButton = () => {
-  const currentDate = dayjs().weekday(1).startOf('day');
+  const currentDate = dayjs().startOf('day');
   const weekEnd = currentDate.clone().endOf('week');
   const { tasks } = useTasks({
     filter: (task) => {
