@@ -1,13 +1,24 @@
 import { useNavigation } from '@react-navigation/native';
+import * as Clipboard from 'expo-clipboard';
 import React from 'react';
-import { Image, StyleSheet, ToastAndroid, TouchableWithoutFeedback, View } from 'react-native';
+import {
+  Image,
+  Linking,
+  StyleSheet,
+  ToastAndroid,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
+import ContextMenu from 'react-native-context-menu-view';
 
 import ClickableText from '../../components/ClickableText';
 import DisciplineType from '../../components/DisciplineType';
 import Text from '../../components/Text';
 import { ITeacher } from '../../models/teachers';
 import { ServicesNavigationProp } from '../../navigation/types';
-import { fontSize, getDisciplineTypeName } from '../../utils/texts';
+import { httpClient } from '../../utils';
+import { fontSize } from '../../utils/texts';
 
 const styles = StyleSheet.create({
   container: {
@@ -40,6 +51,16 @@ interface TeacherProps {
   data: ITeacher;
 }
 
+const getSearchTeacherName = (teacher: string) => {
+  const names = teacher.split(' ');
+
+  // Возможны проблемы в поиске иностранных учителей (Китай)
+  if (names.length !== 3) return teacher;
+
+  const [first, middle, last] = names;
+  return `${middle} ${last} ${first.toUpperCase()}`;
+};
+
 const Teacher = ({ discipline, data }: TeacherProps) => {
   const navigation = useNavigation<ServicesNavigationProp>();
   const subject = data.subjects.find((sub) => sub.discipline === discipline);
@@ -49,9 +70,27 @@ const Teacher = ({ discipline, data }: TeacherProps) => {
       <View style={styles.container}>
         <View style={styles.teacherInfo}>
           <View style={styles.teacherNameView}>
-            <Text style={styles.textTitle} colorVariant={'block'}>
-              {data.name}
-            </Text>
+            <ContextMenu
+              actions={[{ title: 'Скопировать' }, { title: 'Найти на сайте ПГНИУ' }]}
+              onPress={(event) => {
+                const pressIndex = event.nativeEvent.index;
+
+                if (pressIndex === 0) {
+                  Clipboard.setStringAsync(data.name);
+                  ToastAndroid.show('Скопировано в буфер обмена', ToastAndroid.LONG);
+                } else if (pressIndex === 1) {
+                  Linking.openURL(httpClient.getSearchPageURL(getSearchTeacherName(data.name)));
+                }
+              }}
+              dropdownMenuMode
+            >
+              {/* fake touchable effect */}
+              <TouchableOpacity>
+                <Text style={styles.textTitle} colorVariant={'block'}>
+                  {data.name}
+                </Text>
+              </TouchableOpacity>
+            </ContextMenu>
             <View style={styles.typesContainer}>
               {subject.types.map((type) => (
                 <DisciplineType key={type} type={type} size={'small'} />
