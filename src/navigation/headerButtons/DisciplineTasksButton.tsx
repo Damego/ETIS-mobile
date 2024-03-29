@@ -26,7 +26,7 @@ const DisciplineTasksButton = () => {
       onPress={() => {
         navigation.navigate('DisciplineTasks');
       }}
-      style={{ justifyContent: 'center', marginRight: '7%' }}
+      style={{ justifyContent: 'center' }}
     >
       {tasks.length ? (
         <View style={[styles.circle, { borderColor: theme.colors.primary }]}>

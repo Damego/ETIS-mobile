@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { useAppTheme } from '../hooks/theme';
 import { PageType, changeTheme, setEvents, setInitialPage } from '../redux/reducers/settingsSlice';
 import AuthPage from '../screens/auth/Auth';
+import BellSchedule from '../screens/bellSchedule/BellSchedule';
 import CertificateIncome from '../screens/certificate/CertificateIncome';
 import DisciplineInfo from '../screens/disciplineInfo/DisciplineInfo';
 import DisciplinesTasks from '../screens/disciplinesTasks/DisciplinesTasks';
@@ -191,6 +192,11 @@ const StackNavigator = () => {
                   name={'DisciplineTasks'}
                   options={{ title: 'Задания' }}
                   component={DisciplinesTasks}
+                />
+                <Stack.Screen
+                  name={'BellSchedule'}
+                  component={BellSchedule}
+                  options={{ title: 'Расписание звонков' }}
                 />
               </Stack.Group>
             </Stack.Navigator>

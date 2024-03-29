@@ -24,6 +24,7 @@ export type RootStackParamList = {
   DisciplineInfo: { lesson: ILesson; date: string; pairPosition: number };
   DisciplineTasks?: { taskId?: string };
   NewYearTheme: undefined;
+  BellSchedule: undefined;
 };
 
 export type BottomTabsParamList = {
@@ -49,7 +50,6 @@ export type ServicesNativeStackParamList = {
   ChangePassword: undefined;
   ChangeEmail: { sendVerificationMail: boolean };
   CathedraTimetable: { teacherId?: string; cathedraId?: string };
-  BellSchedule: undefined;
   ChangeAppUI: undefined;
 };
 
