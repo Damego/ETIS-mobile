@@ -19,6 +19,6 @@ const styles = StyleSheet.create({
   view: {
     flexDirection: 'row',
     gap: 12,
-    marginRight: '9%'
+    marginRight: '9%',
   },
 });
