@@ -75,6 +75,7 @@ const StackNavigator = () => {
   }, [appIsReady]);
 
   let initialRouteName: keyof RootStackParamList = 'TabNavigator';
+  if (!isSignedIn) initialRouteName = 'Auth';
   if (!introViewed) initialRouteName = 'Onboarding';
   else if (isNewYear() && !events?.newYear2024?.suggestedTheme) initialRouteName = 'NewYearTheme';
 
@@ -83,7 +84,7 @@ const StackNavigator = () => {
       <Background theme={theme}>
         <NavigationContainer theme={theme}>
           <BottomSheetModalProvider>
-            <Stack.Navigator initialRouteName={!isSignedIn ? initialRouteName : undefined}>
+            <Stack.Navigator initialRouteName={initialRouteName}>
               <Stack.Group screenOptions={{ headerShown: true, ...headerParams(theme) }}>
                 {!isSignedIn ? (
                   <Stack.Screen

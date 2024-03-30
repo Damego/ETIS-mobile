@@ -12,7 +12,7 @@ import { ILesson } from '../models/timeTable';
 
 // Список экранов для основного стека
 export type RootStackParamList = {
-  // Первая группа. Имеет хэдер и соответствую для него настройки
+  // Первая группа. Имеет хэдер и соответствующие для него настройки
   Auth: undefined;
   History: { data: IMessage[]; page: number };
   SignsDetails: { subject: ISubject };
