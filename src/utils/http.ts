@@ -8,6 +8,7 @@ import { ICathedraTimetablePayload } from '../models/cathedraTimetable';
 import { ICertificate } from '../models/certificate';
 import { UploadFile } from '../models/other';
 import { CertificateRequestPayload } from './certificate';
+import { PSU_URL } from './consts';
 import { getCurrentEducationYear } from './datetime';
 import { toURLSearchParams } from './encoding';
 import { SessionQuestionnairePayload } from './sessionTest';
@@ -429,6 +430,19 @@ class HTTPClient {
     };
 
     return this.request('GET', '/tt_pkg.show_prep', { params });
+  }
+
+  /*
+  Возвращает ссылку на результат поиска по запросу на сайте ПГНИУ
+  */
+  getSearchPageURL(query: string) {
+    const url = new URL(`${PSU_URL}/poisk`);
+    url.searchParams.append('searchword', query);
+    url.searchParams.append('ordering', 'popular');
+    url.searchParams.append('searchphrase', 'exact');
+    url.searchParams.append('limit', '10');
+
+    return url.toString();
   }
 }
 
