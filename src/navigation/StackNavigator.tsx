@@ -87,6 +87,8 @@ const StackNavigator = () => {
             <Stack.Navigator initialRouteName={initialRouteName}>
               <Stack.Group screenOptions={{ headerShown: true, ...headerParams(theme) }}>
                 {!isSignedIn ? (
+                  // По гайду react navigation, экран авторизации должен быть доступен только при стейте
+                  // https://reactnavigation.org/docs/auth-flow/
                   <Stack.Screen
                     name="Auth"
                     options={{ title: 'Авторизация' }}
@@ -94,6 +96,11 @@ const StackNavigator = () => {
                   />
                 ) : (
                   <>
+                    <Stack.Screen
+                      name="TabNavigator"
+                      component={TabNavigator}
+                      options={{ headerShown: false }}
+                    />
                     <Stack.Screen
                       name="History"
                       component={MessageHistory}
@@ -133,7 +140,6 @@ const StackNavigator = () => {
                 )}
               </Stack.Group>
               <Stack.Group screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="TabNavigator" component={TabNavigator} />
                 <Stack.Screen name="NewYearTheme" component={NewYearThemes} />
                 <Stack.Screen name="Onboarding" component={Intro} />
               </Stack.Group>

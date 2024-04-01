@@ -14,6 +14,7 @@ import { ILesson } from '../models/timeTable';
 export type RootStackParamList = {
   // Первая группа. Имеет хэдер и соответствующие для него настройки
   Auth: undefined;
+  TabNavigator: undefined; // Исключение из правил
   History: { data: IMessage[]; page: number };
   SignsDetails: { subject: ISubject };
   CertificateIncome: undefined;
@@ -23,7 +24,6 @@ export type RootStackParamList = {
   BellSchedule: undefined;
 
   // Вторая группа. Не имеет хэдера
-  TabNavigator: undefined;
   NewYearTheme: undefined;
   Onboarding: undefined;
 };
