@@ -14,6 +14,7 @@ import './notifications/handler';
 import requestNotificationPermission from './notifications/permission';
 import { rescheduleAllTaskNotifications } from './notifications/taskReminder';
 import setupStore from './redux';
+import manageEventTheme from './redux/manageEventTheme';
 import { loadStorage } from './redux/storageLoader';
 import { defineSignsFetchTask } from './tasks/signs/signs';
 import { checkUpdate } from './utils/inappUpdate';
@@ -25,7 +26,9 @@ dayjs.extend(customParseFormat);
 SplashScreen.preventAutoHideAsync().catch((e) => e);
 
 const store = setupStore();
+
 store.dispatch(loadStorage());
+store.dispatch(manageEventTheme(store));
 
 defineSignsFetchTask();
 addShortcuts();
