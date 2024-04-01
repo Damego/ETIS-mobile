@@ -422,7 +422,10 @@ class HTTPClient {
 
   getCathedraTimetable({ session, week, teacherId, cathedraId }: ICathedraTimetablePayload) {
     const params = {
-      p_term: session,
+      // Пустая строка необходима для правильного отображения недельного расписания
+      // Хотя странно, а зачем? Ну да ладно, это проблема ЕТИСа.
+      // Гарантируется, что в один момент может быть либо session, либо week
+      p_term: week !== undefined ? '' : session,
       p_week: week,
       p_sdiv_id: cathedraId,
       p_peo_id: teacherId,
