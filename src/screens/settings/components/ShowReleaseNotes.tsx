@@ -3,22 +3,25 @@ import React from 'react';
 
 import Card from '../../../components/Card';
 import ClickableText from '../../../components/ClickableText';
-import { ServicesNavigationProp } from '../../../navigation/types';
+import { RootStackNavigationProp } from '../../../navigation/types';
 import { fontSize } from '../../../utils/texts';
 
-const AboutAppButton = () => {
-  const navigation = useNavigation<ServicesNavigationProp>();
+const ShowReleaseNotes = () => {
+  const navigation = useNavigation<RootStackNavigationProp>();
+
+  const onPress = () => {
+    navigation.navigate('ReleaseNotes');
+  };
 
   return (
     <Card>
       <ClickableText
-        text={'О приложении'}
-        onPress={() => navigation.navigate('AboutApp')}
+        text={'Список изменений'}
+        onPress={onPress}
         textStyle={[fontSize.medium, { fontWeight: '500' }]}
-        colorVariant={'block'}
       />
     </Card>
   );
 };
 
-export default AboutAppButton;
+export default ShowReleaseNotes;
