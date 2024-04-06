@@ -22,6 +22,7 @@ export type RootStackParamList = {
   DisciplineInfo: { lesson: ILesson; date: string; pairPosition: number };
   DisciplineTasks?: { taskId?: string };
   BellSchedule: undefined;
+  ReleaseNotes: undefined;
 
   // Вторая группа. Не имеет хэдера
   NewYearTheme: undefined;

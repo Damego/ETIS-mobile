@@ -21,6 +21,7 @@ import DisciplinesTasks from '../screens/disciplinesTasks/DisciplinesTasks';
 import Intro from '../screens/intro/Intro';
 import MessageHistory from '../screens/messages/MessageHistory';
 import NewYearThemes from '../screens/newYearThemes/NewYearThemes';
+import ReleaseNotes from '../screens/releaseNotes/ReleaseNotes';
 import SessionQuestionnaire from '../screens/sessionQuestionnaire/SessionQuestionnaire';
 import SignsDetails from '../screens/signs/SignsDetails';
 import { isNewYear } from '../utils/events';
@@ -135,6 +136,11 @@ const StackNavigator = () => {
                       name={'BellSchedule'}
                       component={BellSchedule}
                       options={{ title: 'Расписание звонков' }}
+                    />
+                    <Stack.Screen
+                      name={'ReleaseNotes'}
+                      component={ReleaseNotes}
+                      options={{ title: 'Список изменений' }}
                     />
                   </>
                 )}

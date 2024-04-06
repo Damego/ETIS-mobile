@@ -12,6 +12,7 @@ import ChangeNewYearTheme from './components/ChangeNewYearTheme';
 import ChangePasswordSetting from './components/ChangePasswordSetting';
 import ChangePersonalRecord from './components/ChangePersonalRecord';
 import ResetIntroSetting from './components/ResetIntroSetting';
+import ShowReleaseNotes from './components/ShowReleaseNotes';
 import SignOut from './components/SignOut';
 import ToggleSentrySetting from './components/ToggleSentrySetting';
 import ToggleSignNotification from './components/ToggleSignNotification';
@@ -20,6 +21,7 @@ import ToggleThemeSetting from './components/ToggleThemeSetting';
 export default function Settings() {
   return (
     <Screen>
+      {/* Общие настройки */}
       <Card style={{ zIndex: 1 }}>
         <ToggleThemeSetting />
       </Card>
@@ -31,10 +33,14 @@ export default function Settings() {
       <Card>
         <ResetIntroSetting />
       </Card>
-      <CardHeaderOut topText={'Приложение'}>
-        <AboutAppButton />
-      </CardHeaderOut>
+
+      {/* Настройки приложения */}
+      <Text style={[fontSize.medium, { fontWeight: 'bold', marginBottom: '2%' }]}>Приложение</Text>
+      <ShowReleaseNotes />
+      <AboutAppButton />
       <ToggleSentrySetting />
+
+      {/* Настройки аккаунта пользователя(студента) */}
       <Text style={[fontSize.medium, { fontWeight: 'bold', marginBottom: '2%' }]}>Аккаунт</Text>
       <ChangePasswordSetting />
       <ChangeEmailSetting />

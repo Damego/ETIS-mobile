@@ -480,7 +480,15 @@ export default class SmartCache {
 
   async setUIConfig(config: Partial<UIConfig>) {
     const appConfig = await this.getAppConfig();
-    appConfig.ui = { ...appConfig.ui, ...config };
+    appConfig.ui = appConfig.ui ? { ...appConfig.ui, ...config } : ({ ...config } as UIConfig);
+    await this.updateAppConfig(appConfig);
+  }
+
+  async setReleaseNotesViews(versionsInfo: { [version: string]: boolean }) {
+    const appConfig = await this.getAppConfig();
+    appConfig.releaseNotesViews = appConfig.releaseNotesViews
+      ? { ...appConfig.releaseNotesViews, ...versionsInfo }
+      : { ...versionsInfo };
     await this.updateAppConfig(appConfig);
   }
 
