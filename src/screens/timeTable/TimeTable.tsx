@@ -9,12 +9,12 @@ import TimeTableContext from '../../context/timetableContext';
 import { useClient } from '../../data/client';
 import { useGlobalStyles } from '../../hooks';
 import useQuery from '../../hooks/useQuery';
+import useReleaseNotes from '../../hooks/useReleaseNotes';
 import useTimeTableQuery from '../../hooks/useTimeTableQuery';
 import { WeekInfo, WeekTypes } from '../../models/timeTable';
 import DatesContainer from './DatesContainer';
 import DayArray from './DayArray';
 import HolidayView from './HolidayView';
-import useReleaseNotes from '../../hooks/useReleaseNotes';
 
 const isHolidayWeek = (weekInfo: WeekInfo) => {
   if (weekInfo.type !== WeekTypes.holiday) return false;

@@ -3,9 +3,9 @@ import Constants from 'expo-constants';
 import React, { useEffect } from 'react';
 
 import { cache } from '../cache/smartCache';
-import { useAppDispatch, useAppSelector } from './index';
 import { RootStackNavigationProp } from '../navigation/types';
 import { setReleaseNotes } from '../redux/reducers/settingsSlice';
+import { useAppDispatch, useAppSelector } from './index';
 
 /*
 Возвращает текущую версию приложения без патч версии
