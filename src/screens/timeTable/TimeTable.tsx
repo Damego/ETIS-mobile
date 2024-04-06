@@ -14,6 +14,7 @@ import { WeekInfo, WeekTypes } from '../../models/timeTable';
 import DatesContainer from './DatesContainer';
 import DayArray from './DayArray';
 import HolidayView from './HolidayView';
+import useReleaseNotes from '../../hooks/useReleaseNotes';
 
 const isHolidayWeek = (weekInfo: WeekInfo) => {
   if (weekInfo.type !== WeekTypes.holiday) return false;
@@ -34,6 +35,8 @@ const TimeTable = () => {
   const { data: teachersData, isLoading: teachersIsLoading } = useQuery({
     method: client.getTeacherData,
   });
+
+  useReleaseNotes();
 
   if ((isLoading || teachersIsLoading) && (!data || !teachersData))
     return <LoadingScreen onRefresh={refresh} />;

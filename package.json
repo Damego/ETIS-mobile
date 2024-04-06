@@ -60,6 +60,7 @@
     "react-native-context-menu-view": "^1.15.0",
     "react-native-gesture-handler": "~2.14.0",
     "react-native-get-random-values": "~1.8.0",
+    "react-native-markdown-display": "^7.0.2",
     "react-native-pager-view": "6.2.3",
     "react-native-popover-view": "^5.1.8",
     "react-native-radio-buttons-group": "^3.0.5",

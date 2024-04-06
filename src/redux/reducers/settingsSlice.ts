@@ -29,6 +29,7 @@ export interface AppConfig {
   events: Events;
   cacheMigrations: CacheMigrations;
   ui: UIConfig;
+  releaseNotesViews: { [version: string]: boolean };
 }
 
 export interface SettingsState {
@@ -50,6 +51,7 @@ const initialConfig: AppConfig = {
   cacheMigrations: {},
   reviewStep: 'pending',
   privacyPolicyAccepted: false,
+  releaseNotesViews: {},
 };
 
 const initialState: SettingsState = {
@@ -89,6 +91,9 @@ const settingsSlice = createSlice({
     setUIConfig(state, action: PayloadAction<Partial<UIConfig>>) {
       state.config.ui = { ...state.config.ui, ...action.payload };
     },
+    setReleaseNotes(state, action: PayloadAction<{ [version: string]: boolean }>) {
+      state.config.releaseNotesViews = { ...state.config.releaseNotesViews, ...action.payload };
+    },
   },
 });
 
@@ -103,4 +108,5 @@ export const {
   setSentryEnabled,
   setEvents,
   setUIConfig,
+  setReleaseNotes,
 } = settingsSlice.actions;
