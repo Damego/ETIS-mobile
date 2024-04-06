@@ -48,6 +48,7 @@ const AboutSentryPopover = () => {
 const ToggleSentrySetting = () => {
   const dispatch = useAppDispatch();
   const { sentryEnabled } = useAppSelector((state) => state.settings.config);
+  const theme = useAppTheme();
 
   const toggleSentryEnabled = (value: boolean) => {
     dispatch(setSentryEnabled(value));
@@ -65,7 +66,7 @@ const ToggleSentrySetting = () => {
       <AboutSentryPopover />
 
       <Switch
-        trackColor={{ false: 'gray', true: 'teal' }}
+        trackColor={{ false: 'gray', true: theme.colors.primary }}
         thumbColor="white"
         onValueChange={toggleSentryEnabled}
         value={sentryEnabled}
