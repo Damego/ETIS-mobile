@@ -23,9 +23,7 @@ const useReleaseNotes = () => {
 
   useEffect(() => {
     const appVersion = getAppVersion();
-    console.log(appVersion);
     if (!releaseNotesViews[appVersion]) {
-      console.log('not viewed');
       navigation.navigate('ReleaseNotes');
       const payload = { [appVersion]: true };
       dispatch(setReleaseNotes(payload));
