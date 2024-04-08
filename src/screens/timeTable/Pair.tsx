@@ -4,6 +4,7 @@ import React, { useContext } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import DisciplineType from '../../components/DisciplineType';
+import TaskBadge from '../../components/TaskBadge';
 import Text from '../../components/Text';
 import TimeTableContext from '../../context/timetableContext';
 import { useAppSelector } from '../../hooks';
@@ -73,7 +74,10 @@ const Lesson = ({
       <Text style={[fontSize.medium, styles.lessonInfoText]} colorVariant={'block'}>
         {data.subject.discipline ?? data.subject.string}
       </Text>
-      {data.subject.type && <DisciplineType type={data.subject.type} size={'small'} />}
+      <View style={styles.badges}>
+        {data.subject.type && <DisciplineType type={data.subject.type} size={'small'} />}
+        <TaskBadge subject={data.subject} date={date} />
+      </View>
 
       {data.distancePlatform && <Text colorVariant={'block'}>{data.distancePlatform.name}</Text>}
       {!data.distancePlatform && audience && <Text colorVariant={'block'}>{audience}</Text>}
@@ -97,5 +101,9 @@ const styles = StyleSheet.create({
   lessonContainer: {},
   lessonInfoText: {
     fontWeight: '500',
+  },
+  badges: {
+    gap: 4,
+    flexDirection: 'row',
   },
 });
