@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import Constants from 'expo-constants';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { cache } from '../cache/smartCache';
 import { RootStackNavigationProp } from '../navigation/types';
@@ -8,10 +8,13 @@ import { setReleaseNotes } from '../redux/reducers/settingsSlice';
 import { useAppDispatch, useAppSelector } from './index';
 
 /*
-Возвращает текущую версию приложения без патч версии
+Возвращает текущую версию приложения без патч версии.
+Возвращает null, если текущая версия - бета
 */
 const getAppVersion = () => {
   const appVersion = Constants.expoConfig.version;
+  if (appVersion.includes('beta')) return null;
+
   const [major, minor] = appVersion.split('.');
   return `${major}.${minor}`;
 };
@@ -23,7 +26,7 @@ const useReleaseNotes = () => {
 
   useEffect(() => {
     const appVersion = getAppVersion();
-    if (!releaseNotesViews[appVersion]) {
+    if (appVersion && !releaseNotesViews[appVersion]) {
       navigation.navigate('ReleaseNotes');
       const payload = { [appVersion]: true };
       dispatch(setReleaseNotes(payload));
