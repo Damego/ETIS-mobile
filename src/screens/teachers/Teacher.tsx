@@ -117,7 +117,6 @@ const Teacher = ({ discipline, data }: TeacherProps) => {
 
 export default Teacher;
 
-
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
