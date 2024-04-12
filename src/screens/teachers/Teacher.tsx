@@ -82,7 +82,7 @@ const Teacher = ({ discipline, data }: TeacherProps) => {
             const pressIndex = event.nativeEvent.index;
 
             if (pressIndex === 0) {
-              Clipboard.setStringAsync(data.name);
+              Clipboard.setStringAsync(data.cathedra);
               ToastAndroid.show('Скопировано в буфер обмена', ToastAndroid.LONG);
             } else if (pressIndex === 1) {
               navigation.navigate('CathedraTimetable', { cathedraId: data.cathedraId });
