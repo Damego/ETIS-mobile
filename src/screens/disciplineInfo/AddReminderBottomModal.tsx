@@ -1,4 +1,3 @@
-import { BottomSheetView } from '@gorhom/bottom-sheet';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import React, { useState } from 'react';
@@ -71,7 +70,7 @@ const AddReminderBottomModal = ({ onSubmit }: { onSubmit: (datetime: dayjs.Dayjs
   };
 
   return (
-    <BottomSheetView style={styles.modalView}>
+    <>
       <DateTimePicker
         date={value}
         onChange={({ date }) => handleDayChange(dayjs(date))}
@@ -94,7 +93,7 @@ const AddReminderBottomModal = ({ onSubmit }: { onSubmit: (datetime: dayjs.Dayjs
         viewStyle={styles.saveButton}
         textStyle={styles.text}
       />
-    </BottomSheetView>
+    </>
   );
 };
 
@@ -112,9 +111,6 @@ const timePickerStyles = StyleSheet.create({
 });
 
 const styles = StyleSheet.create({
-  modalView: {
-    marginHorizontal: '2%',
-  },
   text: {
     fontWeight: '500',
     ...fontSize.big,

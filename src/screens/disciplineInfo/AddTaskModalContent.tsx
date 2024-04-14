@@ -71,7 +71,7 @@ const AddTaskModalContent = ({
   };
 
   return (
-    <BottomSheetView style={styles.modalContainer}>
+    <>
       {showDisciplineInfo && selectedTask && (
         <>
           <Text style={styles.disciplineText}>{selectedTask.disciplineName}</Text>
@@ -140,18 +140,19 @@ const AddTaskModalContent = ({
         backdropComponent={BottomSheetModalBackdrop}
         backgroundStyle={{ backgroundColor: globalStyles.block.backgroundColor }}
       >
-        <AddReminderBottomModal onSubmit={addReminder} />
+        <BottomSheetView style={styles.modalView}>
+          <AddReminderBottomModal onSubmit={addReminder} />
+        </BottomSheetView>
       </BottomSheetModal>
-    </BottomSheetView>
+    </>
   );
 };
 
 export default AddTaskModalContent;
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    padding: '4%',
-    gap: 8,
+  modalView: {
+    marginHorizontal: '2%',
   },
   disciplineText: {
     fontWeight: '600',
