@@ -3,7 +3,6 @@ import React, { useContext, useRef, useState } from 'react';
 import { View } from 'react-native';
 
 import { Button } from '../../components/Button';
-import CenteredText from '../../components/CenteredText';
 import Text from '../../components/Text';
 import TimeTableContext from '../../context/timetableContext';
 import { useAppSelector } from '../../hooks';
@@ -36,7 +35,7 @@ const DayArray = ({ data, weekDates }: IDayArrayProps) => {
   const components = data
     .map((day) => {
       const date = bumpDate();
-      if (!localShowPastWeekDays && currentDate > date && currentDate < weekEndDate.current)
+      if (!localShowPastWeekDays && currentDate > date && currentDate <= weekEndDate.current)
         return null;
       return <Day key={day.date} data={day} date={date} />;
     })
@@ -46,7 +45,7 @@ const DayArray = ({ data, weekDates }: IDayArrayProps) => {
     return (
       <>
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={[fontSize.large, { fontWeight: '500' }]}>
+          <Text style={[fontSize.large, { fontWeight: '500', textAlign: 'center' }]}>
             Неделя подошла к концу. {'\n'}Приятных выходных! :)
           </Text>
           <Button
