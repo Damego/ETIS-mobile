@@ -1,11 +1,11 @@
 import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 import React from 'react';
+import { StyleSheet } from 'react-native';
 
 import BottomSheetModalBackdrop from '../../components/BottomSheetModalBackdrop';
 import { useAppTheme } from '../../hooks/theme';
 import { DisciplineTask } from '../../models/disciplinesTasks';
 import AddTaskModalContent, { PartialTask } from './AddTaskModalContent';
-import { StyleSheet } from 'react-native';
 
 interface TaskModalProps {
   onTaskAdd: (partialTask: PartialTask) => void;
@@ -29,13 +29,13 @@ const TaskModal = React.forwardRef<BottomSheetModal, TaskModalProps>(
         onDismiss={onDismiss}
       >
         <BottomSheetView style={styles.modalContainer}>
-        <AddTaskModalContent
-          onTaskAdd={onTaskAdd}
-          selectedTask={task}
-          onTaskRemove={onTaskRemove}
-          showDisciplineInfo={showDisciplineInfo}
-          disableCheckbox={disableCheckbox}
-        />
+          <AddTaskModalContent
+            onTaskAdd={onTaskAdd}
+            selectedTask={task}
+            onTaskRemove={onTaskRemove}
+            showDisciplineInfo={showDisciplineInfo}
+            disableCheckbox={disableCheckbox}
+          />
         </BottomSheetView>
       </BottomSheetModal>
     );
@@ -49,4 +49,4 @@ const styles = StyleSheet.create({
     padding: '4%',
     gap: 8,
   },
-})
+});
