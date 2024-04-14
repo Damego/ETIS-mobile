@@ -21,21 +21,21 @@ const DayArray = ({ data, weekDates }: IDayArrayProps) => {
 
   const { currentDate } = useContext(TimeTableContext);
 
-  const date = useRef(dayjs(weekDates.start, 'DD.MM.YYYY'));
-  const weekEndDate = useRef(dayjs(weekDates.end, 'DD.MM.YYYY'));
+  let date = dayjs(weekDates.start, 'DD.MM.YYYY');
+  const weekEndDate = dayjs(weekDates.end, 'DD.MM.YYYY');
 
   const showPastDays = () => setShowPastWeekDays(true);
 
   const bumpDate = () => {
-    const prev = date.current.clone();
-    date.current = date.current.add(1, 'days');
+    const prev = date.clone();
+    date = date.add(1, 'days');
     return prev;
   };
 
   const components = data
     .map((day) => {
       const date = bumpDate();
-      if (!localShowPastWeekDays && currentDate > date && currentDate <= weekEndDate.current)
+      if (!localShowPastWeekDays && currentDate > date && currentDate <= weekEndDate)
         return null;
       return <Day key={day.date} data={day} date={date} />;
     })
