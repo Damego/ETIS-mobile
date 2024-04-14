@@ -35,8 +35,7 @@ const DayArray = ({ data, weekDates }: IDayArrayProps) => {
   const components = data
     .map((day) => {
       const date = bumpDate();
-      if (!localShowPastWeekDays && currentDate > date && currentDate <= weekEndDate)
-        return null;
+      if (!localShowPastWeekDays && currentDate > date && currentDate <= weekEndDate) return null;
       return <Day key={day.date} data={day} date={date} />;
     })
     .filter((comp) => comp !== null);
