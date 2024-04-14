@@ -1,36 +1,27 @@
-import QuickActions, { ShortcutItem } from 'react-native-quick-actions';
+import { Action, setItems } from 'expo-quick-actions';
 
 import { BottomTabsParamList } from '../navigation/types';
 
-export interface AppShortcutItem extends ShortcutItem {
-  type: keyof BottomTabsParamList;
+export interface AppShortcutItem extends Action {
+  id: keyof BottomTabsParamList;
 }
 
 const SHORTCUTS_ITEMS: AppShortcutItem[] = [
   {
-    type: 'SignsNavigator',
+    id: 'SignsNavigator',
     title: 'Оценки',
     icon: 'signs',
-    userInfo: { url: '' },
   },
   {
-    type: 'Messages',
+    id: 'Messages',
     title: 'Сообщения',
     icon: 'messages',
-    userInfo: { url: '' },
   },
   {
-    type: 'Announces',
+    id: 'Announces',
     title: 'Объявления',
     icon: 'announce',
-    userInfo: { url: '' },
   },
 ];
 
-export const addShortcuts = () => {
-  try {
-    return QuickActions.setShortcutItems(SHORTCUTS_ITEMS);
-  } catch (e) {
-    // I hate js. Damego
-  }
-};
+export const addShortcuts = () => setItems(SHORTCUTS_ITEMS);

@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 
+import { DisciplineTypes } from '../models/other';
 import { ICheckPoint } from '../models/sessionPoints';
+import { ILesson } from '../models/timeTable';
 
 export const getPointsWord = (points: number) => {
   let pointsWord = 'балл';
@@ -21,6 +23,7 @@ export const formatCheckPointScore = (checkPoint: ICheckPoint) => {
   if (Number.isNaN(checkPoint.points) || !checkPoint.points) return '-';
 };
 
+// todo: rename every size to character like format
 export const fontSize = StyleSheet.create({
   micro: {
     fontSize: 8,
@@ -34,8 +37,17 @@ export const fontSize = StyleSheet.create({
   medium: {
     fontSize: 16,
   },
+  big: {
+    fontSize: 18,
+  },
   large: {
     fontSize: 20,
+  },
+  slarge: {
+    fontSize: 22,
+  },
+  mlarge: {
+    fontSize: 24,
   },
   xlarge: {
     fontSize: 26,
@@ -44,3 +56,23 @@ export const fontSize = StyleSheet.create({
     fontSize: 36,
   },
 });
+
+export const disciplineTypeNames: { [key in DisciplineTypes]: string } = {
+  LECTURE: 'Лекция',
+  PRACTICE: 'Практика',
+  LABORATORY: 'Лабораторная',
+  TEST: 'Зачёт',
+  EXAM: 'Экзамен',
+};
+
+export const getDisciplineTypeName = (type: string): string => disciplineTypeNames[type] || type;
+
+export const formatAudience = (lesson: ILesson) => {
+  const { audience } = lesson;
+
+  if (lesson.isDistance) return 'Дистанционно';
+
+  return audience.number && audience.building && audience.floor
+    ? `ауд. ${audience.number} (${audience.building} корпус, ${audience.floor} этаж)`
+    : audience.string;
+};

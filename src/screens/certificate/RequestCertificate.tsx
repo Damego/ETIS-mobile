@@ -1,16 +1,6 @@
-import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useMemo, useState } from 'react';
-import {
-  Alert,
-  Keyboard,
-  StyleSheet,
-  TextInput,
-  ToastAndroid,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import Popover, { PopoverPlacement } from 'react-native-popover-view';
+import { Alert, Keyboard, StyleSheet, ToastAndroid, View } from 'react-native';
 import { RadioButtonProps, RadioGroup } from 'react-native-radio-buttons-group';
 
 import { Button } from '../../components/Button';
@@ -18,13 +8,17 @@ import Card from '../../components/Card';
 import Screen from '../../components/Screen';
 import Text from '../../components/Text';
 import { useAppSelector, useGlobalStyles } from '../../hooks';
-import { useAppTheme } from '../../hooks/theme';
 import { CertificateParam } from '../../models/certificateRequest';
+import { RootStackNavigationProp, RootStackParamList } from '../../navigation/types';
 import { httpClient } from '../../utils';
 import { toCertificatePayload } from '../../utils/certificate';
 import { fontSize } from '../../utils/texts';
+import { Input, PopoverElement } from './CertificateComponents';
 
 const deliveryMethods = [{ id: '1', name: 'лично (в отделе кадров обучающихся)' }];
+const specialCerts: [{ id: string; screen: keyof RootStackParamList }] = [
+  { id: '-1', screen: 'CertificateIncome' },
+];
 
 const certificateType: CertificateParam[] = [
   {
@@ -59,6 +53,14 @@ const certificateType: CertificateParam[] = [
     place: false,
     deliveryMethod: deliveryMethods,
   },
+  {
+    id: '-1',
+    name: 'Справка о доходах (стипендии)',
+    note: false,
+    maxQuantity: 0,
+    place: false,
+    deliveryMethod: [],
+  },
 ];
 
 export const styles = StyleSheet.create({
@@ -73,13 +75,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  popover: {
-    borderRadius: 10,
-    padding: '2%',
-  },
-  input: { margin: '3%', paddingHorizontal: '2%' },
-  inputRow: { flexDirection: 'row', alignItems: 'center' },
-  width90: { width: '85%' },
   alignStart: { alignItems: 'flex-start', marginBottom: 10 },
 });
 
@@ -93,8 +88,7 @@ export default function RequestCertificate() {
   const [delivery, setDelivery] = useState<string>();
   const [keyboardOpen, setKeyboardOpen] = useState<boolean>(false);
   const [requestSent, setRequestSent] = useState<boolean>(false);
-  const appTheme = useAppTheme();
-  const navigator = useNavigation();
+  const navigator = useNavigation<RootStackNavigationProp>();
 
   Keyboard.addListener('keyboardDidShow', () => {
     setKeyboardOpen(true);
@@ -103,55 +97,6 @@ export default function RequestCertificate() {
   Keyboard.addListener('keyboardDidHide', () => {
     setTimeout(() => setKeyboardOpen(false), 60);
   });
-
-  const PopoverElement = useMemo(
-    () =>
-      ({ text }) => (
-        <Popover
-          placement={PopoverPlacement.FLOATING}
-          from={(_, showPopover) => (
-            <TouchableOpacity onPress={showPopover}>
-              <AntDesign name="infocirlceo" size={24} color={appTheme.colors.textForBlock} />
-            </TouchableOpacity>
-          )}
-          popoverStyle={[styles.popover, { backgroundColor: appTheme.colors.block }]}
-        >
-          <Text style={fontSize.medium} colorVariant={'block'}>
-            {text}
-          </Text>
-        </Popover>
-      ),
-    []
-  );
-
-  const Input = useMemo(
-    () =>
-      ({ name, placeholder, onUpdate, value, popover }) => (
-        <>
-          <Text style={fontSize.medium} colorVariant={'block'}>
-            {name}
-          </Text>
-          <View style={styles.inputRow}>
-            <TextInput
-              style={[
-                fontSize.small,
-                globalStyles.fontColorForBlock,
-                globalStyles.border,
-                styles.input,
-                styles.width90,
-              ]}
-              placeholderTextColor={globalStyles.inputPlaceholder.color}
-              placeholder={placeholder}
-              onChangeText={onUpdate}
-              value={value}
-              selectionColor={globalStyles.primaryBackgroundColor.backgroundColor}
-            />
-            {popover}
-          </View>
-        </>
-      ),
-    []
-  );
 
   const currentCertificate = useMemo(
     () => certificateType.find((s) => s.id === currentId),
@@ -249,6 +194,9 @@ export default function RequestCertificate() {
       </Screen>
     );
   }
+
+  const specialCert = specialCerts.find((s) => currentId === s.id);
+
   return (
     <Screen>
       <Card>
@@ -260,10 +208,11 @@ export default function RequestCertificate() {
           onPress={setCurrentId}
           selectedId={currentId}
           containerStyle={styles.alignStart}
+          labelStyle={globalStyles.fontColorForBlock}
         />
       </Card>
 
-      {currentId && (
+      {currentId && !specialCert && (
         <>
           <Card>
             <Text style={fontSize.medium} colorVariant={'block'}>
@@ -274,6 +223,7 @@ export default function RequestCertificate() {
               onPress={setDelivery}
               selectedId={delivery}
               containerStyle={styles.alignStart}
+              labelStyle={globalStyles.fontColorForBlock}
             />
             <Text style={fontSize.medium} colorVariant={'block'}>
               Количество
@@ -283,6 +233,7 @@ export default function RequestCertificate() {
               selectedId={quantity}
               onPress={setQuantity}
               containerStyle={styles.alignStart}
+              labelStyle={globalStyles.fontColorForBlock}
             />
           </Card>
 
@@ -311,6 +262,16 @@ export default function RequestCertificate() {
             )}
           </Card>
         </>
+      )}
+
+      {specialCert && (
+        <View style={{ position: 'absolute', left: 0, right: 0, bottom: '1%' }}>
+          <Button
+            text={'Продолжить'}
+            onPress={() => navigator.navigate(specialCert.screen)}
+            variant={'secondary'}
+          />
+        </View>
       )}
 
       {applicable && (

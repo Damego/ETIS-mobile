@@ -4,7 +4,7 @@ export default {
   expo: {
     name: 'ЕТИС мобайл' + (IS_DEV ? ' (DEV)' : ''),
     slug: 'etis-mobile',
-    version: '1.2.5',
+    version: '1.3.0',
     owner: 'damego',
     orientation: 'portrait',
     icon: './assets/icon.png',
@@ -23,7 +23,7 @@ export default {
       supportsTablet: true,
     },
     android: {
-      versionCode: 10205000,
+      versionCode: 10300006,
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
         backgroundColor: '#FFFFFF',
@@ -54,10 +54,39 @@ export default {
       ],
     },
     plugins: [
-      ['./src/plugins/copyDrawable.ts', './assets/tab_icons'],
+      [
+        'expo-quick-actions',
+        {
+          androidIcons: {
+            signs: {
+              foregroundImage: './assets/tab_icons/signs.png',
+              backgroundColor: '#FFFFFF',
+            },
+            messages: {
+              foregroundImage: './assets/tab_icons/messages.png',
+              backgroundColor: '#FFFFFF',
+            },
+            announce: {
+              foregroundImage: './assets/tab_icons/announce.png',
+              backgroundColor: '#FFFFFF',
+            },
+          },
+        },
+      ],
       ['./src/plugins/disabledForcedDarkModeAndroid.ts', {}],
-      '@config-plugins/react-native-quick-actions',
       'sentry-expo',
+      [
+        'expo-build-properties',
+        {
+          android: {
+            // Без этого билд будет крашиться
+            extraMavenRepos: ['../../node_modules/@notifee/react-native/android/libs'],
+            enableProguardInReleaseBuilds: true,
+            extraProguardRules: '-keep public class com.horcrux.svg.** {*;}',
+            allowBackup: false,
+          },
+        },
+      ],
     ],
   },
 };

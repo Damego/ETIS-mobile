@@ -1,27 +1,11 @@
 import { load } from 'cheerio';
 
-import { ITeacher, TeacherType } from '../models/teachers';
+import { ITeacher, ITeacherSubject } from '../models/teachers';
 import { executeRegex } from '../utils/sentry';
-import { getTextField } from './utils';
+import { disciplineRegex, numberRegex } from './regex';
+import { getDisciplineType, getTextField } from './utils';
 
-/* https://regex101.com/r/gvUVMt/14 */
-const subjectRegex = /(.*)\s\(([а-я]+(?:,\s[а-я]+)*)\)/s;
-const numberRegex = /(\d+)/s;
-
-const groupTeachers = (data: ITeacher[]) => {
-  const dataGrouped = {};
-  data.forEach((val) => {
-    if (dataGrouped[val.subjectUntyped]) {
-      dataGrouped[val.subjectUntyped].push(val);
-    } else {
-      dataGrouped[val.subjectUntyped] = [val];
-    }
-  });
-
-  return Object.entries<ITeacher[]>(dataGrouped);
-};
-
-export default function parseTeachers(html: string): TeacherType {
+export default function parseTeachers(html: string): ITeacher[] {
   const $ = load(html);
   const data: ITeacher[] = [];
 
@@ -35,22 +19,27 @@ export default function parseTeachers(html: string): TeacherType {
     const cathedra = getTextField(cathedraTag);
     const [cathedraId] = executeRegex(numberRegex, cathedraTag.find('img').attr('onclick'));
 
+    const subjects: ITeacherSubject[] = [];
     getTextField(teacherEl.find('.dis'))
       .split('\n')
       .forEach((subject) => {
-        const [, subjectUntyped, subjectType] = executeRegex(subjectRegex, subject);
-        data.push({
-          id,
-          photo,
-          name,
-          cathedra,
-          subjectUntyped,
-          subjectType,
-          photoTitle,
-          cathedraId,
-        });
+        const [, discipline, typesString] = executeRegex(disciplineRegex, subject);
+        const types = typesString
+          ? typesString.split(',').map((s) => getDisciplineType(s.trim()))
+          : [];
+        subjects.push({ discipline, types });
       });
+
+    data.push({
+      id,
+      photo,
+      name,
+      cathedra,
+      subjects,
+      photoTitle,
+      cathedraId,
+    });
   });
 
-  return groupTeachers(data);
+  return data;
 }

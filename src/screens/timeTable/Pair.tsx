@@ -1,19 +1,21 @@
-import React from 'react';
-import { Linking, StyleSheet, TouchableOpacity, View } from 'react-native';
-import AutoHeightWebView from 'react-native-autoheight-webview';
-import Popover, { PopoverPlacement } from 'react-native-popover-view';
+import { useNavigation } from '@react-navigation/native';
+import dayjs from 'dayjs';
+import React, { useContext } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import ClickableText from '../../components/ClickableText';
+import DisciplineType from '../../components/DisciplineType';
+import TaskBadge from '../../components/TaskBadge';
 import Text from '../../components/Text';
-import { useGlobalStyles } from '../../hooks';
-import { useAppTheme } from '../../hooks/theme';
-import { TeacherType } from '../../models/teachers';
+import TimeTableContext from '../../context/timetableContext';
+import { useAppSelector } from '../../hooks';
 import { ILesson, IPair } from '../../models/timeTable';
-import { fontSize } from '../../utils/texts';
-import { getStyles } from '../../utils/webView';
+import { BottomTabsNavigationProp } from '../../navigation/types';
+import { getTeacherName } from '../../utils/teachers';
+import { fontSize, formatAudience } from '../../utils/texts';
 
-export default function Pair({ pair, teachersData }: { pair: IPair; teachersData: TeacherType }) {
-  const pairText = `${pair.position} пара`;
+export default function Pair({ pair, date }: { pair: IPair; date: dayjs.Dayjs }) {
+  const isLyceum = useAppSelector((state) => state.student.info?.isLyceum);
+  const pairText = `${pair.position} ${isLyceum ? 'урок' : 'пара'}`;
 
   return (
     <View style={styles.pairContainer}>
@@ -25,85 +27,64 @@ export default function Pair({ pair, teachersData }: { pair: IPair; teachersData
       </View>
 
       <View style={{ flexDirection: 'column', flex: 1 }}>
-        {pair.lessons.map((lesson, ind) => (
-          <Lesson data={lesson} key={lesson.subject + ind} teachersData={teachersData} />
-        ))}
+        {pair.lessons.map((lesson, ind) => {
+          const time = dayjs(pair.time, 'HH:mm');
+          const cloned = date.clone().set('hour', time.hour()).set('minute', time.minute());
+
+          return (
+            <Lesson
+              key={lesson.subject.string + ind}
+              data={lesson}
+              date={cloned}
+              pairPosition={pair.position}
+            />
+          );
+        })}
       </View>
     </View>
   );
 }
 
-const AnnouncePopover = ({ data }: { data: string }) => {
-  const globalStyles = useGlobalStyles();
-  const theme = useAppTheme();
+const Lesson = ({
+  data,
+  date,
+  pairPosition,
+}: {
+  data: ILesson;
+  date: dayjs.Dayjs;
+  pairPosition: number;
+}) => {
+  const navigation = useNavigation<BottomTabsNavigationProp>();
+  const { teachers } = useContext(TimeTableContext);
+
+  const audience = formatAudience(data);
+  const teacherName = getTeacherName(teachers, data.teacher);
 
   return (
-    <Popover
-      placement={PopoverPlacement.FLOATING}
-      // TODO: Replace with ClickableText in future due to ref issue
-      from={(_, showPopover) => (
-        <TouchableOpacity onPress={showPopover}>
-          <Text
-            style={{ textDecorationLine: 'underline', fontWeight: '500' }}
-            colorVariant={'block'}
-          >
-            Объявление
-          </Text>
-        </TouchableOpacity>
-      )}
-      popoverStyle={{
-        borderRadius: globalStyles.border.borderRadius,
-        backgroundColor: globalStyles.block.backgroundColor,
-        padding: '2%',
-      }}
+    <TouchableOpacity
+      style={styles.lessonContainer}
+      onPress={() =>
+        navigation.navigate('DisciplineInfo', {
+          lesson: data,
+          date: date.toISOString(),
+          pairPosition,
+        })
+      }
     >
-      <AutoHeightWebView
-        source={{ html: data }}
-        customStyle={getStyles(theme.colors.textForBlock, theme.colors.primary)}
-      />
-    </Popover>
-  );
-};
-
-const Lesson = ({ data, teachersData }: { data: ILesson; teachersData: TeacherType }) => {
-  const location =
-    data.audience && data.building && data.floor
-      ? `ауд. ${data.audience} (${data.building} корпус, ${data.floor} этаж)`
-      : data.audienceText;
-  const audience = data.isDistance ? data.audience : location;
-
-  let teacherName: string;
-
-  if (data.teacher?.id) {
-    teachersData.forEach(([, teachers]) => {
-      const teacher = teachers.find((teacher) => teacher.id === data.teacher.id);
-      if (teacher) teacherName = teacher.name;
-    });
-  } else teacherName = data.teacher?.name;
-
-  return (
-    <View style={styles.lessonContainer}>
       <Text style={[fontSize.medium, styles.lessonInfoText]} colorVariant={'block'}>
-        {data.subject}
+        {data.subject.discipline ?? data.subject.string}
       </Text>
+      <View style={styles.badges}>
+        {data.subject.type && <DisciplineType type={data.subject.type} size={'small'} />}
+        <TaskBadge subject={data.subject} date={date} />
+      </View>
 
-      {data.distancePlatform ? (
-        <ClickableText
-          text={data.distancePlatform.name}
-          onPress={() => {
-            Linking.openURL(data.distancePlatform.url);
-          }}
-          textStyle={{ textDecorationLine: 'underline', fontWeight: '500' }}
-          colorVariant={'block'}
-        />
-      ) : audience ? (
-        <Text colorVariant={'block'}>{audience}</Text>
-      ) : (
-        <AnnouncePopover data={data.announceHTML} />
-      )}
+      {data.distancePlatform && <Text colorVariant={'block'}>{data.distancePlatform.name}</Text>}
+      {!data.distancePlatform && audience && <Text colorVariant={'block'}>{audience}</Text>}
+      {data.announceHTML && <Text colorVariant={'block'}>Объявление</Text>}
 
       {teacherName && <Text colorVariant={'block'}>{teacherName}</Text>}
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -120,5 +101,9 @@ const styles = StyleSheet.create({
   lessonContainer: {},
   lessonInfoText: {
     fontWeight: '500',
+  },
+  badges: {
+    gap: 4,
+    flexDirection: 'row',
   },
 });

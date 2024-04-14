@@ -4,25 +4,28 @@ import Card from '../../components/Card';
 import CardHeaderOut from '../../components/CardHeaderOut';
 import Screen from '../../components/Screen';
 import Text from '../../components/Text';
-import { useGlobalStyles } from '../../hooks';
 import { fontSize } from '../../utils/texts';
-import AboutAppButton from './AboutApp';
-import ChangeEmailSetting from './ChangeEmailSetting';
-import ChangeNewYearTheme from './ChangeNewYearTheme';
-import ChangePasswordSetting from './ChangePasswordSetting';
-import ChangePersonalRecord from './ChangePersonalRecord';
-import ResetIntroSetting from './ResetIntroSetting';
-import SignOut from './SignOut';
-import ToggleSentrySetting from './ToggleSentrySetting';
-import ToggleSignNotification from './ToggleSignNotification';
-import ToggleThemeSetting from './ToggleThemeSetting';
+import AboutAppButton from './components/AboutApp';
+import ChangeAppUI from './components/ChangeAppUI';
+import ChangeEmailSetting from './components/ChangeEmailSetting';
+import ChangeNewYearTheme from './components/ChangeNewYearTheme';
+import ChangePasswordSetting from './components/ChangePasswordSetting';
+import ChangePersonalRecord from './components/ChangePersonalRecord';
+import ResetIntroSetting from './components/ResetIntroSetting';
+import ShowReleaseNotes from './components/ShowReleaseNotes';
+import SignOut from './components/SignOut';
+import ToggleSentrySetting from './components/ToggleSentrySetting';
+import ToggleSignNotification from './components/ToggleSignNotification';
+import ToggleThemeSetting from './components/ToggleThemeSetting';
 
 export default function Settings() {
   return (
     <Screen>
+      {/* Общие настройки */}
       <Card style={{ zIndex: 1 }}>
         <ToggleThemeSetting />
       </Card>
+      <ChangeAppUI />
       <ChangeNewYearTheme />
       <Card>
         <ToggleSignNotification />
@@ -30,10 +33,14 @@ export default function Settings() {
       <Card>
         <ResetIntroSetting />
       </Card>
-      <CardHeaderOut topText={'Приложение'}>
-        <AboutAppButton />
-      </CardHeaderOut>
+
+      {/* Настройки приложения */}
+      <Text style={[fontSize.medium, { fontWeight: 'bold', marginBottom: '2%' }]}>Приложение</Text>
+      <ShowReleaseNotes />
+      <AboutAppButton />
       <ToggleSentrySetting />
+
+      {/* Настройки аккаунта пользователя(студента) */}
       <Text style={[fontSize.medium, { fontWeight: 'bold', marginBottom: '2%' }]}>Аккаунт</Text>
       <ChangePasswordSetting />
       <ChangeEmailSetting />

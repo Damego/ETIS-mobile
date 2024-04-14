@@ -8,15 +8,17 @@ import {
 import { ICertificateTable } from '../models/certificate';
 import { IMessagesData, MessageType } from '../models/messages';
 import { IOrder } from '../models/order';
+import { DisciplineTypes } from '../models/other';
 import { IPersonalRecord } from '../models/personalRecords';
+import { IPointUpdates } from '../models/pointUpdates';
 import { ISessionRating } from '../models/rating';
 import { GetResultType, IGetPayload, IGetResult } from '../models/results';
 import { ISessionMarks } from '../models/sessionMarks';
 import { ISessionPoints } from '../models/sessionPoints';
 import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
 import { ISessionTeachPlan } from '../models/teachPlan';
-import { TeacherType } from '../models/teachers';
-import { ITimeTable, WeekTypes } from '../models/timeTable';
+import { ITeacher } from '../models/teachers';
+import { DistancePlatformTypes, ITimeTable, WeekTypes } from '../models/timeTable';
 import { StudentInfo } from '../parser/menu';
 import bind from '../utils/methodBinder';
 import { BaseClient } from './base';
@@ -122,13 +124,22 @@ export default class DemoClient implements BaseClient {
                   time: '8:00',
                   lessons: [
                     {
-                      audienceText: 'ауд. 411/2 (2 корпус, 3 этаж)',
-                      audience: '411/2',
-                      floor: '3',
-                      building: '2',
+                      audience: {
+                        string: 'ауд. 411/2 (2 корпус, 3 этаж)',
+                        number: '411/2',
+                        floor: '3',
+                        building: '2',
+                      },
+                      subject: {
+                        string: 'Математический анализ (лек)',
+                        discipline: 'Математический анализ',
+                        type: DisciplineTypes.LECTURE,
+                      },
                       isDistance: false,
-                      subject: 'Математический анализ (лек)',
-                      teacherId: '0',
+                      teacher: {
+                        id: '0',
+                        name: 'Иванов И.П',
+                      },
                     },
                   ],
                 },
@@ -137,13 +148,22 @@ export default class DemoClient implements BaseClient {
                   time: '9:45',
                   lessons: [
                     {
-                      audienceText: 'ауд. 411/2 (2 корпус, 3 этаж)',
-                      audience: '411/2',
-                      floor: '3',
-                      building: '2',
+                      audience: {
+                        string: 'ауд. 411/2 (2 корпус, 3 этаж)',
+                        number: '411/2',
+                        floor: '3',
+                        building: '2',
+                      },
+                      subject: {
+                        string: 'Комплексный анализ (практ)',
+                        discipline: 'Комплексный анализ',
+                        type: DisciplineTypes.PRACTICE,
+                      },
                       isDistance: false,
-                      subject: 'Комплексный анализ (лек)',
-                      teacherId: '0',
+                      teacher: {
+                        id: '1',
+                        name: 'Иванов П.И',
+                      },
                     },
                   ],
                 },
@@ -152,22 +172,70 @@ export default class DemoClient implements BaseClient {
                   time: '11: 30',
                   lessons: [
                     {
-                      audienceText: 'ауд. 411/2 (2 корпус, 3 этаж)',
-                      audience: '411/2',
-                      floor: '3',
-                      building: '2',
+                      audience: {
+                        string: 'ауд. 411/2 (2 корпус, 3 этаж)',
+                        number: '411/2',
+                        floor: '3',
+                        building: '2',
+                      },
+                      subject: {
+                        string: 'Функциональный анализ (лаб)',
+                        discipline: 'Функциональный анализ',
+                        type: DisciplineTypes.LABORATORY,
+                      },
                       isDistance: false,
-                      subject: 'Функциональный анализ (лек)',
-                      teacherId: '0',
+                      teacher: {
+                        id: '0',
+                        name: 'Иванов И.П',
+                      },
                     },
                     {
-                      audienceText: 'ауд. Дистанционно (on-line корпус)',
-                      audience: 'Дистанционно',
-                      floor: undefined,
-                      building: 'on-line',
+                      audience: {
+                        string: 'ауд. Дистанционно (on-line корпус)',
+                        number: 'Дистанционно',
+                        floor: undefined,
+                        building: 'on-line',
+                      },
+                      subject: {
+                        string: 'Программный анализ (лек)',
+                        discipline: 'Программный анализ',
+                        type: DisciplineTypes.LECTURE,
+                      },
                       isDistance: true,
-                      subject: 'Программный анализ (лек)',
-                      teacherId: '0',
+                      teacher: {
+                        id: '0',
+                        name: 'Иванов И.П',
+                      },
+                    },
+                  ],
+                },
+                {
+                  position: 4,
+                  time: '13:30',
+                  lessons: [
+                    {
+                      audience: {
+                        string: 'ауд. Дистанционно (on-line корпус)',
+                        number: 'Дистанционно',
+                        floor: undefined,
+                        building: 'on-line',
+                      },
+                      subject: {
+                        string: 'Программный анализ (лек)',
+                        discipline: 'Программный анализ',
+                        type: DisciplineTypes.LECTURE,
+                      },
+                      isDistance: true,
+                      teacher: {
+                        id: '0',
+                        name: 'Иванов И.П',
+                      },
+                      distancePlatform: {
+                        name: 'Платформа BBB',
+                        url: 'https://bigbluebutton.org/',
+                        type: DistancePlatformTypes.bbb,
+                        imageUrl: '',
+                      },
                     },
                   ],
                 },
@@ -309,6 +377,7 @@ export default class DemoClient implements BaseClient {
               maxScore: 30,
               isIntroductionWork: false,
               date: '01.10.2023',
+              updatesUrl: '',
               teacher: 'Иванов И. И.',
               hasPoints: true,
               failed: false,
@@ -324,6 +393,7 @@ export default class DemoClient implements BaseClient {
               maxScore: 30,
               isIntroductionWork: false,
               date: '01.10.2023',
+              updatesUrl: '',
               teacher: 'Иванов И. И.',
               hasPoints: true,
               failed: false,
@@ -339,6 +409,7 @@ export default class DemoClient implements BaseClient {
               maxScore: 40,
               isIntroductionWork: false,
               date: '05.10.2023',
+              updatesUrl: '',
               teacher: 'Иванов И. И.',
               hasPoints: true,
               failed: false,
@@ -361,6 +432,7 @@ export default class DemoClient implements BaseClient {
               maxScore: 20,
               isIntroductionWork: false,
               date: '01.10.2023',
+              updatesUrl: '',
               teacher: 'Иванов И. И.',
               hasPoints: true,
               failed: false,
@@ -376,6 +448,7 @@ export default class DemoClient implements BaseClient {
               maxScore: 30,
               isIntroductionWork: false,
               date: '01.10.2023',
+              updatesUrl: '',
               teacher: 'Иванов И. И.',
               hasPoints: true,
               failed: false,
@@ -391,6 +464,7 @@ export default class DemoClient implements BaseClient {
               maxScore: 40,
               isIntroductionWork: false,
               date: '05.10.2023',
+              updatesUrl: '',
               teacher: 'Иванов И. И.',
               hasPoints: true,
               failed: false,
@@ -413,6 +487,7 @@ export default class DemoClient implements BaseClient {
               maxScore: 20,
               isIntroductionWork: false,
               date: '01.10.2023',
+              updatesUrl: '',
               teacher: 'Иванов И. И.',
               hasPoints: true,
               failed: false,
@@ -428,6 +503,7 @@ export default class DemoClient implements BaseClient {
               maxScore: 30,
               isIntroductionWork: false,
               date: '01.10.2023',
+              updatesUrl: '',
               teacher: 'Иванов И. И.',
               hasPoints: true,
               failed: false,
@@ -443,6 +519,7 @@ export default class DemoClient implements BaseClient {
               maxScore: 40,
               isIntroductionWork: false,
               date: '01.10.2023',
+              updatesUrl: '',
               teacher: 'Иванов И. И.',
               hasPoints: true,
               failed: false,
@@ -465,6 +542,7 @@ export default class DemoClient implements BaseClient {
               maxScore: 20,
               isIntroductionWork: false,
               date: '01.10.2023',
+              updatesUrl: '',
               teacher: 'Иванов И. И.',
               hasPoints: false,
               failed: false,
@@ -480,6 +558,7 @@ export default class DemoClient implements BaseClient {
               maxScore: 30,
               isIntroductionWork: false,
               date: '01.10.2023',
+              updatesUrl: '',
               teacher: 'Иванов И. И.',
               hasPoints: false,
               failed: true,
@@ -495,6 +574,7 @@ export default class DemoClient implements BaseClient {
               maxScore: 40,
               isIntroductionWork: false,
               date: '01.10.2023',
+              updatesUrl: '',
               teacher: 'Иванов И. И.',
               hasPoints: false,
               failed: true,
@@ -510,6 +590,10 @@ export default class DemoClient implements BaseClient {
       sessionName: 'триместр',
     };
     return this.toResult(data);
+  }
+
+  async getPointUpdates(): Promise<IGetResult<IPointUpdates>> {
+    return this.toResult({ url: '', date: '24.12.2023' });
   }
 
   async getStudentInfoData(): Promise<IGetResult<StudentInfo>> {
@@ -563,73 +647,44 @@ export default class DemoClient implements BaseClient {
     return this.toResult(data);
   }
 
-  async getTeacherData(): Promise<IGetResult<TeacherType>> {
-    const data: TeacherType = [
-      [
-        'Математический анализ',
-        [
+  async getTeacherData(): Promise<IGetResult<ITeacher[]>> {
+    const data: ITeacher[] = [
+      {
+        id: '0',
+        cathedraId: '0',
+        photo: 'img_peo_pkg.get_d_img',
+        name: 'Иванов Иван Петрович',
+        cathedra: 'Кафедра фундаментальной математики',
+        subjects: [
           {
-            id: '0',
-            cathedraId: '0',
-            photo: 'img_peo_pkg.get_d_img',
-            name: 'Иванов Иван Петрович',
-            cathedra: 'Кафедра фундаментальной математики',
-            subjectUntyped: 'Математический анализ',
-            subjectType: 'лек, практ',
-            photoTitle: 'Фотография загружена 01.01.2000',
+            discipline: 'Математический анализ',
+            types: [DisciplineTypes.LECTURE, DisciplineTypes.PRACTICE],
           },
           {
-            id: '0',
-            cathedraId: '0',
-            photo: 'img_peo_pkg.get_d_img',
-            name: 'Иванов Петр Иванович',
-            cathedra: 'Кафедра фундаментальной математики',
-            subjectUntyped: 'Математический анализ',
-            subjectType: 'экзамен',
-            photoTitle: 'Фотография загружена 01.01.2000',
+            discipline: 'Комплексный анализ',
+            types: [DisciplineTypes.LECTURE, DisciplineTypes.PRACTICE],
           },
         ],
-      ],
-      [
-        'Комплексный анализ',
-        [
+        photoTitle: 'Фотография загружена 01.01.2000',
+      },
+      {
+        id: '1',
+        cathedraId: '0',
+        photo: 'img_peo_pkg.get_d_img',
+        name: 'Иванов Петр Иванович',
+        cathedra: 'Кафедра фундаментальной математики',
+        subjects: [
           {
-            id: '0',
-            cathedraId: '0',
-            photo: 'img_peo_pkg.get_d_img',
-            name: 'Иванов Иван Петрович',
-            cathedra: 'Кафедра фундаментальной математики',
-            subjectUntyped: 'Комплексный анализ',
-            subjectType: 'практ',
-            photoTitle: 'Фотография загружена 01.01.2000',
+            discipline: 'Математический анализ',
+            types: [DisciplineTypes.EXAM],
           },
           {
-            id: '0',
-            cathedraId: '0',
-            photo: 'img_peo_pkg.get_d_img',
-            name: 'Иванов Петр Иванович',
-            cathedra: 'Кафедра фундаментальной математики',
-            subjectUntyped: 'Комплексный анализ',
-            subjectType: 'лек, зачет',
-            photoTitle: 'Фотография загружена 01.01.2000',
+            discipline: 'Комплексный анализ',
+            types: [DisciplineTypes.LECTURE, DisciplineTypes.TEST],
           },
         ],
-      ],
-      [
-        'Функциональный анализ',
-        [
-          {
-            id: '0',
-            cathedraId: '0',
-            photo: 'img_peo_pkg.get_d_img',
-            name: 'Иванов Иван Петрович',
-            cathedra: 'Кафедра фундаментальной математики',
-            subjectUntyped: 'Комплексный анализ',
-            subjectType: 'лек, практ, зачет',
-            photoTitle: 'Фотография загружена 01.01.2000',
-          },
-        ],
-      ],
+        photoTitle: 'Фотография загружена 01.01.2000',
+      },
     ];
     return this.toResult(data);
   }

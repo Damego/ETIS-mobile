@@ -41,6 +41,8 @@ export default function parseSessionPoints(html): ISessionPoints {
         teacher,
       ] = fields;
 
+      const updatesUrl = '/' + tds.eq(3).attr('data-url');
+
       const points = getAsNumber(rawPoints, 0);
       const isAbsent = rawPoints === 'н';
       const hasPoints = rawPoints !== '';
@@ -56,6 +58,7 @@ export default function parseSessionPoints(html): ISessionPoints {
         maxScore: getAsNumber(maxScore, 0),
         isIntroductionWork: getAsNumber(maxScore) === 0.0,
         date,
+        updatesUrl,
         teacher,
         hasPoints,
         failed,

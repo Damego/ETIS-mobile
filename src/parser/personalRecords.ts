@@ -15,7 +15,7 @@ const parsePersonalRecords = (html: string): IPersonalRecord[] => {
     const tr = $(trElement);
     const td = tr.find('td');
     const fields = [];
-    for (let i = 0; i < 5; i += 1) {
+    for (let i = 0; i < 6; i += 1) {
       fields.push(getTextField(td.eq(i)));
     }
 
@@ -25,7 +25,7 @@ const parsePersonalRecords = (html: string): IPersonalRecord[] => {
       recordID = recordElement.attr('href').split('=').at(1);
     }
 
-    const [year, speciality, faculty, educationForm, status] = fields;
+    const [year, speciality, faculty, educationForm, status, note] = fields;
     data.push({
       id: recordID,
       index: index - 1,
@@ -34,6 +34,7 @@ const parsePersonalRecords = (html: string): IPersonalRecord[] => {
       faculty,
       educationForm,
       status,
+      isCurrent: note === 'выбрана',
     });
   });
   return data;

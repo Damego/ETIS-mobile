@@ -1,24 +1,30 @@
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { setBackgroundColorAsync as setBackgroundNavigationBarColorAsync } from 'expo-navigation-bar';
+import * as QuickActions from 'expo-quick-actions';
 import * as SplashScreen from 'expo-splash-screen';
 import { setBackgroundColorAsync } from 'expo-system-ui';
-import React, { useEffect, useMemo } from 'react';
-import QuickActions from 'react-native-quick-actions';
+import React, { useEffect } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { cache } from '../cache/smartCache';
 import Background from '../components/Background';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { useAppTheme } from '../hooks/theme';
-import { PageType, changeTheme, setEvents, setInitialPage } from '../redux/reducers/settingsSlice';
+import { PageType, setInitialPage } from '../redux/reducers/settingsSlice';
 import AuthPage from '../screens/auth/Auth';
+import BellSchedule from '../screens/bellSchedule/BellSchedule';
+import CertificateIncome from '../screens/certificate/CertificateIncome';
+import DisciplineInfo from '../screens/disciplineInfo/DisciplineInfo';
+import DisciplinesTasks from '../screens/disciplinesTasks/DisciplinesTasks';
 import Intro from '../screens/intro/Intro';
 import MessageHistory from '../screens/messages/MessageHistory';
 import NewYearThemes from '../screens/newYearThemes/NewYearThemes';
+import ReleaseNotes from '../screens/releaseNotes/ReleaseNotes';
 import SessionQuestionnaire from '../screens/sessionQuestionnaire/SessionQuestionnaire';
 import SignsDetails from '../screens/signs/SignsDetails';
-import { ThemeType, isNewYearTheme } from '../styles/themes';
-import { isHalloween, isNewYear } from '../utils/events';
+import { isNewYear } from '../utils/events';
 import showPrivacyPolicy from '../utils/privacyPolicy';
 import InitSentry from '../utils/sentry';
 import TabNavigator from './TabNavigation';
@@ -30,11 +36,8 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const StackNavigator = () => {
   const isSignedIn = useAppSelector((state) => state.auth.isSignedIn);
   const {
-    viewedIntro,
+    config: { introViewed, sentryEnabled, events },
     appIsReady,
-    sentryEnabled,
-    theme: themeType,
-    events,
   } = useAppSelector((state) => state.settings);
 
   const theme = useAppTheme();
@@ -42,9 +45,9 @@ const StackNavigator = () => {
 
   const dispatchInitialPage = async () => {
     try {
-      const data = await QuickActions.popInitialAction();
-      if (data?.type) {
-        dispatch(setInitialPage(data.type as PageType));
+      const data = QuickActions.initial;
+      if (data?.id) {
+        dispatch(setInitialPage(data.id as PageType));
       }
     } catch (e) {
       // ignore
@@ -57,52 +60,7 @@ const StackNavigator = () => {
     }
   };
 
-  const checkHalloweenEvent = async () => {
-    const $events = { ...events };
-    const $isHalloween = isHalloween();
-
-    if ($isHalloween && !$events.halloween2023?.suggestedTheme) {
-      $events.halloween2023 = {
-        suggestedTheme: true,
-        previousTheme: themeType,
-      };
-      dispatch(changeTheme(ThemeType.halloween));
-      cache.placeTheme(ThemeType.halloween);
-      dispatch(setEvents($events));
-      cache.placeEvents($events);
-    }
-    if (!$isHalloween && themeType === ThemeType.halloween) {
-      if (!$events.halloween2023) {
-        dispatch(changeTheme(ThemeType.auto));
-        cache.placeTheme(ThemeType.auto);
-      } else {
-        dispatch(changeTheme($events.halloween2023.previousTheme));
-        cache.placeTheme($events.halloween2023.previousTheme);
-      }
-    }
-  };
-
-  const $isNewYear = useMemo(() => isNewYear(), []);
-  const checkNewYearEvent = () => {
-    if (!$isNewYear && isNewYearTheme(themeType)) {
-      let returnTheme: ThemeType;
-
-      if (!events.newYear2024?.previousTheme || isNewYearTheme(events.newYear2024.previousTheme))
-        returnTheme = ThemeType.auto;
-      else returnTheme = events.newYear2024.previousTheme;
-
-      dispatch(changeTheme(returnTheme));
-      cache.placeTheme(returnTheme);
-    }
-  };
-
-  const checkEventTheme = async () => {
-    await checkHalloweenEvent();
-    checkNewYearEvent();
-  };
-
   useEffect(() => {
-    checkEventTheme();
     bumpPrivacyPolicy();
     if (sentryEnabled) InitSentry();
     dispatchInitialPage();
@@ -114,59 +72,88 @@ const StackNavigator = () => {
   }, [theme]);
 
   useEffect(() => {
-    if (appIsReady) SplashScreen.hideAsync().catch((e) => e /* huh? */);
+    if (appIsReady) SplashScreen.hideAsync().catch((e) => e);
   }, [appIsReady]);
 
-  let component: React.ReactNode;
-  if (!viewedIntro) component = <Stack.Screen name="Onboarding" component={Intro} />;
-  else if ($isNewYear && !events?.newYear2024?.suggestedTheme)
-    component = <Stack.Screen name={'NewYearTheme'} component={NewYearThemes} />;
-  else if (!isSignedIn)
-    component = (
-      <Stack.Screen
-        name="Auth"
-        options={{ title: 'Авторизация', headerShown: true, ...headerParams(theme) }}
-        component={AuthPage}
-      />
-    );
-  else
-    component = (
-      <>
-        <Stack.Screen name="TabNavigator" component={TabNavigator} />
-        <Stack.Screen
-          name="History"
-          component={MessageHistory}
-          options={{
-            animation: 'none',
-            headerShown: true,
-            ...headerParams(theme),
-          }}
-        />
-        <Stack.Screen
-          name="SignsDetails"
-          component={SignsDetails}
-          options={{ title: 'Подробности', headerShown: true, ...headerParams(theme) }}
-        />
-        <Stack.Screen
-          name={'SessionQuestionnaire'}
-          component={SessionQuestionnaire}
-          options={{ title: 'Анкетирование', headerShown: true, ...headerParams(theme) }}
-        />
-      </>
-    );
+  let initialRouteName: keyof RootStackParamList = 'TabNavigator';
+  if (!isSignedIn) initialRouteName = 'Auth';
+  if (!introViewed) initialRouteName = 'Onboarding';
+  else if (isNewYear() && !events?.newYear2024?.suggestedTheme) initialRouteName = 'NewYearTheme';
 
   return (
-    <Background theme={theme}>
-      <NavigationContainer theme={theme}>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          {component}
-        </Stack.Navigator>
-      </NavigationContainer>
-    </Background>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Background theme={theme}>
+        <NavigationContainer theme={theme}>
+          <BottomSheetModalProvider>
+            <Stack.Navigator initialRouteName={initialRouteName}>
+              <Stack.Group screenOptions={{ headerShown: true, ...headerParams(theme) }}>
+                {!isSignedIn ? (
+                  // По гайду react navigation, экран авторизации должен быть доступен только при стейте
+                  // https://reactnavigation.org/docs/auth-flow/
+                  <Stack.Screen
+                    name="Auth"
+                    options={{ title: 'Авторизация' }}
+                    component={AuthPage}
+                  />
+                ) : (
+                  <>
+                    <Stack.Screen
+                      name="TabNavigator"
+                      component={TabNavigator}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="History"
+                      component={MessageHistory}
+                      options={{ animation: 'none' }}
+                    />
+                    <Stack.Screen
+                      name="SignsDetails"
+                      component={SignsDetails}
+                      options={{ title: 'Подробности' }}
+                    />
+                    <Stack.Screen
+                      name="CertificateIncome"
+                      component={CertificateIncome}
+                      options={{ title: 'Справка о доходах' }}
+                    />
+                    <Stack.Screen
+                      name={'SessionQuestionnaire'}
+                      component={SessionQuestionnaire}
+                      options={{ title: 'Анкетирование' }}
+                    />
+                    <Stack.Screen
+                      name={'DisciplineInfo'}
+                      options={{ title: 'Информация' }}
+                      component={DisciplineInfo}
+                    />
+                    <Stack.Screen
+                      name={'DisciplineTasks'}
+                      options={{ title: 'Задания' }}
+                      component={DisciplinesTasks}
+                    />
+                    <Stack.Screen
+                      name={'BellSchedule'}
+                      component={BellSchedule}
+                      options={{ title: 'Расписание звонков' }}
+                    />
+                    <Stack.Screen
+                      name={'ReleaseNotes'}
+                      component={ReleaseNotes}
+                      options={{ title: 'Список изменений' }}
+                    />
+                  </>
+                )}
+              </Stack.Group>
+              <Stack.Group screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="NewYearTheme" component={NewYearThemes} />
+                <Stack.Screen name="Onboarding" component={Intro} />
+              </Stack.Group>
+            </Stack.Navigator>
+          </BottomSheetModalProvider>
+        </NavigationContainer>
+      </Background>
+    </GestureHandlerRootView>
   );
 };
 
