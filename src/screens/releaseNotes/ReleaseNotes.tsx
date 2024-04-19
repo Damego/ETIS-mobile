@@ -7,10 +7,12 @@ import releaseNotesFile from '../../../release-notes.md';
 import Card from '../../components/Card';
 import LoadingScreen from '../../components/LoadingScreen';
 import Screen from '../../components/Screen';
+import { useGlobalStyles } from '../../hooks';
 
 const ReleaseNotes = () => {
   const [assets] = useAssets([releaseNotesFile]);
   const [notes, setNotes] = useState<string>();
+  const globalStyles = useGlobalStyles();
 
   useEffect(() => {
     if (!assets || !assets.length) return;
@@ -25,7 +27,7 @@ const ReleaseNotes = () => {
   return (
     <Screen>
       <Card>
-        <Markdown>{notes}</Markdown>
+        <Markdown style={{ text: globalStyles.fontColorForBlock }}>{notes}</Markdown>
       </Card>
     </Screen>
   );
