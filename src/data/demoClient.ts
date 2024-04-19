@@ -113,7 +113,7 @@ export default class DemoClient implements BaseClient {
       'Суббота',
       'Воскресенье',
     ];
-    for (let i = 1; i <= 7; i += 1) {
+    for (let i = 1; i < 7; i += 1) {
       data.days.push({
         date: `${dayOfWeek[i - 1]}, ${i} сентября`,
         pairs:
