@@ -23,7 +23,7 @@ export default {
       supportsTablet: true,
     },
     android: {
-      versionCode: 10300006,
+      versionCode: 10300007,
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
         backgroundColor: '#FFFFFF',
