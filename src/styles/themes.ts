@@ -54,7 +54,7 @@ export const LightTheme: ITheme = {
   dark: false,
   statusBarStyle: 'dark',
   colors: {
-    background: '#F8F8FA',
+    background: '#F7F7F7',
     primary: '#C62E3E',
     secondary: '#C62E3E',
     border: '#EAEAEA',

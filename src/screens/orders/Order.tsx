@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, ToastAndroid, TouchableOpacity } from 'react-native';
 
-import CardHeaderIn from '../../components/CardHeaderIn';
-import Text from '../../components/Text';
-import { getOrderHTML } from '../../data/orders';
-import { useGlobalStyles } from '../../hooks';
-import { IOrder } from '../../models/order';
-import { fontSize } from '../../utils/texts';
+import CardHeaderIn from '~/components/CardHeaderIn';
+import Text from '~/components/Text';
+import { getOrderHTML } from '~/data/orders';
+import { IOrder } from '~/models/order';
+import { fontSize } from '~/utils/texts';
 import OrderModal from './OrderModal';
 
 const styles = StyleSheet.create({

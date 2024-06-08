@@ -2,15 +2,14 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useRef, useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 
-import { useAppSelector } from '../hooks';
-import { useAppTheme } from '../hooks/theme';
+import { useAppSelector } from '~/hooks';
+import { useAppTheme } from '~/hooks/theme';
 import AuthLoadingModal from './AuthLoadingModal';
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    width: '96%',
-    marginLeft: '2%',
+    // marginLeft: '2%',
   },
 });
 
@@ -36,7 +35,7 @@ const Screen = ({ onUpdate, children, startScrollFromBottom }: ScreenProps) => {
     <View style={{ flex: 1 }}>
       {isAuthorizing && <AuthLoadingModal />}
 
-      <StatusBar style={theme.statusBarStyle} />
+      <StatusBar style={"light"} />
 
       <ScrollView
         ref={scrollRef}

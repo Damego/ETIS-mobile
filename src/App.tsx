@@ -16,6 +16,7 @@ import { rescheduleAllTaskNotifications } from './notifications/taskReminder';
 import setupStore from './redux';
 import manageEventTheme from './redux/manageEventTheme';
 import { loadStorage } from './redux/storageLoader';
+import ETISScreen from './screens/etis/Etis';
 import { defineSignsFetchTask } from './tasks/signs/signs';
 import { checkUpdate } from './utils/inappUpdate';
 import { addShortcuts } from './utils/shortcuts';
@@ -23,34 +24,22 @@ import { addShortcuts } from './utils/shortcuts';
 dayjs.locale('ru');
 dayjs.extend(weekday);
 dayjs.extend(customParseFormat);
-SplashScreen.preventAutoHideAsync().catch((e) => e);
-
+// SplashScreen.preventAutoHideAsync().catch((e) => e);
+//
 const store = setupStore();
 
 store.dispatch(loadStorage());
 store.dispatch(manageEventTheme(store));
 
-defineSignsFetchTask();
-addShortcuts();
-rescheduleAllTaskNotifications();
+// defineSignsFetchTask();
+// addShortcuts();
+// rescheduleAllTaskNotifications();
 
 const App = () => {
-  const [fontsLoaded] = useFonts({
-    'Nunito-SemiBold': require('../assets/fonts/Nunito-SemiBold.ttf'),
-    'Nunito-Bold': require('../assets/fonts/Nunito-Bold.ttf'),
-    'Nunito-Light': require('../assets/fonts/Nunito-Light.ttf'),
-    'Nunito-Regular': require('../assets/fonts/Nunito-Regular.ttf'),
-  });
-
-  useEffect(() => {
-    requestNotificationPermission();
-    checkUpdate();
-  }, []);
-
-  if (!fontsLoaded) {
-    return null;
-  }
-
+  // useEffect(() => {
+  //   requestNotificationPermission();
+  //   checkUpdate();
+  // }, []);
   return (
     <Provider store={store}>
       <StackNavigator />

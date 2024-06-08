@@ -1,13 +1,13 @@
 import React from 'react';
 import { Switch } from 'react-native';
 
-import { cache } from '../../../../cache/smartCache';
-import Card from '../../../../components/Card';
-import Text from '../../../../components/Text';
-import { useAppDispatch, useAppSelector } from '../../../../hooks';
-import { useAppTheme } from '../../../../hooks/theme';
-import { setUIConfig } from '../../../../redux/reducers/settingsSlice';
-import { fontSize } from '../../../../utils/texts';
+import { cache } from '~/cache/smartCache';
+import Card from '~/components/Card';
+import Text from '~/components/Text';
+import { useAppDispatch, useAppSelector } from '~/hooks';
+import { useAppTheme } from '~/hooks/theme';
+import { setUIConfig } from '~/redux/reducers/settingsSlice';
+import { fontSize } from '~/utils/texts';
 
 const ToggleHighlightCurrentDay = () => {
   const theme = useAppTheme();

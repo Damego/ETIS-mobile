@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { cache } from '../cache/smartCache';
-import { useClient } from '../data/client';
-import { composePointsAndMarks } from '../data/signs';
-import { GetResultType, RequestType } from '../models/results';
-import { ISessionPoints } from '../models/sessionPoints';
-import { setCurrentSession } from '../redux/reducers/studentSlice';
+import { cache } from '~/cache/smartCache';
+import { useClient } from '~/data/client';
+import { composePointsAndMarks } from '~/data/signs';
+import { GetResultType, RequestType } from '~/models/results';
+import { ISessionPoints } from '~/models/sessionPoints';
+import { setCurrentSession } from '~/redux/reducers/studentSlice';
 import { useAppDispatch, useAppSelector } from './redux';
 import useQuery from './useQuery';
 
