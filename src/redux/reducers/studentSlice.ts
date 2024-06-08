@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { StudentData, StudentState } from '../../models/student';
-import { StudentInfo } from '../../parser/menu';
+import { StudentData, StudentState } from '~/models/student';
+import { StudentInfo } from '~/parser/menu';
 
 const initialState: StudentState = {
   info: null,

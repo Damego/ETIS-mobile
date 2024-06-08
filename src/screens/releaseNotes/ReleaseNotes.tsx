@@ -3,11 +3,11 @@ import * as FileSystem from 'expo-file-system';
 import React, { useEffect, useState } from 'react';
 import Markdown from 'react-native-markdown-display';
 
-import releaseNotesFile from '../../../release-notes.md';
-import Card from '../../components/Card';
-import LoadingScreen from '../../components/LoadingScreen';
-import Screen from '../../components/Screen';
-import { useGlobalStyles } from '../../hooks';
+import releaseNotesFile from '~/release-notes.md';
+import Card from '~/components/Card';
+import LoadingScreen from '~/components/LoadingScreen';
+import Screen from '~/components/Screen';
+import { useGlobalStyles } from '~/hooks';
 
 const ReleaseNotes = () => {
   const [assets] = useAssets([releaseNotesFile]);

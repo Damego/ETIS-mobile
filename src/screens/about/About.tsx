@@ -2,12 +2,12 @@ import Constants from 'expo-constants';
 import React from 'react';
 import { Linking, StyleSheet, View } from 'react-native';
 
-import ClickableText from '../../components/ClickableText';
-import Screen from '../../components/Screen';
-import Text from '../../components/Text';
-import { useGlobalStyles } from '../../hooks';
-import { PRIVACY_POLICY_URL } from '../../utils';
-import { fontSize } from '../../utils/texts';
+import ClickableText from '~/components/ClickableText';
+import Screen from '~/components/Screen';
+import Text from '~/components/Text';
+import { useGlobalStyles } from '~/hooks';
+import { PRIVACY_POLICY_URL } from '~/utils';
+import { fontSize } from '~/utils/texts';
 
 const styles = StyleSheet.create({
   view: {

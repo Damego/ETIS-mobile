@@ -28,7 +28,7 @@ export default {
         foregroundImage: './assets/adaptive-icon.png',
         backgroundColor: '#FFFFFF',
       },
-      package: IS_DEV ? 'dev.damego.etismobile' : 'com.damego.etismobile',
+      package: 'dev.damego.etismobile',
       playStoreUrl: 'https://play.google.com/store/apps/details?id=com.damego.etismobile',
       userInterfaceStyle: 'automatic',
       allowBackup: false,
@@ -85,6 +85,19 @@ export default {
             extraProguardRules: '-keep public class com.horcrux.svg.** {*;}',
             allowBackup: false,
           },
+        },
+      ],
+      [
+        'expo-font',
+        {
+          fonts: [
+            './assets/fonts/Ubuntu-Regular.ttf',
+            './assets/fonts/Ubuntu-Italic.ttf',
+            './assets/fonts/Ubuntu-Medium.ttf',
+            './assets/fonts/Ubuntu-MediumItalic.ttf',
+            './assets/fonts/Ubuntu-Bold.ttf',
+            './assets/fonts/Ubuntu-BoldItalic.ttf',
+          ],
         },
       ],
     ],

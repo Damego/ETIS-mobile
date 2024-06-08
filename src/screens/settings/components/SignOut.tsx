@@ -1,12 +1,12 @@
 import React from 'react';
 import { Alert } from 'react-native';
 
-import { cache } from '../../../cache/smartCache';
-import ClickableText from '../../../components/ClickableText';
-import { useAppDispatch } from '../../../hooks';
-import { signOut } from '../../../redux/reducers/authSlice';
-import { unregisterBackgroundFetchAsync } from '../../../tasks/signs/signs';
-import { fontSize } from '../../../utils/texts';
+import { cache } from '~/cache/smartCache';
+import ClickableText from '~/components/ClickableText';
+import { useAppDispatch } from '~/hooks';
+import { signOut } from '~/redux/reducers/authSlice';
+import { unregisterBackgroundFetchAsync } from '~/tasks/signs/signs';
+import { fontSize } from '~/utils/texts';
 
 const SignOut = () => {
   const dispatch = useAppDispatch();

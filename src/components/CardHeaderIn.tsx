@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
-import { fontSize } from '../utils/texts';
+import { fontSize } from '~/utils/texts';
 import Card from './Card';
 import Text from './Text';
 

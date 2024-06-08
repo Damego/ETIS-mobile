@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 
-import { useAppTheme } from '../../hooks/theme';
+import { useAppTheme } from '~/hooks/theme';
 import { RootStackNavigationProp } from '../types';
 
 const BellScheduleButton = () => {

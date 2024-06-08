@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { useGlobalStyles } from '../hooks';
-import { useAppTheme } from '../hooks/theme';
+import { useAppTheme } from '~/hooks/theme';
 
 const styles = StyleSheet.create({
   cardView: {

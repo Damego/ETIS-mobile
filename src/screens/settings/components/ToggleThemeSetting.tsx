@@ -1,14 +1,14 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { cache } from '../../../cache/smartCache';
-import Dropdown from '../../../components/Dropdown';
-import Text from '../../../components/Text';
-import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { changeTheme, setEvents } from '../../../redux/reducers/settingsSlice';
-import { ThemeType, isNewYearTheme } from '../../../styles/themes';
-import { isHalloween, isNewYear } from '../../../utils/events';
-import { fontSize } from '../../../utils/texts';
+import { cache } from '~/cache/smartCache';
+import Dropdown from '~/components/Dropdown';
+import Text from '~/components/Text';
+import { useAppDispatch, useAppSelector } from '~/hooks';
+import { changeTheme, setEvents } from '~/redux/reducers/settingsSlice';
+import { ThemeType, isNewYearTheme } from '~/styles/themes';
+import { isHalloween, isNewYear } from '~/utils/events';
+import { fontSize } from '~/utils/texts';
 
 const options = [
   {
