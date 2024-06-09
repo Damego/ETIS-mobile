@@ -3,9 +3,9 @@ import dayjs from 'dayjs';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { useAppTheme } from '../hooks/theme';
-import useTasks from '../hooks/useTasks';
-import { ISubject } from '../models/timeTable';
+import { useAppTheme } from '~/hooks/theme';
+import useTasks from '~/hooks/useTasks';
+import { ISubject } from '~/models/timeTable';
 
 const TaskBadge = ({ subject, date }: { subject: ISubject; date: dayjs.Dayjs }) => {
   const theme = useAppTheme();

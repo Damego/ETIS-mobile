@@ -6,12 +6,12 @@ import { setBackgroundColorAsync } from 'expo-system-ui';
 import React, { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { cache } from '../cache/smartCache';
-import { useAppSelector } from '../hooks';
-import { useAppTheme } from '../hooks/theme';
+import { cache } from '~/cache/smartCache';
+import { useAppSelector } from '~/hooks';
+import { useAppTheme } from '~/hooks/theme';
 
-import showPrivacyPolicy from '../utils/privacyPolicy';
-import InitSentry from '../utils/sentry';
+import showPrivacyPolicy from '~/utils/privacyPolicy';
+import InitSentry from '~/utils/sentry';
 import TabNavigator from './TabNavigation';
 import { RootStackParamList } from './types';
 

@@ -1,4 +1,4 @@
-import { cache } from '../cache/smartCache';
+import { cache } from '~/cache/smartCache';
 import { setUserCredentials } from './reducers/authSlice';
 import { setAppReady, setConfig } from './reducers/settingsSlice';
 import { AppDispatch } from './store';

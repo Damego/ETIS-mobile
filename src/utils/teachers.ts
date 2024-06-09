@@ -1,5 +1,5 @@
-import { ITeacher } from '../models/teachers';
-import { ITeacher as ITimeTableTeacher } from '../models/timeTable';
+import { ITeacher } from '~/models/teachers';
+import { ITeacher as ITimeTableTeacher } from '~/models/timeTable';
 
 export const getTeacherName = (teachers: ITeacher[], teacher: ITimeTableTeacher) => {
   let teacherName: string;

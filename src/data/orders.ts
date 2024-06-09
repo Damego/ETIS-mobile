@@ -1,6 +1,6 @@
-import { cache } from '../cache/smartCache';
-import { IOrder } from '../models/order';
-import { httpClient } from '../utils';
+import { cache } from '~/cache/smartCache';
+import { IOrder } from '~/models/order';
+import { httpClient } from '~/utils';
 
 export const getOrderHTML = async (order: IOrder): Promise<string> => {
   const cached = await cache.getOrder(order.id);
