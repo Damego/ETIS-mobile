@@ -42,18 +42,16 @@ export default {
         projectId: 'a3b11e9a-6c2e-4082-81e8-58bc2324b582',
       },
     },
-    hooks: {
-      postPublish: [
+    plugins: [
+      'expo-asset',
+      'expo-secure-store',
+      [
+        '@sentry/react-native/expo',
         {
-          file: 'sentry-expo/upload-sourcemaps',
-          config: {
-            organization: 'etismobile',
-            project: 'etis-mobile',
-          },
+          project: 'etis-mobile',
+          organization: 'etismobile',
         },
       ],
-    },
-    plugins: [
       [
         'expo-quick-actions',
         {
@@ -74,7 +72,6 @@ export default {
         },
       ],
       ['./src/plugins/disabledForcedDarkModeAndroid.ts', {}],
-      'sentry-expo',
       [
         'expo-build-properties',
         {
