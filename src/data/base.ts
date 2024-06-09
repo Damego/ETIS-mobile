@@ -1,12 +1,12 @@
-import { IAbsence } from '../models/absences';
-import { ICalendarSchedule } from '../models/calendarSchedule';
-import { ICathedraTimetable, ICathedraTimetablePayload } from '../models/cathedraTimetable';
-import { ICertificateTable } from '../models/certificate';
-import { IMessagesData } from '../models/messages';
-import { IOrder } from '../models/order';
-import { IPersonalRecord } from '../models/personalRecords';
-import { IPointUpdates } from '../models/pointUpdates';
-import { ISessionRating } from '../models/rating';
+import { IAbsence } from '~/models/absences';
+import { ICalendarSchedule } from '~/models/calendarSchedule';
+import { ICathedraTimetable, ICathedraTimetablePayload } from '~/models/cathedraTimetable';
+import { ICertificateTable } from '~/models/certificate';
+import { IMessagesData } from '~/models/messages';
+import { IOrder } from '~/models/order';
+import { IPersonalRecord } from '~/models/personalRecords';
+import { IPointUpdates } from '~/models/pointUpdates';
+import { ISessionRating } from '~/models/rating';
 import {
   GetResultType,
   IGetPayload,
@@ -15,17 +15,17 @@ import {
   errorResult,
   failedResult,
   loginPageResult,
-} from '../models/results';
-import { ISessionMarks } from '../models/sessionMarks';
-import { ISessionPoints } from '../models/sessionPoints';
-import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
-import { ISessionTeachPlan } from '../models/teachPlan';
-import { ITeacher } from '../models/teachers';
-import { ITimeTable } from '../models/timeTable';
-import { StudentInfo } from '../parser/menu';
-import { isLoginPage } from '../parser/utils';
-import { Response } from '../utils/http';
-import { reportParserError } from '../utils/sentry';
+} from '~/models/results';
+import { ISessionMarks } from '~/models/sessionMarks';
+import { ISessionPoints } from '~/models/sessionPoints';
+import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '~/models/sessionQuestionnaire';
+import { ISessionTeachPlan } from '~/models/teachPlan';
+import { ITeacher } from '~/models/teachers';
+import { ITimeTable } from '~/models/timeTable';
+import { StudentInfo } from '~/parser/menu';
+import { isLoginPage } from '~/parser/utils';
+import { Response } from '~/utils/http';
+import { reportParserError } from '~/utils/sentry';
 
 export interface BaseClient {
   getAbsencesData(payload: IGetPayload<number>): Promise<IGetResult<IAbsence>>;

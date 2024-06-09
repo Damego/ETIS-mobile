@@ -1,26 +1,26 @@
-import { IAbsence, IAbsenceSession } from '../models/absences';
-import { ICalendarSchedule } from '../models/calendarSchedule';
+import { IAbsence, IAbsenceSession } from '~/models/absences';
+import { ICalendarSchedule } from '~/models/calendarSchedule';
 import {
   ICathedraTimetable,
   ICathedraTimetablePayload,
   TimetableTypes,
-} from '../models/cathedraTimetable';
-import { ICertificateTable } from '../models/certificate';
-import { IMessagesData, MessageType } from '../models/messages';
-import { IOrder } from '../models/order';
-import { DisciplineTypes } from '../models/other';
-import { IPersonalRecord } from '../models/personalRecords';
-import { IPointUpdates } from '../models/pointUpdates';
-import { ISessionRating } from '../models/rating';
-import { GetResultType, IGetPayload, IGetResult } from '../models/results';
-import { ISessionMarks } from '../models/sessionMarks';
-import { ISessionPoints } from '../models/sessionPoints';
-import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
-import { ISessionTeachPlan } from '../models/teachPlan';
-import { ITeacher } from '../models/teachers';
-import { DistancePlatformTypes, ITimeTable, WeekTypes } from '../models/timeTable';
-import { StudentInfo } from '../parser/menu';
-import bind from '../utils/methodBinder';
+} from '~/models/cathedraTimetable';
+import { ICertificateTable } from '~/models/certificate';
+import { IMessagesData, MessageType } from '~/models/messages';
+import { IOrder } from '~/models/order';
+import { DisciplineTypes } from '~/models/other';
+import { IPersonalRecord } from '~/models/personalRecords';
+import { IPointUpdates } from '~/models/pointUpdates';
+import { ISessionRating } from '~/models/rating';
+import { GetResultType, IGetPayload, IGetResult } from '~/models/results';
+import { ISessionMarks } from '~/models/sessionMarks';
+import { ISessionPoints } from '~/models/sessionPoints';
+import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '~/models/sessionQuestionnaire';
+import { ISessionTeachPlan } from '~/models/teachPlan';
+import { ITeacher } from '~/models/teachers';
+import { DistancePlatformTypes, ITimeTable, WeekTypes } from '~/models/timeTable';
+import { StudentInfo } from '~/parser/menu';
+import bind from '~/utils/methodBinder';
 import { BaseClient } from './base';
 import { toResult } from './utils';
 
