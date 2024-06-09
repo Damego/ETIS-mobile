@@ -2,8 +2,8 @@ import React from 'react';
 import { Modal, View } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 
-import ClickableText from '.~/components/ClickableText';
-import { useGlobalStyles } from '.~/hooks';
+import ClickableText from '~/components/ClickableText';
+import { useGlobalStyles } from '~/hooks';
 import { fontSize } from '~/utils/texts';
 
 const getStyles = (textColor: string): string => `

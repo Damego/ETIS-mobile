@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { fontSize } from '../utils/texts';
+import { fontSize } from '~/utils/texts';
 import Text from './Text';
 
 const CenteredText = ({ children }: { children: string }) => {

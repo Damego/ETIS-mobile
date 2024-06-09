@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import { useGlobalStyles } from '../hooks';
-import { fontSize } from '../utils/texts';
+import { fontSize } from '~/utils/texts';
 import ClickableText from './ClickableText';
 
 const defaultStyles = StyleSheet.create({
