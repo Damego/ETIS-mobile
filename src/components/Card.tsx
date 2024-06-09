@@ -9,21 +9,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: '2%',
     marginBottom: '2%',
-    borderWidth: 1,
   },
 });
 
 const Card = ({ children, style }: { children: React.ReactNode; style?: StyleProp<ViewStyle> }) => {
   const globalStyles = useGlobalStyles();
-  const theme = useAppTheme();
 
   return (
     <View
       style={[
         styles.cardView,
-        globalStyles.border,
+        globalStyles.borderRadius,
         globalStyles.block,
-        theme.disabledCardBorder ? { borderWidth: 0 } : undefined,
         style,
       ]}
     >

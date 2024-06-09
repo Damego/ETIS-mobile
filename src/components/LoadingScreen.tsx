@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { useGlobalStyles } from '../hooks';
+import { useGlobalStyles } from '~/hooks';
 import Screen from './Screen';
 
 const styles = StyleSheet.create({

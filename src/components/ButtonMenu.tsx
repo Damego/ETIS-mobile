@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Modal, ScrollView, TouchableOpacity, View } from 'react-native';
 
 import { useGlobalStyles } from '../hooks';
-import { fontSize } from '../utils/texts';
+import { fontSize } from '~/utils/texts';
 import Card from './Card';
 import ClickableText from './ClickableText';
 import Text from './Text';

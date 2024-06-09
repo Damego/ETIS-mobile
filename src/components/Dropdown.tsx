@@ -2,8 +2,8 @@ import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import { useGlobalStyles } from '../hooks';
-import { fontSize } from '../utils/texts';
+import { useGlobalStyles } from '~/hooks';
+import { fontSize } from '~/utils/texts';
 import Text from './Text';
 
 interface IDropdownOption {

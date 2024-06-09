@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button, Text, View } from 'react-native';
 
-import { useGlobalStyles } from '../hooks';
-import { fontSize } from '../utils/texts';
+import { useGlobalStyles } from '~/hooks';
+import { fontSize } from '~/utils/texts';
 
 export default function NoData({ text, onRefresh }: { text?: string; onRefresh?: () => void }) {
   const globalStyles = useGlobalStyles();
