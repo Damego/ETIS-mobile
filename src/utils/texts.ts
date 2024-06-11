@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
 
-import { DisciplineTypes } from '../models/other';
-import { ICheckPoint } from '../models/sessionPoints';
-import { ILesson } from '../models/timeTable';
+import { DisciplineTypes } from '~/models/other';
+import { ICheckPoint } from '~/models/sessionPoints';
+import { ILesson } from '~/models/timeTable';
 
 export const getPointsWord = (points: number) => {
   let pointsWord = 'балл';
@@ -76,3 +76,5 @@ export const formatAudience = (lesson: ILesson) => {
     ? `ауд. ${audience.number} (${audience.building} корпус, ${audience.floor} этаж)`
     : audience.string;
 };
+
+export const capitalizeWord = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);

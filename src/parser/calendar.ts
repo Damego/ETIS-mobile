@@ -1,6 +1,7 @@
 import { load } from 'cheerio';
 
 import { ICalendarSchedule } from '../models/calendarSchedule';
+import { capitalizeWord } from '~/utils/texts';
 
 const courseRegex = /\d/;
 
@@ -46,7 +47,7 @@ export default function parseCalendarSchedule(html: string): ICalendarSchedule {
       if (!text) return;
 
       const title = text.trim();
-      d.title = title.charAt(0).toUpperCase() + title.slice(1);
+      d.title = capitalizeWord(title);
     }
     if (el.is('div')) {
       d.dates.push(el.text());
