@@ -71,7 +71,7 @@ const Shortcuts = () => {
         screenName={'Announces'}
         count={announceCount}
       />
-      <Icon iconName={'appstore-o'} title={'Больше'} screenName={'MoreScreens'} />
+      <Icon iconName={'appstore-o'} title={'Меню'} screenName={'MoreScreens'} />
     </View>
   );
 };
