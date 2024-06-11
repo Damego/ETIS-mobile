@@ -1,9 +1,9 @@
 import React from 'react';
-
 import Card from '~/components/Card';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { fontSize } from '~/utils/texts';
+
 import AboutAppButton from './components/AboutApp';
 import ChangeAppUI from './components/ChangeAppUI';
 import ChangeEmailSetting from './components/ChangeEmailSetting';
@@ -17,7 +17,7 @@ import ToggleSentrySetting from './components/ToggleSentrySetting';
 import ToggleSignNotification from './components/ToggleSignNotification';
 import ToggleThemeSetting from './components/ToggleThemeSetting';
 
-export default function Settings() {
+export default function AppSettings() {
   return (
     <Screen>
       {/* Общие настройки */}
@@ -29,9 +29,9 @@ export default function Settings() {
       <Card>
         <ToggleSignNotification />
       </Card>
-      <Card>
-        <ResetIntroSetting />
-      </Card>
+      {/*<Card>*/}
+      {/*  <ResetIntroSetting />*/}
+      {/*</Card>*/}
 
       {/* Настройки приложения */}
       <Text style={[fontSize.medium, { fontWeight: 'bold', marginBottom: '2%' }]}>Приложение</Text>
@@ -40,15 +40,15 @@ export default function Settings() {
       <ToggleSentrySetting />
 
       {/* Настройки аккаунта пользователя(студента) */}
-      <Text style={[fontSize.medium, { fontWeight: 'bold', marginBottom: '2%' }]}>Аккаунт</Text>
-      <ChangePasswordSetting />
-      <ChangeEmailSetting />
-      <Card>
-        <ChangePersonalRecord />
-      </Card>
-      <Card>
-        <SignOut />
-      </Card>
+      {/*<Text style={[fontSize.medium, { fontWeight: 'bold', marginBottom: '2%' }]}>Аккаунт</Text>*/}
+      {/*<ChangePasswordSetting />*/}
+      {/*<ChangeEmailSetting />*/}
+      {/*<Card>*/}
+      {/*  <ChangePersonalRecord />*/}
+      {/*</Card>*/}
+      {/*<Card>*/}
+      {/*  <SignOut />*/}
+      {/*</Card>*/}
     </Screen>
   );
 }
