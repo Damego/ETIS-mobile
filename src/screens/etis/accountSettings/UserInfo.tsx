@@ -3,7 +3,8 @@ import { StyleSheet } from 'react-native';
 
 import CardHeaderIn from '~/components/CardHeaderIn';
 import Text from '~/components/Text';
-import { fontSize } from '~/utils/texts';
+import { capitalizeWord, fontSize } from '~/utils/texts';
+import { useAppSelector } from '~/hooks';
 
 const styles = StyleSheet.create({
   boldText: {
@@ -16,10 +17,8 @@ const styles = StyleSheet.create({
   },
 });
 
-function UserInfo({ data }) {
-  if (!data) return;
-
-  const { name, speciality, educationForm, year, group } = data;
+function UserInfo() {
+  const { name, speciality, educationForm, year, group } = useAppSelector(state => state.student.info);
   const nameTextStyle = [fontSize.medium, styles.boldText];
 
   return (
@@ -43,7 +42,7 @@ function UserInfo({ data }) {
               Форма обучения:{' '}
             </Text>
             <Text style={fontSize.medium} colorVariant={'block'}>
-              {educationForm.charAt(0).toUpperCase() + educationForm.slice(1)}
+              {capitalizeWord(educationForm)}
             </Text>
           </Text>
         )}

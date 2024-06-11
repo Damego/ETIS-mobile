@@ -14,7 +14,7 @@ import PersonalRecords from '../screens/personalRecords/PersonalRecords';
 import Services from '../screens/services';
 import { SettingButton } from '../screens/services/Services';
 import SessionQuestionnaireList from '../screens/sessionQuestionnaire/SessionQuestionnaireList';
-import Settings from '../screens/settings/Settings';
+import Settings from '../screens/settings/AppSettings';
 import ChangeAppUI from '../screens/settings/uiSettings/ChangeAppUI';
 import ShortTeachPlan from '../screens/shortTeachPlan';
 import TeacherTable from '../screens/teachers';

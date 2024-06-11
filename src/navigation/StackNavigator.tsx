@@ -14,6 +14,8 @@ import showPrivacyPolicy from '~/utils/privacyPolicy';
 import InitSentry from '~/utils/sentry';
 import TabNavigator from './TabNavigation';
 import { RootStackParamList } from './types';
+import AppSettings from '~/screens/settings/AppSettings';
+import { headerParams } from '~/navigation/header';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -45,7 +47,7 @@ const StackNavigator = () => {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer theme={theme}>
         <BottomSheetModalProvider>
-          <Stack.Navigator screenOptions={{headerShown: false}}>
+          <Stack.Navigator screenOptions={{headerShown: true, ...headerParams(theme)}}>
             <Stack.Screen
               name="TabNavigator"
               component={TabNavigator}
@@ -53,8 +55,8 @@ const StackNavigator = () => {
             />
             <Stack.Screen
               name="AppSettings"
-              component={TabNavigator}
-              options={{ headerShown: false }}
+              component={AppSettings}
+              options={{ title: "Настройки" }}
             />
             <Stack.Screen
               name="ChangeAppTheme"

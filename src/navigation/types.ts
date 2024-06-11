@@ -6,9 +6,9 @@ import type {
 } from '@react-navigation/native-stack';
 import type { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 
-import { IMessage } from '../models/messages';
-import { ISubject } from '../models/sessionPoints';
-import { ILesson } from '../models/timeTable';
+import { IMessage } from '~/models/messages';
+import { ISubject } from '~/models/sessionPoints';
+import { ILesson } from '~/models/timeTable';
 
 // Список экранов для основного стека
 export type RootStackParamList = {
@@ -27,6 +27,8 @@ export type ETISStackParamList = {
   Auth: undefined;
   // Главный экран ЕТИС
   Main: undefined;
+  // Настройки аккаунта
+  AccountSettings: undefined;
 
   // Быстрый доступ к важным экранам
 
@@ -45,6 +47,8 @@ export type ETISStackParamList = {
 
   // Меню с экранами
 
+  // Недельное расписание
+  Timetable: undefined;
   // Учебный план
   TeachPlan: undefined;
   // Преподаватели
@@ -127,6 +131,6 @@ export type ServicesNavigationProp = CompositeNavigationProp<
   BottomTabsNavigationProp
 >;
 export type ETISNavigationProp = CompositeNavigationProp<
-  NativeStackNavigationProp<ETISStackParamList>,
+  StackNavigationProp<ETISStackParamList>,
   BottomTabsNavigationProp
 >;
