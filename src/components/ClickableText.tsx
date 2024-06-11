@@ -11,7 +11,7 @@ import {
 import Text, { TextColorVariant } from './Text';
 
 interface ClickableTextProps extends TouchableOpacityProps {
-  text: string | number;
+  text?: string | number;
   textStyle?: StyleProp<TextStyle>;
   viewStyle?: StyleProp<ViewStyle>;
   onPress(): void;
@@ -31,6 +31,7 @@ const ClickableText = React.forwardRef<TouchableOpacity, ClickableTextProps>(
       colorVariant,
       iconLeft,
       iconRight,
+      children,
       ...props
     },
     ref
@@ -42,7 +43,7 @@ const ClickableText = React.forwardRef<TouchableOpacity, ClickableTextProps>(
         style={textStyle}
         colorVariant={colorVariant}
       >
-        {text}
+        {text || children}
       </Text>
       {iconRight}
     </TouchableOpacity>
