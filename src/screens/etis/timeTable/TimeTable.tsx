@@ -9,7 +9,6 @@ import TimeTableContext from '~/context/timetableContext';
 import { useClient } from '~/data/client';
 import { useGlobalStyles } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
-import useReleaseNotes from '~/hooks/useReleaseNotes';
 import useTimeTableQuery from '~/hooks/useTimeTableQuery';
 import { WeekInfo, WeekTypes } from '~/models/timeTable';
 import DatesContainer from './DatesContainer';
@@ -35,8 +34,6 @@ const TimeTable = () => {
   const { data: teachersData, isLoading: teachersIsLoading } = useQuery({
     method: client.getTeacherData,
   });
-
-  useReleaseNotes();
 
   if ((isLoading || teachersIsLoading) && (!data || !teachersData))
     return <LoadingScreen onRefresh={refresh} />;

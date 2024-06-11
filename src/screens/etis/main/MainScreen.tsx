@@ -12,9 +12,6 @@ import { Timetable } from './components/Timetable';
 
 const ETISScreen = () => {
   const dispatch = useAppDispatch();
-  const { messageCount, announceCount, hasUnverifiedEmail } = useAppSelector(
-    (state) => state.student
-  );
   const {
     config: { signNotificationEnabled },
   } = useAppSelector((state) => state.settings);
@@ -22,11 +19,12 @@ const ETISScreen = () => {
   const { isDemo, isOfflineMode } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
-    loadData().then(() => {
-      if (signNotificationEnabled && !isDemo && !isOfflineMode) {
-        registerSignsFetchTask();
-      }
-    });
+    loadData()
+    //   .then(() => {
+    //   if (signNotificationEnabled && !isDemo && !isOfflineMode) {
+    //     registerSignsFetchTask();
+    //   }
+    // });
   }, []);
 
   const loadData = async () => {
@@ -57,10 +55,12 @@ const ETISScreen = () => {
   };
 
   return (
-    <Screen>
+    <>
       <Header />
-      <Timetable />
-    </Screen>
+      <Screen statusBarStyle={'light'}>
+        <Timetable />
+      </Screen>
+    </>
   );
 };
 
