@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-
 import CardHeaderOut from '~/components/CardHeaderOut';
 import CenteredText from '~/components/CenteredText';
 import LoadingScreen from '~/components/LoadingScreen';
@@ -11,6 +10,7 @@ import useQuery from '~/hooks/useQuery';
 import { TimetableTypes } from '~/models/cathedraTimetable';
 import { RequestType } from '~/models/results';
 import { ServiceNativeStackScreenProps } from '~/navigation/types';
+
 import Navigation, { NavigationTypeDropdown } from './Navigation';
 import Pairs from './Pairs';
 import TeacherMenu from './TeacherMenu';

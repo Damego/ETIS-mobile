@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { useAppSelector } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
@@ -14,11 +15,14 @@ import CathedraTimetable from '~/screens/etis/cathedraTimetable/CathedraTimetabl
 import Certificate from '~/screens/etis/certificate/Certificate';
 import CertificateIncome from '~/screens/etis/certificate/CertificateIncome';
 import RequestCertificate from '~/screens/etis/certificate/RequestCertificate';
+import ChangeEmail from '~/screens/etis/changeCredentials/ChangeEmail';
 import ChangePassword from '~/screens/etis/changeCredentials/ChangePassword';
 import DisciplineInfo from '~/screens/etis/disciplineInfo/DisciplineInfo';
+import DisciplinesTasks from '~/screens/etis/disciplinesTasks/DisciplinesTasks';
 import ETISScreen from '~/screens/etis/main/MainScreen';
 import MessageHistory from '~/screens/etis/messages/MessageHistory';
 import Messages from '~/screens/etis/messages/Messages';
+import PersonalRecords from '~/screens/etis/personalRecords/PersonalRecords';
 import SessionQuestionnaire from '~/screens/etis/sessionQuestionnaire/SessionQuestionnaire';
 import SessionQuestionnaireList from '~/screens/etis/sessionQuestionnaire/SessionQuestionnaireList';
 import ShortTeachPlan from '~/screens/etis/shortTeachPlan';
@@ -26,10 +30,6 @@ import SignsDetails from '~/screens/etis/signs/SignsDetails';
 import Teachers from '~/screens/etis/teachers';
 import Timetable from '~/screens/etis/timeTable/TimeTable';
 import Orders from '~/screens/orders';
-import DisciplinesTasks from '~/screens/etis/disciplinesTasks/DisciplinesTasks';
-import ChangeEmail from '~/screens/etis/changeCredentials/ChangeEmail';
-import PersonalRecords from '~/screens/etis/personalRecords/PersonalRecords';
-import { createStackNavigator } from '@react-navigation/stack';
 
 const Stack = createStackNavigator<ETISStackParamList>();
 
@@ -120,13 +120,21 @@ const EtisNavigation = () => {
             component={SessionQuestionnaire}
             options={{ title: 'Анкетирование' }}
           />
-          <Stack.Screen name={'DisciplineTasks'} component={DisciplinesTasks} options={{ title: 'Задания' }} />
+          <Stack.Screen
+            name={'DisciplineTasks'}
+            component={DisciplinesTasks}
+            options={{ title: 'Задания' }}
+          />
           <Stack.Screen
             name={'ChangePassword'}
             component={ChangePassword}
             options={{ title: 'Смена пароля' }}
           />
-          <Stack.Screen name={'ChangeEmail'} component={ChangeEmail} options={{ title: 'Смена почты' }} />
+          <Stack.Screen
+            name={'ChangeEmail'}
+            component={ChangeEmail}
+            options={{ title: 'Смена почты' }}
+          />
           <Stack.Screen
             name={'CathedraTimetable'}
             component={CathedraTimetable}

@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
-
 import { useGlobalStyles } from '~/hooks';
 import { fontSize } from '~/utils/texts';
+
 import ClickableText from './ClickableText';
 
 const styles = StyleSheet.create({

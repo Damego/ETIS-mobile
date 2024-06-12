@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-
 import CardHeaderOut from '~/components/CardHeaderOut';
 import FileTextLink from '~/components/FileTextLink';
 import Text from '~/components/Text';

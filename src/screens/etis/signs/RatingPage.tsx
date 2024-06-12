@@ -1,6 +1,5 @@
 import React from 'react';
 import { View } from 'react-native';
-
 import BorderLine from '~/components/BorderLine';
 import CardHeaderOut from '~/components/CardHeaderOut';
 import LoadingScreen from '~/components/LoadingScreen';
@@ -11,6 +10,7 @@ import Text from '~/components/Text';
 import useRatingQuery from '~/hooks/useRatingQuery';
 import { IGroup } from '~/models/rating';
 import { fontSize } from '~/utils/texts';
+
 import RightText from './RightText';
 
 const Group = ({ group }: { group: IGroup }) => {

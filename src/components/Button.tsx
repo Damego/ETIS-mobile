@@ -8,9 +8,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { fontSize } from '~/utils/texts';
 
 import { useGlobalStyles } from '../hooks';
-import { fontSize } from '~/utils/texts';
 import ClickableText from './ClickableText';
 
 const defaultStyles = StyleSheet.create({

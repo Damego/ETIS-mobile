@@ -1,7 +1,7 @@
 import { load } from 'cheerio';
+import { capitalizeWord } from '~/utils/texts';
 
 import { ICalendarSchedule } from '../models/calendarSchedule';
-import { capitalizeWord } from '~/utils/texts';
 
 const courseRegex = /\d/;
 

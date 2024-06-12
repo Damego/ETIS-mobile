@@ -1,10 +1,10 @@
 import React from 'react';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
-
 import { useGlobalStyles } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
 import { getStyles } from '~/utils/webView';
+
 import { Button } from './Button';
 
 const AnnouncePopover = ({ data }: { data: string }) => {

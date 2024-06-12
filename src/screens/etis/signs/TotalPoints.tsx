@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { StyleProp, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-
 import { HalloweenEmoji } from '~/components/HalloweenDecoration';
 import Text from '~/components/Text';
 import { useAppSelector, useGlobalStyles } from '~/hooks';

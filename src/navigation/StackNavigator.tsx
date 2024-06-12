@@ -5,23 +5,22 @@ import { setBackgroundColorAsync as setBackgroundNavigationBarColorAsync } from 
 import { setBackgroundColorAsync } from 'expo-system-ui';
 import React, { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-
 import { cache } from '~/cache/smartCache';
 import { useAppSelector } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
-
+import { headerParams } from '~/navigation/header';
+import AppSettings from '~/screens/settings/AppSettings';
 import showPrivacyPolicy from '~/utils/privacyPolicy';
 import InitSentry from '~/utils/sentry';
+
 import TabNavigator from './TabNavigation';
 import { RootStackParamList } from './types';
-import AppSettings from '~/screens/settings/AppSettings';
-import { headerParams } from '~/navigation/header';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const StackNavigator = () => {
   const {
-    config: { sentryEnabled}, // todo: intro viewed new version
+    config: { sentryEnabled }, // todo: intro viewed new version
   } = useAppSelector((state) => state.settings);
 
   const theme = useAppTheme();
@@ -42,12 +41,11 @@ const StackNavigator = () => {
     setBackgroundColorAsync(theme.colors.background).catch((e) => e);
   }, [theme]);
 
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer theme={theme}>
         <BottomSheetModalProvider>
-          <Stack.Navigator screenOptions={{headerShown: true, ...headerParams(theme)}}>
+          <Stack.Navigator screenOptions={{ headerShown: true, ...headerParams(theme) }}>
             <Stack.Screen
               name="TabNavigator"
               component={TabNavigator}
@@ -56,7 +54,7 @@ const StackNavigator = () => {
             <Stack.Screen
               name="AppSettings"
               component={AppSettings}
-              options={{ title: "Настройки" }}
+              options={{ title: 'Настройки' }}
             />
             <Stack.Screen
               name="ChangeAppTheme"
@@ -81,7 +79,6 @@ const StackNavigator = () => {
 };
 
 export default StackNavigator;
-
 
 /*
   const isSignedIn = useAppSelector((state) => state.auth.isSignedIn);

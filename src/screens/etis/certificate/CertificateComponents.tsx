@@ -1,7 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
-
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';

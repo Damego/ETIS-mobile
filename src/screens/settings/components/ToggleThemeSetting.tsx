@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-
 import { cache } from '~/cache/smartCache';
 import Dropdown from '~/components/Dropdown';
 import Text from '~/components/Text';

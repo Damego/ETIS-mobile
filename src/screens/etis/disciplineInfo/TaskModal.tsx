@@ -1,10 +1,10 @@
 import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-
 import BottomSheetModalBackdrop from '~/components/BottomSheetModalBackdrop';
 import { useAppTheme } from '~/hooks/theme';
 import { DisciplineTask } from '~/models/disciplinesTasks';
+
 import AddTaskModalContent, { PartialTask } from './AddTaskModalContent';
 
 interface TaskModalProps {

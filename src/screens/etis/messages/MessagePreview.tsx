@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-
 import CardHeaderOut from '~/components/CardHeaderOut';
 import Text from '~/components/Text';
 import { IMessage } from '~/models/messages';

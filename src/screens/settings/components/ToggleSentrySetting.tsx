@@ -2,7 +2,6 @@ import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
 import { Linking, Switch, ToastAndroid, TouchableOpacity } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
-
 import { cache } from '~/cache/smartCache';
 import Card from '~/components/Card';
 import Text from '~/components/Text';

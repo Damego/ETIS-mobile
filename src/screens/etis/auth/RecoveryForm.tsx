@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Image, TextInput, View } from 'react-native';
-
 import { Button } from '~/components/Button';
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
 import { fontSize } from '~/utils/texts';
+
 import { styles } from './AuthForm';
 
 const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequestButton }) => {

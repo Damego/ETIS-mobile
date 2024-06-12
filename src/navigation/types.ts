@@ -5,7 +5,6 @@ import type {
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
 import type { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
-
 import { IMessage } from '~/models/messages';
 import { ISubject } from '~/models/sessionPoints';
 import { ILesson } from '~/models/timeTable';

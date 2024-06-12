@@ -1,6 +1,5 @@
 import React from 'react';
 import { Alert } from 'react-native';
-
 import { cache } from '~/cache/smartCache';
 import ClickableText from '~/components/ClickableText';
 import { useAppDispatch } from '~/hooks';

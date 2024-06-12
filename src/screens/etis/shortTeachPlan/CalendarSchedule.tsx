@@ -1,7 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { ActivityIndicator, ToastAndroid, TouchableOpacity, View } from 'react-native';
-
 import BorderLine from '~/components/BorderLine';
 import Text from '~/components/Text';
 import { useClient } from '~/data/client';

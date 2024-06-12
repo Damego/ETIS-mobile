@@ -3,7 +3,6 @@ import 'dayjs/locale/ru';
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, ToastAndroid, View } from 'react-native';
 import DateTimePicker from 'react-native-ui-datepicker';
-
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';

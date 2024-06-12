@@ -1,6 +1,5 @@
 import React from 'react';
 import { Switch } from 'react-native';
-
 import { cache } from '~/cache/smartCache';
 import Card from '~/components/Card';
 import Text from '~/components/Text';

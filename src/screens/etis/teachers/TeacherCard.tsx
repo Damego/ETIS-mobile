@@ -1,9 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
-
 import BorderLine from '~/components/BorderLine';
 import CardHeaderOut from '~/components/CardHeaderOut';
 import { ITeacher } from '~/models/teachers';
+
 import Teacher from './Teacher';
 
 interface TeacherCardProps {

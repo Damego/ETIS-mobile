@@ -4,7 +4,6 @@ import * as Clipboard from 'expo-clipboard';
 import { Image } from 'expo-image';
 import React from 'react';
 import { Linking, StyleSheet, ToastAndroid, View } from 'react-native';
-
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
 import { useClient } from '~/data/client';

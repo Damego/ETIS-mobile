@@ -1,13 +1,13 @@
 import dayjs from 'dayjs';
 import React, { useContext, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-
 import BorderLine from '~/components/BorderLine';
 import Text from '~/components/Text';
 import TaskContext from '~/context/taskContext';
 import { DisciplineTask } from '~/models/disciplinesTasks';
 import { formatTime } from '~/utils/datetime';
 import { fontSize } from '~/utils/texts';
+
 import HistoryButton from '../HistoryButton';
 import getGroupedTasks from '../getGroupedTasks';
 import TaskItem from './TaskItem';

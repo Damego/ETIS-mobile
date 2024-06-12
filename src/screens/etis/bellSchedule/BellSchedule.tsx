@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-
 import { Button } from '~/components/Button';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
 import { fontSize } from '~/utils/texts';
+
 import { lyceumBellSchedule } from './lyceumBellSchedule';
 import { BellScheduleTypes, IBellScheduleBreak, IBellSchedulePair } from './types';
 import { universityBellSchedule } from './universityBellSchedule';

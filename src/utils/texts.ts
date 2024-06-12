@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-
 import { DisciplineTypes } from '~/models/other';
 import { ICheckPoint } from '~/models/sessionPoints';
 import { ILesson } from '~/models/timeTable';

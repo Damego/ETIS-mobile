@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
-
 import { DisciplineTypes } from '~/models/other';
 import { getDisciplineTypeName } from '~/utils/texts';
+
 import Text from './Text';
 
 const DisciplineType = ({

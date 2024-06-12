@@ -19,7 +19,7 @@ const ETISScreen = () => {
   const { isDemo, isOfflineMode } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
-    loadData()
+    loadData();
     //   .then(() => {
     //   if (signNotificationEnabled && !isDemo && !isOfflineMode) {
     //     registerSignsFetchTask();

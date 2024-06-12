@@ -21,6 +21,7 @@ import { ITeacher } from '~/models/teachers';
 import { DistancePlatformTypes, ITimeTable, WeekTypes } from '~/models/timeTable';
 import { StudentInfo } from '~/parser/menu';
 import bind from '~/utils/methodBinder';
+
 import { BaseClient } from './base';
 import { toResult } from './utils';
 

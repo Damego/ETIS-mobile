@@ -4,7 +4,6 @@ import 'dayjs/locale/ru';
 import { Checkbox } from 'expo-checkbox';
 import React, { useRef, useState } from 'react';
 import { Alert, StyleSheet, TextInput, View } from 'react-native';
-
 import BottomSheetModalBackdrop from '~/components/BottomSheetModalBackdrop';
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
@@ -12,6 +11,7 @@ import { useGlobalStyles } from '~/hooks';
 import { DisciplineReminder, DisciplineTask } from '~/models/disciplinesTasks';
 import { formatTime } from '~/utils/datetime';
 import { fontSize } from '~/utils/texts';
+
 import AddReminderBottomModal from './AddReminderBottomModal';
 import AddButton from './components/AddButton';
 import Reminder from './components/Reminder';

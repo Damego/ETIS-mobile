@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { TextInput, ToastAndroid, View } from 'react-native';
-
 import { cache } from '~/cache/smartCache';
 import { Button } from '~/components/Button';
 import CenteredText from '~/components/CenteredText';
@@ -13,6 +12,7 @@ import { parseChangeEmailPage } from '~/parser/changeCredentials';
 import { setUserCredentials } from '~/redux/reducers/authSlice';
 import { httpClient } from '~/utils';
 import { fontSize } from '~/utils/texts';
+
 import { styles } from '../auth/AuthForm';
 
 const emailRegex = /(.+)@(.+){2,}\.(.+){2,}/;

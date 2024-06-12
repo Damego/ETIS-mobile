@@ -1,9 +1,9 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Modal, ScrollView, TouchableOpacity, View } from 'react-native';
+import { fontSize } from '~/utils/texts';
 
 import { useGlobalStyles } from '../hooks';
-import { fontSize } from '~/utils/texts';
 import Card from './Card';
 import ClickableText from './ClickableText';
 import Text from './Text';

@@ -1,5 +1,4 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-
 import { StudentData, StudentState } from '~/models/student';
 import { StudentInfo } from '~/parser/menu';
 

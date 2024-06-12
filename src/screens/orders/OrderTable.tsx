@@ -1,10 +1,10 @@
 import React from 'react';
-
 import LoadingScreen from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
 import Screen from '~/components/Screen';
 import { useClient } from '~/data/client';
 import useQuery from '~/hooks/useQuery';
+
 import Order from './Order';
 
 const OrderTable = () => {
