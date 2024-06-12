@@ -1,6 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-
 import Card from '~/components/Card';
 import ClickableText from '~/components/ClickableText';
 import { RootStackNavigationProp } from '~/navigation/types';

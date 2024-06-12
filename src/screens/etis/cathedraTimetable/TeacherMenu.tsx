@@ -1,10 +1,10 @@
 import React from 'react';
 import { View } from 'react-native';
-
 import ButtonMenu from '~/components/ButtonMenu';
 import Text from '~/components/Text';
 import { ITeacherTimetable } from '~/models/cathedraTimetable';
 import { fontSize } from '~/utils/texts';
+
 import { generateOptionsFromTeachers } from './utils';
 
 const TeacherMenu = ({

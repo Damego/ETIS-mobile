@@ -1,10 +1,9 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-
 import CardHeaderIn from '~/components/CardHeaderIn';
 import Text from '~/components/Text';
-import { capitalizeWord, fontSize } from '~/utils/texts';
 import { useAppSelector } from '~/hooks';
+import { capitalizeWord, fontSize } from '~/utils/texts';
 
 const styles = StyleSheet.create({
   boldText: {
@@ -18,7 +17,9 @@ const styles = StyleSheet.create({
 });
 
 function UserInfo() {
-  const { name, speciality, educationForm, year, group } = useAppSelector(state => state.student.info);
+  const { name, speciality, educationForm, year, group } = useAppSelector(
+    (state) => state.student.info
+  );
   const nameTextStyle = [fontSize.medium, styles.boldText];
 
   return (

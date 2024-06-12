@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import { ToastAndroid, View } from 'react-native';
-
 import { Button } from '~/components/Button';
 import LoadingScreen from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
@@ -13,6 +12,7 @@ import { IAnswer } from '~/models/sessionQuestionnaire';
 import { RootStackScreenProps } from '~/navigation/types';
 import { httpClient } from '~/utils';
 import toSessionTestPayload from '~/utils/sessionTest';
+
 import AdditionalComment from './AdditionalComment';
 import { ConfirmResultView, ResultSentView, SendingResultView } from './ResultViews';
 import TeacherQuestionView from './TeacherQuestionView';

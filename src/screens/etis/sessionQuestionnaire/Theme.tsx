@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-
 import { useGlobalStyles } from '~/hooks';
 import { IAnswer, ITheme } from '~/models/sessionQuestionnaire';
 import { fontSize } from '~/utils/texts';
+
 import Question from './Question';
 
 export default function Theme({

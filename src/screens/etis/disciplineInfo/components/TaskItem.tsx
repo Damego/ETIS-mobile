@@ -2,7 +2,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { Checkbox } from 'expo-checkbox';
 import React, { useContext } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-
 import Text from '~/components/Text';
 import TaskContext from '~/context/taskContext';
 import { useAppTheme } from '~/hooks/theme';

@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { ICheckPoint } from '~/models/sessionPoints';
 import { RootStackScreenProps } from '~/navigation/types';
 import { fontSize } from '~/utils/texts';
+
 import CheckPointDetails from './CheckPointDetails';
 import TotalPoints from './TotalPoints';
 

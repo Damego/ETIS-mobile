@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { useAppTheme } from '~/hooks/theme';
 
 import { useGlobalStyles } from '../hooks';
-import { useAppTheme } from '~/hooks/theme';
 
 const styles = StyleSheet.create({
   cardView: {
@@ -16,14 +16,7 @@ const Card = ({ children, style }: { children: React.ReactNode; style?: StylePro
   const globalStyles = useGlobalStyles();
 
   return (
-    <View
-      style={[
-        styles.cardView,
-        globalStyles.borderRadius,
-        globalStyles.block,
-        style,
-      ]}
-    >
+    <View style={[styles.cardView, globalStyles.borderRadius, globalStyles.block, style]}>
       {children}
     </View>
   );

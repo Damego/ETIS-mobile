@@ -1,9 +1,9 @@
+import { AntDesign } from '@expo/vector-icons';
 import dayjs from 'dayjs';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Text from '~/components/Text';
 import { useTimetableContext } from '~/context/timetableContext';
-import { AntDesign } from '@expo/vector-icons';
 import { useAppTheme } from '~/hooks/theme';
 
 const Dates = ({
@@ -17,7 +17,7 @@ const Dates = ({
   onPrevWeek: () => void;
   onNextWeek: () => void;
 }) => {
-  const {currentDate} = useTimetableContext();
+  const { currentDate } = useTimetableContext();
   const week = selectedDate.startOf('week');
   const theme = useAppTheme();
 
@@ -33,12 +33,13 @@ const Dates = ({
         let containerStyle;
         if (isCurrentDay) {
           containerStyle = styles.selectedDayContainer;
-        }
-        else if (day.diff(currentDate, "day") === 0) {
-          containerStyle = [styles.dayContainer, {borderWidth: 2, borderRadius: 6, borderColor: theme.colors.primary}]
-        }
-        else {
-          containerStyle = styles.dayContainer
+        } else if (day.diff(currentDate, 'day') === 0) {
+          containerStyle = [
+            styles.dayContainer,
+            { borderWidth: 2, borderRadius: 6, borderColor: theme.colors.primary },
+          ];
+        } else {
+          containerStyle = styles.dayContainer;
         }
 
         return (
@@ -67,8 +68,8 @@ export default Dates;
 
 const styles = StyleSheet.create({
   arrow: {
-    paddingHorizontal: "1%",
-    paddingVertical: "2%",
+    paddingHorizontal: '1%',
+    paddingVertical: '2%',
   },
   daysListContainer: {
     flexDirection: 'row',

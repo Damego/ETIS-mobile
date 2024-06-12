@@ -1,6 +1,5 @@
 import React from 'react';
 import { View } from 'react-native';
-
 import Dropdown from '~/components/Dropdown';
 import LoadingScreen from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
@@ -9,6 +8,7 @@ import Text from '~/components/Text';
 import { useClient } from '~/data/client';
 import useQuery from '~/hooks/useQuery';
 import { RequestType } from '~/models/results';
+
 import AbsencesCard from './AbsencesCard';
 
 const AbsencesTable = () => {

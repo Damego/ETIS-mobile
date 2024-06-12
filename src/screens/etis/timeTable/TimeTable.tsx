@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import React from 'react';
-
 import LoadingScreen, { LoadingContainer } from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
 import PageNavigator from '~/components/PageNavigator';
@@ -11,6 +10,7 @@ import { useGlobalStyles } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
 import useTimeTableQuery from '~/hooks/useTimeTableQuery';
 import { WeekInfo, WeekTypes } from '~/models/timeTable';
+
 import DatesContainer from './DatesContainer';
 import DayArray from './DayArray';
 import HolidayView from './HolidayView';

@@ -1,10 +1,10 @@
 import React from 'react';
-
 import LoadingScreen from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
 import PageNavigator from '~/components/PageNavigator';
 import Screen from '~/components/Screen';
 import useMessagesQuery from '~/hooks/useMessagesQuery';
+
 import MessagePreview from './MessagePreview';
 
 const Messages = () => {

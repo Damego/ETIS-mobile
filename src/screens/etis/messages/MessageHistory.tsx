@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ToastAndroid } from 'react-native';
-
 import Screen from '~/components/Screen';
 import { useClient } from '~/data/client';
 import { useAppSelector } from '~/hooks';
@@ -11,6 +10,7 @@ import { IGetPayload, RequestType } from '~/models/results';
 import { RootStackScreenProps } from '~/navigation/types';
 import { parseDate } from '~/parser/utils';
 import { httpClient } from '~/utils';
+
 import Message from './Message';
 import MessageInput, { FilesPreview } from './MessageInput';
 

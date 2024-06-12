@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
-
 import { Button } from '~/components/Button';
 import Card from '~/components/Card';
 import Screen from '~/components/Screen';
@@ -11,6 +10,7 @@ import { RequestType } from '~/models/results';
 import { getStudentYear } from '~/utils/datetime';
 import composeMail from '~/utils/email';
 import { fontSize } from '~/utils/texts';
+
 import { Input, PopoverElement } from './CertificateComponents';
 
 const stipEmail = 'stip@psu.ru';

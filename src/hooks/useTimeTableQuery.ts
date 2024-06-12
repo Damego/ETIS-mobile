@@ -1,9 +1,9 @@
 import { useRef } from 'react';
-
 import { cache } from '~/cache/smartCache';
 import { useClient } from '~/data/client';
 import { GetResultType, RequestType } from '~/models/results';
 import { setCurrentWeek } from '~/redux/reducers/studentSlice';
+
 import { useAppDispatch, useAppSelector } from './redux';
 import useQuery from './useQuery';
 

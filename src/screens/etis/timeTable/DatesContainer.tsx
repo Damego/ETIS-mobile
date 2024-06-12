@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import React from 'react';
 import { Text, View } from 'react-native';
-
 import { useGlobalStyles } from '~/hooks';
 import { WeekDates } from '~/models/timeTable';
 import { fontSize } from '~/utils/texts';

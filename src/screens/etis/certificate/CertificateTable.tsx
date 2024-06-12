@@ -3,7 +3,6 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleProp, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
-
 import BorderLine from '~/components/BorderLine';
 import Card from '~/components/Card';
 import LoadingScreen from '~/components/LoadingScreen';
@@ -16,6 +15,7 @@ import { useAppTheme } from '~/hooks/theme';
 import useQuery from '~/hooks/useQuery';
 import { ServicesNavigationProp } from '~/navigation/types';
 import { fontSize } from '~/utils/texts';
+
 import Certificate from './Certificate';
 
 const iconSize = 24;

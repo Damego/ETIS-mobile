@@ -2,7 +2,6 @@ import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleProp, TextStyle, ToastAndroid, TouchableOpacity, View } from 'react-native';
-
 import Card from '~/components/Card';
 import LoadingScreen from '~/components/LoadingScreen';
 import Screen from '~/components/Screen';

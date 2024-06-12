@@ -1,13 +1,13 @@
 import dayjs from 'dayjs';
 import React, { useContext, useRef, useState } from 'react';
 import { View } from 'react-native';
-
 import { Button } from '~/components/Button';
 import Text from '~/components/Text';
 import TimeTableContext from '~/context/timetableContext';
 import { useAppSelector } from '~/hooks';
 import { ITimeTableDay, WeekDates } from '~/models/timeTable';
 import { fontSize } from '~/utils/texts';
+
 import { Day } from './Day';
 
 interface IDayArrayProps {

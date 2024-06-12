@@ -1,7 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
-
 import CardHeaderOut from '~/components/CardHeaderOut';
 import Text from '~/components/Text';
 import { useAppTheme } from '~/hooks/theme';

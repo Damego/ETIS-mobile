@@ -2,7 +2,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
-
 import BorderLine from '~/components/BorderLine';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';

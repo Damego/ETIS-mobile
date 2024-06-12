@@ -1,7 +1,7 @@
 import React from 'react';
-
 import CardHeaderOut from '~/components/CardHeaderOut';
 import { ISessionTeachPlan } from '~/models/teachPlan';
+
 import Subject from './Discipline';
 
 const SessionCard = ({ data }: { data: ISessionTeachPlan }) => (

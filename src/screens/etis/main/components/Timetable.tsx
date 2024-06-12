@@ -44,7 +44,7 @@ export const Timetable = () => {
     method: client.getTeacherData,
   });
 
-  const currentDate = dayjs().startOf("day");
+  const currentDate = dayjs().startOf('day');
   const [selectedDate, setSelectedDate] = useState(currentDate);
 
   const contextData = useMemo(
@@ -70,7 +70,7 @@ export const Timetable = () => {
   const selectedDayIndex = selectedDate.day() - 1;
 
   let component: React.ReactNode;
-  console.log(selectedDayIndex, data.days)
+  console.log(selectedDayIndex, data.days);
 
   if (isLoading || teachersIsLoading || !data) {
     component = <LoadingContainer />;

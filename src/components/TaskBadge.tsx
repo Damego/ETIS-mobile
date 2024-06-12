@@ -2,7 +2,6 @@ import { AntDesign } from '@expo/vector-icons';
 import dayjs from 'dayjs';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-
 import { useAppTheme } from '~/hooks/theme';
 import useTasks from '~/hooks/useTasks';
 import { ISubject } from '~/models/timeTable';

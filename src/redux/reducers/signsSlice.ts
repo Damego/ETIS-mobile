@@ -1,5 +1,4 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-
 import { ISessionMarks } from '~/models/sessionMarks';
 
 interface SignsState {

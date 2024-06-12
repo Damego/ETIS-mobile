@@ -2,8 +2,8 @@ import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
-
 import { useAppTheme } from '~/hooks/theme';
+
 import { RootStackNavigationProp } from '../types';
 
 const BellScheduleButton = () => {

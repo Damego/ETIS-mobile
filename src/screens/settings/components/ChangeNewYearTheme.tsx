@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { cache } from '~/cache/smartCache';
 import Card from '~/components/Card';
 import ClickableText from '~/components/ClickableText';

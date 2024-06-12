@@ -2,7 +2,6 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import dayjs from 'dayjs';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
-
 import CardHeaderOut from '~/components/CardHeaderOut';
 import CenteredText from '~/components/CenteredText';
 import Screen from '~/components/Screen';
@@ -19,6 +18,7 @@ import {
 import { formatTime } from '~/utils/datetime';
 import { fontSize } from '~/utils/texts';
 import { groupItems } from '~/utils/utils';
+
 import { PartialTask } from '../disciplineInfo/AddTaskModalContent';
 import HistoryButton from '../disciplineInfo/HistoryButton';
 import TaskModal from '../disciplineInfo/TaskModal';

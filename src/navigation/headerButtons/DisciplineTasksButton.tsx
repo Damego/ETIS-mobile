@@ -3,10 +3,10 @@ import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-
 import Text from '~/components/Text';
 import { useAppTheme } from '~/hooks/theme';
 import useTasks from '~/hooks/useTasks';
+
 import { RootStackNavigationProp } from '../types';
 
 const DisciplineTasksButton = () => {

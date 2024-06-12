@@ -11,7 +11,6 @@ import {
   View,
 } from 'react-native';
 import ContextMenu from 'react-native-context-menu-view';
-
 import DisciplineType from '~/components/DisciplineType';
 import Text from '~/components/Text';
 import { ITeacher } from '~/models/teachers';

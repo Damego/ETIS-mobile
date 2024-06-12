@@ -2,7 +2,6 @@ import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Linking, StyleSheet, TouchableOpacity, View } from 'react-native';
-
 import Text from '~/components/Text';
 import { useAppSelector, useGlobalStyles } from '~/hooks';
 import { ServicesNativeStackParamList, ServicesNavigationProp } from '~/navigation/types';

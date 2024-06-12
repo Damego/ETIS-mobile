@@ -1,6 +1,5 @@
 import React from 'react';
 import { Linking, StyleSheet, TouchableOpacity, View } from 'react-native';
-
 import Text from '~/components/Text';
 import { PRIVACY_POLICY_URL, TELEGRAM_URL } from '~/utils';
 import { fontSize } from '~/utils/texts';

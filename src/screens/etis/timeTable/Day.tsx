@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import React, { useContext } from 'react';
 import { View } from 'react-native';
-
 import BorderLine from '~/components/BorderLine';
 import CardHeaderOut from '~/components/CardHeaderOut';
 import Text from '~/components/Text';
@@ -12,6 +11,7 @@ import { ThemeType, isNewYearTheme } from '~/styles/themes';
 import { halloweenEmptyDayResponses, newYearEmptyDayResponse } from '~/utils/events';
 import { fontSize } from '~/utils/texts';
 import { getRandomItem } from '~/utils/utils';
+
 import Pair from './Pair';
 
 interface DayData {

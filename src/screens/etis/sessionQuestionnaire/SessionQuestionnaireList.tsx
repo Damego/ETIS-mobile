@@ -1,6 +1,5 @@
 import { useIsFocused } from '@react-navigation/native';
 import React, { useEffect } from 'react';
-
 import Card from '~/components/Card';
 import ClickableText from '~/components/ClickableText';
 import LoadingScreen from '~/components/LoadingScreen';

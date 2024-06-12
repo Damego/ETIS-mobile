@@ -1,6 +1,5 @@
 import React from 'react';
 import { View } from 'react-native';
-
 import Dropdown from '~/components/Dropdown';
 import PageNavigator from '~/components/PageNavigator';
 import { useAppSelector, useGlobalStyles } from '~/hooks';

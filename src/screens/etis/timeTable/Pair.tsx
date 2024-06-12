@@ -2,7 +2,6 @@ import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React, { useContext } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-
 import DisciplineType from '~/components/DisciplineType';
 import TaskBadge from '~/components/TaskBadge';
 import Text from '~/components/Text';

@@ -2,7 +2,6 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Alert, Keyboard, StyleSheet, ToastAndroid, View } from 'react-native';
 import { RadioButtonProps, RadioGroup } from 'react-native-radio-buttons-group';
-
 import { Button } from '~/components/Button';
 import Card from '~/components/Card';
 import Screen from '~/components/Screen';
@@ -13,6 +12,7 @@ import { RootStackNavigationProp, RootStackParamList } from '~/navigation/types'
 import { httpClient } from '~/utils';
 import { toCertificatePayload } from '~/utils/certificate';
 import { fontSize } from '~/utils/texts';
+
 import { Input, PopoverElement } from './CertificateComponents';
 
 const deliveryMethods = [{ id: '1', name: 'лично (в отделе кадров обучающихся)' }];

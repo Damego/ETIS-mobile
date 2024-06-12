@@ -1,7 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
 import { Linking, StyleSheet, Switch, ToastAndroid, TouchableOpacity, View } from 'react-native';
-
 import { cache } from '~/cache/smartCache';
 import Text from '~/components/Text';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '~/hooks';

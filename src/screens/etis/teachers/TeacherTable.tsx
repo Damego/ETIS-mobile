@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
-
 import LoadingScreen from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
 import Screen from '~/components/Screen';
 import { useClient } from '~/data/client';
 import useQuery from '~/hooks/useQuery';
 import { ITeacher } from '~/models/teachers';
+
 import TeacherCard from './TeacherCard';
 
 const groupTeachers = (teachers: ITeacher[]) => {

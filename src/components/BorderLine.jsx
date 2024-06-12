@@ -1,6 +1,5 @@
 import React from 'react';
 import { View } from 'react-native';
-
 import { useAppTheme } from '~/hooks/theme';
 
 const BorderLine = () => {

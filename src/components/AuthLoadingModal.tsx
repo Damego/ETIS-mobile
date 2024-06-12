@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Button, StyleSheet, ToastAndroid, View } from 'react-native';
-
 import { cache } from '~/cache/smartCache';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '~/hooks';
 import {
@@ -12,6 +11,7 @@ import {
 } from '~/redux/reducers/authSlice';
 import { httpClient } from '~/utils';
 import isDemoCredentials from '~/utils/demo';
+
 import CustomReCaptcha from './ReCaptcha';
 import Text from './Text';
 

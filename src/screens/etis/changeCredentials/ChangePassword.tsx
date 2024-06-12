@@ -1,7 +1,6 @@
 import * as cheerio from 'cheerio';
 import React, { useState } from 'react';
 import { ToastAndroid, View } from 'react-native';
-
 import { cache } from '~/cache/smartCache';
 import { Button } from '~/components/Button';
 import PasswordInput from '~/components/PasswordInput';
@@ -13,6 +12,7 @@ import { getTextField } from '~/parser/utils';
 import { setUserCredentials } from '~/redux/reducers/authSlice';
 import { httpClient } from '~/utils';
 import { fontSize } from '~/utils/texts';
+
 import { styles } from '../auth/AuthForm';
 
 const changePassword = async (oldPassword: string, newPassword: string): Promise<string> => {

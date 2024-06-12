@@ -2,7 +2,6 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import dayjs from 'dayjs';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-
 import Text from '~/components/Text';
 import TaskContext from '~/context/taskContext';
 import useBackPress from '~/hooks/useBackPress';
@@ -14,6 +13,7 @@ import {
   scheduleTaskNotifications,
 } from '~/notifications/taskReminder';
 import { fontSize } from '~/utils/texts';
+
 import { PartialTask } from '../AddTaskModalContent';
 import TaskModal from '../TaskModal';
 import AddButton from './AddButton';

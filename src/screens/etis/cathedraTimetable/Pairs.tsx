@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
-
 import BorderLine from '~/components/BorderLine';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';

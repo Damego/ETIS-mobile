@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-
 import AnnouncePopover from '~/components/AnnouncePopover';
 import BorderLine from '~/components/BorderLine';
 import DisciplineType from '~/components/DisciplineType';
@@ -11,6 +10,7 @@ import Text from '~/components/Text';
 import { useAppTheme } from '~/hooks/theme';
 import { RootStackScreenProps } from '~/navigation/types';
 import { fontSize } from '~/utils/texts';
+
 import Note from './components/Note';
 import { TaskContainer } from './components/TaskContainer';
 import { AudienceInfo, TeacherInfo, TimeInfo } from './components/info';

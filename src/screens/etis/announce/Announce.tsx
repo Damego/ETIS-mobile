@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-
 import LoadingScreen from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
 import PageNavigator from '~/components/PageNavigator';
@@ -10,6 +9,7 @@ import { useAppDispatch } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
 import { GetResultType } from '~/models/results';
 import { setAnnounceCount } from '~/redux/reducers/studentSlice';
+
 import AnnounceCard from './AnnounceCard';
 
 export default function Announce() {

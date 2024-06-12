@@ -1,7 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-
 import BorderLine from '~/components/BorderLine';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';

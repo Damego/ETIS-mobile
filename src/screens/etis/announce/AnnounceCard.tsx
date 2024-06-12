@@ -1,6 +1,5 @@
 import React from 'react';
 import AutoHeightWebView from 'react-native-autoheight-webview';
-
 import Card from '~/components/Card';
 import { useAppTheme } from '~/hooks/theme';
 import { httpClient } from '~/utils';

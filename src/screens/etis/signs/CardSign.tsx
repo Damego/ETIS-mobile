@@ -1,12 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-
 import CardHeaderIn from '~/components/CardHeaderIn';
 import Text from '~/components/Text';
 import { ISubject } from '~/models/sessionPoints';
 import { ETISNavigationProp } from '~/navigation/types';
 import { fontSize } from '~/utils/texts';
+
 import SubjectCheckPoints from './SubjectCheckPoints';
 import TotalPoints from './TotalPoints';
 
