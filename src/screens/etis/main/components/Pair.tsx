@@ -9,7 +9,7 @@ import Text from '~/components/Text';
 import { useTimetableContext } from '~/context/timetableContext';
 import { useAppSelector, useGlobalStyles } from '~/hooks';
 import { ILesson, IPair } from '~/models/timeTable';
-import { ETISNavigationProp } from '~/navigation/types';
+import { EducationNavigationProp } from '~/navigation/types';
 import { getTeacherName } from '~/utils/teachers';
 import { formatAudience } from '~/utils/texts';
 
@@ -22,7 +22,7 @@ const Lesson = ({
   date: dayjs.Dayjs;
   pairPosition: number;
 }) => {
-  const navigation = useNavigation<ETISNavigationProp>();
+  const navigation = useNavigation<EducationNavigationProp>();
 
   const { teachers } = useTimetableContext();
   const audience = formatAudience(lesson);
@@ -43,11 +43,11 @@ const Lesson = ({
 
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
         <Ionicons name={'business-outline'} size={20} />
-        <Text>{audience}</Text>
+        <Text style={{ fontSize: 14 }}>{audience}</Text>
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
         <Ionicons name={'school-outline'} size={20} />
-        <Text>{teacherName}</Text>
+        <Text style={{ fontSize: 14 }}>{teacherName}</Text>
       </View>
       <TaskBadge subject={lesson.subject} date={date} />
     </TouchableOpacity>
@@ -102,11 +102,8 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   lessonContainer: {
-    borderRadius: 10,
-    backgroundColor: '#FFFFFF',
-    flex: 1,
-    padding: '2%',
     gap: 4,
+    flex: 1,
   },
   lessonNameText: {
     fontSize: 16,

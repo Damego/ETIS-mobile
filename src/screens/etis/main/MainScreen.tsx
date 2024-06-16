@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { cache } from '~/cache/smartCache';
 import Screen from '~/components/Screen';
 import { useClient } from '~/data/client';
 import { useAppDispatch, useAppSelector } from '~/hooks';
 import { RequestType } from '~/models/results';
 import { setStudentState } from '~/redux/reducers/studentSlice';
+import Shortcuts, { Shortcut } from '~/screens/etis/main/components/Shortcuts';
 import { registerSignsFetchTask } from '~/tasks/signs/signs';
 
-import Header from './components/Header';
 import { Timetable } from './components/Timetable';
 
 const ETISScreen = () => {
@@ -17,6 +17,7 @@ const ETISScreen = () => {
   } = useAppSelector((state) => state.settings);
   const client = useClient();
   const { isDemo, isOfflineMode } = useAppSelector((state) => state.auth);
+  const [currentShortcut, setCurrentShortcut] = useState<Shortcut>('timetable');
 
   useEffect(() => {
     loadData();
@@ -54,13 +55,15 @@ const ETISScreen = () => {
     if (fetched.data || cached.data) dispatch(setStudentState(fetched.data || cached.data));
   };
 
+  const handleShortcutPress = (shortcut: Shortcut) => {
+    setCurrentShortcut(shortcut);
+  };
+
   return (
-    <>
-      <Header />
-      <Screen statusBarStyle={'light'}>
-        <Timetable />
-      </Screen>
-    </>
+    <Screen>
+      <Shortcuts current={currentShortcut} onPress={handleShortcutPress} />
+      <Timetable />
+    </Screen>
   );
 };
 

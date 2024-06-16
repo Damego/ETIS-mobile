@@ -1,11 +1,12 @@
 import dayjs from 'dayjs';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import CenteredText from '~/components/CenteredText';
 import { LoadingContainer } from '~/components/LoadingScreen';
 import Text from '~/components/Text';
 import TimeTableContext from '~/context/timetableContext';
 import { useClient } from '~/data/client';
+import { useGlobalStyles } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
 import useTimeTableQuery from '~/hooks/useTimeTableQuery';
 import Dates from '~/screens/etis/main/components/Dates';
@@ -43,6 +44,7 @@ export const Timetable = () => {
   const { data: teachersData, isLoading: teachersIsLoading } = useQuery({
     method: client.getTeacherData,
   });
+  const globalStyles = useGlobalStyles();
 
   const currentDate = dayjs().startOf('day');
   const [selectedDate, setSelectedDate] = useState(currentDate);
@@ -52,29 +54,21 @@ export const Timetable = () => {
     [teachersData, currentDate]
   );
 
-  const handlePrevWeek = () => {
-    loadWeek(data.weekInfo.selected - 1);
-    setSelectedDate((prev) => prev.clone().add(-1, 'week'));
-  };
-  const handleNextWeek = () => {
-    loadWeek(data.weekInfo.selected + 1);
-    setSelectedDate((prev) => prev.clone().add(1, 'week'));
-  };
+  useEffect(() => {
+    loadWeek(30)
+  }, []);
 
   const onDatePress = (date: dayjs.Dayjs) => {
     setSelectedDate(date);
   };
 
-  // 0 - понедельник, 5 - суббота, -1 - воскресенье
-  // Происходит это из-за того, что в dayjs 0 - воскресенье
-  const selectedDayIndex = selectedDate.day() - 1;
+  const selectedDayIndex = selectedDate.weekday();
 
   let component: React.ReactNode;
-  console.log(selectedDayIndex, data.days);
 
   if (isLoading || teachersIsLoading || !data) {
     component = <LoadingContainer />;
-  } else if (selectedDayIndex === -1 || !data.days[selectedDayIndex].pairs.length) {
+  } else if (selectedDayIndex === 6 || !data.days[selectedDayIndex].pairs.length) {
     component = <NoPairsContainer />;
   } else {
     component = (
@@ -88,30 +82,26 @@ export const Timetable = () => {
   }
 
   return (
-    <>
-      <View style={styles.timetableContainer}>
-        <Text style={{ fontWeight: '500', fontSize: 18 }}>Расписание</Text>
-        <Text>
-          {capitalizeWord(selectedDate.format('MMMM'))} {selectedDate.get('year')}
-          {data ? ` • ${data.weekInfo.selected} неделя` : ''}
-        </Text>
-      </View>
+    <View style={[globalStyles.container, styles.timetableContainer]}>
+      <Text style={{ fontWeight: '700', fontSize: 22 }}>Расписание</Text>
+      <Text style={{ fontWeight: '500', fontSize: 18 }} colorVariant={"text2"} >
+        {capitalizeWord(selectedDate.format('MMMM'))} {selectedDate.get('year')}
+        {data ? ` • ${data.weekInfo.selected} неделя` : ''}
+      </Text>
       <TimeTableContext.Provider value={contextData}>
         <Dates
           selectedDate={selectedDate}
           onDatePress={onDatePress}
-          onPrevWeek={handlePrevWeek}
-          onNextWeek={handleNextWeek}
         />
         {component}
       </TimeTableContext.Provider>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   timetableContainer: {
-    marginVertical: '2%',
+    padding: '4%',
   },
   pairsList: {
     marginTop: '4%',

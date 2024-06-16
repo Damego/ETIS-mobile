@@ -1,50 +1,53 @@
 import { AntDesign } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Text from '~/components/Text';
-import { useAppSelector } from '~/hooks';
-import { useAppTheme } from '~/hooks/theme';
-import { ETISNavigationProp, ETISStackParamList } from '~/navigation/types';
+import { useAppSelector, useGlobalStyles } from '~/hooks';
+
+export type Shortcut = 'timetable' | 'marks' | 'messages' | 'menu';
 
 const Icon = ({
   iconName,
-  title,
-  screenName,
+  shortcut,
+  onPress,
   count,
+  isCurrent,
 }: {
   iconName: keyof typeof AntDesign.glyphMap;
-  title: string;
-  screenName: keyof ETISStackParamList;
+  shortcut: Shortcut;
+  onPress: (shortcut: Shortcut) => void;
   count?: number;
+  isCurrent: boolean;
 }) => {
-  const navigation = useNavigation<ETISNavigationProp>();
-  const theme = useAppTheme();
-
-  const handleClick = () => {
-    navigation.navigate(screenName);
-  };
+  const globalStyles = useGlobalStyles();
 
   return (
-    <TouchableOpacity onPress={handleClick} style={{ alignItems: 'center' }}>
-      <AntDesign name={iconName} size={24} />
-      <Text style={{ fontSize: 10, fontWeight: '500' }}>{title}</Text>
+    <TouchableOpacity
+      onPress={() => onPress(shortcut)}
+      style={[
+        globalStyles.borderRadius,
+        isCurrent ? globalStyles.secondaryBackgroundColor : null,
+        { alignItems: 'center', paddingVertical: '2%', paddingHorizontal: '6%' },
+      ]}
+    >
+      <AntDesign name={iconName} size={36} color={isCurrent ? globalStyles.primaryText.color : globalStyles.textColor.color} />
 
-      {count && (
+      {!!count && (
         <View
           style={{
             position: 'absolute',
             right: 0,
             top: 0,
-            width: 15,
-            height: 15,
-            borderRadius: 8,
-            backgroundColor: theme.colors.primary,
+            width: 20,
+            height: 20,
+            borderRadius: 10,
+            backgroundColor: globalStyles.primaryText.color,
+
             alignItems: 'center',
             justifyContent: 'center',
           }}
         >
-          <Text style={{ color: theme.colors.textForPrimary, fontSize: 10, fontWeight: '500' }}>
+          <Text style={{ fontSize: 14, color: globalStyles.primaryContrastText.color }}>
             {count}
           </Text>
         </View>
@@ -53,25 +56,43 @@ const Icon = ({
   );
 };
 
-const Shortcuts = () => {
+const Shortcuts = ({
+  current,
+  onPress,
+}: {
+  current: Shortcut;
+  onPress: (shortcut: Shortcut) => void;
+}) => {
   const { messageCount, announceCount } = useAppSelector((state) => state.student);
+  const globalStyles = useGlobalStyles();
 
   return (
-    <View style={styles.shortcutsContainer}>
-      <Icon iconName={'barschart'} title={'Успеваемость'} screenName={'SignsNavigator'} />
+    <View style={[globalStyles.container, styles.shortcutsContainer]}>
+      <Icon
+        iconName={'calendar'}
+        shortcut={'timetable'}
+        onPress={onPress}
+        isCurrent={current === 'timetable'}
+      />
+      <Icon
+        iconName={'barschart'}
+        shortcut={'marks'}
+        onPress={onPress}
+        isCurrent={current === 'marks'}
+      />
       <Icon
         iconName={'message1'}
-        title={'Сообщения'}
-        screenName={'Messages'}
-        count={messageCount}
+        shortcut={'messages'}
+        count={messageCount + announceCount}
+        onPress={onPress}
+        isCurrent={current === 'messages'}
       />
       <Icon
-        iconName={'notification'}
-        title={'Объявления'}
-        screenName={'Announces'}
-        count={announceCount}
+        iconName={'appstore-o'}
+        shortcut={'menu'}
+        onPress={onPress}
+        isCurrent={current === 'menu'}
       />
-      <Icon iconName={'appstore-o'} title={'Меню'} screenName={'MoreScreens'} />
     </View>
   );
 };
@@ -80,23 +101,10 @@ export default Shortcuts;
 
 const styles = StyleSheet.create({
   shortcutsContainer: {
-    position: 'absolute',
-    backgroundColor: '#FFF',
+    width: '100%',
     flexDirection: 'row',
-    width: '85%',
     justifyContent: 'space-between',
     padding: '4%',
-    borderRadius: 10,
-    top: '74%',
     alignSelf: 'center',
-
-    shadowColor: '#000000',
-    shadowOffset: {
-      width: 0,
-      height: 18,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 20.0,
-    elevation: 24,
   },
 });
