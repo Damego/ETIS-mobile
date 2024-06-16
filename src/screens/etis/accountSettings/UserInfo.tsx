@@ -1,37 +1,26 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
-import CardHeaderIn from '~/components/CardHeaderIn';
+import Card from '~/components/Card';
 import Text from '~/components/Text';
 import { useAppSelector } from '~/hooks';
 import { capitalizeWord, fontSize } from '~/utils/texts';
-
-const styles = StyleSheet.create({
-  boldText: {
-    fontWeight: 'bold',
-  },
-  textTitle: {
-    ...fontSize.large,
-    fontWeight: '600',
-    marginBottom: '2%',
-  },
-});
 
 function UserInfo() {
   const { name, speciality, educationForm, year, group } = useAppSelector(
     (state) => state.student.info
   );
-  const nameTextStyle = [fontSize.medium, styles.boldText];
+  const nameTextStyle = useMemo(() => StyleSheet.compose(fontSize.medium, styles.boldText), []);
 
   return (
     <>
-      <Text style={styles.textTitle}>Студент</Text>
-      <CardHeaderIn topText={name}>
+      <Card>
+        <Text style={styles.cardTitle}>{name}</Text>
         {speciality && (
           <Text>
-            <Text style={nameTextStyle} colorVariant={'block'}>
+            <Text style={nameTextStyle} colorVariant={'text2'}>
               Направление:{' '}
             </Text>
-            <Text style={fontSize.medium} colorVariant={'block'}>
+            <Text style={fontSize.medium} colorVariant={'text2'}>
               {speciality}
             </Text>
           </Text>
@@ -39,10 +28,10 @@ function UserInfo() {
 
         {educationForm && (
           <Text>
-            <Text style={nameTextStyle} colorVariant={'block'}>
+            <Text style={nameTextStyle} colorVariant={'text2'}>
               Форма обучения:{' '}
             </Text>
-            <Text style={fontSize.medium} colorVariant={'block'}>
+            <Text style={fontSize.medium} colorVariant={'text2'}>
               {capitalizeWord(educationForm)}
             </Text>
           </Text>
@@ -50,26 +39,37 @@ function UserInfo() {
 
         {year && (
           <Text>
-            <Text style={nameTextStyle} colorVariant={'block'}>
+            <Text style={nameTextStyle} colorVariant={'text2'}>
               Год:{' '}
             </Text>
-            <Text style={fontSize.medium} colorVariant={'block'}>
+            <Text style={fontSize.medium} colorVariant={'text2'}>
               {year}
             </Text>
           </Text>
         )}
 
         <Text>
-          <Text style={nameTextStyle} colorVariant={'block'}>
+          <Text style={nameTextStyle} colorVariant={'text2'}>
             Группа:{' '}
           </Text>
-          <Text style={fontSize.medium} colorVariant={'block'}>
+          <Text style={fontSize.medium} colorVariant={'text2'}>
             {group}
           </Text>
         </Text>
-      </CardHeaderIn>
+      </Card>
     </>
   );
 }
 
 export default UserInfo;
+
+const styles = StyleSheet.create({
+  boldText: {
+    fontWeight: 'bold',
+  },
+  cardTitle: {
+    fontSize: 24,
+    fontWeight: '500',
+    marginBottom: '2%',
+  },
+});
