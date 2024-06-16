@@ -21,7 +21,7 @@ export type RootStackParamList = {
 };
 
 // Список экранов для ЕТИС
-export type ETISStackParamList = {
+export type EducationStackParamList = {
   // Экран аутентификации в ЕТИС
   Auth: undefined;
   // Главный экран ЕТИС
@@ -39,8 +39,6 @@ export type ETISStackParamList = {
   Announces: undefined;
   // Экран со списком остальных экранов для ЕТИС
   MoreScreens: undefined;
-  // Личные записи студента
-  PersonalRecords: undefined;
   // Информация о паре
   DisciplineInfo: { lesson: ILesson; date: string; pairPosition: number };
 
@@ -87,10 +85,9 @@ export type ETISStackParamList = {
 
 // Список экранов с нижними табами
 export type BottomTabsParamList = {
-  ETIS: undefined;
-  services: undefined;
-  events: undefined;
-  news: undefined;
+  Education: undefined;
+  Services: undefined;
+  NewsAndEvents: undefined;
 };
 
 // Список экранов для сервисов
@@ -129,7 +126,7 @@ export type ServicesNavigationProp = CompositeNavigationProp<
   NativeStackNavigationProp<ServicesNativeStackParamList>,
   BottomTabsNavigationProp
 >;
-export type ETISNavigationProp = CompositeNavigationProp<
-  StackNavigationProp<ETISStackParamList>,
+export type EducationNavigationProp = CompositeNavigationProp<
+  StackNavigationProp<EducationStackParamList>,
   BottomTabsNavigationProp
 >;

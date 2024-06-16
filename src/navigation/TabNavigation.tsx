@@ -3,12 +3,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { useAppTheme } from '~/hooks/theme';
 import useNotification from '~/hooks/useNotifications';
-import EtisNavigation from '~/navigation/EtisNavigation';
+import EducationNavigation from '~/navigation/EducationNavigation';
 import { headerParams } from '~/navigation/header';
 import AppSettingButton from '~/navigation/headerButtons/AppSettingsButton';
-import { SettingButton } from '~/screens/etis/etisServices/Services';
 import Events from '~/screens/events/Events';
-import News from '~/screens/news/News';
 import Services from '~/screens/services/Services';
 
 import { BottomTabsParamList, BottomTabsScreenProps } from './types';
@@ -19,7 +17,7 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
   useNotification(async (data) => {
     if (data.type === 'task-reminder') {
       // @ts-expect-error: TS2345
-      navigation.navigate('ETIS', { screen: 'DisciplineTasks', taskId: data.data.taskId });
+      navigation.navigate('Education', { screen: 'DisciplineTasks', taskId: data.data.taskId });
     }
   });
   const theme = useAppTheme();
@@ -27,8 +25,8 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
   return (
     <Tab.Navigator screenOptions={{ headerShown: true, ...headerParams(theme) }}>
       <Tab.Screen
-        name="ETIS"
-        component={EtisNavigation}
+        name="Education"
+        component={EducationNavigation}
         options={{
           title: 'ЕТИС',
           headerShown: false,
@@ -36,7 +34,7 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
         }}
       />
       <Tab.Screen
-        name="services"
+        name="Services"
         component={Services}
         options={{
           title: 'Сервисы',
@@ -47,18 +45,10 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
         }}
       />
       <Tab.Screen
-        name="events"
+        name="NewsAndEvents"
         component={Events}
         options={{
           title: 'События',
-          tabBarIcon: ({ size, color }) => <AntDesign name="staro" size={size} color={color} />,
-        }}
-      />
-      <Tab.Screen
-        name="news"
-        component={News}
-        options={{
-          title: 'Новости',
           tabBarIcon: ({ size, color }) => <AntDesign name="calendar" size={size} color={color} />,
         }}
       />

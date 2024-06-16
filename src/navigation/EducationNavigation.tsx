@@ -1,11 +1,11 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { useAppSelector } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
 import SignsTopTabNavigator from '~/navigation/TopTabNavigator';
 import { headerParams } from '~/navigation/header';
-import { ETISStackParamList } from '~/navigation/types';
+import AccountSettingsButton from '~/navigation/headerButtons/AccountSettingsButton';
+import { EducationStackParamList } from '~/navigation/types';
 import Absences from '~/screens/etis/absences';
 import AccountSettings from '~/screens/etis/accountSettings/AccountSettings';
 import Announce from '~/screens/etis/announce/Announce';
@@ -31,9 +31,9 @@ import Teachers from '~/screens/etis/teachers';
 import Timetable from '~/screens/etis/timeTable/TimeTable';
 import Orders from '~/screens/orders';
 
-const Stack = createStackNavigator<ETISStackParamList>();
+const Stack = createStackNavigator<EducationStackParamList>();
 
-const EtisNavigation = () => {
+const EducationNavigation = () => {
   const { isSignedIn } = useAppSelector((state) => state.auth);
   const theme = useAppTheme();
 
@@ -43,7 +43,11 @@ const EtisNavigation = () => {
         <Stack.Screen name={'Auth'} component={Auth} options={{ title: 'Вход' }} />
       ) : (
         <>
-          <Stack.Screen name={'Main'} component={ETISScreen} options={{ headerShown: false }} />
+          <Stack.Screen
+            name={'Main'}
+            component={ETISScreen}
+            options={{ title: 'Обучение', headerRight: () => <AccountSettingsButton /> }}
+          />
           <Stack.Screen
             name={'AccountSettings'}
             component={AccountSettings}
@@ -62,12 +66,7 @@ const EtisNavigation = () => {
             component={Timetable}
             options={{ title: 'Расписание' }}
           />
-          <Stack.Screen
-            name={'PersonalRecords'}
-            component={PersonalRecords}
-            options={{ title: 'Личные записи' }}
-          />
-          <Stack.Screen name={'DisciplineInfo'} component={DisciplineInfo} />
+          <Stack.Screen name={'DisciplineInfo'} component={DisciplineInfo} options={{ title: 'Информация' }} />
           <Stack.Screen
             name={'TeachPlan'}
             component={ShortTeachPlan}
@@ -146,4 +145,4 @@ const EtisNavigation = () => {
   );
 };
 
-export default EtisNavigation;
+export default EducationNavigation;
