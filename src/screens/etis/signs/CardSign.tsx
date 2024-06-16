@@ -4,7 +4,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import CardHeaderIn from '~/components/CardHeaderIn';
 import Text from '~/components/Text';
 import { ISubject } from '~/models/sessionPoints';
-import { ETISNavigationProp } from '~/navigation/types';
+import { EducationNavigationProp } from '~/navigation/types';
 import { fontSize } from '~/utils/texts';
 
 import SubjectCheckPoints from './SubjectCheckPoints';
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 });
 
 const CardSign = ({ subject }: { subject: ISubject }) => {
-  const navigation = useNavigation<ETISNavigationProp>();
+  const navigation = useNavigation<EducationNavigationProp>();
 
   return (
     <CardHeaderIn topText={subject.name}>

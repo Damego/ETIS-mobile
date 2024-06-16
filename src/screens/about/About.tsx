@@ -39,7 +39,7 @@ const About = () => {
 
       <View style={styles.view}>
         <ClickableText
-          textStyle={[fontSize.medium, globalStyles.primaryFontColor, { fontWeight: '500' }]}
+          textStyle={[fontSize.medium, globalStyles.primaryText, { fontWeight: '500' }]}
           text={'Политика конфиденциальности'}
           onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}
         />
