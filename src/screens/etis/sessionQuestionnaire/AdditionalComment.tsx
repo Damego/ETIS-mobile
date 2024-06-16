@@ -24,7 +24,7 @@ export default function AdditionalComment({ onTextChange }: { onTextChange(text:
         placeholderTextColor={globalStyles.inputPlaceholder.color}
         inputMode="text"
         keyboardType="default"
-        selectionColor={globalStyles.primaryFontColor.color}
+        selectionColor={globalStyles.primaryText.color}
         autoCapitalize={'sentences'}
         multiline
         maxLength={4000}

@@ -66,7 +66,7 @@ const Navigation = ({
             view: {
               borderWidth: 2,
               borderRadius: globalStyles.border.borderRadius,
-              borderColor: globalStyles.primaryFontColor.color,
+              borderColor: globalStyles.primaryText.color,
             },
           },
         }}

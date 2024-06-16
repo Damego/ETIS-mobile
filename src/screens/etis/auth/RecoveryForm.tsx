@@ -22,7 +22,7 @@ const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequ
       <Text>{message}</Text>
 
       <TextInput
-        style={[styles.input, globalStyles.border, globalStyles.fontColorForBlock]}
+        style={[styles.input, globalStyles.border, globalStyles.textColor2]}
         onChangeText={(newLogin) => {
           setLogin(newLogin);
         }}

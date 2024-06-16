@@ -21,8 +21,8 @@ const EmptyCard = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={[styles.textView, globalStyles.block, globalStyles.border]} />
-      <View style={[styles.cardView, globalStyles.block, globalStyles.border]} />
+      <View style={[styles.textView, globalStyles.containerBackground, globalStyles.borderRadius]} />
+      <View style={[styles.cardView, globalStyles.containerBackground, globalStyles.borderRadius]} />
     </View>
   );
 };

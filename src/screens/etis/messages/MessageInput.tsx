@@ -154,7 +154,7 @@ const MessageInput = ({
         value={value}
         placeholder="Сообщение"
         multiline
-        selectionColor={globalStyles.primaryFontColor.color}
+        selectionColor={globalStyles.primaryText.color}
         placeholderTextColor={theme.colors.inputPlaceholder}
         editable={!disabled}
       />

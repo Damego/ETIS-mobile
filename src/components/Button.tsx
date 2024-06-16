@@ -38,7 +38,7 @@ const Button = React.forwardRef<View | Text | TouchableOpacity, ButtonProps>(
       primary: {
         textColor: globalStyles.textColor.color,
         text: [
-          globalStyles.fontColorForPrimary,
+          globalStyles.primaryContrastText,
           { fontWeight: '500' },
           fontStyle || fontSize.xlarge,
         ],
@@ -51,7 +51,7 @@ const Button = React.forwardRef<View | Text | TouchableOpacity, ButtonProps>(
       secondary: {
         textColor: globalStyles.textColor.color,
         text: [
-          globalStyles.fontColorForSecondary,
+          globalStyles.secondaryContrastText,
           { fontWeight: '500' },
           fontStyle || fontSize.xlarge,
         ],
@@ -62,9 +62,9 @@ const Button = React.forwardRef<View | Text | TouchableOpacity, ButtonProps>(
         ],
       },
       card: {
-        textColor: globalStyles.fontColorForBlock.color,
-        text: [globalStyles.fontColorForBlock, { fontWeight: '500' }, fontStyle || fontSize.xlarge],
-        view: [defaultStyles.container, globalStyles.block, globalStyles.border],
+        textColor: globalStyles.secondaryContrastText.color,
+        text: [globalStyles.secondaryText, { fontWeight: '500' }, fontStyle || fontSize.xlarge],
+        view: [defaultStyles.container, globalStyles.borderRadius],
       },
     };
 

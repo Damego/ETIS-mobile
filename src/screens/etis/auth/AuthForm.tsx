@@ -61,10 +61,10 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
     <View style={[styles.container, globalStyles.border, globalStyles.block]}>
       <Image style={styles.logoImage} source={require('../../../../assets/logo_red.png')} />
 
-      <Text colorVariant={'block'}>{errorMessage}</Text>
+      <Text colorVariant={'primary'}>{errorMessage}</Text>
 
       <TextInput
-        style={[styles.input, globalStyles.border, globalStyles.fontColorForBlock]}
+        style={[styles.input, globalStyles.border, globalStyles.textColor2]}
         onChangeText={(newLogin) => {
           setLogin(newLogin);
         }}
@@ -77,27 +77,27 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
         autoCapitalize="none"
       />
       <PasswordInput
-        style={[styles.input, globalStyles.border, globalStyles.fontColorForBlock]}
+        style={[styles.input, globalStyles.border, globalStyles.textColor2]}
         onChangeText={setPassword}
         placeholder="Пароль"
         placeholderTextColor={theme.colors.inputPlaceholder}
         autoComplete="password"
         selectionColor={theme.colors.primary}
         onSubmitEditing={() => onSubmit(login, password)}
-        iconColor={theme.colors.textForBlock}
+        iconColor={theme.colors.text}
         autoCapitalize={'none'}
       />
 
       <View style={styles.authPropContainer}>
         <View style={styles.checkboxContainer}>
           <Checkbox
-            color={theme.colors.secondary}
+            color={theme.colors.primary}
             style={styles.checkbox}
             value={saveUserCredentials}
             onValueChange={toggleSaveUserCredentials}
           />
-          <Text style={fontSize.small} colorVariant={'block'}>
             Запомнить пароль?
+          <Text style={fontSize.small} colorVariant={'primary'}>
           </Text>
         </View>
 
@@ -105,12 +105,12 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
           textStyle={fontSize.small}
           text="Забыли пароль?"
           onPress={() => setShowRecovery(true)}
-          colorVariant={'block'}
+          colorVariant={'text2'}
         />
       </View>
 
       <View style={{ width: '90%' }}>
-        <Button text="Войти" onPress={() => onSubmit(login, password)} variant={'secondary'} />
+        <Button text="Войти" onPress={() => onSubmit(login, password)} variant={'primary'} />
       </View>
     </View>
   );

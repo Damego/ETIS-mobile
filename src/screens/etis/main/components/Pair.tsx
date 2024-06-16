@@ -72,7 +72,7 @@ const Pair = ({ pair, dayDate }: { pair: IPair; dayDate: dayjs.Dayjs }) => {
             borderRadius: 4,
           }}
         >
-          <Text style={[globalStyles.primaryFontColor, { fontWeight: '500' }]}>{pairText}</Text>
+          <Text style={[globalStyles.primaryText, { fontWeight: '500' }]}>{pairText}</Text>
         </View>
         <Text style={styles.timeStartText}>{pair.time}</Text>
         <Text style={styles.timeEndText}>

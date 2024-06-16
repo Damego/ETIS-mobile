@@ -52,7 +52,7 @@ const ToggleSignNotification = () => {
         />
       </TouchableOpacity>
       <Switch
-        trackColor={{ false: 'gray', true: globalStyles.primaryFontColor.color }}
+        trackColor={{ false: 'gray', true: globalStyles.primaryText.color }}
         thumbColor="white"
         onValueChange={(value) => changeSignNotification(value)}
         value={signNotification}

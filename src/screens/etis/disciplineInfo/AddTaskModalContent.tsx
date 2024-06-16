@@ -101,7 +101,7 @@ const AddTaskModalContent = ({
           <Checkbox
             value={isLinkedToPair}
             onValueChange={setLinkedToPair}
-            color={globalStyles.primaryFontColor.color}
+            color={globalStyles.primaryText.color}
           />
           <Text>Привязать задание к этой паре</Text>
         </View>
@@ -125,7 +125,7 @@ const AddTaskModalContent = ({
       <View style={styles.buttonsList}>
         {!!selectedTask && (
           <ClickableText
-            textStyle={[styles.button, globalStyles.primaryFontColor]}
+            textStyle={[styles.button, globalStyles.primaryText]}
             text={'Удалить'}
             onPress={removeTask}
           />

@@ -93,7 +93,7 @@ const Form = ({
         iconColor={theme.colors.textForBlock}
       />
       {firstInputMessage && (
-        <Text style={[globalStyles.primaryFontColor]}>{firstInputMessage}</Text>
+        <Text style={[globalStyles.primaryText]}>{firstInputMessage}</Text>
       )}
 
       <PasswordInput

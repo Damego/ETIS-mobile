@@ -7,13 +7,6 @@ import { useAppTheme } from '~/hooks/theme';
 
 import AuthLoadingModal from './AuthLoadingModal';
 
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    marginHorizontal: '2%',
-  },
-});
-
 interface ScreenProps {
   onUpdate?(...args): unknown;
   children: React.ReactNode;
@@ -34,7 +27,7 @@ const Screen = ({ onUpdate, children, startScrollFromBottom, statusBarStyle }: S
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, marginTop: '4%' }}>
       {isAuthorizing && <AuthLoadingModal />}
 
       <StatusBar style={statusBarStyle || theme.statusBarStyle} />
@@ -65,3 +58,10 @@ const Screen = ({ onUpdate, children, startScrollFromBottom, statusBarStyle }: S
 };
 
 export default Screen;
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    gap: 14,
+  },
+});
