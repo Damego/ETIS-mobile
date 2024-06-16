@@ -187,21 +187,19 @@ const AuthLoadingModal = () => {
       <View
         style={[
           styles.modalContainer,
-          globalStyles.border,
-          globalStyles.block,
-          globalStyles.shadow,
+          globalStyles.container,
         ]}
       >
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-          <ActivityIndicator size="large" color={globalStyles.primaryFontColor.color} />
-          <Text style={globalStyles.fontColorForBlock}>{messageStatus}</Text>
+          <ActivityIndicator size="large" color={globalStyles.primaryText.color} />
+          <Text style={globalStyles.textColor2}>{messageStatus}</Text>
 
           {showOfflineButton && (
             <View style={{ marginTop: '15%' }}>
               <Button
                 title="Оффлайн режим"
                 onPress={signInOffline}
-                color={globalStyles.primaryFontColor.color}
+                color={globalStyles.primaryText.color}
               />
             </View>
           )}

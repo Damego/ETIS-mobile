@@ -121,7 +121,7 @@ const CertificateTable = () => {
                 fontWeight: '600',
               },
               fontSize.large,
-              globalStyles.primaryFontColor,
+              globalStyles.primaryText,
             ]}
             cardStyle={{ marginBottom: '0%' }}
           />

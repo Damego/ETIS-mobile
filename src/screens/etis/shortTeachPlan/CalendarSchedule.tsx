@@ -62,7 +62,7 @@ const CalendarScheduleMenu = ({ data }: { data?: ICalendarSchedule }) => {
           </View>
         ))
       ) : (
-        <ActivityIndicator size="large" color={globalStyles.primaryFontColor.color} />
+        <ActivityIndicator size="large" color={globalStyles.primaryText.color} />
       )}
     </View>
   );

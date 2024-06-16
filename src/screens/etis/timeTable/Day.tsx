@@ -39,8 +39,8 @@ export const Day = ({ data, date }: DayData) => {
   let textStyle = null;
   let cardStyle = null;
   if (highlightCurrentDay && currentDate.diff(date, 'day') === 0) {
-    textStyle = globalStyles.primaryFontColor;
-    cardStyle = { borderColor: globalStyles.primaryFontColor.color };
+    textStyle = globalStyles.primaryText;
+    cardStyle = { borderColor: globalStyles.primaryText.color };
   }
 
   return (

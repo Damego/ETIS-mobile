@@ -31,7 +31,7 @@ export default function TeacherQuestionView({
         autoComplete="name"
         inputMode="text"
         keyboardType="default"
-        selectionColor={globalStyles.primaryFontColor.color}
+        selectionColor={globalStyles.primaryText.color}
         autoCapitalize="words"
       />
     </View>
