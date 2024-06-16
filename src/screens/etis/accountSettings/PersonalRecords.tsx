@@ -1,9 +1,10 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { StyleProp, TextStyle, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, ToastAndroid, TouchableOpacity, View } from 'react-native';
+
 import Card from '~/components/Card';
-import LoadingScreen from '~/components/LoadingScreen';
+import LoadingScreen, { LoadingContainer } from '~/components/LoadingScreen';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { useClient } from '~/data/client';
@@ -37,21 +38,21 @@ const PersonalRecord = ({
   };
 
   return (
-    <Card style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+    <>
       <View>
-        <Text colorVariant={'block'}>
+        <Text colorVariant={'text2'}>
           {record.year} {record.speciality}
         </Text>
-        {!showStatus && <Text colorVariant={'block'}>Статус: {record.status}</Text>}
+        {!showStatus && <Text colorVariant={'text2'}>Статус: {record.status}</Text>}
       </View>
       {record.id && record.status === 'студент' && (
         <View>
           <TouchableOpacity onPress={changePersonalRecord}>
-            <AntDesign name="select1" size={24} color={globalStyles.fontColorForBlock.color} />
+            <AntDesign name="select1" size={24} color={globalStyles.textColor2.color} />
           </TouchableOpacity>
         </View>
       )}
-    </Card>
+    </>
   );
 };
 
@@ -69,31 +70,33 @@ export default function PersonalRecords() {
   });
 
   if (isLoading) {
-    return <LoadingScreen />;
+    return null;
   }
 
-  const currentRecord = data.find((record) => !record.id);
   const activeRecords = data.filter((record) => record.status === 'студент' && record.id);
-  const inactiveRecords = data.filter((record) => record.status !== 'студент' && record.id);
+
+  if (!activeRecords.length) {
+    return null;
+  }
 
   return (
-    <Screen>
-      <Text
-        style={[globalStyles.textColor, fontSize.medium, { fontWeight: '500', marginBottom: '2%' }]}
-      >
-        Текущая запись
-      </Text>
-      <PersonalRecord record={currentRecord} showStatus />
-
-      {activeRecords.length !== 0 && <Text style={textStyles}>Активные записи</Text>}
+    <Card>
+      <Text style={styles.cardTitle}>Личные записи</Text>
+      <Text style={textStyles}>Доступные записи</Text>
       {activeRecords.map((record) => (
         <PersonalRecord record={record} key={record.id + record.index} showStatus />
       ))}
-
-      {inactiveRecords.length !== 0 && <Text style={textStyles}>Неактивные записи</Text>}
-      {inactiveRecords.map((record) => (
-        <PersonalRecord record={record} key={record.id + record.index} showStatus={false} />
-      ))}
-    </Screen>
+    </Card>
   );
 }
+
+const styles = StyleSheet.create({
+  boldText: {
+    fontWeight: 'bold',
+  },
+  cardTitle: {
+    fontSize: 24,
+    fontWeight: '500',
+    marginBottom: '2%',
+  },
+});

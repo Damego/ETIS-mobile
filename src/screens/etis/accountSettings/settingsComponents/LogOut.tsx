@@ -1,13 +1,13 @@
 import React from 'react';
 import { Alert } from 'react-native';
 import { cache } from '~/cache/smartCache';
-import ClickableText from '~/components/ClickableText';
 import { useAppDispatch } from '~/hooks';
 import { signOut } from '~/redux/reducers/authSlice';
 import { unregisterBackgroundFetchAsync } from '~/tasks/signs/signs';
-import { fontSize } from '~/utils/texts';
 
-const SignOut = () => {
+import BaseSettingButton from './base';
+
+const LogOut = () => {
   const dispatch = useAppDispatch();
 
   const doSignOut = async () => {
@@ -16,7 +16,7 @@ const SignOut = () => {
     unregisterBackgroundFetchAsync().catch((error) => error);
   };
 
-  const confirmSignOut = () => {
+  const handlePress = () => {
     Alert.alert(
       'Выход из аккаунта',
       'Вы действительно хотите выйти из аккаунта? Это действие удалит все ваши данные.',
@@ -33,13 +33,13 @@ const SignOut = () => {
   };
 
   return (
-    <ClickableText
-      text="Выйти из аккаунта"
-      textStyle={[fontSize.medium, { fontWeight: '500' }]}
-      onPress={confirmSignOut}
-      colorVariant={'primary'}
+    <BaseSettingButton
+      iconName={'logout'}
+      label={'Выйти'}
+      onPress={handlePress}
+      color={'primary'}
     />
   );
 };
 
-export default SignOut;
+export default LogOut;
