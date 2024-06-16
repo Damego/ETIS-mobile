@@ -55,7 +55,7 @@ export const Timetable = () => {
   );
 
   useEffect(() => {
-    loadWeek(30)
+    loadWeek(30);
   }, []);
 
   const onDatePress = (date: dayjs.Dayjs) => {
@@ -84,15 +84,12 @@ export const Timetable = () => {
   return (
     <View style={[globalStyles.container, styles.timetableContainer]}>
       <Text style={{ fontWeight: '700', fontSize: 22 }}>Расписание</Text>
-      <Text style={{ fontWeight: '500', fontSize: 18 }} colorVariant={"text2"} >
+      <Text style={{ fontWeight: '500', fontSize: 18 }} colorVariant={'text2'}>
         {capitalizeWord(selectedDate.format('MMMM'))} {selectedDate.get('year')}
         {data ? ` • ${data.weekInfo.selected} неделя` : ''}
       </Text>
       <TimeTableContext.Provider value={contextData}>
-        <Dates
-          selectedDate={selectedDate}
-          onDatePress={onDatePress}
-        />
+        <Dates selectedDate={selectedDate} onDatePress={onDatePress} />
         {component}
       </TimeTableContext.Provider>
     </View>

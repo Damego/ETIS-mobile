@@ -66,7 +66,11 @@ const EducationNavigation = () => {
             component={Timetable}
             options={{ title: 'Расписание' }}
           />
-          <Stack.Screen name={'DisciplineInfo'} component={DisciplineInfo} options={{ title: 'Информация' }} />
+          <Stack.Screen
+            name={'DisciplineInfo'}
+            component={DisciplineInfo}
+            options={{ title: 'Информация' }}
+          />
           <Stack.Screen
             name={'TeachPlan'}
             component={ShortTeachPlan}

@@ -30,7 +30,11 @@ const Icon = ({
         { alignItems: 'center', paddingVertical: '2%', paddingHorizontal: '6%' },
       ]}
     >
-      <AntDesign name={iconName} size={36} color={isCurrent ? globalStyles.primaryText.color : globalStyles.textColor.color} />
+      <AntDesign
+        name={iconName}
+        size={36}
+        color={isCurrent ? globalStyles.primaryText.color : globalStyles.textColor.color}
+      />
 
       {!!count && (
         <View

@@ -1,8 +1,14 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { StyleProp, StyleSheet, TextStyle, ToastAndroid, TouchableOpacity, View } from 'react-native';
-
+import {
+  StyleProp,
+  StyleSheet,
+  TextStyle,
+  ToastAndroid,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Card from '~/components/Card';
 import LoadingScreen, { LoadingContainer } from '~/components/LoadingScreen';
 import Screen from '~/components/Screen';

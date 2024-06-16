@@ -92,9 +92,7 @@ const Form = ({
         onEndEditing={validateFirstInput}
         iconColor={theme.colors.textForBlock}
       />
-      {firstInputMessage && (
-        <Text style={[globalStyles.primaryText]}>{firstInputMessage}</Text>
-      )}
+      {firstInputMessage && <Text style={[globalStyles.primaryText]}>{firstInputMessage}</Text>}
 
       <PasswordInput
         style={[

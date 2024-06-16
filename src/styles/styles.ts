@@ -8,11 +8,11 @@ const getGlobalStyles = ({ colors }: { colors: IThemeColors }) =>
       backgroundColor: colors.background,
     },
     containerBackground: {
-      backgroundColor: colors.container
+      backgroundColor: colors.container,
     },
     container: {
       borderRadius: 20,
-      backgroundColor: colors.container
+      backgroundColor: colors.container,
     },
     borderRadius: {
       borderRadius: 10,

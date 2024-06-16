@@ -46,11 +46,11 @@ export const LightTheme: ITheme = {
     background: '#F6F6F6',
     primary: '#C62E3E',
     secondary: '#F9F0F1',
-    primaryContrast: "#FFFFFF",
-    secondaryContrast: "#FFFFFF",
+    primaryContrast: '#FFFFFF',
+    secondaryContrast: '#FFFFFF',
     border: '#EAEAEA',
     text: '#000000',
-    text2: "#2C2C2C",
+    text2: '#2C2C2C',
     inputPlaceholder: '#A9A9AC',
     container: '#FFFFFF',
     card: '#FFFFFF',
@@ -93,4 +93,3 @@ export const APP_THEMES = {
   dark: DarkTheme,
   black: BlackTheme,
 };
-
