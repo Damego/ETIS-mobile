@@ -2,6 +2,7 @@ import { Checkbox } from 'expo-checkbox';
 import React, { useState } from 'react';
 import { Image, StyleSheet, TextInput, View } from 'react-native';
 import { Button } from '~/components/Button';
+import Card from '~/components/Card';
 import ClickableText from '~/components/ClickableText';
 import PasswordInput from '~/components/PasswordInput';
 import Text from '~/components/Text';
@@ -12,10 +13,8 @@ import { fontSize } from '~/utils/texts';
 
 export const styles = StyleSheet.create({
   container: {
-    marginTop: '15%',
     flexDirection: 'column',
     alignItems: 'center',
-    paddingVertical: '4%',
     gap: 16,
   },
   logoImage: {
@@ -34,12 +33,11 @@ export const styles = StyleSheet.create({
     ...fontSize.large,
     paddingLeft: '2%',
     paddingVertical: '3%',
-    width: '90%',
+    width: '100%',
   },
   authPropContainer: {
     flexDirection: 'row',
-    width: '90%',
-    paddingHorizontal: 5,
+    width: '100%',
     justifyContent: 'space-between',
   },
 });
@@ -58,7 +56,7 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
   };
 
   return (
-    <View style={[styles.container, globalStyles.border, globalStyles.block]}>
+    <Card style={styles.container}>
       <Image style={styles.logoImage} source={require('../../../../assets/logo_red.png')} />
 
       <Text colorVariant={'primary'}>{errorMessage}</Text>
@@ -96,8 +94,8 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
             value={saveUserCredentials}
             onValueChange={toggleSaveUserCredentials}
           />
-            Запомнить пароль?
           <Text style={fontSize.small} colorVariant={'primary'}>
+            Запомнить меня
           </Text>
         </View>
 
@@ -109,10 +107,10 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
         />
       </View>
 
-      <View style={{ width: '90%' }}>
+      <View style={{ width: '100%' }}>
         <Button text="Войти" onPress={() => onSubmit(login, password)} variant={'primary'} />
       </View>
-    </View>
+    </Card>
   );
 };
 

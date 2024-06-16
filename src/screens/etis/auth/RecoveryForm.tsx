@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Image, TextInput, View } from 'react-native';
 import { Button } from '~/components/Button';
+import Card from '~/components/Card';
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
@@ -16,7 +17,7 @@ const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequ
   const [login, setLogin] = useState('');
 
   return (
-    <View style={[styles.container, globalStyles.border, globalStyles.block]}>
+    <Card style={styles.container}>
       <Image style={styles.logoImage} source={require('../../../../assets/logo_red.png')} />
 
       <Text>{message}</Text>
@@ -36,13 +37,13 @@ const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequ
         onSubmitEditing={() => onSubmit(login)}
       />
 
-      <View style={{ width: '90%' }}>
+      <View style={{ width: '100%' }}>
         <Button
           text="Отправить письмо"
           onPress={() => onSubmit(login)}
           disabled={disabledRequestButton}
           showLoading={isLoading}
-          variant={'secondary'}
+          variant={'primary'}
         />
       </View>
 
@@ -52,7 +53,7 @@ const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequ
         text="Назад"
         onPress={() => setShowModal(false)}
       />
-    </View>
+    </Card>
   );
 };
 
