@@ -79,8 +79,3 @@ const StackNavigator = () => {
 };
 
 export default StackNavigator;
-
-/*
-  const isSignedIn = useAppSelector((state) => state.auth.isSignedIn);
-
-*/
