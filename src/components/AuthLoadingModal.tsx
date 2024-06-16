@@ -184,12 +184,7 @@ const AuthLoadingModal = () => {
         size={isInvisibleRecaptcha ? 'invisible' : 'normal'}
         onClose={onRecaptchaModalClose}
       />
-      <View
-        style={[
-          styles.modalContainer,
-          globalStyles.container,
-        ]}
-      >
+      <View style={[styles.modalContainer, globalStyles.container]}>
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <ActivityIndicator size="large" color={globalStyles.primaryText.color} />
           <Text style={globalStyles.textColor2}>{messageStatus}</Text>

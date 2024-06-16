@@ -1,8 +1,13 @@
 import React from 'react';
-import { Text as RNText, TextProps as RNTextProps, StyleSheet, StyleProp, TextStyle } from 'react-native';
+import {
+  Text as RNText,
+  TextProps as RNTextProps,
+  StyleProp,
+  StyleSheet,
+  TextStyle,
+} from 'react-native';
 import { useAppTheme } from '~/hooks/theme';
 import { IThemeColors } from '~/styles/themes';
-
 
 export interface TextProps extends RNTextProps {
   colorVariant?: keyof IThemeColors;
@@ -12,7 +17,7 @@ const fontWeightToUbuntuFamily = {
   '400': 'Ubuntu-Regular',
   '500': 'Ubuntu-Medium',
   '700': 'Ubuntu-Bold',
-  'bold': 'Ubuntu-Bold',
+  bold: 'Ubuntu-Bold',
 };
 
 const getFontFamily = (style: StyleProp<TextStyle>) => {
@@ -23,9 +28,9 @@ const getFontFamily = (style: StyleProp<TextStyle>) => {
     }
   }
   if (style instanceof Object) {
-    return fontWeightToUbuntuFamily[style?.fontWeight]
+    return fontWeightToUbuntuFamily[style?.fontWeight];
   }
-}
+};
 
 export default function Text({ colorVariant = 'text', style, ...props }: TextProps) {
   const theme = useAppTheme();
