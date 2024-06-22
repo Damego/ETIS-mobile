@@ -7,8 +7,9 @@ import {
   TouchableOpacityProps,
   ViewStyle,
 } from 'react-native';
+import { IThemeColors } from '~/styles/themes';
 
-import Text, { TextColorVariant } from './Text';
+import Text from './Text';
 
 interface ClickableTextProps extends TouchableOpacityProps {
   text?: string | number;
@@ -16,7 +17,7 @@ interface ClickableTextProps extends TouchableOpacityProps {
   viewStyle?: StyleProp<ViewStyle>;
   onPress(): void;
   adjustsFontSizeToFit?: boolean;
-  colorVariant?: TextColorVariant;
+  colorVariant?: keyof IThemeColors;
   iconLeft?: React.ReactNode;
   iconRight?: React.ReactNode;
 }
@@ -36,7 +37,7 @@ const ClickableText = React.forwardRef<TouchableOpacity, ClickableTextProps>(
     },
     ref
   ) => (
-    <TouchableOpacity style={[styles.row, viewStyle]} ref={ref} {...props}>
+    <TouchableOpacity style={[styles.container, viewStyle]} ref={ref} {...props}>
       {iconLeft}
       <Text
         adjustsFontSizeToFit={adjustsFontSizeToFit}
@@ -53,7 +54,8 @@ const ClickableText = React.forwardRef<TouchableOpacity, ClickableTextProps>(
 export default ClickableText;
 
 const styles = StyleSheet.create({
-  row: {
+  container: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
 });

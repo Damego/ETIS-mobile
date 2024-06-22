@@ -16,6 +16,7 @@ export interface TextProps extends RNTextProps {
 const fontWeightToUbuntuFamily = {
   '400': 'Ubuntu-Regular',
   '500': 'Ubuntu-Medium',
+  '600': 'Ubuntu-Bold',
   '700': 'Ubuntu-Bold',
   bold: 'Ubuntu-Bold',
 };
@@ -36,14 +37,7 @@ export default function Text({ colorVariant = 'text', style, ...props }: TextPro
   const theme = useAppTheme();
 
   const $style = React.useMemo(() => {
-    const color: string =
-      {
-        primary: theme.colors.primary,
-        secondary: theme.colors.secondary,
-        default: theme.colors.text,
-        text: theme.colors.text,
-        text2: theme.colors.text2,
-      }[colorVariant] || theme.colors.text;
+    const color: string = theme.colors[colorVariant] || theme.colors.text2;
 
     return StyleSheet.compose(
       { color, fontFamily: getFontFamily(style) || 'Ubuntu-Regular' },
