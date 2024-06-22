@@ -11,7 +11,7 @@ type BottomSheetModal = BottomSheetModalMethods;
 
 const BottomSheetModalComponent = React.forwardRef<BottomSheetModal, BottomSheetModalProps>(
   (props, ref) => {
-    const { children, ...restProps } = props;
+    const { children, onDismiss, ...restProps } = props;
     const modalRef = useRef<BottomSheetModal>();
     const stateRef = useRef({
       isOpened: false,
@@ -42,7 +42,7 @@ const BottomSheetModalComponent = React.forwardRef<BottomSheetModal, BottomSheet
       [modalRef.current]
     );
 
-    const handleBackdropPress = () => {
+    const dismissModal = () => {
       modalRef.current.dismiss();
       stateRef.current.isOpened = false;
     };
@@ -52,8 +52,9 @@ const BottomSheetModalComponent = React.forwardRef<BottomSheetModal, BottomSheet
         ref={modalRef}
         backdropComponent={(props) => (
           // eslint-disable-next-line react/jsx-props-no-spreading
-          <BottomSheetModalBackdrop {...props} onPress={handleBackdropPress} />
+          <BottomSheetModalBackdrop {...props} onPress={dismissModal} />
         )}
+        onDismiss={onDismiss ?? dismissModal}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...restProps}
       >
