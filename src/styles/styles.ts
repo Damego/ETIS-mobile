@@ -14,6 +14,10 @@ const getGlobalStyles = ({ colors }: { colors: IThemeColors }) =>
       borderRadius: 20,
       backgroundColor: colors.container,
     },
+    card: {
+      backgroundColor: colors.cards,
+      borderRadius: 10,
+    },
     borderRadius: {
       borderRadius: 10,
     },

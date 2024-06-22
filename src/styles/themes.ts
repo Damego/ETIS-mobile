@@ -26,7 +26,9 @@ export interface IThemeColors {
   inputPlaceholder: string;
   // Цвет главных контейнеров
   container: string;
-  // Нижняя панель навигации
+  // Цвет карточек
+  cards: string;
+  // Нижняя панель навигации. Не путать с `cards`
   card: string;
   // ?
   notification: string;
@@ -43,7 +45,7 @@ export const LightTheme: ITheme = {
   dark: false,
   statusBarStyle: 'dark',
   colors: {
-    background: '#F6F6F6',
+    background: '#FFFFFF', // '#F6F6F6',
     primary: '#C62E3E',
     secondary: '#F9F0F1',
     primaryContrast: '#FFFFFF',
@@ -53,6 +55,7 @@ export const LightTheme: ITheme = {
     text2: '#2C2C2C',
     inputPlaceholder: '#A9A9AC',
     container: '#FFFFFF',
+    cards: '#F9F9F9',
     card: '#FFFFFF',
     notification: '#EAEAEA',
   },

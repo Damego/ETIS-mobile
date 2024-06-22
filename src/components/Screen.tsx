@@ -1,9 +1,19 @@
+import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { StatusBarStyle } from 'expo-status-bar/src/StatusBar.types';
 import React, { useRef, useState } from 'react';
-import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
+import {
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { useAppSelector } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
+import { progressiveHeaderShadowStyle } from '~/navigation/header';
+import { RootStackNavigationProp } from '~/navigation/types';
 
 import AuthLoadingModal from './AuthLoadingModal';
 
@@ -19,6 +29,18 @@ const Screen = ({ onUpdate, children, startScrollFromBottom, statusBarStyle }: S
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const scrollRef = useRef<ScrollView>();
   const theme = useAppTheme();
+  const navigation = useNavigation<RootStackNavigationProp>();
+
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    let y = event.nativeEvent.contentOffset.y / 8;
+    console.log(y);
+
+    if (y > 30) {
+      y = 30;
+    }
+
+    navigation.setOptions({ headerStyle: progressiveHeaderShadowStyle(theme, y) });
+  };
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -27,7 +49,7 @@ const Screen = ({ onUpdate, children, startScrollFromBottom, statusBarStyle }: S
   };
 
   return (
-    <View style={{ flex: 1, marginTop: '4%' }}>
+    <View style={{ flex: 1 }}>
       {isAuthorizing && <AuthLoadingModal />}
 
       <StatusBar style={statusBarStyle || theme.statusBarStyle} />
@@ -50,6 +72,7 @@ const Screen = ({ onUpdate, children, startScrollFromBottom, statusBarStyle }: S
         onContentSizeChange={
           startScrollFromBottom ? () => scrollRef.current.scrollToEnd() : undefined
         }
+        onScroll={handleScroll}
       >
         <View style={styles.screen}>{children}</View>
       </ScrollView>
@@ -63,5 +86,6 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     gap: 14,
+    marginHorizontal: '4%',
   },
 });
