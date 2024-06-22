@@ -19,13 +19,13 @@ const AnnouncePopover = ({ data }: { data: string }) => {
       )}
       popoverStyle={{
         borderRadius: globalStyles.border.borderRadius,
-        backgroundColor: globalStyles.block.backgroundColor,
+        backgroundColor: theme.colors.background,
         padding: '2%',
       }}
     >
       <AutoHeightWebView
         source={{ html: data }}
-        customStyle={getStyles(theme.colors.textForBlock, theme.colors.primary)}
+        customStyle={getStyles(theme.colors.text2, theme.colors.primary)}
       />
     </Popover>
   );
