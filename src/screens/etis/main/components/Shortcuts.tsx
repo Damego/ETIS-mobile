@@ -108,6 +108,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignSelf: 'center',
-    marginTop: '4%'
+    marginTop: '4%',
   },
 });

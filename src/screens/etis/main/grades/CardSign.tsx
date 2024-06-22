@@ -37,11 +37,7 @@ const CardSign = ({ subject }: { subject: ISubject }) => {
           </View>
         )}
       </View>
-      <BottomSheetModal
-        ref={ref}
-        onDismiss={() => ref.current.dismiss()}
-        snapPoints={['50%']}
-      >
+      <BottomSheetModal ref={ref} onDismiss={() => ref.current.dismiss()} snapPoints={['50%']}>
         <BottomSheetScrollView>
           <View style={styles.header}>
             <Text style={[fontSize.large, { flex: 1 }]}>{subject.name}</Text>
