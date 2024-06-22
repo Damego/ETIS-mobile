@@ -1,6 +1,4 @@
-import { AntDesign } from '@expo/vector-icons';
 import dayjs from 'dayjs';
-import weekday from 'dayjs/plugin/weekday';
 import React from 'react';
 import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import Text from '~/components/Text';

@@ -1,18 +1,21 @@
 import dayjs from 'dayjs';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import CenteredText from '~/components/CenteredText';
 import { LoadingContainer } from '~/components/LoadingScreen';
+import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import TimeTableContext from '~/context/timetableContext';
 import { useClient } from '~/data/client';
 import { useGlobalStyles } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
 import useTimeTableQuery from '~/hooks/useTimeTableQuery';
-import Dates from '~/screens/etis/main/components/Dates';
-import Pair from '~/screens/etis/main/components/Pair';
+import Shortcuts, { Shortcut } from '~/screens/etis/main/components/Shortcuts';
 import { capitalizeWord } from '~/utils/texts';
 import { getRandomItem } from '~/utils/utils';
+
+import Dates from './Dates';
+import Pair from './Pair';
 
 const noPairsResponses = [
   'Можно поиграть 🎮',
@@ -38,7 +41,7 @@ const NoPairsContainer = () => (
   </View>
 );
 
-export const Timetable = () => {
+export const Timetable = ({ onShortcutPress }) => {
   const client = useClient();
   const { data, isLoading, loadWeek } = useTimeTableQuery();
   const { data: teachersData, isLoading: teachersIsLoading } = useQuery({
@@ -82,24 +85,26 @@ export const Timetable = () => {
   }
 
   return (
-    <View style={[globalStyles.container, styles.timetableContainer]}>
-      <Text style={{ fontWeight: '700', fontSize: 22 }}>Расписание</Text>
-      <Text style={{ fontWeight: '500', fontSize: 18 }} colorVariant={'text2'}>
-        {capitalizeWord(selectedDate.format('MMMM'))} {selectedDate.get('year')}
-        {data ? ` • ${data.weekInfo.selected} неделя` : ''}
-      </Text>
-      <TimeTableContext.Provider value={contextData}>
-        <Dates selectedDate={selectedDate} onDatePress={onDatePress} />
-        {component}
-      </TimeTableContext.Provider>
-    </View>
+    <Screen>
+      <Shortcuts current={'timetable'} onPress={onShortcutPress} />
+
+      <View style={styles.timetableContainer}>
+        <Text style={{ fontWeight: '700', fontSize: 22 }}>Расписание</Text>
+        <Text style={{ fontWeight: '500', fontSize: 18 }} colorVariant={'text2'}>
+          {capitalizeWord(selectedDate.format('MMMM'))} {selectedDate.get('year')}
+          {data ? ` • ${data.weekInfo.selected} неделя` : ''}
+        </Text>
+        <TimeTableContext.Provider value={contextData}>
+          <Dates selectedDate={selectedDate} onDatePress={onDatePress} />
+          {component}
+        </TimeTableContext.Provider>
+      </View>
+    </Screen>
   );
 };
 
 const styles = StyleSheet.create({
-  timetableContainer: {
-    padding: '4%',
-  },
+  timetableContainer: {},
   pairsList: {
     marginTop: '4%',
     gap: 8,
