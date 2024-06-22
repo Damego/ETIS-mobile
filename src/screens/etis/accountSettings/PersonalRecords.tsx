@@ -75,7 +75,7 @@ export default function PersonalRecords() {
     method: client.getPersonalRecords,
   });
 
-  if (isLoading) {
+  if (isLoading || !data) {
     return null;
   }
 
