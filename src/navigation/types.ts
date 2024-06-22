@@ -29,16 +29,6 @@ export type EducationStackParamList = {
   // Настройки аккаунта
   AccountSettings: undefined;
 
-  // Быстрый доступ к важным экранам
-
-  // Экран с оценками
-  SignsNavigator: undefined;
-  // Экран с сообщениями
-  Messages: undefined;
-  // Экран с объявлениями
-  Announces: undefined;
-  // Экран со списком остальных экранов для ЕТИС
-  MoreScreens: undefined;
   // Информация о паре
   DisciplineInfo: { lesson: ILesson; date: string; pairPosition: number };
 
@@ -67,8 +57,6 @@ export type EducationStackParamList = {
 
   // История сообщений
   History: { data: IMessage[]; page: number };
-  // Подробности о выставленных баллах
-  SignsDetails: { subject: ISubject };
   // Заказ справки о доходах
   CertificateIncome: undefined;
   // Анкетирование по прошедшему триместру/семестру
