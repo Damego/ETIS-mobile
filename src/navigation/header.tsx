@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, Text, TextStyle } from 'react-native';
+import { StyleProp, TextStyle, View } from 'react-native';
 import { ITheme } from '~/styles/themes';
 
 export type HeaderParamList = {
@@ -10,6 +10,8 @@ export type HeaderParamList = {
   headerStyle?: StyleProp<{
     backgroundColor?: string;
     borderRadius?: number;
+    borderBottomEndRadius?: number;
+    borderBottomStartRadius?: number;
   }>;
   /**
    * Function which returns a React Element to render as the background of the header.
@@ -60,14 +62,29 @@ export type HeaderParamList = {
 export const headerParams = (theme: ITheme): HeaderParamList => ({
   headerStyle: {
     backgroundColor: theme.colors.container,
-    borderRadius: 30,
+    borderBottomEndRadius: 30,
+    borderBottomStartRadius: 30,
   },
   headerTitleStyle: {
     color: theme.colors.text,
     fontSize: 30,
     fontFamily: 'Ubuntu-Bold',
   },
-  headerBackground: null,
-  headerShadowVisible: false,
+  headerShadowVisible: true,
   headerTitleAlign: 'center',
 });
+
+export const progressiveHeaderShadowStyle = (theme: ITheme, offset: number) => {
+  return {
+    ...headerParams(theme).headerStyle,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.00,
+
+    elevation: offset,
+  }
+}
