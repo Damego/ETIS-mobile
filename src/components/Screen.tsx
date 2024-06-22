@@ -85,7 +85,6 @@ export default Screen;
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    gap: 14,
     marginHorizontal: '4%',
   },
 });

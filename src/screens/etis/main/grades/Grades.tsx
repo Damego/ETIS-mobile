@@ -11,11 +11,10 @@ import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { useAppTheme } from '~/hooks/theme';
 import useSignsQuery from '~/hooks/useSignsQuery';
-import Shortcuts from '~/screens/etis/main/components/Shortcuts';
 import GradesContainer from '~/screens/etis/main/grades/GradesContainer';
 import PeriodsBottomSheet from '~/screens/etis/main/grades/PeriodsBottomSheet';
 
-const Grades = ({ onShortcutPress }) => {
+const Grades = () => {
   const { data, isLoading, refresh, loadSession } = useSignsQuery();
   const ref = useRef<BottomSheetModal>();
   const theme = useAppTheme();
@@ -24,8 +23,7 @@ const Grades = ({ onShortcutPress }) => {
 
   if (isLoading) {
     component = <LoadingContainer />;
-  }
-  if (!data) {
+  } else if (!data) {
     component = <NoData onRefresh={refresh} />;
   } else {
     component = <GradesContainer data={data} />;
@@ -37,8 +35,6 @@ const Grades = ({ onShortcutPress }) => {
 
   return (
     <Screen>
-      <Shortcuts current={'grades'} onPress={onShortcutPress} />
-
       <View style={{ flexDirection: 'row', gap: 14, alignItems: 'center', marginBottom: '2%' }}>
         <Text style={{ fontWeight: '700', fontSize: 22, flex: 2 }}>Оценки</Text>
         {data && (
