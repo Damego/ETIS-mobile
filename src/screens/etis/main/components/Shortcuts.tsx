@@ -1,6 +1,10 @@
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import type {
+  NavigationState,
+  SceneRendererProps,
+} from 'react-native-tab-view/lib/typescript/src/types';
 import Text from '~/components/Text';
 import { useAppSelector, useGlobalStyles } from '~/hooks';
 
@@ -60,13 +64,16 @@ const Icon = ({
   );
 };
 
-const Shortcuts = ({
-  current,
-  onPress,
-}: {
-  current: Shortcut;
-  onPress: (shortcut: Shortcut) => void;
-}) => {
+const Shortcuts = (
+  props: SceneRendererProps & {
+    navigationState: NavigationState<any>;
+  }
+) => {
+  const { jumpTo, navigationState } = props;
+  const currentShortcut = navigationState
+    ? navigationState.routes[navigationState.index].key
+    : 'timetable';
+
   const { messageCount, announceCount } = useAppSelector((state) => state.student);
 
   return (
@@ -74,27 +81,27 @@ const Shortcuts = ({
       <Icon
         iconName={'calendar'}
         shortcut={'timetable'}
-        onPress={onPress}
-        isCurrent={current === 'timetable'}
+        onPress={jumpTo}
+        isCurrent={currentShortcut === 'timetable'}
       />
       <Icon
         iconName={'barschart'}
         shortcut={'grades'}
-        onPress={onPress}
-        isCurrent={current === 'grades'}
+        onPress={jumpTo}
+        isCurrent={currentShortcut === 'grades'}
       />
       <Icon
         iconName={'message1'}
         shortcut={'messages'}
         count={messageCount + announceCount}
-        onPress={onPress}
-        isCurrent={current === 'messages'}
+        onPress={jumpTo}
+        isCurrent={currentShortcut === 'messages'}
       />
       <Icon
         iconName={'appstore-o'}
         shortcut={'menu'}
-        onPress={onPress}
-        isCurrent={current === 'menu'}
+        onPress={jumpTo}
+        isCurrent={currentShortcut === 'menu'}
       />
     </View>
   );
@@ -108,6 +115,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignSelf: 'center',
-    marginTop: '4%',
+    marginVertical: '4%',
+    paddingHorizontal: '4%', // marginHorizontal не работает, если компонент исплользуется как TabBar для react-native-tab-view
   },
 });

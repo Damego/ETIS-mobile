@@ -1,22 +1,21 @@
-import React, { useEffect, useRef, useState } from 'react';
-import PagerView from 'react-native-pager-view';
+import React, { useEffect } from 'react';
+import { useWindowDimensions } from 'react-native';
+import { SceneMap, TabView } from 'react-native-tab-view';
 import { cache } from '~/cache/smartCache';
-import Screen from '~/components/Screen';
 import { useClient } from '~/data/client';
 import { useAppDispatch, useAppSelector } from '~/hooks';
 import { RequestType } from '~/models/results';
 import { setStudentState } from '~/redux/reducers/studentSlice';
-import Shortcuts, { Shortcut } from '~/screens/etis/main/components/Shortcuts';
+import Shortcuts from '~/screens/etis/main/components/Shortcuts';
 import { registerSignsFetchTask } from '~/tasks/signs/signs';
 
 import Grades from './grades/Grades';
 import { Timetable } from './timetable/Timetable';
 
-const shortcutToPage = {
-  timetable: 0,
-  grades: 1,
-  messages: 2,
-};
+const renderScene = SceneMap({
+  timetable: Timetable,
+  grades: Grades,
+});
 
 const ETISScreen = () => {
   const dispatch = useAppDispatch();
@@ -25,8 +24,6 @@ const ETISScreen = () => {
   } = useAppSelector((state) => state.settings);
   const client = useClient();
   const { isDemo, isOfflineMode } = useAppSelector((state) => state.auth);
-  const [currentShortcut, setCurrentShortcut] = useState<Shortcut>('timetable');
-  const pagerRef = useRef<PagerView>(null);
 
   useEffect(() => {
     loadData();
@@ -63,15 +60,23 @@ const ETISScreen = () => {
     if (fetched.data || cached.data) dispatch(setStudentState(fetched.data || cached.data));
   };
 
-  const handleShortcutPress = (shortcut: Shortcut) => {
-    pagerRef.current.setPageWithoutAnimation(shortcutToPage[shortcut]);
-  };
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    { key: 'timetable', title: 'timetable' },
+    { key: 'grades', title: 'grades' },
+  ]);
+  const layout = useWindowDimensions();
 
   return (
-    <PagerView style={{ flex: 1 }} initialPage={0} ref={pagerRef} scrollEnabled={false}>
-      <Timetable key={'1'} onShortcutPress={handleShortcutPress} />
-      <Grades key={'2'} onShortcutPress={handleShortcutPress} />
-    </PagerView>
+    <TabView
+      lazy
+      swipeEnabled={false}
+      navigationState={{ index, routes }}
+      renderScene={renderScene}
+      onIndexChange={setIndex}
+      initialLayout={{ width: layout.width }}
+      renderTabBar={Shortcuts}
+    />
   );
 };
 

@@ -41,13 +41,12 @@ const NoPairsContainer = () => (
   </View>
 );
 
-export const Timetable = ({ onShortcutPress }) => {
+export const Timetable = () => {
   const client = useClient();
   const { data, isLoading, loadWeek } = useTimeTableQuery();
   const { data: teachersData, isLoading: teachersIsLoading } = useQuery({
     method: client.getTeacherData,
   });
-  const globalStyles = useGlobalStyles();
 
   const currentDate = dayjs().startOf('day');
   const [selectedDate, setSelectedDate] = useState(currentDate);
@@ -86,8 +85,6 @@ export const Timetable = ({ onShortcutPress }) => {
 
   return (
     <Screen>
-      <Shortcuts current={'timetable'} onPress={onShortcutPress} />
-
       <View style={styles.timetableContainer}>
         <Text style={{ fontWeight: '700', fontSize: 22 }}>Расписание</Text>
         <Text style={{ fontWeight: '500', fontSize: 18 }} colorVariant={'text2'}>
