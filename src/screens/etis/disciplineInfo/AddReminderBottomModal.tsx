@@ -31,7 +31,7 @@ const TimePicker = ({
   return (
     <View style={timePickerStyles.container}>
       <TextInput
-        style={[globalStyles.border, timePickerStyles.textInput, globalStyles.fontColorForBlock]}
+        style={[globalStyles.border, timePickerStyles.textInput, globalStyles.textColor2]}
         placeholderTextColor={globalStyles.inputPlaceholder.color}
         value={value.hour().toString().padStart(2, '0')}
         onChangeText={handleChange('hours')}
@@ -39,7 +39,7 @@ const TimePicker = ({
       />
       <Text style={fontSize.xlarge}>:</Text>
       <TextInput
-        style={[globalStyles.border, timePickerStyles.textInput, globalStyles.fontColorForBlock]}
+        style={[globalStyles.border, timePickerStyles.textInput, globalStyles.textColor2]}
         placeholderTextColor={globalStyles.inputPlaceholder.color}
         value={value.minute().toString().padStart(2, '0')}
         onChangeText={handleChange('minutes')}
@@ -78,11 +78,11 @@ const AddReminderBottomModal = ({ onSubmit }: { onSubmit: (datetime: dayjs.Dayjs
         firstDayOfWeek={1}
         mode={'single'}
         selectedItemColor={theme.colors.primary}
-        calendarTextStyle={{ color: theme.colors.textForBlock }}
-        headerTextStyle={{ color: theme.colors.textForBlock }}
-        headerButtonColor={theme.colors.textForBlock}
-        weekDaysTextStyle={{ color: theme.colors.textForBlock }}
-        yearContainerStyle={{ backgroundColor: theme.colors.block }}
+        calendarTextStyle={{ color: theme.colors.text2 }}
+        headerTextStyle={{ color: theme.colors.text2 }}
+        headerButtonColor={theme.colors.text2}
+        weekDaysTextStyle={{ color: theme.colors.text2 }}
+        yearContainerStyle={{ backgroundColor: theme.colors.container }}
       />
       <Text style={styles.text}>Укажите время</Text>
       <TimePicker value={value} onValueChange={setValue} />

@@ -7,17 +7,15 @@ import BorderLine from '~/components/BorderLine';
 import DisciplineType from '~/components/DisciplineType';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
-import { useAppTheme } from '~/hooks/theme';
-import { RootStackScreenProps } from '~/navigation/types';
+import { EducationStackScreenProps } from '~/navigation/types';
 import { fontSize } from '~/utils/texts';
 
 import Note from './components/Note';
 import { TaskContainer } from './components/TaskContainer';
 import { AudienceInfo, TeacherInfo, TimeInfo } from './components/info';
 
-const DisciplineInfo = ({ route }: RootStackScreenProps<'DisciplineInfo'>) => {
+const DisciplineInfo = ({ route }: EducationStackScreenProps<'DisciplineInfo'>) => {
   const { date: stringDate, lesson, pairPosition } = route.params;
-  const theme = useAppTheme();
 
   // React navigation не позволяет передавать функции и экземпляры классов,
   // поэтому пришлось преобразовать dayjs в строку, а сейчас обратно
@@ -25,7 +23,7 @@ const DisciplineInfo = ({ route }: RootStackScreenProps<'DisciplineInfo'>) => {
 
   return (
     <Screen>
-      <View style={[styles.container, { backgroundColor: theme.colors.block }]}>
+      <View style={{ gap: 8 }}>
         <Text style={styles.text}>{lesson.subject.discipline}</Text>
         {lesson.subject?.type && <DisciplineType type={lesson.subject.type} />}
 
@@ -55,7 +53,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontWeight: '500',
-    ...fontSize.big,
+    ...fontSize.mlarge,
   },
 });
 

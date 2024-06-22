@@ -8,7 +8,7 @@ const AddButton = ({ onPress }: { onPress: () => void }) => {
   const globalStyles = useGlobalStyles();
   return (
     <TouchableOpacity style={[globalStyles.border, styles.container]} onPress={onPress}>
-      <Ionicons name={'add'} size={20} color={globalStyles.fontColorForBlock.color} />
+      <Ionicons name={'add'} size={20} color={globalStyles.textColor2.color} />
       <Text>Добавить</Text>
     </TouchableOpacity>
   );
