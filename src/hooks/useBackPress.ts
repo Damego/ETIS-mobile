@@ -1,6 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
+import { BackHandler } from 'react-native';
 
+/*
+ * Хук для отслеживания действия кнопки назад.
+ * Принимает функцию, которая должна вернуть булевое значение, означающее, нужно ли игнорировать нажатие кнопки
+ */
 const useBackPress = (callback: () => boolean) => {
   const navigation = useNavigation();
   useEffect(() => {
@@ -10,6 +15,12 @@ const useBackPress = (callback: () => boolean) => {
         event.preventDefault();
       }
     });
+    const handler = BackHandler.addEventListener('hardwareBackPress', callback);
+
+    return () => {
+      handler.remove();
+      // navigation.removeListener()
+    };
   }, []);
 };
 
