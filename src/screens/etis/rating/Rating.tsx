@@ -31,10 +31,8 @@ const Group = ({ group }: { group: IGroup }) => {
         <View style={{ width: '70%' }}>
           {group.disciplines.map((discipline, index) => (
             <View key={discipline.discipline}>
-              <Text style={fontSize.medium} colorVariant={'block'}>
-                {discipline.discipline}
-              </Text>
-              <Text style={fontSize.medium} colorVariant={'block'}>
+              <Text style={fontSize.medium}>{discipline.discipline}</Text>
+              <Text style={fontSize.medium}>
                 {discipline.top} из {discipline.total}
               </Text>
               {index !== group.disciplines.length - 1 && <BorderLine />}
@@ -48,7 +46,7 @@ const Group = ({ group }: { group: IGroup }) => {
   );
 };
 
-export default function RatingPage() {
+export default function Rating() {
   const { data, isLoading, refresh, loadSession } = useRatingQuery();
 
   if (isLoading) return <LoadingScreen />;

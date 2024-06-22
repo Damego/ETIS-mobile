@@ -4,7 +4,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Text from '~/components/Text';
 import { useAppSelector, useGlobalStyles } from '~/hooks';
 
-export type Shortcut = 'timetable' | 'marks' | 'messages' | 'menu';
+export type Shortcut = 'timetable' | 'grades' | 'messages' | 'menu';
 
 const Icon = ({
   iconName,
@@ -68,10 +68,9 @@ const Shortcuts = ({
   onPress: (shortcut: Shortcut) => void;
 }) => {
   const { messageCount, announceCount } = useAppSelector((state) => state.student);
-  const globalStyles = useGlobalStyles();
 
   return (
-    <View style={[globalStyles.container, styles.shortcutsContainer]}>
+    <View style={styles.shortcutsContainer}>
       <Icon
         iconName={'calendar'}
         shortcut={'timetable'}
@@ -80,9 +79,9 @@ const Shortcuts = ({
       />
       <Icon
         iconName={'barschart'}
-        shortcut={'marks'}
+        shortcut={'grades'}
         onPress={onPress}
-        isCurrent={current === 'marks'}
+        isCurrent={current === 'grades'}
       />
       <Icon
         iconName={'message1'}
@@ -108,7 +107,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: '4%',
     alignSelf: 'center',
+    marginTop: '4%'
   },
 });

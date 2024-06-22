@@ -4,7 +4,6 @@ import CardHeaderIn from '~/components/CardHeaderIn';
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
 import { useClient } from '~/data/client';
-import { useGlobalStyles } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
 import { RequestType } from '~/models/results';
 import { ICheckPoint } from '~/models/sessionPoints';
@@ -18,17 +17,8 @@ const cutTypeControl = (typeControl: string): string =>
     .map((char) => char.charAt(0).toUpperCase())
     .join('');
 
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-  },
-});
-
 const CheckPointDetails = ({ checkPoint, index }: { checkPoint: ICheckPoint; index: number }) => {
   const client = useClient();
-  const globalStyles = useGlobalStyles();
   const { data, isLoading } = useQuery({
     method: client.getPointUpdates,
     payload: {
@@ -41,15 +31,10 @@ const CheckPointDetails = ({ checkPoint, index }: { checkPoint: ICheckPoint; ind
   let scoreText: string | number = formatCheckPointScore(checkPoint) || checkPoint.points;
   const lastDate = data && data.date ? data.date : checkPoint.date;
 
-  const rowTextStyle = StyleSheet.compose(globalStyles.fontColorForBlock, { fontSize: 15 });
   const Row = ({ first, second }: { first: string | number; second: string | number }) => (
     <View style={styles.row}>
-      <Text style={rowTextStyle} colorVariant={'block'}>
-        {first}
-      </Text>
-      <Text style={rowTextStyle} colorVariant={'block'}>
-        {second}
-      </Text>
+      <Text style={styles.rowText}>{first}</Text>
+      <Text style={styles.rowText}>{second}</Text>
     </View>
   );
 
@@ -67,15 +52,13 @@ const CheckPointDetails = ({ checkPoint, index }: { checkPoint: ICheckPoint; ind
       )}
       <Row first={'Вид работы:'} second={checkPoint.typeWork} />
       <View style={styles.row}>
-        <Text style={rowTextStyle} colorVariant={'block'}>
-          {'Вид контроля:'}
-        </Text>
+        <Text style={styles.rowText}>{'Вид контроля:'}</Text>
         <ClickableText
           text={cutTypeControl(checkPoint.typeControl)}
           onPress={() => {
             ToastAndroid.show(checkPoint.typeControl, ToastAndroid.LONG);
           }}
-          textStyle={[rowTextStyle, { textDecorationLine: 'underline' }]}
+          textStyle={styles.clickableText}
         />
       </View>
     </CardHeaderIn>
@@ -83,3 +66,18 @@ const CheckPointDetails = ({ checkPoint, index }: { checkPoint: ICheckPoint; ind
 };
 
 export default CheckPointDetails;
+
+const styles = StyleSheet.create({
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+  },
+  rowText: {
+    fontSize: 16,
+  },
+  clickableText: {
+    fontSize: 16,
+    textDecorationLine: 'underline',
+  },
+});
