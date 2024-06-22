@@ -83,7 +83,7 @@ const AddTaskModalContent = ({
       {/* BottomSheetTextInput просто закрывается при открытии клавиатуры */}
       <Text style={styles.titleText}>Описание</Text>
       <TextInput
-        style={[globalStyles.border, styles.textInput, globalStyles.fontColorForBlock]}
+        style={[globalStyles.border, styles.textInput, globalStyles.textColor2]}
         placeholderTextColor={globalStyles.inputPlaceholder.color}
         placeholder="Решить 100 задач"
         value={description}
@@ -138,7 +138,7 @@ const AddTaskModalContent = ({
       <BottomSheetModal
         ref={reminderModal}
         backdropComponent={BottomSheetModalBackdrop}
-        backgroundStyle={{ backgroundColor: globalStyles.block.backgroundColor }}
+        backgroundStyle={{ backgroundColor: globalStyles.containerBackground.backgroundColor }}
       >
         <BottomSheetView style={styles.modalView}>
           <AddReminderBottomModal onSubmit={addReminder} />

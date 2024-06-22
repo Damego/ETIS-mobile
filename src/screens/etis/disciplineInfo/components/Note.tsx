@@ -82,14 +82,14 @@ const Note = ({ disciplineName }: { disciplineName: string }) => {
           <Ionicons
             name={showNote ? 'chevron-up-outline' : 'chevron-down-outline'}
             size={24}
-            color={globalStyles.fontColorForBlock.color}
+            color={globalStyles.textColor2.color}
           />
         </TouchableOpacity>
       </View>
       {showNote && (
         <View style={styles.textInputContainer}>
           <TextInput
-            style={[globalStyles.border, styles.textInput, globalStyles.fontColorForBlock]}
+            style={[globalStyles.border, styles.textInput, globalStyles.textColor2]}
             value={info.note}
             onChangeText={handleEditNote}
             placeholder={'Запишите сюда почту или телефон преподавателя'}
@@ -99,11 +99,7 @@ const Note = ({ disciplineName }: { disciplineName: string }) => {
 
           {isTextChanged && (
             <TouchableOpacity style={styles.saveIcon} onPress={handleNoteSave}>
-              <Ionicons
-                name={'save-outline'}
-                size={26}
-                color={globalStyles.fontColorForBlock.color}
-              />
+              <Ionicons name={'save-outline'} size={26} color={globalStyles.textColor2.color} />
             </TouchableOpacity>
           )}
         </View>

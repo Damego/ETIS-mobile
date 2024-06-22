@@ -22,7 +22,7 @@ const TaskItem = ({ task }: { task: DisciplineTask }) => {
         <Text>{task.description}</Text>
       </View>
       <TouchableOpacity onPress={() => onRequestEdit(task)} style={styles.align}>
-        <Ionicons name={'pencil-outline'} size={20} color={theme.colors.textForBlock} />
+        <Ionicons name={'pencil-outline'} size={20} color={theme.colors.text2} />
       </TouchableOpacity>
     </View>
   );

@@ -25,7 +25,7 @@ const TaskModal = React.forwardRef<BottomSheetModal, TaskModalProps>(
         ref={ref}
         enableDynamicSizing
         backdropComponent={BottomSheetModalBackdrop}
-        backgroundStyle={{ backgroundColor: theme.colors.block }}
+        backgroundStyle={{ backgroundColor: theme.colors.container }}
         onDismiss={onDismiss}
       >
         <BottomSheetView style={styles.modalContainer}>

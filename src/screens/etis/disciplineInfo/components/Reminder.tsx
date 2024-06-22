@@ -20,7 +20,7 @@ const Reminder = ({
     <View style={styles.reminderContainer}>
       <Text style={fontSize.big}>{formatTime(reminder.datetime)}</Text>
       <TouchableOpacity onPress={onRemove}>
-        <Ionicons name={'trash-outline'} size={20} color={theme.colors.textForBlock} />
+        <Ionicons name={'trash-outline'} size={20} color={theme.colors.text2} />
       </TouchableOpacity>
     </View>
   );
