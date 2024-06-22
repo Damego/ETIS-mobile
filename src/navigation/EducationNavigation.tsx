@@ -2,13 +2,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { useAppSelector } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
-import SignsTopTabNavigator from '~/navigation/TopTabNavigator';
 import { headerParams } from '~/navigation/header';
 import AccountSettingsButton from '~/navigation/headerButtons/AccountSettingsButton';
 import { EducationStackParamList } from '~/navigation/types';
 import Absences from '~/screens/etis/absences';
 import AccountSettings from '~/screens/etis/accountSettings/AccountSettings';
-import Announce from '~/screens/etis/announce/Announce';
 import Auth from '~/screens/etis/auth/Auth';
 import BellSchedule from '~/screens/etis/bellSchedule/BellSchedule';
 import CathedraTimetable from '~/screens/etis/cathedraTimetable/CathedraTimetable';
@@ -21,12 +19,9 @@ import DisciplineInfo from '~/screens/etis/disciplineInfo/DisciplineInfo';
 import DisciplinesTasks from '~/screens/etis/disciplinesTasks/DisciplinesTasks';
 import ETISScreen from '~/screens/etis/main/MainScreen';
 import MessageHistory from '~/screens/etis/messages/MessageHistory';
-import Messages from '~/screens/etis/messages/Messages';
-import PersonalRecords from '~/screens/etis/personalRecords/PersonalRecords';
 import SessionQuestionnaire from '~/screens/etis/sessionQuestionnaire/SessionQuestionnaire';
 import SessionQuestionnaireList from '~/screens/etis/sessionQuestionnaire/SessionQuestionnaireList';
 import ShortTeachPlan from '~/screens/etis/shortTeachPlan';
-import SignsDetails from '~/screens/etis/signs/SignsDetails';
 import Teachers from '~/screens/etis/teachers';
 import Timetable from '~/screens/etis/timeTable/TimeTable';
 import Orders from '~/screens/orders';
@@ -53,14 +48,6 @@ const EducationNavigation = () => {
             component={AccountSettings}
             options={{ title: 'Аккаунт' }}
           />
-          <Stack.Screen
-            name={'SignsNavigator'}
-            component={SignsTopTabNavigator}
-            options={{ title: 'Успеваемость' }}
-          />
-          <Stack.Screen name={'Messages'} component={Messages} options={{ title: 'Сообщения' }} />
-          <Stack.Screen name={'Announces'} component={Announce} options={{ title: 'Объявления' }} />
-          <Stack.Screen name={'MoreScreens'} component={Auth} options={{ title: 'Сервисы ЕТИС' }} />
           <Stack.Screen
             name={'Timetable'}
             component={Timetable}
@@ -108,11 +95,6 @@ const EducationNavigation = () => {
             options={{ title: 'Расписание звонков' }}
           />
           <Stack.Screen name={'History'} component={MessageHistory} />
-          <Stack.Screen
-            name={'SignsDetails'}
-            component={SignsDetails}
-            options={{ title: 'Подробности' }}
-          />
           <Stack.Screen
             name={'CertificateIncome'}
             component={CertificateIncome}
