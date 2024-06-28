@@ -121,7 +121,7 @@ export default function parseMessages(html: string) {
   const { messages } = data;
   let messageThemeIndex = -1;
 
-  $('.nav.msg', html).each((el, messageElement) => {
+  $('.nav.msg').each((el, messageElement) => {
     const message = $(messageElement);
 
     if (message.hasClass('repl_t')) {

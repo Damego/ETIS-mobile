@@ -18,9 +18,7 @@ const styles = StyleSheet.create({
 const AttachedFiles = ({ files }: { files: IMessageFile[] }) => {
   return (
     <View style={{ flexDirection: 'column' }}>
-      <Text style={styles.subjectText} colorVariant={'block'}>
-        Прикреплённые файлы:{' '}
-      </Text>
+      <Text style={styles.subjectText}>Прикреплённые файлы: </Text>
       {files.map((file, index) => (
         <FileTextLink
           src={file.uri}
@@ -48,12 +46,12 @@ function Message({ message }: { message: IMessage }) {
 
   return (
     <CardHeaderOut topText={cardTopText}>
-      <Text colorVariant={'block'} selectable selectionColor={theme.colors.primary}>
+      <Text selectable selectionColor={theme.colors.primary}>
         {message.content}
       </Text>
       {hasFiles ? <AttachedFiles files={message.files} /> : ''}
       <View style={{ alignItems: 'flex-end' }}>
-        <Text colorVariant={'block'}>{formattedTime}</Text>
+        <Text>{formattedTime}</Text>
       </View>
     </CardHeaderOut>
   );

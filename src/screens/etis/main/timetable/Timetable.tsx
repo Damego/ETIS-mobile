@@ -57,8 +57,8 @@ export const Timetable = () => {
   );
 
   useEffect(() => {
-    loadWeek(30);
-  }, []);
+    if (data && data.weekInfo.selected !== 30) loadWeek(30);
+  }, [data]);
 
   const onDatePress = (date: dayjs.Dayjs) => {
     setSelectedDate(date);

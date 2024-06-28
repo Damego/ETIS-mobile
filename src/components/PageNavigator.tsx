@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   activeButtonView: {
-    borderRadius: 10,
+    borderRadius: 18,
   },
   activeButtonText: {
     color: '#FFFFFF',

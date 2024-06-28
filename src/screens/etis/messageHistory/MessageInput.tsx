@@ -55,24 +55,18 @@ const styles = StyleSheet.create({
   },
 });
 
+const MAX_FILE_SIZE_LIMIT = 2 * 1024 * 1024;
+
 const File = ({ name, onRemove }) => {
   const globalStyles = useGlobalStyles();
   const fileFormat = name.split('.').at(-1);
   const cutFileName = name.length < 14 ? name : `${name.substring(0, 10)}....${fileFormat}`;
 
   return (
-    <View
-      style={[
-        styles.fileContainer,
-        globalStyles.block,
-        { borderColor: globalStyles.border.borderColor },
-      ]}
-    >
-      <Text style={styles.fileText} colorVariant={'block'}>
-        {cutFileName}
-      </Text>
+    <View style={[styles.fileContainer, { borderColor: globalStyles.border.borderColor }]}>
+      <Text style={styles.fileText}>{cutFileName}</Text>
       <TouchableOpacity style={styles.removeIcon} onPress={() => onRemove(name)}>
-        <AntDesign name="closecircleo" size={20} color={globalStyles.fontColorForBlock.color} />
+        <AntDesign name="closecircleo" size={20} color={globalStyles.textColor2.color} />
       </TouchableOpacity>
     </View>
   );
@@ -121,7 +115,7 @@ const MessageInput = ({
 
     const docs = result.assets
       .map((doc) => {
-        if (doc.size > 2 * 1024 * 1024) {
+        if (doc.size > MAX_FILE_SIZE_LIMIT) {
           ToastAndroid.show('Файл должен быть не более 2 МБ!', ToastAndroid.SHORT);
           return;
         }
@@ -143,13 +137,13 @@ const MessageInput = ({
   };
 
   return (
-    <View style={[styles.inputView, globalStyles.block, { borderColor: theme.colors.border }]}>
+    <View style={[styles.inputView, { borderColor: theme.colors.border }]}>
       <TouchableOpacity style={styles.iconView} onPress={innerSelectFile}>
-        <Feather name="paperclip" size={24} color={theme.colors.textForBlock} />
+        <Feather name="paperclip" size={24} color={theme.colors.text} />
       </TouchableOpacity>
 
       <TextInput
-        style={[fontSize.medium, styles.input, globalStyles.fontColorForBlock, globalStyles.block]}
+        style={[fontSize.medium, styles.input, globalStyles.textColor]}
         onChangeText={(text) => setValue(text)}
         value={value}
         placeholder="Сообщение"
@@ -174,7 +168,7 @@ const MessageInput = ({
           <Ionicons
             name="send"
             size={24}
-            color={value ? theme.colors.primary : theme.colors.textForBlock}
+            color={value ? theme.colors.primary : theme.colors.text}
           />
         )}
       </TouchableOpacity>
