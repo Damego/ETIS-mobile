@@ -18,7 +18,7 @@ import ChangePassword from '~/screens/etis/changeCredentials/ChangePassword';
 import DisciplineInfo from '~/screens/etis/disciplineInfo/DisciplineInfo';
 import DisciplinesTasks from '~/screens/etis/disciplinesTasks/DisciplinesTasks';
 import ETISScreen from '~/screens/etis/main/MainScreen';
-import MessageHistory from '~/screens/etis/messages/MessageHistory';
+import MessageHistory from '~/screens/etis/messageHistory/MessageHistory';
 import SessionQuestionnaire from '~/screens/etis/sessionQuestionnaire/SessionQuestionnaire';
 import SessionQuestionnaireList from '~/screens/etis/sessionQuestionnaire/SessionQuestionnaireList';
 import ShortTeachPlan from '~/screens/etis/shortTeachPlan';
@@ -94,7 +94,7 @@ const EducationNavigation = () => {
             component={BellSchedule}
             options={{ title: 'Расписание звонков' }}
           />
-          <Stack.Screen name={'History'} component={MessageHistory} />
+          <Stack.Screen name={'MessageHistory'} component={MessageHistory} />
           <Stack.Screen
             name={'CertificateIncome'}
             component={CertificateIncome}

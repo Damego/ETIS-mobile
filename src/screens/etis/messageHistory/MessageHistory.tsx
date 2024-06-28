@@ -1,13 +1,14 @@
+import { ListRenderItemInfo } from '@shopify/flash-list';
 import React, { useEffect, useRef, useState } from 'react';
-import { ToastAndroid } from 'react-native';
-import Screen from '~/components/Screen';
+import { ToastAndroid, View } from 'react-native';
+import Screen, { ListScreen } from '~/components/Screen';
 import { useClient } from '~/data/client';
 import { useAppSelector } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
 import { IMessage } from '~/models/messages';
 import { UploadFile } from '~/models/other';
 import { IGetPayload, RequestType } from '~/models/results';
-import { RootStackScreenProps } from '~/navigation/types';
+import { EducationStackScreenProps } from '~/navigation/types';
 import { parseDate } from '~/parser/utils';
 import { httpClient } from '~/utils';
 
@@ -31,7 +32,10 @@ const compareMessages = (first: IMessage, second: IMessage) => {
 const findMessageBlockById = (messages: IMessage[][], messageId: string) =>
   messages.find((messageBlock) => messageBlock.find((message) => message.messageID === messageId));
 
-export default function MessageHistory({ route, navigation }: RootStackScreenProps<'History'>) {
+export default function MessageHistory({
+  route,
+  navigation,
+}: EducationStackScreenProps<'MessageHistory'>) {
   const [messages, setMessages] = useState<IMessage[]>(route.params.data);
   const pageRef = useRef<number>(route.params.page);
   const [isUploading, setUploading] = useState<boolean>(false);
@@ -120,13 +124,19 @@ export default function MessageHistory({ route, navigation }: RootStackScreenPro
     navigation.setOptions({ title: shortAuthor });
   }, []);
 
+  const renderMessage = ({ item }: ListRenderItemInfo<IMessage>) => <Message message={item} />;
+
   return (
     <>
-      <Screen startScrollFromBottom>
-        {messages.sort(compareMessages).map((message, index) => (
-          <Message message={message} key={`${message.time}-${index}`} />
-        ))}
-      </Screen>
+      <ListScreen
+        startScrollFromBottom
+        renderItem={renderMessage}
+        data={messages.sort(compareMessages)}
+        estimatedItemSize={140}
+        containerStyle={{ marginBottom: '2%' }}
+        ItemSeparatorComponent={() => <View style={{ marginVertical: '1%' }} />}
+      />
+
       {files.length !== 0 && <FilesPreview files={files} onFileRemove={onFileRemove} />}
       <MessageInput
         onFileSelect={onFileSelect}

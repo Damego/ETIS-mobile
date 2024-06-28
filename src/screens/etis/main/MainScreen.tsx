@@ -10,11 +10,13 @@ import Shortcuts from '~/screens/etis/main/components/Shortcuts';
 import { registerSignsFetchTask } from '~/tasks/signs/signs';
 
 import Grades from './grades/Grades';
+import MessagesTabs from './messages/MessagesTabs';
 import { Timetable } from './timetable/Timetable';
 
 const renderScene = SceneMap({
   timetable: Timetable,
   grades: Grades,
+  messageTabs: MessagesTabs,
 });
 
 const ETISScreen = () => {
@@ -64,11 +66,13 @@ const ETISScreen = () => {
   const [routes] = React.useState([
     { key: 'timetable', title: 'timetable' },
     { key: 'grades', title: 'grades' },
+    { key: 'messageTabs', title: 'messageTabs' },
   ]);
   const layout = useWindowDimensions();
 
   return (
     <TabView
+      style={{ flex: 1 }}
       lazy
       swipeEnabled={false}
       navigationState={{ index, routes }}

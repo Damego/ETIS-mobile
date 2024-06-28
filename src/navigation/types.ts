@@ -56,7 +56,7 @@ export type EducationStackParamList = {
   // Остальные экраны
 
   // История сообщений
-  History: { data: IMessage[]; page: number };
+  MessageHistory: { data: IMessage[]; page: number };
   // Заказ справки о доходах
   CertificateIncome: undefined;
   // Анкетирование по прошедшему триместру/семестру
@@ -96,6 +96,14 @@ export type RootStackScreenProps<ScreenName extends keyof RootStackParamList = u
   StackScreenProps<RootStackParamList, ScreenName>;
 export type BottomTabsScreenProps<ScreenName extends keyof BottomTabsParamList = undefined> =
   CompositeScreenProps<BottomTabScreenProps<BottomTabsParamList, ScreenName>, RootStackScreenProps>;
+
+export type EducationStackScreenProps<
+  ScreenName extends keyof EducationStackParamList = undefined,
+> = CompositeScreenProps<
+  StackScreenProps<EducationStackParamList, ScreenName>,
+  RootStackScreenProps
+>;
+
 export type ServiceNativeStackScreenProps<
   ScreenName extends keyof ServicesNativeStackParamList = undefined,
 > = CompositeScreenProps<
