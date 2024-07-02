@@ -49,7 +49,7 @@ const PersonalRecord = ({
         <Text colorVariant={'text2'}>
           {record.year} {record.speciality}
         </Text>
-        {!showStatus && <Text colorVariant={'text2'}>Статус: {record.status}</Text>}
+        {!showStatus && <Text>Статус: {record.status}</Text>}
       </View>
       {record.id && record.status === 'студент' && (
         <View>
