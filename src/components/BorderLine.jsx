@@ -1,15 +1,14 @@
 import React from 'react';
 import { View } from 'react-native';
-
-import { useGlobalStyles } from '../hooks';
+import { useAppTheme } from '~/hooks/theme';
 
 const BorderLine = () => {
-  const globalStyles = useGlobalStyles();
+  const theme = useAppTheme();
 
   return (
     <View
       style={{
-        borderBottomColor: globalStyles.border.borderColor,
+        borderBottomColor: theme.colors.border,
         borderBottomWidth: 1,
         alignSelf: 'center',
         width: '95%',

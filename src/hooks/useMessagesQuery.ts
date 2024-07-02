@@ -1,8 +1,8 @@
 import { useRef } from 'react';
+import { useClient } from '~/data/client';
+import { GetResultType, RequestType } from '~/models/results';
+import { setMessageCount } from '~/redux/reducers/studentSlice';
 
-import { useClient } from '../data/client';
-import { GetResultType, RequestType } from '../models/results';
-import { setMessageCount } from '../redux/reducers/studentSlice';
 import { useAppDispatch } from './redux';
 import useQuery from './useQuery';
 
@@ -21,7 +21,8 @@ const useMessagesQuery = () => {
         dispatch(setMessageCount(null));
       }
     },
-    onFail: () => {
+    onFail: (result) => {
+      console.log('fail');
       update({
         data: 1,
         requestType: RequestType.forceCache,

@@ -1,6 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-
-import { ISessionMarks } from '../../models/sessionMarks';
+import { ISessionMarks } from '~/models/sessionMarks';
 
 interface SignsState {
   sessionsMarks: ISessionMarks[];

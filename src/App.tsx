@@ -3,9 +3,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import weekday from 'dayjs/plugin/weekday';
-import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
-import React, { useEffect } from 'react';
+import React from 'react';
 import 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
 
@@ -23,33 +21,21 @@ import { addShortcuts } from './utils/shortcuts';
 dayjs.locale('ru');
 dayjs.extend(weekday);
 dayjs.extend(customParseFormat);
-SplashScreen.preventAutoHideAsync().catch((e) => e);
 
 const store = setupStore();
 
 store.dispatch(loadStorage());
 store.dispatch(manageEventTheme(store));
 
-defineSignsFetchTask();
-addShortcuts();
-rescheduleAllTaskNotifications();
+// defineSignsFetchTask();
+// addShortcuts();
+// rescheduleAllTaskNotifications();
 
 const App = () => {
-  const [fontsLoaded] = useFonts({
-    'Nunito-SemiBold': require('../assets/fonts/Nunito-SemiBold.ttf'),
-    'Nunito-Bold': require('../assets/fonts/Nunito-Bold.ttf'),
-    'Nunito-Light': require('../assets/fonts/Nunito-Light.ttf'),
-    'Nunito-Regular': require('../assets/fonts/Nunito-Regular.ttf'),
-  });
-
-  useEffect(() => {
-    requestNotificationPermission();
-    checkUpdate();
-  }, []);
-
-  if (!fontsLoaded) {
-    return null;
-  }
+  // useEffect(() => {
+  //   requestNotificationPermission();
+  //   checkUpdate();
+  // }, []);
 
   return (
     <Provider store={store}>

@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Button, StyleSheet, ToastAndroid, View } from 'react-native';
-
-import { cache } from '../cache/smartCache';
-import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
+import { cache } from '~/cache/smartCache';
+import { useAppDispatch, useAppSelector, useGlobalStyles } from '~/hooks';
 import {
   UserCredentials,
   setAuthorizing,
   signIn,
   signInDemo,
   signOut,
-} from '../redux/reducers/authSlice';
-import { httpClient } from '../utils';
-import isDemoCredentials from '../utils/demo';
+} from '~/redux/reducers/authSlice';
+import { httpClient } from '~/utils';
+import isDemoCredentials from '~/utils/demo';
+
 import CustomReCaptcha from './ReCaptcha';
 import Text from './Text';
 
@@ -184,24 +184,17 @@ const AuthLoadingModal = () => {
         size={isInvisibleRecaptcha ? 'invisible' : 'normal'}
         onClose={onRecaptchaModalClose}
       />
-      <View
-        style={[
-          styles.modalContainer,
-          globalStyles.border,
-          globalStyles.block,
-          globalStyles.shadow,
-        ]}
-      >
+      <View style={[styles.modalContainer, globalStyles.container]}>
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-          <ActivityIndicator size="large" color={globalStyles.primaryFontColor.color} />
-          <Text style={globalStyles.fontColorForBlock}>{messageStatus}</Text>
+          <ActivityIndicator size="large" color={globalStyles.primaryText.color} />
+          <Text style={globalStyles.textColor2}>{messageStatus}</Text>
 
           {showOfflineButton && (
             <View style={{ marginTop: '15%' }}>
               <Button
                 title="Оффлайн режим"
                 onPress={signInOffline}
-                color={globalStyles.primaryFontColor.color}
+                color={globalStyles.primaryText.color}
               />
             </View>
           )}

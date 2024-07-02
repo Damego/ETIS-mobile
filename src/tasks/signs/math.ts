@@ -1,4 +1,5 @@
-import { ISubject } from '../../models/sessionPoints';
+import { ISubject } from '~/models/sessionPoints';
+
 import { IDifferentCheckPoint } from './types';
 
 export const differenceSigns = (marks1: ISubject[], marks2: ISubject[]): IDifferentCheckPoint[] => {

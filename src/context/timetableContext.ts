@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
-import { createContext } from 'react';
-
-import { ITeacher } from '../models/teachers';
+import { createContext, useContext } from 'react';
+import { ITeacher } from '~/models/teachers';
 
 interface ITimeTableContext {
   teachers?: ITeacher[];
@@ -11,3 +10,5 @@ interface ITimeTableContext {
 const TimeTableContext = createContext<ITimeTableContext>({});
 
 export default TimeTableContext;
+
+export const useTimetableContext = () => useContext(TimeTableContext);

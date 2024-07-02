@@ -1,4 +1,4 @@
-import * as SentryExpo from 'sentry-expo';
+import * as Sentry from '@sentry/react-native';
 
 export default () => {
   if (__DEV__) return;
@@ -10,23 +10,22 @@ export default () => {
   if (!dsn) {
     console.warn('[SENTRY] No DSN URL was provided!');
   } else {
-    SentryExpo.init({
+    Sentry.init({
       dsn,
       tracesSampleRate: 1.0,
       integrations: __DEV__
         ? [
-            new SentryExpo.Native.ReactNativeTracing({
+            new Sentry.ReactNativeTracing({
               shouldCreateSpanForRequest: (url) => !url.startsWith(`http://`),
             }),
           ]
         : [],
-      enableInExpoDevelopment: true,
       debug: __DEV__, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
     });
   }
 };
 export const reportParserError = (error) => {
-  if (!__DEV__) SentryExpo.React.captureException(error);
+  if (!__DEV__) Sentry.captureException(error);
 };
 
 export const executeRegex = (
@@ -36,7 +35,7 @@ export const executeRegex = (
 ): RegExpExecArray => {
   const result = regex.exec(str);
   if (!result && sendReport) {
-    SentryExpo.React.captureMessage(`String ${str} mismatched with regex ${regex}`, 'error');
+    Sentry.captureMessage(`String ${str} mismatched with regex ${regex}`, 'error');
   }
   return result;
 };

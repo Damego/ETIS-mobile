@@ -1,23 +1,22 @@
 import { useMemo } from 'react';
-
-import { cache } from '../cache/smartCache';
-import { useAppSelector } from '../hooks';
-import { IAbsence } from '../models/absences';
-import { ICalendarSchedule } from '../models/calendarSchedule';
-import { ICathedraTimetable, ICathedraTimetablePayload } from '../models/cathedraTimetable';
-import { ICertificateTable } from '../models/certificate';
-import { IMessagesData } from '../models/messages';
-import { IOrder } from '../models/order';
-import { IPersonalRecord } from '../models/personalRecords';
-import { IPointUpdates } from '../models/pointUpdates';
-import { ISessionRating } from '../models/rating';
-import { IGetPayload, IGetResult } from '../models/results';
-import { ISessionMarks } from '../models/sessionMarks';
-import { ISessionPoints } from '../models/sessionPoints';
-import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
-import { ISessionTeachPlan } from '../models/teachPlan';
-import { ITeacher } from '../models/teachers';
-import { ITimeTable } from '../models/timeTable';
+import { cache } from '~/cache/smartCache';
+import { useAppSelector } from '~/hooks';
+import { IAbsence } from '~/models/absences';
+import { ICalendarSchedule } from '~/models/calendarSchedule';
+import { ICathedraTimetable, ICathedraTimetablePayload } from '~/models/cathedraTimetable';
+import { ICertificateTable } from '~/models/certificate';
+import { IMessagesData } from '~/models/messages';
+import { IOrder } from '~/models/order';
+import { IPersonalRecord } from '~/models/personalRecords';
+import { IPointUpdates } from '~/models/pointUpdates';
+import { ISessionRating } from '~/models/rating';
+import { IGetPayload, IGetResult } from '~/models/results';
+import { ISessionMarks } from '~/models/sessionMarks';
+import { ISessionPoints } from '~/models/sessionPoints';
+import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '~/models/sessionQuestionnaire';
+import { ISessionTeachPlan } from '~/models/teachPlan';
+import { ITeacher } from '~/models/teachers';
+import { ITimeTable } from '~/models/timeTable';
 import {
   parseAbsenses,
   parseAnnounce,
@@ -28,19 +27,20 @@ import {
   parseShortTeachPlan,
   parseTeachers,
   parseTimeTable,
-} from '../parser';
-import parseCalendarSchedule from '../parser/calendar';
-import parseCathedraTimetable from '../parser/cathedraTimetable';
-import { parseCertificateTable } from '../parser/certificate';
-import { StudentInfo } from '../parser/menu';
-import parseOrders from '../parser/order';
-import parsePersonalRecords from '../parser/personalRecords';
-import parsePointUpdates from '../parser/pointUpdates';
-import parseRating from '../parser/rating';
-import parseSessionQuestionnaire from '../parser/sessionQuestionnaire';
-import parseSessionQuestionnaireList from '../parser/sessionQuestionnaireList';
-import { httpClient } from '../utils';
-import bind from '../utils/methodBinder';
+} from '~/parser';
+import parseCalendarSchedule from '~/parser/calendar';
+import parseCathedraTimetable from '~/parser/cathedraTimetable';
+import { parseCertificateTable } from '~/parser/certificate';
+import { StudentInfo } from '~/parser/menu';
+import parseOrders from '~/parser/order';
+import parsePersonalRecords from '~/parser/personalRecords';
+import parsePointUpdates from '~/parser/pointUpdates';
+import parseRating from '~/parser/rating';
+import parseSessionQuestionnaire from '~/parser/sessionQuestionnaire';
+import parseSessionQuestionnaireList from '~/parser/sessionQuestionnaireList';
+import { httpClient } from '~/utils';
+import bind from '~/utils/methodBinder';
+
 import { BaseClient, BasicClient } from './base';
 import DemoClient from './demoClient';
 

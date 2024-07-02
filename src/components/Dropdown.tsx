@@ -1,9 +1,9 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useGlobalStyles } from '~/hooks';
+import { fontSize } from '~/utils/texts';
 
-import { useGlobalStyles } from '../hooks';
-import { fontSize } from '../utils/texts';
 import Text from './Text';
 
 interface IDropdownOption {
@@ -50,8 +50,6 @@ const SelectOption = ({
   option: IDropdownOption;
   onSelect: (value: unknown) => void;
 }) => {
-  const globalStyles = useGlobalStyles();
-
   return (
     <TouchableOpacity
       onPress={() => onSelect(option.value)}
@@ -60,7 +58,7 @@ const SelectOption = ({
       disabled={option.current}
       style={styles.optionView}
     >
-      <Text style={styles.optionText} colorVariant={option.current ? 'primary' : 'block'}>
+      <Text style={styles.optionText} colorVariant={option.current ? 'primary' : 'text2'}>
         {option.label}
       </Text>
     </TouchableOpacity>
@@ -78,7 +76,7 @@ function Menu({
 
   return (
     <View>
-      <View style={[styles.menuView, globalStyles.border, globalStyles.block]}>
+      <View style={[styles.menuView]}>
         {options.map((option) => (
           <SelectOption option={option} onSelect={onSelect} key={option.label} />
         ))}
@@ -100,17 +98,15 @@ function Select({
 
   return (
     <TouchableOpacity
-      style={[styles.selectButton, globalStyles.border, globalStyles.block]}
+      style={[styles.selectButton, globalStyles.border]}
       onPress={toggleOpened}
       activeOpacity={0.9}
     >
-      <Text style={[fontSize.medium, styles.selectText]} colorVariant={'block'}>
-        {selectedOption}
-      </Text>
+      <Text style={[fontSize.medium, styles.selectText]}>{selectedOption}</Text>
       <AntDesign
         name={isOpened ? 'caretup' : 'caretdown'}
         size={14}
-        color={globalStyles.fontColorForBlock.color}
+        color={globalStyles.textColor2.color}
       />
     </TouchableOpacity>
   );

@@ -5,56 +5,83 @@ import type {
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
 import type { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
-
-import { IMessage } from '../models/messages';
-import { ISubject } from '../models/sessionPoints';
-import { ILesson } from '../models/timeTable';
+import { IMessage } from '~/models/messages';
+import { ISubject } from '~/models/sessionPoints';
+import { ILesson } from '~/models/timeTable';
 
 // Список экранов для основного стека
 export type RootStackParamList = {
-  // Первая группа. Имеет хэдер и соответствующие для него настройки
-  Auth: undefined;
-  TabNavigator: undefined; // Исключение из правил
-  History: { data: IMessage[]; page: number };
-  SignsDetails: { subject: ISubject };
-  CertificateIncome: undefined;
-  SessionQuestionnaire: { url: string };
-  DisciplineInfo: { lesson: ILesson; date: string; pairPosition: number };
-  DisciplineTasks?: { taskId?: string };
-  BellSchedule: undefined;
-  ReleaseNotes: undefined;
+  TabNavigator: undefined;
 
-  // Вторая группа. Не имеет хэдера
-  NewYearTheme: undefined;
-  Onboarding: undefined;
+  AppSettings: undefined;
+  ChangeAppTheme: undefined;
+  AboutApp: undefined;
+  ReleaseNotes: undefined;
+  // Onboarding: undefined;
+};
+
+// Список экранов для ЕТИС
+export type EducationStackParamList = {
+  // Экран аутентификации в ЕТИС
+  Auth: undefined;
+  // Главный экран ЕТИС
+  Main: undefined;
+  // Настройки аккаунта
+  AccountSettings: undefined;
+
+  // Информация о паре
+  DisciplineInfo: { lesson: ILesson; date: string; pairPosition: number };
+
+  // Меню с экранами
+
+  // Недельное расписание
+  Timetable: undefined;
+  // Учебный план
+  TeachPlan: undefined;
+  // Преподаватели
+  Teachers: undefined;
+  // Пропущенные занятия
+  Absences: undefined;
+  // Приказы
+  Orders: undefined;
+  // Список справок
+  Certificate: undefined;
+  // Заказ справки
+  RequestCertificate: undefined;
+  // Список доступных для анкетирования дисциплин
+  SessionQuestionnaireList: undefined;
+  // Расписание звонков
+  BellSchedule: undefined;
+
+  // Остальные экраны
+
+  // История сообщений
+  MessageHistory: { data: IMessage[]; page: number };
+  // Заказ справки о доходах
+  CertificateIncome: undefined;
+  // Анкетирование по прошедшему триместру/семестру
+  SessionQuestionnaire: { url: string };
+  // Список заданий
+  DisciplineTasks: { taskId?: string };
+  // Смена пароля
+  ChangePassword: undefined;
+  // Смена электронной почты
+  ChangeEmail: { sendVerificationMail: boolean };
+  // Расписание преподавателей/кафедр
+  CathedraTimetable: { teacherId?: string; cathedraId?: string };
 };
 
 // Список экранов с нижними табами
 export type BottomTabsParamList = {
-  Timetable: undefined;
-  SignsNavigator: undefined;
-  Messages: undefined;
-  Announces: undefined;
-  ServicesNavigator: undefined;
+  Education: undefined;
+  Services: undefined;
+  NewsAndEvents: undefined;
 };
 
 // Список экранов для сервисов
 export type ServicesNativeStackParamList = {
   Services: undefined;
-  TeachPlan: undefined;
-  Teachers: undefined;
-  Absences: undefined;
-  Orders: undefined;
-  Certificate: undefined;
-  RequestCertificate: undefined;
-  Settings: undefined;
-  AboutApp: undefined;
-  SessionQuestionnaireList: undefined;
-  PersonalRecords: undefined;
-  ChangePassword: undefined;
-  ChangeEmail: { sendVerificationMail: boolean };
-  CathedraTimetable: { teacherId?: string; cathedraId?: string };
-  ChangeAppUI: undefined;
+  // TODO: check Notion
 };
 
 // Список экранов для оценок с верхними табами
@@ -69,6 +96,14 @@ export type RootStackScreenProps<ScreenName extends keyof RootStackParamList = u
   StackScreenProps<RootStackParamList, ScreenName>;
 export type BottomTabsScreenProps<ScreenName extends keyof BottomTabsParamList = undefined> =
   CompositeScreenProps<BottomTabScreenProps<BottomTabsParamList, ScreenName>, RootStackScreenProps>;
+
+export type EducationStackScreenProps<
+  ScreenName extends keyof EducationStackParamList = undefined,
+> = CompositeScreenProps<
+  StackScreenProps<EducationStackParamList, ScreenName>,
+  RootStackScreenProps
+>;
+
 export type ServiceNativeStackScreenProps<
   ScreenName extends keyof ServicesNativeStackParamList = undefined,
 > = CompositeScreenProps<
@@ -85,5 +120,9 @@ export type BottomTabsNavigationProp = CompositeNavigationProp<
 >;
 export type ServicesNavigationProp = CompositeNavigationProp<
   NativeStackNavigationProp<ServicesNativeStackParamList>,
+  BottomTabsNavigationProp
+>;
+export type EducationNavigationProp = CompositeNavigationProp<
+  StackNavigationProp<EducationStackParamList>,
   BottomTabsNavigationProp
 >;

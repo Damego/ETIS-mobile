@@ -28,7 +28,7 @@ export default {
         foregroundImage: './assets/adaptive-icon.png',
         backgroundColor: '#FFFFFF',
       },
-      package: IS_DEV ? 'dev.damego.etismobile' : 'com.damego.etismobile',
+      package: 'dev.damego.etismobile',
       playStoreUrl: 'https://play.google.com/store/apps/details?id=com.damego.etismobile',
       userInterfaceStyle: 'automatic',
       allowBackup: false,
@@ -42,18 +42,16 @@ export default {
         projectId: 'a3b11e9a-6c2e-4082-81e8-58bc2324b582',
       },
     },
-    hooks: {
-      postPublish: [
+    plugins: [
+      'expo-asset',
+      'expo-secure-store',
+      [
+        '@sentry/react-native/expo',
         {
-          file: 'sentry-expo/upload-sourcemaps',
-          config: {
-            organization: 'etismobile',
-            project: 'etis-mobile',
-          },
+          project: 'etis-mobile',
+          organization: 'etismobile',
         },
       ],
-    },
-    plugins: [
       [
         'expo-quick-actions',
         {
@@ -74,7 +72,6 @@ export default {
         },
       ],
       ['./src/plugins/disabledForcedDarkModeAndroid.ts', {}],
-      'sentry-expo',
       [
         'expo-build-properties',
         {
@@ -85,6 +82,19 @@ export default {
             extraProguardRules: '-keep public class com.horcrux.svg.** {*;}',
             allowBackup: false,
           },
+        },
+      ],
+      [
+        'expo-font',
+        {
+          fonts: [
+            './assets/fonts/Ubuntu-Regular.ttf',
+            './assets/fonts/Ubuntu-Italic.ttf',
+            './assets/fonts/Ubuntu-Medium.ttf',
+            './assets/fonts/Ubuntu-MediumItalic.ttf',
+            './assets/fonts/Ubuntu-Bold.ttf',
+            './assets/fonts/Ubuntu-BoldItalic.ttf',
+          ],
         },
       ],
     ],

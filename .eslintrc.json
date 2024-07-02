@@ -45,6 +45,7 @@
     "react/require-default-props": "off",
     "react/no-unstable-nested-components": "off",
     "react/jsx-no-useless-fragment": "off",
-    "react-hooks/exhaustive-deps": "off"
+    "react-hooks/exhaustive-deps": "off",
+    "import/extensions": "off"
   }
 }

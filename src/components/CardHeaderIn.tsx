@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { fontSize } from '~/utils/texts';
 
-import { fontSize } from '../utils/texts';
 import Card from './Card';
 import Text from './Text';
 
@@ -27,7 +27,7 @@ const CardHeaderIn = ({
   return (
     <Card style={style}>
       <View style={styles.cardHeaderView}>
-        <Text style={styles.cardHeaderText} colorVariant={'block'}>
+        <Text style={styles.cardHeaderText} colorVariant={'text2'}>
           {topText}
         </Text>
       </View>

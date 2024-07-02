@@ -3,10 +3,10 @@ import * as cheerio from 'cheerio';
 import CyrillicToTranslit from 'cyrillic-to-translit-js';
 import { documentDirectory, downloadAsync } from 'expo-file-system';
 import { getNetworkStateAsync } from 'expo-network';
+import { ICathedraTimetablePayload } from '~/models/cathedraTimetable';
+import { ICertificate } from '~/models/certificate';
+import { UploadFile } from '~/models/other';
 
-import { ICathedraTimetablePayload } from '../models/cathedraTimetable';
-import { ICertificate } from '../models/certificate';
-import { UploadFile } from '../models/other';
 import { CertificateRequestPayload } from './certificate';
 import { PSU_URL } from './consts';
 import { getCurrentEducationYear } from './datetime';
@@ -184,7 +184,7 @@ class HTTPClient {
     isInvisibleRecaptcha: boolean
   ): Promise<Response<AxiosResponse | null>> {
     const data = {
-      p_redirect: '/stu.timetable',
+      p_redirect: '/stu.blank_page',
       p_username: username.trim(),
       p_password: password.trim(),
       p_recaptcha_ver: isInvisibleRecaptcha ? '3' : '2',

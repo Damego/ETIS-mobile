@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useGlobalStyles } from '~/hooks';
 
-import { useGlobalStyles } from '../hooks';
 import Screen from './Screen';
 
 const styles = StyleSheet.create({
@@ -21,20 +21,20 @@ const EmptyCard = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={[styles.textView, globalStyles.block, globalStyles.border]} />
-      <View style={[styles.cardView, globalStyles.block, globalStyles.border]} />
+      <View style={[styles.textView, globalStyles.card, globalStyles.borderRadius]} />
+      <View style={[styles.cardView, globalStyles.card, globalStyles.borderRadius]} />
     </View>
   );
 };
 
 export const LoadingContainer = () => (
-  <>
+  <View style={{ flex: 1 }}>
     <View style={{ marginTop: '10%' }} />
     <EmptyCard />
     <EmptyCard />
     <EmptyCard />
     <EmptyCard />
-  </>
+  </View>
 );
 
 const LoadingScreen = ({ onRefresh }: { onRefresh?(): void }) => (

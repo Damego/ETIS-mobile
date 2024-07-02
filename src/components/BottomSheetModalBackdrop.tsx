@@ -1,8 +1,13 @@
-import { BottomSheetBackdropProps } from '@gorhom/bottom-sheet';
+import { BottomSheetBackdropProps as GorhomBottomSheetBackdropProps } from '@gorhom/bottom-sheet';
 import React, { useMemo } from 'react';
+import { Pressable } from 'react-native';
 import Animated, { Extrapolation, interpolate, useAnimatedStyle } from 'react-native-reanimated';
 
-const BottomSheetModalBackdrop = ({ animatedIndex, style }: BottomSheetBackdropProps) => {
+export interface BottomSheetBackdropProps extends GorhomBottomSheetBackdropProps {
+  onPress: () => void;
+}
+
+const BottomSheetModalBackdrop = ({ animatedIndex, style, onPress }: BottomSheetBackdropProps) => {
   const containerAnimatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(animatedIndex.value, [-1, 0], [0, 0.3], Extrapolation.CLAMP),
   }));
@@ -18,7 +23,11 @@ const BottomSheetModalBackdrop = ({ animatedIndex, style }: BottomSheetBackdropP
     [style, containerAnimatedStyle]
   );
 
-  return <Animated.View style={containerStyle} />;
+  return (
+    <Animated.View style={containerStyle}>
+      <Pressable style={{ flex: 1 }} onPress={onPress} />
+    </Animated.View>
+  );
 };
 
 export default BottomSheetModalBackdrop;

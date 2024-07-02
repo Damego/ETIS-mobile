@@ -1,5 +1,5 @@
-import { ISessionMarks } from '../models/sessionMarks';
-import { ISessionPoints } from '../models/sessionPoints';
+import { ISessionMarks } from '~/models/sessionMarks';
+import { ISessionPoints } from '~/models/sessionPoints';
 
 export const composePointsAndMarks = (
   sessionPoints: ISessionPoints,
