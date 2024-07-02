@@ -28,7 +28,7 @@ const EmptyCard = () => {
 };
 
 export const LoadingContainer = () => (
-  <View style={{ flex: 1, borderWidth: 2, width: '100%' }}>
+  <View style={{ flex: 1 }}>
     <View style={{ marginTop: '10%' }} />
     <EmptyCard />
     <EmptyCard />
