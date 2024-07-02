@@ -102,9 +102,7 @@ function Select({
       onPress={toggleOpened}
       activeOpacity={0.9}
     >
-      <Text style={[fontSize.medium, styles.selectText]}>
-        {selectedOption}
-      </Text>
+      <Text style={[fontSize.medium, styles.selectText]}>{selectedOption}</Text>
       <AntDesign
         name={isOpened ? 'caretup' : 'caretdown'}
         size={14}
