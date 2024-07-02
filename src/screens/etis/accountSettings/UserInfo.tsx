@@ -17,44 +17,28 @@ function UserInfo() {
         <Text style={styles.cardTitle}>{name}</Text>
         {speciality && (
           <Text>
-            <Text style={nameTextStyle}>
-              Направление:{' '}
-            </Text>
-            <Text style={fontSize.medium}>
-              {speciality}
-            </Text>
+            <Text style={nameTextStyle}>Направление: </Text>
+            <Text style={fontSize.medium}>{speciality}</Text>
           </Text>
         )}
 
         {educationForm && (
           <Text>
-            <Text style={nameTextStyle}>
-              Форма обучения:{' '}
-            </Text>
-            <Text style={fontSize.medium}>
-              {capitalizeWord(educationForm)}
-            </Text>
+            <Text style={nameTextStyle}>Форма обучения: </Text>
+            <Text style={fontSize.medium}>{capitalizeWord(educationForm)}</Text>
           </Text>
         )}
 
         {year && (
           <Text>
-            <Text style={nameTextStyle}>
-              Год:{' '}
-            </Text>
-            <Text style={fontSize.medium}>
-              {year}
-            </Text>
+            <Text style={nameTextStyle}>Год: </Text>
+            <Text style={fontSize.medium}>{year}</Text>
           </Text>
         )}
 
         <Text>
-          <Text style={nameTextStyle}>
-            Группа:{' '}
-          </Text>
-          <Text style={fontSize.medium}>
-            {group}
-          </Text>
+          <Text style={nameTextStyle}>Группа: </Text>
+          <Text style={fontSize.medium}>{group}</Text>
         </Text>
       </Card>
     </>
