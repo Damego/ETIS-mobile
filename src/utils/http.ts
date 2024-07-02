@@ -184,7 +184,7 @@ class HTTPClient {
     isInvisibleRecaptcha: boolean
   ): Promise<Response<AxiosResponse | null>> {
     const data = {
-      p_redirect: '/stu.timetable',
+      p_redirect: '/stu.blank_page',
       p_username: username.trim(),
       p_password: password.trim(),
       p_recaptcha_ver: isInvisibleRecaptcha ? '3' : '2',
