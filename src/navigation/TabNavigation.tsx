@@ -23,7 +23,21 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
   const theme = useAppTheme();
 
   return (
-    <Tab.Navigator screenOptions={{ headerShown: true, ...headerParams(theme) }}>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: true,
+        ...headerParams(theme),
+        tabBarVisibilityAnimationConfig: {
+          show: {
+            animation: 'timing',
+            config: {
+              duration: 50,
+            },
+          },
+        },
+        tabBarHideOnKeyboard: true,
+      }}
+    >
       <Tab.Screen
         name="Education"
         component={EducationNavigation}
