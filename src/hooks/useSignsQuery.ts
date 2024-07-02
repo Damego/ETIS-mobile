@@ -15,10 +15,11 @@ const useSignsQuery = () => {
   const { currentSession } = useAppSelector((state) => state.student);
   const client = useClient();
   const [data, setData] = useState<ISessionPoints>(null);
+  const [isLoading, setLoading] = useState(true);
 
   const {
     data: pointsData,
-    isLoading,
+    isLoading: isPointsLoading,
     update,
     refresh,
   } = useQuery({
@@ -55,6 +56,10 @@ const useSignsQuery = () => {
   useEffect(() => {
     if (pointsData && marksQuery.data) setData(composePointsAndMarks(pointsData, marksQuery.data));
   }, [pointsData, marksQuery.data]);
+
+  useEffect(() => {
+    setLoading(isPointsLoading && marksQuery.isLoading);
+  }, [isPointsLoading, marksQuery.isLoading]);
 
   const loadSession = (session: number) => {
     const hasDuty = marksQuery.data.find(
