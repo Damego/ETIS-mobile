@@ -37,7 +37,7 @@ export default function Text({ colorVariant = 'text', style, ...props }: TextPro
   const theme = useAppTheme();
 
   const $style = React.useMemo(() => {
-    const color: string = theme.colors[colorVariant] || theme.colors.text2;
+    const color: string = theme.colors[colorVariant] || theme.colors.text;
 
     return StyleSheet.compose(
       { color, fontFamily: getFontFamily(style) || 'Ubuntu-Regular' },

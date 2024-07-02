@@ -1,12 +1,10 @@
-import { BottomSheetScrollView, BottomSheetView } from '@gorhom/bottom-sheet';
-import { useNavigation } from '@react-navigation/native';
+import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import React, { useRef } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import BottomSheetModal from '~/components/BottomSheetModal';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
 import { ICheckPoint, ISubject } from '~/models/sessionPoints';
-import { EducationNavigationProp } from '~/navigation/types';
 import { fontSize } from '~/utils/texts';
 
 import CheckPointDetails from './CheckPointDetails';

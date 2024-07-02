@@ -21,24 +21,20 @@ const EmptyCard = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <View
-        style={[styles.textView, globalStyles.containerBackground, globalStyles.borderRadius]}
-      />
-      <View
-        style={[styles.cardView, globalStyles.containerBackground, globalStyles.borderRadius]}
-      />
+      <View style={[styles.textView, globalStyles.card, globalStyles.borderRadius]} />
+      <View style={[styles.cardView, globalStyles.card, globalStyles.borderRadius]} />
     </View>
   );
 };
 
 export const LoadingContainer = () => (
-  <>
+  <View style={{ flex: 1, borderWidth: 2, width: '100%' }}>
     <View style={{ marginTop: '10%' }} />
     <EmptyCard />
     <EmptyCard />
     <EmptyCard />
     <EmptyCard />
-  </>
+  </View>
 );
 
 const LoadingScreen = ({ onRefresh }: { onRefresh?(): void }) => (

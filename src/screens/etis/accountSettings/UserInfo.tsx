@@ -17,10 +17,10 @@ function UserInfo() {
         <Text style={styles.cardTitle}>{name}</Text>
         {speciality && (
           <Text>
-            <Text style={nameTextStyle} colorVariant={'text2'}>
+            <Text style={nameTextStyle}>
               Направление:{' '}
             </Text>
-            <Text style={fontSize.medium} colorVariant={'text2'}>
+            <Text style={fontSize.medium}>
               {speciality}
             </Text>
           </Text>
@@ -28,10 +28,10 @@ function UserInfo() {
 
         {educationForm && (
           <Text>
-            <Text style={nameTextStyle} colorVariant={'text2'}>
+            <Text style={nameTextStyle}>
               Форма обучения:{' '}
             </Text>
-            <Text style={fontSize.medium} colorVariant={'text2'}>
+            <Text style={fontSize.medium}>
               {capitalizeWord(educationForm)}
             </Text>
           </Text>
@@ -39,20 +39,20 @@ function UserInfo() {
 
         {year && (
           <Text>
-            <Text style={nameTextStyle} colorVariant={'text2'}>
+            <Text style={nameTextStyle}>
               Год:{' '}
             </Text>
-            <Text style={fontSize.medium} colorVariant={'text2'}>
+            <Text style={fontSize.medium}>
               {year}
             </Text>
           </Text>
         )}
 
         <Text>
-          <Text style={nameTextStyle} colorVariant={'text2'}>
+          <Text style={nameTextStyle}>
             Группа:{' '}
           </Text>
-          <Text style={fontSize.medium} colorVariant={'text2'}>
+          <Text style={fontSize.medium}>
             {group}
           </Text>
         </Text>
