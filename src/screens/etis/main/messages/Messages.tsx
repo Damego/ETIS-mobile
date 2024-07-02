@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import BorderLine from '~/components/BorderLine';
 import { LoadingContainer } from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
 import PageNavigator from '~/components/PageNavigator';
-import { ListScreen } from '~/components/Screen';
+import Screen, { ListScreen } from '~/components/Screen';
 import useMessagesQuery from '~/hooks/useMessagesQuery';
 import { SceneProps } from '~/models/rn-tab-view';
 import { MessagesShortcuts } from '~/screens/etis/main/components/MessagesShortcuts';
@@ -14,27 +14,40 @@ import MessageCard from '../components/MessageCard';
 const Messages = ({ jumpTo, route }: SceneProps) => {
   const { data, isLoading, refresh, loadPage } = useMessagesQuery();
 
+  const Navigation = () => (
+    <View style={{ marginBottom: '2%', gap: 8 }}>
+      <MessagesShortcuts onShortcutPress={jumpTo} currentShortcut={route.key} />
+      {!!data && (
+        <PageNavigator
+          firstPage={1}
+          lastPage={data.lastPage}
+          currentPage={data.page}
+          onPageChange={loadPage}
+        />
+      )}
+    </View>
+  );
+
+  // FlashList не позволяет для "пустого" компонента использовать всю доступную высоту окна, поэтому пока так
+  // https://github.com/Shopify/flash-list/issues/848
+  if (isLoading || !data) {
+    return (
+      <Screen>
+        <Navigation />
+        {isLoading ? <LoadingContainer /> : <NoData />}
+      </Screen>
+    );
+  }
+
   return (
     <ListScreen
       onUpdate={refresh}
-      ListHeaderComponent={
-        <View style={{ marginBottom: '2%', gap: 8 }}>
-          <MessagesShortcuts onShortcutPress={jumpTo} currentShortcut={route.key} />
-          {!!data && (
-            <PageNavigator
-              firstPage={1}
-              lastPage={data.lastPage}
-              currentPage={data.page}
-              onPageChange={loadPage}
-            />
-          )}
-        </View>
-      }
+      ListHeaderComponent={<Navigation />}
       data={data ? data.messages : []}
       renderItem={({ item }) => <MessageCard data={item} page={data.page} />}
       keyExtractor={(item) => item[0].time}
       estimatedItemSize={10}
-      ListEmptyComponent={isLoading ? <LoadingContainer /> : !data ? <NoData /> : undefined}
+      // ListEmptyComponent={isLoading ? <LoadingContainer /> : !data ? <NoData /> : undefined}
       ItemSeparatorComponent={BorderLine}
     />
   );
