@@ -54,8 +54,9 @@ const Lesson = ({
   );
 };
 
-const Pair = ({ pair, dayDate }: { pair: IPair; dayDate: dayjs.Dayjs }) => {
+const Pair = ({ pair }: { pair: IPair }) => {
   const globalStyles = useGlobalStyles();
+  const { selectedDate: dayDate } = useTimetableContext();
   const time = dayjs(pair.time, 'H:mm');
   const pairDate = dayDate.clone().set('hour', time.hour()).set('minute', time.minute());
   const isLyceum = useAppSelector((state) => state.student.info?.isLyceum);
@@ -94,7 +95,7 @@ const Pair = ({ pair, dayDate }: { pair: IPair; dayDate: dayjs.Dayjs }) => {
   );
 };
 
-export default Pair;
+export default React.memo(Pair);
 
 const styles = StyleSheet.create({
   pairContainer: {

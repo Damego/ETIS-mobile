@@ -5,6 +5,8 @@ import { ITeacher } from '~/models/teachers';
 interface ITimeTableContext {
   teachers?: ITeacher[];
   currentDate?: dayjs.Dayjs;
+  selectedDate?: dayjs.Dayjs;
+  selectedWeek?: number;
 }
 
 const TimeTableContext = createContext<ITimeTableContext>({});
