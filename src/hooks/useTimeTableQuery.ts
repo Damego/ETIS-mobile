@@ -53,9 +53,7 @@ const useTimeTableQuery = () => {
           setSelectedDate(preselectedDateRef.current);
           preselectedDateRef.current = null;
         } else {
-          setSelectedDate(
-            selectedDate.add(selectedWeek - data.weekInfo.selected, 'week')
-          );
+          setSelectedDate(selectedDate.add(selectedWeek - data.weekInfo.selected, 'week'));
         }
       }
     },
