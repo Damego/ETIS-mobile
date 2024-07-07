@@ -22,15 +22,8 @@ const getWeekDiffDate = (date: dayjs.Dayjs, a: number, b: number) => {
 
 export const Timetable = () => {
   const client = useClient();
-  const {
-    data,
-    isLoading,
-    loadByDate,
-    currentWeek,
-    selectedDate,
-    selectDate,
-    currentDate,
-  } = useTimeTableQuery();
+  const { data, isLoading, loadByDate, currentWeek, selectedDate, selectDate, currentDate } =
+    useTimeTableQuery();
   const { data: teachersData, isLoading: teachersIsLoading } = useQuery({
     method: client.getTeacherData,
   });
