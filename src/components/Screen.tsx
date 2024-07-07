@@ -42,7 +42,8 @@ const Screen = ({
 
       <ScrollView
         ref={scrollRef}
-        contentContainerStyle={{ flexGrow: 1 }}
+        nestedScrollEnabled
+        contentContainerStyle={[{ flexGrow: 1 }, styles.screen, containerStyle]}
         style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
         overScrollMode="never"
@@ -59,7 +60,7 @@ const Screen = ({
           startScrollFromBottom ? () => scrollRef.current.scrollToEnd() : undefined
         }
       >
-        <View style={[styles.screen, containerStyle]}>{children}</View>
+        {children}
       </ScrollView>
     </View>
   );
@@ -122,7 +123,6 @@ export const ListScreen = <T,>({
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1,
     marginHorizontal: '4%',
   },
 });
