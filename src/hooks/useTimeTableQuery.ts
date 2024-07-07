@@ -1,4 +1,5 @@
-import { useRef } from 'react';
+import dayjs from 'dayjs';
+import { useCallback, useRef, useState } from 'react';
 import { cache } from '~/cache/smartCache';
 import { useClient } from '~/data/client';
 import { GetResultType, RequestType } from '~/models/results';
@@ -12,6 +13,9 @@ const useTimeTableQuery = () => {
   const client = useClient();
   const fetchedWeeks = useRef<number[]>([]);
   const { currentWeek } = useAppSelector((state) => state.student);
+  const currentDayDate = useRef(dayjs().startOf('day'));
+  const [selectedDate, setSelectedDate] = useState(currentDayDate.current);
+  const preselectedDateRef = useRef<dayjs.Dayjs>(null);
 
   const { data, isLoading, update, refresh } = useQuery({
     method: client.getTimeTableData,
@@ -43,20 +47,58 @@ const useTimeTableQuery = () => {
       if (!fetchedWeeks.current.includes(selectedWeek)) {
         fetchedWeeks.current.push(selectedWeek);
       }
+
+      if (data) {
+        if (preselectedDateRef.current) {
+          setSelectedDate(preselectedDateRef.current);
+          preselectedDateRef.current = null;
+        } else {
+          setSelectedDate(
+            selectedDate.add(selectedWeek - data.weekInfo.selected, 'week')
+          );
+        }
+      }
     },
   });
 
-  const loadWeek = (week: number) => {
-    update({
-      requestType:
-        (data && week < currentWeek) || fetchedWeeks.current.includes(week)
-          ? RequestType.tryCache
-          : RequestType.tryFetch,
-      data: week,
-    });
-  };
+  const loadWeek = useCallback(
+    (week: number) => {
+      update({
+        requestType:
+          (data && week < currentWeek) || fetchedWeeks.current.includes(week)
+            ? RequestType.tryCache
+            : RequestType.tryFetch,
+        data: week,
+      });
+    },
+    [data, currentWeek, fetchedWeeks.current, update]
+  );
 
-  return { data, isLoading, loadWeek, currentWeek, refresh };
+  const loadByDate = useCallback(
+    (date: dayjs.Dayjs) => {
+      const weekDiff = date.startOf('week').diff(selectedDate.startOf('week'), 'week');
+      if (weekDiff === 0) {
+        setSelectedDate(date);
+        return;
+      }
+
+      loadWeek(data.weekInfo.selected + weekDiff);
+      preselectedDateRef.current = date;
+    },
+    [selectedDate, data, loadWeek, setSelectedDate]
+  );
+
+  return {
+    data,
+    isLoading,
+    loadWeek,
+    currentWeek,
+    selectedDate,
+    currentDate: currentDayDate.current,
+    refresh,
+    loadByDate,
+    selectDate: setSelectedDate,
+  };
 };
 
 export default useTimeTableQuery;

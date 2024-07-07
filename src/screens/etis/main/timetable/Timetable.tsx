@@ -1,109 +1,107 @@
 import dayjs from 'dayjs';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import CenteredText from '~/components/CenteredText';
+import React, { useEffect, useMemo, useRef } from 'react';
+import { StyleSheet } from 'react-native';
+import PagerView from 'react-native-pager-view';
 import { LoadingContainer } from '~/components/LoadingScreen';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import TimeTableContext from '~/context/timetableContext';
 import { useClient } from '~/data/client';
-import { useGlobalStyles } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
 import useTimeTableQuery from '~/hooks/useTimeTableQuery';
-import Shortcuts, { Shortcut } from '~/screens/etis/main/components/Shortcuts';
+import TimetableCalendar from '~/screens/etis/main/components/timetableCalendar/TimetableCalendar';
+import TimetablePages from '~/screens/etis/main/timetable/TimetablePages';
 import { capitalizeWord } from '~/utils/texts';
-import { getRandomItem } from '~/utils/utils';
 
-import Dates from './Dates';
-import Pair from './Pair';
-
-const noPairsResponses = [
-  'Можно поиграть 🎮',
-  'Можно поспать 💤',
-  'Можно отдохнуть 😴',
-  'Нужно сделать домашку 📚',
-];
-
-const NoPairsContainer = () => (
-  <View
-    style={{
-      backgroundColor: '#FEFEFE',
-      width: '90%',
-      alignSelf: 'center',
-      marginTop: '4%',
-      paddingVertical: '2%',
-      borderRadius: 10,
-      alignItems: 'center',
-    }}
-  >
-    <CenteredText>В этот день занятий нет</CenteredText>
-    <Text>{getRandomItem(noPairsResponses)}</Text>
-  </View>
-);
+const getWeekDiffDate = (date: dayjs.Dayjs, a: number, b: number) => {
+  return date
+    .clone()
+    .startOf('week')
+    .add(a - b, 'week');
+};
 
 export const Timetable = () => {
   const client = useClient();
-  const { data, isLoading, loadWeek } = useTimeTableQuery();
+  const {
+    data,
+    isLoading,
+    loadByDate,
+    currentWeek,
+    selectedDate,
+    selectDate,
+    currentDate,
+  } = useTimeTableQuery();
   const { data: teachersData, isLoading: teachersIsLoading } = useQuery({
     method: client.getTeacherData,
   });
-
-  const currentDate = dayjs().startOf('day');
-  const [selectedDate, setSelectedDate] = useState(currentDate);
+  const pagerRef = useRef<PagerView>(null);
 
   const contextData = useMemo(
-    () => ({ teachers: teachersData, currentDate }),
-    [teachersData, currentDate]
+    () => ({
+      teachers: teachersData,
+      selectedDate,
+      currentDate,
+      selectedWeek: data?.weekInfo?.selected,
+      currentWeek,
+    }),
+    [teachersData, selectedDate]
   );
 
   useEffect(() => {
-    if (data && data.weekInfo.selected !== 30) loadWeek(30);
-  }, [data]);
+    if (pagerRef.current) {
+      pagerRef.current.setPage(selectedDate.weekday());
+    }
+  }, [selectedDate]);
 
-  const onDatePress = (date: dayjs.Dayjs) => {
-    setSelectedDate(date);
+  const handleDatePress = (date: dayjs.Dayjs) => {
+    loadByDate(date);
   };
 
-  const selectedDayIndex = selectedDate.weekday();
+  const handlePagePress = (pageNumber: number) => {
+    selectDate((prev) => prev.clone().add(pageNumber, 'day'));
+  };
 
   let component: React.ReactNode;
 
   if (isLoading || teachersIsLoading || !data) {
     component = <LoadingContainer />;
-  } else if (selectedDayIndex === 6 || !data.days[selectedDayIndex].pairs.length) {
-    component = <NoPairsContainer />;
   } else {
     component = (
-      <View style={styles.pairsList}>
-        {data.days[selectedDayIndex].pairs.map(
-          (pair) =>
-            !!pair.lessons.length && <Pair pair={pair} key={pair.position} dayDate={selectedDate} />
-        )}
-      </View>
+      <TimetablePages
+        ref={pagerRef}
+        onPagePress={handlePagePress}
+        days={data.days}
+        dayNumber={selectedDate.weekday()}
+      />
     );
   }
 
+  const startDate = useMemo(
+    () =>
+      !data ? currentDate : getWeekDiffDate(currentDate, data.weekInfo.first - 1, currentWeek),
+    [currentWeek, currentDate, data]
+  );
+  const endDate = useMemo(
+    () => (!data ? currentDate : getWeekDiffDate(currentDate, data.weekInfo.last + 1, currentWeek)),
+    [currentWeek, currentDate, data]
+  );
+
   return (
     <Screen>
-      <View style={styles.timetableContainer}>
-        <Text style={{ fontWeight: '700', fontSize: 22 }}>Расписание</Text>
-        <Text style={{ fontWeight: '500', fontSize: 18 }} colorVariant={'text2'}>
-          {capitalizeWord(selectedDate.format('MMMM'))} {selectedDate.get('year')}
-          {data ? ` • ${data.weekInfo.selected} неделя` : ''}
-        </Text>
-        <TimeTableContext.Provider value={contextData}>
-          <Dates selectedDate={selectedDate} onDatePress={onDatePress} />
-          {component}
-        </TimeTableContext.Provider>
-      </View>
+      <Text style={styles.titleText}>Расписание</Text>
+
+      <TimeTableContext.Provider value={contextData}>
+        <TimetableCalendar
+          periodStartDate={startDate}
+          periodEndDate={endDate}
+          onDatePress={handleDatePress}
+        />
+        {component}
+      </TimeTableContext.Provider>
     </Screen>
   );
 };
 
 const styles = StyleSheet.create({
-  timetableContainer: {},
-  pairsList: {
-    marginTop: '4%',
-    gap: 8,
-  },
+  titleText: { fontWeight: '700', fontSize: 22 },
 });
