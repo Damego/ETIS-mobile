@@ -43,8 +43,8 @@ const SCREENS: ScreenT[][] = [
     },
     {
       title: 'Рейтинг',
-      icon: (color) => <AntDesign name={'filetext1'} size={ICON_SIZE} color={color} />,
-      screenName: 'Orders',
+      icon: (color) => <AntDesign name={'staro'} size={ICON_SIZE} color={color} />,
+      screenName: 'Rating',
     },
   ],
   [

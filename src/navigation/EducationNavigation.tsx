@@ -19,6 +19,7 @@ import DisciplineInfo from '~/screens/etis/disciplineInfo/DisciplineInfo';
 import DisciplinesTasks from '~/screens/etis/disciplinesTasks/DisciplinesTasks';
 import ETISScreen from '~/screens/etis/main/MainScreen';
 import MessageHistory from '~/screens/etis/messageHistory/MessageHistory';
+import Rating from '~/screens/etis/rating';
 import SessionQuestionnaire from '~/screens/etis/sessionQuestionnaire/SessionQuestionnaire';
 import SessionQuestionnaireList from '~/screens/etis/sessionQuestionnaire/SessionQuestionnaireList';
 import ShortTeachPlan from '~/screens/etis/shortTeachPlan';
@@ -125,6 +126,7 @@ const EducationNavigation = () => {
             component={CathedraTimetable}
             options={{ title: 'Расписание' }}
           />
+          <Stack.Screen name={'Rating'} component={Rating} options={{ title: 'Рейтинг' }} />
         </>
       )}
     </Stack.Navigator>
