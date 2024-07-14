@@ -45,7 +45,7 @@ const IconInfo = ({ icon, text }: { icon: keyof typeof Ionicons.glyphMap; text: 
 
   return (
     <View style={styles.container}>
-      <Ionicons name={icon} size={28} style={styles.icon} color={theme.colors.text2} />
+      <Ionicons name={icon} size={28} style={styles.icon} color={theme.colors.text} />
       <Text style={styles.text}>{text}</Text>
     </View>
   );
@@ -86,7 +86,7 @@ export const AudienceInfo = ({ lesson }: { lesson: ILesson }) => {
     const asset = getAssetByPlatformType(lesson.distancePlatform.type);
     return (
       <View style={styles.container}>
-        <Image source={asset} style={{ height: 30, width: 30 }} tintColor={theme.colors.text2} />
+        <Image source={asset} style={{ height: 30, width: 30 }} tintColor={theme.colors.text} />
         <ClickableText
           text={lesson.distancePlatform.name}
           onPress={() => {

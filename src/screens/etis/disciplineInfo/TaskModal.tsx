@@ -1,7 +1,7 @@
-import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetView } from '@gorhom/bottom-sheet';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import BottomSheetModalBackdrop from '~/components/BottomSheetModalBackdrop';
+import BottomSheetModal from '~/components/BottomSheetModal';
 import { useAppTheme } from '~/hooks/theme';
 import { DisciplineTask } from '~/models/disciplinesTasks';
 
@@ -23,10 +23,9 @@ const TaskModal = React.forwardRef<BottomSheetModal, TaskModalProps>(
     return (
       <BottomSheetModal
         ref={ref}
-        enableDynamicSizing
-        backdropComponent={BottomSheetModalBackdrop}
         backgroundStyle={{ backgroundColor: theme.colors.container }}
         onDismiss={onDismiss}
+        snapPoints={['50%']}
       >
         <BottomSheetView style={styles.modalContainer}>
           <AddTaskModalContent

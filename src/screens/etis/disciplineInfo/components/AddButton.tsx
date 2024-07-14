@@ -1,27 +1,21 @@
-import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
-import Text from '~/components/Text';
+import { StyleSheet } from 'react-native';
+import ClickableText from '~/components/ClickableText';
 import { useGlobalStyles } from '~/hooks';
 
 const AddButton = ({ onPress }: { onPress: () => void }) => {
   const globalStyles = useGlobalStyles();
   return (
-    <TouchableOpacity style={[globalStyles.border, styles.container]} onPress={onPress}>
-      <Ionicons name={'add'} size={20} color={globalStyles.textColor2.color} />
-      <Text>Добавить</Text>
-    </TouchableOpacity>
+    <ClickableText onPress={onPress} textStyle={[globalStyles.primaryText, styles.text]}>
+      Добавить
+    </ClickableText>
   );
 };
 
 export default AddButton;
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    paddingVertical: '1%',
-    paddingHorizontal: '2%',
-    alignSelf: 'flex-start',
-    borderRadius: 25,
+  text: {
+    fontWeight: '600',
   },
 });
