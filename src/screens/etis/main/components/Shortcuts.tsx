@@ -8,7 +8,7 @@ import type {
 import Text from '~/components/Text';
 import { useAppSelector, useGlobalStyles } from '~/hooks';
 
-export type Shortcut = 'timetable' | 'grades' | 'messageTabs' | 'menu';
+export type Shortcut = 'timetable' | 'grades' | 'messageTabs' | 'more';
 
 const Icon = ({
   iconName,
@@ -99,9 +99,9 @@ const Shortcuts = (
       />
       <Icon
         iconName={'appstore-o'}
-        shortcut={'menu'}
+        shortcut={'more'}
         onPress={jumpTo}
-        isCurrent={currentShortcut === 'menu'}
+        isCurrent={currentShortcut === 'more'}
       />
     </View>
   );
