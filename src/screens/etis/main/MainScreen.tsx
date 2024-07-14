@@ -12,11 +12,13 @@ import { registerSignsFetchTask } from '~/tasks/signs/signs';
 import Grades from './grades/Grades';
 import MessagesTabs from './messages/MessagesTabs';
 import { Timetable } from './timetable/Timetable';
+import MoreScreens from '~/screens/etis/main/more/MoreScreens';
 
 const renderScene = SceneMap({
   timetable: Timetable,
   grades: Grades,
   messageTabs: MessagesTabs,
+  more: MoreScreens,
 });
 
 const ETISScreen = () => {
@@ -67,6 +69,7 @@ const ETISScreen = () => {
     { key: 'timetable', title: 'timetable' },
     { key: 'grades', title: 'grades' },
     { key: 'messageTabs', title: 'messageTabs' },
+    { key: 'more', title: 'more' },
   ]);
   const layout = useWindowDimensions();
 
