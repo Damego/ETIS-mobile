@@ -7,12 +7,12 @@ import { useAppDispatch, useAppSelector } from '~/hooks';
 import { RequestType } from '~/models/results';
 import { setStudentState } from '~/redux/reducers/studentSlice';
 import Shortcuts from '~/screens/etis/main/components/Shortcuts';
+import MoreScreens from '~/screens/etis/main/more/MoreScreens';
 import { registerSignsFetchTask } from '~/tasks/signs/signs';
 
 import Grades from './grades/Grades';
 import MessagesTabs from './messages/MessagesTabs';
 import { Timetable } from './timetable/Timetable';
-import MoreScreens from '~/screens/etis/main/more/MoreScreens';
 
 const renderScene = SceneMap({
   timetable: Timetable,
