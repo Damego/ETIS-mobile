@@ -8,6 +8,7 @@ import type { StackNavigationProp, StackScreenProps } from '@react-navigation/st
 import { IMessage } from '~/models/messages';
 import { ISubject } from '~/models/sessionPoints';
 import { ILesson } from '~/models/timeTable';
+import Rating from '~/screens/etis/rating';
 
 // Список экранов для основного стека
 export type RootStackParamList = {
@@ -52,6 +53,8 @@ export type EducationStackParamList = {
   SessionQuestionnaireList: undefined;
   // Расписание звонков
   BellSchedule: undefined;
+  // Рейтинг
+  Rating: undefined;
 
   // Остальные экраны
 
