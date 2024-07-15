@@ -22,6 +22,8 @@ const studentSlice = createSlice({
       state.announceCount = action.payload.announceCount;
       state.messageCount = action.payload.messageCount;
       state.hasUnverifiedEmail = action.payload.hasUnverifiedEmail;
+      state.currentSession = action.payload.currentSession;
+      state.currentWeek = action.payload.currentWeek;
     },
     setStudentInfo(state, action: PayloadAction<StudentData>) {
       state.info = action.payload;
