@@ -5,6 +5,7 @@ import { cache } from '~/cache/smartCache';
 import { useClient } from '~/data/client';
 import { useAppDispatch, useAppSelector } from '~/hooks';
 import { RequestType } from '~/models/results';
+import { StudentInfo } from '~/parser/menu';
 import { setStudentState } from '~/redux/reducers/studentSlice';
 import Shortcuts from '~/screens/etis/main/components/Shortcuts';
 import MoreScreens from '~/screens/etis/main/more/MoreScreens';
@@ -61,7 +62,10 @@ const ETISScreen = () => {
       await cache.placePartialStudent(fetched.data);
     }
 
-    if (fetched.data || cached.data) dispatch(setStudentState(fetched.data || cached.data));
+    let data: StudentInfo = {} as StudentInfo;
+    if (cached.data) data = { ...data, ...cached.data };
+    if (fetched.data) data = { ...data, ...fetched.data };
+    dispatch(setStudentState(data));
   };
 
   const [index, setIndex] = React.useState(0);
