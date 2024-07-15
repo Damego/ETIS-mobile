@@ -92,8 +92,8 @@ const MoreScreens = () => {
       <Text style={styles.titleText}>Меню ЕТИС</Text>
 
       <View style={{ gap: 10 }}>
-        {SCREENS.map((group) => (
-          <View style={{ flexDirection: 'row', gap: 10 }}>
+        {SCREENS.map((group, index) => (
+          <View style={{ flexDirection: 'row', gap: 10 }} key={index}>
             {group.map((screen) => (
               <ScreenButton screen={screen} key={screen.screenName} />
             ))}
