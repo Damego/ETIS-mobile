@@ -1,17 +1,19 @@
 import React from 'react';
+import { View } from 'react-native';
+import BorderLine from '~/components/BorderLine';
 import CardHeaderOut from '~/components/CardHeaderOut';
 import { ISessionTeachPlan } from '~/models/teachPlan';
+import { fontSize } from '~/utils/texts';
 
 import Subject from './Discipline';
 
 const SessionCard = ({ data }: { data: ISessionTeachPlan }) => (
-  <CardHeaderOut topText={data.stringSession}>
+  <CardHeaderOut topText={data.period.string} topTextStyle={fontSize.large}>
     {data.disciplines.map((discipline, index) => (
-      <Subject
-        data={discipline}
-        showBorderLine={index !== data.disciplines.length - 1}
-        key={discipline.name}
-      />
+      <View key={discipline.name}>
+        <Subject data={discipline} />
+        {index !== data.disciplines.length - 1 && <BorderLine />}
+      </View>
     ))}
   </CardHeaderOut>
 );
