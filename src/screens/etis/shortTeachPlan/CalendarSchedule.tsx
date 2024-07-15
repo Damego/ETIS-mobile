@@ -1,13 +1,12 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { ActivityIndicator, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from 'react-native';
 import BorderLine from '~/components/BorderLine';
 import Text from '~/components/Text';
 import { useClient } from '~/data/client';
-import { useAppDispatch, useGlobalStyles } from '~/hooks';
+import { useGlobalStyles } from '~/hooks';
+import useQuery from '~/hooks/useQuery';
 import { ICalendarSchedule, ISessionSchedule } from '~/models/calendarSchedule';
-import { GetResultType, RequestType } from '~/models/results';
-import { setAuthorizing } from '~/redux/reducers/authSlice';
 import { fontSize } from '~/utils/texts';
 
 const SessionSchedule = ({ session }: { session: ISessionSchedule }) => {
@@ -26,24 +25,11 @@ const SessionSchedule = ({ session }: { session: ISessionSchedule }) => {
         onPress={() => setOpened(!isOpened)}
         activeOpacity={0.45}
       >
-        <Text
-          style={[{ fontWeight: '600', paddingVertical: '2%' }, fontSize.medium]}
-          colorVariant={'block'}
-        >
-          {session.title}
-        </Text>
-        <AntDesign
-          name={isOpened ? 'up' : 'down'}
-          size={18}
-          color={globalStyles.fontColorForBlock.color}
-        />
+        <Text style={styles.sessionScheduleTitleText}>{session.title}</Text>
+        <AntDesign name={isOpened ? 'up' : 'down'} size={18} color={globalStyles.textColor.color} />
       </TouchableOpacity>
 
-      {isOpened && (
-        <Text style={fontSize.medium} colorVariant={'block'}>
-          {session.dates.join('\n')}
-        </Text>
-      )}
+      {isOpened && <Text style={fontSize.medium}>{session.dates.join('\n')}</Text>}
     </>
   );
 };
@@ -71,70 +57,49 @@ const CalendarScheduleMenu = ({ data }: { data?: ICalendarSchedule }) => {
 export default function CalendarSchedule() {
   const globalStyles = useGlobalStyles();
   const [isOpened, setOpened] = useState(false);
-  const [data, setData] = useState<ICalendarSchedule>();
-  const dispatch = useAppDispatch();
   const client = useClient();
-
-  const loadData = async () => {
-    setOpened(true);
-
-    const result = await client.getCalendarScheduleData({
-      requestType: RequestType.tryFetch, // TODO: Определить, когда использовать кэш
-    });
-
-    if (!result.data) {
-      ToastAndroid.show('Нет данных для отображения', ToastAndroid.LONG);
-      return;
-    }
-
-    if (result.type === GetResultType.loginPage) {
-      dispatch(setAuthorizing(true));
-      return;
-    }
-
-    setData(result.data);
-  };
+  const { data, update } = useQuery({
+    method: client.getCalendarScheduleData,
+    skipInitialGet: true,
+  });
 
   const handlePress = () => {
     if (isOpened) return setOpened(false);
 
     setOpened(true);
-    if (!data) loadData();
+    if (!data) update();
   };
 
   return (
-    <View
-      style={[
-        {
-          paddingVertical: '2%',
-          paddingHorizontal: '2%',
-          marginBottom: '2%',
-        },
-        globalStyles.block,
-        globalStyles.border,
-      ]}
-    >
-      <TouchableOpacity
-        onPress={handlePress}
-        style={{
-          paddingVertical: '2%',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-        activeOpacity={0.45}
-      >
-        <Text style={[{ fontWeight: '600' }, fontSize.medium]} colorVariant={'block'}>
-          Календарный учебный график
-        </Text>
-        <AntDesign
-          name={isOpened ? 'up' : 'down'}
-          size={18}
-          color={globalStyles.fontColorForBlock.color}
-        />
+    <View style={[styles.scheduleContainer, globalStyles.card]}>
+      <TouchableOpacity onPress={handlePress} style={styles.scheduleButton} activeOpacity={0.45}>
+        <Text style={styles.scheduleButtonText}>Календарный учебный график</Text>
+        <AntDesign name={isOpened ? 'up' : 'down'} size={18} color={globalStyles.textColor.color} />
       </TouchableOpacity>
 
       {isOpened && <CalendarScheduleMenu data={data} />}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  scheduleContainer: {
+    paddingVertical: '2%',
+    paddingHorizontal: '2%',
+  },
+  scheduleButton: {
+    paddingVertical: '2%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  scheduleButtonText: {
+    fontWeight: '600',
+    ...fontSize.medium,
+  },
+  sessionScheduleTitleText: {
+    fontWeight: '600',
+    paddingVertical: '2%',
+    ...fontSize.medium,
+  },
+});
