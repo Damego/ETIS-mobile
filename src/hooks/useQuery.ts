@@ -12,8 +12,8 @@ interface Query<P, R> {
   data: R;
   isLoading: boolean;
   refresh: () => void;
-  update: (payload: IGetPayload<P>) => void;
-  get: (payload: IGetPayload<P>) => Promise<IGetResult<R>>;
+  update: (payload?: IGetPayload<P>) => void;
+  get: (payload?: IGetPayload<P>) => Promise<IGetResult<R>>;
   initialPayload: P;
 }
 
@@ -88,7 +88,7 @@ const useQuery = <P, R>({
     }
   };
 
-  const loadData = async (payload: IGetPayload<P>) => {
+  const loadData = async (payload?: IGetPayload<P>) => {
     enableLoading();
 
     const result = await get(payload);
@@ -107,11 +107,13 @@ const useQuery = <P, R>({
   const refresh = () =>
     loadData({ requestType: RequestType.forceFetch, data: payloadData.current });
 
-  const get = async (payload: IGetPayload<P>): Promise<IGetResult<R>> => {
+  const get = async (payload?: IGetPayload<P>): Promise<IGetResult<R>> => {
+    payload = payload || { requestType, data: payloadData.current };
     if (isOfflineMode) {
       payload.requestType = RequestType.forceCache;
     }
     payloadData.current = payload.data;
+
     const result = await method(payload);
 
     checkLoginPage(result);
@@ -122,7 +124,7 @@ const useQuery = <P, R>({
     data,
     isLoading,
     refresh,
-    update: (payload) => loadData(payload),
+    update: (payload?) => loadData(payload),
     get,
     initialPayload: payloadData.current,
   };
