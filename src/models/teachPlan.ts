@@ -8,5 +8,9 @@ export interface ITeachPlanDiscipline {
 
 export interface ISessionTeachPlan {
   disciplines: ITeachPlanDiscipline[];
-  stringSession: string;
+  period: {
+    string: string;
+    number: number;
+    name: string;
+  }
 }

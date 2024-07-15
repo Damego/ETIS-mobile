@@ -5,13 +5,12 @@ import { getTextField } from './utils';
 
 const FIELDS_NUM = 5;
 
-export default function parseShortTeachPlan(html) {
+export default function parseShortTeachPlan(html: string) {
   const $ = load(html);
   const sessionName = $('h3').first().text().split(' ').at(-1);
   const data: ISessionTeachPlan[] = [];
 
   $('.common', html).each((index, table) => {
-    const stringSession = `${index + 1} ${sessionName}`;
     const disciplines: ITeachPlanDiscipline[] = [];
 
     $('.cgrldatarow', table).each((ind, tr) => {
@@ -37,7 +36,11 @@ export default function parseShortTeachPlan(html) {
     });
     data.push({
       disciplines,
-      stringSession,
+      period: {
+        name: sessionName,
+        number: index + 1,
+        string: `${index + 1} ${sessionName}`,
+      },
     });
   });
   return data;
