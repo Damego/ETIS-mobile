@@ -12,5 +12,5 @@ export interface ISessionTeachPlan {
     string: string;
     number: number;
     name: string;
-  }
+  };
 }
