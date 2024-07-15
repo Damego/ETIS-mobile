@@ -29,7 +29,7 @@ const CardHeaderOut = ({
   const globalStyles = useGlobalStyles();
 
   return (
-    <>
+    <View>
       {topText && (
         <View style={styles.cardHeaderView}>
           <Text style={[styles.cardHeaderText, globalStyles.textColor, topTextStyle]}>
@@ -38,7 +38,7 @@ const CardHeaderOut = ({
         </View>
       )}
       <Card style={style}>{children}</Card>
-    </>
+    </View>
   );
 };
 
