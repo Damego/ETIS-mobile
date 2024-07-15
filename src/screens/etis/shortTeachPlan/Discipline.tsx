@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   subjectTitleView: {
     flex: 1,
-    gap: 4
+    gap: 4,
   },
   subjectNameText: {
     fontWeight: '500',
