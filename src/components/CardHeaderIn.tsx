@@ -27,9 +27,7 @@ const CardHeaderIn = ({
   return (
     <Card style={style}>
       <View style={styles.cardHeaderView}>
-        <Text style={styles.cardHeaderText}>
-          {topText}
-        </Text>
+        <Text style={styles.cardHeaderText}>{topText}</Text>
       </View>
       {children}
     </Card>
