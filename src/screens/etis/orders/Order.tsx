@@ -8,13 +8,6 @@ import { fontSize } from '~/utils/texts';
 
 import OrderModal from './OrderModal';
 
-const styles = StyleSheet.create({
-  textTitle: {
-    fontWeight: '500',
-    ...fontSize.small,
-  },
-});
-
 const Order = ({ order }: { order: IOrder }) => {
   const [isOpened, setOpened] = useState<boolean>(false);
   const [html, setHTML] = useState<string>();
@@ -42,15 +35,9 @@ const Order = ({ order }: { order: IOrder }) => {
 
       <TouchableOpacity onPress={openModal}>
         <CardHeaderIn topText={`№${order.id ?? '-'} от ${order.date}`}>
-          <Text style={styles.textTitle} colorVariant={'block'}>
-            {order.name}
-          </Text>
+          <Text style={styles.textTitle}>{order.name}</Text>
 
-          {!order.uri && (
-            <Text style={styles.textTitle} colorVariant={'block'}>
-              Приказ готовится...
-            </Text>
-          )}
+          {!order.uri && <Text style={styles.textTitle}>Приказ готовится...</Text>}
         </CardHeaderIn>
       </TouchableOpacity>
     </>
@@ -58,3 +45,10 @@ const Order = ({ order }: { order: IOrder }) => {
 };
 
 export default Order;
+
+const styles = StyleSheet.create({
+  textTitle: {
+    fontWeight: '500',
+    ...fontSize.small,
+  },
+});

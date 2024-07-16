@@ -25,7 +25,7 @@ import SessionQuestionnaireList from '~/screens/etis/sessionQuestionnaire/Sessio
 import ShortTeachPlan from '~/screens/etis/shortTeachPlan';
 import Teachers from '~/screens/etis/teachers';
 import Timetable from '~/screens/etis/timeTable/TimeTable';
-import Orders from '~/screens/orders';
+import Orders from '../screens/etis/orders';
 
 const Stack = createStackNavigator<EducationStackParamList>();
 
