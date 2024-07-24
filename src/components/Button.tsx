@@ -18,6 +18,7 @@ const defaultStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: '2%',
+    borderRadius: 50
   },
 });
 
@@ -42,11 +43,7 @@ const Button = React.forwardRef<View | Text | TouchableOpacity, ButtonProps>(
           { fontWeight: '500' },
           fontStyle || fontSize.xlarge,
         ],
-        view: [
-          defaultStyles.container,
-          globalStyles.primaryBackgroundColor,
-          globalStyles.borderRadius,
-        ],
+        view: [defaultStyles.container, globalStyles.primaryBackgroundColor],
       },
       secondary: {
         textColor: globalStyles.textColor.color,
@@ -55,16 +52,12 @@ const Button = React.forwardRef<View | Text | TouchableOpacity, ButtonProps>(
           { fontWeight: '500' },
           fontStyle || fontSize.xlarge,
         ],
-        view: [
-          defaultStyles.container,
-          globalStyles.secondaryBackgroundColor,
-          globalStyles.borderRadius,
-        ],
+        view: [defaultStyles.container, globalStyles.secondaryBackgroundColor],
       },
       card: {
         textColor: globalStyles.secondaryContrastText.color,
         text: [globalStyles.secondaryText, { fontWeight: '500' }, fontStyle || fontSize.xlarge],
-        view: [defaultStyles.container, globalStyles.borderRadius],
+        view: [defaultStyles.container],
       },
     };
 
