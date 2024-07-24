@@ -47,7 +47,9 @@ const RequestSentScreen = ({
 
           {place && (
             <>
-              <Text style={styles.paragraphText}>Место предъявления (организация-работодатель)</Text>
+              <Text style={styles.paragraphText}>
+                Место предъявления (организация-работодатель)
+              </Text>
               <Text style={fontSize.big}>{place}</Text>
             </>
           )}

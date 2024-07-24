@@ -18,7 +18,7 @@ const defaultStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: '2%',
-    borderRadius: 50
+    borderRadius: 50,
   },
 });
 
