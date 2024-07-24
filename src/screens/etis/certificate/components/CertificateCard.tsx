@@ -3,7 +3,6 @@ import { StyleSheet, ToastAndroid, TouchableOpacity } from 'react-native';
 import { cache } from '~/cache/smartCache';
 import CardHeaderIn from '~/components/CardHeaderIn';
 import Text from '~/components/Text';
-import { useGlobalStyles } from '~/hooks';
 import { ICertificate } from '~/models/certificate';
 import { cutCertificateHTML } from '~/parser/certificate';
 import { httpClient } from '~/utils';
@@ -11,16 +10,7 @@ import { fontSize } from '~/utils/texts';
 
 import CertificateModal from './CertificateModal';
 
-const styles = StyleSheet.create({
-  textTitle: {
-    fontWeight: '500',
-    ...fontSize.small,
-  },
-});
-
-const Certificate = ({ certificate }: { certificate: ICertificate }) => {
-  const globalStyles = useGlobalStyles();
-
+const CertificateCard = ({ certificate }: { certificate: ICertificate }) => {
   const [isOpened, setOpened] = useState<boolean>(false);
   const [html, setHTML] = useState<string>();
 
@@ -56,7 +46,7 @@ const Certificate = ({ certificate }: { certificate: ICertificate }) => {
 
       <TouchableOpacity onPress={openModal}>
         <CardHeaderIn topText={`№${certificate.id ?? '-'} от ${certificate.date}`}>
-          <Text style={styles.textTitle} colorVariant={'block'}>
+          <Text style={styles.textTitle}>
             {certificate.name} статус: {certificate.status}
           </Text>
         </CardHeaderIn>
@@ -65,4 +55,11 @@ const Certificate = ({ certificate }: { certificate: ICertificate }) => {
   );
 };
 
-export default Certificate;
+export default CertificateCard;
+
+const styles = StyleSheet.create({
+  textTitle: {
+    fontWeight: '500',
+    ...fontSize.small,
+  },
+});

@@ -1,7 +1,7 @@
 import { IAbsence } from '~/models/absences';
 import { ICalendarSchedule } from '~/models/calendarSchedule';
 import { ICathedraTimetable, ICathedraTimetablePayload } from '~/models/cathedraTimetable';
-import { ICertificateTable } from '~/models/certificate';
+import { ICertificateResult } from '~/models/certificate';
 import { IMessagesData } from '~/models/messages';
 import { IOrder } from '~/models/order';
 import { IPersonalRecord } from '~/models/personalRecords';
@@ -41,7 +41,7 @@ export interface BaseClient {
   getTeacherData(payload: IGetPayload): Promise<IGetResult<ITeacher[]>>;
   getTeachPlanData(payload: IGetPayload): Promise<IGetResult<ISessionTeachPlan[]>>;
   getCalendarScheduleData(payload: IGetPayload): Promise<IGetResult<ICalendarSchedule>>;
-  getCertificateData(payload: IGetPayload): Promise<IGetResult<ICertificateTable>>;
+  getCertificateData(payload: IGetPayload): Promise<IGetResult<ICertificateResult>>;
   getSessionQuestionnaireList(
     payload: IGetPayload<string>
   ): Promise<IGetResult<ISessionQuestionnaireLink[]>>;

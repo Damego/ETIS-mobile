@@ -9,6 +9,7 @@ import { IMessage } from '~/models/messages';
 import { ISubject } from '~/models/sessionPoints';
 import { ILesson } from '~/models/timeTable';
 import Rating from '~/screens/etis/rating';
+import { IAvailableCertificate } from '~/models/certificate';
 
 // Список экранов для основного стека
 export type RootStackParamList = {
@@ -48,7 +49,7 @@ export type EducationStackParamList = {
   // Список справок
   Certificate: undefined;
   // Заказ справки
-  RequestCertificate: undefined;
+  RequestCertificate: IAvailableCertificate[];
   // Список доступных для анкетирования дисциплин
   SessionQuestionnaireList: undefined;
   // Расписание звонков

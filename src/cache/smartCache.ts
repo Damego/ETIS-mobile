@@ -1,7 +1,7 @@
 import * as SecureStore from 'expo-secure-store';
 import { IAbsence } from '~/models/absences';
 import { ICalendarSchedule } from '~/models/calendarSchedule';
-import { ICertificate, ICertificateTable } from '~/models/certificate';
+import { ICertificate, ICertificateResult } from '~/models/certificate';
 import { IMessagesData } from '~/models/messages';
 import { IOrder } from '~/models/order';
 import { IPersonalRecord } from '~/models/personalRecords';
@@ -283,12 +283,12 @@ export default class SmartCache {
 
   // // Certificate Region
 
-  async getCertificate(): Promise<ICertificateTable> {
+  async getCertificate(): Promise<ICertificateResult> {
     if (!this.certificate.isReady()) await this.certificate.init();
     return { certificates: this.certificate.get(), announce: {} };
   }
 
-  async placeCertificate(data: ICertificateTable) {
+  async placeCertificate(data: ICertificateResult) {
     this.certificate.place(data.certificates);
     await this.certificate.save();
   }

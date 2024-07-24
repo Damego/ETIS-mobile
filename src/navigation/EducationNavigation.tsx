@@ -10,8 +10,8 @@ import AccountSettings from '~/screens/etis/accountSettings/AccountSettings';
 import Auth from '~/screens/etis/auth/Auth';
 import BellSchedule from '~/screens/etis/bellSchedule/BellSchedule';
 import CathedraTimetable from '~/screens/etis/cathedraTimetable/CathedraTimetable';
-import Certificate from '~/screens/etis/certificate/Certificate';
 import CertificateIncome from '~/screens/etis/certificate/CertificateIncome';
+import CertificateTable from '~/screens/etis/certificate/CertificateTable';
 import RequestCertificate from '~/screens/etis/certificate/RequestCertificate';
 import ChangeEmail from '~/screens/etis/changeCredentials/ChangeEmail';
 import ChangePassword from '~/screens/etis/changeCredentials/ChangePassword';
@@ -78,7 +78,7 @@ const EducationNavigation = () => {
           <Stack.Screen name={'Orders'} component={Orders} options={{ title: 'Приказы' }} />
           <Stack.Screen
             name={'Certificate'}
-            component={Certificate}
+            component={CertificateTable}
             options={{ title: 'Справки' }}
           />
           <Stack.Screen

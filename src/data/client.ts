@@ -4,7 +4,7 @@ import { useAppSelector } from '~/hooks';
 import { IAbsence } from '~/models/absences';
 import { ICalendarSchedule } from '~/models/calendarSchedule';
 import { ICathedraTimetable, ICathedraTimetablePayload } from '~/models/cathedraTimetable';
-import { ICertificateTable } from '~/models/certificate';
+import { ICertificateResult } from '~/models/certificate';
 import { IMessagesData } from '~/models/messages';
 import { IOrder } from '~/models/order';
 import { IPersonalRecord } from '~/models/personalRecords';
@@ -64,7 +64,7 @@ class StudentClient extends BasicClient<IGetPayload, StudentInfo> {}
 class TeachersClient extends BasicClient<IGetPayload, ITeacher[]> {}
 class TeachPlanClient extends BasicClient<IGetPayload, ISessionTeachPlan[]> {}
 class CalendarScheduleClient extends BasicClient<IGetPayload, ICalendarSchedule> {}
-class CertificateClient extends BasicClient<IGetPayload, ICertificateTable> {}
+class CertificateClient extends BasicClient<IGetPayload, ICertificateResult> {}
 class SessionQuestionnaireClient extends BasicClient<IGetPayload<string>, ISessionQuestionnaire> {}
 class SessionQuestionnaireListClient extends BasicClient<
   IGetPayload<string>,
@@ -273,7 +273,7 @@ export default class Client implements BaseClient {
     return this.calendarScheduleClient.getData(payload);
   }
 
-  async getCertificateData(payload: IGetPayload): Promise<IGetResult<ICertificateTable>> {
+  async getCertificateData(payload: IGetPayload): Promise<IGetResult<ICertificateResult>> {
     await cache.certificate.init();
     return this.certificateClient.getData(payload);
   }

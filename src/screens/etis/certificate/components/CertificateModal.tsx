@@ -26,23 +26,21 @@ export default function CertificateModal({ html, closeModal }) {
             marginVertical: '20%',
             marginHorizontal: '2%',
           },
-          globalStyles.block,
+          globalStyles.container,
           globalStyles.border,
-          globalStyles.shadow,
         ]}
       >
         <AutoHeightWebView
           source={{ html }}
           scalesPageToFit
           style={{ marginHorizontal: '20%', marginVertical: '3%' }}
-          customStyle={getStyles(globalStyles.fontColorForBlock.color)}
+          customStyle={getStyles(globalStyles.textColor.color)}
         />
         <ClickableText
           text={'Закрыть'}
           onPress={closeModal}
           textStyle={fontSize.large}
           viewStyle={{ marginBottom: '2%' }}
-          colorVariant={'block'}
         />
       </View>
     </Modal>
