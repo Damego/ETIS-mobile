@@ -5,11 +5,11 @@ import type {
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
 import type { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
+import { IAvailableCertificate } from '~/models/certificate';
 import { IMessage } from '~/models/messages';
 import { ISubject } from '~/models/sessionPoints';
 import { ILesson } from '~/models/timeTable';
 import Rating from '~/screens/etis/rating';
-import { IAvailableCertificate } from '~/models/certificate';
 
 // Список экранов для основного стека
 export type RootStackParamList = {

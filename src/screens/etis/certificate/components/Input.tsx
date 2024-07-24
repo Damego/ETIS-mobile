@@ -4,7 +4,6 @@ import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
 import { fontSize } from '~/utils/texts';
 
-
 const Input = ({ name, placeholder, onUpdate, value, popover }) => {
   const globalStyles = useGlobalStyles();
   return (
