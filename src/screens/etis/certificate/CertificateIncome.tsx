@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import { Button } from '~/components/Button';
 import Card from '~/components/Card';
@@ -6,12 +6,14 @@ import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { useClient } from '~/data/client';
 import { useAppSelector, useGlobalStyles } from '~/hooks';
+import useQuery from '~/hooks/useQuery';
 import { RequestType } from '~/models/results';
+import { PopoverElement } from '~/screens/etis/certificate/components/PopoverElement';
 import { getStudentYear } from '~/utils/datetime';
 import composeMail from '~/utils/email';
 import { fontSize } from '~/utils/texts';
 
-import { Input, PopoverElement } from './CertificateComponents';
+import Input from './components/Input';
 
 const stipEmail = 'stip@psu.ru';
 
@@ -33,16 +35,6 @@ const makeMailOptions = ({
   };
 };
 
-const btnCompose: ViewStyle = { position: 'absolute', left: 0, right: 0, bottom: '1%' };
-
-const styles = StyleSheet.create({
-  btnCompose: btnCompose,
-  btnComposeDisabled: {
-    ...btnCompose,
-    opacity: 0.75,
-  },
-});
-
 export default function CertificateIncome() {
   const globalStyles = useGlobalStyles();
   const client = useClient();
@@ -52,25 +44,22 @@ export default function CertificateIncome() {
   const [faculty, setFaculty] = useState<string>();
   const [year, setYear] = useState<string>(getStudentYear(Number.parseInt(info.year)));
   const [certPeriod, setCertPeriod] = useState<string>();
+  useQuery({
+    method: client.getPersonalRecords,
+    payload: {
+      requestType: RequestType.tryCache,
+    },
+    after: (result) => {
+      setFaculty(result.data.find((record) => record.isCurrent).faculty);
+    },
+  });
 
-  const applicable: boolean = !!fio && !!faculty && !!year && !!certPeriod;
-
-  useEffect(() => {
-    const fetchFaculty = async () => {
-      try {
-        const response = await client.getPersonalRecords({ requestType: RequestType.tryCache });
-        setFaculty(response.data.find((record) => record.isCurrent).faculty);
-      } catch (e) {}
-    };
-    fetchFaculty();
-  }, []);
-
-  const btnComposeStyles = applicable ? styles.btnCompose : styles.btnComposeDisabled;
+  const isApplicable: boolean = !!fio && !!faculty && !!year && !!certPeriod;
 
   return (
     <Screen>
       <View>
-        <Text style={[globalStyles.fontColorForBlock, fontSize.medium]} colorVariant={'block'}>
+        <Text style={[globalStyles.textColor, fontSize.medium]}>
           Справки о доходах (стипендии) можно заказать по телефону 239-65-34 или по электронной
           почте stip@psu.ru, необходимо указать следующие данные:
         </Text>
@@ -100,13 +89,13 @@ export default function CertificateIncome() {
             }
           />
         </Card>
-        <Text style={[globalStyles.fontColorForBlock, fontSize.medium]} colorVariant={'block'}>
+        <Text style={[globalStyles.textColor, fontSize.medium]}>
           Срок изготовления справки - 3 рабочих дня. Справки выдаются только за прошедшие месяцы -
           студентам первого курса в сентябре месяце справки о доходах не выдаются. {'\n\n'}
           Получение справки - в отделе расчёта с обучающимися, 1 корпус, 322 кабинет.
         </Text>
       </View>
-      <View style={btnComposeStyles}>
+      <View style={isApplicable ? styles.btnCompose : styles.btnComposeDisabled}>
         <Button
           text={'Составить письмо'}
           onPress={() =>
@@ -119,10 +108,19 @@ export default function CertificateIncome() {
               })
             )
           }
-          variant={'secondary'}
-          disabled={!applicable}
+          variant={'primary'}
+          disabled={!isApplicable}
         />
       </View>
     </Screen>
   );
 }
+
+const btnCompose: ViewStyle = { position: 'absolute', left: 0, right: 0, bottom: '1%' };
+const styles = StyleSheet.create({
+  btnCompose,
+  btnComposeDisabled: {
+    ...btnCompose,
+    opacity: 0.75,
+  },
+});

@@ -1,19 +1,27 @@
 import * as cheerio from 'cheerio';
+import {
+  IAvailableCertificate,
+  ICertificate,
+  ICertificateAnnounce,
+  ICertificateResult,
+} from '~/models/certificate';
 
-import { ICertificate, ICertificateAnnounce, ICertificateTable } from '../models/certificate';
 import { getTextField } from './utils';
 
-export function parseCertificateTable(html: string): ICertificateTable {
+export function parseCertificateTable(html: string): ICertificateResult {
+  const $ = cheerio.load(html);
+
   return {
-    certificates: parseCertificates(html),
-    announce: parseAnnounces(html),
+    certificates: parseCertificates($),
+    announce: parseAnnounces($),
+    availableCertificates: parseAvailableCertificates($),
   };
 }
-function parseCertificates(html: string): ICertificate[] {
-  const $ = cheerio.load(html);
+
+function parseCertificates($: cheerio.Root): ICertificate[] {
   const data: ICertificate[] = [];
 
-  $('.ord', html).each((el, orderEl) => {
+  $('.ord').each((el, orderEl) => {
     const order = $(orderEl).find('.ord-name');
 
     // DD.DD.DDDD {NAME} (код запроса: #DDD, статус: {STATUS})
@@ -34,6 +42,24 @@ function parseCertificates(html: string): ICertificate[] {
   return data;
 }
 
+const parseAvailableCertificates = ($: cheerio.Root) => {
+  const availableCertificates: IAvailableCertificate[] = [];
+
+  $('.orders')
+    .find('a')
+    .each((ind, aElement) => {
+      const aTag = $(aElement);
+      const partialUrl = aTag.attr('href');
+      const searchParams = new URLSearchParams(partialUrl.split('?')[1]);
+      availableCertificates.push({
+        id: searchParams.get('p_crtt_id'),
+        name: getTextField(aTag),
+      });
+    });
+
+  return availableCertificates;
+};
+
 const parseAnnounceText = (item: cheerio.Cheerio) =>
   item
     .contents()
@@ -45,8 +71,7 @@ const parseAnnounceText = (item: cheerio.Cheerio) =>
     .join('')
     .trim();
 
-function parseAnnounces(html: string): ICertificateAnnounce {
-  const $ = cheerio.load(html);
+function parseAnnounces($: cheerio.Root): ICertificateAnnounce {
   const content = $('.span9');
   let selector: cheerio.Cheerio;
   // Объявление с подтверждением почты похожа по структуре на объявления на странице заказа справок
@@ -68,5 +93,5 @@ function parseAnnounces(html: string): ICertificateAnnounce {
 
 export function cutCertificateHTML(html: string): string {
   const $ = cheerio.load(html);
-  return $('.bgprj', html).html();
+  return $('.bgprj').html();
 }

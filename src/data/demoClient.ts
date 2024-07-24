@@ -5,7 +5,7 @@ import {
   ICathedraTimetablePayload,
   TimetableTypes,
 } from '~/models/cathedraTimetable';
-import { ICertificateTable } from '~/models/certificate';
+import { ICertificateResult } from '~/models/certificate';
 import { IMessagesData, MessageType } from '~/models/messages';
 import { IOrder } from '~/models/order';
 import { DisciplineTypes } from '~/models/other';
@@ -53,7 +53,7 @@ export default class DemoClient implements BaseClient {
     return this.toResult(data);
   }
 
-  async getCertificateData(): Promise<IGetResult<ICertificateTable>> {
+  async getCertificateData(): Promise<IGetResult<ICertificateResult>> {
     return toResult({
       certificates: [
         {

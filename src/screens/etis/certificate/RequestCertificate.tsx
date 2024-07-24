@@ -7,88 +7,72 @@ import Card from '~/components/Card';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { useAppSelector, useGlobalStyles } from '~/hooks';
-import { CertificateParam } from '~/models/certificateRequest';
-import { RootStackNavigationProp, RootStackParamList } from '~/navigation/types';
+import { IAvailableCertificate } from '~/models/certificate';
+import { CertificateParam, CertificateRequest } from '~/models/certificateRequest';
+import {
+  EducationNavigationProp,
+  EducationStackParamList,
+  EducationStackScreenProps,
+} from '~/navigation/types';
+import { PopoverElement } from '~/screens/etis/certificate/components/PopoverElement';
+import RequestSentScreen from '~/screens/etis/certificate/components/RequestSentScreen';
+import { KNOWN_CERTIFICATES, SPECIAL_CERTIFICATES } from '~/screens/etis/certificate/data';
 import { httpClient } from '~/utils';
 import { toCertificatePayload } from '~/utils/certificate';
 import { fontSize } from '~/utils/texts';
 
-import { Input, PopoverElement } from './CertificateComponents';
+import Input from './components/Input';
 
-const deliveryMethods = [{ id: '1', name: 'лично (в отделе кадров обучающихся)' }];
-const specialCerts: [{ id: string; screen: keyof RootStackParamList }] = [
+const specialCerts: [{ id: string; screen: keyof EducationStackParamList }] = [
   { id: '-1', screen: 'CertificateIncome' },
 ];
 
-const certificateType: CertificateParam[] = [
-  {
-    id: '13',
-    name: 'Справка, подтверждающая факт обучения в ПГНИУ',
-    note: true,
-    maxQuantity: 3,
-    place: false,
-    deliveryMethod: deliveryMethods,
-  },
-  {
-    id: '7',
-    name: 'Справка-вызов (без оплаты)',
-    note: true,
-    maxQuantity: 1,
-    place: true,
-    deliveryMethod: deliveryMethods,
-  },
-  {
-    id: '5',
-    name: 'Справка в Сбербанк',
-    note: true,
-    maxQuantity: 3,
-    deliveryMethod: deliveryMethods,
-    place: false,
-  },
-  {
-    id: '12',
-    name: 'Справка для оформления банковской карты платежной системы МИР',
-    note: true,
-    maxQuantity: 1,
-    place: false,
-    deliveryMethod: deliveryMethods,
-  },
-  {
-    id: '-1',
-    name: 'Справка о доходах (стипендии)',
-    note: false,
-    maxQuantity: 0,
-    place: false,
-    deliveryMethod: [],
-  },
-];
+const getAvailableCertificates = (
+  availableCertificates: readonly IAvailableCertificate[]
+): CertificateParam[] => {
+  const $availableCertificates = [];
+  const ids = availableCertificates.map((cert) => cert.id);
 
-export const styles = StyleSheet.create({
-  text: {
-    ...fontSize.xlarge,
-    color: '#FFFFFF',
-    fontWeight: '500',
-  },
-  buttonContainer: {
-    paddingVertical: '2%',
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  alignStart: { alignItems: 'flex-start', marginBottom: 10 },
-});
+  KNOWN_CERTIFICATES.forEach((certificate) => {
+    if (ids.includes(certificate.id)) {
+      $availableCertificates.push(certificate);
+    }
+  });
+  // todo
+  return [...KNOWN_CERTIFICATES, ...SPECIAL_CERTIFICATES];
+};
 
-export default function RequestCertificate() {
+export default function RequestCertificate({
+  route,
+}: EducationStackScreenProps<'RequestCertificate'>) {
   const globalStyles = useGlobalStyles();
+  const navigation = useNavigation<EducationNavigationProp>();
+  const availableCertificates = getAvailableCertificates(route.params);
+
   const { isDemo } = useAppSelector((state) => state.auth);
-  const [currentId, setCurrentId] = useState<string>();
-  const [note, setNote] = useState<string>('');
-  const [place, setPlace] = useState<string>('');
-  const [quantity, setQuantity] = useState<string>();
-  const [delivery, setDelivery] = useState<string>();
+  const [{ certificateId, note, quantity, delivery, place }, setCertificate] =
+    useState<CertificateRequest>({
+      certificateId: undefined,
+      note: '',
+      quantity: '1',
+      delivery: '1',
+      place: '',
+    });
+
   const [keyboardOpen, setKeyboardOpen] = useState<boolean>(false);
   const [requestSent, setRequestSent] = useState<boolean>(false);
-  const navigator = useNavigation<RootStackNavigationProp>();
+
+  const changeCertificate = (certificate: Partial<CertificateRequest>) => {
+    setCertificate(($cert) => {
+      const updatedCert = { ...$cert };
+      Object.entries(certificate)
+        .filter(([, v]) => v !== undefined)
+        .forEach(([k, v]) => {
+          updatedCert[k] = v;
+        });
+      return updatedCert;
+    });
+  };
 
   Keyboard.addListener('keyboardDidShow', () => {
     setKeyboardOpen(true);
@@ -99,32 +83,26 @@ export default function RequestCertificate() {
   });
 
   const currentCertificate = useMemo(
-    () => certificateType.find((s) => s.id === currentId),
-    [currentId]
+    () => availableCertificates.find((s) => s.id === certificateId),
+    [certificateId]
   );
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    !currentCertificate?.place && setPlace('');
-  }, [currentId]);
-
-  const applicable =
-    currentId &&
-    !keyboardOpen &&
-    !!place === currentCertificate.place &&
-    !!note <= currentCertificate.note &&
-    Number(quantity) <= currentCertificate.maxQuantity &&
-    !!currentCertificate.deliveryMethod.find((s) => delivery === s.id);
+    !currentCertificate?.place && changeCertificate({ place: '' });
+  }, [certificateId]);
 
   const radioFactory = (id: string, name: string) => ({
     id,
     label: name,
-    ...globalStyles.fontColorForBlock,
-    labelStyle: [fontSize.medium, globalStyles.fontColorForBlock],
+    ...globalStyles.textColor,
+    labelStyle: [fontSize.medium, globalStyles.textColor, { flex: 1 }],
+    containerStyle: { marginHorizontal: 5 },
   });
 
   const certificateRadioButtons: RadioButtonProps[] = useMemo(
-    () => certificateType.map((certificate) => radioFactory(certificate.id, certificate.name)),
+    () =>
+      availableCertificates.map((certificate) => radioFactory(certificate.id, certificate.name)),
     []
   );
 
@@ -135,7 +113,7 @@ export default function RequestCertificate() {
       ),
       ['1', '2', '3'].slice(0, currentCertificate?.maxQuantity).map((i) => radioFactory(i, i)),
     ],
-    [currentId]
+    [certificateId]
   );
 
   const submitRequest = async () => {
@@ -148,7 +126,7 @@ export default function RequestCertificate() {
     try {
       await httpClient.sendCertificateRequest(
         toCertificatePayload({
-          certificateId: currentId,
+          certificateId,
           place,
           note,
           quantity,
@@ -175,65 +153,56 @@ export default function RequestCertificate() {
 
   if (requestSent) {
     return (
-      <Screen>
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <Text
-            style={[fontSize.xlarge, { fontWeight: '500', textAlign: 'center' }]}
-            colorVariant={'block'}
-          >
-            Запрос успешно отправлен!
-          </Text>
-        </View>
-        <View style={{ position: 'absolute', left: 0, right: 0, bottom: '1%' }}>
-          <Button
-            text={'Вернуться назад'}
-            onPress={() => navigator.goBack()}
-            variant={'secondary'}
-          />
-        </View>
-      </Screen>
+      <RequestSentScreen
+        certificateId={certificateId}
+        note={note}
+        quantity={quantity}
+        delivery={delivery}
+        place={place}
+      />
     );
   }
 
-  const specialCert = specialCerts.find((s) => currentId === s.id);
+  const isApplicable =
+    certificateId &&
+    !keyboardOpen &&
+    !!place === currentCertificate.place &&
+    !!note <= currentCertificate.note &&
+    Number(quantity) <= currentCertificate.maxQuantity &&
+    !!currentCertificate.deliveryMethod.find((s) => delivery === s.id);
+
+  const specialCert = specialCerts.find((s) => certificateId === s.id);
 
   return (
-    <Screen>
+    <Screen containerStyle={{ gap: 16 }}>
       <Card>
-        <Text style={fontSize.medium} colorVariant={'block'}>
-          Тип справки
-        </Text>
+        <Text style={fontSize.big}>Тип справки</Text>
         <RadioGroup
           radioButtons={certificateRadioButtons}
-          onPress={setCurrentId}
-          selectedId={currentId}
+          onPress={(certId) => changeCertificate({ certificateId: certId })}
+          selectedId={certificateId}
           containerStyle={styles.alignStart}
-          labelStyle={globalStyles.fontColorForBlock}
         />
       </Card>
 
-      {currentId && !specialCert && (
+      {certificateId && !specialCert && (
         <>
           <Card>
-            <Text style={fontSize.medium} colorVariant={'block'}>
-              Метод вручения
-            </Text>
+            <Text style={fontSize.big}>Метод вручения</Text>
             <RadioGroup
               radioButtons={deliveryWayRadioButtons}
-              onPress={setDelivery}
+              onPress={(delivery) => changeCertificate({ delivery })}
               selectedId={delivery}
               containerStyle={styles.alignStart}
-              labelStyle={globalStyles.fontColorForBlock}
+              labelStyle={globalStyles.textColor}
             />
-            <Text style={fontSize.medium} colorVariant={'block'}>
-              Количество
-            </Text>
+            <Text style={fontSize.big}>Количество (шт.)</Text>
             <RadioGroup
               radioButtons={quantityRadioButtons}
               selectedId={quantity}
-              onPress={setQuantity}
+              onPress={(quantity) => changeCertificate({ quantity })}
               containerStyle={styles.alignStart}
-              labelStyle={globalStyles.fontColorForBlock}
+              labelStyle={globalStyles.textColor}
             />
           </Card>
 
@@ -243,7 +212,7 @@ export default function RequestCertificate() {
                 name="Примечание"
                 placeholder="Заберёт Иванов Андрей Алексеевич"
                 value={note}
-                onUpdate={setNote}
+                onUpdate={(note: string) => changeCertificate({ note })}
                 popover={
                   <PopoverElement text="Справки выдаются лично заявителю. Если Вы доверяете получить справку другому лицу, пишите в примечаниях фамилию, имя отчество того, кто будет справку забирать." />
                 }
@@ -251,10 +220,10 @@ export default function RequestCertificate() {
             )}
             {currentCertificate.place && (
               <Input
-                name="Место предъявления (организация-работодатель)"
+                name="Место предъявления (организация-работодатель) *"
                 placeholder="ОАО НефтьГаз"
                 value={place}
-                onUpdate={setPlace}
+                onUpdate={(place: string) => changeCertificate({ place })}
                 popover={
                   <PopoverElement text="Название организации необходимо указывать в РОДИТЕЛЬНОМ падеже для соблюдения норм русского языка при формировании текста справки." />
                 }
@@ -265,20 +234,33 @@ export default function RequestCertificate() {
       )}
 
       {specialCert && (
-        <View style={{ position: 'absolute', left: 0, right: 0, bottom: '1%' }}>
+        <View style={styles.buttonContainer}>
           <Button
             text={'Продолжить'}
-            onPress={() => navigator.navigate(specialCert.screen)}
-            variant={'secondary'}
+            onPress={() => navigation.navigate(specialCert.screen)}
+            variant={'primary'}
           />
         </View>
       )}
 
-      {applicable && (
-        <View style={{ position: 'absolute', left: 0, right: 0, bottom: '1%' }}>
-          <Button text={'Заказать'} onPress={confirmSubmit} variant={'secondary'} />
+      {isApplicable && (
+        <View style={styles.buttonContainer}>
+          <Button text={'Заказать'} onPress={confirmSubmit} variant={'primary'} />
         </View>
       )}
     </Screen>
   );
 }
+
+export const styles = StyleSheet.create({
+  text: {
+    ...fontSize.xlarge,
+    color: '#FFFFFF',
+    fontWeight: '500',
+  },
+  alignStart: { alignItems: 'flex-start', marginBottom: 10 },
+  buttonContainer: {
+    marginTop: 'auto',
+    marginBottom: '2%',
+  },
+});
