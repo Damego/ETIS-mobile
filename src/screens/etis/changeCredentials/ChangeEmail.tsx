@@ -7,7 +7,7 @@ import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { useAppDispatch, useGlobalStyles } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
-import { ServiceNativeStackScreenProps } from '~/navigation/types';
+import { EducationStackScreenProps } from '~/navigation/types';
 import { parseChangeEmailPage } from '~/parser/changeCredentials';
 import { setUserCredentials } from '~/redux/reducers/authSlice';
 import { httpClient } from '~/utils';
@@ -56,8 +56,7 @@ const Form = ({
         style={[
           styles.input,
           globalStyles.border,
-          globalStyles.fontColorForBlock,
-          globalStyles.block,
+          globalStyles.textColor,
           email && !emailRegex.test(email) ? { borderColor: theme.colors.primary } : undefined,
         ]}
         onChangeText={setEmail}
@@ -75,14 +74,14 @@ const Form = ({
           onPress={() => onSubmit(email)}
           disabled={!email || !emailRegex.test(email)}
           showLoading={showLoading}
-          variant={'secondary'}
+          variant={'primary'}
         />
       </View>
     </View>
   );
 };
 
-export default function ChangeEmail({ route }: ServiceNativeStackScreenProps<'ChangeEmail'>) {
+export default function ChangeEmail({ route }: EducationStackScreenProps<'ChangeEmail'>) {
   const sendVerificationMail = route.params?.sendVerificationMail;
 
   const dispatch = useAppDispatch();

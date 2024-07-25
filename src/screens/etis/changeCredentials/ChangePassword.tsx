@@ -78,8 +78,7 @@ const Form = ({
         style={[
           styles.input,
           globalStyles.border,
-          globalStyles.block,
-          globalStyles.fontColorForBlock,
+          globalStyles.textColor,
           newPassword && !passwordHasEightSymbols
             ? { borderColor: theme.colors.primary }
             : undefined,
@@ -90,7 +89,7 @@ const Form = ({
         autoComplete="password-new"
         selectionColor={theme.colors.primary}
         onEndEditing={validateFirstInput}
-        iconColor={theme.colors.textForBlock}
+        iconColor={theme.colors.text}
       />
       {firstInputMessage && <Text style={[globalStyles.primaryText]}>{firstInputMessage}</Text>}
 
@@ -98,8 +97,7 @@ const Form = ({
         style={[
           styles.input,
           globalStyles.border,
-          globalStyles.block,
-          globalStyles.fontColorForBlock,
+          globalStyles.textColor,
           passwordUnconfirmed ? { borderColor: theme.colors.primary } : undefined,
         ]}
         onChangeText={setNewPasswordConfirm}
@@ -107,7 +105,7 @@ const Form = ({
         placeholderTextColor={theme.colors.inputPlaceholder}
         autoComplete="password"
         selectionColor={theme.colors.primary}
-        iconColor={theme.colors.textForBlock}
+        iconColor={theme.colors.text}
       />
 
       <View style={{ width: '90%' }}>
@@ -116,7 +114,7 @@ const Form = ({
           onPress={preSubmit}
           disabled={!passwordHasEightSymbols || !passwordConfirmed}
           showLoading={showLoading}
-          variant={'secondary'}
+          variant={'primary'}
         />
       </View>
     </View>
