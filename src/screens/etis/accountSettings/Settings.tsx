@@ -1,6 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import Card from '~/components/Card';
+import { StyleSheet, View } from 'react-native';
 import Text from '~/components/Text';
 
 import ChangeEmailSetting from './settingsComponents/ChangeEmailSetting';
@@ -9,13 +8,13 @@ import LogOut from './settingsComponents/LogOut';
 
 const Settings = () => {
   return (
-    <Card style={styles.card}>
+    <View style={styles.card}>
       <Text style={styles.cardTitle}>Аккаунт</Text>
 
       <ChangeEmailSetting />
       <ChangePasswordSetting />
       <LogOut />
-    </Card>
+    </View>
   );
 };
 
