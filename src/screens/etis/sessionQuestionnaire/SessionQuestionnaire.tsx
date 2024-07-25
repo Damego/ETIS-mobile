@@ -9,14 +9,14 @@ import { useAppSelector } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
 import { RequestType } from '~/models/results';
 import { IAnswer } from '~/models/sessionQuestionnaire';
-import { RootStackScreenProps } from '~/navigation/types';
+import { EducationStackScreenProps } from '~/navigation/types';
 import { httpClient } from '~/utils';
 import toSessionTestPayload from '~/utils/sessionTest';
 
-import AdditionalComment from './AdditionalComment';
-import { ConfirmResultView, ResultSentView, SendingResultView } from './ResultViews';
-import TeacherQuestionView from './TeacherQuestionView';
 import Theme from './Theme';
+import AdditionalComment from './components/AdditionalComment';
+import { ConfirmResultView, ResultSentView, SendingResultView } from './components/ResultViews';
+import TeacherQuestionView from './components/TeacherQuestionView';
 
 enum Steps {
   inputTeacher = 1,
@@ -30,7 +30,7 @@ enum Steps {
 
 export default function SessionQuestionnaire({
   route,
-}: RootStackScreenProps<'SessionQuestionnaire'>) {
+}: EducationStackScreenProps<'SessionQuestionnaire'>) {
   const { url } = route.params;
   const [step, setStep] = useState<Steps>(1);
   const [themeIndex, setThemeIndex] = useState(0);
@@ -131,7 +131,7 @@ export default function SessionQuestionnaire({
 
       {!hideButton && (
         <View style={{ marginVertical: '5%' }}>
-          <Button onPress={onButtonClick} text={'Далее'} variant={'secondary'} />
+          <Button onPress={onButtonClick} text={'Далее'} variant={'primary'} />
         </View>
       )}
     </Screen>

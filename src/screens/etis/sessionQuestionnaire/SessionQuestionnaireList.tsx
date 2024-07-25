@@ -1,5 +1,6 @@
 import { useIsFocused } from '@react-navigation/native';
 import React, { useEffect } from 'react';
+import { View } from 'react-native';
 import Card from '~/components/Card';
 import ClickableText from '~/components/ClickableText';
 import LoadingScreen from '~/components/LoadingScreen';
@@ -10,10 +11,10 @@ import { useClient } from '~/data/client';
 import { useAppSelector } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
 import { RequestType } from '~/models/results';
-import { RootStackScreenProps } from '~/navigation/types';
+import { EducationStackScreenProps } from '~/navigation/types';
 import { fontSize } from '~/utils/texts';
 
-export default function SessionQuestionnaireList({ navigation }: RootStackScreenProps) {
+export default function SessionQuestionnaireList({ navigation }: EducationStackScreenProps) {
   const { sessionTestID } = useAppSelector((state) => state.student);
   const client = useClient();
   const { data, isLoading, refresh } = useQuery({
@@ -39,29 +40,30 @@ export default function SessionQuestionnaireList({ navigation }: RootStackScreen
   return (
     <Screen>
       {available.length !== 0 && (
-        <Text style={[fontSize.large, { fontWeight: '500', marginBottom: '2%' }]}>Доступные</Text>
+        <>
+          <Text style={[fontSize.large, { fontWeight: '500', marginBottom: '2%' }]}>Доступные</Text>
+          <View style={{ gap: 8 }}>
+            {available.map((link) => (
+              <Card key={link.name}>
+                <ClickableText
+                  text={link.name}
+                  onPress={() => {
+                    navigation.navigate('SessionQuestionnaire', { url: link.url });
+                  }}
+                  textStyle={fontSize.small}
+                />
+              </Card>
+            ))}
+          </View>
+        </>
       )}
-      {available.map((link) => (
-        <Card key={link.name}>
-          <ClickableText
-            text={link.name}
-            onPress={() => {
-              navigation.navigate('SessionQuestionnaire', { url: link.url });
-            }}
-            textStyle={fontSize.small}
-            colorVariant={'block'}
-          />
-        </Card>
-      ))}
 
       {passed.length !== 0 && (
         <Text style={[fontSize.large, { fontWeight: '500', marginBottom: '2%' }]}>Пройденные</Text>
       )}
       {passed.map((link) => (
         <Card key={link.name}>
-          <Text style={fontSize.small} colorVariant={'block'}>
-            {link.name}
-          </Text>
+          <Text style={fontSize.small}>{link.name}</Text>
         </Card>
       ))}
     </Screen>

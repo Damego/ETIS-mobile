@@ -16,13 +16,11 @@ export default function Question({
   answerTitles: string[];
   onAnswer(answer: IAnswer): void;
 }) {
-  const globalStyles = useGlobalStyles();
-
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text style={[fontSize.large, { height: '40%' }]}>{question.name}</Text>
 
-      <View style={{ marginTop: '2%', height: '60%' }}>
+      <View style={{ marginTop: '2%', height: '60%', gap: 8 }}>
         {question.answers.map((answer, index) => (
           <Card key={answerTitles[index]}>
             <ClickableText
@@ -30,7 +28,6 @@ export default function Question({
               onPress={() => onAnswer(answer)}
               textStyle={fontSize.large}
               viewStyle={{ justifyContent: 'center', alignItems: 'center' }}
-              colorVariant={'block'}
             />
           </Card>
         ))}
