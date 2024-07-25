@@ -14,9 +14,8 @@ export default function AdditionalComment({ onTextChange }: { onTextChange(text:
 
       <TextInput
         style={[
-          globalStyles.fontColorForBlock,
+          globalStyles.textColor,
           globalStyles.border,
-          globalStyles.block,
           { width: '100%', paddingVertical: '2%', paddingHorizontal: '2%' },
         ]}
         onChangeText={onTextChange}

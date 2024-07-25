@@ -20,9 +20,8 @@ export default function TeacherQuestionView({
       </Text>
       <TextInput
         style={[
-          globalStyles.fontColorForBlock,
+          globalStyles.textColor,
           globalStyles.border,
-          globalStyles.block,
           { width: '80%', paddingVertical: '2%', paddingHorizontal: '2%' },
         ]}
         onChangeText={setTeacher}
