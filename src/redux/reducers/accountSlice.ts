@@ -18,7 +18,10 @@ export interface SignOutPayload {
   cleanUserCredentials?: boolean;
 }
 
-interface AuthState {
+export interface TeacherState {
+  id: number;
+  name: string;
+}
 
 export enum AccountType {
   NONE,
@@ -36,6 +39,8 @@ interface AccountState {
   isOfflineMode: boolean;
   isSignedOut: boolean;
   isDemo: boolean;
+  accountType: AccountType;
+  studentGroupId?: string;
   teacher?: TeacherState;
 }
 
@@ -61,11 +66,16 @@ const accountSlice = createSlice({
       if (action && action.payload.isOffline !== undefined) {
         state.isOfflineMode = action.payload.isOffline;
       }
+      state.accountType = AccountType.AUTHORIZED_STUDENT;
     },
     signOut(state, action: PayloadAction<SignOutPayload>) {
       state.isSignedIn = false;
       state.isSignedOut = true;
       state.isDemo = false;
+      if (action.payload.cleanUserCredentials) {
+        state.userCredentials = undefined;
+        state.accountType = AccountType.NONE;
+      }
     },
     setAuthorizing(state, action: PayloadAction<boolean>) {
       state.isAuthorizing = action.payload;
@@ -74,6 +84,8 @@ const accountSlice = createSlice({
       if (action.payload.userCredentials) {
         state.userCredentials = action.payload.userCredentials;
         state.fromStorage = action.payload.fromStorage;
+        state.accountType = AccountType.AUTHORIZED_STUDENT;
+      }
     },
     setSaveUserCredentials(state, action: PayloadAction<boolean>) {
       state.saveUserCredentials = action.payload;
@@ -83,9 +95,15 @@ const accountSlice = createSlice({
       state.isSignedOut = false;
       state.isDemo = action.payload;
     },
+    setAccountState(state, action: PayloadAction<AccountType>) {
+      state.accountType = action.payload;
+    },
+    setGroupId(state, action: PayloadAction<string>) {
       state.studentGroupId = action.payload;
       state.teacher = null;
       state.accountType = AccountType.UNAUTHORIZED_STUDENT;
+    },
+    setTeacher(state, action: PayloadAction<TeacherState>) {
       state.studentGroupId = null;
       state.teacher = action.payload;
       state.accountType = AccountType.UNAUTHORIZED_TEACHER;
