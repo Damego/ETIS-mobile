@@ -1,4 +1,5 @@
 import * as Sentry from '@sentry/react-native';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -30,6 +31,7 @@ store.dispatch(manageEventTheme(store));
 // defineSignsFetchTask();
 // addShortcuts();
 // rescheduleAllTaskNotifications();
+const queryClient = new QueryClient();
 
 const App = () => {
   // useEffect(() => {
@@ -38,9 +40,11 @@ const App = () => {
   // }, []);
 
   return (
-    <Provider store={store}>
-      <StackNavigator />
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <StackNavigator />
+      </Provider>
+    </QueryClientProvider>
   );
 };
 
