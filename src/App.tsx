@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import isoWeek from 'dayjs/plugin/isoWeek';
 import weekday from 'dayjs/plugin/weekday';
 import React from 'react';
 import 'react-native-gesture-handler';
@@ -22,6 +23,7 @@ import { addShortcuts } from './utils/shortcuts';
 dayjs.locale('ru');
 dayjs.extend(weekday);
 dayjs.extend(customParseFormat);
+dayjs.extend(isoWeek);
 
 const store = setupStore();
 
