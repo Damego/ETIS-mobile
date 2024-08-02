@@ -1,8 +1,8 @@
-import { DisciplineTypes } from './other';
+import { LessonTypes } from './other';
 
 export interface ITeacherSubject {
   discipline: string;
-  types: DisciplineTypes[];
+  types: LessonTypes[];
 }
 
 export interface ITeacher {

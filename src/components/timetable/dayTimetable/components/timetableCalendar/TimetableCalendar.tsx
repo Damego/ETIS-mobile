@@ -4,8 +4,8 @@ import { View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { runOnJS } from 'react-native-reanimated';
 import { useTimetableContext } from '~/context/timetableContext';
-import MonthCalendar from '~/screens/etis/main/components/timetableCalendar/MonthCalendar';
-import WeekCalendar from '~/screens/etis/main/components/timetableCalendar/WeekCalendar';
+import MonthCalendar from '~/components/timetable/dayTimetable/components/timetableCalendar/MonthCalendar';
+import WeekCalendar from '~/components/timetable/dayTimetable/components/timetableCalendar/WeekCalendar';
 
 type TimetableCalendarModes = 'week' | 'month';
 

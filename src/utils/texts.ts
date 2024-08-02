@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { DisciplineTypes } from '~/models/other';
+import { LessonTypes } from '~/models/other';
 import { ICheckPoint } from '~/models/sessionPoints';
 import { ILesson } from '~/models/timeTable';
 
@@ -56,7 +56,7 @@ export const fontSize = StyleSheet.create({
   },
 });
 
-export const disciplineTypeNames: { [key in DisciplineTypes]: string } = {
+export const disciplineTypeNames: { [key in LessonTypes]: string } = {
   LECTURE: 'Лекция',
   PRACTICE: 'Практика',
   LABORATORY: 'Лабораторная',
@@ -75,5 +75,17 @@ export const formatAudience = (lesson: ILesson) => {
     ? `ауд. ${audience.number} (${audience.building} корпус, ${audience.floor} этаж)`
     : audience.string;
 };
+
+export const formatGroups = (groups: string[]) => {
+  let str = "";
+  groups.forEach((group, ind) => {
+    str += group;
+    if (ind !== groups.length - 1) {
+      str += " • ";
+    }
+  })
+
+  return str;
+}
 
 export const capitalizeWord = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);

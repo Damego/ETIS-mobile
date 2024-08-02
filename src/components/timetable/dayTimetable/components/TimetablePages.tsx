@@ -1,15 +1,25 @@
 import React, { forwardRef } from 'react';
 import { NativeSyntheticEvent, StyleSheet, View } from 'react-native';
 import PagerView from 'react-native-pager-view';
-import { ITimeTableDay } from '~/models/timeTable';
+import { IPair, ITimeTableDay } from '~/models/timeTable';
 import NoPairs from '~/screens/etis/main/components/NoPairs';
-import Pair from '~/screens/etis/main/timetable/Pair';
+
+import Pair from './Pair';
 
 interface TimetablePagesProps {
   days: ITimeTableDay[];
   dayNumber: number;
   onPagePress: (pageNumber: number) => void;
 }
+
+const Page = ({ day }: { day: ITimeTableDay }) => {
+  return (
+    <View style={styles.pairsList}>
+      {!day.pairs.length && <NoPairs />}
+      {day.pairs.map((pair) => !!pair.lessons.length && <Pair pair={pair} key={pair.position} />)}
+    </View>
+  );
+};
 
 const TimetablePages = forwardRef<PagerView, TimetablePagesProps>(
   ({ days, dayNumber, onPagePress }, ref) => {
@@ -24,12 +34,7 @@ const TimetablePages = forwardRef<PagerView, TimetablePagesProps>(
         onPageSelected={handlePageSelected}
       >
         {days.map((day, index) => (
-          <View style={styles.pairsList} key={index}>
-            {dayNumber === 6 || (!days[dayNumber].pairs.length && <NoPairs />)}
-            {day.pairs.map(
-              (pair) => !!pair.lessons.length && <Pair pair={pair} key={pair.position} />
-            )}
-          </View>
+          <Page day={day} key={index} />
         ))}
 
         {/* Воскресенья нет в данных */}

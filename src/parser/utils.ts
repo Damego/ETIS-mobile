@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 import dayjs from 'dayjs';
 
-import { DisciplineTypes } from '../models/other';
+import { LessonTypes } from '../models/other';
 
 export const getTextField = (component: cheerio.Cheerio): string => component.text().trim();
 
@@ -18,11 +18,11 @@ export const isLoginPage = (html: string) => {
   return !!$('.login').html();
 };
 
-export const getDisciplineType = (string: string): DisciplineTypes =>
+export const getDisciplineType = (string: string): LessonTypes =>
   ({
-    лек: DisciplineTypes.LECTURE,
-    практ: DisciplineTypes.PRACTICE,
-    лаб: DisciplineTypes.LABORATORY,
-    экзамен: DisciplineTypes.EXAM,
-    зачет: DisciplineTypes.TEST,
+    лек: LessonTypes.LECTURE,
+    практ: LessonTypes.PRACTICE,
+    лаб: LessonTypes.LABORATORY,
+    экзамен: LessonTypes.EXAM,
+    зачет: LessonTypes.TEST,
   })[string];

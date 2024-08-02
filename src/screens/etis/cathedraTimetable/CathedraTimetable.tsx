@@ -1,83 +1,67 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
-import CardHeaderOut from '~/components/CardHeaderOut';
-import CenteredText from '~/components/CenteredText';
-import LoadingScreen from '~/components/LoadingScreen';
+import { LoadingContainer } from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
 import Screen from '~/components/Screen';
+import DayTimetable from '~/components/timetable/DayTimetable';
 import { useClient } from '~/data/client';
 import useQuery from '~/hooks/useQuery';
-import { TimetableTypes } from '~/models/cathedraTimetable';
+import useTimetable from '~/hooks/useTimetable';
 import { RequestType } from '~/models/results';
-import { ServiceNativeStackScreenProps } from '~/navigation/types';
+import { ITeacher } from '~/models/timeTable';
+import { EducationStackScreenProps } from '~/navigation/types';
 
-import Navigation, { NavigationTypeDropdown } from './Navigation';
-import Pairs from './Pairs';
 import TeacherMenu from './TeacherMenu';
-import { DAYS } from './utils';
 
-const CathedraTimetable = ({ route }: ServiceNativeStackScreenProps<'CathedraTimetable'>) => {
+const CathedraTimetable = ({ route }: EducationStackScreenProps<'CathedraTimetable'>) => {
   const client = useClient();
+  const timetable = useTimetable({
+    onRequestUpdate: (week) =>
+      update({ data: { ...initialPayload, week }, requestType: RequestType.tryFetch }),
+  });
   const { data, isLoading, refresh, update, initialPayload } = useQuery({
     method: client.getCathedraTimetable,
     payload: {
       data: {
         cathedraId: route.params.cathedraId,
         teacherId: route.params.teacherId,
+        week: timetable.currentWeek,
       },
       requestType: RequestType.forceFetch,
     },
   });
-  const [type, setType] = useState<TimetableTypes>(TimetableTypes.sessions);
-  const [currentTeacher, setCurrentTeacher] = useState<string>();
 
-  const onChange = (data: number) => {
-    update({
-      data: {
-        ...initialPayload,
-        week: type === TimetableTypes.weeks ? data : undefined,
-        session: type === TimetableTypes.sessions ? data : undefined,
-      },
-      requestType: RequestType.forceFetch,
-    });
-  };
+  const [currentTeacher, setCurrentTeacher] = useState<ITeacher>();
 
-  const onTeacherSelect = (teacher: string) => {
+  const onTeacherSelect = (teacher: ITeacher) => {
     setCurrentTeacher(teacher);
   };
 
-  if (isLoading && !data) return <LoadingScreen onRefresh={refresh} />;
   if (!data || !data.timetable || !data.timetable.length) return <NoData />;
 
-  const teacherTimetable =
-    data.timetable.find((timetable) => timetable.teacherName === currentTeacher) ||
-    data.timetable[0];
+  const teacherTimetable = data
+    ? data.timetable.find((timetable) => timetable.teacher.id === currentTeacher?.id) ||
+      data.timetable[0]
+    : undefined;
 
   return (
     <Screen onUpdate={refresh}>
-      <View
-        style={{
-          flexDirection: type === TimetableTypes.sessions ? 'row' : 'column',
-          marginBottom: '2%',
-        }}
-      >
-        <NavigationTypeDropdown type={type} onSelect={setType} />
-        <Navigation data={data} onChange={onChange} type={type} />
-      </View>
-
-      <TeacherMenu
-        currentTeacherName={teacherTimetable.teacherName}
-        timetable={data.timetable}
-        onSelect={onTeacherSelect}
+      {teacherTimetable && (
+        <TeacherMenu
+          currentTeacher={teacherTimetable.teacher}
+          timetable={data.timetable}
+          onSelect={onTeacherSelect}
+        />
+      )}
+      <DayTimetable
+        timetable={teacherTimetable}
+        currentDate={timetable.currentDate}
+        currentWeek={timetable.currentWeek}
+        selectedDate={timetable.selectedDate}
+        selectedWeek={timetable.selectedWeek}
+        onDatePress={timetable.onDatePress}
+        isLoading={isLoading && !data}
+        loadingComponent={() => <LoadingContainer />}
       />
-
-      {!teacherTimetable.days.length && <CenteredText>Пар нет</CenteredText>}
-
-      {teacherTimetable.days.map((day, index) => (
-        <CardHeaderOut topText={DAYS[index]} key={index}>
-          <Pairs pairs={day.pairs} />
-        </CardHeaderOut>
-      ))}
     </Screen>
   );
 };

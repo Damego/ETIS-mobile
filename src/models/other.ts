@@ -4,7 +4,7 @@ export interface UploadFile {
   uri: string;
 }
 
-export enum DisciplineTypes {
+export enum LessonTypes {
   LECTURE = 'LECTURE',
   PRACTICE = 'PRACTICE',
   LABORATORY = 'LABORATORY',

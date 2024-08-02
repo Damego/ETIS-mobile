@@ -1,21 +1,22 @@
-import dayjs from 'dayjs';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef } from 'react';
 import { cache } from '~/cache/smartCache';
 import { useClient } from '~/data/client';
-import { GetResultType, RequestType } from '~/models/results';
+import { GetResultType, IGetResult, RequestType } from '~/models/results';
+import { ITimeTable } from '~/models/timeTable';
 import { setCurrentWeek } from '~/redux/reducers/studentSlice';
 
 import { useAppDispatch, useAppSelector } from './redux';
 import useQuery from './useQuery';
 
-const useTimeTableQuery = () => {
+const useTimeTableQuery = ({
+  afterCallback,
+}: {
+  afterCallback?: (result: IGetResult<ITimeTable>) => void;
+}) => {
   const dispatch = useAppDispatch();
   const client = useClient();
   const fetchedWeeks = useRef<number[]>([]);
   const { currentWeek } = useAppSelector((state) => state.student);
-  const currentDayDate = useRef(dayjs().startOf('day'));
-  const [selectedDate, setSelectedDate] = useState(currentDayDate.current);
-  const preselectedDateRef = useRef<dayjs.Dayjs>(null);
 
   const { data, isLoading, update, refresh } = useQuery({
     method: client.getTimeTableData,
@@ -47,15 +48,7 @@ const useTimeTableQuery = () => {
       if (!fetchedWeeks.current.includes(selectedWeek)) {
         fetchedWeeks.current.push(selectedWeek);
       }
-
-      if (data) {
-        if (preselectedDateRef.current) {
-          setSelectedDate(preselectedDateRef.current);
-          preselectedDateRef.current = null;
-        } else {
-          setSelectedDate(selectedDate.add(selectedWeek - data.weekInfo.selected, 'week'));
-        }
-      }
+      afterCallback?.(result);
     },
   });
 
@@ -72,30 +65,12 @@ const useTimeTableQuery = () => {
     [data, currentWeek, fetchedWeeks.current, update]
   );
 
-  const loadByDate = useCallback(
-    (date: dayjs.Dayjs) => {
-      const weekDiff = date.startOf('week').diff(selectedDate.startOf('week'), 'week');
-      if (weekDiff === 0) {
-        setSelectedDate(date);
-        return;
-      }
-
-      loadWeek(data.weekInfo.selected + weekDiff);
-      preselectedDateRef.current = date;
-    },
-    [selectedDate, data, loadWeek, setSelectedDate]
-  );
-
   return {
     data,
     isLoading,
     loadWeek,
     currentWeek,
-    selectedDate,
-    currentDate: currentDayDate.current,
     refresh,
-    loadByDate,
-    selectDate: setSelectedDate,
   };
 };
 

@@ -5,7 +5,7 @@ import BorderLine from '~/components/BorderLine';
 import DisciplineType from '~/components/DisciplineType';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
-import { DisciplineTypes } from '~/models/other';
+import { LessonTypes } from '~/models/other';
 import { ITeachPlanDiscipline } from '~/models/teachPlan';
 import { fontSize } from '~/utils/texts';
 
@@ -56,8 +56,8 @@ const DisciplineWorkHours = ({
 
 const getDisciplineType = (reporting: string) =>
   ({
-    Экзамен: DisciplineTypes.EXAM,
-    Зачет: DisciplineTypes.TEST,
+    Экзамен: LessonTypes.EXAM,
+    Зачет: LessonTypes.TEST,
   })[reporting];
 
 const Subject = ({ data }: { data: ITeachPlanDiscipline }) => {
