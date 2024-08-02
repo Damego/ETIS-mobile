@@ -1,4 +1,4 @@
-import { UserCredentials } from '../redux/reducers/authSlice';
+import { UserCredentials } from '../redux/reducers/accountSlice';
 
 const isDemoCredentials = (userCredentials: UserCredentials) => userCredentials.login === 'demo';
 
