@@ -27,8 +27,16 @@ const StartNavigator = () => {
         component={SelectStudentAccountTypeScreen}
         options={{ title: 'Тип аккаунта' }}
       />
-      <Stack.Screen name={'SelectFaculty'} component={SelectFacultyScreen} options={{ title: 'Факультет' }} />
-      <Stack.Screen name={'SelectGroup'} component={SelectGroupScreen} options={{ title: 'Группа' }} />
+      <Stack.Screen
+        name={'SelectFaculty'}
+        component={SelectFacultyScreen}
+        options={{ title: 'Факультет' }}
+      />
+      <Stack.Screen
+        name={'SelectGroup'}
+        component={SelectGroupScreen}
+        options={{ title: 'Группа' }}
+      />
     </Stack.Navigator>
   );
 };

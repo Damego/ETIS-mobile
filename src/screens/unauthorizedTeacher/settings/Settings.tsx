@@ -1,12 +1,12 @@
 import React from 'react';
 import { View } from 'react-native';
+import { cache } from '~/cache/smartCache';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import BaseSettingButton from '~/components/baseSettingButton';
 import { useAppDispatch, useAppSelector } from '~/hooks';
 import { clearAccountState } from '~/redux/reducers/accountSlice';
 import { fontSize } from '~/utils/texts';
-import { cache } from '~/cache/smartCache';
 
 const LogOut = ({ onPress }: { onPress: () => void }) => {
   return (
@@ -20,7 +20,7 @@ const Settings = () => {
 
   const handleLogOut = () => {
     dispatch(clearAccountState());
-    cache.clearAccountData()
+    cache.clearAccountData();
   };
 
   return (

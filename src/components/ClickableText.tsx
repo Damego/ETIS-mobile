@@ -4,7 +4,8 @@ import {
   StyleSheet,
   TextStyle,
   TouchableOpacity,
-  TouchableOpacityProps, View,
+  TouchableOpacityProps,
+  View,
   ViewStyle,
 } from 'react-native';
 import { IThemeColors } from '~/styles/themes';

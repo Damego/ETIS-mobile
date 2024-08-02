@@ -513,7 +513,7 @@ export default class SmartCache {
 
   async clearAccountData() {
     await this.account.init();
-    await this.account.delete()
+    await this.account.delete();
   }
 
   async setTeacherData(teacher: TeacherState) {

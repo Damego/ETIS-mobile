@@ -9,7 +9,7 @@ const OptionButton = ({
   isPressed,
   onPress,
   children,
-  bottomComponent
+  bottomComponent,
 }: {
   isPressed: boolean;
   onPress: () => void;
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     paddingVertical: '8%',
     paddingHorizontal: '4%',
     justifyContent: 'space-between',
-    minWidth: '100%'
+    minWidth: '100%',
   },
   buttonText: {
     ...fontSize.big,

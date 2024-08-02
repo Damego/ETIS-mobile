@@ -1,12 +1,10 @@
 import React from 'react';
 import { Alert } from 'react-native';
 import { cache } from '~/cache/smartCache';
+import BaseSettingButton from '~/components/baseSettingButton';
 import { useAppDispatch } from '~/hooks';
 import { signOut } from '~/redux/reducers/accountSlice';
 import { unregisterBackgroundFetchAsync } from '~/tasks/signs/signs';
-
-
-import BaseSettingButton from '~/components/baseSettingButton';
 
 const LogOut = () => {
   const dispatch = useAppDispatch();

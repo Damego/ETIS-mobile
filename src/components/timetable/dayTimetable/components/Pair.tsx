@@ -2,10 +2,11 @@ import dayjs from 'dayjs';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Text from '~/components/Text';
-import Lesson from './Lesson';
 import { useTimetableContext } from '~/context/timetableContext';
 import { useAppSelector, useGlobalStyles } from '~/hooks';
 import { IPair } from '~/models/timeTable';
+
+import Lesson from './Lesson';
 
 const Pair = ({ pair }: { pair: IPair }) => {
   const globalStyles = useGlobalStyles();
