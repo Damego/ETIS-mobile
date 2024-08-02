@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, TextStyle, View } from 'react-native';
+import { StyleProp, TextStyle } from 'react-native';
 import { ITheme } from '~/styles/themes';
 
 export type HeaderParamList = {
@@ -70,7 +70,7 @@ export const headerParams = (theme: ITheme): HeaderParamList => ({
     fontSize: 30,
     fontFamily: 'Ubuntu-Bold',
   },
-  headerShadowVisible: true,
+  headerShadowVisible: false,
   headerTitleAlign: 'center',
 });
 

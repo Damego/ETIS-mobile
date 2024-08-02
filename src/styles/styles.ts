@@ -26,6 +26,15 @@ const getGlobalStyles = ({ colors }: { colors: IThemeColors }) =>
       borderWidth: 2,
       borderColor: colors.border,
     },
+    primaryBorder: {
+      borderRadius: 10,
+      borderWidth: 2,
+      borderColor: colors.primary,
+    },
+    invisibleBorder: {
+      borderWidth: 2,
+      borderColor: colors.background,
+    },
     primaryText: {
       color: colors.primary,
     },
