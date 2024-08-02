@@ -2,7 +2,8 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { EducationNavigationProp } from '~/navigation/types';
 
-import BaseSettingButton from './base';
+
+import BaseSettingButton from '~/components/baseSettingButton';
 
 const ChangeEmailSetting = () => {
   const navigation = useNavigation<EducationNavigationProp>();

@@ -4,7 +4,7 @@ import {
   StyleSheet,
   TextStyle,
   TouchableOpacity,
-  TouchableOpacityProps,
+  TouchableOpacityProps, View,
   ViewStyle,
 } from 'react-native';
 import { IThemeColors } from '~/styles/themes';
@@ -20,6 +20,7 @@ interface ClickableTextProps extends TouchableOpacityProps {
   colorVariant?: keyof IThemeColors;
   iconLeft?: React.ReactNode;
   iconRight?: React.ReactNode;
+  bottomComponent?: React.ReactNode;
 }
 
 const ClickableText = React.forwardRef<TouchableOpacity, ClickableTextProps>(
@@ -33,22 +34,28 @@ const ClickableText = React.forwardRef<TouchableOpacity, ClickableTextProps>(
       iconLeft,
       iconRight,
       children,
+      bottomComponent,
       ...props
     },
     ref
-  ) => (
-    <TouchableOpacity style={[styles.container, viewStyle]} ref={ref} {...props}>
-      {iconLeft}
-      <Text
-        adjustsFontSizeToFit={adjustsFontSizeToFit}
-        style={textStyle}
-        colorVariant={colorVariant}
-      >
-        {text || children}
-      </Text>
-      {iconRight}
-    </TouchableOpacity>
-  )
+  ) => {
+    return (
+      <TouchableOpacity style={[styles.container, viewStyle]} ref={ref} {...props}>
+        {iconLeft}
+        <View>
+          <Text
+            adjustsFontSizeToFit={adjustsFontSizeToFit}
+            style={textStyle}
+            colorVariant={colorVariant}
+          >
+            {text || children}
+          </Text>
+          {bottomComponent}
+        </View>
+        {iconRight}
+      </TouchableOpacity>
+    );
+  }
 );
 
 export default ClickableText;

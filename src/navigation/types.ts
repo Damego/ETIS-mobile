@@ -7,9 +7,7 @@ import type {
 import type { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { IAvailableCertificate } from '~/models/certificate';
 import { IMessage } from '~/models/messages';
-import { ISubject } from '~/models/sessionPoints';
 import { ILesson } from '~/models/timeTable';
-import Rating from '~/screens/etis/rating';
 
 // Список экранов для основного стека
 export type RootStackParamList = {
@@ -20,6 +18,23 @@ export type RootStackParamList = {
   AboutApp: undefined;
   ReleaseNotes: undefined;
   // Onboarding: undefined;
+};
+
+export type StartStackParamList = {
+  Start: undefined;
+  SelectTeacher: undefined;
+  SelectStudentAccountType: undefined;
+  SelectFaculty: undefined;
+  SelectGroup: undefined;
+
+  TeacherNavigator: undefined;
+  UnauthorizedStudentNavigator: undefined;
+  AuthorizedStudentNavigator: undefined;
+};
+
+export type UnauthorizedTeacherStackParamList = {
+  Timetable: undefined;
+  AccountSettings: undefined;
 };
 
 // Список экранов для ЕТИС
@@ -113,6 +128,16 @@ export type ServiceNativeStackScreenProps<
 > = CompositeScreenProps<
   NativeStackScreenProps<ServicesNativeStackParamList, ScreenName>,
   BottomTabsScreenProps
+>;
+
+export type StartStackScreenProps<ScreenName extends keyof StartStackParamList = undefined> =
+  CompositeScreenProps<StackScreenProps<StartStackParamList, ScreenName>, RootStackScreenProps>;
+
+export type UnauthorizedTeacherStackScreenProps<
+  ScreenName extends keyof UnauthorizedTeacherStackParamList = undefined,
+> = CompositeScreenProps<
+  StackScreenProps<UnauthorizedTeacherStackParamList, ScreenName>,
+  StartStackScreenProps
 >;
 
 // Типы для хука useNavigation
