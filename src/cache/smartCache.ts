@@ -13,7 +13,7 @@ import { ISessionTeachPlan } from '~/models/teachPlan';
 import { ITeacher } from '~/models/teachers';
 import { ITimeTable } from '~/models/timeTable';
 import { StudentInfo } from '~/parser/menu';
-import { UserCredentials } from '~/redux/reducers/authSlice';
+import { AccountType, TeacherState, UserCredentials } from '~/redux/reducers/accountSlice';
 import { AppConfig, UIConfig } from '~/redux/reducers/settingsSlice';
 import { ThemeType } from '~/styles/themes';
 import { Events } from '~/utils/events';
@@ -21,6 +21,17 @@ import { Events } from '~/utils/events';
 import FieldCache from './fieldCache';
 import MappedCache from './mappedCache';
 import SecuredFieldCache from './securedFieldCache';
+
+export interface UnauthorizedStudentState {
+  groupId: string;
+}
+
+export interface Account {
+  teacher?: TeacherState;
+  student?: {
+    groupId: string;
+  };
+}
 
 export default class SmartCache {
   absences: MappedCache<number, IAbsence>;
@@ -44,6 +55,7 @@ export default class SmartCache {
 
   // Internal
   user: SecuredFieldCache<UserCredentials>;
+  account: FieldCache<Account>;
   app: FieldCache<AppConfig>;
 
   private keys = {
@@ -67,6 +79,7 @@ export default class SmartCache {
 
     // Internal keys
     USER: 'USER',
+    ACCOUNT: 'ACCOUNT',
     APP: 'APP',
   };
 
@@ -92,6 +105,7 @@ export default class SmartCache {
 
     this.user = new SecuredFieldCache<UserCredentials>(this.keys.USER);
     this.app = new FieldCache<AppConfig>(this.keys.APP);
+    this.account = new FieldCache<Account>(this.keys.ACCOUNT);
   }
 
   // Absences Region
@@ -490,6 +504,28 @@ export default class SmartCache {
       ? { ...appConfig.releaseNotesViews, ...versionsInfo }
       : { ...versionsInfo };
     await this.updateAppConfig(appConfig);
+  }
+
+  async getAccountData() {
+    await this.account.init();
+    return this.account.get();
+  }
+
+  async clearAccountData() {
+    await this.account.init();
+    await this.account.delete()
+  }
+
+  async setTeacherData(teacher: TeacherState) {
+    await this.account.init();
+    this.account.place({ teacher });
+    await this.account.save();
+  }
+
+  async setStudentData(student: UnauthorizedStudentState) {
+    await this.account.init();
+    this.account.place({ student });
+    await this.account.save();
   }
 
   // End Internal Region
