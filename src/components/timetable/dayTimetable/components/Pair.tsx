@@ -1,58 +1,11 @@
-import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import DisciplineType from '~/components/DisciplineType';
-import TaskBadge from '~/components/TaskBadge';
+import { StyleSheet, View } from 'react-native';
 import Text from '~/components/Text';
+import Lesson from './Lesson';
 import { useTimetableContext } from '~/context/timetableContext';
 import { useAppSelector, useGlobalStyles } from '~/hooks';
-import { ILesson, IPair } from '~/models/timeTable';
-import { EducationNavigationProp } from '~/navigation/types';
-import { getTeacherName } from '~/utils/teachers';
-import { formatAudience } from '~/utils/texts';
-
-const Lesson = ({
-  lesson,
-  date,
-  pairPosition,
-}: {
-  lesson: ILesson;
-  date: dayjs.Dayjs;
-  pairPosition: number;
-}) => {
-  const navigation = useNavigation<EducationNavigationProp>();
-
-  const { teachers } = useTimetableContext();
-  const audience = formatAudience(lesson);
-  const teacherName = lesson.teacher ? getTeacherName(teachers, lesson.teacher) : null;
-
-  const onLessonPress = () => {
-    navigation.navigate('DisciplineInfo', {
-      lesson,
-      date: date.toISOString(),
-      pairPosition,
-    });
-  };
-
-  return (
-    <TouchableOpacity style={styles.lessonContainer} onPress={onLessonPress}>
-      <Text style={styles.lessonNameText}>{lesson.subject.discipline}</Text>
-      {lesson.subject.type && <DisciplineType type={lesson.subject.type} size={'small'} />}
-
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-        <Ionicons name={'business-outline'} size={20} />
-        <Text style={{ fontSize: 14 }}>{audience}</Text>
-      </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-        <Ionicons name={'school-outline'} size={20} />
-        <Text style={{ fontSize: 14 }}>{teacherName}</Text>
-      </View>
-      <TaskBadge subject={lesson.subject} date={date} />
-    </TouchableOpacity>
-  );
-};
+import { IPair } from '~/models/timeTable';
 
 const Pair = ({ pair }: { pair: IPair }) => {
   const globalStyles = useGlobalStyles();

@@ -2,28 +2,28 @@ import React from 'react';
 import { View } from 'react-native';
 import ButtonMenu from '~/components/ButtonMenu';
 import Text from '~/components/Text';
-import { ITeacherTimetable } from '~/models/cathedraTimetable';
+import { ITeacher, ITimeTable } from '~/models/timeTable';
 import { fontSize } from '~/utils/texts';
 
 import { generateOptionsFromTeachers } from './utils';
 
 const TeacherMenu = ({
-  currentTeacherName,
+  currentTeacher,
   timetable,
   onSelect,
 }: {
-  currentTeacherName: string;
-  timetable: ITeacherTimetable[];
-  onSelect: (teacherName: string) => void;
+  currentTeacher: ITeacher;
+  timetable: ITimeTable[];
+  onSelect: (teacher: ITeacher) => void;
 }) => {
   if (timetable.length === 1)
     return (
       <View style={{ alignItems: 'center', marginBottom: '2%' }}>
-        <Text style={[fontSize.large, { fontWeight: '500' }]}>{currentTeacherName}</Text>
+        <Text style={[fontSize.large, { fontWeight: '500' }]}>{currentTeacher.name}</Text>
       </View>
     );
 
-  const options = generateOptionsFromTeachers(timetable, currentTeacherName);
+  const options = generateOptionsFromTeachers(timetable, currentTeacher.id);
 
   return <ButtonMenu options={options} onSelect={onSelect} />;
 };

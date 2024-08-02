@@ -14,10 +14,9 @@ import {
 } from '../models/timeTable';
 import { httpClient } from '../utils';
 import { executeRegex } from '../utils/sentry';
-import { disciplineRegex } from './regex';
+import { dateRegex, disciplineRegex } from './regex';
 import { getDisciplineType, getTextField } from './utils';
 
-const dateRegex = /\d+.\d+.\d+/gm;
 const audienceRegex = /ауд\. (.*)\/.* \((.*) корпус(?:, (\d) этаж)?\)/s;
 const idRegex = /[a-z]*\.[a-z]*\?\#([0-9]*)/s;
 
