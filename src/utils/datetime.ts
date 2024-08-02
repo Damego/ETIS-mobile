@@ -47,8 +47,7 @@ export const getStudentYear = (entryYear: number): string => {
   return String(getCurrentEducationYear() - entryYear + 1);
 };
 
-
 export const getEducationWeekByDate = (date: dayjs.Dayjs) => {
-  const firstWeekDate = dayjs(new Date(getCurrentEducationYear(), 8, 2)).startOf("isoWeek");
+  const firstWeekDate = dayjs(new Date(getCurrentEducationYear(), 8, 2)).startOf('isoWeek');
   return date.startOf('isoWeek').diff(firstWeekDate, 'week') + 1;
-}
+};

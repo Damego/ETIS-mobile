@@ -77,15 +77,15 @@ export const formatAudience = (lesson: ILesson) => {
 };
 
 export const formatGroups = (groups: string[]) => {
-  let str = "";
+  let str = '';
   groups.forEach((group, ind) => {
     str += group;
     if (ind !== groups.length - 1) {
-      str += " • ";
+      str += ' • ';
     }
-  })
+  });
 
   return str;
-}
+};
 
 export const capitalizeWord = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
