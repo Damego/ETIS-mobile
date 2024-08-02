@@ -8,7 +8,7 @@ import {
 import { ICertificateResult } from '~/models/certificate';
 import { IMessagesData, MessageType } from '~/models/messages';
 import { IOrder } from '~/models/order';
-import { DisciplineTypes } from '~/models/other';
+import { LessonTypes } from '~/models/other';
 import { IPersonalRecord } from '~/models/personalRecords';
 import { IPointUpdates } from '~/models/pointUpdates';
 import { ISessionRating } from '~/models/rating';
@@ -134,7 +134,7 @@ export default class DemoClient implements BaseClient {
                       subject: {
                         string: 'Математический анализ (лек)',
                         discipline: 'Математический анализ',
-                        type: DisciplineTypes.LECTURE,
+                        type: LessonTypes.LECTURE,
                       },
                       isDistance: false,
                       teacher: {
@@ -158,7 +158,7 @@ export default class DemoClient implements BaseClient {
                       subject: {
                         string: 'Комплексный анализ (практ)',
                         discipline: 'Комплексный анализ',
-                        type: DisciplineTypes.PRACTICE,
+                        type: LessonTypes.PRACTICE,
                       },
                       isDistance: false,
                       teacher: {
@@ -182,7 +182,7 @@ export default class DemoClient implements BaseClient {
                       subject: {
                         string: 'Функциональный анализ (лаб)',
                         discipline: 'Функциональный анализ',
-                        type: DisciplineTypes.LABORATORY,
+                        type: LessonTypes.LABORATORY,
                       },
                       isDistance: false,
                       teacher: {
@@ -200,7 +200,7 @@ export default class DemoClient implements BaseClient {
                       subject: {
                         string: 'Программный анализ (лек)',
                         discipline: 'Программный анализ',
-                        type: DisciplineTypes.LECTURE,
+                        type: LessonTypes.LECTURE,
                       },
                       isDistance: true,
                       teacher: {
@@ -224,7 +224,7 @@ export default class DemoClient implements BaseClient {
                       subject: {
                         string: 'Программный анализ (лек)',
                         discipline: 'Программный анализ',
-                        type: DisciplineTypes.LECTURE,
+                        type: LessonTypes.LECTURE,
                       },
                       isDistance: true,
                       teacher: {
@@ -659,11 +659,11 @@ export default class DemoClient implements BaseClient {
         subjects: [
           {
             discipline: 'Математический анализ',
-            types: [DisciplineTypes.LECTURE, DisciplineTypes.PRACTICE],
+            types: [LessonTypes.LECTURE, LessonTypes.PRACTICE],
           },
           {
             discipline: 'Комплексный анализ',
-            types: [DisciplineTypes.LECTURE, DisciplineTypes.PRACTICE],
+            types: [LessonTypes.LECTURE, LessonTypes.PRACTICE],
           },
         ],
         photoTitle: 'Фотография загружена 01.01.2000',
@@ -677,11 +677,11 @@ export default class DemoClient implements BaseClient {
         subjects: [
           {
             discipline: 'Математический анализ',
-            types: [DisciplineTypes.EXAM],
+            types: [LessonTypes.EXAM],
           },
           {
             discipline: 'Комплексный анализ',
-            types: [DisciplineTypes.LECTURE, DisciplineTypes.TEST],
+            types: [LessonTypes.LECTURE, LessonTypes.TEST],
           },
         ],
         photoTitle: 'Фотография загружена 01.01.2000',
