@@ -19,6 +19,15 @@ export interface SignOutPayload {
 }
 
 interface AuthState {
+
+export enum AccountType {
+  NONE,
+  AUTHORIZED_STUDENT,
+  UNAUTHORIZED_STUDENT,
+  UNAUTHORIZED_TEACHER,
+}
+
+interface AccountState {
   isSignedIn: boolean;
   isAuthorizing: boolean;
   userCredentials?: UserCredentials;
@@ -27,9 +36,10 @@ interface AuthState {
   isOfflineMode: boolean;
   isSignedOut: boolean;
   isDemo: boolean;
+  teacher?: TeacherState;
 }
 
-const initialState: AuthState = {
+const initialState: AccountState = {
   isSignedIn: false,
   isAuthorizing: false,
   saveUserCredentials: true,
@@ -37,10 +47,11 @@ const initialState: AuthState = {
   isOfflineMode: false,
   isSignedOut: false,
   isDemo: false,
+  accountType: AccountType.NONE,
 };
 
-const authSlice = createSlice({
-  name: 'auth',
+const accountSlice = createSlice({
+  name: 'account',
   initialState,
   reducers: {
     signIn(state, action: PayloadAction<SignInPayload>) {
@@ -55,14 +66,14 @@ const authSlice = createSlice({
       state.isSignedIn = false;
       state.isSignedOut = true;
       state.isDemo = false;
-      if (action.payload.cleanUserCredentials) state.userCredentials = undefined;
     },
     setAuthorizing(state, action: PayloadAction<boolean>) {
       state.isAuthorizing = action.payload;
     },
     setUserCredentials(state, action: PayloadAction<SetUserCredentialsPayload>) {
-      state.userCredentials = action.payload.userCredentials;
-      state.fromStorage = action.payload.fromStorage;
+      if (action.payload.userCredentials) {
+        state.userCredentials = action.payload.userCredentials;
+        state.fromStorage = action.payload.fromStorage;
     },
     setSaveUserCredentials(state, action: PayloadAction<boolean>) {
       state.saveUserCredentials = action.payload;
@@ -72,10 +83,22 @@ const authSlice = createSlice({
       state.isSignedOut = false;
       state.isDemo = action.payload;
     },
+      state.studentGroupId = action.payload;
+      state.teacher = null;
+      state.accountType = AccountType.UNAUTHORIZED_STUDENT;
+      state.studentGroupId = null;
+      state.teacher = action.payload;
+      state.accountType = AccountType.UNAUTHORIZED_TEACHER;
+    },
+    clearAccountState(state) {
+      state.studentGroupId = null;
+      state.teacher = null;
+      state.accountType = AccountType.NONE;
+    },
   },
 });
 
-export default authSlice.reducer;
+export default accountSlice.reducer;
 export const {
   signIn,
   signOut,
@@ -83,4 +106,8 @@ export const {
   setUserCredentials,
   setSaveUserCredentials,
   signInDemo,
-} = authSlice.actions;
+  setAccountState,
+  setGroupId,
+  setTeacher,
+  clearAccountState,
+} = accountSlice.actions;

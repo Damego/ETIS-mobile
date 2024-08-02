@@ -22,7 +22,7 @@ const ToggleSignNotification = () => {
   const dispatch = useAppDispatch();
   const signNotification = useAppSelector((state) => state.settings.config.signNotificationEnabled);
   const globalStyles = useGlobalStyles();
-  const { isDemo, isOfflineMode } = useAppSelector((state) => state.auth);
+  const { isDemo, isOfflineMode } = useAppSelector((state) => state.account);
 
   const changeSignNotification = (hasSignNotification: boolean) => {
     if (isDemo || isOfflineMode) {

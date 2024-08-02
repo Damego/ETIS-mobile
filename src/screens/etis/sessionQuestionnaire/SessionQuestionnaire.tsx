@@ -53,7 +53,7 @@ export default function SessionQuestionnaire({
       );
     },
   });
-  const { isDemo } = useAppSelector((state) => state.auth);
+  const { isDemo } = useAppSelector((state) => state.account);
   const setTeacher = (name: string) => {
     teacherRef.current = name;
   };

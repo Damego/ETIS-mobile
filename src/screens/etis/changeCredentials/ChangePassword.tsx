@@ -9,7 +9,7 @@ import Text from '~/components/Text';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
 import { getTextField } from '~/parser/utils';
-import { setUserCredentials } from '~/redux/reducers/authSlice';
+import { setUserCredentials } from '~/redux/reducers/accountSlice';
 import { httpClient } from '~/utils';
 import { fontSize } from '~/utils/texts';
 
@@ -126,7 +126,7 @@ export default function ChangePassword() {
   const globalStyles = useGlobalStyles();
 
   const [isLoading, setLoading] = useState<boolean>(false);
-  const oldPassword = useAppSelector((state) => state.auth.userCredentials.password);
+  const oldPassword = useAppSelector((state) => state.account.userCredentials.password);
   const [passwordChanged, setPasswordChanged] = useState<boolean>(false);
 
   const submit = async (password: string) => {

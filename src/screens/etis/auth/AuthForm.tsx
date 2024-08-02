@@ -8,7 +8,7 @@ import PasswordInput from '~/components/PasswordInput';
 import Text from '~/components/Text';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
-import { setSaveUserCredentials } from '~/redux/reducers/authSlice';
+import { setSaveUserCredentials } from '~/redux/reducers/accountSlice';
 import { fontSize } from '~/utils/texts';
 
 export const styles = StyleSheet.create({
@@ -44,7 +44,7 @@ export const styles = StyleSheet.create({
 
 const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
   const dispatch = useAppDispatch();
-  const { saveUserCredentials } = useAppSelector((state) => state.auth);
+  const { saveUserCredentials } = useAppSelector((state) => state.account);
   const globalStyles = useGlobalStyles();
   const theme = useAppTheme();
 

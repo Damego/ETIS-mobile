@@ -49,7 +49,7 @@ export default function RequestCertificate({
   const navigation = useNavigation<EducationNavigationProp>();
   const availableCertificates = getAvailableCertificates(route.params);
 
-  const { isDemo } = useAppSelector((state) => state.auth);
+  const { isDemo } = useAppSelector((state) => state.account);
   const [{ certificateId, note, quantity, delivery, place }, setCertificate] =
     useState<CertificateRequest>({
       certificateId: undefined,

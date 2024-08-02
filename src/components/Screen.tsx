@@ -23,7 +23,7 @@ const Screen = ({
   statusBarStyle,
   containerStyle,
 }: ScreenProps) => {
-  const { isAuthorizing } = useAppSelector((state) => state.auth);
+  const { isAuthorizing } = useAppSelector((state) => state.account);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const scrollRef = useRef<ScrollView>();
   const theme = useAppTheme();
@@ -78,7 +78,7 @@ export const ListScreen = <T,>({
   data,
   ...listProps
 }: ListScreenProps<T>) => {
-  const { isAuthorizing } = useAppSelector((state) => state.auth);
+  const { isAuthorizing } = useAppSelector((state) => state.account);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const theme = useAppTheme();
   const ref = useRef<FlashList<never>>();

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { GetResultType, IGetPayload, IGetResult, RequestType } from '../models/results';
-import { setAuthorizing } from '../redux/reducers/authSlice';
+import { setAuthorizing } from '../redux/reducers/accountSlice';
 import { useAppDispatch, useAppSelector } from './redux';
 
 interface GetMethod<P, R> {
@@ -36,7 +36,7 @@ const useQuery = <P, R>({
   const fromFail = useRef<boolean>(false);
   const calledAuthorizing = useRef<boolean>(false);
   const didInitialGet = useRef<boolean>(false);
-  const { isAuthorizing, isOfflineMode } = useAppSelector((state) => state.auth);
+  const { isAuthorizing, isOfflineMode } = useAppSelector((state) => state.account);
 
   const [data, setData] = useState<R>();
   const [isLoading, setLoading] = useState<boolean>(true);
