@@ -3,7 +3,7 @@ import { ToastAndroid, View } from 'react-native';
 import { cache } from '~/cache/smartCache';
 import Screen from '~/components/Screen';
 import { useAppDispatch, useAppSelector } from '~/hooks';
-import { setAuthorizing, setUserCredentials } from '~/redux/reducers/authSlice';
+import { setAuthorizing, setUserCredentials } from '~/redux/reducers/accountSlice';
 import { httpClient } from '~/utils';
 import showPrivacyPolicy from '~/utils/privacyPolicy';
 
@@ -14,7 +14,7 @@ import Recovery from './Recovery';
 const AuthScreen = () => {
   const dispatch = useAppDispatch();
 
-  const { userCredentials, isSignedOut } = useAppSelector((state) => state.auth);
+  const { userCredentials, isSignedOut } = useAppSelector((state) => state.account);
 
   const [message, setMessage] = useState(null);
   const [showRecovery, setShowRecovery] = useState(false);

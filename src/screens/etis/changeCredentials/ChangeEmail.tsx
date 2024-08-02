@@ -9,7 +9,7 @@ import { useAppDispatch, useGlobalStyles } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
 import { EducationStackScreenProps } from '~/navigation/types';
 import { parseChangeEmailPage } from '~/parser/changeCredentials';
-import { setUserCredentials } from '~/redux/reducers/authSlice';
+import { setUserCredentials } from '~/redux/reducers/accountSlice';
 import { httpClient } from '~/utils';
 import { fontSize } from '~/utils/texts';
 

@@ -40,7 +40,7 @@ export default function MessageHistory({
   const pageRef = useRef<number>(route.params.page);
   const [isUploading, setUploading] = useState<boolean>(false);
   const [files, setFiles] = useState<UploadFile[]>([]);
-  const isDemo = useAppSelector((state) => state.auth.isDemo);
+  const isDemo = useAppSelector((state) => state.account.isDemo);
 
   const [firstMessage] = messages;
   const shortAuthor = formatTeacherName(firstMessage.author);

@@ -8,7 +8,7 @@ import {
   signIn,
   signInDemo,
   signOut,
-} from '~/redux/reducers/authSlice';
+} from '~/redux/reducers/accountSlice';
 import { httpClient } from '~/utils';
 import isDemoCredentials from '~/utils/demo';
 
@@ -90,7 +90,7 @@ const makeLogin = async (
 const AuthLoadingModal = () => {
   const dispatch = useAppDispatch();
   const { userCredentials, saveUserCredentials, fromStorage, isAuthorizing } = useAppSelector(
-    (state) => state.auth
+    (state) => state.account
   );
   const [showOfflineButton, setShowOfflineButton] = useState<boolean>(false);
   const [messageStatus, setMessageStatus] = useState<string>();

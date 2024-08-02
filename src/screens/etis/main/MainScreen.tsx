@@ -28,7 +28,7 @@ const ETISScreen = () => {
     config: { signNotificationEnabled },
   } = useAppSelector((state) => state.settings);
   const client = useClient();
-  const { isDemo, isOfflineMode } = useAppSelector((state) => state.auth);
+  const { isDemo, isOfflineMode } = useAppSelector((state) => state.account);
 
   useEffect(() => {
     loadData();

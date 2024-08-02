@@ -45,7 +45,7 @@ import { BaseClient, BasicClient } from './base';
 import DemoClient from './demoClient';
 
 export const useClient: () => BaseClient = () => {
-  const { isDemo } = useAppSelector((state) => state.auth);
+  const { isDemo } = useAppSelector((state) => state.account);
   return useMemo(() => (isDemo ? new DemoClient() : new Client()), [isDemo]);
 };
 
