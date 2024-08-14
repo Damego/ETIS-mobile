@@ -51,3 +51,14 @@ export const getEducationWeekByDate = (date: dayjs.Dayjs) => {
   const firstWeekDate = dayjs(new Date(getCurrentEducationYear(), 8, 2)).startOf('isoWeek');
   return date.startOf('isoWeek').diff(firstWeekDate, 'week') + 1;
 };
+
+
+export const getFirstEducationWeekDate = () => {
+  const year = getCurrentEducationYear();
+  return dayjs().startOf('day').startOf('week').year(year).month(8).day(2);
+}
+
+export const getLastEducationWeekDate = () => {
+  const year = getCurrentEducationYear() + 1;
+  return dayjs().year(year).month(8).date(1).startOf('day');
+}
