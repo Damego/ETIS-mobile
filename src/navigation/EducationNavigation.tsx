@@ -31,7 +31,7 @@ import Orders from '../screens/etis/orders';
 const Stack = createStackNavigator<EducationStackParamList>();
 
 const EducationNavigation = () => {
-  const { isSignedIn } = useAppSelector((state) => state.auth);
+  const { isSignedIn } = useAppSelector((state) => state.account);
   const theme = useAppTheme();
 
   return (

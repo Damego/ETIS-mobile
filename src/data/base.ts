@@ -2,6 +2,7 @@ import { IAbsence } from '~/models/absences';
 import { ICalendarSchedule } from '~/models/calendarSchedule';
 import { ICathedraTimetable, ICathedraTimetablePayload } from '~/models/cathedraTimetable';
 import { ICertificateResult } from '~/models/certificate';
+import { IGroupTimetablePayload } from '~/models/groupTimetable';
 import { IMessagesData } from '~/models/messages';
 import { IOrder } from '~/models/order';
 import { IPersonalRecord } from '~/models/personalRecords';
@@ -50,6 +51,7 @@ export interface BaseClient {
   getCathedraTimetable(
     payload: IGetPayload<ICathedraTimetablePayload>
   ): Promise<IGetResult<ICathedraTimetable>>;
+  getGroupTimetable(payload: IGetPayload<IGroupTimetablePayload>): Promise<IGetResult<ITimeTable>>;
 }
 
 export class BasicClient<P extends IGetPayload, T> {

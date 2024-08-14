@@ -71,9 +71,8 @@ export const TeacherInfo = ({ teacher }: { teacher?: ITeacher }) => {
     payload: {
       requestType: RequestType.tryCache,
     },
+    skipInitialGet: !teacher?.id,
   });
-
-  if (!teacher || !data) return;
 
   const teacherName = getTeacherName(data, teacher);
   return <IconInfo icon={'school-outline'} text={teacherName} />;

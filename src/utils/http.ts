@@ -435,6 +435,39 @@ class HTTPClient {
     return this.request('GET', '/tt_pkg.show_prep', { params });
   }
 
+  getGroupTimetable({
+    groupId,
+    facultyId,
+    course,
+    period,
+    year,
+    week,
+  }: {
+    groupId: string;
+    facultyId: string;
+    course: number;
+    period: number;
+    year: number;
+    week: number;
+  }) {
+    const params = {
+      // Непонятная фигня, которая остаётся постоянной для всех групп
+      P_FOE_ID: '1',
+      P_TEDP_ID: '1',
+      P_LANG: 'N',
+      P_JOU: 'N',
+
+      P_DIV_ID: facultyId,
+      P_COURSE: course,
+      P_TERM: period,
+      P_TY_ID: year,
+      P_NG_ID: groupId,
+      P_TW: week,
+    };
+
+    return this.request('GET', '/tt_pkg.tt_show_for_stu', { params });
+  }
+
   /*
   Возвращает ссылку на результат поиска по запросу на сайте ПГНИУ
   */

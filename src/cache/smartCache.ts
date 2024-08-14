@@ -13,7 +13,11 @@ import { ISessionTeachPlan } from '~/models/teachPlan';
 import { ITeacher } from '~/models/teachers';
 import { ITimeTable } from '~/models/timeTable';
 import { StudentInfo } from '~/parser/menu';
-import { AccountType, TeacherState, UserCredentials } from '~/redux/reducers/accountSlice';
+import {
+  TeacherState,
+  UnauthorizedStudentState,
+  UserCredentials,
+} from '~/redux/reducers/accountSlice';
 import { AppConfig, UIConfig } from '~/redux/reducers/settingsSlice';
 import { ThemeType } from '~/styles/themes';
 import { Events } from '~/utils/events';
@@ -22,15 +26,9 @@ import FieldCache from './fieldCache';
 import MappedCache from './mappedCache';
 import SecuredFieldCache from './securedFieldCache';
 
-export interface UnauthorizedStudentState {
-  groupId: string;
-}
-
 export interface Account {
   teacher?: TeacherState;
-  student?: {
-    groupId: string;
-  };
+  student?: UnauthorizedStudentState;
 }
 
 export default class SmartCache {
