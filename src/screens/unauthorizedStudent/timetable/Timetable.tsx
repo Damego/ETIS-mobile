@@ -10,8 +10,12 @@ import useQuery from '~/hooks/useQuery';
 import useTimetable from '~/hooks/useTimetable';
 import { RequestType } from '~/models/results';
 import { UnauthorizedTeacherStackScreenProps } from '~/navigation/types';
-import { getCurrentEducationYear, getFirstEducationWeekDate, getLastEducationWeekDate, getStudentYear } from '~/utils/datetime';
-
+import {
+  getCurrentEducationYear,
+  getFirstEducationWeekDate,
+  getLastEducationWeekDate,
+  getStudentYear,
+} from '~/utils/datetime';
 
 const Timetable = ({ navigation }: UnauthorizedTeacherStackScreenProps) => {
   const { group } = useAppSelector((state) => state.account.student);

@@ -37,7 +37,7 @@ const StartScreen = ({ navigation }: StartStackScreenProps) => {
           : [globalStyles.card, globalStyles.invisibleBorder],
       ]}
     >
-      <View style={{width: 35, alignItems: 'center'}}>
+      <View style={{ width: 35, alignItems: 'center' }}>
         <FontAwesome5
           name={type === 'teacher' ? 'chalkboard-teacher' : 'male'}
           size={24}

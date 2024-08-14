@@ -25,12 +25,15 @@ export const searchGroups = async (query: string, facultyId: string): Promise<IG
   return res.data;
 };
 
-export const getPeriodWeek = async (periodType: PeriodTypes, year: number): Promise<IPeriodWeek> => {
+export const getPeriodWeek = async (
+  periodType: PeriodTypes,
+  year: number
+): Promise<IPeriodWeek> => {
   const res = await inst.get('/periods', { params: { period_type: periodType, year } });
   return res.data;
 };
 
 export const getGroupById = async (groupId: string) => {
   const res = await inst.get<IGroup>(`/groups/${groupId}`);
-  return res.data
-}
+  return res.data;
+};
