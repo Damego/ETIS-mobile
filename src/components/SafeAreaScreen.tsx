@@ -7,7 +7,7 @@ const SafeAreaScreen = ({ children }: { children: React.ReactNode }) => {
   const theme = useAppTheme();
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, marginHorizontal: '4%' }}>
       <StatusBar style={theme.statusBarStyle} />
       {children}
     </SafeAreaView>

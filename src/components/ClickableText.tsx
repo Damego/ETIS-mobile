@@ -18,7 +18,7 @@ interface ClickableTextProps extends TouchableOpacityProps {
   viewStyle?: StyleProp<ViewStyle>;
   onPress(): void;
   adjustsFontSizeToFit?: boolean;
-  colorVariant?: keyof IThemeColors;
+  colorVariant?: '' | keyof IThemeColors;
   iconLeft?: React.ReactNode;
   iconRight?: React.ReactNode;
   bottomComponent?: React.ReactNode;
