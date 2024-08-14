@@ -5,6 +5,7 @@ import { IAbsence } from '~/models/absences';
 import { ICalendarSchedule } from '~/models/calendarSchedule';
 import { ICathedraTimetable, ICathedraTimetablePayload } from '~/models/cathedraTimetable';
 import { ICertificateResult } from '~/models/certificate';
+import { IGroupTimetablePayload } from '~/models/groupTimetable';
 import { IMessagesData } from '~/models/messages';
 import { IOrder } from '~/models/order';
 import { IPersonalRecord } from '~/models/personalRecords';
@@ -31,6 +32,7 @@ import {
 import parseCalendarSchedule from '~/parser/calendar';
 import parseCathedraTimetable from '~/parser/cathedraTimetable';
 import { parseCertificateTable } from '~/parser/certificate';
+import { parseGroupTimetable } from '~/parser/groupTimetable';
 import { StudentInfo } from '~/parser/menu';
 import parseOrders from '~/parser/order';
 import parsePersonalRecords from '~/parser/personalRecords';
@@ -75,6 +77,7 @@ class CathedraTimetableClient extends BasicClient<
   IGetPayload<ICathedraTimetablePayload>,
   ICathedraTimetable
 > {}
+class GroupTimetableClient extends BasicClient<IGetPayload<IGroupTimetablePayload>, ITimeTable> {}
 
 export default class Client implements BaseClient {
   private absencesClient: AbsencesClient;
@@ -95,6 +98,7 @@ export default class Client implements BaseClient {
   private sessionQuestionnaireListClient: SessionQuestionnaireListClient;
   private personalRecordsClient: PersonalRecordsClient;
   private cathedraTimetableClient: CathedraTimetableClient;
+  private groupTimetableClient: GroupTimetableClient;
 
   constructor() {
     this.absencesClient = new AbsencesClient(
@@ -205,6 +209,12 @@ export default class Client implements BaseClient {
       parseCathedraTimetable,
       emptyFunction
     );
+    this.groupTimetableClient = new GroupTimetableClient(
+      emptyFunction,
+      (payload) => httpClient.getGroupTimetable(payload.data),
+      parseGroupTimetable,
+      emptyFunction
+    );
 
     bind(this, Client);
   }
@@ -298,5 +308,9 @@ export default class Client implements BaseClient {
     payload: IGetPayload<ICathedraTimetablePayload>
   ): Promise<IGetResult<ICathedraTimetable>> {
     return this.cathedraTimetableClient.getData(payload);
+  }
+
+  getGroupTimetable(payload: IGetPayload<IGroupTimetablePayload>): Promise<IGetResult<ITimeTable>> {
+    return this.groupTimetableClient.getData(payload);
   }
 }

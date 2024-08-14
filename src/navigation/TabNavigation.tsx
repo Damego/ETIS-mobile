@@ -7,6 +7,7 @@ import useNotification from '~/hooks/useNotifications';
 import EducationNavigation from '~/navigation/EducationNavigation';
 import StartNavigator from '~/navigation/StartNavigator';
 import TeacherNavigator from '~/navigation/TeacherNavigator';
+import UnauthorizedStudentNavigator from '~/navigation/UnauthorizedStudentNavigator';
 import { headerParams } from '~/navigation/header';
 import AppSettingButton from '~/navigation/headerButtons/AppSettingsButton';
 import { AccountType } from '~/redux/reducers/accountSlice';
@@ -34,7 +35,7 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
   } else if (accountType === AccountType.AUTHORIZED_STUDENT) {
     educationScreen = EducationNavigation;
   } else if (accountType === AccountType.UNAUTHORIZED_STUDENT) {
-    // educationScreen = <Stack.Screen name={'UnauthorizedStudentNavigator'} />
+    educationScreen = UnauthorizedStudentNavigator;
   }
 
   return (

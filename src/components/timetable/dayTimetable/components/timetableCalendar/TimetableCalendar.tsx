@@ -14,8 +14,8 @@ const TimetableCalendar = ({
   periodEndDate,
   onDatePress,
 }: {
-  periodStartDate: dayjs.Dayjs;
-  periodEndDate: dayjs.Dayjs;
+  periodStartDate?: dayjs.Dayjs;
+  periodEndDate?: dayjs.Dayjs;
   onDatePress: (date: dayjs.Dayjs) => void;
 }) => {
   const { selectedDate, currentDate, selectedWeek } = useTimetableContext();

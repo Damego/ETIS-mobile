@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { IGroup } from '~/api/psutech/types';
 
 export interface UserCredentials {
   login: string;
@@ -23,6 +24,10 @@ export interface TeacherState {
   name: string;
 }
 
+export interface UnauthorizedStudentState {
+  group: IGroup;
+}
+
 export enum AccountType {
   NONE,
   AUTHORIZED_STUDENT,
@@ -40,7 +45,7 @@ interface AccountState {
   isSignedOut: boolean;
   isDemo: boolean;
   accountType: AccountType;
-  studentGroupId?: string;
+  student?: UnauthorizedStudentState;
   teacher?: TeacherState;
 }
 
@@ -98,18 +103,18 @@ const accountSlice = createSlice({
     setAccountState(state, action: PayloadAction<AccountType>) {
       state.accountType = action.payload;
     },
-    setGroupId(state, action: PayloadAction<string>) {
-      state.studentGroupId = action.payload;
+    setStudent(state, action: PayloadAction<UnauthorizedStudentState>) {
+      state.student = action.payload;
       state.teacher = null;
       state.accountType = AccountType.UNAUTHORIZED_STUDENT;
     },
     setTeacher(state, action: PayloadAction<TeacherState>) {
-      state.studentGroupId = null;
+      state.student = null;
       state.teacher = action.payload;
       state.accountType = AccountType.UNAUTHORIZED_TEACHER;
     },
     clearAccountState(state) {
-      state.studentGroupId = null;
+      state.student = null;
       state.teacher = null;
       state.accountType = AccountType.NONE;
     },
@@ -125,7 +130,7 @@ export const {
   setSaveUserCredentials,
   signInDemo,
   setAccountState,
-  setGroupId,
+  setStudent,
   setTeacher,
   clearAccountState,
 } = accountSlice.actions;

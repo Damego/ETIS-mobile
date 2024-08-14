@@ -1,6 +1,6 @@
 import { cache } from '~/cache/smartCache';
 
-import { setGroupId, setTeacher, setUserCredentials } from './reducers/accountSlice';
+import { setStudent, setTeacher, setUserCredentials } from './reducers/accountSlice';
 import { setAppReady, setConfig } from './reducers/settingsSlice';
 import { AppDispatch } from './store';
 
@@ -30,7 +30,7 @@ export const loadUserCredentials = () => async (dispatch: AppDispatch) => {
 export const loadAccount = () => async (dispatch: AppDispatch) => {
   const data = await cache.getAccountData();
   if (data.teacher) dispatch(setTeacher(data.teacher));
-  if (data.student) dispatch(setGroupId(data.student.groupId));
+  if (data.student) dispatch(setStudent(data.student));
 };
 
 export const loadStorage = () => async (dispatch: AppDispatch) => {

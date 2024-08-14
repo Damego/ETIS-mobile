@@ -25,7 +25,7 @@ export type StartStackParamList = {
   SelectTeacher: undefined;
   SelectStudentAccountType: undefined;
   SelectFaculty: undefined;
-  SelectGroup: undefined;
+  SelectGroup: { facultyId: string };
 
   TeacherNavigator: undefined;
   UnauthorizedStudentNavigator: undefined;
@@ -35,6 +35,12 @@ export type StartStackParamList = {
 export type UnauthorizedTeacherStackParamList = {
   Timetable: undefined;
   AccountSettings: undefined;
+};
+
+export type UnauthorizedStudentStackParamList = {
+  Timetable: undefined;
+  AccountSettings: undefined;
+  DisciplineInfo: { lesson: ILesson; date: string; pairPosition: number };
 };
 
 // Список экранов для ЕТИС

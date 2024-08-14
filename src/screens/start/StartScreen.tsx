@@ -1,6 +1,6 @@
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Button } from '~/components/Button';
 import ClickableText from '~/components/ClickableText';
 import SafeAreaScreen from '~/components/SafeAreaScreen';
@@ -28,23 +28,34 @@ const StartScreen = ({ navigation }: StartStackScreenProps) => {
   };
 
   const renderButton = (text: string, type: UserType) => (
-    <ClickableText
+    <TouchableOpacity
       onPress={handlePress(type)}
-      viewStyle={[
+      style={[
         styles.buttonView,
         selectedType === type
           ? globalStyles.primaryBorder
           : [globalStyles.card, globalStyles.invisibleBorder],
       ]}
-      iconRight={
-        selectedType === type && (
-          <AntDesign name={'checkcircle'} color={globalStyles.primaryText.color} size={20} />
-        )
-      }
-      textStyle={styles.buttonText}
     >
-      {text}
-    </ClickableText>
+      <View style={{width: 35, alignItems: 'center'}}>
+        <FontAwesome5
+          name={type === 'teacher' ? 'chalkboard-teacher' : 'male'}
+          size={24}
+          color="black"
+        />
+      </View>
+
+      <Text style={styles.buttonText}>{text}</Text>
+
+      {selectedType === type && (
+        <AntDesign
+          name={'checkcircle'}
+          color={globalStyles.primaryText.color}
+          size={20}
+          style={{ marginLeft: 'auto' }}
+        />
+      )}
+    </TouchableOpacity>
   );
 
   return (
@@ -80,13 +91,14 @@ const styles = StyleSheet.create({
     marginTop: '20%',
   },
   buttonView: {
+    flexDirection: 'row',
     paddingVertical: '8%',
     paddingHorizontal: '4%',
-    justifyContent: 'space-between',
   },
   buttonText: {
     ...fontSize.big,
     fontWeight: 'bold',
+    marginHorizontal: '4%',
   },
   buttonWrapper: {
     marginTop: 'auto',
