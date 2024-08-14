@@ -56,13 +56,13 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
   };
 
   return (
-    <Card style={styles.container}>
+    <View style={styles.container}>
       <Image style={styles.logoImage} source={require('../../../../assets/logo_red.png')} />
 
       <Text colorVariant={'primary'}>{errorMessage}</Text>
 
       <TextInput
-        style={[styles.input, globalStyles.border, globalStyles.textColor2]}
+        style={[styles.input, globalStyles.border, globalStyles.textColor]}
         onChangeText={(newLogin) => {
           setLogin(newLogin);
         }}
@@ -75,7 +75,7 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
         autoCapitalize="none"
       />
       <PasswordInput
-        style={[styles.input, globalStyles.border, globalStyles.textColor2]}
+        style={[styles.input, globalStyles.border, globalStyles.textColor]}
         onChangeText={setPassword}
         placeholder="Пароль"
         placeholderTextColor={theme.colors.inputPlaceholder}
@@ -110,7 +110,7 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
       <View style={{ width: '100%' }}>
         <Button text="Войти" onPress={() => onSubmit(login, password)} variant={'primary'} />
       </View>
-    </Card>
+    </View>
   );
 };
 

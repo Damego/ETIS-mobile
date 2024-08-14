@@ -95,7 +95,7 @@ export const ListScreen = <T,>({
 
       <StatusBar style={statusBarStyle || theme.statusBarStyle} />
 
-      <View style={[styles.screen, containerStyle]}>
+      <View style={[{ flex: 1 }, styles.screen, containerStyle]}>
         <FlashList
           ref={ref}
           inverted={startScrollFromBottom}
