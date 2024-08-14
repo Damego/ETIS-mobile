@@ -30,7 +30,11 @@ const useTimetable = ({ onRequestUpdate }: { onRequestUpdate: (week: number) => 
 
   const updateData = (weekInfo: WeekInfo) => {
     if (preSelectedDate) {
-      setTimetable((prev) => ({ ...prev, selectedDate: preSelectedDate }));
+      setTimetable((prev) => ({
+        ...prev,
+        selectedDate: preSelectedDate,
+        selectedWeek: weekInfo.selected,
+      }));
       preSelectedDate = null;
     } else {
       const weekDiff = weekInfo.selected - selectedWeek;
