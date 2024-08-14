@@ -10,7 +10,7 @@ import { useAppTheme } from '~/hooks/theme';
 import { IThemeColors } from '~/styles/themes';
 
 export interface TextProps extends RNTextProps {
-  colorVariant?: keyof IThemeColors;
+  colorVariant?: '' | keyof IThemeColors;
 }
 
 const fontWeightToUbuntuFamily = {
