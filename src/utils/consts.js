@@ -8,4 +8,4 @@ export const GITHUB_URL = 'https://github.com/damego/ETIS-mobile';
 export const SENTRY_PULL_REQUEST = `${GITHUB_URL}/pull/72`;
 
 export const PSU_URL = 'http://psu.ru';
-export const MAIN_ETIS_URL = "https://etis.psu.ru"
+export const MAIN_ETIS_URL = 'https://etis.psu.ru';
