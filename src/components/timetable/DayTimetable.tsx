@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import React, { useEffect, useMemo, useRef } from 'react';
 import PagerView from 'react-native-pager-view';
+import CenteredText from '~/components/CenteredText';
 import TimetablePages from '~/components/timetable/dayTimetable/components/TimetablePages';
 import TimetableCalendar from '~/components/timetable/dayTimetable/components/timetableCalendar/TimetableCalendar';
 import TimeTableContext from '~/context/timetableContext';
@@ -20,6 +21,8 @@ const DayTimetable = ({
   selectedWeek,
   currentDate,
   currentWeek,
+  startDate,
+  endDate,
   teachers,
   onDatePress,
   isLoading,
@@ -30,6 +33,8 @@ const DayTimetable = ({
   selectedWeek: number;
   currentDate: dayjs.Dayjs;
   currentWeek: number;
+  startDate?: dayjs.Dayjs;
+  endDate?: dayjs.Dayjs;
   teachers?: ITeacher[];
   onDatePress: (date: dayjs.Dayjs) => void;
   isLoading?: boolean;
@@ -54,37 +59,34 @@ const DayTimetable = ({
     }
   }, [selectedDate]);
 
-  const startDate = useMemo(
-    () =>
-      !timetable
-        ? currentDate
-        : getWeekDiffDate(currentDate, timetable.weekInfo.first - 1, currentWeek),
+  const $startDate = useMemo(
+    () => timetable && getWeekDiffDate(currentDate, timetable.weekInfo.first - 1, currentWeek),
     [currentWeek, currentDate, timetable]
   );
-  const endDate = useMemo(
-    () =>
-      !timetable
-        ? currentDate
-        : getWeekDiffDate(currentDate, timetable.weekInfo.last + 1, currentWeek),
+  const $endDate = useMemo(
+    () => timetable && getWeekDiffDate(currentDate, timetable.weekInfo.last + 1, currentWeek),
     [currentWeek, currentDate, timetable]
   );
 
   return (
     <TimeTableContext.Provider value={contextData}>
       <TimetableCalendar
-        periodStartDate={startDate}
-        periodEndDate={endDate}
+        periodStartDate={startDate ?? $startDate}
+        periodEndDate={endDate ?? $endDate}
         onDatePress={onDatePress}
       />
+      {/* eslint-disable-next-line no-nested-ternary */}
       {loadingComponent !== undefined && isLoading ? (
         loadingComponent()
-      ) : (
+      ) : timetable ? (
         <TimetablePages
           ref={pagerRef}
           onPagePress={(pageNumber) => onDatePress(selectedDate.clone().add(pageNumber, 'day'))}
           days={timetable.days}
           dayNumber={selectedDate.weekday()}
         />
+      ) : (
+        <CenteredText>Расписания нет</CenteredText>
       )}
     </TimeTableContext.Provider>
   );
