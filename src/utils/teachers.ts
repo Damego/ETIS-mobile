@@ -5,7 +5,7 @@ export const getTeacherName = (teachers: ITeacher[], teacher: ITimeTableTeacher)
   let teacherName: string;
 
   if (teacher.id) {
-    const $teacher = teachers.find(($teacher) => $teacher.id === teacher.id);
+    const $teacher = teachers?.find(($teacher) => $teacher.id === teacher.id);
     if ($teacher) teacherName = $teacher.name;
   }
   if (!teacherName) teacherName = teacher.name;
