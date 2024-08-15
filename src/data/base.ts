@@ -58,14 +58,14 @@ export class BasicClient<P extends IGetPayload, T> {
   cacheMethod: (payload?: P) => Promise<T>;
   httpMethod: (payload?: P) => Promise<Response<string>>;
   parseMethod: (data: string, payload?: P) => T;
-  placeMethod: (data: T) => void;
+  placeMethod: (data: T, payload: P) => void;
   name: string;
 
   constructor(
     cacheMethod: (payload?: P) => Promise<T>,
     httpMethod: (payload?: P) => Promise<Response<string>>,
     parseMethod: (data: string, payload?: P) => T,
-    placeMethod: (data: T) => void
+    placeMethod: (data: T, payload: P) => void
   ) {
     this.cacheMethod = cacheMethod;
     this.httpMethod = httpMethod;
@@ -146,7 +146,7 @@ export class BasicClient<P extends IGetPayload, T> {
       return parsed;
     }
 
-    this.placeMethod(parsed.data);
+    this.placeMethod(parsed.data, payload);
     console.log(`[DATA] Retrieved and cached ${this.name} from server`);
     return parsed;
   }
