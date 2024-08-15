@@ -1,7 +1,9 @@
 import * as SecureStore from 'expo-secure-store';
 import { IAbsence } from '~/models/absences';
 import { ICalendarSchedule } from '~/models/calendarSchedule';
+import { ICathedraTimetable, ICathedraTimetablePayload } from '~/models/cathedraTimetable';
 import { ICertificate, ICertificateResult } from '~/models/certificate';
+import { IGroupTimetablePayload } from '~/models/groupTimetable';
 import { IMessagesData } from '~/models/messages';
 import { IOrder } from '~/models/order';
 import { IPersonalRecord } from '~/models/personalRecords';
@@ -50,6 +52,8 @@ export default class SmartCache {
   student: FieldCache<StudentInfo>;
   calendarSchedule: FieldCache<ICalendarSchedule>;
   certificate: FieldCache<ICertificate[]>;
+  cathedraTimetable: MappedCache<string, ICathedraTimetable>;
+  groupTimetable: MappedCache<string, ITimeTable>;
 
   // Internal
   user: SecuredFieldCache<UserCredentials>;
@@ -74,6 +78,8 @@ export default class SmartCache {
     TEACH_PLAN: 'TEACH_PLAN',
     TEACHERS: 'TEACHERS',
     TIMETABLE: 'TIMETABLE',
+    CATHEDRA_TIMETABLE: 'CATHEDRA_TIMETABLE',
+    GROUP_TIMETABLE: 'GROUP_TIMETABLE',
 
     // Internal keys
     USER: 'USER',
@@ -100,6 +106,10 @@ export default class SmartCache {
     this.student = new FieldCache<StudentInfo>(this.keys.STUDENT);
     this.calendarSchedule = new FieldCache(this.keys.CALENDAR_SCHEDULE);
     this.certificate = new FieldCache(this.keys.CERTIFICATE);
+    this.cathedraTimetable = new MappedCache<string, ICathedraTimetable>(
+      this.keys.CATHEDRA_TIMETABLE
+    );
+    this.groupTimetable = new MappedCache<string, ITimeTable>(this.keys.GROUP_TIMETABLE);
 
     this.user = new SecuredFieldCache<UserCredentials>(this.keys.USER);
     this.app = new FieldCache<AppConfig>(this.keys.APP);
@@ -354,6 +364,43 @@ export default class SmartCache {
   }
 
   // End Calendar Schedule region
+
+  // Cathedra Timetable region
+
+  async placeCathedraTimetable(
+    requestPayload: ICathedraTimetablePayload,
+    data: ICathedraTimetable
+  ) {
+    await this.cathedraTimetable.init();
+    // Данные на выходе сильно зависят от данных на входе, поэтому ничего не остаётся,
+    // кроме как в лоб использовать payload в запросе
+    this.cathedraTimetable.place(JSON.stringify(requestPayload), data);
+    await this.cathedraTimetable.save();
+  }
+
+  async getCathedraTimetable(requestPayload: ICathedraTimetablePayload) {
+    await this.cathedraTimetable.init();
+    return this.cathedraTimetable.get(JSON.stringify(requestPayload));
+  }
+
+  // End Cathedra Timetable region
+
+  // Group Timetable region
+
+  async placeGroupTimetable(requestPayload: IGroupTimetablePayload, data: ITimeTable) {
+    await this.groupTimetable.init();
+    // Данные на выходе сильно зависят от данных на входе, поэтому ничего не остаётся,
+    // кроме как в лоб использовать payload в запросе
+    this.groupTimetable.place(JSON.stringify(requestPayload), data);
+    await this.groupTimetable.save();
+  }
+
+  async getGroupTimetable(requestPayload: IGroupTimetablePayload) {
+    await this.groupTimetable.init();
+    return this.groupTimetable.get(JSON.stringify(requestPayload));
+  }
+
+  // End Group Timetable region
 
   // Secure Region
 
