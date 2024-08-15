@@ -204,16 +204,16 @@ export default class Client implements BaseClient {
       (data) => cache.placePersonalRecords(data)
     );
     this.cathedraTimetableClient = new CathedraTimetableClient(
-      emptyFunction,
+      (payload) => cache.getCathedraTimetable(payload.data),
       (payload) => httpClient.getCathedraTimetable(payload.data),
       parseCathedraTimetable,
-      emptyFunction
+      (data, payload) => cache.placeCathedraTimetable(payload.data, data)
     );
     this.groupTimetableClient = new GroupTimetableClient(
-      emptyFunction,
+      (payload) => cache.getGroupTimetable(payload.data),
       (payload) => httpClient.getGroupTimetable(payload.data),
       parseGroupTimetable,
-      emptyFunction
+      (data, payload) => cache.placeGroupTimetable(payload.data, data)
     );
 
     bind(this, Client);

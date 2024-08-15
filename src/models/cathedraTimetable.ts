@@ -1,4 +1,4 @@
-import { ISubject, ITimeTable, WeekInfo } from '~/models/timeTable';
+import { ITimeTable } from '~/models/timeTable';
 
 export enum TimetableTypes {
   sessions,
