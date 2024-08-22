@@ -1,21 +1,17 @@
-import { useNavigation } from '@react-navigation/native';
-import * as Clipboard from 'expo-clipboard';
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   Image,
-  Linking,
   StyleSheet,
   ToastAndroid,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import ContextMenu from 'react-native-context-menu-view';
+import BottomSheetModal from '~/components/BottomSheetModal';
 import DisciplineType from '~/components/DisciplineType';
 import Text from '~/components/Text';
 import { ITeacher } from '~/models/teachers';
-import { ServicesNavigationProp } from '~/navigation/types';
-import { httpClient } from '~/utils';
+import TeacherBottomSheet from '~/screens/etis/teachers/TeacherBottomSheet';
 import { fontSize } from '~/utils/texts';
 
 interface TeacherProps {
@@ -23,51 +19,15 @@ interface TeacherProps {
   data: ITeacher;
 }
 
-const getSearchTeacherName = (teacher: string) => {
-  const names = teacher.split(' ');
-
-  // Возможны проблемы в поиске иностранных учителей (Китай)
-  if (names.length !== 3) return teacher;
-
-  const [first, middle, last] = names;
-  return `${middle} ${last} ${first.toUpperCase()}`;
-};
-
 const Teacher = ({ discipline, data }: TeacherProps) => {
-  const navigation = useNavigation<ServicesNavigationProp>();
   const subject = data.subjects.find((sub) => sub.discipline === discipline);
+  const modalRef = useRef<BottomSheetModal>();
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={() => modalRef.current.present()} style={styles.container}>
       <View style={styles.teacherInfo}>
         <View style={styles.teacherNameView}>
-          <ContextMenu
-            actions={[
-              { title: 'Скопировать' },
-              { title: 'Найти на сайте ПГНИУ' },
-              { title: 'Расписание пар' },
-            ]}
-            onPress={(event) => {
-              const pressIndex = event.nativeEvent.index;
-
-              if (pressIndex === 0) {
-                Clipboard.setStringAsync(data.name);
-                ToastAndroid.show('Скопировано в буфер обмена', ToastAndroid.LONG);
-              } else if (pressIndex === 1) {
-                Linking.openURL(httpClient.getSearchPageURL(getSearchTeacherName(data.name)));
-              } else if (pressIndex === 2) {
-                navigation.navigate('CathedraTimetable', { teacherId: data.id });
-              }
-            }}
-            dropdownMenuMode
-          >
-            {/* fake touchable effect */}
-            <TouchableOpacity>
-              <Text style={styles.textTitle} colorVariant={'block'}>
-                {data.name}
-              </Text>
-            </TouchableOpacity>
-          </ContextMenu>
+          <Text style={styles.textTitle}>{data.name}</Text>
           <View style={styles.typesContainer}>
             {subject.types.map((type) => (
               <DisciplineType key={type} type={type} size={'small'} />
@@ -75,27 +35,7 @@ const Teacher = ({ discipline, data }: TeacherProps) => {
           </View>
         </View>
 
-        <ContextMenu
-          actions={[{ title: 'Скопировать' }, { title: 'Расписание пар' }]}
-          onPress={(event) => {
-            const pressIndex = event.nativeEvent.index;
-
-            if (pressIndex === 0) {
-              Clipboard.setStringAsync(data.cathedra);
-              ToastAndroid.show('Скопировано в буфер обмена', ToastAndroid.LONG);
-            } else if (pressIndex === 1) {
-              navigation.navigate('CathedraTimetable', { cathedraId: data.cathedraId });
-            }
-          }}
-          dropdownMenuMode
-        >
-          {/* fake touchable effect */}
-          <TouchableOpacity style={styles.subjectInfoView}>
-            <Text style={fontSize.small} colorVariant={'block'}>
-              {data.cathedra}
-            </Text>
-          </TouchableOpacity>
-        </ContextMenu>
+        <Text style={fontSize.small}>{data.cathedra}</Text>
       </View>
 
       {/* Фотография загружена... */}
@@ -110,7 +50,8 @@ const Teacher = ({ discipline, data }: TeacherProps) => {
           }}
         />
       </TouchableWithoutFeedback>
-    </View>
+      <TeacherBottomSheet ref={modalRef} teacher={data} />
+    </TouchableOpacity>
   );
 };
 
