@@ -7,6 +7,7 @@ import BaseSettingButton from '~/components/baseSettingButton';
 import { useAppDispatch, useAppSelector } from '~/hooks';
 import { clearAccountState } from '~/redux/reducers/accountSlice';
 import { fontSize } from '~/utils/texts';
+import ChangeAppUI from '~/screens/settings/components/ChangeAppUI';
 
 const LogOut = ({ onPress }: { onPress: () => void }) => {
   return (
@@ -33,6 +34,7 @@ const Settings = () => {
         Действия с аккаунтом
       </Text>
       <LogOut onPress={handleLogOut} />
+      <ChangeAppUI />
     </Screen>
   );
 };

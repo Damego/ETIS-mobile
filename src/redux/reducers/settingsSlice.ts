@@ -9,11 +9,17 @@ export enum PageType {
   announces = 'Announces',
 }
 
+export enum TimetableModes {
+  days,
+  weeks
+}
+
 export interface CacheMigrations {
   v1_3_0?: boolean;
 }
 
 export interface UIConfig {
+  timetableMode: TimetableModes;
   showPastWeekDays: boolean;
   highlightCurrentDay: boolean;
 }
@@ -44,6 +50,7 @@ const initialConfig: AppConfig = {
   sentryEnabled: true,
   events: {},
   ui: {
+    timetableMode: TimetableModes.days,
     showPastWeekDays: true,
     highlightCurrentDay: false,
   },
