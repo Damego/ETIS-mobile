@@ -1,10 +1,32 @@
+import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button } from '~/components/Button';
 import Text from '~/components/Text';
-import { useAppDispatch } from '~/hooks';
+import { useAppDispatch, useGlobalStyles } from '~/hooks';
 import { AccountType, setAccountState } from '~/redux/reducers/accountSlice';
 import OptionButton from '~/screens/start/components/OptionButton';
+import { fontSize } from '~/utils/texts';
+
+const WarningMessage = () => {
+  const globalStyles = useGlobalStyles();
+
+  return (
+    <View
+      style={[
+        globalStyles.secondaryBackgroundColor,
+        { padding: '2%', flexDirection: 'row', gap: 8 },
+        globalStyles.borderRadius,
+      ]}
+    >
+      <AntDesign name="warning" size={24} color={globalStyles.primaryText.color} />
+      <Text style={[globalStyles.primaryText, { fontWeight: 'bold', flex: 1 }, fontSize.medium]}>
+        Расписание может отличаться от действительного!{'\n'}Особенно, если у вас в текущем учебном
+        периоде имеются дисциплины по выбору!
+      </Text>
+    </View>
+  );
+};
 
 const SelectStudentAccountTypeScreen = ({ navigation }) => {
   const dispatch = useAppDispatch();
@@ -40,6 +62,8 @@ const SelectStudentAccountTypeScreen = ({ navigation }) => {
           Без авторизации в ЕТИС
         </OptionButton>
       </View>
+
+      {!withAuth && <WarningMessage />}
 
       <View style={styles.buttonWrapper}>
         <Button text={'Выбрать'} onPress={handleChoose} variant={'primary'} />
