@@ -43,7 +43,7 @@ const PeriodsBottomSheet = React.forwardRef<BottomSheetModal, Props>(({ data, on
             onPress={() => onChange(item.value)}
             viewStyle={{ padding: '2%', width: '100%', justifyContent: 'center' }}
             textStyle={{ fontSize: 18, fontWeight: '600' }}
-            colorVariant={item.isCurrent ? 'primary' : 'text2'}
+            colorVariant={item.isCurrent ? 'primary' : 'text'}
           >
             {item.label}
           </ClickableText>
