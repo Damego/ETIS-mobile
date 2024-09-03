@@ -59,9 +59,7 @@ const ToggleThemeSetting = () => {
 
   return (
     <View style={styles.cardView}>
-      <Text style={styles.settingTitle}>
-        Тема
-      </Text>
+      <Text style={styles.settingTitle}>Тема</Text>
       {/*<View style={{ width: '60%' }}>*/}
       {/*  <Dropdown options={options} selectedOption={getCurrentTheme()} onSelect={changeAppTheme} />*/}
       {/*</View>*/}

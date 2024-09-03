@@ -11,7 +11,7 @@ export enum PageType {
 
 export enum TimetableModes {
   days,
-  weeks
+  weeks,
 }
 
 export interface CacheMigrations {

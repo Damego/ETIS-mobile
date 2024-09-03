@@ -5,7 +5,6 @@ import DayButton from '~/components/timetable/dayTimetable/components/timetableC
 import WeekNavigation from '~/components/timetable/dayTimetable/components/timetableCalendar/WeekNavigation';
 import { DatePressT } from '~/hooks/useTimetable';
 
-
 const WeekCalendar = ({
   selectedDate,
   currentDate,
