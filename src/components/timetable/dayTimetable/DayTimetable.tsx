@@ -56,15 +56,17 @@ const DayTimetable = ({
     [teachers, selectedDate]
   );
 
-  const handleDatePress = ({ date, week }: { date?: dayjs.Dayjs; week?: number }, mode: TimetableCalendarModes) => {
-    console.log(date, week)
+  const handleDatePress = (
+    { date, week }: { date?: dayjs.Dayjs; week?: number },
+    mode: TimetableCalendarModes
+  ) => {
+    console.log(date, week);
     if (mode === 'week' && date) {
       if (pagerRef.current) {
         pagerRef.current.setPage(date.weekday());
       }
-    }
-    else onDatePress({ date, week });
-  }
+    } else onDatePress({ date, week });
+  };
 
   const $startDate = useMemo(
     () => data && getWeekDiffDate(currentDate, data.weekInfo.first - 1, currentWeek),

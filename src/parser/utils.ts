@@ -1,6 +1,5 @@
 import * as cheerio from 'cheerio';
 import dayjs from 'dayjs';
-
 import { LessonTypes } from '~/models/other';
 
 export const getTextField = (component: cheerio.Cheerio): string => component.text().trim();

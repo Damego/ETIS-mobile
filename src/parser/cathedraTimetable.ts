@@ -186,7 +186,8 @@ const cleanupPairs = (pairs: IPair[]) => {
   return pairs.slice(0, lastPair + 1);
 };
 
-const generateNextDayDateString = (date: dayjs.Dayjs, addValue: number) => date.add(addValue, 'day').format('DD.MM.YYYY');
+const generateNextDayDateString = (date: dayjs.Dayjs, addValue: number) =>
+  date.add(addValue, 'day').format('DD.MM.YYYY');
 
 const parseTeacher = (tdTag: cheerio.Cheerio): ITeacher => {
   const teacherTextTag = tdTag.contents().eq(0);
