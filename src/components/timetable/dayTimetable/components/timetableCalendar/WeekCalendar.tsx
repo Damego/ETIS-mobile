@@ -3,6 +3,8 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import DayButton from '~/components/timetable/dayTimetable/components/timetableCalendar/DayButton';
 import WeekNavigation from '~/components/timetable/dayTimetable/components/timetableCalendar/WeekNavigation';
+import { DatePressT } from '~/hooks/useTimetable';
+
 
 const WeekCalendar = ({
   selectedDate,
@@ -12,21 +14,21 @@ const WeekCalendar = ({
 }: {
   selectedDate: dayjs.Dayjs;
   currentDate: dayjs.Dayjs;
-  onDatePress: (date: dayjs.Dayjs) => void;
+  onDatePress: DatePressT;
   selectedWeek: number;
 }) => {
   const week = selectedDate.startOf('week');
 
   const handlePrevPress = () => {
-    onDatePress(selectedDate.clone().add(-1, 'week'));
+    onDatePress({ week: selectedWeek - 1 });
   };
 
   const handleNextPress = () => {
-    onDatePress(selectedDate.clone().add(1, 'week'));
+    onDatePress({ week: selectedWeek + 1 });
   };
 
   const handleMainPress = () => {
-    onDatePress(currentDate);
+    onDatePress({ date: currentDate });
   };
 
   return (
@@ -47,7 +49,7 @@ const WeekCalendar = ({
             currentDate={currentDate}
             selectedDate={selectedDate}
             position={index}
-            onPress={onDatePress}
+            onPress={(date) => onDatePress({ date })}
           />
         ))}
       </View>
@@ -55,7 +57,7 @@ const WeekCalendar = ({
   );
 };
 
-export default WeekCalendar;
+export default React.memo(WeekCalendar);
 
 const styles = StyleSheet.create({
   calendarContainer: {

@@ -20,9 +20,13 @@ const WeekNavigation = ({
 }) => {
   return (
     <View style={styles.navigation}>
-      <TouchableOpacity onPress={onPrevPress}>
-        <AntDesign name={'left'} size={18} />
-      </TouchableOpacity>
+      {selectedWeek !== 1 ? (
+        <TouchableOpacity onPress={onPrevPress}>
+          <AntDesign name={'left'} size={18} />
+        </TouchableOpacity>
+      ) : (
+        <View style={{ width: 20 }} />
+      )}
       <Text style={styles.infoText} onPress={onMainPress}>
         {capitalizeWord(selectedDate.format('MMMM'))}
         {selectedWeek ? ` • ${selectedWeek} неделя` : ''}
@@ -34,7 +38,7 @@ const WeekNavigation = ({
   );
 };
 
-export default WeekNavigation;
+export default React.memo(WeekNavigation);
 
 const styles = StyleSheet.create({
   navigation: {

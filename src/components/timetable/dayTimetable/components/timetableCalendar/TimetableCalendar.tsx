@@ -7,7 +7,7 @@ import MonthCalendar from '~/components/timetable/dayTimetable/components/timeta
 import WeekCalendar from '~/components/timetable/dayTimetable/components/timetableCalendar/WeekCalendar';
 import { useTimetableContext } from '~/context/timetableContext';
 
-type TimetableCalendarModes = 'week' | 'month';
+export type TimetableCalendarModes = 'week' | 'month';
 
 const TimetableCalendar = ({
   periodStartDate,
@@ -16,7 +16,10 @@ const TimetableCalendar = ({
 }: {
   periodStartDate?: dayjs.Dayjs;
   periodEndDate?: dayjs.Dayjs;
-  onDatePress: (date: dayjs.Dayjs) => void;
+  onDatePress: (
+    { date, week }: { date?: dayjs.Dayjs; week?: number },
+    mode: TimetableCalendarModes
+  ) => void;
 }) => {
   const { selectedDate, currentDate, selectedWeek } = useTimetableContext();
   const [mode, setMode] = useState<TimetableCalendarModes>('week');
@@ -36,7 +39,13 @@ const TimetableCalendar = ({
           <WeekCalendar
             currentDate={currentDate}
             selectedDate={selectedDate}
-            onDatePress={onDatePress}
+            onDatePress={(data) =>
+              onDatePress(
+                data,
+                // date доступен когда юзер нажал на дату, а week при нажатии на стрелочки
+                data.date ? 'week' : 'month'
+              )
+            }
             selectedWeek={selectedWeek}
           />
         ) : (
@@ -44,7 +53,7 @@ const TimetableCalendar = ({
             date={selectedDate}
             periodStartDate={periodStartDate}
             periodEndDate={periodEndDate}
-            onDatePress={onDatePress}
+            onDatePress={(data) => onDatePress(data, 'month')}
           />
         )}
       </View>
@@ -52,4 +61,4 @@ const TimetableCalendar = ({
   );
 };
 
-export default TimetableCalendar;
+export default React.memo(TimetableCalendar);

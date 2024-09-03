@@ -7,8 +7,7 @@ import Text from '~/components/Text';
 import TimeTableContext from '~/context/timetableContext';
 import { useAppSelector, useGlobalStyles } from '~/hooks';
 import { ITimeTableDay } from '~/models/timeTable';
-import { ThemeType, isNewYearTheme } from '~/styles/themes';
-import { halloweenEmptyDayResponses, newYearEmptyDayResponse } from '~/utils/events';
+import { ThemeType } from '~/styles/themes';
 import { fontSize } from '~/utils/texts';
 import { getRandomItem } from '~/utils/utils';
 
@@ -22,12 +21,12 @@ interface DayData {
 const responses = ['Пар нет', 'Отдых', '💤', '😴', '🎮', '(๑ᵕ⌓ᵕ̤)'];
 
 const getRandomResponse = (appTheme: ThemeType) => {
-  if (appTheme === ThemeType.halloween) return getRandomItem(halloweenEmptyDayResponses);
-  if (isNewYearTheme(appTheme)) return getRandomItem(newYearEmptyDayResponse);
+  // if (appTheme === ThemeType.halloween) return getRandomItem(halloweenEmptyDayResponses);
+  // if (isNewYearTheme(appTheme)) return getRandomItem(newYearEmptyDayResponse);
   return getRandomItem(responses);
 };
 
-export const Day = ({ data, date }: DayData) => {
+export const Day = React.memo(({ data, date }: DayData) => {
   const { date: dateString, pairs } = data;
   const {
     theme,
@@ -47,9 +46,7 @@ export const Day = ({ data, date }: DayData) => {
     <CardHeaderOut topText={dateString} topTextStyle={textStyle} style={cardStyle}>
       {data.pairs.length === 0 ? (
         <View style={{ alignItems: 'center' }}>
-          <Text style={{ ...fontSize.medium, fontWeight: '600' }} colorVariant={'block'}>
-            {getRandomResponse(theme)}
-          </Text>
+          <Text style={{ ...fontSize.medium, fontWeight: '600' }}>{getRandomResponse(theme)}</Text>
         </View>
       ) : (
         pairs.map((pair, index) => (
@@ -61,4 +58,4 @@ export const Day = ({ data, date }: DayData) => {
       )}
     </CardHeaderOut>
   );
-};
+});

@@ -65,7 +65,7 @@ const DayButton = ({
   );
 };
 
-export default DayButton;
+export default React.memo(DayButton);
 
 const styles = StyleSheet.create({
   dayContainer: {

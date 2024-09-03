@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import React from 'react';
 import DateTimePicker from 'react-native-ui-datepicker';
 import { useAppTheme } from '~/hooks/theme';
+import { DatePressT } from '~/hooks/useTimetable';
 
 const MonthCalendarComponent = ({
   date,
@@ -12,14 +13,14 @@ const MonthCalendarComponent = ({
   date: dayjs.Dayjs;
   periodStartDate: dayjs.Dayjs;
   periodEndDate: dayjs.Dayjs;
-  onDatePress: (date: dayjs.Dayjs) => void;
+  onDatePress: DatePressT;
 }) => {
   const theme = useAppTheme();
 
   return (
     <DateTimePicker
       date={date}
-      onChange={({ date }) => onDatePress(dayjs(date))}
+      onChange={({ date }) => onDatePress({ date: dayjs(date) })}
       locale={'ru'}
       minDate={periodStartDate}
       maxDate={periodEndDate}
