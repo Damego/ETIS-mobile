@@ -11,20 +11,19 @@ import BottomSheetModal from '~/components/BottomSheetModal';
 import DisciplineType from '~/components/DisciplineType';
 import Text from '~/components/Text';
 import { ITeacher } from '~/models/teachers';
-import TeacherBottomSheet from '~/screens/etis/teachers/TeacherBottomSheet';
 import { fontSize } from '~/utils/texts';
 
 interface TeacherProps {
   discipline: string;
   data: ITeacher;
+  onPress: (teacher: ITeacher) => void;
 }
 
-const Teacher = ({ discipline, data }: TeacherProps) => {
+const Teacher = ({ discipline, data, onPress }: TeacherProps) => {
   const subject = data.subjects.find((sub) => sub.discipline === discipline);
-  const modalRef = useRef<BottomSheetModal>();
 
   return (
-    <TouchableOpacity onPress={() => modalRef.current.present()} style={styles.container}>
+    <TouchableOpacity onPress={() => onPress(data)} style={styles.container}>
       <View style={styles.teacherInfo}>
         <View style={styles.teacherNameView}>
           <Text style={styles.textTitle}>{data.name}</Text>
@@ -50,7 +49,6 @@ const Teacher = ({ discipline, data }: TeacherProps) => {
           }}
         />
       </TouchableWithoutFeedback>
-      <TeacherBottomSheet ref={modalRef} teacher={data} />
     </TouchableOpacity>
   );
 };
