@@ -3,8 +3,11 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import PagerView from 'react-native-pager-view';
 import CenteredText from '~/components/CenteredText';
 import TimetablePages from '~/components/timetable/dayTimetable/components/TimetablePages';
-import TimetableCalendar from '~/components/timetable/dayTimetable/components/timetableCalendar/TimetableCalendar';
+import TimetableCalendar, {
+  TimetableCalendarModes,
+} from '~/components/timetable/dayTimetable/components/timetableCalendar/TimetableCalendar';
 import TimeTableContext from '~/context/timetableContext';
+import { DatePressT } from '~/hooks/useTimetable';
 import { ITeacher } from '~/models/teachers';
 import { ITimeTable } from '~/models/timeTable';
 
@@ -16,7 +19,7 @@ const getWeekDiffDate = (date: dayjs.Dayjs, a: number, b: number) => {
 };
 
 const DayTimetable = ({
-  timetable,
+  data,
   selectedDate,
   selectedWeek,
   currentDate,
@@ -28,7 +31,7 @@ const DayTimetable = ({
   isLoading,
   loadingComponent,
 }: {
-  timetable: ITimeTable;
+  data: ITimeTable;
   selectedDate: dayjs.Dayjs;
   selectedWeek: number;
   currentDate: dayjs.Dayjs;
@@ -36,7 +39,7 @@ const DayTimetable = ({
   startDate?: dayjs.Dayjs;
   endDate?: dayjs.Dayjs;
   teachers?: ITeacher[];
-  onDatePress: (date: dayjs.Dayjs) => void;
+  onDatePress: DatePressT;
   isLoading?: boolean;
   loadingComponent?: () => React.ReactNode;
 }) => {
@@ -53,19 +56,23 @@ const DayTimetable = ({
     [teachers, selectedDate]
   );
 
-  useEffect(() => {
-    if (pagerRef.current) {
-      pagerRef.current.setPage(selectedDate.weekday());
+  const handleDatePress = ({ date, week }: { date?: dayjs.Dayjs; week?: number }, mode: TimetableCalendarModes) => {
+    console.log(date, week)
+    if (mode === 'week' && date) {
+      if (pagerRef.current) {
+        pagerRef.current.setPage(date.weekday());
+      }
     }
-  }, [selectedDate]);
+    else onDatePress({ date, week });
+  }
 
   const $startDate = useMemo(
-    () => timetable && getWeekDiffDate(currentDate, timetable.weekInfo.first - 1, currentWeek),
-    [currentWeek, currentDate, timetable]
+    () => data && getWeekDiffDate(currentDate, data.weekInfo.first - 1, currentWeek),
+    [currentWeek, currentDate, data]
   );
   const $endDate = useMemo(
-    () => timetable && getWeekDiffDate(currentDate, timetable.weekInfo.last + 1, currentWeek),
-    [currentWeek, currentDate, timetable]
+    () => data && getWeekDiffDate(currentDate, data.weekInfo.last + 1, currentWeek),
+    [currentWeek, currentDate, data]
   );
 
   return (
@@ -73,16 +80,20 @@ const DayTimetable = ({
       <TimetableCalendar
         periodStartDate={startDate ?? $startDate}
         periodEndDate={endDate ?? $endDate}
-        onDatePress={onDatePress}
+        onDatePress={handleDatePress}
       />
       {/* eslint-disable-next-line no-nested-ternary */}
       {loadingComponent !== undefined && isLoading ? (
         loadingComponent()
-      ) : timetable ? (
+      ) : data ? (
         <TimetablePages
           ref={pagerRef}
-          onPagePress={(pageNumber) => onDatePress(selectedDate.clone().add(pageNumber, 'day'))}
-          days={timetable.days}
+          onPagePress={(direction) => {
+            // direction: -1 or 1
+            // Нужно для свайпа между днями
+            onDatePress({ date: selectedDate.clone().add(direction, 'day') });
+          }}
+          days={data.days}
           dayNumber={selectedDate.weekday()}
         />
       ) : (

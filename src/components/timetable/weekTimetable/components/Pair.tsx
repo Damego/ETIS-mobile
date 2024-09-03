@@ -8,21 +8,19 @@ import Text from '~/components/Text';
 import TimeTableContext from '~/context/timetableContext';
 import { useAppSelector } from '~/hooks';
 import { ILesson, IPair } from '~/models/timeTable';
-import { BottomTabsNavigationProp } from '~/navigation/types';
+import { EducationNavigationProp } from '~/navigation/types';
 import { getTeacherName } from '~/utils/teachers';
 import { fontSize, formatAudience } from '~/utils/texts';
 
-export default function Pair({ pair, date }: { pair: IPair; date: dayjs.Dayjs }) {
+const Pair = ({ pair, date }: { pair: IPair; date: dayjs.Dayjs }) => {
   const isLyceum = useAppSelector((state) => state.student.info?.isLyceum);
   const pairText = `${pair.position} ${isLyceum ? 'урок' : 'пара'}`;
 
   return (
     <View style={styles.pairContainer}>
       <View style={styles.pairTimeContainer}>
-        <Text style={fontSize.mini} colorVariant={'block'}>
-          {pairText}
-        </Text>
-        <Text colorVariant={'block'}>{pair.time}</Text>
+        <Text style={fontSize.mini}>{pairText}</Text>
+        <Text>{pair.time}</Text>
       </View>
 
       <View style={{ flexDirection: 'column', flex: 1 }}>
@@ -42,50 +40,46 @@ export default function Pair({ pair, date }: { pair: IPair; date: dayjs.Dayjs })
       </View>
     </View>
   );
-}
-
-const Lesson = ({
-  data,
-  date,
-  pairPosition,
-}: {
-  data: ILesson;
-  date: dayjs.Dayjs;
-  pairPosition: number;
-}) => {
-  const navigation = useNavigation<BottomTabsNavigationProp>();
-  const { teachers } = useContext(TimeTableContext);
-
-  const audience = formatAudience(data);
-  const teacherName = getTeacherName(teachers, data.teacher);
-
-  return (
-    <TouchableOpacity
-      style={styles.lessonContainer}
-      onPress={() =>
-        navigation.navigate('DisciplineInfo', {
-          lesson: data,
-          date: date.toISOString(),
-          pairPosition,
-        })
-      }
-    >
-      <Text style={[fontSize.medium, styles.lessonInfoText]} colorVariant={'block'}>
-        {data.subject.discipline ?? data.subject.string}
-      </Text>
-      <View style={styles.badges}>
-        {data.subject.type && <DisciplineType type={data.subject.type} size={'small'} />}
-        <TaskBadge subject={data.subject} date={date} />
-      </View>
-
-      {data.distancePlatform && <Text colorVariant={'block'}>{data.distancePlatform.name}</Text>}
-      {!data.distancePlatform && audience && <Text colorVariant={'block'}>{audience}</Text>}
-      {data.announceHTML && <Text colorVariant={'block'}>Объявление</Text>}
-
-      {teacherName && <Text colorVariant={'block'}>{teacherName}</Text>}
-    </TouchableOpacity>
-  );
 };
+
+const Lesson = React.memo(
+  ({ data, date, pairPosition }: { data: ILesson; date: dayjs.Dayjs; pairPosition: number }) => {
+    const navigation = useNavigation<EducationNavigationProp>();
+    const { teachers } = useContext(TimeTableContext);
+
+    const audience = formatAudience(data);
+    const teacherName = getTeacherName(teachers, data.teacher);
+
+    return (
+      <TouchableOpacity
+        style={styles.lessonContainer}
+        onPress={() =>
+          navigation.navigate('DisciplineInfo', {
+            lesson: data,
+            date: date.toISOString(),
+            pairPosition,
+          })
+        }
+      >
+        <Text style={[fontSize.medium, styles.lessonInfoText]}>
+          {data.subject.discipline ?? data.subject.string}
+        </Text>
+        <View style={styles.badges}>
+          {data.subject.type && <DisciplineType type={data.subject.type} size={'small'} />}
+          <TaskBadge subject={data.subject} date={date} />
+        </View>
+
+        {data.distancePlatform && <Text>{data.distancePlatform.name}</Text>}
+        {!data.distancePlatform && audience && <Text>{audience}</Text>}
+        {data.announceHTML && <Text>Объявление</Text>}
+
+        {teacherName && <Text>{teacherName}</Text>}
+      </TouchableOpacity>
+    );
+  }
+);
+
+export default React.memo(Pair);
 
 const styles = StyleSheet.create({
   pairContainer: {

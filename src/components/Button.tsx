@@ -55,9 +55,9 @@ const Button = React.forwardRef<View | Text | TouchableOpacity, ButtonProps>(
         view: [defaultStyles.container, globalStyles.secondaryBackgroundColor],
       },
       card: {
-        textColor: globalStyles.secondaryContrastText.color,
-        text: [globalStyles.secondaryText, { fontWeight: '500' }, fontStyle || fontSize.xlarge],
-        view: [defaultStyles.container],
+        textColor: globalStyles.textColor.color,
+        text: [globalStyles.textColor, { fontWeight: '500' }, fontStyle || fontSize.xlarge],
+        view: [defaultStyles.container, globalStyles.card],
       },
     };
 

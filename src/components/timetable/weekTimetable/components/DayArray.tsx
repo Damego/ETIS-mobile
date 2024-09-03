@@ -40,7 +40,7 @@ const DayArray = ({ data, weekDates }: IDayArrayProps) => {
     })
     .filter((comp) => comp !== null);
 
-  if (components.length === 0) {
+  if (components.length === 0 && currentDate.weekday() === 6) {
     return (
       <>
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -59,7 +59,7 @@ const DayArray = ({ data, weekDates }: IDayArrayProps) => {
   }
 
   return (
-    <>
+    <View style={{ gap: 8 }}>
       {components.length !== 6 && (
         <Button
           text={'Показать прошедшие дни'}
@@ -69,8 +69,8 @@ const DayArray = ({ data, weekDates }: IDayArrayProps) => {
         />
       )}
       {components}
-    </>
+    </View>
   );
 };
 
-export default DayArray;
+export default React.memo(DayArray);

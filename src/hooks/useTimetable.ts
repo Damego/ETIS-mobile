@@ -1,7 +1,10 @@
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { WeekInfo } from '~/models/timeTable';
+import { parseDate } from '~/parser/utils';
 import { getEducationWeekByDate } from '~/utils/datetime';
+
+export type DatePressT = ({ date, week }: { date?: dayjs.Dayjs; week?: number }) => void;
 
 interface TimetableState {
   currentDate?: dayjs.Dayjs;
@@ -10,9 +13,23 @@ interface TimetableState {
   selectedWeek?: number;
 }
 
+export interface IUseTimetable {
+  currentDate: dayjs.Dayjs;
+  currentWeek: number;
+  selectedDate: dayjs.Dayjs;
+  selectedWeek: number;
+  updateData: (weekInfo: WeekInfo) => void;
+  onDatePress: DatePressT;
+  onWeekPress: (week: number) => void;
+}
+
 let preSelectedDate: dayjs.Dayjs = null;
 
-const useTimetable = ({ onRequestUpdate }: { onRequestUpdate: (week: number) => void }) => {
+const useTimetable = ({
+  onRequestUpdate,
+}: {
+  onRequestUpdate: (week: number) => void;
+}): IUseTimetable => {
   const [{ currentDate, currentWeek, selectedDate, selectedWeek }, setTimetable] =
     useState<TimetableState>(
       (() => {
@@ -22,7 +39,7 @@ const useTimetable = ({ onRequestUpdate }: { onRequestUpdate: (week: number) => 
         return {
           currentDate,
           currentWeek,
-          selectedDate: currentDate.clone(),
+          selectedDate: currentDate,
           selectedWeek: currentWeek,
         };
       })()
@@ -33,33 +50,47 @@ const useTimetable = ({ onRequestUpdate }: { onRequestUpdate: (week: number) => 
       setTimetable((prev) => ({
         ...prev,
         selectedDate: preSelectedDate,
-        selectedWeek: weekInfo.selected,
+        selectedWeek: weekInfo.selected ?? selectedWeek,
       }));
       preSelectedDate = null;
-    } else {
-      const weekDiff = weekInfo.selected - selectedWeek;
-      const updatedDate = selectedDate.clone().add(weekDiff, 'week');
+    } else if (weekInfo.selected !== null) {
       setTimetable((prev) => ({
         ...prev,
-        selectedDate: updatedDate,
+        selectedDate: parseDate(weekInfo.dates.start),
         selectedWeek: weekInfo.selected,
       }));
     }
   };
 
-  const onDatePress = (date: dayjs.Dayjs) => {
+  const onDatePress = ({ date, week }: { date?: dayjs.Dayjs; week?: number }) => {
+    if (week !== undefined) {
+      return onRequestUpdate(week);
+    }
+
     const weekDiff = date.startOf('isoWeek').diff(selectedDate.startOf('isoWeek'), 'week');
     if (weekDiff === 0) {
       setTimetable((prev) => ({ ...prev, selectedDate: date }));
       return;
     }
 
-    const week = getEducationWeekByDate(date);
-    onRequestUpdate(week);
+    const $week = getEducationWeekByDate(date);
+    onRequestUpdate($week);
     preSelectedDate = date;
   };
 
-  return { currentDate, currentWeek, selectedDate, selectedWeek, updateData, onDatePress };
+  const onWeekPress = (week: number) => {
+    onRequestUpdate(week);
+  };
+
+  return {
+    currentDate,
+    currentWeek,
+    selectedDate,
+    selectedWeek,
+    updateData,
+    onDatePress,
+    onWeekPress,
+  };
 };
 
 export default useTimetable;

@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { NativeSyntheticEvent, StyleSheet, View } from 'react-native';
 import PagerView from 'react-native-pager-view';
-import { IPair, ITimeTableDay } from '~/models/timeTable';
+import { ITimeTableDay } from '~/models/timeTable';
 import NoPairs from '~/screens/etis/main/components/NoPairs';
 
 import Pair from './Pair';

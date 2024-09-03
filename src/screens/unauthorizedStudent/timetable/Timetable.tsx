@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { getPeriodWeek } from '~/api/psutech/api';
 import { LoadingContainer } from '~/components/LoadingScreen';
 import Screen from '~/components/Screen';
-import DayTimetable from '~/components/timetable/DayTimetable';
+import TimetableContainer from '~/components/timetable/TimetableContainer';
 import { useClient } from '~/data/client';
 import { useAppSelector } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
@@ -81,17 +81,15 @@ const Timetable = ({ navigation }: UnauthorizedTeacherStackScreenProps) => {
 
   return (
     <Screen onUpdate={refresh}>
-      <DayTimetable
-        timetable={data}
-        currentDate={timetable.currentDate}
-        currentWeek={timetable.currentWeek}
-        onDatePress={timetable.onDatePress}
-        selectedDate={timetable.selectedDate}
-        selectedWeek={timetable.selectedWeek}
+      <TimetableContainer
+        data={data}
+        timetable={timetable}
         isLoading={isLoading}
         loadingComponent={() => <LoadingContainer />}
         startDate={getFirstEducationWeekDate()}
         endDate={getLastEducationWeekDate()}
+        firstWeek={1}
+        lastWeek={53}
       />
     </Screen>
   );

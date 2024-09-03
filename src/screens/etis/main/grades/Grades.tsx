@@ -33,7 +33,7 @@ const Grades = () => {
   };
 
   return (
-    <Screen>
+    <Screen onUpdate={refresh}>
       <View style={{ flexDirection: 'row', gap: 14, alignItems: 'center', marginBottom: '2%' }}>
         <Text style={{ fontWeight: '700', fontSize: 22, flex: 2 }}>Оценки</Text>
         {data && (

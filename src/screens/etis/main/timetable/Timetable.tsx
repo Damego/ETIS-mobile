@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { LoadingContainer } from '~/components/LoadingScreen';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
-import DayTimetable from '~/components/timetable/DayTimetable';
+import TimetableContainer from '~/components/timetable/TimetableContainer';
 import { useClient } from '~/data/client';
 import useQuery from '~/hooks/useQuery';
 import useTimeTableQuery from '~/hooks/useTimeTableQuery';
@@ -11,7 +11,7 @@ import useTimetable from '~/hooks/useTimetable';
 
 export const Timetable = () => {
   const client = useClient();
-  const { data, isLoading, loadWeek, currentWeek } = useTimeTableQuery({
+  const { data, isLoading, loadWeek, refresh } = useTimeTableQuery({
     afterCallback: (result) => {
       timetable.updateData(result.data.weekInfo);
     },
@@ -22,16 +22,13 @@ export const Timetable = () => {
   const timetable = useTimetable({ onRequestUpdate: (week) => loadWeek(week) });
 
   return (
-    <Screen>
+    <Screen onUpdate={refresh}>
       <Text style={styles.titleText}>Расписание</Text>
 
-      <DayTimetable
-        timetable={data}
+      <TimetableContainer
+        data={data}
+        timetable={timetable}
         teachers={teachersData}
-        selectedDate={timetable.selectedDate}
-        currentDate={timetable.currentDate}
-        currentWeek={currentWeek}
-        onDatePress={timetable.onDatePress}
         isLoading={isLoading || teachersIsLoading || !data}
         loadingComponent={() => <LoadingContainer />}
       />

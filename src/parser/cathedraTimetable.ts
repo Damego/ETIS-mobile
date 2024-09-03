@@ -29,7 +29,12 @@ const parsePeriodsAndWeeks = ($: cheerio.Root) => {
 
     if (!Number.isNaN(parseInt(text))) {
       const rawDates = getTextField($('h4'));
-      const [startDate, endDate] = rawDates.match(dateRegex);
+      const dates = rawDates.match(dateRegex);
+      let startDate: string;
+      let endDate: string;
+      if (dates) {
+        [startDate, endDate] = dates;
+      }
 
       data.weekInfo = {
         first: parseInt(text),
@@ -62,7 +67,9 @@ const getAudienceByWeek = (text: string, weekInfo: WeekInfo): string => {
   const [, audience] = audienceRaw.split('к.');
   const weeks = weeksRaw.split(',').map((week) => week.trim());
 
-  if (weeks.includes(weekInfo.selected.toString())) {
+  // Аудитория может отсутствовать вовсе
+  // Пример: 32, 33 -
+  if (audience && weeks.includes(weekInfo.selected.toString())) {
     return audience.trim();
   }
 };
@@ -90,8 +97,8 @@ const getAudienceFromText = (text: string): IAudience => {
 };
 
 const parseAudience = ($: cheerio.Root, tag: cheerio.Cheerio, weekInfo: WeekInfo) => {
-  let audience: IAudience;
-  tag.contents().each(function (i, el: cheerio.TagElement) {
+  let audience: IAudience | undefined;
+  tag.contents().each(function (_, el: cheerio.TagElement) {
     const tag = $(el);
     if (this.type === 'text') {
       const audienceString = getAudienceByWeek(getTextField(tag), weekInfo);
@@ -155,7 +162,7 @@ const parsePairLessons = ($: cheerio.Root, td: cheerio.Cheerio, weekInfo: WeekIn
       audience,
       groups,
       shortGroups,
-      isDistance: audience.number === 'Дистанционно',
+      isDistance: audience?.number === 'Дистанционно',
     });
   }
 
@@ -179,7 +186,7 @@ const cleanupPairs = (pairs: IPair[]) => {
   return pairs.slice(0, lastPair + 1);
 };
 
-const generateNextDayDateString = (date: dayjs.Dayjs) => date.add(1, 'day').format('DD.MM.YYYY');
+const generateNextDayDateString = (date: dayjs.Dayjs, addValue: number) => date.add(addValue, 'day').format('DD.MM.YYYY');
 
 const parseTeacher = (tdTag: cheerio.Cheerio): ITeacher => {
   const teacherTextTag = tdTag.contents().eq(0);
@@ -242,11 +249,11 @@ export default function parseCathedraTimetable(html: string) {
         weekInfo,
         days: [
           { pairs: [], date: weekInfo.dates.start },
-          { pairs: [], date: generateNextDayDateString(date) },
-          { pairs: [], date: generateNextDayDateString(date) },
-          { pairs: [], date: generateNextDayDateString(date) },
-          { pairs: [], date: generateNextDayDateString(date) },
-          { pairs: [], date: generateNextDayDateString(date) },
+          { pairs: [], date: generateNextDayDateString(date, 1) },
+          { pairs: [], date: generateNextDayDateString(date, 2) },
+          { pairs: [], date: generateNextDayDateString(date, 3) },
+          { pairs: [], date: generateNextDayDateString(date, 4) },
+          { pairs: [], date: generateNextDayDateString(date, 5) },
         ],
       };
     } else if (tdList.length >= 2) {
