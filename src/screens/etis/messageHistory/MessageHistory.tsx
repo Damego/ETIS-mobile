@@ -9,7 +9,7 @@ import { IMessage } from '~/models/messages';
 import { UploadFile } from '~/models/other';
 import { IGetPayload, RequestType } from '~/models/results';
 import { EducationStackScreenProps } from '~/navigation/types';
-import { parseDate } from '~/parser/utils';
+import { parseDatetime } from '~/parser/utils';
 import { httpClient } from '~/utils';
 
 import Message from './Message';
@@ -22,8 +22,8 @@ const formatTeacherName = (name: string): string => {
 };
 
 const compareMessages = (first: IMessage, second: IMessage) => {
-  const time1 = parseDate(first.time);
-  const time2 = parseDate(second.time);
+  const time1 = parseDatetime(first.time);
+  const time2 = parseDatetime(second.time);
   if (time1 < time2) return -1;
   if (time1 > time2) return 1;
   return 0;
