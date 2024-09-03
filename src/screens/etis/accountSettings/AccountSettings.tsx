@@ -7,7 +7,7 @@ import PersonalRecords from './PersonalRecords';
 
 const AccountSettings = () => {
   return (
-    <Screen>
+    <Screen containerStyle={{ gap: 16 }}>
       <UserInfo />
       <Settings />
       <PersonalRecords />

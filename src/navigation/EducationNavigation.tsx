@@ -4,6 +4,7 @@ import { useAppSelector } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
 import { headerParams } from '~/navigation/header';
 import AccountSettingsButton from '~/navigation/headerButtons/AccountSettingsButton';
+import AppSettingsButton from '~/navigation/headerButtons/AppSettingsButton';
 import { EducationStackParamList } from '~/navigation/types';
 import Absences from '~/screens/etis/absences';
 import AccountSettings from '~/screens/etis/accountSettings/AccountSettings';
@@ -24,7 +25,6 @@ import SessionQuestionnaire from '~/screens/etis/sessionQuestionnaire/SessionQue
 import SessionQuestionnaireList from '~/screens/etis/sessionQuestionnaire/SessionQuestionnaireList';
 import ShortTeachPlan from '~/screens/etis/shortTeachPlan';
 import Teachers from '~/screens/etis/teachers';
-import Timetable from '~/screens/etis/timeTable/TimeTable';
 
 import Orders from '../screens/etis/orders';
 
@@ -48,12 +48,7 @@ const EducationNavigation = () => {
           <Stack.Screen
             name={'AccountSettings'}
             component={AccountSettings}
-            options={{ title: 'Аккаунт' }}
-          />
-          <Stack.Screen
-            name={'Timetable'}
-            component={Timetable}
-            options={{ title: 'Расписание' }}
+            options={{ title: 'Аккаунт', headerRight: () => <AppSettingsButton /> }}
           />
           <Stack.Screen
             name={'DisciplineInfo'}
