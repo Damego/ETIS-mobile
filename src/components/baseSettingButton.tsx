@@ -17,7 +17,7 @@ const BaseSettingButton = ({
   color?: keyof IThemeColors;
 }) => {
   const theme = useAppTheme();
-  const $color = color ? theme.colors[color] : theme.colors.text2;
+  const $color = color ? theme.colors[color] : theme.colors.text;
 
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>

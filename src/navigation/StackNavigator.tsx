@@ -10,6 +10,7 @@ import { useAppSelector } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
 import { headerParams } from '~/navigation/header';
 import AppSettings from '~/screens/settings/AppSettings';
+import ChangeAppUI from '~/screens/settings/uiSettings/ChangeAppUI';
 import showPrivacyPolicy from '~/utils/privacyPolicy';
 import InitSentry from '~/utils/sentry';
 
@@ -55,6 +56,11 @@ const StackNavigator = () => {
               name="AppSettings"
               component={AppSettings}
               options={{ title: 'Настройки' }}
+            />
+            <Stack.Screen
+              name="ChangeAppUI"
+              component={ChangeAppUI}
+              options={{ title: 'Интерфейс' }}
             />
             <Stack.Screen
               name="ChangeAppTheme"

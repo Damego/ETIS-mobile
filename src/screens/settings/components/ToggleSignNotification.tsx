@@ -41,14 +41,14 @@ const ToggleSignNotification = () => {
 
   return (
     <View style={styles.cardView}>
-      <Text style={styles.header} colorVariant={'block'}>
+      <Text style={styles.header}>
         Уведомлять об оценках
       </Text>
       <TouchableOpacity onPress={() => Linking.openURL(NOTIFICATION_GUIDE_URL)}>
         <AntDesign // TODO: make as modal w/ blur
           name="infocirlceo"
           size={24}
-          color={globalStyles.fontColorForBlock.color}
+          color={globalStyles.textColor.color}
         />
       </TouchableOpacity>
       <Switch

@@ -14,9 +14,9 @@ const AppSettingButton = () => {
       onPress={() => {
         navigation.navigate('AppSettings');
       }}
-      style={{ justifyContent: 'center' }}
+      style={{ marginRight: '10%' }}
     >
-      <AntDesign name="setting" size={28} color={theme.colors.primary} />
+      <AntDesign name="setting" size={28} color={theme.colors.text} />
     </TouchableOpacity>
   );
 };

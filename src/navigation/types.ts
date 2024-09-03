@@ -15,6 +15,7 @@ export type RootStackParamList = {
 
   AppSettings: undefined;
   ChangeAppTheme: undefined;
+  ChangeAppUI: undefined;
   AboutApp: undefined;
   ReleaseNotes: undefined;
   // Onboarding: undefined;
