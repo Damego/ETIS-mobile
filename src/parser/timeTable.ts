@@ -38,9 +38,8 @@ const getWeekType = (week: cheerio.Cheerio): WeekTypes => {
 
 const getDistancePlatformType = (platform: cheerio.Cheerio): DistancePlatformTypes => {
   const title = platform.find('img').attr('title');
-
-  if (title === 'bbb.psu.ru') return DistancePlatformTypes.bbb;
-  if (title === 'zoom.us') return DistancePlatformTypes.zoom; // maybe...
+  if (title.includes('bbb')) return DistancePlatformTypes.bbb;
+  if (title.includes('zoom')) return DistancePlatformTypes.zoom; // maybe...
   if (platform.attr('href').includes('skype')) return DistancePlatformTypes.skype;
 
   return DistancePlatformTypes.unknown;
