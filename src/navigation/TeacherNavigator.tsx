@@ -3,6 +3,7 @@ import React from 'react';
 import { useAppTheme } from '~/hooks/theme';
 import { headerParams } from '~/navigation/header';
 import AccountSettingsButton from '~/navigation/headerButtons/AccountSettingsButton';
+import AppSettingsButton from '~/navigation/headerButtons/AppSettingsButton';
 import { UnauthorizedTeacherStackParamList } from '~/navigation/types';
 import DisciplineInfo from '~/screens/etis/disciplineInfo/DisciplineInfo';
 import Settings from '~/screens/unauthorizedTeacher/settings/Settings';
@@ -26,7 +27,7 @@ const TeacherNavigator = () => {
       <Stack.Screen
         name={'AccountSettings'}
         component={Settings}
-        options={{ headerTitle: 'Аккаунт' }}
+        options={{ headerTitle: 'Аккаунт', headerRight: () => <AppSettingsButton /> }}
       />
       <Stack.Screen
         name={'DisciplineInfo'}

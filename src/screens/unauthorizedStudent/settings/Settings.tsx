@@ -34,7 +34,6 @@ const Settings = () => {
         Действия с аккаунтом
       </Text>
       <LogOut onPress={handleLogOut} />
-      <ChangeAppUI />
     </Screen>
   );
 };
