@@ -3,6 +3,7 @@ import React from 'react';
 import { useAppTheme } from '~/hooks/theme';
 import { headerParams } from '~/navigation/header';
 import AccountSettingsButton from '~/navigation/headerButtons/AccountSettingsButton';
+import AppSettingsButton from '~/navigation/headerButtons/AppSettingsButton';
 import { UnauthorizedStudentStackParamList } from '~/navigation/types';
 import DisciplineInfo from '~/screens/etis/disciplineInfo/DisciplineInfo';
 import Settings from '~/screens/unauthorizedStudent/settings/Settings';
@@ -10,7 +11,7 @@ import Timetable from '~/screens/unauthorizedStudent/timetable/Timetable';
 
 const Stack = createNativeStackNavigator<UnauthorizedStudentStackParamList>();
 
-const TeacherNavigator = () => {
+const UnauthorizedStudentNavigator = () => {
   const theme = useAppTheme();
 
   return (
@@ -26,7 +27,7 @@ const TeacherNavigator = () => {
       <Stack.Screen
         name={'AccountSettings'}
         component={Settings}
-        options={{ headerTitle: 'Аккаунт' }}
+        options={{ headerTitle: 'Аккаунт', headerRight: () => <AppSettingsButton /> }}
       />
       <Stack.Screen
         name={'DisciplineInfo'}
@@ -37,4 +38,4 @@ const TeacherNavigator = () => {
   );
 };
 
-export default TeacherNavigator;
+export default UnauthorizedStudentNavigator;
