@@ -7,7 +7,7 @@ import { useClient } from '~/data/client';
 import useQuery from '~/hooks/useQuery';
 import { RequestType } from '~/models/results';
 import { ICheckPoint } from '~/models/sessionPoints';
-import { formatCheckPointScore } from '~/utils/texts';
+import { fontSize, formatCheckPointScore } from '~/utils/texts';
 
 const getCheckpointTitle = (theme: string, number: number) => `КТ ${number}: ${theme}`;
 
@@ -39,7 +39,8 @@ const CheckPointDetails = ({ checkPoint, index }: { checkPoint: ICheckPoint; ind
   );
 
   return (
-    <CardHeaderIn key={index} topText={getCheckpointTitle(checkPoint.theme, index + 1)}>
+    <View>
+      <Text style={styles.titleText}>{getCheckpointTitle(checkPoint.theme, index + 1)}</Text>
       <Row first={'Оценка:'} second={scoreText} />
       <Row first={'Проходной балл:'} second={checkPoint.passScore} />
       <Row first={'Текущий балл:'} second={checkPoint.currentScore} />
@@ -61,7 +62,7 @@ const CheckPointDetails = ({ checkPoint, index }: { checkPoint: ICheckPoint; ind
           textStyle={styles.clickableText}
         />
       </View>
-    </CardHeaderIn>
+    </View>
   );
 };
 
@@ -75,6 +76,10 @@ const styles = StyleSheet.create({
   },
   rowText: {
     fontSize: 16,
+  },
+  titleText: {
+    ...fontSize.big,
+    fontWeight: 'bold',
   },
   clickableText: {
     fontSize: 16,
