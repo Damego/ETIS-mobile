@@ -37,7 +37,7 @@ const Timetable = ({ navigation }: UnauthorizedTeacherStackScreenProps) => {
   return (
     <Screen onUpdate={refresh}>
       <TimetableContainer
-        data={data.timetable[0]}
+        data={data?.timetable?.[0]}
         timetable={timetable}
         isLoading={isLoading}
         loadingComponent={() => <LoadingContainer />}
