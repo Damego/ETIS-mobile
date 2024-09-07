@@ -1,6 +1,7 @@
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import React, { useRef } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import BorderLine from '~/components/BorderLine';
 import BottomSheetModal from '~/components/BottomSheetModal';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
@@ -36,14 +37,17 @@ const CardSign = ({ subject }: { subject: ISubject }) => {
         )}
       </View>
       <BottomSheetModal ref={ref} onDismiss={() => ref.current.dismiss()} snapPoints={['50%']}>
-        <BottomSheetScrollView>
+        <BottomSheetScrollView style={{ marginHorizontal: '2%' }}>
           <View style={styles.header}>
             <Text style={[fontSize.large, { flex: 1 }]}>{subject.name}</Text>
             <TotalPoints subject={subject} style={{ alignItems: 'center' }} />
           </View>
 
           {subject.checkPoints.map((checkPoint: ICheckPoint, index: number) => (
-            <CheckPointDetails checkPoint={checkPoint} index={index} key={index} />
+            <>
+              <CheckPointDetails checkPoint={checkPoint} index={index} key={index} />
+              {index !== subject.checkPoints.length - 1 && <BorderLine />}
+            </>
           ))}
         </BottomSheetScrollView>
       </BottomSheetModal>
@@ -79,7 +83,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginHorizontal: '2%',
     marginBottom: '2%',
     gap: 5,
   },
