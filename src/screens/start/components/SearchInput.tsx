@@ -16,6 +16,7 @@ const SearchInput = ({
     <View style={[styles.container, globalStyles.card]}>
       <AntDesign name={'search1'} size={20} />
       <TextInput
+        autoCapitalize={'characters'}
         placeholder={'Поиск'}
         style={styles.input}
         value={value}

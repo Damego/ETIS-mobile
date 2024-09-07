@@ -65,10 +65,14 @@ const SelectGroupScreen = ({ route }: StartStackScreenProps<'SelectGroup'>) => {
     dispatch(setStudent({ group: selectedGroup }));
   };
 
+  const processValue = (value: string) => {
+    setQuery(value.replaceAll(' ', '-'));
+  };
+
   return (
     <>
       <View style={{ marginHorizontal: '4%' }}>
-        <SearchInput value={query} onValueChange={setQuery} />
+        <SearchInput value={query} onValueChange={processValue} />
       </View>
       <ListScreen
         renderItem={({ item }) => (
