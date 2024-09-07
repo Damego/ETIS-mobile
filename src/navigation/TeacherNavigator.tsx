@@ -6,6 +6,7 @@ import AccountSettingsButton from '~/navigation/headerButtons/AccountSettingsBut
 import { UnauthorizedTeacherStackParamList } from '~/navigation/types';
 import Settings from '~/screens/unauthorizedTeacher/settings/Settings';
 import Timetable from '~/screens/unauthorizedTeacher/timetable/Timetable';
+import DisciplineInfo from '~/screens/etis/disciplineInfo/DisciplineInfo';
 
 const Stack = createNativeStackNavigator<UnauthorizedTeacherStackParamList>();
 
@@ -13,12 +14,11 @@ const TeacherNavigator = () => {
   const theme = useAppTheme();
 
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{...headerParams(theme)}}>
       <Stack.Screen
         name={'Timetable'}
         component={Timetable}
         options={{
-          ...headerParams(theme),
           headerTitle: 'Расписание',
           headerRight: AccountSettingsButton,
         }}
@@ -26,7 +26,12 @@ const TeacherNavigator = () => {
       <Stack.Screen
         name={'AccountSettings'}
         component={Settings}
-        options={{ ...headerParams(theme), headerTitle: 'Аккаунт' }}
+        options={{ headerTitle: 'Аккаунт' }}
+      />
+      <Stack.Screen
+        name={'DisciplineInfo'}
+        component={DisciplineInfo}
+        options={{ title: 'Информация' }}
       />
     </Stack.Navigator>
   );

@@ -106,6 +106,10 @@ export const AudienceInfo = ({ lesson }: { lesson: ILesson }) => {
   return <IconInfo icon={'business-outline'} text={audience} />;
 };
 
+export const GroupsInfo = ({ groups }: { groups: string[] }) => {
+  return <IconInfo icon={'school-outline'} text={groups.join('\n')} />;
+};
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
