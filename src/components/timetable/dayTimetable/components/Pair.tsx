@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import BorderLine from '~/components/BorderLine';
 import Text from '~/components/Text';
 import { useTimetableContext } from '~/context/timetableContext';
 import { useAppSelector, useGlobalStyles } from '~/hooks';
@@ -35,16 +36,16 @@ const Pair = ({ pair }: { pair: IPair }) => {
         </Text>
       </View>
 
-      {pair.lessons.map((lesson, index) => {
-        return (
-          <Lesson
-            lesson={lesson}
-            pairPosition={pair.position}
-            date={pairDate}
-            key={index.toString()}
-          />
-        );
-      })}
+      <View style={styles.lessonsContainer}>
+        {pair.lessons.map((lesson, index) => {
+          return (
+            <React.Fragment key={index}>
+              <Lesson lesson={lesson} pairPosition={pair.position} date={pairDate} />
+              {index !== pair.lessons.length - 1 && <BorderLine />}
+            </React.Fragment>
+          );
+        })}
+      </View>
     </View>
   );
 };
@@ -56,13 +57,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 8,
   },
-  lessonContainer: {
-    gap: 4,
+  lessonsContainer: {
+    flexDirection: 'column',
     flex: 1,
-  },
-  lessonNameText: {
-    fontSize: 16,
-    fontWeight: '500',
   },
   timeContainer: {
     alignItems: 'center',
