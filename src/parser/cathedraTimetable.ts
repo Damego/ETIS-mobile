@@ -78,7 +78,7 @@ const getAudienceFromText = (text: string): IAudience => {
   // Регулярка каким-то образом не парсит некоторые аудитории, хотя внешне они выглядят нормально
   // и на сайте всё работает и в отдельном тестовом сценарии тоже о_О
   // ауд.123/1
-  const newText = text.slice(4);
+  const newText = ['online', 'zoom', 'bbb.psu.ru'].includes(text) ? text : text.slice(4);
   const array = newText.split('/');
   if (array.length === 2) {
     const [number, buildingRaw] = array;
@@ -101,12 +101,19 @@ const parseAudience = ($: cheerio.Root, tag: cheerio.Cheerio, weekInfo: WeekInfo
   tag.contents().each(function (_, el: cheerio.TagElement) {
     const tag = $(el);
     if (this.type === 'text') {
-      const audienceString = getAudienceByWeek(getTextField(tag), weekInfo);
+      let audienceString = getAudienceByWeek(getTextField(tag), weekInfo);
+      if (!audienceString) {
+        // Аудитория указана для недели, но на другой строке.
+        // Возможно, что это онлайн пара. Следующий тег является span с img и текстом
+        const distanceAudienceTag = $(el.next);
+        audienceString = getTextField(distanceAudienceTag);
+      }
       if (audienceString) {
         const aud = getAudienceFromText(audienceString);
         audience = {
           ...aud,
           info:
+            // Изображение говорит о наличии некой информации об аудитории
             (el.next as cheerio.TagElement)?.name === 'img'
               ? $(el.next).attr('title').replaceAll('<br>', '\n')
               : undefined,
@@ -114,7 +121,6 @@ const parseAudience = ($: cheerio.Root, tag: cheerio.Cheerio, weekInfo: WeekInfo
       }
     }
   });
-
   return audience;
 };
 
