@@ -54,9 +54,11 @@ const useTimetable = ({
       }));
       preSelectedDate = null;
     } else if (weekInfo.selected !== null) {
+      const startWeekDate = parseDate(weekInfo.dates.start);
+
       setTimetable((prev) => ({
         ...prev,
-        selectedDate: parseDate(weekInfo.dates.start),
+        selectedDate: startWeekDate.add(selectedDate.weekday(), 'day'),
         selectedWeek: weekInfo.selected,
       }));
     }
