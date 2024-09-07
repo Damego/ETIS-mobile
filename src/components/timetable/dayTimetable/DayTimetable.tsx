@@ -60,7 +60,6 @@ const DayTimetable = ({
     { date, week }: { date?: dayjs.Dayjs; week?: number },
     mode: TimetableCalendarModes
   ) => {
-    console.log(date, week);
     if (mode === 'week' && date) {
       if (pagerRef.current) {
         pagerRef.current.setPage(date.weekday());
