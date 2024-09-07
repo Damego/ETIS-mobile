@@ -36,6 +36,7 @@ export type StartStackParamList = {
 export type UnauthorizedTeacherStackParamList = {
   Timetable: undefined;
   AccountSettings: undefined;
+  DisciplineInfo: { lesson: ILesson; date: string; pairPosition: number };
 };
 
 export type UnauthorizedStudentStackParamList = {

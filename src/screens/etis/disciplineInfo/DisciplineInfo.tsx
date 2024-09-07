@@ -12,7 +12,7 @@ import { fontSize } from '~/utils/texts';
 
 import Note from './components/Note';
 import { TaskContainer } from './components/TaskContainer';
-import { AudienceInfo, TeacherInfo, TimeInfo } from './components/info';
+import { AudienceInfo, GroupsInfo, TeacherInfo, TimeInfo } from './components/info';
 
 const DisciplineInfo = ({ route }: EducationStackScreenProps<'DisciplineInfo'>) => {
   const { date: stringDate, lesson, pairPosition } = route.params;
@@ -33,7 +33,8 @@ const DisciplineInfo = ({ route }: EducationStackScreenProps<'DisciplineInfo'>) 
 
         <TimeInfo date={date} pairPosition={pairPosition} />
         <AudienceInfo lesson={lesson} />
-        <TeacherInfo teacher={lesson.teacher} />
+        {lesson.teacher && <TeacherInfo teacher={lesson.teacher} />}
+        {lesson.groups && <GroupsInfo groups={lesson.groups} />}
 
         <Note disciplineName={lesson.subject.discipline} />
         <BorderLine />
