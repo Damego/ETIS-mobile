@@ -7,10 +7,10 @@ import { LoadingContainer } from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
+import PeriodsBottomSheet from '~/components/bottomSheets/PeriodsBottomSheet';
 import { useAppTheme } from '~/hooks/theme';
 import useSignsQuery from '~/hooks/useSignsQuery';
 import GradesContainer from '~/screens/etis/main/grades/GradesContainer';
-import PeriodsBottomSheet from '~/screens/etis/main/grades/PeriodsBottomSheet';
 import { fontSize } from '~/utils/texts';
 
 const Grades = () => {
@@ -50,7 +50,15 @@ const Grades = () => {
 
       {component}
 
-      {data && <PeriodsBottomSheet ref={ref} data={data} onChange={handlePeriodPress} />}
+      {data && (
+        <PeriodsBottomSheet
+          ref={ref}
+          currentPeriod={data.currentSession}
+          latestPeriod={data.latestSession}
+          periodName={data.sessionName}
+          onChange={handlePeriodPress}
+        />
+      )}
     </Screen>
   );
 };
