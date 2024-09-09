@@ -1,12 +1,17 @@
-import React from 'react';
+import { AntDesign } from '@expo/vector-icons';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import React, { useRef } from 'react';
 import { View } from 'react-native';
 import BorderLine from '~/components/BorderLine';
 import CardHeaderOut from '~/components/CardHeaderOut';
-import LoadingScreen from '~/components/LoadingScreen';
+import ClickableText from '~/components/ClickableText';
+import LoadingScreen, { LoadingContainer } from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
 import Screen from '~/components/Screen';
 import SessionDropdown from '~/components/SessionDropdown';
 import Text from '~/components/Text';
+import PeriodsBottomSheet from '~/components/bottomSheets/PeriodsBottomSheet';
+import { useAppTheme } from '~/hooks/theme';
 import useRatingQuery from '~/hooks/useRatingQuery';
 import { IGroup } from '~/models/rating';
 import { fontSize } from '~/utils/texts';
@@ -49,31 +54,38 @@ const Group = ({ group }: { group: IGroup }) => {
 export default function Rating() {
   const { data, isLoading, refresh, loadSession } = useRatingQuery();
 
-  if (isLoading) return <LoadingScreen />;
-  if (!data) return <NoData onRefresh={refresh} />;
+  const theme = useAppTheme();
+  const modalRef = useRef<BottomSheetModal>();
+
+  let component: React.ReactNode;
+  if (isLoading) component = <LoadingContainer />;
+  else if (!data) component = <NoData onRefresh={refresh} />;
+  else component = data.groups.map((group) => <Group group={group} key={group.name} />);
 
   return (
     <Screen onUpdate={refresh}>
-      <View
-        style={{
-          marginTop: '2%',
-          marginLeft: 'auto',
-          marginRight: 0,
-          paddingBottom: '2%',
-          zIndex: 1,
-        }}
-      >
-        <SessionDropdown
-          currentSession={data.session.current}
-          latestSession={data.session.latest}
-          sessionName={data.session.name}
-          onSelect={loadSession}
-        />
-      </View>
+      {data && (
+        <ClickableText
+          onPress={() => modalRef.current.present()}
+          textStyle={fontSize.big}
+          iconRight={<AntDesign name="swap" size={18} color={theme.colors.text} />}
+          viewStyle={{ gap: 4, alignSelf: 'flex-end' }}
+        >
+          {data.session.current} {data.session.name}
+        </ClickableText>
+      )}
 
-      {data.groups.map((group) => (
-        <Group group={group} key={group.name} />
-      ))}
+      {component}
+
+      {data && (
+        <PeriodsBottomSheet
+          ref={modalRef}
+          currentPeriod={data.session.current}
+          latestPeriod={data.session.latest}
+          periodName={data.session.name}
+          onChange={loadSession}
+        />
+      )}
     </Screen>
   );
 }
