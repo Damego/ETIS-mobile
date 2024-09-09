@@ -1,13 +1,12 @@
-import React, { useRef } from 'react';
+import { Image } from 'expo-image';
+import React from 'react';
 import {
-  Image,
   StyleSheet,
   ToastAndroid,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import BottomSheetModal from '~/components/BottomSheetModal';
 import DisciplineType from '~/components/DisciplineType';
 import Text from '~/components/Text';
 import { ITeacher } from '~/models/teachers';
@@ -44,9 +43,7 @@ const Teacher = ({ discipline, data, onPress }: TeacherProps) => {
       >
         <Image
           style={styles.photoStyle}
-          source={{
-            uri: `https://student.psu.ru/pls/stu_cus_et/${data.photo}`,
-          }}
+          source={`https://student.psu.ru/pls/stu_cus_et/${data.photo}`}
         />
       </TouchableWithoutFeedback>
     </TouchableOpacity>
@@ -77,6 +74,6 @@ const styles = StyleSheet.create({
   typesContainer: {
     flexDirection: 'row',
     gap: 4,
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
   },
 });
