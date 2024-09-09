@@ -77,5 +77,6 @@ const styles = StyleSheet.create({
   typesContainer: {
     flexDirection: 'row',
     gap: 4,
+    flexWrap: 'wrap'
   },
 });
