@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React from 'react';
@@ -40,10 +40,18 @@ const Lesson = ({
       <Text style={styles.lessonNameText}>{lesson.subject.discipline}</Text>
       {lesson.subject.type && <DisciplineType type={lesson.subject.type} size={'small'} />}
 
-      <View style={styles.row}>
-        <Ionicons name={'business-outline'} size={20} />
-        <Text>{audience}</Text>
-      </View>
+      {audience && (
+        <View style={styles.row}>
+          <Ionicons name={'business-outline'} size={20} />
+          <Text>{audience}</Text>
+        </View>
+      )}
+      {lesson.announceHTML && (
+        <View style={styles.row}>
+          <AntDesign name="warning" size={20} />
+          <Text>Объявление</Text>
+        </View>
+      )}
       <View style={styles.row}>
         <Ionicons name={'school-outline'} size={20} />
         {!!teacherName && <Text>{teacherName}</Text>}
