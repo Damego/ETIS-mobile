@@ -44,10 +44,10 @@ const CardSign = ({ subject }: { subject: ISubject }) => {
           </View>
 
           {subject.checkPoints.map((checkPoint: ICheckPoint, index: number) => (
-            <>
-              <CheckPointDetails checkPoint={checkPoint} index={index} key={index} />
+            <React.Fragment key={index}>
+              <CheckPointDetails checkPoint={checkPoint} index={index} />
               {index !== subject.checkPoints.length - 1 && <BorderLine />}
-            </>
+            </React.Fragment>
           ))}
         </BottomSheetScrollView>
       </BottomSheetModal>
