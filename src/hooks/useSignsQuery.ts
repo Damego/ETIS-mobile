@@ -58,7 +58,7 @@ const useSignsQuery = () => {
   }, [pointsData, marksQuery.data]);
 
   useEffect(() => {
-    setLoading(isPointsLoading && marksQuery.isLoading);
+    setLoading(isPointsLoading || marksQuery.isLoading);
   }, [isPointsLoading, marksQuery.isLoading]);
 
   const loadSession = (session: number) => {
