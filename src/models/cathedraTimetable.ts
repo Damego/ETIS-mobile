@@ -20,6 +20,6 @@ export interface ICathedraTimetable {
 export interface ICathedraTimetablePayload {
   session?: number;
   week?: number;
-  teacherId?: string;
+  teacherId?: number;
   cathedraId?: string;
 }
