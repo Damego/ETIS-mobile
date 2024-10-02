@@ -67,7 +67,6 @@ export default React.memo(Lesson);
 const styles = StyleSheet.create({
   lessonContainer: {
     gap: 4,
-    flex: 1,
   },
   lessonNameText: {
     fontSize: 16,
