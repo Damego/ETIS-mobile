@@ -1,8 +1,8 @@
 import { load } from 'cheerio';
+import { IFile } from '~/models/other';
 
 import { IMessage, IMessagesData, MessageType } from '../models/messages';
 import { getTextField } from './utils';
-import { IFile } from '~/models/other';
 
 const getMessageFiles = ($: cheerio.Root, message: cheerio.Cheerio): IFile[] => {
   const files: IFile[] = [];

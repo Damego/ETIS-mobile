@@ -5,9 +5,9 @@ import FileTextLink from '~/components/FileTextLink';
 import Text from '~/components/Text';
 import { useAppTheme } from '~/hooks/theme';
 import { IMessage, MessageType } from '~/models/messages';
+import { IFile } from '~/models/other';
 import { parseDatetime } from '~/parser/utils';
 import { fontSize } from '~/utils/texts';
-import { IFile } from '~/models/other';
 
 const styles = StyleSheet.create({
   subjectText: {

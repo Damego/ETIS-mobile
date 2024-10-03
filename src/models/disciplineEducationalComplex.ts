@@ -75,7 +75,6 @@ export interface IDisciplineEducationalComplex {
   evaluationIndicators?: IEvaluationIndicators;
 }
 
-
 export interface IDisciplineEducationalComplexPayload {
   disciplineId: string;
   disciplineTeachPlanId: string;
