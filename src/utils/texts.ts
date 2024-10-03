@@ -89,3 +89,10 @@ export const formatGroups = (groups: string[]) => {
 };
 
 export const capitalizeWord = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
+
+
+export const getDisciplineTypeFromReporting = (reporting: string) =>
+  ({
+    Экзамен: LessonTypes.EXAM,
+    Зачет: LessonTypes.TEST,
+  })[reporting];

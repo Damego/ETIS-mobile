@@ -11,7 +11,7 @@ const SessionCard = ({ data }: { data: ISessionTeachPlan }) => (
   <CardHeaderOut topText={data.period.string} topTextStyle={fontSize.large}>
     {data.disciplines.map((discipline, index) => (
       <View key={discipline.name}>
-        <Subject data={discipline} />
+        <Subject data={discipline} period={data.period.string} />
         {index !== data.disciplines.length - 1 && <BorderLine />}
       </View>
     ))}

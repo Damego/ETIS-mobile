@@ -1,13 +1,13 @@
 import { AntDesign } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import BorderLine from '~/components/BorderLine';
 import DisciplineType from '~/components/DisciplineType';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
-import { LessonTypes } from '~/models/other';
 import { ITeachPlanDiscipline } from '~/models/teachPlan';
-import { fontSize } from '~/utils/texts';
+import { EducationNavigationProp } from '~/navigation/types';
+import { fontSize, getDisciplineTypeFromReporting } from '~/utils/texts';
 
 const styles = StyleSheet.create({
   subjectDropdownView: {
@@ -28,64 +28,29 @@ const styles = StyleSheet.create({
   },
 });
 
-const DisciplineWorkHours = ({
-  classWorkHours,
-  soloWorkHours,
-  totalWorkHours,
-}: {
-  classWorkHours: number;
-  soloWorkHours: number;
-  totalWorkHours: number;
-}) => {
-  return (
-    <>
-      <Text style={[fontSize.medium, styles.boldText]}>Трудоёмкость:</Text>
-
-      <Text style={fontSize.medium}>
-        Аудиторная работа: {classWorkHours} часов ({classWorkHours / 2} пар)
-      </Text>
-      <Text style={fontSize.medium}>
-        Самостоятельная работа: {soloWorkHours} часов ({soloWorkHours / 2} пар)
-      </Text>
-      <Text style={fontSize.medium}>
-        Всего: {totalWorkHours} часов ({totalWorkHours / 2} пар)
-      </Text>
-    </>
-  );
-};
-
-const getDisciplineType = (reporting: string) =>
-  ({
-    Экзамен: LessonTypes.EXAM,
-    Зачет: LessonTypes.TEST,
-  })[reporting];
-
-const Subject = ({ data }: { data: ITeachPlanDiscipline }) => {
+const Subject = ({ data, period }: { data: ITeachPlanDiscipline; period: string }) => {
+  const navigation = useNavigation<EducationNavigationProp>();
   const globalStyles = useGlobalStyles();
-  const [isOpened, setOpened] = useState(false);
 
   return (
     <>
       <TouchableOpacity
-        onPress={() => setOpened(!isOpened)}
+        onPress={() => {
+          navigation.navigate('DisciplineEducationalComplex', {
+            disciplineTeachPlan: data,
+            period,
+          });
+        }}
         style={styles.subjectDropdownView}
         activeOpacity={0.45}
       >
         <View style={styles.subjectTitleView}>
           <Text style={styles.subjectNameText}>{data.name}</Text>
-          <DisciplineType type={getDisciplineType(data.reporting)} />
+          <DisciplineType type={getDisciplineTypeFromReporting(data.reporting)} />
         </View>
 
-        <AntDesign name={isOpened ? 'up' : 'down'} size={18} color={globalStyles.textColor.color} />
+        <AntDesign name={'right'} size={18} color={globalStyles.textColor.color} />
       </TouchableOpacity>
-
-      {isOpened && (
-        <DisciplineWorkHours
-          classWorkHours={data.classWorkHours}
-          soloWorkHours={data.soloWorkHours}
-          totalWorkHours={data.totalWorkHours}
-        />
-      )}
     </>
   );
 };

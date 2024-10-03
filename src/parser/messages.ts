@@ -1,10 +1,11 @@
 import { load } from 'cheerio';
 
-import { IMessage, IMessageFile, IMessagesData, MessageType } from '../models/messages';
+import { IMessage, IMessagesData, MessageType } from '../models/messages';
 import { getTextField } from './utils';
+import { IFile } from '~/models/other';
 
-const getMessageFiles = ($: cheerio.Root, message: cheerio.Cheerio): IMessageFile[] => {
-  const files: IMessageFile[] = [];
+const getMessageFiles = ($: cheerio.Root, message: cheerio.Cheerio): IFile[] => {
+  const files: IFile[] = [];
 
   message.find('a').each((index, element) => {
     const link = $(element);
