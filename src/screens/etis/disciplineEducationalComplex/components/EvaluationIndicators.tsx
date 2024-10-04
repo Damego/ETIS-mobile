@@ -7,26 +7,9 @@ import BottomSheetModal from '~/components/BottomSheetModal';
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
 import { IEvaluationIndicators } from '~/models/disciplineEducationalComplex';
+import DropdownText from '~/screens/etis/disciplineEducationalComplex/components/DropdownText';
 import { RIGHT_ICON_SIZE } from '~/screens/etis/disciplineEducationalComplex/components/common';
 import { fontSize } from '~/utils/texts';
-
-const DropdownText = ({ title, value }: { title: string; value: string }) => {
-  const [isOpened, setOpened] = React.useState(false);
-
-  return (
-    <View>
-      <ClickableText
-        textStyle={[fontSize.medium, { fontWeight: 'bold' }]}
-        onPress={() => setOpened((prev) => !prev)}
-        iconRight={<AntDesign name={isOpened ? 'up' : 'down'} size={18} />}
-        viewStyle={{ justifyContent: 'space-between' }}
-      >
-        {title}
-      </ClickableText>
-      {isOpened && <Text>{value}</Text>}
-    </View>
-  );
-};
 
 const EvaluationIndicatorsBottomSheet = React.forwardRef<
   BottomSheetModal,
