@@ -1,22 +1,25 @@
 import { AntDesign } from '@expo/vector-icons';
-import { BottomSheetScrollView, BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import React, { useRef } from 'react';
 import { View } from 'react-native';
+import BorderLine from '~/components/BorderLine';
 import BottomSheetModal from '~/components/BottomSheetModal';
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
 import { IPlannedLearningOutcome } from '~/models/disciplineEducationalComplex';
+import DropdownText from '~/screens/etis/disciplineEducationalComplex/components/DropdownText';
 import { RIGHT_ICON_SIZE } from '~/screens/etis/disciplineEducationalComplex/components/common';
 import { fontSize } from '~/utils/texts';
 
 const Outcome = ({ data }: { data: IPlannedLearningOutcome }) => {
   return (
     <View>
-      <Text>{data.outcome}</Text>
+      <Text style={fontSize.medium}>{data.outcome}</Text>
+      <Text style={[fontSize.big, { fontWeight: 'bold', marginBottom: '2%' }]}>Критерии</Text>
       {data.criteria.map((criteria, index) => (
         <React.Fragment key={index}>
-          <Text style={{ fontWeight: 'bold' }}>{criteria.title}</Text>
-          <Text>{criteria.description}</Text>
+          <DropdownText title={criteria.title} value={criteria.description} />
+          {data.criteria.length - 1 !== index && <BorderLine />}
         </React.Fragment>
       ))}
     </View>
@@ -28,10 +31,17 @@ const PlannedLearningOutcomeBottomSheet = React.forwardRef<
   { data: IPlannedLearningOutcome[] }
 >(({ data }, ref) => {
   return (
-    <BottomSheetModal ref={ref}>
+    <BottomSheetModal ref={ref} style={{ paddingHorizontal: '2%' }}>
+      <Text style={[fontSize.slarge, { fontWeight: 'bold', textAlign: 'center' }]}>
+        Планируемый результат обучения
+      </Text>
+
       <BottomSheetScrollView>
         {data.map(($data, index) => (
-          <Outcome data={$data} key={index} />
+          <View key={index} style={{ marginVertical: '2%', gap: 16 }}>
+            <Outcome data={$data} />
+            {index !== data.length - 1 && <BorderLine />}
+          </View>
         ))}
       </BottomSheetScrollView>
     </BottomSheetModal>

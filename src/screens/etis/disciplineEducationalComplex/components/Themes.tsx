@@ -36,16 +36,20 @@ const controlBadgeStyles = StyleSheet.create({
 
 const Theme = ({ theme }: { theme: IDisciplineEducationalComplexThemeLink }) => {
   return (
-    <View style={{ flex: 1 }}>
-      <Text style={fontSize.medium}>{theme.name}</Text>
-      {theme.hasCheckPoint && <ControlBadge />}
+    <View style={{ flex: 1, paddingVertical: '2%' }}>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+        <Text style={fontSize.medium}>{theme.name}</Text>
+        {theme.hasCheckPoint && <ControlBadge />}
+      </View>
 
       {!!theme.subthemes.length &&
-        theme.subthemes.map(($theme) => (
-          <View style={{ flexDirection: 'row', marginLeft: '2%' }} key={$theme.id}>
-            <Text>- </Text>
-            <Theme theme={$theme} />
-          </View>
+        theme.subthemes.map(($theme, index) => (
+          <React.Fragment key={$theme.id}>
+            <View style={{ flexDirection: 'row', marginLeft: '4%', alignItems: 'center' }}>
+              <Theme theme={$theme} />
+            </View>
+            {index !== theme.subthemes.length - 1 && <BorderLine />}
+          </React.Fragment>
         ))}
     </View>
   );
@@ -57,6 +61,7 @@ const ThemesBottomSheet = React.forwardRef<
 >(({ themes }, ref) => {
   return (
     <BottomSheetModal ref={ref} style={{ padding: '2%' }}>
+      <Text style={[fontSize.slarge, { fontWeight: 'bold', textAlign: 'center' }]}>Темы</Text>
       <BottomSheetScrollView style={{ flex: 1 }}>
         {themes.map((theme, index) => (
           <React.Fragment key={index}>
