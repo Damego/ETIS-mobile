@@ -66,6 +66,7 @@ export interface BaseClient {
   getDisciplineEducationalComplexTheme(
     payload: IGetPayload<IDisciplineEducationalComplexThemePayload>
   ): Promise<IGetResult<IDisciplineEducationalComplexTheme>>;
+  getExamQuestions(payload: IGetPayload<string>): Promise<IGetResult<string>>;
 }
 
 export class BasicClient<P extends IGetPayload, T> {

@@ -42,6 +42,7 @@ import parseCathedraTimetable from '~/parser/cathedraTimetable';
 import { parseCertificateTable } from '~/parser/certificate';
 import { parseDisciplineEducationalComplex } from '~/parser/disciplineEducationalComplex';
 import { parseDisciplineEducationalComplexTheme } from '~/parser/disciplineEducationalComplexTheme';
+import { parseExamQuestions } from '~/parser/examQuestions';
 import { parseGroupTimetable } from '~/parser/groupTimetable';
 import { StudentInfo } from '~/parser/menu';
 import parseOrders from '~/parser/order';
@@ -96,6 +97,7 @@ class DisciplineEducationalComplexThemeClient extends BasicClient<
   IGetPayload<IDisciplineEducationalComplexThemePayload>,
   IDisciplineEducationalComplexTheme
 > {}
+class ExamQuestionsClient extends BasicClient<IGetPayload<string>, string> {}
 
 export default class Client implements BaseClient {
   private absencesClient: AbsencesClient;
@@ -119,6 +121,7 @@ export default class Client implements BaseClient {
   private groupTimetableClient: GroupTimetableClient;
   private disciplineEducationalComplexClient: DisciplineEducationalComplexClient;
   private disciplineEducationalComplexThemeClient: DisciplineEducationalComplexThemeClient;
+  private examQuestionsClient: ExamQuestionsClient;
 
   constructor() {
     this.absencesClient = new AbsencesClient(
@@ -247,6 +250,12 @@ export default class Client implements BaseClient {
       parseDisciplineEducationalComplexTheme,
       (data, payload) => cache.placeDisciplineEducationalComplexTheme(payload.data, data)
     );
+    this.examQuestionsClient = new ExamQuestionsClient(
+      emptyFunction,
+      (payload) => httpClient.getExamQuestions(payload.data),
+      parseExamQuestions,
+      emptyFunction
+    );
 
     bind(this, Client);
   }
@@ -356,5 +365,9 @@ export default class Client implements BaseClient {
     payload: IGetPayload<IDisciplineEducationalComplexThemePayload>
   ): Promise<IGetResult<IDisciplineEducationalComplexTheme>> {
     return this.disciplineEducationalComplexThemeClient.getData(payload);
+  }
+
+  getExamQuestions(payload: IGetPayload<string>) {
+    return this.examQuestionsClient.getData(payload);
   }
 }

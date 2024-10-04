@@ -1,26 +1,31 @@
 import { AntDesign } from '@expo/vector-icons';
-import { BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetScrollView, BottomSheetView } from '@gorhom/bottom-sheet';
 import { useQuery } from '@tanstack/react-query';
 import React, { useRef } from 'react';
 import { View } from 'react-native';
 import BottomSheetModal from '~/components/BottomSheetModal';
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
+import { useClient } from '~/data/client';
 import { IExamQuestions } from '~/models/disciplineEducationalComplex';
+import { RequestType } from '~/models/results';
 import { RIGHT_ICON_SIZE } from '~/screens/etis/disciplineEducationalComplex/components/common';
-import { httpClient } from '~/utils';
 import { fontSize } from '~/utils/texts';
 
 const Question = ({ question }: { question: IExamQuestions }) => {
-  const { data, isLoading } = useQuery({
-    queryFn: () => httpClient.getExamQuestions(question.id),
-    queryKey: ['examQuestion', question.id],
+  const client = useClient();
+
+  // Не требует авторизации в ЕТИС, поэтому несущественно, что здесь использовать
+  const { data } = useQuery({
+    queryFn: () =>
+      client.getExamQuestions({ data: question.id, requestType: RequestType.tryFetch }),
+    queryKey: ['examQuestions', question.id],
   });
 
   return (
     <View>
-      <Text>{question.title}</Text>
-      {isLoading && <Text>{data?.data}</Text>}
+      <Text style={[fontSize.big, { fontWeight: 'bold' }]}>{question.title}</Text>
+      {data?.data && <Text>{data?.data}</Text>}
     </View>
   );
 };
@@ -28,12 +33,16 @@ const Question = ({ question }: { question: IExamQuestions }) => {
 const QuestionsBottomSheet = React.forwardRef<BottomSheetModal, { questions: IExamQuestions[] }>(
   ({ questions }, ref) => {
     return (
-      <BottomSheetModal ref={ref}>
-        <BottomSheetView>
+      <BottomSheetModal ref={ref} style={{ padding: '2%' }}>
+        <Text style={[fontSize.slarge, { fontWeight: 'bold', textAlign: 'center' }]}>
+          Вопросы промежуточной аттестации
+        </Text>
+
+        <BottomSheetScrollView>
           {questions.map((question) => (
             <Question question={question} key={question.id} />
           ))}
-        </BottomSheetView>
+        </BottomSheetScrollView>
       </BottomSheetModal>
     );
   }
