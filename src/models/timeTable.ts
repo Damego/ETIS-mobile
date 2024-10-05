@@ -122,4 +122,7 @@ export interface ITimeTable {
 
   // Преподаватель. Только в расписании преподавателей
   teacher?: ITeacher;
+
+  // Доступно только для авторизованных студентов
+  icalToken?: string;
 }

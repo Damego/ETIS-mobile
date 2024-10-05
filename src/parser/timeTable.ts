@@ -112,9 +112,12 @@ export default function parseTimeTable(html: string) {
     };
   }
 
+  const icalTokenData = $('#calendar').find('input').attr('value');
+
   const data: ITimeTable = {
     weekInfo,
     days: [],
+    icalToken: icalTokenData ? icalTokenData.split('/').at(-1) : undefined,
   };
   const { days } = data;
 
