@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import BorderLine from '~/components/BorderLine';
 import { LoadingContainer } from '~/components/LoadingScreen';
@@ -49,6 +49,7 @@ const Messages = ({ jumpTo, route }: SceneProps) => {
       estimatedItemSize={10}
       // ListEmptyComponent={isLoading ? <LoadingContainer /> : !data ? <NoData /> : undefined}
       ItemSeparatorComponent={BorderLine}
+      containerStyle={{ paddingBottom: '20%' }}
     />
   );
 };

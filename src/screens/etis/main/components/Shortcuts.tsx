@@ -29,14 +29,14 @@ const Icon = ({
     <TouchableOpacity
       onPress={() => onPress(shortcut)}
       style={[
-        globalStyles.borderRadius,
-        isCurrent ? globalStyles.secondaryBackgroundColor : null,
+        // globalStyles.borderRadius,
+        // isCurrent ? globalStyles.secondaryBackgroundColor : null,
         { alignItems: 'center', paddingVertical: '2%', paddingHorizontal: '6%' },
       ]}
     >
       <AntDesign
         name={iconName}
-        size={36}
+        size={32}
         color={isCurrent ? globalStyles.primaryText.color : globalStyles.textColor.color}
       />
 
@@ -55,7 +55,7 @@ const Icon = ({
             justifyContent: 'center',
           }}
         >
-          <Text style={{ fontSize: 14, color: globalStyles.primaryContrastText.color }}>
+          <Text style={{ fontSize: 10, color: globalStyles.primaryContrastText.color }}>
             {count}
           </Text>
         </View>
@@ -69,7 +69,12 @@ const Shortcuts = (
     navigationState: NavigationState<any>;
   }
 ) => {
-  const { jumpTo, navigationState } = props;
+  const globalStyles = useGlobalStyles();
+  const {
+    jumpTo,
+    navigationState,
+    layout: { height },
+  } = props;
   const currentShortcut = navigationState
     ? navigationState.routes[navigationState.index].key
     : 'timetable';
@@ -77,7 +82,14 @@ const Shortcuts = (
   const { messageCount, announceCount } = useAppSelector((state) => state.student);
 
   return (
-    <View style={styles.shortcutsContainer}>
+    <View
+      style={[
+        styles.shortcutsContainer,
+        { top: height * 0.9 },
+        globalStyles.containerBackground,
+        globalStyles.borderRadius,
+      ]}
+    >
       <Icon
         iconName={'calendar'}
         shortcut={'timetable'}
@@ -111,11 +123,13 @@ export default Shortcuts;
 
 const styles = StyleSheet.create({
   shortcutsContainer: {
-    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignSelf: 'center',
-    marginVertical: '4%',
-    paddingHorizontal: '4%', // marginHorizontal не работает, если компонент исплользуется как TabBar для react-native-tab-view
+    position: 'absolute',
+    zIndex: 1,
+
+    shadowColor: '#000',
+    elevation: 20,
   },
 });
