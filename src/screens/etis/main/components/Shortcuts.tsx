@@ -136,6 +136,6 @@ const styles = StyleSheet.create({
   shortcutsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
 });
