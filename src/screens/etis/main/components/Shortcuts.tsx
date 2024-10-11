@@ -1,6 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Shadow } from 'react-native-shadow-2';
 import type {
   NavigationState,
   SceneRendererProps,
@@ -36,7 +37,7 @@ const Icon = ({
     >
       <AntDesign
         name={iconName}
-        size={32}
+        size={28}
         color={isCurrent ? globalStyles.primaryText.color : globalStyles.textColor.color}
       />
 
@@ -82,12 +83,22 @@ const Shortcuts = (
   const { messageCount, announceCount } = useAppSelector((state) => state.student);
 
   return (
-    <View
+    <Shadow
+      distance={20}
+      stretch
+      safeRender
       style={[
         styles.shortcutsContainer,
-        { top: height * 0.9 },
         globalStyles.containerBackground,
         globalStyles.borderRadius,
+      ]}
+      containerStyle={[
+        {
+          top: height * 0.9,
+          position: 'absolute',
+          zIndex: 1,
+          alignSelf: 'center',
+        },
       ]}
     >
       <Icon
@@ -115,7 +126,7 @@ const Shortcuts = (
         onPress={jumpTo}
         isCurrent={currentShortcut === 'more'}
       />
-    </View>
+    </Shadow>
   );
 };
 
@@ -125,11 +136,6 @@ const styles = StyleSheet.create({
   shortcutsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignSelf: 'center',
-    position: 'absolute',
-    zIndex: 1,
-
-    shadowColor: '#000',
-    elevation: 20,
+    alignSelf: 'center'
   },
 });
