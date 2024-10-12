@@ -37,7 +37,7 @@ const Icon = ({
     >
       <AntDesign
         name={iconName}
-        size={28}
+        size={24}
         color={isCurrent ? globalStyles.primaryText.color : globalStyles.textColor.color}
       />
 
@@ -137,5 +137,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignSelf: 'center',
+    paddingVertical: '2%'
   },
 });
