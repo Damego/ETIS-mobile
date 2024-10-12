@@ -137,6 +137,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignSelf: 'center',
-    paddingVertical: '2%'
+    paddingVertical: '2%',
   },
 });
