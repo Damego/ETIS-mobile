@@ -480,6 +480,14 @@ class HTTPClient {
 
     return url.toString();
   }
+
+  subscribeICalendar() {
+    return this.request('POST', '/stu_plus.cal_crt');
+  }
+
+  unsubscribeICalendar() {
+    return this.request('POST', '/stu_plus.cal_del');
+  }
 }
 
 const httpClient = new HTTPClient();
