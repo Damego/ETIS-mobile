@@ -1,5 +1,5 @@
-import ical from 'node-ical';
 import axios from 'axios';
+import ical from 'node-ical';
 
 const ICAL_BASE_URL = 'https://ical.psu.ru/calendars';
 const inst = axios.create({ baseURL: ICAL_BASE_URL });
