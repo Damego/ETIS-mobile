@@ -27,14 +27,7 @@ const Icon = ({
   const globalStyles = useGlobalStyles();
 
   return (
-    <TouchableOpacity
-      onPress={() => onPress(shortcut)}
-      style={[
-        // globalStyles.borderRadius,
-        // isCurrent ? globalStyles.secondaryBackgroundColor : null,
-        { alignItems: 'center', paddingVertical: '2%', paddingHorizontal: '6%' },
-      ]}
-    >
+    <TouchableOpacity onPress={() => onPress(shortcut)} style={styles.iconView}>
       <AntDesign
         name={iconName}
         size={24}
@@ -42,20 +35,7 @@ const Icon = ({
       />
 
       {!!count && (
-        <View
-          style={{
-            position: 'absolute',
-            right: 0,
-            top: 0,
-            width: 20,
-            height: 20,
-            borderRadius: 10,
-            backgroundColor: globalStyles.primaryText.color,
-
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
+        <View style={[styles.iconCounter, globalStyles.primaryBackgroundColor]}>
           <Text style={{ fontSize: 10, color: globalStyles.primaryContrastText.color }}>
             {count}
           </Text>
@@ -138,5 +118,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignSelf: 'center',
     paddingVertical: '2%',
+  },
+  iconView: {
+    alignItems: 'center',
+    paddingVertical: '2%',
+    paddingHorizontal: '6%',
+  },
+  iconCounter: {
+    position: 'absolute',
+    right: '50%',
+    width: 14,
+    height: 14,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
