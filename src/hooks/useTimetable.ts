@@ -27,8 +27,10 @@ let preSelectedDate: dayjs.Dayjs = null;
 
 const useTimetable = ({
   onRequestUpdate,
+  enableTransitionFromSunday,
 }: {
   onRequestUpdate: (week: number) => void;
+  enableTransitionFromSunday?: boolean;
 }): IUseTimetable => {
   const [{ currentDate, currentWeek, selectedDate, selectedWeek }, setTimetable] =
     useState<TimetableState>(
@@ -39,8 +41,8 @@ const useTimetable = ({
         return {
           currentDate,
           currentWeek,
-          selectedDate: currentDate,
-          selectedWeek: currentWeek,
+          selectedDate: enableTransitionFromSunday ? currentDate.add(1, 'day') : currentDate,
+          selectedWeek: enableTransitionFromSunday ? currentWeek + 1 : currentWeek,
         };
       })()
     );

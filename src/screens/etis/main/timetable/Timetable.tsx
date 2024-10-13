@@ -11,7 +11,15 @@ import useTimetable from '~/hooks/useTimetable';
 
 export const Timetable = () => {
   const client = useClient();
+  const nextWeek = true;
+
+  const timetable = useTimetable({
+    enableTransitionFromSunday: nextWeek,
+    onRequestUpdate: (week) => loadWeek(week),
+  });
+
   const { data, isLoading, loadWeek, refresh } = useTimeTableQuery({
+    week: timetable.selectedWeek,
     afterCallback: (result) => {
       timetable.updateData(result.data.weekInfo);
     },
@@ -19,7 +27,6 @@ export const Timetable = () => {
   const { data: teachersData, isLoading: teachersIsLoading } = useQuery({
     method: client.getTeacherData,
   });
-  const timetable = useTimetable({ onRequestUpdate: (week) => loadWeek(week) });
 
   return (
     <Screen onUpdate={refresh} containerStyle={{ paddingBottom: '20%' }}>
