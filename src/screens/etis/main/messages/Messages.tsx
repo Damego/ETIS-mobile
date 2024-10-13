@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, useWindowDimensions } from 'react-native';
 import BorderLine from '~/components/BorderLine';
 import { LoadingContainer } from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
@@ -12,6 +12,7 @@ import { MessagesShortcuts } from '~/screens/etis/main/components/MessagesShortc
 import MessageCard from '../components/MessageCard';
 
 const Messages = ({ jumpTo, route }: SceneProps) => {
+  const { height } = useWindowDimensions();
   const { data, isLoading, refresh, loadPage } = useMessagesQuery();
 
   const Navigation = () => (
@@ -47,9 +48,8 @@ const Messages = ({ jumpTo, route }: SceneProps) => {
       renderItem={({ item }) => <MessageCard data={item} page={data.page} />}
       keyExtractor={(item) => item[0].time}
       estimatedItemSize={10}
-      // ListEmptyComponent={isLoading ? <LoadingContainer /> : !data ? <NoData /> : undefined}
       ItemSeparatorComponent={BorderLine}
-      containerStyle={{ paddingBottom: '20%' }}
+      contentContainerStyle={{ paddingBottom: height * 0.1 }}
     />
   );
 };
