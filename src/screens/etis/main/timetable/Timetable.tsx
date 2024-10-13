@@ -22,7 +22,7 @@ export const Timetable = () => {
   const timetable = useTimetable({ onRequestUpdate: (week) => loadWeek(week) });
 
   return (
-    <Screen onUpdate={refresh}>
+    <Screen onUpdate={refresh} containerStyle={{ paddingBottom: '20%' }}>
       <Text style={styles.titleText}>Расписание</Text>
 
       <TimetableContainer

@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { useWindowDimensions } from 'react-native';
 import { SceneMap, TabView } from 'react-native-tab-view';
 import { cache } from '~/cache/smartCache';
 import { useClient } from '~/data/client';
@@ -75,17 +74,14 @@ const ETISScreen = () => {
     { key: 'messageTabs', title: 'messageTabs' },
     { key: 'more', title: 'more' },
   ]);
-  const layout = useWindowDimensions();
 
   return (
     <TabView
-      style={{ flex: 1 }}
       lazy
       swipeEnabled={false}
       navigationState={{ index, routes }}
       renderScene={renderScene}
       onIndexChange={setIndex}
-      initialLayout={{ width: layout.width }}
       renderTabBar={Shortcuts}
     />
   );

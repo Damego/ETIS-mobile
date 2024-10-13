@@ -88,7 +88,7 @@ const ScreenButton = ({ screen }: { screen: ScreenT }) => {
 
 const MoreScreens = () => {
   return (
-    <Screen containerStyle={{ gap: 8 }}>
+    <Screen containerStyle={{ gap: 8, paddingBottom: '20%' }}>
       <Text style={styles.titleText}>Меню ЕТИС</Text>
 
       <View style={{ gap: 10 }}>
