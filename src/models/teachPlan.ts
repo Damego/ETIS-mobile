@@ -1,4 +1,6 @@
 export interface ITeachPlanDiscipline {
+  id?: string;
+  teachPlanId?: string;
   name: string;
   reporting: string;
   classWorkHours: number;

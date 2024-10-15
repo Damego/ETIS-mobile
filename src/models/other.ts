@@ -11,3 +11,8 @@ export enum LessonTypes {
   EXAM = 'EXAM',
   TEST = 'TEST',
 }
+
+export interface IFile {
+  name: string;
+  uri: string;
+}

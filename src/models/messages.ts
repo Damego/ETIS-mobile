@@ -1,12 +1,9 @@
+import { IFile } from '~/models/other';
+
 export enum MessageType {
   message = 'message',
   studentReply = 'studentReply',
   teacherReply = 'teacherReply',
-}
-
-export interface IMessageFile {
-  name: string;
-  uri: string;
 }
 
 export interface IMessage {
@@ -14,7 +11,7 @@ export interface IMessage {
   time: string;
   author?: string;
   content: string;
-  files?: IMessageFile[];
+  files?: IFile[];
   answerMessageID?: string;
   subject?: string;
   theme?: string;

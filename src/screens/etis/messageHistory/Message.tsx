@@ -4,7 +4,8 @@ import CardHeaderOut from '~/components/CardHeaderOut';
 import FileTextLink from '~/components/FileTextLink';
 import Text from '~/components/Text';
 import { useAppTheme } from '~/hooks/theme';
-import { IMessage, IMessageFile, MessageType } from '~/models/messages';
+import { IMessage, MessageType } from '~/models/messages';
+import { IFile } from '~/models/other';
 import { parseDatetime } from '~/parser/utils';
 import { fontSize } from '~/utils/texts';
 
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const AttachedFiles = ({ files }: { files: IMessageFile[] }) => {
+const AttachedFiles = ({ files }: { files: IFile[] }) => {
   return (
     <View style={{ flexDirection: 'column' }}>
       <Text style={styles.subjectText}>Прикреплённые файлы: </Text>

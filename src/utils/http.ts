@@ -5,10 +5,10 @@ import { documentDirectory, downloadAsync } from 'expo-file-system';
 import { getNetworkStateAsync } from 'expo-network';
 import { ICathedraTimetablePayload } from '~/models/cathedraTimetable';
 import { ICertificate } from '~/models/certificate';
+import { IDisciplineEducationalComplexPayload } from '~/models/disciplineEducationalComplex';
 import { UploadFile } from '~/models/other';
 
 import { CertificateRequestPayload } from './certificate';
-import { PSU_URL } from './consts';
 import { getCurrentEducationYear } from './datetime';
 import { toURLSearchParams } from './encoding';
 import { SessionQuestionnairePayload } from './sessionTest';
@@ -468,17 +468,42 @@ class HTTPClient {
     return this.request('GET', '/tt_pkg.tt_show_for_stu', { params });
   }
 
-  /*
-  Возвращает ссылку на результат поиска по запросу на сайте ПГНИУ
-  */
-  getSearchPageURL(query: string) {
-    const url = new URL(`${PSU_URL}/poisk`);
-    url.searchParams.append('searchword', query);
-    url.searchParams.append('ordering', 'popular');
-    url.searchParams.append('searchphrase', 'exact');
-    url.searchParams.append('limit', '10');
+  getDisciplineEducationalComplex({
+    disciplineId,
+    disciplineTeachPlanId,
+  }: IDisciplineEducationalComplexPayload) {
+    const params = {
+      p_tpr_id: disciplineId, // id дисциплины
+      p_tpdl_id: disciplineTeachPlanId, // id учебного плана дисциплины
+      p_mode: 'no', // Режим отображения? На сайте стоит STU, но если поставить что-то другое, то выдаёт "чистую" версию страницы.
+      // При этом не требуется авторизация в ЕТИС
+      // Имеется режим CUS
+    };
+    return this.request('GET', '/stu.tpr', { params });
+  }
 
-    return url.toString();
+  getDisciplineEducationalComplexTheme({
+    disciplineTeachPlanId,
+    themeId,
+  }: {
+    disciplineTeachPlanId: string;
+    themeId: string;
+  }) {
+    const params = {
+      p_tpdl_id: disciplineTeachPlanId, // id дисциплины
+      p_tc_id: themeId, // id темы,
+      p_mode: 'no',
+    };
+    return this.request('GET', '/stu.theme', { params });
+  }
+
+  getExamQuestions(id: string) {
+    const params = {
+      p_dfc_id: id,
+    };
+
+    // Не требует авторизацию
+    return this.request('GET', '/stu.exam_que', { params });
   }
 }
 
