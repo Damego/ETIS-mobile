@@ -5,6 +5,7 @@ import {
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/src/types';
 import React, { useImperativeHandle, useRef } from 'react';
 import BottomSheetModalBackdrop from '~/components/BottomSheetModalBackdrop';
+import { useGlobalStyles } from '~/hooks';
 import useBackPress from '~/hooks/useBackPress';
 
 type BottomSheetModal = BottomSheetModalMethods;
@@ -12,6 +13,7 @@ type BottomSheetModal = BottomSheetModalMethods;
 const BottomSheetModalComponent = React.forwardRef<BottomSheetModal, BottomSheetModalProps>(
   (props, ref) => {
     const { children, onDismiss, ...restProps } = props;
+    const globalStyles = useGlobalStyles();
     const modalRef = useRef<BottomSheetModal>();
     const stateRef = useRef({
       isOpened: false,
@@ -55,6 +57,8 @@ const BottomSheetModalComponent = React.forwardRef<BottomSheetModal, BottomSheet
           <BottomSheetModalBackdrop {...props} onPress={dismissModal} />
         )}
         onDismiss={onDismiss ?? dismissModal}
+        backgroundStyle={globalStyles.card}
+        handleIndicatorStyle={{ backgroundColor: globalStyles.textColor.color }}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...restProps}
       >
