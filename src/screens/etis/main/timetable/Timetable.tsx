@@ -5,16 +5,17 @@ import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import TimetableContainer from '~/components/timetable/TimetableContainer';
 import { useClient } from '~/data/client';
+import { useAppSelector } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
 import useTimeTableQuery from '~/hooks/useTimeTableQuery';
 import useTimetable from '~/hooks/useTimetable';
 
 export const Timetable = () => {
   const client = useClient();
-  const nextWeek = true;
+  const { skipSunday } = useAppSelector((state) => state.settings.config.ui);
 
   const timetable = useTimetable({
-    enableTransitionFromSunday: nextWeek,
+    skipSunday,
     onRequestUpdate: (week) => loadWeek(week),
   });
 
