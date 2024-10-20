@@ -22,6 +22,7 @@ export interface UIConfig {
   timetableMode: TimetableModes;
   showPastWeekDays: boolean;
   highlightCurrentDay: boolean;
+  skipSunday: boolean;
 }
 
 export interface AppConfig {
@@ -53,6 +54,7 @@ const initialConfig: AppConfig = {
     timetableMode: TimetableModes.days,
     showPastWeekDays: true,
     highlightCurrentDay: false,
+    skipSunday: true,
   },
   cacheMigrations: {},
   reviewStep: 'pending',
