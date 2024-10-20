@@ -10,7 +10,7 @@
   "dependencies": {
     "@expo/config-plugins": "~8.0.0",
     "@expo/vector-icons": "^14.0.0",
-    "@gorhom/bottom-sheet": "^5.0.0-alpha.9",
+    "@gorhom/bottom-sheet": "^5.0.4",
     "@notifee/react-native": "^7.8.2",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-navigation/bottom-tabs": "^6.5.20",
