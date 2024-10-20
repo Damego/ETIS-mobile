@@ -20,16 +20,16 @@ const AboutSentryPopover = () => {
       placement={PopoverPlacement.FLOATING}
       from={(_, toggleShow) => (
         <TouchableOpacity onPress={toggleShow}>
-          <AntDesign name={'infocirlceo'} size={24} color={appTheme.colors.textForBlock} />
+          <AntDesign name={'infocirlceo'} size={24} color={appTheme.colors.text} />
         </TouchableOpacity>
       )}
       popoverStyle={{
         borderRadius: globalStyles.border.borderRadius,
         padding: '2%',
-        backgroundColor: appTheme.colors.block,
+        backgroundColor: appTheme.colors.container,
       }}
     >
-      <Text textBreakStrategy={'simple'} selectable style={fontSize.medium} colorVariant={'block'}>
+      <Text textBreakStrategy={'simple'} selectable style={fontSize.medium}>
         Эта настройка позволяет отправлять ошибки, возникшие в ходе работы приложения, в сервис
         Sentry.
       </Text>
@@ -58,7 +58,7 @@ const ToggleSentrySetting = () => {
 
   return (
     <Card style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-      <Text style={[{ fontWeight: '500' }, fontSize.medium]} colorVariant={'block'}>
+      <Text style={[{ fontWeight: '500' }, fontSize.medium]}>
         Отправлять логи об ошибках
       </Text>
 

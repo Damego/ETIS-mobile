@@ -14,7 +14,6 @@ const AboutAppButton = () => {
         text={'О приложении'}
         onPress={() => navigation.navigate('AboutApp')}
         textStyle={[fontSize.medium, { fontWeight: '500' }]}
-        colorVariant={'block'}
       />
     </Card>
   );
