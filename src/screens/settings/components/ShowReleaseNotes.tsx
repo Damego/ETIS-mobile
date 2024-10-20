@@ -1,3 +1,4 @@
+import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import Card from '~/components/Card';
@@ -17,7 +18,10 @@ const ShowReleaseNotes = () => {
       <ClickableText
         text={'Список изменений'}
         onPress={onPress}
-        textStyle={[fontSize.medium, { fontWeight: '500' }]}
+        viewStyle={{ gap: 8 }}
+        textStyle={fontSize.medium}
+        iconLeft={<AntDesign name={'copy1'} size={26} />}
+        iconRight={<AntDesign name={'right'} size={20} style={{ marginLeft: 'auto' }} />}
       />
     </Card>
   );

@@ -1,3 +1,4 @@
+import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import Card from '~/components/Card';
@@ -13,7 +14,10 @@ const AboutAppButton = () => {
       <ClickableText
         text={'О приложении'}
         onPress={() => navigation.navigate('AboutApp')}
-        textStyle={[fontSize.medium, { fontWeight: '500' }]}
+        textStyle={fontSize.medium}
+        viewStyle={{ gap: 8 }}
+        iconLeft={<AntDesign name={'infocirlceo'} size={26} />}
+        iconRight={<AntDesign name={'right'} size={20} style={{ marginLeft: 'auto' }} />}
       />
     </Card>
   );

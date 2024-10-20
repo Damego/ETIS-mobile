@@ -1,3 +1,4 @@
+import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import Card from '~/components/Card';
@@ -17,7 +18,10 @@ const ChangeAppUI = () => {
       <ClickableText
         text={'Настройки интерфейса'}
         onPress={onPress}
-        textStyle={[fontSize.medium, { fontWeight: '500' }]}
+        viewStyle={{ gap: 8 }}
+        textStyle={fontSize.medium}
+        iconRight={<AntDesign name={'right'} size={20} style={{ marginLeft: 'auto' }} />}
+        iconLeft={<AntDesign name={'picture'} size={26} />}
       />
     </Card>
   );

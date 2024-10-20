@@ -1,7 +1,10 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Octicons } from '@expo/vector-icons';
+import React, { useRef } from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { cache } from '~/cache/smartCache';
+import BottomSheetModal from '~/components/BottomSheetModal';
 import Text from '~/components/Text';
+import OptionsBottomSheet from '~/components/bottomSheets/OptionsBottomSheet';
 import { useAppDispatch, useAppSelector } from '~/hooks';
 import { changeTheme, setEvents } from '~/redux/reducers/settingsSlice';
 import { ThemeType } from '~/styles/themes';
@@ -11,36 +14,40 @@ const options = [
   {
     label: 'Автоматическая',
     value: ThemeType.auto,
+    isCurrent: false,
   },
   {
     label: 'Светлая',
     value: ThemeType.light,
+    isCurrent: false,
   },
   {
     label: 'Тёмная',
     value: ThemeType.dark,
+    isCurrent: false,
   },
   {
     label: 'Чёрная',
     value: ThemeType.black,
+    isCurrent: false,
   },
 ];
 
 const styles = StyleSheet.create({
   cardView: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    gap: 8,
   },
   settingTitle: {
     ...fontSize.medium,
-    fontWeight: '500',
   },
 });
 
 const ToggleThemeSetting = () => {
   const dispatch = useAppDispatch();
   const { events, theme: themeType } = useAppSelector((state) => state.settings.config);
+  const modalRef = useRef<BottomSheetModal>();
 
   const changeAppTheme = (selectedTheme: ThemeType) => {
     if (selectedTheme === ThemeType.newYear) {
@@ -58,12 +65,20 @@ const ToggleThemeSetting = () => {
   };
 
   return (
-    <View style={styles.cardView}>
+    <TouchableOpacity style={styles.cardView} onPress={() => modalRef.current.present()}>
+      <Octicons name={'paintbrush'} size={22} />
       <Text style={styles.settingTitle}>Тема</Text>
-      {/*<View style={{ width: '60%' }}>*/}
-      {/*  <Dropdown options={options} selectedOption={getCurrentTheme()} onSelect={changeAppTheme} />*/}
-      {/*</View>*/}
-    </View>
+      <Text style={[styles.settingTitle, { marginLeft: 'auto' }]}>
+        {options.find((opt) => opt.value === themeType).label}
+      </Text>
+
+      <OptionsBottomSheet
+        ref={modalRef}
+        options={options}
+        onOptionPress={changeAppTheme}
+        currentOptionValue={themeType}
+      />
+    </TouchableOpacity>
   );
 };
 

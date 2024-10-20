@@ -1,6 +1,6 @@
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Fontisto } from '@expo/vector-icons';
 import React from 'react';
-import { Linking, Switch, ToastAndroid, TouchableOpacity } from 'react-native';
+import { Linking, Switch, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 import { cache } from '~/cache/smartCache';
 import Card from '~/components/Card';
@@ -58,7 +58,10 @@ const ToggleSentrySetting = () => {
 
   return (
     <Card style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-      <Text style={[{ fontWeight: '500' }, fontSize.medium]}>Отправлять логи об ошибках</Text>
+      <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center' }}>
+        <Fontisto name={'sentry'} size={22} />
+        <Text style={fontSize.medium}>Отправлять ошибки</Text>
+      </View>
 
       <AboutSentryPopover />
 
