@@ -3,9 +3,9 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import Card from '~/components/Card';
 import ClickableText from '~/components/ClickableText';
+import { useAppTheme } from '~/hooks/theme';
 import { RootStackNavigationProp } from '~/navigation/types';
 import { fontSize } from '~/utils/texts';
-import { useAppTheme } from '~/hooks/theme';
 
 const ShowReleaseNotes = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
