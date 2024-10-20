@@ -58,9 +58,7 @@ const ToggleSentrySetting = () => {
 
   return (
     <Card style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-      <Text style={[{ fontWeight: '500' }, fontSize.medium]}>
-        Отправлять логи об ошибках
-      </Text>
+      <Text style={[{ fontWeight: '500' }, fontSize.medium]}>Отправлять логи об ошибках</Text>
 
       <AboutSentryPopover />
 
