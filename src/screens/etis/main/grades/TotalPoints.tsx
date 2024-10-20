@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
-import { StyleProp, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { HalloweenEmoji } from '~/components/HalloweenDecoration';
+import React from 'react';
+import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import Text from '~/components/Text';
-import { useAppSelector, useGlobalStyles } from '~/hooks';
+import { useGlobalStyles } from '~/hooks';
 import { ISubject } from '~/models/sessionPoints';
-import { ThemeType } from '~/styles/themes';
 import { fontSize, getPointsWord } from '~/utils/texts';
 
 const styles = StyleSheet.create({
@@ -50,41 +48,19 @@ const getSubjectPointsStyle = (
   return styles.colorMark5;
 };
 
-const TotalPoints = ({
-  subject,
-  style,
-  isInBlock,
-}: {
-  subject: ISubject;
-  style?: StyleProp<ViewStyle>;
-  isInBlock?: boolean;
-}) => {
+const TotalPoints = ({ subject, style }: { subject: ISubject; style?: StyleProp<ViewStyle> }) => {
   const globalStyles = useGlobalStyles();
-  const { theme } = useAppSelector((state) => state.settings.config);
-  const [showPoint, setShowPoint] = useState<boolean>(theme !== ThemeType.halloween);
 
-  const textStyle = getSubjectPointsStyle(
-    subject,
-    isInBlock ? globalStyles.fontColorForBlock : globalStyles.textColor
-  );
+  const textStyle = getSubjectPointsStyle(subject, globalStyles.textColor);
   const pointsWord = getPointsWord(subject.totalPoints);
 
-  return showPoint ? (
+  return (
     <View style={style}>
       <Text style={[fontSize.xxlarge, { fontWeight: '600' }, textStyle]}>
         {subject.totalPoints}
       </Text>
-      <Text
-        style={[fontSize.medium, { fontWeight: '600' }]}
-        colorVariant={isInBlock ? 'block' : undefined}
-      >
-        {pointsWord}
-      </Text>
+      <Text style={[fontSize.medium, { fontWeight: '600' }]}>{pointsWord}</Text>
     </View>
-  ) : (
-    <TouchableOpacity style={style} onPress={() => setShowPoint(true)}>
-      <HalloweenEmoji />
-    </TouchableOpacity>
   );
 };
 
