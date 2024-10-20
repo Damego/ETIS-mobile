@@ -10,9 +10,11 @@ import { RequestType } from '~/models/results';
 import { UnauthorizedTeacherStackScreenProps } from '~/navigation/types';
 
 const Timetable = ({ navigation }: UnauthorizedTeacherStackScreenProps) => {
+  const { skipSunday } = useAppSelector((state) => state.settings.config.ui);
   const teacherId = useAppSelector((state) => state.account.teacher.id);
   const client = useClient();
   const timetable = useTimetable({
+    skipSunday,
     onRequestUpdate: (week) => update({ data: { week, teacherId } }),
   });
 

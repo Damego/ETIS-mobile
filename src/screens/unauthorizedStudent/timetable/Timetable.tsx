@@ -19,6 +19,7 @@ import {
 
 const Timetable = ({ navigation }: UnauthorizedTeacherStackScreenProps) => {
   const { group } = useAppSelector((state) => state.account.student);
+  const { skipSunday } = useAppSelector((state) => state.settings.config.ui);
   const client = useClient();
 
   const { data: periodWeek } = useTanstackQuery({
@@ -72,6 +73,7 @@ const Timetable = ({ navigation }: UnauthorizedTeacherStackScreenProps) => {
   }, [periodWeek]);
 
   const timetable = useTimetable({
+    skipSunday,
     onRequestUpdate: loadData,
   });
 
