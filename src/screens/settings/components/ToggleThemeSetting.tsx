@@ -6,6 +6,7 @@ import BottomSheetModal from '~/components/BottomSheetModal';
 import Text from '~/components/Text';
 import OptionsBottomSheet from '~/components/bottomSheets/OptionsBottomSheet';
 import { useAppDispatch, useAppSelector } from '~/hooks';
+import { useAppTheme } from '~/hooks/theme';
 import { changeTheme, setEvents } from '~/redux/reducers/settingsSlice';
 import { ThemeType } from '~/styles/themes';
 import { fontSize } from '~/utils/texts';
@@ -48,6 +49,7 @@ const ToggleThemeSetting = () => {
   const dispatch = useAppDispatch();
   const { events, theme: themeType } = useAppSelector((state) => state.settings.config);
   const modalRef = useRef<BottomSheetModal>();
+  const theme = useAppTheme();
 
   const changeAppTheme = (selectedTheme: ThemeType) => {
     if (selectedTheme === ThemeType.newYear) {
@@ -66,7 +68,7 @@ const ToggleThemeSetting = () => {
 
   return (
     <TouchableOpacity style={styles.cardView} onPress={() => modalRef.current.present()}>
-      <Octicons name={'paintbrush'} size={22} />
+      <Octicons name={'paintbrush'} size={22} color={theme.colors.text} />
       <Text style={styles.settingTitle}>Тема</Text>
       <Text style={[styles.settingTitle, { marginLeft: 'auto' }]}>
         {options.find((opt) => opt.value === themeType).label}

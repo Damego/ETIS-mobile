@@ -21,7 +21,7 @@ const getWeekButtonStyle = (
   if (isCurrentDay) {
     return StyleSheet.compose(styles.dayContainer, { borderColor: theme.colors.primary });
   }
-  return StyleSheet.compose(styles.dayContainer, { borderColor: theme.colors.primaryContrast });
+  return StyleSheet.compose(styles.dayContainer, { borderColor: theme.colors.background });
 };
 
 const DayButton = ({

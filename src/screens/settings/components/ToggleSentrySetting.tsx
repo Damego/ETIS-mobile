@@ -59,7 +59,7 @@ const ToggleSentrySetting = () => {
   return (
     <Card style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
       <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center' }}>
-        <Fontisto name={'sentry'} size={22} />
+        <Fontisto name={'sentry'} size={22} color={theme.colors.text} />
         <Text style={fontSize.medium}>Отправлять ошибки</Text>
       </View>
 

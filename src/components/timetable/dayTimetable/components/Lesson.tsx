@@ -7,6 +7,7 @@ import DisciplineType from '~/components/DisciplineType';
 import TaskBadge from '~/components/TaskBadge';
 import Text from '~/components/Text';
 import { useTimetableContext } from '~/context/timetableContext';
+import { useAppTheme } from '~/hooks/theme';
 import { ILesson } from '~/models/timeTable';
 import { EducationNavigationProp } from '~/navigation/types';
 import { getTeacherName } from '~/utils/teachers';
@@ -22,6 +23,7 @@ const Lesson = ({
   pairPosition: number;
 }) => {
   const navigation = useNavigation<EducationNavigationProp>();
+  const theme = useAppTheme();
 
   const { teachers } = useTimetableContext();
   const audience = formatAudience(lesson);
@@ -42,18 +44,18 @@ const Lesson = ({
 
       {audience && (
         <View style={styles.row}>
-          <Ionicons name={'business-outline'} size={20} />
+          <Ionicons name={'business-outline'} size={20} color={theme.colors.text} />
           <Text>{audience}</Text>
         </View>
       )}
       {lesson.announceHTML && (
         <View style={styles.row}>
-          <AntDesign name="warning" size={20} />
+          <AntDesign name="warning" size={20} color={theme.colors.text} />
           <Text>Объявление</Text>
         </View>
       )}
       <View style={styles.row}>
-        <Ionicons name={'school-outline'} size={20} />
+        <Ionicons name={'school-outline'} size={20} color={theme.colors.text} />
         {!!teacherName && <Text>{teacherName}</Text>}
         {!!lesson.shortGroups && <Text>{formatGroups(lesson.shortGroups)}</Text>}
       </View>
