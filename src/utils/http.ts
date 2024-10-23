@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import * as cheerio from 'cheerio';
 import CyrillicToTranslit from 'cyrillic-to-translit-js';
 import { documentDirectory, downloadAsync } from 'expo-file-system';
@@ -48,6 +48,11 @@ export interface Response<T> {
   error?: HTTPError;
 }
 
+const PROXY_LIST = [
+  'https://etisproxy0.damego.ru/student/pls/stu_cus_et',
+  'https://etisproxy0.damego.ru/etis/pls/education',
+];
+
 class HTTPClient {
   private sessionID: string | null;
   private instance: AxiosInstance;
@@ -58,13 +63,19 @@ class HTTPClient {
     this.sessionID = null;
     this.siteURL = 'https://student.psu.ru';
     this.baseURL = `${this.siteURL}/pls/stu_cus_et`;
-    this.instance = axios.create({
-      baseURL: this.baseURL,
+    this.instance = this.createAxiosInstance();
+  }
+
+  private createAxiosInstance(useProxyServer: boolean = false) {
+    return axios.create({
+      baseURL: useProxyServer ? PROXY_LIST[0] : this.baseURL,
       headers: {
         'User-Agent': getRandomUserAgent(),
       },
     });
   }
+
+  private switchServer() {}
 
   getSiteURL() {
     return this.siteURL;
@@ -86,6 +97,14 @@ class HTTPClient {
       console.warn('[HTTP] Cannot get network state');
       return true;
     }
+  }
+
+  private async detectNetworkIssue(error: AxiosError) {
+    return (
+      error.message === 'Network Error' &&
+      error.code === 'ERR_NETWORK' &&
+      (await this.isInternetReachable())
+    );
   }
 
   async request(
@@ -148,6 +167,11 @@ class HTTPClient {
       };
     } catch (e) {
       console.warn('[HTTP]', e);
+      if (await this.detectNetworkIssue(e)) {
+        console.warn('[HTTP] Detected network issue. Switching to proxy server.');
+        this.instance = this.createAxiosInstance(true);
+        return await this.request(method, endpoint, { params, data, returnResponse });
+      }
       return {
         error: {
           code: ErrorCode.invalidConnection,
@@ -198,6 +222,7 @@ class HTTPClient {
     if (response.error) return response;
 
     const cookies = response.data.headers['set-cookie'];
+    console.log(response.data.headers);
 
     if (!cookies) {
       const $ = cheerio.load(response.data.data);
