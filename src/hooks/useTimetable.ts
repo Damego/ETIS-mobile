@@ -38,11 +38,13 @@ const useTimetable = ({
         const currentDate = dayjs().startOf('day');
         const currentWeek = getEducationWeekByDate(currentDate);
 
+        const $skipSunday = skipSunday && currentDate.day() === 6;
+
         return {
           currentDate,
           currentWeek,
-          selectedDate: skipSunday ? currentDate.add(1, 'day') : currentDate,
-          selectedWeek: skipSunday ? currentWeek + 1 : currentWeek,
+          selectedDate: $skipSunday ? currentDate.add(1, 'day') : currentDate,
+          selectedWeek: $skipSunday ? currentWeek + 1 : currentWeek,
         };
       })()
     );
