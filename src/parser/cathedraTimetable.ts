@@ -160,9 +160,13 @@ const parsePairLessons = ($: cheerio.Root, td: cheerio.Cheerio, weekInfo: WeekIn
     }
 
     const audience = parseAudience($, divs.eq(2 + i * interval), weekInfo);
-    const groups = getTextField(divs.eq(4 + i * interval)).split('\n');
-    const shortGroups = [...new Set(groups.map(cutGroupName))];
-
+    const groupsText = getTextField(divs.eq(4 + i * interval));
+    let groups: string[];
+    let shortGroups: string[];
+    if (groupsText) {
+      groups = groupsText.split('\n');
+      shortGroups = [...new Set(groups.map(cutGroupName))];
+    }
     lessons.push({
       subject,
       audience,
