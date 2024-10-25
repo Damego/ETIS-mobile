@@ -17,7 +17,7 @@ const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequ
   const [login, setLogin] = useState('');
 
   return (
-    <Card style={styles.container}>
+    <View style={styles.container}>
       <Image style={styles.logoImage} source={require('../../../../assets/logo_red.png')} />
 
       <Text>{message}</Text>
@@ -53,7 +53,7 @@ const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequ
         text="Назад"
         onPress={() => setShowModal(false)}
       />
-    </Card>
+    </View>
   );
 };
 

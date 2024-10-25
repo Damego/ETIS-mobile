@@ -14,7 +14,7 @@ const WarningMessage = () => {
   return (
     <View
       style={[
-        globalStyles.secondaryBackgroundColor,
+        globalStyles.card,
         { padding: '2%', flexDirection: 'row', gap: 8 },
         globalStyles.borderRadius,
       ]}
