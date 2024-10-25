@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { cache } from '~/cache/smartCache';
 import { useAppSelector } from '~/hooks';
 import { IAbsence } from '~/models/absences';
+import { IAnnounce } from '~/models/announce';
 import { ICalendarSchedule } from '~/models/calendarSchedule';
 import { ICathedraTimetable, ICathedraTimetablePayload } from '~/models/cathedraTimetable';
 import { ICertificateResult } from '~/models/certificate';
@@ -54,7 +55,7 @@ export const useClient: () => BaseClient = () => {
 const emptyFunction = <T>() => undefined as T;
 
 class AbsencesClient extends BasicClient<IGetPayload<number>, IAbsence> {}
-class AnnounceClient extends BasicClient<IGetPayload, string[]> {}
+class AnnounceClient extends BasicClient<IGetPayload, IAnnounce[]> {}
 class TimeTableClient extends BasicClient<IGetPayload<number>, ITimeTable> {}
 class MessageClient extends BasicClient<IGetPayload<number>, IMessagesData> {}
 class OrderClient extends BasicClient<IGetPayload, IOrder[]> {}
@@ -224,7 +225,7 @@ export default class Client implements BaseClient {
     return this.absencesClient.getData(payload);
   }
 
-  async getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>> {
+  async getAnnounceData(payload: IGetPayload): Promise<IGetResult<IAnnounce[]>> {
     await cache.announce.init();
     return this.announceClient.getData(payload);
   }
