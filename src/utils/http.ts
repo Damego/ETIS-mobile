@@ -161,7 +161,7 @@ class HTTPClient {
       };
     } catch (e) {
       console.warn('[HTTP]', e);
-      if (!this.useProxy && await this.detectNetworkIssue(e)) {
+      if (!this.useProxy && (await this.detectNetworkIssue(e))) {
         console.warn('[HTTP] Detected network issue. Switching to proxy server.');
         this.useProxy = true;
         this.createAxiosInstance();
