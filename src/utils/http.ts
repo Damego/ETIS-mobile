@@ -220,7 +220,6 @@ class HTTPClient {
     if (response.error) return response;
 
     const cookies = response.data.headers['set-cookie'];
-    console.log(response.data.headers);
 
     if (!cookies) {
       const $ = cheerio.load(response.data.data);
