@@ -89,7 +89,7 @@ export const BlackTheme: ITheme = {
     background: '#000000',
     container: '#000000',
     card: '#000000',
-    cards: '#222222'
+    cards: '#222222',
   },
 };
 
