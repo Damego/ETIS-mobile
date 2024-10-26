@@ -161,12 +161,15 @@ class HTTPClient {
       };
     } catch (e) {
       console.warn('[HTTP]', e);
+
+      // https://github.com/Damego/ETIS-mobile/issues/168
       if (!this.useProxy && (await this.detectNetworkIssue(e))) {
         console.warn('[HTTP] Detected network issue. Switching to proxy server.');
         this.useProxy = true;
         this.createAxiosInstance();
         return await this.request(method, endpoint, { params, data, returnResponse });
       }
+
       return {
         error: {
           code: ErrorCode.invalidConnection,
