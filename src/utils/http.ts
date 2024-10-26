@@ -48,41 +48,33 @@ export interface Response<T> {
   error?: HTTPError;
 }
 
-const PROXY_LIST = [
-  'https://etisproxy0.damego.ru/student/pls/stu_cus_et',
-  'https://etisproxy0.damego.ru/etis/pls/education',
-];
+const PROXY_SERVER_URL = 'https://etisproxy0.damego.ru/student';
 
 class HTTPClient {
   private sessionID: string | null;
   private instance: AxiosInstance;
+  private readonly siteSuffix: string = '/pls/stu_cus_et';
+  private readonly siteURL: string = 'https://student.psu.ru';
   private readonly baseURL: string;
-  private readonly siteURL: string;
+  private useProxy: boolean;
 
   constructor() {
     this.sessionID = null;
-    this.siteURL = 'https://student.psu.ru';
-    this.baseURL = `${this.siteURL}/pls/stu_cus_et`;
-    this.instance = this.createAxiosInstance();
+    this.baseURL = `${this.siteURL}${this.siteSuffix}`;
+    this.createAxiosInstance();
   }
 
-  private createAxiosInstance(useProxyServer: boolean = false) {
-    return axios.create({
-      baseURL: useProxyServer ? PROXY_LIST[0] : this.baseURL,
+  private createAxiosInstance() {
+    this.instance = axios.create({
+      baseURL: this.useProxy ? `${PROXY_SERVER_URL}${this.siteSuffix}` : this.baseURL,
       headers: {
         'User-Agent': getRandomUserAgent(),
       },
     });
   }
 
-  private switchServer() {}
-
   getSiteURL() {
-    return this.siteURL;
-  }
-
-  getBaseURL() {
-    return this.baseURL;
+    return this.useProxy ? PROXY_SERVER_URL : this.siteURL;
   }
 
   getSessionID() {
@@ -146,11 +138,13 @@ class HTTPClient {
       Cookie: this.sessionID,
     };
 
+    let $data;
     if (data) {
       if (data instanceof FormData) {
         headers['Content-Type'] = 'multipart/form-data';
+        $data = data;
       } else {
-        data = toURLSearchParams(data);
+        $data = toURLSearchParams(data);
       }
     }
 
@@ -160,7 +154,7 @@ class HTTPClient {
         method,
         headers,
         params,
-        data,
+        data: $data,
       });
       return {
         data: returnResponse ? response : response.data,
@@ -169,7 +163,8 @@ class HTTPClient {
       console.warn('[HTTP]', e);
       if (await this.detectNetworkIssue(e)) {
         console.warn('[HTTP] Detected network issue. Switching to proxy server.');
-        this.instance = this.createAxiosInstance(true);
+        this.useProxy = true;
+        this.createAxiosInstance();
         return await this.request(method, endpoint, { params, data, returnResponse });
       }
       return {
