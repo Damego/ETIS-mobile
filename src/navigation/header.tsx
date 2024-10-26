@@ -61,7 +61,7 @@ export type HeaderParamList = {
 
 export const headerParams = (theme: ITheme): HeaderParamList => ({
   headerStyle: {
-    backgroundColor: theme.colors.container,
+    backgroundColor: theme.colors.background,
     borderBottomEndRadius: 30,
     borderBottomStartRadius: 30,
   },

@@ -1,8 +1,7 @@
-import { AntDesign, FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
+import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Button } from '~/components/Button';
-import ClickableText from '~/components/ClickableText';
 import SafeAreaScreen from '~/components/SafeAreaScreen';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
@@ -41,7 +40,7 @@ const StartScreen = ({ navigation }: StartStackScreenProps) => {
         <FontAwesome5
           name={type === 'teacher' ? 'chalkboard-teacher' : 'male'}
           size={24}
-          color="black"
+          color={globalStyles.textColor.color}
         />
       </View>
 

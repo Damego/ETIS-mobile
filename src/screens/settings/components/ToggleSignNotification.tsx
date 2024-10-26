@@ -47,7 +47,7 @@ const ToggleSignNotification = () => {
   return (
     <View style={styles.cardView}>
       <View style={styles.textWithIcon}>
-        <AntDesign name={'notification'} size={26} />
+        <AntDesign name={'notification'} size={26} color={globalStyles.textColor.color} />
         <Text style={styles.header}>Уведомлять об оценках</Text>
       </View>
 

@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     position: 'absolute',
-    marginRight: '1%',
+    marginRight: '2%',
     right: 0,
   },
 });

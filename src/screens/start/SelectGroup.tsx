@@ -72,7 +72,7 @@ const SelectGroupScreen = ({ route }: StartStackScreenProps<'SelectGroup'>) => {
   return (
     <>
       <View style={{ marginHorizontal: '4%' }}>
-        <SearchInput value={query} onValueChange={processValue} />
+        <SearchInput value={query} onValueChange={processValue} autoCapitalize />
       </View>
       <ListScreen
         renderItem={({ item }) => (

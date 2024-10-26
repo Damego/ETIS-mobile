@@ -6,21 +6,24 @@ import { useGlobalStyles } from '~/hooks';
 const SearchInput = ({
   value,
   onValueChange,
+  autoCapitalize,
 }: {
   value: string;
   onValueChange: (value: string) => void;
+  autoCapitalize?: boolean;
 }) => {
   const globalStyles = useGlobalStyles();
 
   return (
     <View style={[styles.container, globalStyles.card]}>
-      <AntDesign name={'search1'} size={20} />
+      <AntDesign name={'search1'} size={20} color={globalStyles.textColor.color} />
       <TextInput
-        autoCapitalize={'characters'}
+        autoCapitalize={autoCapitalize ? 'characters' : undefined}
         placeholder={'Поиск'}
-        style={styles.input}
+        style={[styles.input, globalStyles.textColor]}
         value={value}
         onChangeText={onValueChange}
+        placeholderTextColor={globalStyles.textColor2.color}
       />
     </View>
   );
