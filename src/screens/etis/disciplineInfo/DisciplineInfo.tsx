@@ -28,7 +28,7 @@ const DisciplineInfo = ({ route }: EducationStackScreenProps<'DisciplineInfo'>) 
   return (
     <Screen>
       <View style={{ gap: 8 }}>
-        <Text style={styles.text}>{lesson.subject.discipline}</Text>
+        <Text style={styles.text}>{lesson.subject.discipline ?? lesson.subject.string}</Text>
         {lesson.subject?.type && <DisciplineType type={lesson.subject.type} />}
 
         <View />
@@ -43,7 +43,7 @@ const DisciplineInfo = ({ route }: EducationStackScreenProps<'DisciplineInfo'>) 
         )}
 
         <TimeInfo date={date} pairPosition={pairPosition} />
-        {lesson.audience?.string && <AudienceInfo lesson={lesson} />}
+        <AudienceInfo lesson={lesson} />
         {lesson.teacher && <TeacherInfo teacher={lesson.teacher} />}
         {lesson.groups && <GroupsInfo groups={lesson.groups} />}
 

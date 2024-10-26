@@ -39,7 +39,9 @@ const Lesson = ({
 
   return (
     <TouchableOpacity style={styles.lessonContainer} onPress={onLessonPress}>
-      <Text style={styles.lessonNameText}>{lesson.subject.discipline}</Text>
+      <Text style={styles.lessonNameText}>
+        {lesson.subject.discipline ?? lesson.subject.string}
+      </Text>
       {lesson.subject.type && <DisciplineType type={lesson.subject.type} size={'small'} />}
 
       {audience && (
@@ -54,11 +56,14 @@ const Lesson = ({
           <Text>Объявление</Text>
         </View>
       )}
-      <View style={styles.row}>
-        <Ionicons name={'school-outline'} size={20} color={theme.colors.text} />
-        {!!teacherName && <Text>{teacherName}</Text>}
-        {!!lesson.shortGroups && <Text>{formatGroups(lesson.shortGroups)}</Text>}
-      </View>
+
+      {(!!teacherName || !!lesson.shortGroups?.length) && (
+        <View style={styles.row}>
+          <Ionicons name={'school-outline'} size={20} color={theme.colors.text} />
+          {!!teacherName && <Text>{teacherName}</Text>}
+          {!!lesson.shortGroups?.length && <Text>{formatGroups(lesson.shortGroups)}</Text>}
+        </View>
+      )}
       <TaskBadge subject={lesson.subject} date={date} />
     </TouchableOpacity>
   );
