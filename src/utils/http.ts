@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import * as cheerio from 'cheerio';
 import CyrillicToTranslit from 'cyrillic-to-translit-js';
 import { documentDirectory, downloadAsync } from 'expo-file-system';
@@ -48,18 +48,25 @@ export interface Response<T> {
   error?: HTTPError;
 }
 
+const PROXY_SERVER_URL = 'https://etisproxy0.damego.ru/student';
+
 class HTTPClient {
   private sessionID: string | null;
   private instance: AxiosInstance;
+  private readonly siteSuffix: string = '/pls/stu_cus_et';
+  private readonly siteURL: string = 'https://student.psu.ru';
   private readonly baseURL: string;
-  private readonly siteURL: string;
+  private useProxy: boolean;
 
   constructor() {
     this.sessionID = null;
-    this.siteURL = 'https://student.psu.ru';
-    this.baseURL = `${this.siteURL}/pls/stu_cus_et`;
+    this.baseURL = `${this.siteURL}${this.siteSuffix}`;
+    this.createAxiosInstance();
+  }
+
+  private createAxiosInstance() {
     this.instance = axios.create({
-      baseURL: this.baseURL,
+      baseURL: this.useProxy ? `${PROXY_SERVER_URL}${this.siteSuffix}` : this.baseURL,
       headers: {
         'User-Agent': getRandomUserAgent(),
       },
@@ -67,11 +74,7 @@ class HTTPClient {
   }
 
   getSiteURL() {
-    return this.siteURL;
-  }
-
-  getBaseURL() {
-    return this.baseURL;
+    return this.useProxy ? PROXY_SERVER_URL : this.siteURL;
   }
 
   getSessionID() {
@@ -86,6 +89,14 @@ class HTTPClient {
       console.warn('[HTTP] Cannot get network state');
       return true;
     }
+  }
+
+  private async detectNetworkIssue(error: AxiosError) {
+    return (
+      error.message === 'Network Error' &&
+      error.code === 'ERR_NETWORK' &&
+      (await this.isInternetReachable())
+    );
   }
 
   async request(
@@ -127,11 +138,13 @@ class HTTPClient {
       Cookie: this.sessionID,
     };
 
+    let $data;
     if (data) {
       if (data instanceof FormData) {
         headers['Content-Type'] = 'multipart/form-data';
+        $data = data;
       } else {
-        data = toURLSearchParams(data);
+        $data = toURLSearchParams(data);
       }
     }
 
@@ -141,13 +154,22 @@ class HTTPClient {
         method,
         headers,
         params,
-        data,
+        data: $data,
       });
       return {
         data: returnResponse ? response : response.data,
       };
     } catch (e) {
       console.warn('[HTTP]', e);
+
+      // https://github.com/Damego/ETIS-mobile/issues/168
+      if (!this.useProxy && (await this.detectNetworkIssue(e))) {
+        console.warn('[HTTP] Detected network issue. Switching to proxy server.');
+        this.useProxy = true;
+        this.createAxiosInstance();
+        return await this.request(method, endpoint, { params, data, returnResponse });
+      }
+
       return {
         error: {
           code: ErrorCode.invalidConnection,
@@ -198,6 +220,7 @@ class HTTPClient {
     if (response.error) return response;
 
     const cookies = response.data.headers['set-cookie'];
+    console.log(response.data.headers);
 
     if (!cookies) {
       const $ = cheerio.load(response.data.data);
