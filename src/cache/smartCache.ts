@@ -1,5 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 import { IAbsence } from '~/models/absences';
+import { IAnnounce } from '~/models/announce';
 import { ICalendarSchedule } from '~/models/calendarSchedule';
 import { ICathedraTimetable, ICathedraTimetablePayload } from '~/models/cathedraTimetable';
 import { ICertificate, ICertificateResult } from '~/models/certificate';
@@ -43,7 +44,7 @@ export interface Account {
 
 export default class SmartCache {
   absences: MappedCache<number, IAbsence>;
-  announce: FieldCache<string[]>;
+  announce: FieldCache<IAnnounce[]>;
   messages: MappedCache<number, IMessagesData>;
   orders: {
     list: FieldCache<IOrder[]>;
@@ -156,7 +157,7 @@ export default class SmartCache {
     return this.announce.get();
   }
 
-  async placeAnnounce(data: string[]) {
+  async placeAnnounce(data: IAnnounce[]) {
     this.announce.place(data);
     await this.announce.save();
   }

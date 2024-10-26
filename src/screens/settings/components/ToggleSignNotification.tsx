@@ -15,7 +15,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  header: { fontWeight: '500', ...fontSize.medium },
+  header: { ...fontSize.medium },
+  textWithIcon: {
+    flexDirection: 'row',
+    gap: 8,
+    alignItems: 'center',
+  },
 });
 
 const ToggleSignNotification = () => {
@@ -41,7 +46,11 @@ const ToggleSignNotification = () => {
 
   return (
     <View style={styles.cardView}>
-      <Text style={styles.header}>Уведомлять об оценках</Text>
+      <View style={styles.textWithIcon}>
+        <AntDesign name={'notification'} size={26} color={globalStyles.textColor.color} />
+        <Text style={styles.header}>Уведомлять об оценках</Text>
+      </View>
+
       <TouchableOpacity onPress={() => Linking.openURL(NOTIFICATION_GUIDE_URL)}>
         <AntDesign // TODO: make as modal w/ blur
           name="infocirlceo"

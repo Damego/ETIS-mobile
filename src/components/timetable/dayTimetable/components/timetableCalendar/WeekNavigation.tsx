@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Text from '~/components/Text';
+import { useAppTheme } from '~/hooks/theme';
 import { capitalizeWord } from '~/utils/texts';
 
 const WeekNavigation = ({
@@ -18,11 +19,13 @@ const WeekNavigation = ({
   onNextPress: () => void;
   onMainPress: () => void;
 }) => {
+  const theme = useAppTheme();
+
   return (
     <View style={styles.navigation}>
       {selectedWeek !== 1 ? (
         <TouchableOpacity onPress={onPrevPress}>
-          <AntDesign name={'left'} size={18} />
+          <AntDesign name={'left'} size={18} color={theme.colors.text} />
         </TouchableOpacity>
       ) : (
         <View style={{ width: 20 }} />
@@ -32,7 +35,7 @@ const WeekNavigation = ({
         {selectedWeek ? ` • ${selectedWeek} неделя` : ''}
       </Text>
       <TouchableOpacity onPress={onNextPress}>
-        <AntDesign name={'right'} size={18} />
+        <AntDesign name={'right'} size={18} color={theme.colors.text} />
       </TouchableOpacity>
     </View>
   );

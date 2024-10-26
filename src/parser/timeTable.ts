@@ -75,6 +75,8 @@ const getTeacher = (lesson: cheerio.Cheerio): ITeacher => {
   const teacherAnchorHref = teacherAnchor.attr('href');
   const name = getTextField(teacherAnchor);
 
+  if (!name) return null;
+
   if (!teacherAnchorHref) return { name };
 
   // Ссылка может ввести не на преподавателя, а на форму оценивания занятия
@@ -112,9 +114,12 @@ export default function parseTimeTable(html: string) {
     };
   }
 
+  const icalTokenData = $('#calendar').find('input').attr('value');
+
   const data: ITimeTable = {
     weekInfo,
     days: [],
+    icalToken: icalTokenData ? icalTokenData.split('/').at(-1) : undefined,
   };
   const { days } = data;
 
@@ -173,7 +178,7 @@ export default function parseTimeTable(html: string) {
           lessons.push({
             subject,
             audience,
-            isDistance: audience.number === 'Дистанционно' || !!distancePlatform,
+            isDistance: audience.string?.includes?.('Дистанционно') || !!distancePlatform,
             distancePlatform,
             teacher: getTeacher(lesson),
             announceHTML,

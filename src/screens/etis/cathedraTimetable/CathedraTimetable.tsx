@@ -9,8 +9,7 @@ import useTimetable from '~/hooks/useTimetable';
 import { RequestType } from '~/models/results';
 import { ITeacher } from '~/models/timeTable';
 import { EducationStackScreenProps } from '~/navigation/types';
-
-import TeacherMenu from './TeacherMenu';
+import TeachersBottomSheet from '~/screens/etis/cathedraTimetable/TeachersBottomSheet';
 
 const CathedraTimetable = ({ route }: EducationStackScreenProps<'CathedraTimetable'>) => {
   const [currentTeacher, setCurrentTeacher] = useState<ITeacher>();
@@ -41,8 +40,8 @@ const CathedraTimetable = ({ route }: EducationStackScreenProps<'CathedraTimetab
     },
   });
 
-  const onTeacherSelect = (teacher: ITeacher) => {
-    setCurrentTeacher(teacher);
+  const onTeacherSelect = (teacherId: string) => {
+    setCurrentTeacher(data.timetable.find((tt) => tt.teacher.id === teacherId).teacher);
   };
 
   if (!isLoading && (!data || !data.timetable || !data.timetable.length)) return <NoData />;
@@ -55,10 +54,10 @@ const CathedraTimetable = ({ route }: EducationStackScreenProps<'CathedraTimetab
   return (
     <Screen onUpdate={refresh}>
       {teacherTimetable && (
-        <TeacherMenu
-          currentTeacher={teacherTimetable.teacher}
+        <TeachersBottomSheet
+          selectedTeacher={teacherTimetable.teacher}
           timetable={data.timetable}
-          onSelect={onTeacherSelect}
+          onTeacherSelect={onTeacherSelect}
         />
       )}
       <TimetableContainer

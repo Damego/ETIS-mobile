@@ -27,8 +27,10 @@ let preSelectedDate: dayjs.Dayjs = null;
 
 const useTimetable = ({
   onRequestUpdate,
+  skipSunday,
 }: {
   onRequestUpdate: (week: number) => void;
+  skipSunday?: boolean;
 }): IUseTimetable => {
   const [{ currentDate, currentWeek, selectedDate, selectedWeek }, setTimetable] =
     useState<TimetableState>(
@@ -36,11 +38,13 @@ const useTimetable = ({
         const currentDate = dayjs().startOf('day');
         const currentWeek = getEducationWeekByDate(currentDate);
 
+        const $skipSunday = skipSunday && currentDate.day() === 0;
+
         return {
           currentDate,
           currentWeek,
-          selectedDate: currentDate,
-          selectedWeek: currentWeek,
+          selectedDate: $skipSunday ? currentDate.add(1, 'day') : currentDate,
+          selectedWeek: $skipSunday ? currentWeek + 1 : currentWeek,
         };
       })()
     );

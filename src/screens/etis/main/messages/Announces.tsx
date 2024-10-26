@@ -7,6 +7,7 @@ import Screen from '~/components/Screen';
 import { useClient } from '~/data/client';
 import { useAppDispatch } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
+import { IAnnounce } from '~/models/announce';
 import { GetResultType } from '~/models/results';
 import { SceneProps } from '~/models/rn-tab-view';
 import { setAnnounceCount } from '~/redux/reducers/studentSlice';
@@ -32,7 +33,7 @@ const Announces = ({ jumpTo, route }: SceneProps) => {
     },
   });
 
-  const filterData = (el: string, index: number) =>
+  const filterData = (el: IAnnounce, index: number) =>
     index < currentPageNum * PAGE_ITEMS_LENGTH && index >= (currentPageNum - 1) * PAGE_ITEMS_LENGTH;
 
   const changePage = (pageNum: number) => setCurrentPageNum(pageNum);
@@ -55,8 +56,8 @@ const Announces = ({ jumpTo, route }: SceneProps) => {
         </View>
 
         <View style={{ gap: 8 }}>
-          {data.filter(filterData).map((message, i) => (
-            <AnnounceCard data={message} key={`card-${i}`} />
+          {data.filter(filterData).map((announce, i) => (
+            <AnnounceCard data={announce} key={i} />
           ))}
         </View>
       </>

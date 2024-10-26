@@ -69,7 +69,11 @@ export const getDisciplineTypeName = (type: string): string => disciplineTypeNam
 export const formatAudience = (lesson: ILesson) => {
   const { audience } = lesson;
 
-  if (lesson.isDistance) return 'Дистанционно';
+  if (lesson.isDistance) {
+    if (!lesson.distancePlatform) return 'Дистанционно';
+
+    return lesson.distancePlatform.name;
+  }
 
   return audience.number && audience.building && audience.floor
     ? `ауд. ${audience.number} (${audience.building} корпус, ${audience.floor} этаж)`

@@ -1,6 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Shadow } from 'react-native-shadow-2';
 import type {
   NavigationState,
   SceneRendererProps,
@@ -26,36 +27,16 @@ const Icon = ({
   const globalStyles = useGlobalStyles();
 
   return (
-    <TouchableOpacity
-      onPress={() => onPress(shortcut)}
-      style={[
-        globalStyles.borderRadius,
-        isCurrent ? globalStyles.secondaryBackgroundColor : null,
-        { alignItems: 'center', paddingVertical: '2%', paddingHorizontal: '6%' },
-      ]}
-    >
+    <TouchableOpacity onPress={() => onPress(shortcut)} style={styles.iconView}>
       <AntDesign
         name={iconName}
-        size={36}
+        size={24}
         color={isCurrent ? globalStyles.primaryText.color : globalStyles.textColor.color}
       />
 
       {!!count && (
-        <View
-          style={{
-            position: 'absolute',
-            right: 0,
-            top: 0,
-            width: 20,
-            height: 20,
-            borderRadius: 10,
-            backgroundColor: globalStyles.primaryText.color,
-
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Text style={{ fontSize: 14, color: globalStyles.primaryContrastText.color }}>
+        <View style={[styles.iconCounter, globalStyles.primaryBackgroundColor]}>
+          <Text style={{ fontSize: 10, color: globalStyles.primaryContrastText.color }}>
             {count}
           </Text>
         </View>
@@ -69,7 +50,12 @@ const Shortcuts = (
     navigationState: NavigationState<any>;
   }
 ) => {
-  const { jumpTo, navigationState } = props;
+  const globalStyles = useGlobalStyles();
+  const {
+    jumpTo,
+    navigationState,
+    layout: { height },
+  } = props;
   const currentShortcut = navigationState
     ? navigationState.routes[navigationState.index].key
     : 'timetable';
@@ -77,7 +63,24 @@ const Shortcuts = (
   const { messageCount, announceCount } = useAppSelector((state) => state.student);
 
   return (
-    <View style={styles.shortcutsContainer}>
+    <Shadow
+      distance={20}
+      stretch
+      safeRender
+      style={[
+        styles.shortcutsContainer,
+        globalStyles.containerBackground,
+        globalStyles.borderRadius,
+      ]}
+      containerStyle={[
+        {
+          top: height * 0.9,
+          position: 'absolute',
+          zIndex: 1,
+          alignSelf: 'center',
+        },
+      ]}
+    >
       <Icon
         iconName={'calendar'}
         shortcut={'timetable'}
@@ -103,7 +106,7 @@ const Shortcuts = (
         onPress={jumpTo}
         isCurrent={currentShortcut === 'more'}
       />
-    </View>
+    </Shadow>
   );
 };
 
@@ -111,11 +114,23 @@ export default Shortcuts;
 
 const styles = StyleSheet.create({
   shortcutsContainer: {
-    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignSelf: 'center',
-    marginVertical: '4%',
-    paddingHorizontal: '4%', // marginHorizontal не работает, если компонент исплользуется как TabBar для react-native-tab-view
+    paddingVertical: '2%',
+  },
+  iconView: {
+    alignItems: 'center',
+    paddingVertical: '2%',
+    paddingHorizontal: '6%',
+  },
+  iconCounter: {
+    position: 'absolute',
+    right: '50%',
+    width: 14,
+    height: 14,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
