@@ -1,4 +1,3 @@
-import { AntDesign } from '@expo/vector-icons';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import React, { useRef } from 'react';
 import BottomSheetModal from '~/components/BottomSheetModal';
@@ -6,7 +5,7 @@ import ClickableText from '~/components/ClickableText';
 import FileTextLink from '~/components/FileTextLink';
 import Text from '~/components/Text';
 import { IAdditionalMaterials } from '~/models/disciplineEducationalComplex';
-import { RIGHT_ICON_SIZE } from '~/screens/etis/disciplineEducationalComplex/components/common';
+import RightIcon from '~/screens/etis/disciplineEducationalComplex/RightIcon';
 import { fontSize } from '~/utils/texts';
 
 const AdditionalMaterialsBottomSheet = React.forwardRef<
@@ -34,7 +33,7 @@ const AdditionalMaterials = ({ data }: { data: IAdditionalMaterials }) => {
     <>
       <ClickableText
         onPress={() => ref.current.present()}
-        iconRight={<AntDesign name={'right'} size={RIGHT_ICON_SIZE} />}
+        iconRight={<RightIcon />}
         textStyle={[fontSize.big, { fontWeight: 'bold' }]}
         viewStyle={{ justifyContent: 'space-between' }}
       >

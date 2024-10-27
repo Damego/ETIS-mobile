@@ -6,6 +6,7 @@ import type {
 } from '@react-navigation/native-stack';
 import type { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { IAvailableCertificate } from '~/models/certificate';
+import { IDisciplineEducationalComplexThemeLink } from '~/models/disciplineEducationalComplex';
 import { IMessage } from '~/models/messages';
 import { ITeachPlanDiscipline } from '~/models/teachPlan';
 import { ILesson } from '~/models/timeTable';
@@ -62,7 +63,10 @@ export type EducationStackParamList = {
     disciplineTeachPlan: ITeachPlanDiscipline;
     period: string;
   };
-  DisciplineEducationalComplexTheme: { id: string; teachPlanId: string };
+  DisciplineEducationalComplexTheme: {
+    theme: IDisciplineEducationalComplexThemeLink;
+    disciplineName: string;
+  };
 
   // Меню с экранами
 

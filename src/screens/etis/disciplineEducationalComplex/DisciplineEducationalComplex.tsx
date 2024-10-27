@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Card from '~/components/Card';
 import DisciplineType from '~/components/DisciplineType';
-import LoadingScreen from '~/components/LoadingScreen';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { useClient } from '~/data/client';
@@ -74,7 +73,9 @@ const DisciplineEducationalComplex = ({
 
       {data && (
         <Card style={{ marginTop: 'auto', marginBottom: '4%', gap: 8 }}>
-          {!!data.themes?.length && <Themes themes={data.themes} />}
+          {!!data.themes?.length && (
+            <Themes themes={data.themes} disciplineName={data.discipline} />
+          )}
           {!!data.examQuestions?.length && <ExamQuestions questions={data.examQuestions} />}
           {data.evaluationIndicators && <EvaluationIndicators data={data.evaluationIndicators} />}
           {data.additionalMaterials && <AdditionalMaterials data={data.additionalMaterials} />}

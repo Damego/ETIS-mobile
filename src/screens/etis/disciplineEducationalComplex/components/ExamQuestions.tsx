@@ -1,5 +1,4 @@
-import { AntDesign } from '@expo/vector-icons';
-import { BottomSheetScrollView, BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { useQuery } from '@tanstack/react-query';
 import React, { useRef } from 'react';
 import { View } from 'react-native';
@@ -9,7 +8,7 @@ import Text from '~/components/Text';
 import { useClient } from '~/data/client';
 import { IExamQuestions } from '~/models/disciplineEducationalComplex';
 import { RequestType } from '~/models/results';
-import { RIGHT_ICON_SIZE } from '~/screens/etis/disciplineEducationalComplex/components/common';
+import RightIcon from '~/screens/etis/disciplineEducationalComplex/RightIcon';
 import { fontSize } from '~/utils/texts';
 
 const Question = ({ question }: { question: IExamQuestions }) => {
@@ -55,7 +54,7 @@ const ExamQuestions = ({ questions }: { questions: IExamQuestions[] }) => {
     <>
       <ClickableText
         onPress={() => ref.current.present()}
-        iconRight={<AntDesign name={'right'} size={RIGHT_ICON_SIZE} />}
+        iconRight={<RightIcon />}
         textStyle={[fontSize.big, { fontWeight: 'bold' }]}
         viewStyle={{ justifyContent: 'space-between' }}
       >

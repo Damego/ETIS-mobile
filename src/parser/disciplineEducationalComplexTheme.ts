@@ -27,7 +27,7 @@ const parseList = ($: cheerio.Root, tag: cheerio.Cheerio) => {
     const aTag = tag.find('a');
 
     data.push({
-      title: getTextField(tag),
+      title: getTextField(aTag).trim() || getTextField(tag),
       url: aTag.attr('href'),
     });
   });
