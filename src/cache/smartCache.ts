@@ -4,6 +4,14 @@ import { IAnnounce } from '~/models/announce';
 import { ICalendarSchedule } from '~/models/calendarSchedule';
 import { ICathedraTimetable, ICathedraTimetablePayload } from '~/models/cathedraTimetable';
 import { ICertificate, ICertificateResult } from '~/models/certificate';
+import {
+  IDisciplineEducationalComplex,
+  IDisciplineEducationalComplexPayload,
+} from '~/models/disciplineEducationalComplex';
+import {
+  IDisciplineEducationalComplexTheme,
+  IDisciplineEducationalComplexThemePayload,
+} from '~/models/disciplineEducationalComplexTheme';
 import { IGroupTimetablePayload } from '~/models/groupTimetable';
 import { IMessagesData } from '~/models/messages';
 import { IOrder } from '~/models/order';
@@ -55,6 +63,8 @@ export default class SmartCache {
   certificate: FieldCache<ICertificate[]>;
   cathedraTimetable: MappedCache<string, ICathedraTimetable>;
   groupTimetable: MappedCache<string, ITimeTable>;
+  disciplineEducationalComplex: MappedCache<string, IDisciplineEducationalComplex>;
+  disciplineEducationalComplexTheme: MappedCache<string, IDisciplineEducationalComplexTheme>;
 
   // Internal
   user: SecuredFieldCache<UserCredentials>;
@@ -81,6 +91,8 @@ export default class SmartCache {
     TIMETABLE: 'TIMETABLE',
     CATHEDRA_TIMETABLE: 'CATHEDRA_TIMETABLE',
     GROUP_TIMETABLE: 'GROUP_TIMETABLE',
+    DISCIPLINE_EDUCATIONAL_COMPLEX: 'DISCIPLINE_EDUCATIONAL_COMPLEX',
+    DISCIPLINE_EDUCATIONAL_COMPLEX_THEME: 'DISCIPLINE_EDUCATIONAL_COMPLEX_THEME',
 
     // Internal keys
     USER: 'USER',
@@ -111,6 +123,13 @@ export default class SmartCache {
       this.keys.CATHEDRA_TIMETABLE
     );
     this.groupTimetable = new MappedCache<string, ITimeTable>(this.keys.GROUP_TIMETABLE);
+    this.disciplineEducationalComplex = new MappedCache<string, IDisciplineEducationalComplex>(
+      this.keys.DISCIPLINE_EDUCATIONAL_COMPLEX
+    );
+    this.disciplineEducationalComplexTheme = new MappedCache<
+      string,
+      IDisciplineEducationalComplexTheme
+    >(this.keys.DISCIPLINE_EDUCATIONAL_COMPLEX_THEME);
 
     this.user = new SecuredFieldCache<UserCredentials>(this.keys.USER);
     this.app = new FieldCache<AppConfig>(this.keys.APP);
@@ -402,6 +421,38 @@ export default class SmartCache {
   }
 
   // End Group Timetable region
+
+  // Discipline Educational Complex region
+
+  async getDisciplineEducationalComplex(payload: IDisciplineEducationalComplexPayload) {
+    await this.disciplineEducationalComplex.init();
+    return this.disciplineEducationalComplex.get(JSON.stringify(payload));
+  }
+
+  async placeDisciplineEducationalComplex(
+    payload: IDisciplineEducationalComplexPayload,
+    data: IDisciplineEducationalComplex
+  ) {
+    await this.disciplineEducationalComplex.init();
+    this.disciplineEducationalComplex.place(JSON.stringify(payload), data);
+    await this.disciplineEducationalComplex.save();
+  }
+
+  async getDisciplineEducationalComplexTheme(payload: IDisciplineEducationalComplexThemePayload) {
+    await this.disciplineEducationalComplexTheme.init();
+    return this.disciplineEducationalComplexTheme.get(JSON.stringify(payload));
+  }
+
+  async placeDisciplineEducationalComplexTheme(
+    payload: IDisciplineEducationalComplexThemePayload,
+    data: IDisciplineEducationalComplexTheme
+  ) {
+    await this.disciplineEducationalComplexTheme.init();
+    this.disciplineEducationalComplexTheme.place(JSON.stringify(payload), data);
+    await this.disciplineEducationalComplexTheme.save();
+  }
+
+  // End Discipline Educational Complex region
 
   // Secure Region
 

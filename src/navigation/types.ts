@@ -6,7 +6,9 @@ import type {
 } from '@react-navigation/native-stack';
 import type { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { IAvailableCertificate } from '~/models/certificate';
+import { IDisciplineEducationalComplexThemeLink } from '~/models/disciplineEducationalComplex';
 import { IMessage } from '~/models/messages';
+import { ITeachPlanDiscipline } from '~/models/teachPlan';
 import { ILesson } from '~/models/timeTable';
 
 // Список экранов для основного стека
@@ -56,6 +58,15 @@ export type EducationStackParamList = {
 
   // Информация о паре
   DisciplineInfo: { lesson: ILesson; date: string; pairPosition: number };
+  // Учебно-методический комплекс
+  DisciplineEducationalComplex: {
+    disciplineTeachPlan: ITeachPlanDiscipline;
+    period: string;
+  };
+  DisciplineEducationalComplexTheme: {
+    theme: IDisciplineEducationalComplexThemeLink;
+    disciplineName: string;
+  };
 
   // Меню с экранами
 

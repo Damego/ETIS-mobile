@@ -3,6 +3,14 @@ import { IAnnounce } from '~/models/announce';
 import { ICalendarSchedule } from '~/models/calendarSchedule';
 import { ICathedraTimetable, ICathedraTimetablePayload } from '~/models/cathedraTimetable';
 import { ICertificateResult } from '~/models/certificate';
+import {
+  IDisciplineEducationalComplex,
+  IDisciplineEducationalComplexPayload,
+} from '~/models/disciplineEducationalComplex';
+import {
+  IDisciplineEducationalComplexTheme,
+  IDisciplineEducationalComplexThemePayload,
+} from '~/models/disciplineEducationalComplexTheme';
 import { IGroupTimetablePayload } from '~/models/groupTimetable';
 import { IMessagesData } from '~/models/messages';
 import { IOrder } from '~/models/order';
@@ -53,6 +61,13 @@ export interface BaseClient {
     payload: IGetPayload<ICathedraTimetablePayload>
   ): Promise<IGetResult<ICathedraTimetable>>;
   getGroupTimetable(payload: IGetPayload<IGroupTimetablePayload>): Promise<IGetResult<ITimeTable>>;
+  getDisciplineEducationalComplex(
+    payload: IGetPayload<IDisciplineEducationalComplexPayload>
+  ): Promise<IGetResult<IDisciplineEducationalComplex>>;
+  getDisciplineEducationalComplexTheme(
+    payload: IGetPayload<IDisciplineEducationalComplexThemePayload>
+  ): Promise<IGetResult<IDisciplineEducationalComplexTheme>>;
+  getExamQuestions(payload: IGetPayload<string>): Promise<IGetResult<string>>;
 }
 
 export class BasicClient<P extends IGetPayload, T> {
