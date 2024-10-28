@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Card from '~/components/Card';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
@@ -7,7 +7,7 @@ import { useClient } from '~/data/client';
 import useQuery from '~/hooks/useQuery';
 import { RequestType } from '~/models/results';
 import { EducationStackScreenProps } from '~/navigation/types';
-import Annotation from '~/screens/etis/disciplineEducationalComplexTheme/components/Annotation';
+import { ControlBadge } from '~/screens/etis/disciplineEducationalComplex/components/ControlBadge';
 import ControlRequirements from '~/screens/etis/disciplineEducationalComplexTheme/components/ControlRequirements';
 import ListData from '~/screens/etis/disciplineEducationalComplexTheme/components/ListData';
 import { fontSize } from '~/utils/texts';
@@ -30,13 +30,20 @@ const DisciplineEducationalComplexTheme = ({
   });
 
   return (
-    <Screen>
+    <Screen containerStyle={{ gap: 8 }}>
       <Text style={[fontSize.slarge, styles.boldText]}>{disciplineName}</Text>
-      <Text style={[fontSize.slarge, styles.boldText]}>{theme.name}</Text>
+      <Text style={fontSize.slarge}>{theme.name}</Text>
+      {theme.hasCheckPoint && <ControlBadge />}
+
+      {!!data?.annotation && (
+        <View>
+          <Text style={[fontSize.big, { fontWeight: 'bold' }]}>Аннотация</Text>
+          <Text style={fontSize.medium}>{data.annotation}</Text>
+        </View>
+      )}
 
       {data && (
         <Card style={{ marginTop: 'auto', marginBottom: '4%', gap: 8 }}>
-          {!!data.annotation && <Annotation data={data.annotation} />}
           {!!data.controlRequirements && <ControlRequirements data={data.controlRequirements} />}
           {!!data.links?.length && (
             <ListData label={'Другое обеспечение курса'} data={data.links} />

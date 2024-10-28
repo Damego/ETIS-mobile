@@ -1,39 +1,16 @@
 import { BottomSheetScrollView, useBottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import React, { useRef } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import BorderLine from '~/components/BorderLine';
 import BottomSheetModal from '~/components/BottomSheetModal';
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
-import { useGlobalStyles } from '~/hooks';
 import { IDisciplineEducationalComplexThemeLink } from '~/models/disciplineEducationalComplex';
 import { EducationNavigationProp } from '~/navigation/types';
 import RightIcon from '~/screens/etis/disciplineEducationalComplex/RightIcon';
+import { ControlBadge } from '~/screens/etis/disciplineEducationalComplex/components/ControlBadge';
 import { fontSize } from '~/utils/texts';
-
-const ControlBadge = () => {
-  const globalStyles = useGlobalStyles();
-
-  return (
-    <View style={[controlBadgeStyles.view, globalStyles.primaryBackgroundColor]}>
-      <Text style={[controlBadgeStyles.text, globalStyles.primaryContrastText]}>Контроль</Text>
-    </View>
-  );
-};
-
-const controlBadgeStyles = StyleSheet.create({
-  view: {
-    borderRadius: 5,
-    paddingHorizontal: '1%',
-    paddingVertical: '0.5%',
-    alignSelf: 'flex-start',
-  },
-  text: {
-    fontSize: 14,
-    fontWeight: '500',
-  },
-});
 
 const Theme = ({
   theme,
