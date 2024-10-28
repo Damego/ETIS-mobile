@@ -27,7 +27,7 @@ const CardSign = ({ subject }: { subject: ISubject }) => {
         >
           <SubjectCheckPoints data={subject.checkPoints} />
         </TouchableOpacity>
-        <TotalPoints subject={subject} style={styles.totalPoints} isInBlock />
+        <TotalPoints subject={subject} style={styles.totalPoints} />
       </View>
       <View>
         {subject.mark !== null && (

@@ -12,7 +12,6 @@ const ResetIntroSetting = () => {
       text={'Сбросить обучение'}
       onPress={() => dispatch(setIntroViewed(false))}
       textStyle={[fontSize.medium, { fontWeight: '500' }]}
-      colorVariant={'block'}
     />
   );
 };

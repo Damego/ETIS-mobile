@@ -103,6 +103,7 @@ export const AudienceInfo = ({ lesson }: { lesson: ILesson }) => {
   }
 
   const audience = formatAudience(lesson);
+  if (!audience) return null;
   return <IconInfo icon={'business-outline'} text={audience} />;
 };
 

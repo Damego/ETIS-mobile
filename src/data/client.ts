@@ -2,9 +2,18 @@ import { useMemo } from 'react';
 import { cache } from '~/cache/smartCache';
 import { useAppSelector } from '~/hooks';
 import { IAbsence } from '~/models/absences';
+import { IAnnounce } from '~/models/announce';
 import { ICalendarSchedule } from '~/models/calendarSchedule';
 import { ICathedraTimetable, ICathedraTimetablePayload } from '~/models/cathedraTimetable';
 import { ICertificateResult } from '~/models/certificate';
+import {
+  IDisciplineEducationalComplex,
+  IDisciplineEducationalComplexPayload,
+} from '~/models/disciplineEducationalComplex';
+import {
+  IDisciplineEducationalComplexTheme,
+  IDisciplineEducationalComplexThemePayload,
+} from '~/models/disciplineEducationalComplexTheme';
 import { IGroupTimetablePayload } from '~/models/groupTimetable';
 import { IMessagesData } from '~/models/messages';
 import { IOrder } from '~/models/order';
@@ -32,6 +41,9 @@ import {
 import parseCalendarSchedule from '~/parser/calendar';
 import parseCathedraTimetable from '~/parser/cathedraTimetable';
 import { parseCertificateTable } from '~/parser/certificate';
+import { parseDisciplineEducationalComplex } from '~/parser/disciplineEducationalComplex';
+import { parseDisciplineEducationalComplexTheme } from '~/parser/disciplineEducationalComplexTheme';
+import { parseExamQuestions } from '~/parser/examQuestions';
 import { parseGroupTimetable } from '~/parser/groupTimetable';
 import { StudentInfo } from '~/parser/menu';
 import parseOrders from '~/parser/order';
@@ -54,7 +66,7 @@ export const useClient: () => BaseClient = () => {
 const emptyFunction = <T>() => undefined as T;
 
 class AbsencesClient extends BasicClient<IGetPayload<number>, IAbsence> {}
-class AnnounceClient extends BasicClient<IGetPayload, string[]> {}
+class AnnounceClient extends BasicClient<IGetPayload, IAnnounce[]> {}
 class TimeTableClient extends BasicClient<IGetPayload<number>, ITimeTable> {}
 class MessageClient extends BasicClient<IGetPayload<number>, IMessagesData> {}
 class OrderClient extends BasicClient<IGetPayload, IOrder[]> {}
@@ -78,6 +90,15 @@ class CathedraTimetableClient extends BasicClient<
   ICathedraTimetable
 > {}
 class GroupTimetableClient extends BasicClient<IGetPayload<IGroupTimetablePayload>, ITimeTable> {}
+class DisciplineEducationalComplexClient extends BasicClient<
+  IGetPayload<IDisciplineEducationalComplexPayload>,
+  IDisciplineEducationalComplex
+> {}
+class DisciplineEducationalComplexThemeClient extends BasicClient<
+  IGetPayload<IDisciplineEducationalComplexThemePayload>,
+  IDisciplineEducationalComplexTheme
+> {}
+class ExamQuestionsClient extends BasicClient<IGetPayload<string>, string> {}
 
 export default class Client implements BaseClient {
   private absencesClient: AbsencesClient;
@@ -99,6 +120,9 @@ export default class Client implements BaseClient {
   private personalRecordsClient: PersonalRecordsClient;
   private cathedraTimetableClient: CathedraTimetableClient;
   private groupTimetableClient: GroupTimetableClient;
+  private disciplineEducationalComplexClient: DisciplineEducationalComplexClient;
+  private disciplineEducationalComplexThemeClient: DisciplineEducationalComplexThemeClient;
+  private examQuestionsClient: ExamQuestionsClient;
 
   constructor() {
     this.absencesClient = new AbsencesClient(
@@ -215,6 +239,24 @@ export default class Client implements BaseClient {
       parseGroupTimetable,
       (data, payload) => cache.placeGroupTimetable(payload.data, data)
     );
+    this.disciplineEducationalComplexClient = new DisciplineEducationalComplexClient(
+      (payload) => cache.getDisciplineEducationalComplex(payload.data),
+      (payload) => httpClient.getDisciplineEducationalComplex(payload.data),
+      parseDisciplineEducationalComplex,
+      (data, payload) => cache.placeDisciplineEducationalComplex(payload.data, data)
+    );
+    this.disciplineEducationalComplexThemeClient = new DisciplineEducationalComplexThemeClient(
+      (payload) => cache.getDisciplineEducationalComplexTheme(payload.data),
+      (payload) => httpClient.getDisciplineEducationalComplexTheme(payload.data),
+      parseDisciplineEducationalComplexTheme,
+      (data, payload) => cache.placeDisciplineEducationalComplexTheme(payload.data, data)
+    );
+    this.examQuestionsClient = new ExamQuestionsClient(
+      emptyFunction,
+      (payload) => httpClient.getExamQuestions(payload.data),
+      parseExamQuestions,
+      emptyFunction
+    );
 
     bind(this, Client);
   }
@@ -224,7 +266,7 @@ export default class Client implements BaseClient {
     return this.absencesClient.getData(payload);
   }
 
-  async getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>> {
+  async getAnnounceData(payload: IGetPayload): Promise<IGetResult<IAnnounce[]>> {
     await cache.announce.init();
     return this.announceClient.getData(payload);
   }
@@ -312,5 +354,21 @@ export default class Client implements BaseClient {
 
   getGroupTimetable(payload: IGetPayload<IGroupTimetablePayload>): Promise<IGetResult<ITimeTable>> {
     return this.groupTimetableClient.getData(payload);
+  }
+
+  getDisciplineEducationalComplex(
+    payload: IGetPayload<IDisciplineEducationalComplexPayload>
+  ): Promise<IGetResult<IDisciplineEducationalComplex>> {
+    return this.disciplineEducationalComplexClient.getData(payload);
+  }
+
+  getDisciplineEducationalComplexTheme(
+    payload: IGetPayload<IDisciplineEducationalComplexThemePayload>
+  ): Promise<IGetResult<IDisciplineEducationalComplexTheme>> {
+    return this.disciplineEducationalComplexThemeClient.getData(payload);
+  }
+
+  getExamQuestions(payload: IGetPayload<string>) {
+    return this.examQuestionsClient.getData(payload);
   }
 }

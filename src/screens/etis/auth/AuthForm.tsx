@@ -2,7 +2,6 @@ import { Checkbox } from 'expo-checkbox';
 import React, { useState } from 'react';
 import { Image, StyleSheet, TextInput, View } from 'react-native';
 import { Button } from '~/components/Button';
-import Card from '~/components/Card';
 import ClickableText from '~/components/ClickableText';
 import PasswordInput from '~/components/PasswordInput';
 import Text from '~/components/Text';

@@ -69,7 +69,11 @@ export const getDisciplineTypeName = (type: string): string => disciplineTypeNam
 export const formatAudience = (lesson: ILesson) => {
   const { audience } = lesson;
 
-  if (lesson.isDistance) return 'Дистанционно';
+  if (lesson.isDistance) {
+    if (!lesson.distancePlatform) return 'Дистанционно';
+
+    return lesson.distancePlatform.name;
+  }
 
   return audience.number && audience.building && audience.floor
     ? `ауд. ${audience.number} (${audience.building} корпус, ${audience.floor} этаж)`
@@ -89,3 +93,9 @@ export const formatGroups = (groups: string[]) => {
 };
 
 export const capitalizeWord = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
+
+export const getDisciplineTypeFromReporting = (reporting: string) =>
+  ({
+    Экзамен: LessonTypes.EXAM,
+    Зачет: LessonTypes.TEST,
+  })[reporting];

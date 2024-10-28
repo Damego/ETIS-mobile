@@ -1,7 +1,16 @@
 import { IAbsence } from '~/models/absences';
+import { IAnnounce } from '~/models/announce';
 import { ICalendarSchedule } from '~/models/calendarSchedule';
 import { ICathedraTimetable, ICathedraTimetablePayload } from '~/models/cathedraTimetable';
 import { ICertificateResult } from '~/models/certificate';
+import {
+  IDisciplineEducationalComplex,
+  IDisciplineEducationalComplexPayload,
+} from '~/models/disciplineEducationalComplex';
+import {
+  IDisciplineEducationalComplexTheme,
+  IDisciplineEducationalComplexThemePayload,
+} from '~/models/disciplineEducationalComplexTheme';
 import { IGroupTimetablePayload } from '~/models/groupTimetable';
 import { IMessagesData } from '~/models/messages';
 import { IOrder } from '~/models/order';
@@ -30,7 +39,7 @@ import { reportParserError } from '~/utils/sentry';
 
 export interface BaseClient {
   getAbsencesData(payload: IGetPayload<number>): Promise<IGetResult<IAbsence>>;
-  getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>>;
+  getAnnounceData(payload: IGetPayload): Promise<IGetResult<IAnnounce[]>>;
   getTimeTableData(payload: IGetPayload<number>): Promise<IGetResult<ITimeTable>>;
   getMessagesData(payload: IGetPayload<number>): Promise<IGetResult<IMessagesData>>;
   getOrdersData(payload: IGetPayload): Promise<IGetResult<IOrder[]>>;
@@ -52,6 +61,13 @@ export interface BaseClient {
     payload: IGetPayload<ICathedraTimetablePayload>
   ): Promise<IGetResult<ICathedraTimetable>>;
   getGroupTimetable(payload: IGetPayload<IGroupTimetablePayload>): Promise<IGetResult<ITimeTable>>;
+  getDisciplineEducationalComplex(
+    payload: IGetPayload<IDisciplineEducationalComplexPayload>
+  ): Promise<IGetResult<IDisciplineEducationalComplex>>;
+  getDisciplineEducationalComplexTheme(
+    payload: IGetPayload<IDisciplineEducationalComplexThemePayload>
+  ): Promise<IGetResult<IDisciplineEducationalComplexTheme>>;
+  getExamQuestions(payload: IGetPayload<string>): Promise<IGetResult<string>>;
 }
 
 export class BasicClient<P extends IGetPayload, T> {

@@ -30,20 +30,18 @@ const AbsencesCard = ({ disciplineAbsences }: { disciplineAbsences: IDisciplineA
           ))}
         </View>
         <View style={{ flex: 1 }}>
-          <Text
-            colorVariant={'block'}
-          >{`Пропущенных занятий: ${disciplineAbsences.dates.length}`}</Text>
+          <Text>{`Пропущенных занятий: ${disciplineAbsences.dates.length}`}</Text>
           {!!covered && <Text>{`По уважительной причине: ${covered}`}</Text>}
           {isOpened && (
             <>
-              <Text colorVariant={'block'}>{`Преподаватель: ${disciplineAbsences.teacher}`}</Text>
-              <Text colorVariant={'block'}>{`Вид работы: ${disciplineAbsences.type}`}</Text>
+              <Text>{`Преподаватель: ${disciplineAbsences.teacher}`}</Text>
+              <Text>{`Вид работы: ${disciplineAbsences.type}`}</Text>
             </>
           )}
         </View>
 
         <View style={{ justifyContent: 'center', alignItems: 'flex-end' }}>
-          <AntDesign name={isOpened ? 'up' : 'down'} size={18} color={theme.colors.textForBlock} />
+          <AntDesign name={isOpened ? 'up' : 'down'} size={18} color={theme.colors.text} />
         </View>
       </TouchableOpacity>
     </CardHeaderOut>

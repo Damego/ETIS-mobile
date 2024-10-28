@@ -16,6 +16,8 @@ import CertificateTable from '~/screens/etis/certificate/CertificateTable';
 import RequestCertificate from '~/screens/etis/certificate/RequestCertificate';
 import ChangeEmail from '~/screens/etis/changeCredentials/ChangeEmail';
 import ChangePassword from '~/screens/etis/changeCredentials/ChangePassword';
+import DisciplineEducationalComplex from '~/screens/etis/disciplineEducationalComplex/DisciplineEducationalComplex';
+import DisciplineEducationalComplexTheme from '~/screens/etis/disciplineEducationalComplexTheme/DisciplineEducationalComplexTheme';
 import DisciplineInfo from '~/screens/etis/disciplineInfo/DisciplineInfo';
 import DisciplinesTasks from '~/screens/etis/disciplinesTasks/DisciplinesTasks';
 import ETISScreen from '~/screens/etis/main/MainScreen';
@@ -123,6 +125,16 @@ const EducationNavigation = () => {
             options={{ title: 'Расписание' }}
           />
           <Stack.Screen name={'Rating'} component={Rating} options={{ title: 'Рейтинг' }} />
+          <Stack.Screen
+            name={'DisciplineEducationalComplex'}
+            component={DisciplineEducationalComplex}
+            options={{ title: 'УМК' }}
+          />
+          <Stack.Screen
+            name={'DisciplineEducationalComplexTheme'}
+            component={DisciplineEducationalComplexTheme}
+            options={{ title: 'УМК' }}
+          />
         </>
       )}
     </Stack.Navigator>

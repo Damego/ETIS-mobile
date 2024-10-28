@@ -29,7 +29,6 @@ const ChangeNewYearTheme = () => {
         text={'Сменить новогоднюю тему'}
         onPress={clearEvent}
         textStyle={[fontSize.medium, { fontWeight: '500' }]}
-        colorVariant={'block'}
       />
     </Card>
   );

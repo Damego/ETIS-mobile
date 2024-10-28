@@ -65,19 +65,19 @@ export const DarkTheme: ITheme = {
   dark: true,
   statusBarStyle: 'light',
   colors: {
-    background: '#121212',
+    background: '#141313',
     primary: '#C62E3E',
-    secondary: '#C62E3E',
-    border: '#3B3B3B',
-    text: '#DDDDDD',
-    textForPrimary: '#FFFFFF',
-    textForSecondary: '#FFFFFF',
-    textForBlock: '#DDDDDD',
+    secondary: '#5A5349',
+    primaryContrast: '#FFFFFF',
+    secondaryContrast: '#FFFFFF',
+    border: '#A9A9AC',
+    text: '#EFEBEB',
+    text2: '#A9A9AC',
     inputPlaceholder: '#A9A9AC',
-    block: '#222222',
-    card: '#222222',
-    shadow: '#FFFFFF',
-    notification: '#3B3B3B',
+    container: '#141313',
+    cards: '#222222',
+    card: '#141313',
+    notification: '#121212',
   },
 };
 
@@ -85,9 +85,11 @@ export const BlackTheme: ITheme = {
   ...DarkTheme,
   colors: {
     ...DarkTheme.colors,
+
     background: '#000000',
+    container: '#000000',
     card: '#000000',
-    block: '#000000',
+    cards: '#222222',
   },
 };
 

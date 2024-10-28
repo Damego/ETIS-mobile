@@ -10,8 +10,10 @@ import useQuery from './useQuery';
 
 const useTimeTableQuery = ({
   afterCallback,
+  week,
 }: {
   afterCallback?: (result: IGetResult<ITimeTable>) => void;
+  week?: number;
 }) => {
   const dispatch = useAppDispatch();
   const client = useClient();
@@ -19,6 +21,10 @@ const useTimeTableQuery = ({
   const { currentWeek } = useAppSelector((state) => state.student);
 
   const { data, isLoading, update, refresh } = useQuery({
+    payload: {
+      data: week,
+      requestType: RequestType.tryFetch,
+    },
     method: client.getTimeTableData,
     onFail: async () => {
       const student = await cache.getStudent();

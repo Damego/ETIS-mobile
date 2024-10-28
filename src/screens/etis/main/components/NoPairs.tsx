@@ -22,7 +22,6 @@ export default NoPairs;
 
 const styles = StyleSheet.create({
   view: {
-    backgroundColor: '#FEFEFE',
     width: '90%',
     alignSelf: 'center',
     marginTop: '4%',
