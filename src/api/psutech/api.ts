@@ -54,7 +54,7 @@ export const getAudienceTimetable = async (audienceId: number, week: number) => 
     params: { week },
   });
 
-  const {data} = res;
+  const { data } = res;
 
   data.weekInfo = data.week_info;
 
