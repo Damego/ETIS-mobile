@@ -65,6 +65,8 @@ export interface ISubject {
 }
 
 export interface IAudience {
+  // Идентификатор аудитории в ЕТИС. Доступно только в расписании аудитории
+  id?: number;
   // Необработанная строка аудитории
   string: string;
   // Номер аудитории
@@ -122,6 +124,9 @@ export interface ITimeTable {
 
   // Преподаватель. Только в расписании преподавателей
   teacher?: ITeacher;
+
+  // Аудитория. Только в расписании аудиторий
+  audience?: IAudience;
 
   // Доступно только для авторизованных студентов
   icalToken?: string;

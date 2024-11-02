@@ -51,11 +51,12 @@ const useTimetable = ({
 
   const updateData = (weekInfo: WeekInfo) => {
     if (preSelectedDate) {
-      setTimetable((prev) => ({
-        ...prev,
-        selectedDate: preSelectedDate,
+      setTimetable({
+        currentDate,
+        currentWeek,
+        selectedDate: preSelectedDate.clone(),
         selectedWeek: weekInfo.selected ?? selectedWeek,
-      }));
+      });
       preSelectedDate = null;
     } else if (weekInfo.selected !== null) {
       const startWeekDate = parseDate(weekInfo.dates.start);

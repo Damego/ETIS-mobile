@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { IAudience, ITimeTable } from '~/models/timeTable';
 
 import { IFaculty, IGroup, IPeriodWeek, ITeacher, PeriodTypes } from './types';
 
@@ -40,5 +41,22 @@ export const getPeriodWeek = async (
 
 export const getGroupById = async (groupId: string) => {
   const res = await inst.get<IGroup>(`/groups/${groupId}`);
+  return res.data;
+};
+
+export const searchAudience = async (query: string, building: string) => {
+  const res = await inst.get<IAudience[]>('/audience/search', { params: { query, building } });
+  return res.data;
+};
+
+export const getAudienceTimetable = async (audienceId: number, week: number) => {
+  const res = await inst.get<ITimeTable>(`/audience/${audienceId}/timetable/`, {
+    params: { week },
+  });
+
+  const {data} = res;
+
+  data.weekInfo = data.week_info;
+
   return res.data;
 };

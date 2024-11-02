@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import PagerView from 'react-native-pager-view';
 import CenteredText from '~/components/CenteredText';
 import TimetablePages from '~/components/timetable/dayTimetable/components/TimetablePages';
