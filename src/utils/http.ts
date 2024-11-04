@@ -529,7 +529,7 @@ class HTTPClient {
   }
 
   getDigitalResources() {
-    return this.request('GET', '/stu.electr')
+    return this.request('GET', '/stu.electr');
   }
 }
 
