@@ -34,7 +34,7 @@ export const parseDigitalResources = (html: string) => {
       name,
       login: password ? loginOrCode : undefined,
       password,
-      accessCode: !password ? loginOrCode : undefined,
+      accessCode: !password ? loginOrCode.split(':')[1] : undefined,
       url,
       category: currentCategory,
     });

@@ -67,8 +67,14 @@ const DigitalResources = () => {
               >
                 {resource.name}
               </ClickableText>
-              <Field value={resource.login} />
-              <Field value={resource.password} />
+              {resource.accessCode ? (
+                <Field value={resource.accessCode} />
+              ) : (
+                <>
+                  <Field value={resource.login} />
+                  <Field value={resource.password} />
+                </>
+              )}
             </Card>
           ))}
         </View>
