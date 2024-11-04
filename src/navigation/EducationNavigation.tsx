@@ -18,6 +18,7 @@ import CertificateTable from '~/screens/etis/certificate/CertificateTable';
 import RequestCertificate from '~/screens/etis/certificate/RequestCertificate';
 import ChangeEmail from '~/screens/etis/changeCredentials/ChangeEmail';
 import ChangePassword from '~/screens/etis/changeCredentials/ChangePassword';
+import DigitalResources from '~/screens/etis/digitalResources/DigitalResources';
 import DisciplineEducationalComplex from '~/screens/etis/disciplineEducationalComplex/DisciplineEducationalComplex';
 import DisciplineEducationalComplexTheme from '~/screens/etis/disciplineEducationalComplexTheme/DisciplineEducationalComplexTheme';
 import DisciplineInfo from '~/screens/etis/disciplineInfo/DisciplineInfo';
@@ -146,6 +147,11 @@ const EducationNavigation = () => {
             name={'AudienceTimetable'}
             component={AudienceTimetable}
             options={{ title: 'Расписание' }}
+          />
+          <Stack.Screen
+            name={'DigitalResources'}
+            component={DigitalResources}
+            options={{ title: 'Ресурсы' }}
           />
         </>
       )}

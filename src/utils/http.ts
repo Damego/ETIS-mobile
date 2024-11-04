@@ -527,6 +527,10 @@ class HTTPClient {
     // Не требует авторизацию
     return this.request('GET', '/stu.exam_que', { params });
   }
+
+  getDigitalResources() {
+    return this.request('GET', '/stu.electr')
+  }
 }
 
 const httpClient = new HTTPClient();

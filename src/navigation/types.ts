@@ -10,6 +10,7 @@ import { IDisciplineEducationalComplexThemeLink } from '~/models/disciplineEduca
 import { IMessage } from '~/models/messages';
 import { ITeachPlanDiscipline } from '~/models/teachPlan';
 import { IAudience, ILesson } from '~/models/timeTable';
+import DigitalResources from '~/screens/etis/digitalResources/DigitalResources';
 
 // Список экранов для основного стека
 export type RootStackParamList = {
@@ -109,6 +110,7 @@ export type EducationStackParamList = {
   CathedraTimetable: { teacherId?: string; cathedraId?: string };
   SelectAudience: undefined;
   AudienceTimetable: { audience: IAudience };
+  DigitalResources: undefined;
 };
 
 // Список экранов с нижними табами
