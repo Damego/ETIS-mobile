@@ -71,6 +71,13 @@ const SCREENS: ScreenT[][] = [
       screenName: 'SelectAudience',
     },
   ],
+  [
+    {
+      title: 'Электронные ресурсы',
+      icon: (color) => <AntDesign name={'copy1'} size={ICON_SIZE} color={color} />,
+      screenName: 'DigitalResources',
+    },
+  ],
 ];
 
 const ScreenButton = ({ screen }: { screen: ScreenT }) => {
