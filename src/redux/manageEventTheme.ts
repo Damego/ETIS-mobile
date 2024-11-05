@@ -1,6 +1,7 @@
 import { cache } from '~/cache/smartCache';
 import { ThemeType } from '~/styles/themes';
 import { isHalloween, isNewYear } from '~/utils/events';
+
 import { changeTheme, setEvents } from './reducers/settingsSlice';
 import { AppDispatch, AppStore } from './store';
 
