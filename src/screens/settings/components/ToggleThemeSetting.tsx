@@ -54,9 +54,9 @@ const ToggleThemeSetting = () => {
   const changeAppTheme = (selectedTheme: ThemeType) => {
     if (selectedTheme === ThemeType.newYear) {
       const $events = { ...events };
-      $events.newYear2024 = {
+      $events.newYear = {
         suggestedTheme: false,
-        previousTheme: events.newYear2024.previousTheme,
+        previousTheme: events.newYear.previousTheme,
       };
       dispatch(setEvents($events));
       cache.placeEvents($events);

@@ -1,4 +1,4 @@
-import { ThemeType } from '../styles/themes';
+import { ThemeType } from '~/styles/themes';
 
 export interface EventData {
   suggestedTheme: boolean;
@@ -6,8 +6,8 @@ export interface EventData {
 }
 
 export interface Events {
-  halloween2023?: EventData;
-  newYear2024?: EventData;
+  halloween?: EventData;
+  newYear?: EventData;
 }
 
 const isInDateRange = (startDate: Date, endDate: Date, checkCondition: 'and' | 'or' = 'and') => {
