@@ -126,12 +126,6 @@ export type ServicesNativeStackParamList = {
   // TODO: check Notion
 };
 
-// Список экранов для оценок с верхними табами
-export type SignsTopTabsParamsList = {
-  Points: undefined;
-  Rating: undefined;
-};
-
 // Типы параметров для экранов-компонентов (navigation, route)
 
 export type RootStackScreenProps<ScreenName extends keyof RootStackParamList = undefined> =
