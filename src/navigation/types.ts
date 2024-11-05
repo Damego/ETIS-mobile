@@ -9,7 +9,7 @@ import { IAvailableCertificate } from '~/models/certificate';
 import { IDisciplineEducationalComplexThemeLink } from '~/models/disciplineEducationalComplex';
 import { IMessage } from '~/models/messages';
 import { ITeachPlanDiscipline } from '~/models/teachPlan';
-import { ILesson } from '~/models/timeTable';
+import { IAudience, ILesson } from '~/models/timeTable';
 
 // Список экранов для основного стека
 export type RootStackParamList = {
@@ -107,6 +107,8 @@ export type EducationStackParamList = {
   ChangeEmail: { sendVerificationMail: boolean };
   // Расписание преподавателей/кафедр
   CathedraTimetable: { teacherId?: string; cathedraId?: string };
+  SelectAudience: undefined;
+  AudienceTimetable: { audience: IAudience };
 };
 
 // Список экранов с нижними табами

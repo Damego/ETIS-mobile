@@ -4,7 +4,12 @@ import { LessonTypes } from '~/models/other';
 
 export const getTextField = (component: cheerio.Cheerio): string => component.text().trim();
 
-export const parseDate = (date: string) => dayjs(date, 'DD.MM.YYYY');
+export const parseDate = (date: string) => {
+  if (date.length === 8) {
+    return dayjs(date, 'DD.MM.YY');
+  }
+  return dayjs(date, 'DD.MM.YYYY');
+};
 export const parseDatetime = (date: string) => dayjs(date, 'DD.MM.YYYY HH:mm:ss');
 
 export const getAsNumber = (str: string, defaultValue: number = null): number | null => {

@@ -65,6 +65,8 @@ export interface ISubject {
 }
 
 export interface IAudience {
+  // Идентификатор аудитории в ЕТИС. Доступно только в расписании аудитории
+  id?: number;
   // Необработанная строка аудитории
   string: string;
   // Номер аудитории
@@ -98,6 +100,15 @@ export interface ILesson {
   shortGroups?: string[];
 }
 
+export interface IEvent {
+  // Названия мероприятия
+  name: string;
+  // Контактная информация
+  contact_info: string;
+  // Подразделение, отвечающее за данное мероприятие
+  department: string;
+}
+
 export interface IPair {
   // Позиция пары
   position: number;
@@ -105,6 +116,9 @@ export interface IPair {
   time: string;
   // Список занятий на эту пару
   lessons: ILesson[];
+
+  // Мероприятие. Доступно только в расписании аудитории
+  event?: IEvent;
 }
 
 export interface ITimeTableDay {
@@ -122,6 +136,9 @@ export interface ITimeTable {
 
   // Преподаватель. Только в расписании преподавателей
   teacher?: ITeacher;
+
+  // Аудитория. Только в расписании аудиторий
+  audience?: IAudience;
 
   // Доступно только для авторизованных студентов
   icalToken?: string;
