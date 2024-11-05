@@ -45,6 +45,13 @@ const Pair = ({ pair }: { pair: IPair }) => {
             </React.Fragment>
           );
         })}
+        {pair.event && (
+          <View>
+            <Text style={styles.eventTitleText}>Мероприятие "{pair.event.name}"</Text>
+            <Text style={styles.eventNameText}>{pair.event.contact_info}</Text>
+            <Text style={styles.eventNameText}>{pair.event.department}</Text>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -71,5 +78,12 @@ const styles = StyleSheet.create({
   timeEndText: {
     fontSize: 16,
     color: '#808080',
+  },
+  eventTitleText: {
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  eventNameText: {
+    fontSize: 16,
   },
 });

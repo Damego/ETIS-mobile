@@ -100,6 +100,15 @@ export interface ILesson {
   shortGroups?: string[];
 }
 
+export interface IEvent {
+  // Названия мероприятия
+  name: string;
+  // Контактная информация
+  contact_info: string;
+  // Подразделение, отвечающее за данное мероприятие
+  department: string;
+}
+
 export interface IPair {
   // Позиция пары
   position: number;
@@ -107,6 +116,9 @@ export interface IPair {
   time: string;
   // Список занятий на эту пару
   lessons: ILesson[];
+
+  // Мероприятие. Доступно только в расписании аудитории
+  event?: IEvent;
 }
 
 export interface ITimeTableDay {

@@ -16,7 +16,7 @@ const Page = ({ day }: { day: ITimeTableDay }) => {
   return (
     <View style={styles.pairsList}>
       {!day.pairs.length && <NoPairs />}
-      {day.pairs.map((pair) => !!pair.lessons.length && <Pair pair={pair} key={pair.position} />)}
+      {day.pairs.map((pair) => (!!pair.lessons.length || !!pair.event) && <Pair pair={pair} key={pair.position} />)}
     </View>
   );
 };

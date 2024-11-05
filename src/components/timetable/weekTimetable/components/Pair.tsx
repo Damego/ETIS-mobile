@@ -37,6 +37,13 @@ const Pair = ({ pair, date }: { pair: IPair; date: dayjs.Dayjs }) => {
             />
           );
         })}
+        {pair.event && (
+          <View>
+            <Text style={styles.eventTitleText}>Мероприятие "{pair.event.name}"</Text>
+            <Text style={styles.eventNameText}>{pair.event.contact_info}</Text>
+            <Text style={styles.eventNameText}>{pair.event.department}</Text>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -99,4 +106,9 @@ const styles = StyleSheet.create({
     gap: 4,
     flexDirection: 'row',
   },
+  eventTitleText: {
+    ...fontSize.medium,
+    fontWeight: '500',
+  },
+  eventNameText: {},
 });
