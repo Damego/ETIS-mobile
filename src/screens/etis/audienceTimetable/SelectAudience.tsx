@@ -5,6 +5,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { searchAudience } from '~/api/psutech/api';
 import BorderLine from '~/components/BorderLine';
 import ClickableText from '~/components/ClickableText';
+import { LoadingContainer } from '~/components/LoadingScreen';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
@@ -21,7 +22,7 @@ const SelectAudience = ({ navigation }: EducationStackScreenProps) => {
   const [selectedAudience, setSelectedAudience] = React.useState<IAudience>(null);
   const [selectedBuilding, setSelectedBuilding] = React.useState(null);
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryFn: () => searchAudience(query, selectedBuilding),
     queryKey: ['aud-search', query, selectedBuilding],
   });
@@ -39,6 +40,8 @@ const SelectAudience = ({ navigation }: EducationStackScreenProps) => {
       <View style={styles.searchWrapper}>
         <SearchInput value={query} onValueChange={setQuery} />
       </View>
+
+      {isLoading && <LoadingContainer />}
 
       {data?.map((audience, index) => (
         <View key={audience.id}>
