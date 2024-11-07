@@ -42,7 +42,7 @@ const Field = ({ value }: { value: string }) => {
 
 const DigitalResources = () => {
   const client = useClient();
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refresh } = useQuery({
     method: client.getDigitalQuestions,
   });
 
@@ -53,7 +53,7 @@ const DigitalResources = () => {
   const grouped = groupItems(data, (item) => item.category);
 
   return (
-    <Screen containerStyle={{ gap: 16 }}>
+    <Screen containerStyle={{ gap: 16 }} onUpdate={refresh}>
       {grouped.map((resources) => (
         <View key={resources[0].category} style={{ gap: 8 }}>
           <Text style={[fontSize.big, { fontWeight: 'bold' }]}>{resources[0].category}</Text>

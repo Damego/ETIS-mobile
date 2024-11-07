@@ -15,7 +15,7 @@ const AudienceTimetable = ({ route }: EducationStackScreenProps<'AudienceTimetab
   const timetable = useTimetable({ onRequestUpdate: (week) => setFetchWeek(week) });
   const [fetchWeek, setFetchWeek] = React.useState<number>(timetable.selectedWeek);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryFn: () => getAudienceTimetable(audience.id, fetchWeek),
     queryKey: ['aud-timetable', fetchWeek, audience.id],
   });
@@ -27,7 +27,7 @@ const AudienceTimetable = ({ route }: EducationStackScreenProps<'AudienceTimetab
   }, [data]);
 
   return (
-    <Screen>
+    <Screen onUpdate={refetch}>
       {data && (
         <Text style={[fontSize.large, { fontWeight: 'bold', alignSelf: 'center' }]}>
           Аудитория: {data.audience.string}
