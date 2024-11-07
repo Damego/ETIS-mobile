@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import React from 'react';
 import { Text, View } from 'react-native';
 import { useGlobalStyles } from '~/hooks';

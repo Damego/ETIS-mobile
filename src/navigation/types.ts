@@ -10,7 +10,6 @@ import { IDisciplineEducationalComplexThemeLink } from '~/models/disciplineEduca
 import { IMessage } from '~/models/messages';
 import { ITeachPlanDiscipline } from '~/models/teachPlan';
 import { IAudience, ILesson } from '~/models/timeTable';
-import DigitalResources from '~/screens/etis/digitalResources/DigitalResources';
 
 // Список экранов для основного стека
 export type RootStackParamList = {
