@@ -28,7 +28,7 @@ export default {
         foregroundImage: './assets/adaptive-icon.png',
         backgroundColor: '#FFFFFF',
       },
-      package: 'dev.damego.etismobile',
+      package: IS_DEV ? 'dev.damego.etismobile' : 'com.damego.etismobile',
       playStoreUrl: 'https://play.google.com/store/apps/details?id=com.damego.etismobile',
       userInterfaceStyle: 'automatic',
       allowBackup: false,
