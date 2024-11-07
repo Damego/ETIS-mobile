@@ -3,7 +3,7 @@ import { IAudience, ITimeTable } from '~/models/timeTable';
 
 import { IFaculty, IGroup, IPeriodWeek, ITeacher, PeriodTypes } from './types';
 
-const BASE_URL = 'https://psutech.damego.ru/api/';
+const BASE_URL = 'https://psutech.damego.ru/api';
 
 const inst = axios.create({ baseURL: BASE_URL });
 
@@ -50,7 +50,7 @@ export const searchAudience = async (query: string, building: string) => {
 };
 
 export const getAudienceTimetable = async (audienceId: number, week: number) => {
-  const res = await inst.get<ITimeTable>(`/audience/${audienceId}/timetable/`, {
+  const res = await inst.get<ITimeTable>(`/audience/${audienceId}/timetable`, {
     params: { week },
   });
 
