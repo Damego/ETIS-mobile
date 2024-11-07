@@ -3,7 +3,7 @@ import { IAudience, ITimeTable } from '~/models/timeTable';
 
 import { IFaculty, IGroup, IPeriodWeek, ITeacher, PeriodTypes } from './types';
 
-const BASE_URL = "https://psutech.damego.ru/api/";
+const BASE_URL = 'https://psutech.damego.ru/api/';
 
 const inst = axios.create({ baseURL: BASE_URL });
 
