@@ -32,17 +32,15 @@ const Field = ({ value }: { value: string }) => {
         },
       ]}
     >
-      <Text>{value}</Text>
+      <Text selectable>{value}</Text>
       <TouchableOpacity onPress={copyValue}>
-        <Feather name={'copy'} size={18} />
+        <Feather name={'copy'} size={18} color={globalStyles.textColor.color} />
       </TouchableOpacity>
     </View>
   );
 };
 
 const DigitalResources = () => {
-  const globalStyles = useGlobalStyles();
-
   const client = useClient();
   const { data, isLoading } = useQuery({
     method: client.getDigitalQuestions,
