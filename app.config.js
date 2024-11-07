@@ -78,8 +78,6 @@ export default {
           android: {
             // Без этого билд будет крашиться
             extraMavenRepos: ['../../node_modules/@notifee/react-native/android/libs'],
-            enableProguardInReleaseBuilds: true,
-            extraProguardRules: '-keep public class com.horcrux.svg.** {*;}',
             allowBackup: false,
           },
         },
