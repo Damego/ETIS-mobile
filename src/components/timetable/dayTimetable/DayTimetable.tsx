@@ -60,11 +60,12 @@ const DayTimetable = ({
     { date, week }: { date?: dayjs.Dayjs; week?: number },
     mode: TimetableCalendarModes
   ) => {
-    if (mode === 'week' && date) {
+    if (date) {
       if (pagerRef.current) {
         pagerRef.current.setPage(date.weekday());
       }
-    } else onDatePress({ date, week });
+    }
+    onDatePress({ date, week });
   };
 
   const $startDate = useMemo(
