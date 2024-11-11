@@ -59,7 +59,7 @@ const ShortTeachPlan = () => {
     method: client.getTeachPlanData,
   });
   const currentSession = useAppSelector((state) => state.student.currentSession);
-  const [openedPeriod, setOpenedPeriod] = useState<number | null>(null);
+  const [openedPeriod, setOpenedPeriod] = useState<number>(currentSession);
 
   const handlePeriodPress = (period: number) => {
     setOpenedPeriod(($period) => {
