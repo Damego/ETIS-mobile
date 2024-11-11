@@ -22,7 +22,7 @@ export const searchTeachers = async (query: string): Promise<ITeacher[]> => {
 };
 
 export const getFaculties = async (): Promise<IFaculty[]> => {
-  const res = await inst.get('/faculties');
+  const res = await inst.get('/faculties/');
   return res.data;
 };
 
@@ -35,7 +35,7 @@ export const getPeriodWeek = async (
   periodType: PeriodTypes,
   year: number
 ): Promise<IPeriodWeek> => {
-  const res = await inst.get('/periods', { params: { period_type: periodType, year } });
+  const res = await inst.get('/periods/', { params: { period_type: periodType, year } });
   return res.data;
 };
 
