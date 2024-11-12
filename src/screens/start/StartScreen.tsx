@@ -6,6 +6,7 @@ import SafeAreaScreen from '~/components/SafeAreaScreen';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
 import { StartStackScreenProps } from '~/navigation/types';
+import AuthFooter from '~/screens/etis/auth/AuthFooter';
 import { fontSize } from '~/utils/texts';
 
 type UserType = 'teacher' | 'student';
@@ -65,11 +66,15 @@ const StartScreen = ({ navigation }: StartStackScreenProps) => {
         {renderButton('Я преподаватель', 'teacher')}
       </View>
 
-      {selectedType !== null && (
-        <View style={styles.buttonWrapper}>
-          <Button text={'Выбрать'} onPress={handleChoose} variant={'primary'} />
-        </View>
-      )}
+      <View style={{ marginTop: 'auto' }}>
+        {selectedType !== null && (
+          <View style={styles.buttonWrapper}>
+            <Button text={'Выбрать'} onPress={handleChoose} variant={'primary'} />
+          </View>
+        )}
+
+        <AuthFooter />
+      </View>
     </SafeAreaScreen>
   );
 };
