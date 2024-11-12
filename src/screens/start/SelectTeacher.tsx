@@ -7,6 +7,8 @@ import { ITeacher } from '~/api/psutech/types';
 import { cache } from '~/cache/smartCache';
 import BorderLine from '~/components/BorderLine';
 import ClickableText from '~/components/ClickableText';
+import { LoadingContainer } from '~/components/LoadingScreen';
+import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { useAppDispatch, useGlobalStyles } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
@@ -22,7 +24,7 @@ const SelectTeacherScreen = () => {
   const [selectedTeacher, setSelectedTeacher] = useState<ITeacher>(null);
 
   const [query, setQuery] = useState('');
-  const { data } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ['teachers', query],
     queryFn: () => searchTeachers(query),
   });
@@ -38,28 +40,32 @@ const SelectTeacherScreen = () => {
   };
 
   return (
-    <View style={styles.screenContainer}>
-      <View style={styles.searchWrapper}>
-        <SearchInput value={query} onValueChange={setQuery} />
-      </View>
-
-      {data?.map((teacher, index) => (
-        <View key={teacher.id}>
-          <ClickableText
-            onPress={handleTeacherSelect(teacher)}
-            viewStyle={styles.teacherItem}
-            textStyle={fontSize.medium}
-            iconRight={
-              teacher.id === selectedTeacher?.id && (
-                <AntDesign name={'checkcircle'} color={theme.colors.primary} size={20} />
-              )
-            }
-          >
-            {teacher.name}
-          </ClickableText>
-          {index !== data.length - 1 && <BorderLine />}
+    <>
+      <Screen onUpdate={refetch}>
+        <View style={styles.searchWrapper}>
+          <SearchInput value={query} onValueChange={setQuery} />
         </View>
-      ))}
+
+        {isLoading && <LoadingContainer variant={'texts'} />}
+
+        {data?.map((teacher, index) => (
+          <View key={teacher.id}>
+            <ClickableText
+              onPress={handleTeacherSelect(teacher)}
+              viewStyle={styles.teacherItem}
+              textStyle={fontSize.medium}
+              iconRight={
+                teacher.id === selectedTeacher?.id && (
+                  <AntDesign name={'checkcircle'} color={theme.colors.primary} size={20} />
+                )
+              }
+            >
+              {teacher.name}
+            </ClickableText>
+            {index !== data.length - 1 && <BorderLine />}
+          </View>
+        ))}
+      </Screen>
 
       {selectedTeacher !== null && (
         <TouchableOpacity
@@ -72,17 +78,13 @@ const SelectTeacherScreen = () => {
           <Text colorVariant={'primaryContrast'}>({selectedTeacher.name})</Text>
         </TouchableOpacity>
       )}
-    </View>
+    </>
   );
 };
 
 export default SelectTeacherScreen;
 
 const styles = StyleSheet.create({
-  screenContainer: {
-    marginHorizontal: '4%',
-    flex: 1,
-  },
   searchWrapper: {
     marginVertical: '5%',
   },
@@ -97,5 +99,6 @@ const styles = StyleSheet.create({
     right: 0,
     padding: '4%',
     alignItems: 'center',
+    marginHorizontal: '4%',
   },
 });

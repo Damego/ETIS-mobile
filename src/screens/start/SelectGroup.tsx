@@ -6,6 +6,7 @@ import { IGroup } from '~/api/psutech/types';
 import { cache } from '~/cache/smartCache';
 import BorderLine from '~/components/BorderLine';
 import ClickableText from '~/components/ClickableText';
+import { LoadingContainer } from '~/components/LoadingScreen';
 import { ListScreen } from '~/components/Screen';
 import Text from '~/components/Text';
 import { useAppDispatch, useGlobalStyles } from '~/hooks';
@@ -52,7 +53,7 @@ const SelectGroupScreen = ({ route }: StartStackScreenProps<'SelectGroup'>) => {
   const { facultyId } = route.params;
   const [selectedGroup, setSelectedGroup] = useState<IGroup>(null);
   const [query, setQuery] = useState('');
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['groups', query],
     queryFn: () => searchGroups(query, facultyId),
   });
@@ -74,6 +75,13 @@ const SelectGroupScreen = ({ route }: StartStackScreenProps<'SelectGroup'>) => {
       <View style={{ marginHorizontal: '4%' }}>
         <SearchInput value={query} onValueChange={processValue} autoCapitalize />
       </View>
+
+      {isLoading && (
+        <View style={{ flex: 1, marginHorizontal: '4%' }}>
+          {isLoading && <LoadingContainer variant={'texts'} />}
+        </View>
+      )}
+
       <ListScreen
         renderItem={({ item }) => (
           <GroupItem

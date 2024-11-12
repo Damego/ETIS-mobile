@@ -1,4 +1,3 @@
-import { AntDesign } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import { Image } from 'expo-image';
 import React, { useState } from 'react';
@@ -6,8 +5,8 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { getFaculties } from '~/api/psutech/api';
 import { IFaculty } from '~/api/psutech/types';
 import BorderLine from '~/components/BorderLine';
-import CenteredText from '~/components/CenteredText';
 import LoadingScreen from '~/components/LoadingScreen';
+import NoData from '~/components/NoData';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
@@ -44,7 +43,7 @@ const FacultyButton = React.memo(
 const SelectFacultyScreen = ({ navigation }: StartStackScreenProps) => {
   const globalStyles = useGlobalStyles();
   const [selectedFaculty, setSelectedFaculty] = useState<IFaculty>(null);
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ['faculties'],
     queryFn: getFaculties,
   });
@@ -53,9 +52,8 @@ const SelectFacultyScreen = ({ navigation }: StartStackScreenProps) => {
     navigation.navigate('SelectGroup', { facultyId: selectedFaculty.id });
   };
 
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
+  if (isLoading) return <LoadingScreen variant={'texts'} />;
+  if (!data) return <NoData onRefresh={refetch} />;
 
   return (
     <>
