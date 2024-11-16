@@ -34,11 +34,14 @@ const Stack = createStackNavigator<EducationStackParamList>();
 
 const EducationNavigation = () => {
   const { isSignedIn } = useAppSelector((state) => state.account);
+  const { iCalToken } = useAppSelector((state) => state.student);
   const theme = useAppTheme();
+
+  console.log('ical token in education nav', iCalToken);
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: true, ...headerParams(theme) }}>
-      {!isSignedIn ? (
+      {!isSignedIn && !iCalToken ? (
         <Stack.Screen name={'Auth'} component={Auth} options={{ title: 'Вход' }} />
       ) : (
         <>
