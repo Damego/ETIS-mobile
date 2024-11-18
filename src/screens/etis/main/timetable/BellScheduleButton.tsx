@@ -4,7 +4,7 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { useAppTheme } from '~/hooks/theme';
 
-import { EducationNavigationProp } from '../../../../navigation/types';
+import { EducationNavigationProp } from '~/navigation/types';
 
 const BellScheduleButton = () => {
   const navigation = useNavigation<EducationNavigationProp>();

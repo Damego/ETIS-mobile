@@ -7,7 +7,7 @@ import Text from '~/components/Text';
 import { useAppTheme } from '~/hooks/theme';
 import useTasks from '~/hooks/useTasks';
 
-import { EducationNavigationProp } from '../../../../navigation/types';
+import { EducationNavigationProp } from '~/navigation/types';
 
 const DisciplineTasksButton = () => {
   const currentDate = dayjs().startOf('day');
