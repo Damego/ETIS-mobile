@@ -12,7 +12,11 @@ const parseEmail = (script: string) => {
   const part2 = lines.at(-4).match(regex);
   const part1 = lines.at(-5).match(regex);
 
-  return partsToString(part1) + partsToString(part2);
+  const cursedEmail = partsToString(part1) + partsToString(part2);
+  return cursedEmail.replaceAll(/&#\d+;/g, (match) => {
+    const charCode = Number(match.slice(2, match.length - 1));
+    return String.fromCharCode(charCode);
+  });
 };
 
 export const parseTeacherContacts = (html: string): ITeacherContacts => {
@@ -25,9 +29,9 @@ export const parseTeacherContacts = (html: string): ITeacherContacts => {
     .get();
 
   const phones = [];
-  article.children('div').each((_, el) => {
+  article.contents().each((_, el) => {
     const text = $(el).text();
-    if (text.toLowerCase().includes('тел')) {
+    if (text.trim().toLowerCase().startsWith('тел')) {
       const matches = text.match(phoneRegex);
       phones.push(...matches.map((match) => match.trim()));
     }
