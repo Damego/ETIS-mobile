@@ -28,8 +28,8 @@ const DisciplineTasksButton = () => {
       style={{ justifyContent: 'center' }}
     >
       {tasks.length ? (
-        <View style={[styles.circle, { borderColor: theme.colors.primary }]}>
-          <Text style={[styles.text, { color: theme.colors.primary }]}>{tasks.length}</Text>
+        <View style={[styles.circle, { borderColor: theme.colors.text }]}>
+          <Text style={[styles.text, { color: theme.colors.text }]}>{tasks.length}</Text>
         </View>
       ) : (
         <AntDesign name="checkcircleo" size={24} color={theme.colors.text} />
