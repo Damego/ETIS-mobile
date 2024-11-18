@@ -17,9 +17,8 @@ export interface IBellScheduleBreak {
 
 export type IBellSchedule = IBellSchedulePair | IBellScheduleBreak;
 
-
 export enum BellScheduleModes {
   UNIVERSITY,
   LYCEUM,
-  SKI_BASE
+  SKI_BASE,
 }

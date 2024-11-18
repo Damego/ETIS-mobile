@@ -81,11 +81,7 @@ const BellSchedule = () => {
       <View style={styles.listView}>
         {array.map((item, index) =>
           item.type === BellScheduleTypes.PAIR ? (
-            <PairSchedule
-              schedule={item}
-              isPair={mode !== BellScheduleModes.LYCEUM}
-              key={index}
-            />
+            <PairSchedule schedule={item} isPair={mode !== BellScheduleModes.LYCEUM} key={index} />
           ) : (
             <BreakSchedule schedule={item} key={index} />
           )
