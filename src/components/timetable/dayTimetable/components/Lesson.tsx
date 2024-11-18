@@ -42,7 +42,10 @@ const Lesson = ({
       <Text style={styles.lessonNameText}>
         {lesson.subject.discipline ?? lesson.subject.string}
       </Text>
-      {lesson.subject.type && <DisciplineType type={lesson.subject.type} size={'small'} />}
+      <View style={styles.row}>
+        {lesson.subject.type && <DisciplineType type={lesson.subject.type} size={'small'} />}
+        <TaskBadge subject={lesson.subject} date={date} />
+      </View>
 
       {audience && (
         <View style={styles.row}>
@@ -64,7 +67,6 @@ const Lesson = ({
           {!!lesson.shortGroups?.length && <Text>{formatGroups(lesson.shortGroups)}</Text>}
         </View>
       )}
-      <TaskBadge subject={lesson.subject} date={date} />
     </TouchableOpacity>
   );
 };
