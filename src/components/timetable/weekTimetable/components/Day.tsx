@@ -10,8 +10,7 @@ import { ITimeTableDay } from '~/models/timeTable';
 import { ThemeType } from '~/styles/themes';
 import { fontSize } from '~/utils/texts';
 import { getRandomItem } from '~/utils/utils';
-
-import Pair from './Pair';
+import Pair from '~/components/timetable/dayTimetable/components/Pair';
 
 interface DayData {
   data: ITimeTableDay;
@@ -43,7 +42,8 @@ export const Day = React.memo(({ data, date }: DayData) => {
   }
 
   return (
-    <CardHeaderOut topText={dateString} topTextStyle={textStyle} style={cardStyle}>
+    <View style={cardStyle}>
+      <Text style={[fontSize.medium, { fontWeight: 'bold'}, textStyle]}>{dateString}</Text>
       {data.pairs.length === 0 ? (
         <View style={{ alignItems: 'center' }}>
           <Text style={{ ...fontSize.medium, fontWeight: '600' }}>{getRandomResponse(theme)}</Text>
@@ -51,11 +51,11 @@ export const Day = React.memo(({ data, date }: DayData) => {
       ) : (
         pairs.map((pair, index) => (
           <View key={index + pair.time}>
-            <Pair pair={pair} date={date} />
+            <Pair pair={pair} />
             {index !== pairs.length - 1 && <BorderLine />}
           </View>
         ))
       )}
-    </CardHeaderOut>
+    </View>
   );
 });
