@@ -51,7 +51,10 @@ const WeekTimeTable = ({
 }) => {
   const globalStyles = useGlobalStyles();
 
-  const contextData = useMemo(() => ({ teachers, currentDate }), [teachers, currentDate]);
+  const contextData = useMemo(
+    () => ({ teachers, currentDate, selectedDate }),
+    [teachers, currentDate, selectedDate]
+  );
 
   const shouldRenderNavigator = (!!firstWeek && !!lastWeek) || !!data;
 
