@@ -4,13 +4,13 @@ import { View } from 'react-native';
 import BorderLine from '~/components/BorderLine';
 import CardHeaderOut from '~/components/CardHeaderOut';
 import Text from '~/components/Text';
+import Pair from '~/components/timetable/dayTimetable/components/Pair';
 import TimeTableContext from '~/context/timetableContext';
 import { useAppSelector, useGlobalStyles } from '~/hooks';
 import { ITimeTableDay } from '~/models/timeTable';
 import { ThemeType } from '~/styles/themes';
 import { fontSize } from '~/utils/texts';
 import { getRandomItem } from '~/utils/utils';
-import Pair from '~/components/timetable/dayTimetable/components/Pair';
 
 interface DayData {
   data: ITimeTableDay;
@@ -42,19 +42,19 @@ export const Day = React.memo(({ data, date }: DayData) => {
   }
 
   return (
-    <View style={cardStyle}>
-      <Text style={[fontSize.medium, { fontWeight: 'bold'}, textStyle]}>{dateString}</Text>
+    <View style={[cardStyle, { gap: 10 }]}>
+      <Text style={[fontSize.medium, { fontWeight: 'bold' }, textStyle]}>{dateString}</Text>
       {data.pairs.length === 0 ? (
         <View style={{ alignItems: 'center' }}>
           <Text style={{ ...fontSize.medium, fontWeight: '600' }}>{getRandomResponse(theme)}</Text>
         </View>
       ) : (
-        pairs.map((pair, index) => (
-          <View key={index + pair.time}>
-            <Pair pair={pair} />
-            {index !== pairs.length - 1 && <BorderLine />}
-          </View>
-        ))
+        <View style={{ gap: 8 }}>
+          {pairs.map(
+            (pair, index) =>
+              (!!pair.lessons.length || !!pair.event) && <Pair pair={pair} key={index} />
+          )}
+        </View>
       )}
     </View>
   );
