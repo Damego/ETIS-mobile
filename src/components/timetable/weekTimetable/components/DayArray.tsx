@@ -66,7 +66,7 @@ const DayArray = ({ data, weekDates }: IDayArrayProps) => {
 
   return (
     <View style={{ gap: 8 }}>
-      {components.length !== 6 && (
+      {components.length < 6 && (
         <Button
           text={'Показать прошедшие дни'}
           onPress={showPastDays}

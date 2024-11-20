@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { View } from 'react-native';
 import BorderLine from '~/components/BorderLine';
 import CardHeaderOut from '~/components/CardHeaderOut';
@@ -9,8 +9,9 @@ import TimeTableContext from '~/context/timetableContext';
 import { useAppSelector, useGlobalStyles } from '~/hooks';
 import { ITimeTableDay } from '~/models/timeTable';
 import { ThemeType } from '~/styles/themes';
-import { fontSize } from '~/utils/texts';
+import { capitalizeWord, fontSize } from '~/utils/texts';
 import { getRandomItem } from '~/utils/utils';
+import { parseDate } from '~/parser/utils';
 
 interface DayData {
   data: ITimeTableDay;
@@ -26,7 +27,7 @@ const getRandomResponse = (appTheme: ThemeType) => {
 };
 
 export const Day = React.memo(({ data, date }: DayData) => {
-  const { date: dateString, pairs } = data;
+  const { pairs } = data;
   const {
     theme,
     ui: { highlightCurrentDay },
@@ -43,7 +44,7 @@ export const Day = React.memo(({ data, date }: DayData) => {
 
   return (
     <View style={[cardStyle, { gap: 10 }]}>
-      <Text style={[fontSize.medium, { fontWeight: 'bold' }, textStyle]}>{dateString}</Text>
+      <Text style={[fontSize.medium, { fontWeight: 'bold' }, textStyle]}>{capitalizeWord(date.format('dddd, DD MMMM'))}</Text>
       {data.pairs.length === 0 ? (
         <View style={{ alignItems: 'center' }}>
           <Text style={{ ...fontSize.medium, fontWeight: '600' }}>{getRandomResponse(theme)}</Text>
