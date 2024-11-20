@@ -77,7 +77,8 @@ const parseAudience = (stringAudience: string): IAudience => {
     floor: !Number.isNaN(Number(number[0])) ? number[0] : null,
   };
 };
-const generateNextDayDateString = (date: dayjs.Dayjs, value: number) => date.add(value, 'day').format('DD.MM.YYYY');
+const generateNextDayDateString = (date: dayjs.Dayjs, value: number) =>
+  date.add(value, 'day').format('DD.MM.YYYY');
 
 const parseTeachers = ($: cheerio.Root, table: cheerio.Cheerio) => {
   const teachers: ITeacherInfo[] = [];
@@ -193,7 +194,10 @@ export const parseGroupTimetable = (html: string): ITimeTable => {
       if (days.length - 1 !== dayIndex) {
         days.push({
           pairs: [],
-          date: dayIndex === 0 ? timetable.weekInfo.dates.start : generateNextDayDateString(date, dayIndex),
+          date:
+            dayIndex === 0
+              ? timetable.weekInfo.dates.start
+              : generateNextDayDateString(date, dayIndex),
         });
       }
       if (pair.lessons.length) days[dayIndex].pairs.push(pair);

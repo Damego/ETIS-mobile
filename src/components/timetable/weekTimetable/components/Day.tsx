@@ -8,10 +8,10 @@ import Pair from '~/components/timetable/dayTimetable/components/Pair';
 import TimeTableContext from '~/context/timetableContext';
 import { useAppSelector, useGlobalStyles } from '~/hooks';
 import { ITimeTableDay } from '~/models/timeTable';
+import { parseDate } from '~/parser/utils';
 import { ThemeType } from '~/styles/themes';
 import { capitalizeWord, fontSize } from '~/utils/texts';
 import { getRandomItem } from '~/utils/utils';
-import { parseDate } from '~/parser/utils';
 
 interface DayData {
   data: ITimeTableDay;
@@ -44,7 +44,9 @@ export const Day = React.memo(({ data, date }: DayData) => {
 
   return (
     <View style={[cardStyle, { gap: 10 }]}>
-      <Text style={[fontSize.medium, { fontWeight: 'bold' }, textStyle]}>{capitalizeWord(date.format('dddd, DD MMMM'))}</Text>
+      <Text style={[fontSize.medium, { fontWeight: 'bold' }, textStyle]}>
+        {capitalizeWord(date.format('dddd, DD MMMM'))}
+      </Text>
       {data.pairs.length === 0 ? (
         <View style={{ alignItems: 'center' }}>
           <Text style={{ ...fontSize.medium, fontWeight: '600' }}>{getRandomResponse(theme)}</Text>
