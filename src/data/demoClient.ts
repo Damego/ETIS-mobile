@@ -1,4 +1,5 @@
 import { IAbsence, IAbsenceSession } from '~/models/absences';
+import { IAnnounce } from '~/models/announce';
 import { ICalendarSchedule } from '~/models/calendarSchedule';
 import {
   ICathedraTimetable,
@@ -6,6 +7,7 @@ import {
   TimetableTypes,
 } from '~/models/cathedraTimetable';
 import { ICertificateResult } from '~/models/certificate';
+import { IDigitalResource } from '~/models/digitalResources';
 import { IMessagesData, MessageType } from '~/models/messages';
 import { IOrder } from '~/models/order';
 import { LessonTypes } from '~/models/other';
@@ -55,6 +57,7 @@ export default class DemoClient implements BaseClient {
 
   async getCertificateData(): Promise<IGetResult<ICertificateResult>> {
     return toResult({
+      availableCertificates: [],
       certificates: [
         {
           date: '01.01.2023',
@@ -248,10 +251,16 @@ export default class DemoClient implements BaseClient {
     return this.toResult(data);
   }
 
-  async getAnnounceData(): Promise<IGetResult<string[]>> {
-    const data = [
-      '\n<li><font color="#808080">02.09.2023 12:00:00</font><br>\n<font style="font-weight:bold">Тестовое объявление!</font><br>\n<br>Как уже неоднократно упомянуто, активно развивающиеся страны третьего мира, превозмогая сложившуюся непростую экономическую ситуацию, превращены в посмешище, хотя само их существование приносит несомненную пользу обществу.</b><br><br><br>Создатели ETIS Mobile</li>\n',
-      '\n<li><font color="#808080">01.09.2023 12:00:28</font><br>\n<font style="font-weight:bold">Другое тестовое объявление</font><br>\n<br>Современные технологии достигли такого уровня, что высококачественный прототип будущего проекта способствует повышению качества существующих финансовых и административных условий.</b><br><br><br>Создатели ETIS Mobile</li>\n',
+  async getAnnounceData(): Promise<IGetResult<IAnnounce[]>> {
+    const data: IAnnounce[] = [
+      {
+        isNew: true,
+        html: '\n<li><font color="#808080">02.09.2023 12:00:00</font><br>\n<font style="font-weight:bold">Тестовое объявление!</font><br>\n<br>Как уже неоднократно упомянуто, активно развивающиеся страны третьего мира, превозмогая сложившуюся непростую экономическую ситуацию, превращены в посмешище, хотя само их существование приносит несомненную пользу обществу.</b><br><br><br>Создатели ETIS Mobile</li>\n',
+      },
+      {
+        isNew: false,
+        html: '\n<li><font color="#808080">01.09.2023 12:00:28</font><br>\n<font style="font-weight:bold">Другое тестовое объявление</font><br>\n<br>Современные технологии достигли такого уровня, что высококачественный прототип будущего проекта способствует повышению качества существующих финансовых и административных условий.</b><br><br><br>Создатели ETIS Mobile</li>\n',
+      },
     ];
 
     return this.toResult(data);
@@ -612,32 +621,36 @@ export default class DemoClient implements BaseClient {
   async getTeachPlanData(): Promise<IGetResult<ISessionTeachPlan[]>> {
     const data: ISessionTeachPlan[] = [
       {
-        stringSession: '1 триместр',
+        period: {
+          string: '1 триместр',
+          number: 1,
+          name: 'триместр',
+        },
         disciplines: [
           {
             name: 'Математический анализ',
-            reporting: 'оценка',
+            reporting: 'Экзамен',
             classWorkHours: 500,
             soloWorkHours: 500,
             totalWorkHours: 1000,
           },
           {
             name: 'Комплексный анализ',
-            reporting: 'зачет',
+            reporting: 'Зачет',
             classWorkHours: 500,
             soloWorkHours: 500,
             totalWorkHours: 1000,
           },
           {
             name: 'Функциональный анализ',
-            reporting: 'зачет',
+            reporting: 'Зачет',
             classWorkHours: 500,
             soloWorkHours: 500,
             totalWorkHours: 1000,
           },
           {
             name: 'Нестандартный анализ',
-            reporting: 'зачет',
+            reporting: 'Зачет',
             classWorkHours: 500,
             soloWorkHours: 500,
             totalWorkHours: 1000,
@@ -838,5 +851,17 @@ export default class DemoClient implements BaseClient {
     });
 
     return this.toResult(data);
+  }
+
+  async getDigitalResources(payload): Promise<IGetResult<IDigitalResource[]>> {
+    return this.toResult([
+      {
+        category: 'Отечественные ресурсы',
+        name: 'ЕТИС',
+        login: 'login',
+        password: '12345678',
+        url: 'https://student.psu.ru',
+      },
+    ]);
   }
 }
