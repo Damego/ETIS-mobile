@@ -1,14 +1,14 @@
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import * as cheerio from 'cheerio';
 import CyrillicToTranslit from 'cyrillic-to-translit-js';
 import { documentDirectory, downloadAsync } from 'expo-file-system';
 import { getNetworkStateAsync } from 'expo-network';
+import { ICathedraTimetablePayload } from '~/models/cathedraTimetable';
+import { ICertificate } from '~/models/certificate';
+import { IDisciplineEducationalComplexPayload } from '~/models/disciplineEducationalComplex';
+import { UploadFile } from '~/models/other';
 
-import { ICathedraTimetablePayload } from '../models/cathedraTimetable';
-import { ICertificate } from '../models/certificate';
-import { UploadFile } from '../models/other';
 import { CertificateRequestPayload } from './certificate';
-import { PSU_URL } from './consts';
 import { getCurrentEducationYear } from './datetime';
 import { toURLSearchParams } from './encoding';
 import { SessionQuestionnairePayload } from './sessionTest';
@@ -48,18 +48,25 @@ export interface Response<T> {
   error?: HTTPError;
 }
 
+const PROXY_SERVER_URL = 'https://etisproxy0.damego.ru/student';
+
 class HTTPClient {
   private sessionID: string | null;
   private instance: AxiosInstance;
+  private readonly siteSuffix: string = '/pls/stu_cus_et';
+  private readonly siteURL: string = 'https://student.psu.ru';
   private readonly baseURL: string;
-  private readonly siteURL: string;
+  private useProxy: boolean;
 
   constructor() {
     this.sessionID = null;
-    this.siteURL = 'https://student.psu.ru';
-    this.baseURL = `${this.siteURL}/pls/stu_cus_et`;
+    this.baseURL = `${this.siteURL}${this.siteSuffix}`;
+    this.createAxiosInstance();
+  }
+
+  private createAxiosInstance() {
     this.instance = axios.create({
-      baseURL: this.baseURL,
+      baseURL: this.useProxy ? `${PROXY_SERVER_URL}${this.siteSuffix}` : this.baseURL,
       headers: {
         'User-Agent': getRandomUserAgent(),
       },
@@ -67,11 +74,7 @@ class HTTPClient {
   }
 
   getSiteURL() {
-    return this.siteURL;
-  }
-
-  getBaseURL() {
-    return this.baseURL;
+    return this.useProxy ? PROXY_SERVER_URL : this.siteURL;
   }
 
   getSessionID() {
@@ -86,6 +89,14 @@ class HTTPClient {
       console.warn('[HTTP] Cannot get network state');
       return true;
     }
+  }
+
+  private async detectNetworkIssue(error: AxiosError) {
+    return (
+      error.message === 'Network Error' &&
+      error.code === 'ERR_NETWORK' &&
+      (await this.isInternetReachable())
+    );
   }
 
   async request(
@@ -127,11 +138,13 @@ class HTTPClient {
       Cookie: this.sessionID,
     };
 
+    let $data;
     if (data) {
       if (data instanceof FormData) {
         headers['Content-Type'] = 'multipart/form-data';
+        $data = data;
       } else {
-        data = toURLSearchParams(data);
+        $data = toURLSearchParams(data);
       }
     }
 
@@ -141,13 +154,22 @@ class HTTPClient {
         method,
         headers,
         params,
-        data,
+        data: $data,
       });
       return {
         data: returnResponse ? response : response.data,
       };
     } catch (e) {
       console.warn('[HTTP]', e);
+
+      // https://github.com/Damego/ETIS-mobile/issues/168
+      if (!this.useProxy && (await this.detectNetworkIssue(e))) {
+        console.warn('[HTTP] Detected network issue. Switching to proxy server.');
+        this.useProxy = true;
+        this.createAxiosInstance();
+        return await this.request(method, endpoint, { params, data, returnResponse });
+      }
+
       return {
         error: {
           code: ErrorCode.invalidConnection,
@@ -184,7 +206,7 @@ class HTTPClient {
     isInvisibleRecaptcha: boolean
   ): Promise<Response<AxiosResponse | null>> {
     const data = {
-      p_redirect: '/stu.timetable',
+      p_redirect: '/stu.blank_page',
       p_username: username.trim(),
       p_password: password.trim(),
       p_recaptcha_ver: isInvisibleRecaptcha ? '3' : '2',
@@ -435,17 +457,79 @@ class HTTPClient {
     return this.request('GET', '/tt_pkg.show_prep', { params });
   }
 
-  /*
-  Возвращает ссылку на результат поиска по запросу на сайте ПГНИУ
-  */
-  getSearchPageURL(query: string) {
-    const url = new URL(`${PSU_URL}/poisk`);
-    url.searchParams.append('searchword', query);
-    url.searchParams.append('ordering', 'popular');
-    url.searchParams.append('searchphrase', 'exact');
-    url.searchParams.append('limit', '10');
+  getGroupTimetable({
+    groupId,
+    facultyId,
+    course,
+    period,
+    year,
+    week,
+  }: {
+    groupId: string;
+    facultyId: string;
+    course: number;
+    period: number;
+    year: number;
+    week: number;
+  }) {
+    const params = {
+      // Непонятная фигня, которая остаётся постоянной для всех групп
+      P_FOE_ID: '1',
+      P_TEDP_ID: '1',
+      P_LANG: 'N',
+      P_JOU: 'N',
 
-    return url.toString();
+      P_DIV_ID: facultyId,
+      P_COURSE: course,
+      P_TERM: period,
+      P_TY_ID: year,
+      P_NG_ID: groupId,
+      P_TW: week,
+    };
+
+    return this.request('GET', '/tt_pkg.tt_show_for_stu', { params });
+  }
+
+  getDisciplineEducationalComplex({
+    disciplineId,
+    disciplineTeachPlanId,
+  }: IDisciplineEducationalComplexPayload) {
+    const params = {
+      p_tpr_id: disciplineId, // id дисциплины
+      p_tpdl_id: disciplineTeachPlanId, // id учебного плана дисциплины
+      p_mode: 'no', // Режим отображения? На сайте стоит STU, но если поставить что-то другое, то выдаёт "чистую" версию страницы.
+      // При этом не требуется авторизация в ЕТИС
+      // Имеется режим CUS
+    };
+    return this.request('GET', '/stu.tpr', { params });
+  }
+
+  getDisciplineEducationalComplexTheme({
+    disciplineTeachPlanId,
+    themeId,
+  }: {
+    disciplineTeachPlanId: string;
+    themeId: string;
+  }) {
+    const params = {
+      p_tpdl_id: disciplineTeachPlanId, // id дисциплины
+      p_tc_id: themeId, // id темы,
+      p_mode: 'no',
+    };
+    return this.request('GET', '/stu.theme', { params });
+  }
+
+  getExamQuestions(id: string) {
+    const params = {
+      p_dfc_id: id,
+    };
+
+    // Не требует авторизацию
+    return this.request('GET', '/stu.exam_que', { params });
+  }
+
+  getDigitalResources() {
+    return this.request('GET', '/stu.electr');
   }
 }
 

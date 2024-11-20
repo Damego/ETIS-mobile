@@ -8,9 +8,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { fontSize } from '~/utils/texts';
 
 import { useGlobalStyles } from '../hooks';
-import { fontSize } from '../utils/texts';
 import ClickableText from './ClickableText';
 
 const defaultStyles = StyleSheet.create({
@@ -18,6 +18,7 @@ const defaultStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: '2%',
+    borderRadius: 50,
   },
 });
 
@@ -38,33 +39,25 @@ const Button = React.forwardRef<View | Text | TouchableOpacity, ButtonProps>(
       primary: {
         textColor: globalStyles.textColor.color,
         text: [
-          globalStyles.fontColorForPrimary,
+          globalStyles.primaryContrastText,
           { fontWeight: '500' },
           fontStyle || fontSize.xlarge,
         ],
-        view: [
-          defaultStyles.container,
-          globalStyles.primaryBackgroundColor,
-          globalStyles.borderRadius,
-        ],
+        view: [defaultStyles.container, globalStyles.primaryBackgroundColor],
       },
       secondary: {
         textColor: globalStyles.textColor.color,
         text: [
-          globalStyles.fontColorForSecondary,
+          globalStyles.secondaryContrastText,
           { fontWeight: '500' },
           fontStyle || fontSize.xlarge,
         ],
-        view: [
-          defaultStyles.container,
-          globalStyles.secondaryBackgroundColor,
-          globalStyles.borderRadius,
-        ],
+        view: [defaultStyles.container, globalStyles.secondaryBackgroundColor],
       },
       card: {
-        textColor: globalStyles.fontColorForBlock.color,
-        text: [globalStyles.fontColorForBlock, { fontWeight: '500' }, fontStyle || fontSize.xlarge],
-        view: [defaultStyles.container, globalStyles.block, globalStyles.border],
+        textColor: globalStyles.textColor.color,
+        text: [globalStyles.textColor, { fontWeight: '500' }, fontStyle || fontSize.xlarge],
+        view: [defaultStyles.container, { backgroundColor: globalStyles.card.backgroundColor }],
       },
     };
 

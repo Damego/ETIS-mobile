@@ -1,68 +1,62 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-
-import { cache } from '../../../cache/smartCache';
-import Dropdown from '../../../components/Dropdown';
-import Text from '../../../components/Text';
-import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { changeTheme, setEvents } from '../../../redux/reducers/settingsSlice';
-import { ThemeType, isNewYearTheme } from '../../../styles/themes';
-import { isHalloween, isNewYear } from '../../../utils/events';
-import { fontSize } from '../../../utils/texts';
+import { Octicons } from '@expo/vector-icons';
+import React, { useRef } from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { cache } from '~/cache/smartCache';
+import BottomSheetModal from '~/components/BottomSheetModal';
+import Text from '~/components/Text';
+import OptionsBottomSheet from '~/components/bottomSheets/OptionsBottomSheet';
+import { useAppDispatch, useAppSelector } from '~/hooks';
+import { useAppTheme } from '~/hooks/theme';
+import { changeTheme, setEvents } from '~/redux/reducers/settingsSlice';
+import { ThemeType } from '~/styles/themes';
+import { fontSize } from '~/utils/texts';
 
 const options = [
   {
     label: 'Автоматическая',
     value: ThemeType.auto,
+    isCurrent: false,
   },
   {
     label: 'Светлая',
     value: ThemeType.light,
+    isCurrent: false,
   },
   {
     label: 'Тёмная',
     value: ThemeType.dark,
+    isCurrent: false,
   },
   {
     label: 'Чёрная',
     value: ThemeType.black,
+    isCurrent: false,
   },
 ];
-
-if (isHalloween())
-  options.push({
-    label: 'Хэллоуин',
-    value: ThemeType.halloween,
-  });
-
-if (isNewYear())
-  options.push({
-    label: 'Новогодняя',
-    value: ThemeType.newYear,
-  });
 
 const styles = StyleSheet.create({
   cardView: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    gap: 8,
   },
   settingTitle: {
     ...fontSize.medium,
-    fontWeight: '500',
   },
 });
 
 const ToggleThemeSetting = () => {
   const dispatch = useAppDispatch();
   const { events, theme: themeType } = useAppSelector((state) => state.settings.config);
+  const modalRef = useRef<BottomSheetModal>();
+  const theme = useAppTheme();
 
   const changeAppTheme = (selectedTheme: ThemeType) => {
     if (selectedTheme === ThemeType.newYear) {
       const $events = { ...events };
-      $events.newYear2024 = {
+      $events.newYear = {
         suggestedTheme: false,
-        previousTheme: events.newYear2024.previousTheme,
+        previousTheme: events.newYear.previousTheme,
       };
       dispatch(setEvents($events));
       cache.placeEvents($events);
@@ -72,20 +66,21 @@ const ToggleThemeSetting = () => {
     }
   };
 
-  const getCurrentTheme = () => {
-    const $themeType = isNewYearTheme(themeType) ? ThemeType.newYear : themeType;
-    return options.find((option) => option.value === $themeType);
-  };
-
   return (
-    <View style={styles.cardView}>
-      <Text style={styles.settingTitle} colorVariant={'block'}>
-        Тема
+    <TouchableOpacity style={styles.cardView} onPress={() => modalRef.current.present()}>
+      <Octicons name={'paintbrush'} size={22} color={theme.colors.text} />
+      <Text style={styles.settingTitle}>Тема</Text>
+      <Text style={[styles.settingTitle, { marginLeft: 'auto' }]}>
+        {options.find((opt) => opt.value === themeType).label}
       </Text>
-      <View style={{ width: '60%' }}>
-        <Dropdown options={options} selectedOption={getCurrentTheme()} onSelect={changeAppTheme} />
-      </View>
-    </View>
+
+      <OptionsBottomSheet
+        ref={modalRef}
+        options={options}
+        onOptionPress={changeAppTheme}
+        currentOptionValue={themeType}
+      />
+    </TouchableOpacity>
   );
 };
 

@@ -1,7 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-
-import { ThemeType } from '../../styles/themes';
-import { Events } from '../../utils/events';
+import { ThemeType } from '~/styles/themes';
+import { Events } from '~/utils/events';
 
 export enum PageType {
   timeTable = 'Timetable',
@@ -10,13 +9,20 @@ export enum PageType {
   announces = 'Announces',
 }
 
+export enum TimetableModes {
+  days,
+  weeks,
+}
+
 export interface CacheMigrations {
   v1_3_0?: boolean;
 }
 
 export interface UIConfig {
+  timetableMode: TimetableModes;
   showPastWeekDays: boolean;
   highlightCurrentDay: boolean;
+  skipSunday: boolean;
 }
 
 export interface AppConfig {
@@ -45,8 +51,10 @@ const initialConfig: AppConfig = {
   sentryEnabled: true,
   events: {},
   ui: {
+    timetableMode: TimetableModes.days,
     showPastWeekDays: true,
     highlightCurrentDay: false,
+    skipSunday: true,
   },
   cacheMigrations: {},
   reviewStep: 'pending',

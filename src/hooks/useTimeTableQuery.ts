@@ -1,19 +1,30 @@
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
+import { cache } from '~/cache/smartCache';
+import { useClient } from '~/data/client';
+import { GetResultType, IGetResult, RequestType } from '~/models/results';
+import { ITimeTable } from '~/models/timeTable';
+import { setCurrentWeek } from '~/redux/reducers/studentSlice';
 
-import { cache } from '../cache/smartCache';
-import { useClient } from '../data/client';
-import { GetResultType, RequestType } from '../models/results';
-import { setCurrentWeek } from '../redux/reducers/studentSlice';
 import { useAppDispatch, useAppSelector } from './redux';
 import useQuery from './useQuery';
 
-const useTimeTableQuery = () => {
+const useTimeTableQuery = ({
+  afterCallback,
+  week,
+}: {
+  afterCallback?: (result: IGetResult<ITimeTable>) => void;
+  week?: number;
+}) => {
   const dispatch = useAppDispatch();
   const client = useClient();
   const fetchedWeeks = useRef<number[]>([]);
   const { currentWeek } = useAppSelector((state) => state.student);
 
   const { data, isLoading, update, refresh } = useQuery({
+    payload: {
+      data: week,
+      requestType: RequestType.tryFetch,
+    },
     method: client.getTimeTableData,
     onFail: async () => {
       const student = await cache.getStudent();
@@ -43,20 +54,30 @@ const useTimeTableQuery = () => {
       if (!fetchedWeeks.current.includes(selectedWeek)) {
         fetchedWeeks.current.push(selectedWeek);
       }
+      afterCallback?.(result);
     },
   });
 
-  const loadWeek = (week: number) => {
-    update({
-      requestType:
-        (data && week < currentWeek) || fetchedWeeks.current.includes(week)
-          ? RequestType.tryCache
-          : RequestType.tryFetch,
-      data: week,
-    });
-  };
+  const loadWeek = useCallback(
+    (week: number) => {
+      update({
+        requestType:
+          (data && week < currentWeek) || fetchedWeeks.current.includes(week)
+            ? RequestType.tryCache
+            : RequestType.tryFetch,
+        data: week,
+      });
+    },
+    [data, currentWeek, fetchedWeeks.current, update]
+  );
 
-  return { data, isLoading, loadWeek, currentWeek, refresh };
+  return {
+    data,
+    isLoading,
+    loadWeek,
+    currentWeek,
+    refresh,
+  };
 };
 
 export default useTimeTableQuery;

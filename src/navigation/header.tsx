@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleProp, TextStyle } from 'react-native';
-
-import { ITheme } from '../styles/themes';
+import { ITheme } from '~/styles/themes';
 
 export type HeaderParamList = {
   /**
@@ -10,6 +9,9 @@ export type HeaderParamList = {
    */
   headerStyle?: StyleProp<{
     backgroundColor?: string;
+    borderRadius?: number;
+    borderBottomEndRadius?: number;
+    borderBottomStartRadius?: number;
   }>;
   /**
    * Function which returns a React Element to render as the background of the header.
@@ -54,17 +56,35 @@ export type HeaderParamList = {
    * Whether to show the shadow of the header
    */
   headerShadowVisible?: boolean;
+  headerTitleAlign?: 'left' | 'center';
 };
 
 export const headerParams = (theme: ITheme): HeaderParamList => ({
   headerStyle: {
-    backgroundColor: 'transparent',
+    backgroundColor: theme.colors.background,
+    borderBottomEndRadius: 30,
+    borderBottomStartRadius: 30,
   },
   headerTitleStyle: {
-    color: theme.colors.primary,
-    fontWeight: '600',
-    fontSize: 24,
+    color: theme.colors.text,
+    fontSize: 30,
+    fontFamily: 'Ubuntu-Bold',
   },
-  headerBackground: null,
   headerShadowVisible: false,
+  headerTitleAlign: 'center',
 });
+
+export const progressiveHeaderShadowStyle = (theme: ITheme, offset: number) => {
+  return {
+    ...headerParams(theme).headerStyle,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.0,
+
+    elevation: offset,
+  };
+};

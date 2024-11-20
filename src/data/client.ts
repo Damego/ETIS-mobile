@@ -1,23 +1,33 @@
 import { useMemo } from 'react';
-
-import { cache } from '../cache/smartCache';
-import { useAppSelector } from '../hooks';
-import { IAbsence } from '../models/absences';
-import { ICalendarSchedule } from '../models/calendarSchedule';
-import { ICathedraTimetable, ICathedraTimetablePayload } from '../models/cathedraTimetable';
-import { ICertificateTable } from '../models/certificate';
-import { IMessagesData } from '../models/messages';
-import { IOrder } from '../models/order';
-import { IPersonalRecord } from '../models/personalRecords';
-import { IPointUpdates } from '../models/pointUpdates';
-import { ISessionRating } from '../models/rating';
-import { IGetPayload, IGetResult } from '../models/results';
-import { ISessionMarks } from '../models/sessionMarks';
-import { ISessionPoints } from '../models/sessionPoints';
-import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
-import { ISessionTeachPlan } from '../models/teachPlan';
-import { ITeacher } from '../models/teachers';
-import { ITimeTable } from '../models/timeTable';
+import { cache } from '~/cache/smartCache';
+import { useAppSelector } from '~/hooks';
+import { IAbsence } from '~/models/absences';
+import { IAnnounce } from '~/models/announce';
+import { ICalendarSchedule } from '~/models/calendarSchedule';
+import { ICathedraTimetable, ICathedraTimetablePayload } from '~/models/cathedraTimetable';
+import { ICertificateResult } from '~/models/certificate';
+import { IDigitalResource } from '~/models/digitalResources';
+import {
+  IDisciplineEducationalComplex,
+  IDisciplineEducationalComplexPayload,
+} from '~/models/disciplineEducationalComplex';
+import {
+  IDisciplineEducationalComplexTheme,
+  IDisciplineEducationalComplexThemePayload,
+} from '~/models/disciplineEducationalComplexTheme';
+import { IGroupTimetablePayload } from '~/models/groupTimetable';
+import { IMessagesData } from '~/models/messages';
+import { IOrder } from '~/models/order';
+import { IPersonalRecord } from '~/models/personalRecords';
+import { IPointUpdates } from '~/models/pointUpdates';
+import { ISessionRating } from '~/models/rating';
+import { IGetPayload, IGetResult } from '~/models/results';
+import { ISessionMarks } from '~/models/sessionMarks';
+import { ISessionPoints } from '~/models/sessionPoints';
+import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '~/models/sessionQuestionnaire';
+import { ISessionTeachPlan } from '~/models/teachPlan';
+import { ITeacher } from '~/models/teachers';
+import { ITimeTable } from '~/models/timeTable';
 import {
   parseAbsenses,
   parseAnnounce,
@@ -28,31 +38,37 @@ import {
   parseShortTeachPlan,
   parseTeachers,
   parseTimeTable,
-} from '../parser';
-import parseCalendarSchedule from '../parser/calendar';
-import parseCathedraTimetable from '../parser/cathedraTimetable';
-import { parseCertificateTable } from '../parser/certificate';
-import { StudentInfo } from '../parser/menu';
-import parseOrders from '../parser/order';
-import parsePersonalRecords from '../parser/personalRecords';
-import parsePointUpdates from '../parser/pointUpdates';
-import parseRating from '../parser/rating';
-import parseSessionQuestionnaire from '../parser/sessionQuestionnaire';
-import parseSessionQuestionnaireList from '../parser/sessionQuestionnaireList';
-import { httpClient } from '../utils';
-import bind from '../utils/methodBinder';
+} from '~/parser';
+import parseCalendarSchedule from '~/parser/calendar';
+import parseCathedraTimetable from '~/parser/cathedraTimetable';
+import { parseCertificateTable } from '~/parser/certificate';
+import { parseDigitalResources } from '~/parser/digitalResources';
+import { parseDisciplineEducationalComplex } from '~/parser/disciplineEducationalComplex';
+import { parseDisciplineEducationalComplexTheme } from '~/parser/disciplineEducationalComplexTheme';
+import { parseExamQuestions } from '~/parser/examQuestions';
+import { parseGroupTimetable } from '~/parser/groupTimetable';
+import { StudentInfo } from '~/parser/menu';
+import parseOrders from '~/parser/order';
+import parsePersonalRecords from '~/parser/personalRecords';
+import parsePointUpdates from '~/parser/pointUpdates';
+import parseRating from '~/parser/rating';
+import parseSessionQuestionnaire from '~/parser/sessionQuestionnaire';
+import parseSessionQuestionnaireList from '~/parser/sessionQuestionnaireList';
+import { httpClient } from '~/utils';
+import bind from '~/utils/methodBinder';
+
 import { BaseClient, BasicClient } from './base';
 import DemoClient from './demoClient';
 
 export const useClient: () => BaseClient = () => {
-  const { isDemo } = useAppSelector((state) => state.auth);
+  const { isDemo } = useAppSelector((state) => state.account);
   return useMemo(() => (isDemo ? new DemoClient() : new Client()), [isDemo]);
 };
 
 const emptyFunction = <T>() => undefined as T;
 
 class AbsencesClient extends BasicClient<IGetPayload<number>, IAbsence> {}
-class AnnounceClient extends BasicClient<IGetPayload, string[]> {}
+class AnnounceClient extends BasicClient<IGetPayload, IAnnounce[]> {}
 class TimeTableClient extends BasicClient<IGetPayload<number>, ITimeTable> {}
 class MessageClient extends BasicClient<IGetPayload<number>, IMessagesData> {}
 class OrderClient extends BasicClient<IGetPayload, IOrder[]> {}
@@ -64,7 +80,7 @@ class StudentClient extends BasicClient<IGetPayload, StudentInfo> {}
 class TeachersClient extends BasicClient<IGetPayload, ITeacher[]> {}
 class TeachPlanClient extends BasicClient<IGetPayload, ISessionTeachPlan[]> {}
 class CalendarScheduleClient extends BasicClient<IGetPayload, ICalendarSchedule> {}
-class CertificateClient extends BasicClient<IGetPayload, ICertificateTable> {}
+class CertificateClient extends BasicClient<IGetPayload, ICertificateResult> {}
 class SessionQuestionnaireClient extends BasicClient<IGetPayload<string>, ISessionQuestionnaire> {}
 class SessionQuestionnaireListClient extends BasicClient<
   IGetPayload<string>,
@@ -75,6 +91,17 @@ class CathedraTimetableClient extends BasicClient<
   IGetPayload<ICathedraTimetablePayload>,
   ICathedraTimetable
 > {}
+class GroupTimetableClient extends BasicClient<IGetPayload<IGroupTimetablePayload>, ITimeTable> {}
+class DisciplineEducationalComplexClient extends BasicClient<
+  IGetPayload<IDisciplineEducationalComplexPayload>,
+  IDisciplineEducationalComplex
+> {}
+class DisciplineEducationalComplexThemeClient extends BasicClient<
+  IGetPayload<IDisciplineEducationalComplexThemePayload>,
+  IDisciplineEducationalComplexTheme
+> {}
+class ExamQuestionsClient extends BasicClient<IGetPayload<string>, string> {}
+class DigitalResourcesClient extends BasicClient<IGetPayload, IDigitalResource[]> {}
 
 export default class Client implements BaseClient {
   private absencesClient: AbsencesClient;
@@ -95,6 +122,11 @@ export default class Client implements BaseClient {
   private sessionQuestionnaireListClient: SessionQuestionnaireListClient;
   private personalRecordsClient: PersonalRecordsClient;
   private cathedraTimetableClient: CathedraTimetableClient;
+  private groupTimetableClient: GroupTimetableClient;
+  private disciplineEducationalComplexClient: DisciplineEducationalComplexClient;
+  private disciplineEducationalComplexThemeClient: DisciplineEducationalComplexThemeClient;
+  private digitalResourcesClient: DigitalResourcesClient;
+  private examQuestionsClient: ExamQuestionsClient;
 
   constructor() {
     this.absencesClient = new AbsencesClient(
@@ -200,10 +232,40 @@ export default class Client implements BaseClient {
       (data) => cache.placePersonalRecords(data)
     );
     this.cathedraTimetableClient = new CathedraTimetableClient(
-      emptyFunction,
+      (payload) => cache.getCathedraTimetable(payload.data),
       (payload) => httpClient.getCathedraTimetable(payload.data),
       parseCathedraTimetable,
+      (data, payload) => cache.placeCathedraTimetable(payload.data, data)
+    );
+    this.groupTimetableClient = new GroupTimetableClient(
+      (payload) => cache.getGroupTimetable(payload.data),
+      (payload) => httpClient.getGroupTimetable(payload.data),
+      parseGroupTimetable,
+      (data, payload) => cache.placeGroupTimetable(payload.data, data)
+    );
+    this.disciplineEducationalComplexClient = new DisciplineEducationalComplexClient(
+      (payload) => cache.getDisciplineEducationalComplex(payload.data),
+      (payload) => httpClient.getDisciplineEducationalComplex(payload.data),
+      parseDisciplineEducationalComplex,
+      (data, payload) => cache.placeDisciplineEducationalComplex(payload.data, data)
+    );
+    this.disciplineEducationalComplexThemeClient = new DisciplineEducationalComplexThemeClient(
+      (payload) => cache.getDisciplineEducationalComplexTheme(payload.data),
+      (payload) => httpClient.getDisciplineEducationalComplexTheme(payload.data),
+      parseDisciplineEducationalComplexTheme,
+      (data, payload) => cache.placeDisciplineEducationalComplexTheme(payload.data, data)
+    );
+    this.examQuestionsClient = new ExamQuestionsClient(
+      emptyFunction,
+      (payload) => httpClient.getExamQuestions(payload.data),
+      parseExamQuestions,
       emptyFunction
+    );
+    this.digitalResourcesClient = new DigitalResourcesClient(
+      () => cache.getDigitalResources(),
+      () => httpClient.getDigitalResources(),
+      parseDigitalResources,
+      (data) => cache.placeDigitalResources(data)
     );
 
     bind(this, Client);
@@ -214,7 +276,7 @@ export default class Client implements BaseClient {
     return this.absencesClient.getData(payload);
   }
 
-  async getAnnounceData(payload: IGetPayload): Promise<IGetResult<string[]>> {
+  async getAnnounceData(payload: IGetPayload): Promise<IGetResult<IAnnounce[]>> {
     await cache.announce.init();
     return this.announceClient.getData(payload);
   }
@@ -273,7 +335,7 @@ export default class Client implements BaseClient {
     return this.calendarScheduleClient.getData(payload);
   }
 
-  async getCertificateData(payload: IGetPayload): Promise<IGetResult<ICertificateTable>> {
+  async getCertificateData(payload: IGetPayload): Promise<IGetResult<ICertificateResult>> {
     await cache.certificate.init();
     return this.certificateClient.getData(payload);
   }
@@ -298,5 +360,29 @@ export default class Client implements BaseClient {
     payload: IGetPayload<ICathedraTimetablePayload>
   ): Promise<IGetResult<ICathedraTimetable>> {
     return this.cathedraTimetableClient.getData(payload);
+  }
+
+  getGroupTimetable(payload: IGetPayload<IGroupTimetablePayload>): Promise<IGetResult<ITimeTable>> {
+    return this.groupTimetableClient.getData(payload);
+  }
+
+  getDisciplineEducationalComplex(
+    payload: IGetPayload<IDisciplineEducationalComplexPayload>
+  ): Promise<IGetResult<IDisciplineEducationalComplex>> {
+    return this.disciplineEducationalComplexClient.getData(payload);
+  }
+
+  getDisciplineEducationalComplexTheme(
+    payload: IGetPayload<IDisciplineEducationalComplexThemePayload>
+  ): Promise<IGetResult<IDisciplineEducationalComplexTheme>> {
+    return this.disciplineEducationalComplexThemeClient.getData(payload);
+  }
+
+  getExamQuestions(payload: IGetPayload<string>) {
+    return this.examQuestionsClient.getData(payload);
+  }
+
+  getDigitalResources(payload: IGetPayload): Promise<IGetResult<IDigitalResource[]>> {
+    return this.digitalResourcesClient.getData(payload);
   }
 }

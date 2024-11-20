@@ -1,10 +1,11 @@
 import { load } from 'cheerio';
+import { IFile } from '~/models/other';
 
-import { IMessage, IMessageFile, IMessagesData, MessageType } from '../models/messages';
+import { IMessage, IMessagesData, MessageType } from '../models/messages';
 import { getTextField } from './utils';
 
-const getMessageFiles = ($: cheerio.Root, message: cheerio.Cheerio): IMessageFile[] => {
-  const files: IMessageFile[] = [];
+const getMessageFiles = ($: cheerio.Root, message: cheerio.Cheerio): IFile[] => {
+  const files: IFile[] = [];
 
   message.find('a').each((index, element) => {
     const link = $(element);
@@ -121,7 +122,7 @@ export default function parseMessages(html: string) {
   const { messages } = data;
   let messageThemeIndex = -1;
 
-  $('.nav.msg', html).each((el, messageElement) => {
+  $('.nav.msg').each((el, messageElement) => {
     const message = $(messageElement);
 
     if (message.hasClass('repl_t')) {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
+import { useGlobalStyles } from '~/hooks';
+import { fontSize } from '~/utils/texts';
 
-import { useGlobalStyles } from '../hooks';
-import { fontSize } from '../utils/texts';
 import Card from './Card';
 
 const styles = StyleSheet.create({
@@ -29,7 +29,7 @@ const CardHeaderOut = ({
   const globalStyles = useGlobalStyles();
 
   return (
-    <>
+    <View>
       {topText && (
         <View style={styles.cardHeaderView}>
           <Text style={[styles.cardHeaderText, globalStyles.textColor, topTextStyle]}>
@@ -38,7 +38,7 @@ const CardHeaderOut = ({
         </View>
       )}
       <Card style={style}>{children}</Card>
-    </>
+    </View>
   );
 };
 

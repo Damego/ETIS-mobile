@@ -1,6 +1,6 @@
 import { load } from 'cheerio';
+import { StudentData } from '~/models/student';
 
-import { StudentData } from '../models/student';
 import { getTextField } from './utils';
 
 const nameWithBirthDateRegex = /([а-яА-ЯёЁ\s\w]+) \((\d{2}\.\d{2}\.\d{4}) г\.р\.\)/s;
@@ -58,6 +58,7 @@ export default function parseMenu(html: string, parseGroupJournal = false): Stud
     educationForm,
     year,
     group: null,
+    groupShort: null,
     isLyceum: speciality.startsWith('Лицей') || speciality.endsWith('класс'), // TODO: Убрать лишнее, как только узнаем правду
   };
 
@@ -73,6 +74,9 @@ export default function parseMenu(html: string, parseGroupJournal = false): Stud
   // Получение группы студента
   if (parseGroupJournal) {
     data.student.group = content.find('h3').text().split(' ').at(1);
+    // Структура группы: ГРП-1-2024
+    const [groupName, groupNumber] = data.student.group.split('-');
+    data.student.groupShort = `${groupName}-${groupNumber}`;
     if (!data.student.isLyceum) {
       data.student.isLyceum = data.student.group.startsWith('ЛЦ');
     }

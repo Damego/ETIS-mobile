@@ -4,50 +4,60 @@ import { IThemeColors } from './themes';
 
 const getGlobalStyles = ({ colors }: { colors: IThemeColors }) =>
   StyleSheet.create({
-    shadow: {
-      shadowColor: colors.shadow,
-      shadowOffset: {
-        width: 0,
-        height: 0,
-      },
-      shadowOpacity: 0.35,
-      shadowRadius: 6,
-      elevation: 5,
+    background: {
+      backgroundColor: colors.background,
+    },
+    containerBackground: {
+      backgroundColor: colors.container,
+    },
+    container: {
+      borderRadius: 20,
+      backgroundColor: colors.container,
+    },
+    card: {
+      backgroundColor: colors.cards,
+      borderRadius: 10,
     },
     borderRadius: {
       borderRadius: 10,
     },
     border: {
       borderRadius: 10,
-      borderWidth: 1,
+      borderWidth: 2,
       borderColor: colors.border,
     },
-    primaryFontColor: {
+    primaryBorder: {
+      borderRadius: 10,
+      borderWidth: 2,
+      borderColor: colors.primary,
+    },
+    invisibleBorder: {
+      borderWidth: 2,
+      borderColor: colors.background,
+    },
+    primaryText: {
       color: colors.primary,
     },
     primaryBackgroundColor: {
       backgroundColor: colors.primary,
     },
-    fontColorForPrimary: {
-      color: colors.textForPrimary,
-    },
-    fontColorForSecondary: {
-      color: colors.textForSecondary,
-    },
-    fontColorForBlock: {
-      color: colors.textForBlock,
-    },
-    secondaryFontColor: {
+    secondaryText: {
       color: colors.secondary,
     },
     secondaryBackgroundColor: {
       backgroundColor: colors.secondary,
     },
-    block: {
-      backgroundColor: colors.block,
-    },
     textColor: {
       color: colors.text,
+    },
+    textColor2: {
+      color: colors.text2,
+    },
+    primaryContrastText: {
+      color: colors.primaryContrast,
+    },
+    secondaryContrastText: {
+      color: colors.secondaryContrast,
     },
     inputPlaceholder: {
       color: colors.inputPlaceholder,

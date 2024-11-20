@@ -1,163 +1,88 @@
-import { AntDesign } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import * as QuickActions from 'expo-quick-actions';
-import React, { useEffect } from 'react';
-
-import { cache } from '../cache/smartCache';
-import { useClient } from '../data/client';
-import { useAppDispatch, useAppSelector, useGlobalStyles } from '../hooks';
-import { useAppTheme } from '../hooks/theme';
-import useNotification from '../hooks/useNotifications';
-import { RequestType } from '../models/results';
-import { setStudentState } from '../redux/reducers/studentSlice';
-import Announce from '../screens/announce/Announce';
-import Messages from '../screens/messages/Messages';
-import AboutSignsDetails from '../screens/signs/AboutSignsDetails';
-import TimeTablePage from '../screens/timeTable/TimeTable';
-import { registerSignsFetchTask } from '../tasks/signs/signs';
-import { AppShortcutItem } from '../utils/shortcuts';
-import ServicesStackNavigator from './ServicesStackNavigator';
-import SignsTopTabNavigator from './TopTabNavigator';
-import { headerParams } from './header';
-import DisciplineTasksButton from './headerButtons/DisciplineTasksButton';
-import TimetableButtonGroup from './headerButtons/TimetableButtonGroup';
-import { BottomTabsParamList, BottomTabsScreenProps } from './types';
-
-const Tab = createBottomTabNavigator<BottomTabsParamList>();
-
-const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
-  const globalStyles = useGlobalStyles();
-  const theme = useAppTheme();
-
-  const dispatch = useAppDispatch();
-  const { messageCount, announceCount, hasUnverifiedEmail } = useAppSelector(
-    (state) => state.student
-  );
-  const {
-    config: { signNotificationEnabled },
-    initialPage,
-  } = useAppSelector((state) => state.settings);
-  const client = useClient();
-  const { isDemo, isOfflineMode } = useAppSelector((state) => state.auth);
-
-  useEffect(() => {
-    QuickActions.addListener((data: AppShortcutItem) => {
-      navigation.navigate(data.id);
-    });
-  }, []);
-
-  useNotification(async (data) => {
-    if (data.type === 'task-reminder') {
-      navigation.navigate('DisciplineTasks', { taskId: data.data.taskId });
-    }
-  });
-
-  const loadData = async () => {
-    if (isDemo || isOfflineMode) {
-      const result = await client.getStudentInfoData({ requestType: RequestType.forceCache });
-      if (result.data) {
-        dispatch(setStudentState(result.data));
-      }
-      return;
-    }
-
-    const cached = await client.getStudentInfoData({ requestType: RequestType.forceCache });
-    const cachedStudent = cached.data?.student ? { ...cached.data.student } : null;
-    const fetched = await client.getStudentInfoData({ requestType: RequestType.forceFetch });
-
-    if (!cached.data && !fetched.data) return; // edge case
-
-    if (
-      cachedStudent &&
-      fetched.data?.student &&
-      cachedStudent.group !== fetched.data.student.group
-    ) {
-      await cache.clear();
-      await cache.placePartialStudent(fetched.data);
-    }
-
-    if (fetched.data || cached.data) dispatch(setStudentState(fetched.data || cached.data));
-  };
-
-  useEffect(() => {
-    loadData().then(() => {
-      if (signNotificationEnabled && !isDemo && !isOfflineMode) {
-        registerSignsFetchTask();
-      }
-    });
-  }, []);
-
-  return (
-    <Tab.Navigator
-      initialRouteName={initialPage}
-      screenOptions={{
-        headerShown: true,
-        ...headerParams(theme),
-        tabBarVisibilityAnimationConfig: {
-          show: {
-            animation: 'timing',
-            config: {
-              duration: 50,
-            },
-          },
-        },
-        tabBarActiveTintColor: globalStyles.primaryFontColor.color,
-        tabBarShowLabel: false,
-        tabBarBadgeStyle: globalStyles.primaryBackgroundColor,
-        tabBarHideOnKeyboard: true,
-      }}
-    >
-      <Tab.Screen
-        name="Timetable"
-        component={TimeTablePage}
-        options={{
-          title: 'Расписание',
-          tabBarIcon: ({ size, color }) => <AntDesign name="calendar" size={size} color={color} />,
-          headerRight: () => <TimetableButtonGroup />,
-        }}
-      />
-      <Tab.Screen
-        name="SignsNavigator"
-        component={SignsTopTabNavigator}
-        options={{
-          title: 'Оценки',
-          tabBarIcon: ({ size, color }) => <AntDesign name="barschart" size={size} color={color} />,
-          headerRight: () => <AboutSignsDetails />,
-        }}
-      />
-      <Tab.Screen
-        name="Messages"
-        component={Messages}
-        options={{
-          title: 'Сообщения',
-          tabBarBadge: messageCount,
-          tabBarIcon: ({ size, color }) => <AntDesign name="message1" size={size} color={color} />,
-        }}
-      />
-      <Tab.Screen
-        name="Announces"
-        component={Announce}
-        options={{
-          title: 'Объявления',
-          tabBarBadge: announceCount,
-          tabBarIcon: ({ size, color }) => (
-            <AntDesign name="notification" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="ServicesNavigator"
-        component={ServicesStackNavigator}
-        options={{
-          headerShown: false,
-          title: 'Сервисы',
-          tabBarIcon: ({ size, color }) => (
-            <AntDesign name="appstore-o" size={size} color={color} />
-          ),
-          tabBarBadge: hasUnverifiedEmail ? '!' : undefined,
-        }}
-      />
-    </Tab.Navigator>
-  );
-};
-export default TabNavigator;
+// import { AntDesign } from '@expo/vector-icons';
+// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+// import React from 'react';
+// import { useAppSelector } from '~/hooks';
+// import { useAppTheme } from '~/hooks/theme';
+// import useNotification from '~/hooks/useNotifications';
+// import EducationNavigation from '~/navigation/EducationNavigation';
+// import StartNavigator from '~/navigation/StartNavigator';
+// import TeacherNavigator from '~/navigation/TeacherNavigator';
+// import UnauthorizedStudentNavigator from '~/navigation/UnauthorizedStudentNavigator';
+// import { headerParams } from '~/navigation/header';
+// import AppSettingButton from '~/navigation/headerButtons/AppSettingsButton';
+// import { AccountType } from '~/redux/reducers/accountSlice';
+// import Events from '~/screens/events/Events';
+// import Services from '~/screens/services/Services';
+//
+// import { BottomTabsParamList, BottomTabsScreenProps } from './types';
+//
+// const Tab = createBottomTabNavigator<BottomTabsParamList>();
+//
+// const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
+//   const accountType = useAppSelector((state) => state.account.accountType);
+//
+//   useNotification(async (data) => {
+//     if (data.type === 'task-reminder') {
+//       // @ts-expect-error: TS2345
+//       navigation.navigate('Education', { screen: 'DisciplineTasks', taskId: data.data.taskId });
+//     }
+//   });
+//   const theme = useAppTheme();
+//
+//   let educationScreen = StartNavigator;
+//   if (accountType === AccountType.UNAUTHORIZED_TEACHER) {
+//     educationScreen = TeacherNavigator;
+//   } else if (accountType === AccountType.AUTHORIZED_STUDENT) {
+//     educationScreen = EducationNavigation;
+//   } else if (accountType === AccountType.UNAUTHORIZED_STUDENT) {
+//     educationScreen = UnauthorizedStudentNavigator;
+//   }
+//
+//   return (
+//     <Tab.Navigator
+//       screenOptions={{
+//         headerShown: true,
+//         ...headerParams(theme),
+//         tabBarVisibilityAnimationConfig: {
+//           show: {
+//             animation: 'timing',
+//             config: {
+//               duration: 50,
+//             },
+//           },
+//         },
+//         tabBarHideOnKeyboard: true,
+//       }}
+//     >
+//       <Tab.Screen
+//         name="Education"
+//         component={educationScreen}
+//         options={{
+//           title: 'ЕТИС',
+//           headerShown: false,
+//           tabBarIcon: ({ size, color }) => <AntDesign name="home" size={size} color={color} />,
+//         }}
+//       />
+//       <Tab.Screen
+//         name="Services"
+//         component={Services}
+//         options={{
+//           title: 'Сервисы',
+//           tabBarIcon: ({ size, color }) => (
+//             <AntDesign name="appstore-o" size={size} color={color} />
+//           ),
+//           headerRight: () => <AppSettingButton />,
+//         }}
+//       />
+//       <Tab.Screen
+//         name="NewsAndEvents"
+//         component={Events}
+//         options={{
+//           title: 'События',
+//           tabBarIcon: ({ size, color }) => <AntDesign name="calendar" size={size} color={color} />,
+//         }}
+//       />
+//     </Tab.Navigator>
+//   );
+// };
+// export default TabNavigator;

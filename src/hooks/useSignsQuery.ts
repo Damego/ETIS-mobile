@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
+import { cache } from '~/cache/smartCache';
+import { useClient } from '~/data/client';
+import { composePointsAndMarks } from '~/data/signs';
+import { GetResultType, RequestType } from '~/models/results';
+import { ISessionPoints } from '~/models/sessionPoints';
+import { setCurrentSession } from '~/redux/reducers/studentSlice';
 
-import { cache } from '../cache/smartCache';
-import { useClient } from '../data/client';
-import { composePointsAndMarks } from '../data/signs';
-import { GetResultType, RequestType } from '../models/results';
-import { ISessionPoints } from '../models/sessionPoints';
-import { setCurrentSession } from '../redux/reducers/studentSlice';
 import { useAppDispatch, useAppSelector } from './redux';
 import useQuery from './useQuery';
 
@@ -15,10 +15,11 @@ const useSignsQuery = () => {
   const { currentSession } = useAppSelector((state) => state.student);
   const client = useClient();
   const [data, setData] = useState<ISessionPoints>(null);
+  const [isLoading, setLoading] = useState(true);
 
   const {
     data: pointsData,
-    isLoading,
+    isLoading: isPointsLoading,
     update,
     refresh,
   } = useQuery({
@@ -55,6 +56,10 @@ const useSignsQuery = () => {
   useEffect(() => {
     if (pointsData && marksQuery.data) setData(composePointsAndMarks(pointsData, marksQuery.data));
   }, [pointsData, marksQuery.data]);
+
+  useEffect(() => {
+    setLoading(isPointsLoading || marksQuery.isLoading);
+  }, [isPointsLoading, marksQuery.isLoading]);
 
   const loadSession = (session: number) => {
     const hasDuty = marksQuery.data.find(

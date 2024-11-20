@@ -1,30 +1,51 @@
 import * as SecureStore from 'expo-secure-store';
+import { IAbsence } from '~/models/absences';
+import { IAnnounce } from '~/models/announce';
+import { ICalendarSchedule } from '~/models/calendarSchedule';
+import { ICathedraTimetable, ICathedraTimetablePayload } from '~/models/cathedraTimetable';
+import { ICertificate, ICertificateResult } from '~/models/certificate';
+import { IDigitalResource } from '~/models/digitalResources';
+import {
+  IDisciplineEducationalComplex,
+  IDisciplineEducationalComplexPayload,
+} from '~/models/disciplineEducationalComplex';
+import {
+  IDisciplineEducationalComplexTheme,
+  IDisciplineEducationalComplexThemePayload,
+} from '~/models/disciplineEducationalComplexTheme';
+import { IGroupTimetablePayload } from '~/models/groupTimetable';
+import { IMessagesData } from '~/models/messages';
+import { IOrder } from '~/models/order';
+import { IPersonalRecord } from '~/models/personalRecords';
+import { IPointUpdates } from '~/models/pointUpdates';
+import { ISessionRating } from '~/models/rating';
+import { ISessionMarks } from '~/models/sessionMarks';
+import { ISessionPoints } from '~/models/sessionPoints';
+import { ISessionTeachPlan } from '~/models/teachPlan';
+import { ITeacher } from '~/models/teachers';
+import { ITimeTable } from '~/models/timeTable';
+import { StudentInfo } from '~/parser/menu';
+import {
+  TeacherState,
+  UnauthorizedStudentState,
+  UserCredentials,
+} from '~/redux/reducers/accountSlice';
+import { AppConfig, UIConfig } from '~/redux/reducers/settingsSlice';
+import { ThemeType } from '~/styles/themes';
+import { Events } from '~/utils/events';
 
-import { IAbsence } from '../models/absences';
-import { ICalendarSchedule } from '../models/calendarSchedule';
-import { ICertificate, ICertificateTable } from '../models/certificate';
-import { IMessagesData } from '../models/messages';
-import { IOrder } from '../models/order';
-import { IPersonalRecord } from '../models/personalRecords';
-import { IPointUpdates } from '../models/pointUpdates';
-import { ISessionRating } from '../models/rating';
-import { ISessionMarks } from '../models/sessionMarks';
-import { ISessionPoints } from '../models/sessionPoints';
-import { ISessionTeachPlan } from '../models/teachPlan';
-import { ITeacher } from '../models/teachers';
-import { ITimeTable } from '../models/timeTable';
-import { StudentInfo } from '../parser/menu';
-import { UserCredentials } from '../redux/reducers/authSlice';
-import { AppConfig, UIConfig } from '../redux/reducers/settingsSlice';
-import { ThemeType } from '../styles/themes';
-import { Events } from '../utils/events';
 import FieldCache from './fieldCache';
 import MappedCache from './mappedCache';
 import SecuredFieldCache from './securedFieldCache';
 
+export interface Account {
+  teacher?: TeacherState;
+  student?: UnauthorizedStudentState;
+}
+
 export default class SmartCache {
   absences: MappedCache<number, IAbsence>;
-  announce: FieldCache<string[]>;
+  announce: FieldCache<IAnnounce[]>;
   messages: MappedCache<number, IMessagesData>;
   orders: {
     list: FieldCache<IOrder[]>;
@@ -41,9 +62,15 @@ export default class SmartCache {
   student: FieldCache<StudentInfo>;
   calendarSchedule: FieldCache<ICalendarSchedule>;
   certificate: FieldCache<ICertificate[]>;
+  cathedraTimetable: MappedCache<string, ICathedraTimetable>;
+  groupTimetable: MappedCache<string, ITimeTable>;
+  disciplineEducationalComplex: MappedCache<string, IDisciplineEducationalComplex>;
+  disciplineEducationalComplexTheme: MappedCache<string, IDisciplineEducationalComplexTheme>;
+  digitalResources: FieldCache<IDigitalResource[]>;
 
   // Internal
   user: SecuredFieldCache<UserCredentials>;
+  account: FieldCache<Account>;
   app: FieldCache<AppConfig>;
 
   private keys = {
@@ -64,9 +91,15 @@ export default class SmartCache {
     TEACH_PLAN: 'TEACH_PLAN',
     TEACHERS: 'TEACHERS',
     TIMETABLE: 'TIMETABLE',
+    CATHEDRA_TIMETABLE: 'CATHEDRA_TIMETABLE',
+    GROUP_TIMETABLE: 'GROUP_TIMETABLE',
+    DISCIPLINE_EDUCATIONAL_COMPLEX: 'DISCIPLINE_EDUCATIONAL_COMPLEX',
+    DISCIPLINE_EDUCATIONAL_COMPLEX_THEME: 'DISCIPLINE_EDUCATIONAL_COMPLEX_THEME',
+    DIGITAL_RESOURCES: 'DIGITAL_RESOURCES',
 
     // Internal keys
     USER: 'USER',
+    ACCOUNT: 'ACCOUNT',
     APP: 'APP',
   };
 
@@ -89,9 +122,22 @@ export default class SmartCache {
     this.student = new FieldCache<StudentInfo>(this.keys.STUDENT);
     this.calendarSchedule = new FieldCache(this.keys.CALENDAR_SCHEDULE);
     this.certificate = new FieldCache(this.keys.CERTIFICATE);
+    this.cathedraTimetable = new MappedCache<string, ICathedraTimetable>(
+      this.keys.CATHEDRA_TIMETABLE
+    );
+    this.groupTimetable = new MappedCache<string, ITimeTable>(this.keys.GROUP_TIMETABLE);
+    this.disciplineEducationalComplex = new MappedCache<string, IDisciplineEducationalComplex>(
+      this.keys.DISCIPLINE_EDUCATIONAL_COMPLEX
+    );
+    this.disciplineEducationalComplexTheme = new MappedCache<
+      string,
+      IDisciplineEducationalComplexTheme
+    >(this.keys.DISCIPLINE_EDUCATIONAL_COMPLEX_THEME);
+    this.digitalResources = new FieldCache<IDigitalResource[]>(this.keys.DIGITAL_RESOURCES);
 
     this.user = new SecuredFieldCache<UserCredentials>(this.keys.USER);
     this.app = new FieldCache<AppConfig>(this.keys.APP);
+    this.account = new FieldCache<Account>(this.keys.ACCOUNT);
   }
 
   // Absences Region
@@ -115,7 +161,7 @@ export default class SmartCache {
     return this.announce.get();
   }
 
-  async placeAnnounce(data: string[]) {
+  async placeAnnounce(data: IAnnounce[]) {
     this.announce.place(data);
     await this.announce.save();
   }
@@ -283,12 +329,12 @@ export default class SmartCache {
 
   // // Certificate Region
 
-  async getCertificate(): Promise<ICertificateTable> {
+  async getCertificate(): Promise<ICertificateResult> {
     if (!this.certificate.isReady()) await this.certificate.init();
     return { certificates: this.certificate.get(), announce: {} };
   }
 
-  async placeCertificate(data: ICertificateTable) {
+  async placeCertificate(data: ICertificateResult) {
     this.certificate.place(data.certificates);
     await this.certificate.save();
   }
@@ -342,6 +388,89 @@ export default class SmartCache {
   }
 
   // End Calendar Schedule region
+
+  // Cathedra Timetable region
+
+  async placeCathedraTimetable(
+    requestPayload: ICathedraTimetablePayload,
+    data: ICathedraTimetable
+  ) {
+    await this.cathedraTimetable.init();
+    // Данные на выходе сильно зависят от данных на входе, поэтому ничего не остаётся,
+    // кроме как в лоб использовать payload в запросе
+    this.cathedraTimetable.place(JSON.stringify(requestPayload), data);
+    await this.cathedraTimetable.save();
+  }
+
+  async getCathedraTimetable(requestPayload: ICathedraTimetablePayload) {
+    await this.cathedraTimetable.init();
+    return this.cathedraTimetable.get(JSON.stringify(requestPayload));
+  }
+
+  // End Cathedra Timetable region
+
+  // Group Timetable region
+
+  async placeGroupTimetable(requestPayload: IGroupTimetablePayload, data: ITimeTable) {
+    await this.groupTimetable.init();
+    // Данные на выходе сильно зависят от данных на входе, поэтому ничего не остаётся,
+    // кроме как в лоб использовать payload в запросе
+    this.groupTimetable.place(JSON.stringify(requestPayload), data);
+    await this.groupTimetable.save();
+  }
+
+  async getGroupTimetable(requestPayload: IGroupTimetablePayload) {
+    await this.groupTimetable.init();
+    return this.groupTimetable.get(JSON.stringify(requestPayload));
+  }
+
+  // End Group Timetable region
+
+  // Discipline Educational Complex region
+
+  async getDisciplineEducationalComplex(payload: IDisciplineEducationalComplexPayload) {
+    await this.disciplineEducationalComplex.init();
+    return this.disciplineEducationalComplex.get(JSON.stringify(payload));
+  }
+
+  async placeDisciplineEducationalComplex(
+    payload: IDisciplineEducationalComplexPayload,
+    data: IDisciplineEducationalComplex
+  ) {
+    await this.disciplineEducationalComplex.init();
+    this.disciplineEducationalComplex.place(JSON.stringify(payload), data);
+    await this.disciplineEducationalComplex.save();
+  }
+
+  async getDisciplineEducationalComplexTheme(payload: IDisciplineEducationalComplexThemePayload) {
+    await this.disciplineEducationalComplexTheme.init();
+    return this.disciplineEducationalComplexTheme.get(JSON.stringify(payload));
+  }
+
+  async placeDisciplineEducationalComplexTheme(
+    payload: IDisciplineEducationalComplexThemePayload,
+    data: IDisciplineEducationalComplexTheme
+  ) {
+    await this.disciplineEducationalComplexTheme.init();
+    this.disciplineEducationalComplexTheme.place(JSON.stringify(payload), data);
+    await this.disciplineEducationalComplexTheme.save();
+  }
+
+  // End Discipline Educational Complex region
+
+  //
+
+  async getDigitalResources() {
+    await this.digitalResources.init();
+    return this.digitalResources.get();
+  }
+
+  async placeDigitalResources(data: IDigitalResource[]) {
+    await this.digitalResources.init();
+    this.digitalResources.place(data);
+    await this.digitalResources.save();
+  }
+  //
 
   // Secure Region
 
@@ -490,6 +619,28 @@ export default class SmartCache {
       ? { ...appConfig.releaseNotesViews, ...versionsInfo }
       : { ...versionsInfo };
     await this.updateAppConfig(appConfig);
+  }
+
+  async getAccountData() {
+    await this.account.init();
+    return this.account.get();
+  }
+
+  async clearAccountData() {
+    await this.account.init();
+    await this.account.delete();
+  }
+
+  async setTeacherData(teacher: TeacherState) {
+    await this.account.init();
+    this.account.place({ teacher });
+    await this.account.save();
+  }
+
+  async setStudentData(student: UnauthorizedStudentState) {
+    await this.account.init();
+    this.account.place({ student });
+    await this.account.save();
   }
 
   // End Internal Region

@@ -1,16 +1,15 @@
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Fontisto } from '@expo/vector-icons';
 import React from 'react';
-import { Linking, Switch, ToastAndroid, TouchableOpacity } from 'react-native';
+import { Linking, Switch, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
-
-import { cache } from '../../../cache/smartCache';
-import Card from '../../../components/Card';
-import Text from '../../../components/Text';
-import { useAppDispatch, useAppSelector, useGlobalStyles } from '../../../hooks';
-import { useAppTheme } from '../../../hooks/theme';
-import { setSentryEnabled } from '../../../redux/reducers/settingsSlice';
-import { SENTRY_PULL_REQUEST } from '../../../utils/consts';
-import { fontSize } from '../../../utils/texts';
+import { cache } from '~/cache/smartCache';
+import Card from '~/components/Card';
+import Text from '~/components/Text';
+import { useAppDispatch, useAppSelector, useGlobalStyles } from '~/hooks';
+import { useAppTheme } from '~/hooks/theme';
+import { setSentryEnabled } from '~/redux/reducers/settingsSlice';
+import { SENTRY_PULL_REQUEST } from '~/utils/consts';
+import { fontSize } from '~/utils/texts';
 
 const AboutSentryPopover = () => {
   const globalStyles = useGlobalStyles();
@@ -21,16 +20,16 @@ const AboutSentryPopover = () => {
       placement={PopoverPlacement.FLOATING}
       from={(_, toggleShow) => (
         <TouchableOpacity onPress={toggleShow}>
-          <AntDesign name={'infocirlceo'} size={24} color={appTheme.colors.textForBlock} />
+          <AntDesign name={'infocirlceo'} size={24} color={appTheme.colors.text} />
         </TouchableOpacity>
       )}
       popoverStyle={{
         borderRadius: globalStyles.border.borderRadius,
         padding: '2%',
-        backgroundColor: appTheme.colors.block,
+        backgroundColor: appTheme.colors.container,
       }}
     >
-      <Text textBreakStrategy={'simple'} selectable style={fontSize.medium} colorVariant={'block'}>
+      <Text textBreakStrategy={'simple'} selectable style={fontSize.medium}>
         Эта настройка позволяет отправлять ошибки, возникшие в ходе работы приложения, в сервис
         Sentry.
       </Text>
@@ -59,9 +58,10 @@ const ToggleSentrySetting = () => {
 
   return (
     <Card style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-      <Text style={[{ fontWeight: '500' }, fontSize.medium]} colorVariant={'block'}>
-        Отправлять логи об ошибках
-      </Text>
+      <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center' }}>
+        <Fontisto name={'sentry'} size={22} color={theme.colors.text} />
+        <Text style={fontSize.medium}>Отправлять ошибки</Text>
+      </View>
 
       <AboutSentryPopover />
 

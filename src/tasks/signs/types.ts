@@ -1,4 +1,4 @@
-import { ICheckPoint } from '../../models/sessionPoints';
+import { ICheckPoint } from '~/models/sessionPoints';
 
 export interface IDifferentCheckPoint {
   oldResult: ICheckPoint;

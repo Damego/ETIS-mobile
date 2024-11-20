@@ -1,26 +1,29 @@
-import { IAbsence, IAbsenceSession } from '../models/absences';
-import { ICalendarSchedule } from '../models/calendarSchedule';
+import { IAbsence, IAbsenceSession } from '~/models/absences';
+import { IAnnounce } from '~/models/announce';
+import { ICalendarSchedule } from '~/models/calendarSchedule';
 import {
   ICathedraTimetable,
   ICathedraTimetablePayload,
   TimetableTypes,
-} from '../models/cathedraTimetable';
-import { ICertificateTable } from '../models/certificate';
-import { IMessagesData, MessageType } from '../models/messages';
-import { IOrder } from '../models/order';
-import { DisciplineTypes } from '../models/other';
-import { IPersonalRecord } from '../models/personalRecords';
-import { IPointUpdates } from '../models/pointUpdates';
-import { ISessionRating } from '../models/rating';
-import { GetResultType, IGetPayload, IGetResult } from '../models/results';
-import { ISessionMarks } from '../models/sessionMarks';
-import { ISessionPoints } from '../models/sessionPoints';
-import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '../models/sessionQuestionnaire';
-import { ISessionTeachPlan } from '../models/teachPlan';
-import { ITeacher } from '../models/teachers';
-import { DistancePlatformTypes, ITimeTable, WeekTypes } from '../models/timeTable';
-import { StudentInfo } from '../parser/menu';
-import bind from '../utils/methodBinder';
+} from '~/models/cathedraTimetable';
+import { ICertificateResult } from '~/models/certificate';
+import { IDigitalResource } from '~/models/digitalResources';
+import { IMessagesData, MessageType } from '~/models/messages';
+import { IOrder } from '~/models/order';
+import { LessonTypes } from '~/models/other';
+import { IPersonalRecord } from '~/models/personalRecords';
+import { IPointUpdates } from '~/models/pointUpdates';
+import { ISessionRating } from '~/models/rating';
+import { GetResultType, IGetPayload, IGetResult } from '~/models/results';
+import { ISessionMarks } from '~/models/sessionMarks';
+import { ISessionPoints } from '~/models/sessionPoints';
+import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '~/models/sessionQuestionnaire';
+import { ISessionTeachPlan } from '~/models/teachPlan';
+import { ITeacher } from '~/models/teachers';
+import { DistancePlatformTypes, ITimeTable, WeekTypes } from '~/models/timeTable';
+import { StudentInfo } from '~/parser/menu';
+import bind from '~/utils/methodBinder';
+
 import { BaseClient } from './base';
 import { toResult } from './utils';
 
@@ -52,8 +55,9 @@ export default class DemoClient implements BaseClient {
     return this.toResult(data);
   }
 
-  async getCertificateData(): Promise<IGetResult<ICertificateTable>> {
+  async getCertificateData(): Promise<IGetResult<ICertificateResult>> {
     return toResult({
+      availableCertificates: [],
       certificates: [
         {
           date: '01.01.2023',
@@ -133,7 +137,7 @@ export default class DemoClient implements BaseClient {
                       subject: {
                         string: 'Математический анализ (лек)',
                         discipline: 'Математический анализ',
-                        type: DisciplineTypes.LECTURE,
+                        type: LessonTypes.LECTURE,
                       },
                       isDistance: false,
                       teacher: {
@@ -157,7 +161,7 @@ export default class DemoClient implements BaseClient {
                       subject: {
                         string: 'Комплексный анализ (практ)',
                         discipline: 'Комплексный анализ',
-                        type: DisciplineTypes.PRACTICE,
+                        type: LessonTypes.PRACTICE,
                       },
                       isDistance: false,
                       teacher: {
@@ -181,7 +185,7 @@ export default class DemoClient implements BaseClient {
                       subject: {
                         string: 'Функциональный анализ (лаб)',
                         discipline: 'Функциональный анализ',
-                        type: DisciplineTypes.LABORATORY,
+                        type: LessonTypes.LABORATORY,
                       },
                       isDistance: false,
                       teacher: {
@@ -199,7 +203,7 @@ export default class DemoClient implements BaseClient {
                       subject: {
                         string: 'Программный анализ (лек)',
                         discipline: 'Программный анализ',
-                        type: DisciplineTypes.LECTURE,
+                        type: LessonTypes.LECTURE,
                       },
                       isDistance: true,
                       teacher: {
@@ -223,7 +227,7 @@ export default class DemoClient implements BaseClient {
                       subject: {
                         string: 'Программный анализ (лек)',
                         discipline: 'Программный анализ',
-                        type: DisciplineTypes.LECTURE,
+                        type: LessonTypes.LECTURE,
                       },
                       isDistance: true,
                       teacher: {
@@ -247,10 +251,16 @@ export default class DemoClient implements BaseClient {
     return this.toResult(data);
   }
 
-  async getAnnounceData(): Promise<IGetResult<string[]>> {
-    const data = [
-      '\n<li><font color="#808080">02.09.2023 12:00:00</font><br>\n<font style="font-weight:bold">Тестовое объявление!</font><br>\n<br>Как уже неоднократно упомянуто, активно развивающиеся страны третьего мира, превозмогая сложившуюся непростую экономическую ситуацию, превращены в посмешище, хотя само их существование приносит несомненную пользу обществу.</b><br><br><br>Создатели ETIS Mobile</li>\n',
-      '\n<li><font color="#808080">01.09.2023 12:00:28</font><br>\n<font style="font-weight:bold">Другое тестовое объявление</font><br>\n<br>Современные технологии достигли такого уровня, что высококачественный прототип будущего проекта способствует повышению качества существующих финансовых и административных условий.</b><br><br><br>Создатели ETIS Mobile</li>\n',
+  async getAnnounceData(): Promise<IGetResult<IAnnounce[]>> {
+    const data: IAnnounce[] = [
+      {
+        isNew: true,
+        html: '\n<li><font color="#808080">02.09.2023 12:00:00</font><br>\n<font style="font-weight:bold">Тестовое объявление!</font><br>\n<br>Как уже неоднократно упомянуто, активно развивающиеся страны третьего мира, превозмогая сложившуюся непростую экономическую ситуацию, превращены в посмешище, хотя само их существование приносит несомненную пользу обществу.</b><br><br><br>Создатели ETIS Mobile</li>\n',
+      },
+      {
+        isNew: false,
+        html: '\n<li><font color="#808080">01.09.2023 12:00:28</font><br>\n<font style="font-weight:bold">Другое тестовое объявление</font><br>\n<br>Современные технологии достигли такого уровня, что высококачественный прототип будущего проекта способствует повышению качества существующих финансовых и административных условий.</b><br><br><br>Создатели ETIS Mobile</li>\n',
+      },
     ];
 
     return this.toResult(data);
@@ -611,32 +621,36 @@ export default class DemoClient implements BaseClient {
   async getTeachPlanData(): Promise<IGetResult<ISessionTeachPlan[]>> {
     const data: ISessionTeachPlan[] = [
       {
-        stringSession: '1 триместр',
+        period: {
+          string: '1 триместр',
+          number: 1,
+          name: 'триместр',
+        },
         disciplines: [
           {
             name: 'Математический анализ',
-            reporting: 'оценка',
+            reporting: 'Экзамен',
             classWorkHours: 500,
             soloWorkHours: 500,
             totalWorkHours: 1000,
           },
           {
             name: 'Комплексный анализ',
-            reporting: 'зачет',
+            reporting: 'Зачет',
             classWorkHours: 500,
             soloWorkHours: 500,
             totalWorkHours: 1000,
           },
           {
             name: 'Функциональный анализ',
-            reporting: 'зачет',
+            reporting: 'Зачет',
             classWorkHours: 500,
             soloWorkHours: 500,
             totalWorkHours: 1000,
           },
           {
             name: 'Нестандартный анализ',
-            reporting: 'зачет',
+            reporting: 'Зачет',
             classWorkHours: 500,
             soloWorkHours: 500,
             totalWorkHours: 1000,
@@ -658,11 +672,11 @@ export default class DemoClient implements BaseClient {
         subjects: [
           {
             discipline: 'Математический анализ',
-            types: [DisciplineTypes.LECTURE, DisciplineTypes.PRACTICE],
+            types: [LessonTypes.LECTURE, LessonTypes.PRACTICE],
           },
           {
             discipline: 'Комплексный анализ',
-            types: [DisciplineTypes.LECTURE, DisciplineTypes.PRACTICE],
+            types: [LessonTypes.LECTURE, LessonTypes.PRACTICE],
           },
         ],
         photoTitle: 'Фотография загружена 01.01.2000',
@@ -676,11 +690,11 @@ export default class DemoClient implements BaseClient {
         subjects: [
           {
             discipline: 'Математический анализ',
-            types: [DisciplineTypes.EXAM],
+            types: [LessonTypes.EXAM],
           },
           {
             discipline: 'Комплексный анализ',
-            types: [DisciplineTypes.LECTURE, DisciplineTypes.TEST],
+            types: [LessonTypes.LECTURE, LessonTypes.TEST],
           },
         ],
         photoTitle: 'Фотография загружена 01.01.2000',
@@ -831,16 +845,23 @@ export default class DemoClient implements BaseClient {
     if (payload.data.teacherId) data = require('./teacherTimetable.json');
     else data = require('./cathedraTimetable.json');
 
-    if (payload.data.session) {
-      data.type = TimetableTypes.sessions;
-      data.sessions.forEach((session) => {
-        session.isCurrent = session.number === payload.data.session;
-      });
-    } else if (payload.data.week) {
-      data.type = TimetableTypes.weeks;
-      data.weekInfo.selected = payload.data.week;
-    }
+    data.type = TimetableTypes.weeks;
+    data.timetable.forEach((timetable) => {
+      timetable.weekInfo.selected = payload.data.week;
+    });
 
     return this.toResult(data);
+  }
+
+  async getDigitalResources(payload): Promise<IGetResult<IDigitalResource[]>> {
+    return this.toResult([
+      {
+        category: 'Отечественные ресурсы',
+        name: 'ЕТИС',
+        login: 'login',
+        password: '12345678',
+        url: 'https://student.psu.ru',
+      },
+    ]);
   }
 }

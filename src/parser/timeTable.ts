@@ -14,10 +14,9 @@ import {
 } from '../models/timeTable';
 import { httpClient } from '../utils';
 import { executeRegex } from '../utils/sentry';
-import { disciplineRegex } from './regex';
+import { dateRegex, disciplineRegex } from './regex';
 import { getDisciplineType, getTextField } from './utils';
 
-const dateRegex = /\d+.\d+.\d+/gm;
 const audienceRegex = /ауд\. (.*)\/.* \((.*) корпус(?:, (\d) этаж)?\)/s;
 const idRegex = /[a-z]*\.[a-z]*\?\#([0-9]*)/s;
 
@@ -39,9 +38,8 @@ const getWeekType = (week: cheerio.Cheerio): WeekTypes => {
 
 const getDistancePlatformType = (platform: cheerio.Cheerio): DistancePlatformTypes => {
   const title = platform.find('img').attr('title');
-
-  if (title === 'bbb.psu.ru') return DistancePlatformTypes.bbb;
-  if (title === 'zoom.us') return DistancePlatformTypes.zoom; // maybe...
+  if (title.includes('bbb')) return DistancePlatformTypes.bbb;
+  if (title.includes('zoom')) return DistancePlatformTypes.zoom; // maybe...
   if (platform.attr('href').includes('skype')) return DistancePlatformTypes.skype;
 
   return DistancePlatformTypes.unknown;
@@ -76,6 +74,8 @@ const getTeacher = (lesson: cheerio.Cheerio): ITeacher => {
 
   const teacherAnchorHref = teacherAnchor.attr('href');
   const name = getTextField(teacherAnchor);
+
+  if (!name) return null;
 
   if (!teacherAnchorHref) return { name };
 
@@ -114,9 +114,12 @@ export default function parseTimeTable(html: string) {
     };
   }
 
+  const icalTokenData = $('#calendar').find('input').attr('value');
+
   const data: ITimeTable = {
     weekInfo,
     days: [],
+    icalToken: icalTokenData ? icalTokenData.split('/').at(-1) : undefined,
   };
   const { days } = data;
 
@@ -175,7 +178,7 @@ export default function parseTimeTable(html: string) {
           lessons.push({
             subject,
             audience,
-            isDistance: audience.number === 'Дистанционно' || !!distancePlatform,
+            isDistance: audience.string?.includes?.('Дистанционно') || !!distancePlatform,
             distancePlatform,
             teacher: getTeacher(lesson),
             announceHTML,

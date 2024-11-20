@@ -4,7 +4,7 @@ export default {
   expo: {
     name: 'ЕТИС мобайл' + (IS_DEV ? ' (DEV)' : ''),
     slug: 'etis-mobile',
-    version: '1.3.0',
+    version: '1.4.0',
     owner: 'damego',
     orientation: 'portrait',
     icon: './assets/icon.png',
@@ -23,7 +23,7 @@ export default {
       supportsTablet: true,
     },
     android: {
-      versionCode: 10300007,
+      versionCode: 10400003,
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
         backgroundColor: '#FFFFFF',
@@ -42,18 +42,16 @@ export default {
         projectId: 'a3b11e9a-6c2e-4082-81e8-58bc2324b582',
       },
     },
-    hooks: {
-      postPublish: [
+    plugins: [
+      'expo-asset',
+      'expo-secure-store',
+      [
+        '@sentry/react-native/expo',
         {
-          file: 'sentry-expo/upload-sourcemaps',
-          config: {
-            organization: 'etismobile',
-            project: 'etis-mobile',
-          },
+          project: 'etis-mobile',
+          organization: 'etismobile',
         },
       ],
-    },
-    plugins: [
       [
         'expo-quick-actions',
         {
@@ -74,17 +72,27 @@ export default {
         },
       ],
       ['./src/plugins/disabledForcedDarkModeAndroid.ts', {}],
-      'sentry-expo',
       [
         'expo-build-properties',
         {
           android: {
             // Без этого билд будет крашиться
             extraMavenRepos: ['../../node_modules/@notifee/react-native/android/libs'],
-            enableProguardInReleaseBuilds: true,
-            extraProguardRules: '-keep public class com.horcrux.svg.** {*;}',
             allowBackup: false,
           },
+        },
+      ],
+      [
+        'expo-font',
+        {
+          fonts: [
+            './assets/fonts/Ubuntu-Regular.ttf',
+            './assets/fonts/Ubuntu-Italic.ttf',
+            './assets/fonts/Ubuntu-Medium.ttf',
+            './assets/fonts/Ubuntu-MediumItalic.ttf',
+            './assets/fonts/Ubuntu-Bold.ttf',
+            './assets/fonts/Ubuntu-BoldItalic.ttf',
+          ],
         },
       ],
     ],

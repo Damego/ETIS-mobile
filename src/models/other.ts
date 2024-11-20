@@ -4,10 +4,15 @@ export interface UploadFile {
   uri: string;
 }
 
-export enum DisciplineTypes {
+export enum LessonTypes {
   LECTURE = 'LECTURE',
   PRACTICE = 'PRACTICE',
   LABORATORY = 'LABORATORY',
   EXAM = 'EXAM',
   TEST = 'TEST',
+}
+
+export interface IFile {
+  name: string;
+  uri: string;
 }
