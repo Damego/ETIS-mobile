@@ -10,7 +10,7 @@ import TaskContext, { ITaskContext } from '~/context/taskContext';
 import useBackPress from '~/hooks/useBackPress';
 import useTasks from '~/hooks/useTasks';
 import { DisciplineStorage, DisciplineTask } from '~/models/disciplinesTasks';
-import { RootStackScreenProps } from '~/navigation/types';
+import { EducationStackScreenProps } from '~/navigation/types';
 import {
   cancelScheduledTaskNotifications,
   rescheduleTaskNotifications,
@@ -46,7 +46,7 @@ const TaskGroup = ({ tasks }: { tasks: DisciplineTask[] }) => {
   );
 };
 
-const DisciplinesTasks = ({ route }: RootStackScreenProps<'DisciplineTasks'>) => {
+const DisciplinesTasks = ({ route }: EducationStackScreenProps<'DisciplineTasks'>) => {
   const { tasks, saveTasks, removeTask } = useTasks();
 
   const [selectedTask, setSelectedTask] = useState<DisciplineTask>();
