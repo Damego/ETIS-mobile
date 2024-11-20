@@ -30,12 +30,11 @@ const ETISScreen = () => {
   const { isDemo, isOfflineMode } = useAppSelector((state) => state.account);
 
   useEffect(() => {
-    loadData();
-    //   .then(() => {
-    //   if (signNotificationEnabled && !isDemo && !isOfflineMode) {
-    //     registerSignsFetchTask();
-    //   }
-    // });
+    loadData().then(() => {
+      if (signNotificationEnabled && !isDemo && !isOfflineMode) {
+        registerSignsFetchTask();
+      }
+    });
   }, []);
 
   const loadData = async () => {

@@ -28,7 +28,7 @@ const TeachersBottomSheet = ({
 
   return (
     <>
-      <TouchableOpacity onPress={() => modalRef.current.present()}>
+      <TouchableOpacity onPress={() => modalRef.current.present()} style={{ marginBottom: '2%' }}>
         <Card
           style={{ justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}
         >

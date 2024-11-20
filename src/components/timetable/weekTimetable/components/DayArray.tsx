@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import React, { useContext, useRef, useState } from 'react';
 import { View } from 'react-native';
+import BorderLine from '~/components/BorderLine';
 import { Button } from '~/components/Button';
 import Text from '~/components/Text';
 import TimeTableContext from '~/context/timetableContext';
@@ -33,10 +34,15 @@ const DayArray = ({ data, weekDates }: IDayArrayProps) => {
   };
 
   const components = data
-    .map((day) => {
+    .map((day, index) => {
       const date = bumpDate();
       if (!localShowPastWeekDays && currentDate > date && currentDate <= weekEndDate) return null;
-      return <Day key={day.date} data={day} date={date} />;
+      return (
+        <React.Fragment key={day.date}>
+          <Day data={day} date={date} />
+          {index !== data.length - 1 && <BorderLine />}
+        </React.Fragment>
+      );
     })
     .filter((comp) => comp !== null);
 
@@ -60,7 +66,7 @@ const DayArray = ({ data, weekDates }: IDayArrayProps) => {
 
   return (
     <View style={{ gap: 8 }}>
-      {components.length !== 6 && (
+      {components.length < 6 && (
         <Button
           text={'Показать прошедшие дни'}
           onPress={showPastDays}

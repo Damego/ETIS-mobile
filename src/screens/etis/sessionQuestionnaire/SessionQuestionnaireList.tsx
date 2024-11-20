@@ -38,10 +38,10 @@ export default function SessionQuestionnaireList({ navigation }: EducationStackS
   const passed = data.filter((link) => !link.url);
 
   return (
-    <Screen>
+    <Screen containerStyle={{ gap: 8 }}>
       {available.length !== 0 && (
         <>
-          <Text style={[fontSize.large, { fontWeight: '500', marginBottom: '2%' }]}>Доступные</Text>
+          <Text style={[fontSize.large, { fontWeight: '500' }]}>Доступные</Text>
           <View style={{ gap: 8 }}>
             {available.map((link) => (
               <Card key={link.name}>
@@ -59,7 +59,7 @@ export default function SessionQuestionnaireList({ navigation }: EducationStackS
       )}
 
       {passed.length !== 0 && (
-        <Text style={[fontSize.large, { fontWeight: '500', marginBottom: '2%' }]}>Пройденные</Text>
+        <Text style={[fontSize.large, { fontWeight: '500' }]}>Пройденные</Text>
       )}
       {passed.map((link) => (
         <Card key={link.name}>

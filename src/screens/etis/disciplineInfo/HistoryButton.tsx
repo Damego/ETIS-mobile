@@ -14,13 +14,13 @@ const HistoryButton = ({ onPress, showHistory }: { onPress: () => void; showHist
       onPress={onPress}
       textStyle={fontSize.big}
       viewStyle={styles.showInactiveButton}
-      iconLeft={<Ionicons name={'time-outline'} size={26} color={globalStyles.textColor2.color} />}
+      iconLeft={<Ionicons name={'time-outline'} size={26} color={globalStyles.textColor.color} />}
       iconRight={
         <Ionicons
           name={showHistory ? 'arrow-up-outline' : 'arrow-down-outline'}
           style={{ marginLeft: 'auto' }}
           size={22}
-          color={globalStyles.textColor2.color}
+          color={globalStyles.textColor.color}
         />
       }
     />

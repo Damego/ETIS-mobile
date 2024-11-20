@@ -2,6 +2,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { useAppTheme } from '~/hooks/theme';
 import { headerParams } from '~/navigation/header';
+import GroupListSourceButton from '~/navigation/headerButtons/GroupListSourceButton';
+import TeacherListSourceButton from '~/navigation/headerButtons/TeacherListSourceButton';
 import { StartStackParamList } from '~/navigation/types';
 import SelectFacultyScreen from '~/screens/start/SelectFaculty';
 import SelectGroupScreen from '~/screens/start/SelectGroup';
@@ -20,7 +22,7 @@ const StartNavigator = () => {
       <Stack.Screen
         name={'SelectTeacher'}
         component={SelectTeacherScreen}
-        options={{ title: 'Поиск преподавателя' }}
+        options={{ title: 'Поиск преподавателя', headerRight: TeacherListSourceButton }}
       />
       <Stack.Screen
         name={'SelectStudentAccountType'}
@@ -35,7 +37,7 @@ const StartNavigator = () => {
       <Stack.Screen
         name={'SelectGroup'}
         component={SelectGroupScreen}
-        options={{ title: 'Группа' }}
+        options={{ title: 'Группа', headerRight: GroupListSourceButton }}
       />
     </Stack.Navigator>
   );

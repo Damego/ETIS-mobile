@@ -6,8 +6,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Text from '~/components/Text';
 import { useAppTheme } from '~/hooks/theme';
 import useTasks from '~/hooks/useTasks';
-
-import { RootStackNavigationProp } from '../types';
+import { EducationNavigationProp } from '~/navigation/types';
 
 const DisciplineTasksButton = () => {
   const currentDate = dayjs().startOf('day');
@@ -18,7 +17,7 @@ const DisciplineTasksButton = () => {
       return task.datetime >= currentDate && task.datetime <= weekEnd && !task.isComplete;
     },
   });
-  const navigation = useNavigation<RootStackNavigationProp>();
+  const navigation = useNavigation<EducationNavigationProp>();
   const theme = useAppTheme();
 
   return (
@@ -29,11 +28,11 @@ const DisciplineTasksButton = () => {
       style={{ justifyContent: 'center' }}
     >
       {tasks.length ? (
-        <View style={[styles.circle, { borderColor: theme.colors.primary }]}>
-          <Text style={[styles.text, { color: theme.colors.primary }]}>{tasks.length}</Text>
+        <View style={[styles.circle, { borderColor: theme.colors.text }]}>
+          <Text style={[styles.text, { color: theme.colors.text }]}>{tasks.length}</Text>
         </View>
       ) : (
-        <AntDesign name="checkcircleo" size={28} color={theme.colors.primary} />
+        <AntDesign name="checkcircleo" size={24} color={theme.colors.text} />
       )}
     </TouchableOpacity>
   );

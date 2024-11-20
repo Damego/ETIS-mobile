@@ -1,17 +1,11 @@
 export interface ITeacherPSUData {
   page_url: string;
-  image_url: string;
-  contacts: {
-    phones: string[];
-    emails: string[];
-  };
 }
 
 export interface ITeacher {
   id: number;
   name: string;
 
-  etis?: object;
   psu?: ITeacherPSUData;
 }
 

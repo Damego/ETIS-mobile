@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { LoadingContainer } from '~/components/LoadingScreen';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
@@ -9,6 +9,8 @@ import { useAppSelector } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
 import useTimeTableQuery from '~/hooks/useTimeTableQuery';
 import useTimetable from '~/hooks/useTimetable';
+import BellScheduleButton from '~/screens/etis/main/timetable/BellScheduleButton';
+import DisciplineTasksButton from '~/screens/etis/main/timetable/DisciplineTasksButton';
 
 export const Timetable = () => {
   const client = useClient();
@@ -31,7 +33,13 @@ export const Timetable = () => {
 
   return (
     <Screen onUpdate={refresh} containerStyle={{ paddingBottom: '20%' }}>
-      <Text style={styles.titleText}>Расписание</Text>
+      <View style={styles.titleContainer}>
+        <Text style={styles.titleText}>Расписание</Text>
+        <View style={styles.titleIconsContainer}>
+          <BellScheduleButton />
+          <DisciplineTasksButton />
+        </View>
+      </View>
 
       <TimetableContainer
         data={data}
@@ -45,5 +53,19 @@ export const Timetable = () => {
 };
 
 const styles = StyleSheet.create({
-  titleText: { fontWeight: '700', fontSize: 22 },
+  titleText: {
+    fontWeight: '700',
+    fontSize: 22,
+  },
+  titleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  titleIconsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 4,
+  },
 });

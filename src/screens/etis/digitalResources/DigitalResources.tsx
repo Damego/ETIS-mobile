@@ -43,7 +43,7 @@ const Field = ({ value }: { value: string }) => {
 const DigitalResources = () => {
   const client = useClient();
   const { data, isLoading, refresh } = useQuery({
-    method: client.getDigitalQuestions,
+    method: client.getDigitalResources,
   });
 
   if (isLoading) {

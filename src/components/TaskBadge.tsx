@@ -20,7 +20,7 @@ const TaskBadge = ({ subject, date }: { subject: ISubject; date: dayjs.Dayjs }) 
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.primary }]}>
-      <AntDesign name="checkcircleo" size={15} color={theme.colors.textForPrimary} />
+      <AntDesign name="checkcircleo" size={15} color={theme.colors.primaryContrast} />
     </View>
   );
 };

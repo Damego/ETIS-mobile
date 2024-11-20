@@ -382,7 +382,7 @@ export default class Client implements BaseClient {
     return this.examQuestionsClient.getData(payload);
   }
 
-  getDigitalQuestions(payload: IGetPayload): Promise<IGetResult<IDigitalResource[]>> {
+  getDigitalResources(payload: IGetPayload): Promise<IGetResult<IDigitalResource[]>> {
     return this.digitalResourcesClient.getData(payload);
   }
 }

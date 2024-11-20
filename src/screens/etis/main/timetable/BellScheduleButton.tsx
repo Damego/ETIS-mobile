@@ -3,16 +3,15 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { useAppTheme } from '~/hooks/theme';
-
-import { RootStackNavigationProp } from '../types';
+import { EducationNavigationProp } from '~/navigation/types';
 
 const BellScheduleButton = () => {
-  const navigation = useNavigation<RootStackNavigationProp>();
+  const navigation = useNavigation<EducationNavigationProp>();
   const theme = useAppTheme();
 
   return (
     <TouchableOpacity onPress={() => navigation.navigate('BellSchedule')}>
-      <AntDesign name={'bells'} size={28} color={theme.colors.primary} />
+      <AntDesign name={'bells'} size={24} color={theme.colors.text} />
     </TouchableOpacity>
   );
 };
