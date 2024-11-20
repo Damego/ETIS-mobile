@@ -10,6 +10,7 @@ import ShowReleaseNotes from './components/ShowReleaseNotes';
 import ToggleSentrySetting from './components/ToggleSentrySetting';
 import ToggleSignNotification from './components/ToggleSignNotification';
 import ToggleThemeSetting from './components/ToggleThemeSetting';
+import TelegramAppChannel from '~/screens/settings/components/TelegramAppChannel';
 
 export default function AppSettings() {
   return (
@@ -31,6 +32,7 @@ export default function AppSettings() {
       <ShowReleaseNotes />
       <AboutAppButton />
       <ToggleSentrySetting />
+      <TelegramAppChannel />
     </Screen>
   );
 }

@@ -15,9 +15,9 @@ import TeacherNavigator from '~/navigation/TeacherNavigator';
 import UnauthorizedStudentNavigator from '~/navigation/UnauthorizedStudentNavigator';
 import { headerParams } from '~/navigation/header';
 import { AccountType } from '~/redux/reducers/accountSlice';
+import About from '~/screens/about/About';
 import ReleaseNotes from '~/screens/releaseNotes/ReleaseNotes';
 import AppSettings from '~/screens/settings/AppSettings';
-import AboutApp from '~/screens/settings/components/AboutApp';
 import ChangeAppUI from '~/screens/settings/uiSettings/ChangeAppUI';
 import showPrivacyPolicy from '~/utils/privacyPolicy';
 import InitSentry from '~/utils/sentry';
@@ -88,7 +88,7 @@ const StackNavigator = () => {
               component={ChangeAppUI}
               options={{ title: 'Интерфейс' }}
             />
-            <Stack.Screen name="AboutApp" component={AboutApp} options={{ headerShown: false }} />
+            <Stack.Screen name="AboutApp" component={About} options={{ title: 'О приложении' }} />
             <Stack.Screen
               name="ReleaseNotes"
               component={ReleaseNotes}
