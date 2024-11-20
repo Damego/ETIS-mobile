@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { IAudience, ITimeTable } from '~/models/timeTable';
 
@@ -35,8 +36,15 @@ export const getPeriodWeek = async (
   periodType: PeriodTypes,
   year: number
 ): Promise<IPeriodWeek> => {
-  const res = await inst.get('/periods/', { params: { period_type: periodType, year } });
-  return res.data;
+  try {
+    const res = await inst.get('/periods/', { params: { period_type: periodType, year } });
+    // пока так. SmartCache лучше оставить исключительно на ЕТИС
+    await AsyncStorage.setItem('GROUP_TIMETABLE_PERIOD_WEEK', JSON.stringify(res.data));
+    return res.data;
+  } catch (err) {
+    const cached = await AsyncStorage.getItem('GROUP_TIMETABLE_PERIOD_WEEK');
+    if (cached) return JSON.parse(cached);
+  }
 };
 
 export const getGroupById = async (groupId: string) => {
