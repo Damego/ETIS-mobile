@@ -832,15 +832,10 @@ export default class DemoClient implements BaseClient {
     if (payload.data.teacherId) data = require('./teacherTimetable.json');
     else data = require('./cathedraTimetable.json');
 
-    if (payload.data.session) {
-      data.type = TimetableTypes.sessions;
-      data.sessions.forEach((session) => {
-        session.isCurrent = session.number === payload.data.session;
-      });
-    } else if (payload.data.week) {
-      data.type = TimetableTypes.weeks;
-      data.weekInfo.selected = payload.data.week;
-    }
+    data.type = TimetableTypes.weeks;
+    data.timetable.forEach((timetable) => {
+      timetable.weekInfo.selected = payload.data.week;
+    });
 
     return this.toResult(data);
   }
