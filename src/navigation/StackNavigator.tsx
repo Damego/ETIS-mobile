@@ -2,6 +2,7 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { setBackgroundColorAsync as setBackgroundNavigationBarColorAsync } from 'expo-navigation-bar';
+import * as SplashScreen from 'expo-splash-screen';
 import { setBackgroundColorAsync } from 'expo-system-ui';
 import React, { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -22,15 +23,14 @@ import ChangeAppUI from '~/screens/settings/uiSettings/ChangeAppUI';
 import showPrivacyPolicy from '~/utils/privacyPolicy';
 import InitSentry from '~/utils/sentry';
 
-// import TabNavigator from './TabNavigation';
 import { RootStackParamList } from './types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const StackNavigator = () => {
   const accountType = useAppSelector((state) => state.account.accountType);
-
   const {
+    appIsReady,
     config: { sentryEnabled }, // todo: intro viewed new version
   } = useAppSelector((state) => state.settings);
 
@@ -58,6 +58,12 @@ const StackNavigator = () => {
       navigation.navigate('TabNavigator', { screen: 'DisciplineTasks', taskId: data.data.taskId });
     }
   });
+
+  useEffect(() => {
+    if (appIsReady) {
+      SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
 
   let educationScreen = StartNavigator;
   if (accountType === AccountType.UNAUTHORIZED_TEACHER) {

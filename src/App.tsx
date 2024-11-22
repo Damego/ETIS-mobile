@@ -5,6 +5,7 @@ import 'dayjs/locale/ru';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import weekday from 'dayjs/plugin/weekday';
+import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect } from 'react';
 import 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
@@ -35,6 +36,8 @@ addShortcuts();
 rescheduleAllTaskNotifications();
 
 const queryClient = new QueryClient();
+
+SplashScreen.preventAutoHideAsync();
 
 const App = () => {
   useEffect(() => {
