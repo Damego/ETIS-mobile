@@ -32,6 +32,7 @@ const MonthCalendarComponent = ({
       headerButtonColor={theme.colors.text}
       weekDaysTextStyle={{ color: theme.colors.text }}
       yearContainerStyle={{ backgroundColor: theme.colors.container }}
+      monthContainerStyle={{ backgroundColor: theme.colors.container }}
     />
   );
 };
