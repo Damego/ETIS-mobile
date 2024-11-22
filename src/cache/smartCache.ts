@@ -688,6 +688,7 @@ export default class SmartCache {
 
   runMigrations() {
     this.migrateToV1_3_0();
+    this.migrateToV1_4_0();
   }
 
   /*
@@ -706,6 +707,28 @@ export default class SmartCache {
     await this.teachers.save();
 
     appConfig.cacheMigrations.v1_3_0 = true;
+    await this.updateAppConfig(appConfig);
+  }
+
+  /*
+  Изменилась структура объявлений
+  */
+  private async migrateToV1_4_0() {
+    const appConfig = await this.getAppConfig();
+    if (!appConfig.cacheMigrations) {
+      appConfig.cacheMigrations = {};
+    }
+    if (appConfig.cacheMigrations.v1_4_0) return;
+
+    await this.announce.init();
+    const announces = this.announce.get();
+    if (announces?.length && typeof announces[0] === 'string') {
+      this.announce.place(
+        announces.map((announce) => ({ isNew: false, html: announce as unknown as string }))
+      );
+    }
+
+    appConfig.cacheMigrations.v1_4_0 = true;
     await this.updateAppConfig(appConfig);
   }
 }

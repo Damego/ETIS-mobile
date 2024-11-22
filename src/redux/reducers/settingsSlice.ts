@@ -16,6 +16,7 @@ export enum TimetableModes {
 
 export interface CacheMigrations {
   v1_3_0?: boolean;
+  v1_4_0?: boolean;
 }
 
 export interface UIConfig {
