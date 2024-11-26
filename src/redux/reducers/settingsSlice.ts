@@ -24,6 +24,8 @@ export interface UIConfig {
   showPastWeekDays: boolean;
   highlightCurrentDay: boolean;
   skipSunday: boolean;
+  showGapsBetweenPairs: boolean;
+  showEmptyPairs: boolean;
 }
 
 export interface AppConfig {
@@ -56,6 +58,8 @@ const initialConfig: AppConfig = {
     showPastWeekDays: true,
     highlightCurrentDay: false,
     skipSunday: true,
+    showGapsBetweenPairs: false,
+    showEmptyPairs: false,
   },
   cacheMigrations: {},
   reviewStep: 'pending',

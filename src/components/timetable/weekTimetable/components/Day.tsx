@@ -1,14 +1,12 @@
 import dayjs from 'dayjs';
-import React, { useContext, useMemo } from 'react';
+import React, { useContext } from 'react';
 import { View } from 'react-native';
-import BorderLine from '~/components/BorderLine';
-import CardHeaderOut from '~/components/CardHeaderOut';
 import Text from '~/components/Text';
+import { checkAllowedPairRender } from '~/components/timetable/checkAllowedPairRender';
 import Pair from '~/components/timetable/dayTimetable/components/Pair';
 import TimeTableContext from '~/context/timetableContext';
 import { useAppSelector, useGlobalStyles } from '~/hooks';
 import { ITimeTableDay } from '~/models/timeTable';
-import { parseDate } from '~/parser/utils';
 import { ThemeType } from '~/styles/themes';
 import { capitalizeWord, fontSize } from '~/utils/texts';
 import { getRandomItem } from '~/utils/utils';
@@ -30,10 +28,11 @@ export const Day = React.memo(({ data, date }: DayData) => {
   const { pairs } = data;
   const {
     theme,
-    ui: { highlightCurrentDay },
+    ui: { highlightCurrentDay, showEmptyPairs, showGapsBetweenPairs },
   } = useAppSelector((state) => state.settings.config);
   const globalStyles = useGlobalStyles();
   const { currentDate } = useContext(TimeTableContext);
+  let didRenderFirstPair = false;
 
   let textStyle = null;
   let cardStyle = null;
@@ -53,10 +52,15 @@ export const Day = React.memo(({ data, date }: DayData) => {
         </View>
       ) : (
         <View style={{ gap: 8 }}>
-          {pairs.map(
-            (pair, index) =>
-              (!!pair.lessons.length || !!pair.event) && <Pair pair={pair} key={index} />
-          )}
+          {pairs.map((pair, index) => {
+            if (
+              checkAllowedPairRender(pair, didRenderFirstPair, showGapsBetweenPairs, showEmptyPairs)
+            ) {
+              didRenderFirstPair = true;
+              return <Pair pair={pair} key={index} />;
+            }
+            return null;
+          })}
         </View>
       )}
     </View>
