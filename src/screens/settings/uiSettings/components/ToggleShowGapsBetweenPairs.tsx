@@ -10,7 +10,9 @@ import { fontSize } from '~/utils/texts';
 
 const ToggleShowGapsBetweenPairs = () => {
   const theme = useAppTheme();
-  const { showGapsBetweenPairs, showEmptyPairs } = useAppSelector((state) => state.settings.config.ui);
+  const { showGapsBetweenPairs, showEmptyPairs } = useAppSelector(
+    (state) => state.settings.config.ui
+  );
   const dispatch = useAppDispatch();
 
   const toggle = () => {
