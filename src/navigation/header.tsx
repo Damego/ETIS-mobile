@@ -73,18 +73,3 @@ export const headerParams = (theme: ITheme): HeaderParamList => ({
   headerShadowVisible: false,
   headerTitleAlign: 'center',
 });
-
-export const progressiveHeaderShadowStyle = (theme: ITheme, offset: number) => {
-  return {
-    ...headerParams(theme).headerStyle,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 12,
-    },
-    shadowOpacity: 0.58,
-    shadowRadius: 16.0,
-
-    elevation: offset,
-  };
-};

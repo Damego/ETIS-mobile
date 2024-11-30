@@ -1,6 +1,4 @@
 import { FlashList, FlashListProps } from '@shopify/flash-list';
-import { StatusBar } from 'expo-status-bar';
-import { StatusBarStyle } from 'expo-status-bar/src/StatusBar.types';
 import React, { useRef, useState } from 'react';
 import { RefreshControl, ScrollView, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useAppSelector } from '~/hooks';
@@ -12,17 +10,10 @@ interface ScreenProps {
   onUpdate?(...args): unknown;
   children: React.ReactNode;
   startScrollFromBottom?: boolean;
-  statusBarStyle?: StatusBarStyle;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
-const Screen = ({
-  onUpdate,
-  children,
-  startScrollFromBottom,
-  statusBarStyle,
-  containerStyle,
-}: ScreenProps) => {
+const Screen = ({ onUpdate, children, startScrollFromBottom, containerStyle }: ScreenProps) => {
   const { isAuthorizing } = useAppSelector((state) => state.account);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const scrollRef = useRef<ScrollView>();
@@ -37,8 +28,6 @@ const Screen = ({
   return (
     <View style={{ flex: 1 }}>
       {isAuthorizing && <AuthLoadingModal />}
-
-      <StatusBar style={statusBarStyle || theme.statusBarStyle} />
 
       <ScrollView
         ref={scrollRef}
@@ -73,7 +62,6 @@ type ListScreenProps<T> = Omit<ScreenProps, 'children'> & FlashListProps<T>;
 export const ListScreen = <T,>({
   onUpdate,
   startScrollFromBottom,
-  statusBarStyle,
   containerStyle,
   data,
   ...listProps
@@ -92,8 +80,6 @@ export const ListScreen = <T,>({
   return (
     <View style={{ flex: 1 }}>
       {isAuthorizing && <AuthLoadingModal />}
-
-      <StatusBar style={statusBarStyle || theme.statusBarStyle} />
 
       <View style={[{ flex: 1 }, styles.screen, containerStyle]}>
         <FlashList

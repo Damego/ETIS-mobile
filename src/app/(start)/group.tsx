@@ -1,8 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
+import { useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { searchGroups } from '~/api/psutech/api';
 import { IGroup } from '~/api/psutech/types';
+import SearchInput from '~/app/(start)/components/SearchInput';
 import { cache } from '~/cache/smartCache';
 import BorderLine from '~/components/BorderLine';
 import ClickableText from '~/components/ClickableText';
@@ -10,9 +12,7 @@ import { LoadingContainer } from '~/components/LoadingScreen';
 import { ListScreen } from '~/components/Screen';
 import Text from '~/components/Text';
 import { useAppDispatch, useGlobalStyles } from '~/hooks';
-import { StartStackScreenProps } from '~/navigation/types';
 import { setStudent } from '~/redux/reducers/accountSlice';
-import SearchInput from '~/screens/start/components/SearchInput';
 import { fontSize } from '~/utils/texts';
 
 const formatDegree = (degree: string) =>
@@ -47,10 +47,10 @@ const GroupItem = React.memo(
   }
 );
 
-const SelectGroupScreen = ({ route }: StartStackScreenProps<'SelectGroup'>) => {
+const SelectGroupScreen = () => {
   const globalStyles = useGlobalStyles();
   const dispatch = useAppDispatch();
-  const { facultyId } = route.params;
+  const { facultyId } = useLocalSearchParams();
   const [selectedGroup, setSelectedGroup] = useState<IGroup>(null);
   const [query, setQuery] = useState('');
   const { data, isLoading } = useQuery({

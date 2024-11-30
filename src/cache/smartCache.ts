@@ -1,4 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
+import { Platform } from 'react-native';
 import { IAbsence } from '~/models/absences';
 import { IAnnounce } from '~/models/announce';
 import { ICalendarSchedule } from '~/models/calendarSchedule';
@@ -135,7 +136,10 @@ export default class SmartCache {
     >(this.keys.DISCIPLINE_EDUCATIONAL_COMPLEX_THEME);
     this.digitalResources = new FieldCache<IDigitalResource[]>(this.keys.DIGITAL_RESOURCES);
 
-    this.user = new SecuredFieldCache<UserCredentials>(this.keys.USER);
+    this.user =
+      Platform.OS === 'web'
+        ? new FieldCache<UserCredentials>(this.keys.USER)
+        : new SecuredFieldCache<UserCredentials>(this.keys.USER);
     this.app = new FieldCache<AppConfig>(this.keys.APP);
     this.account = new FieldCache<Account>(this.keys.ACCOUNT);
   }

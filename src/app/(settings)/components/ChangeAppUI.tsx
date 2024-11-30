@@ -1,18 +1,15 @@
 import { AntDesign } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import Card from '~/components/Card';
 import ClickableText from '~/components/ClickableText';
 import { useAppTheme } from '~/hooks/theme';
-import { RootStackNavigationProp } from '~/navigation/types';
 import { fontSize } from '~/utils/texts';
 
 const ChangeAppUI = () => {
-  const navigation = useNavigation<RootStackNavigationProp>();
   const theme = useAppTheme();
 
   const onPress = () => {
-    navigation.navigate('ChangeAppUI');
+    // navigation.navigate('ChangeAppUI');
   };
 
   return (

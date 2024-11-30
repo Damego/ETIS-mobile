@@ -1,3 +1,4 @@
+import { DefaultTheme } from '@react-navigation/native';
 import { StatusBarStyle } from 'expo-status-bar/src/StatusBar.types';
 
 export enum ThemeType {
@@ -44,6 +45,7 @@ export interface ITheme {
 }
 
 export const LightTheme: ITheme = {
+  fonts: DefaultTheme.fonts,
   dark: false,
   statusBarStyle: 'dark',
   colors: {
@@ -64,6 +66,7 @@ export const LightTheme: ITheme = {
 };
 
 export const DarkTheme: ITheme = {
+  fonts: DefaultTheme.fonts,
   dark: true,
   statusBarStyle: 'light',
   colors: {

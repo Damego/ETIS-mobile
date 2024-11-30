@@ -1,25 +1,26 @@
 import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Button } from '~/components/Button';
 import SafeAreaScreen from '~/components/SafeAreaScreen';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
-import { StartStackScreenProps } from '~/navigation/types';
 import AuthFooter from '~/screens/etis/auth/AuthFooter';
 import { fontSize } from '~/utils/texts';
 
 type UserType = 'teacher' | 'student';
 
-const StartScreen = ({ navigation }: StartStackScreenProps) => {
+const StartScreen = () => {
+  const router = useRouter();
   const globalStyles = useGlobalStyles();
   const [selectedType, setSelectedType] = useState<UserType>(null);
 
   const handleChoose = () => {
     if (selectedType === 'student') {
-      navigation.navigate('SelectStudentAccountType');
+      router.push('(start)/student');
     } else {
-      navigation.navigate('SelectTeacher');
+      router.push('(start)/teacher');
     }
   };
 

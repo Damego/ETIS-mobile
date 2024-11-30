@@ -32,9 +32,9 @@ const lyceumTimeInfo = {
 
 const getAssetByPlatformType = (type: DistancePlatformTypes) => {
   const platformTypeToAsset = [
-    [DistancePlatformTypes.zoom, require('../../../../../assets/platforms/zoom.svg')],
-    [DistancePlatformTypes.bbb, require('../../../../../assets/platforms/bigbluebutton.svg')],
-    [DistancePlatformTypes.skype, require('../../../../../assets/platforms/skype.svg')],
+    [DistancePlatformTypes.zoom, require('../../../../assets/platforms/zoom.svg')],
+    [DistancePlatformTypes.bbb, require('../../../../assets/platforms/bigbluebutton.svg')],
+    [DistancePlatformTypes.skype, require('../../../../assets/platforms/skype.svg')],
   ];
 
   return platformTypeToAsset.find(([$type]) => type === $type)[1];

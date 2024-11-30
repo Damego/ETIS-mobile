@@ -1,4 +1,4 @@
-const IS_DEV = process.env.APP_VARIANT === 'development';
+const IS_DEV = true; //process.env.APP_VARIANT === 'development';
 
 export default {
   expo: {
@@ -6,6 +6,7 @@ export default {
     slug: 'etis-mobile',
     version: '1.4.0',
     owner: 'damego',
+    scheme: "etismobile",
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
@@ -35,6 +36,8 @@ export default {
     },
     web: {
       favicon: './assets/favicon.png',
+      bundler: "metro",
+      output: "single",
     },
     platforms: ['android'],
     extra: {
@@ -43,10 +46,11 @@ export default {
       },
     },
     plugins: [
+      'expo-router',
       'expo-asset',
       'expo-secure-store',
       [
-        '@sentry/react-native/expo',
+        '@sentry/react-native',
         {
           project: 'etis-mobile',
           organization: 'etismobile',

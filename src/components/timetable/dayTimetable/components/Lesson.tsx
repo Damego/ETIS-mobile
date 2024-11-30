@@ -1,6 +1,6 @@
 import { AntDesign, Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
+import { useNavigation, useRouter } from 'expo-router';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import DisciplineType from '~/components/DisciplineType';
@@ -9,7 +9,6 @@ import Text from '~/components/Text';
 import { useTimetableContext } from '~/context/timetableContext';
 import { useAppTheme } from '~/hooks/theme';
 import { ILesson } from '~/models/timeTable';
-import { EducationNavigationProp } from '~/navigation/types';
 import { getTeacherName } from '~/utils/teachers';
 import { formatAudience, formatGroups } from '~/utils/texts';
 
@@ -22,7 +21,7 @@ const Lesson = ({
   date: dayjs.Dayjs;
   pairPosition: number;
 }) => {
-  const navigation = useNavigation<EducationNavigationProp>();
+  const navigation = useNavigation();
   const theme = useAppTheme();
 
   const { teachers } = useTimetableContext();
@@ -30,8 +29,8 @@ const Lesson = ({
   const teacherName = lesson.teacher ? getTeacherName(teachers, lesson.teacher) : null;
 
   const onLessonPress = () => {
-    navigation.navigate('DisciplineInfo', {
-      lesson,
+    navigation.navigate('(disciplineInfo)', {
+      lesson: JSON.stringify(lesson),
       date: date.toISOString(),
       pairPosition,
     });

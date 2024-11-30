@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { searchTeachers } from '~/api/psutech/api';
 import { ITeacher } from '~/api/psutech/types';
+import SearchInput from '~/app/(start)/components/SearchInput';
 import { cache } from '~/cache/smartCache';
 import BorderLine from '~/components/BorderLine';
 import ClickableText from '~/components/ClickableText';
@@ -13,10 +14,11 @@ import Text from '~/components/Text';
 import { useAppDispatch, useGlobalStyles } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
 import { setTeacher } from '~/redux/reducers/accountSlice';
-import SearchInput from '~/screens/start/components/SearchInput';
 import { fontSize } from '~/utils/texts';
+import { useRouter } from 'expo-router';
 
 const SelectTeacherScreen = () => {
+  const router = useRouter()
   const theme = useAppTheme();
   const globalStyles = useGlobalStyles();
 
@@ -37,6 +39,7 @@ const SelectTeacherScreen = () => {
     const teacher = { id: selectedTeacher.id, name: selectedTeacher.name };
     dispatch(setTeacher(teacher));
     cache.setTeacherData(teacher);
+    // router.push('(teacher)/timetable')
   };
 
   return (

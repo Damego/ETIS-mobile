@@ -1,11 +1,11 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import OptionButton from '~/app/(start)/components/OptionButton';
 import { Button } from '~/components/Button';
 import Text from '~/components/Text';
 import { useAppDispatch, useGlobalStyles } from '~/hooks';
 import { AccountType, setAccountState } from '~/redux/reducers/accountSlice';
-import OptionButton from '~/screens/start/components/OptionButton';
 import { fontSize } from '~/utils/texts';
 
 const WarningMessage = () => {

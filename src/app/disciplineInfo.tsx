@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
+import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
@@ -8,22 +9,28 @@ import Card from '~/components/Card';
 import DisciplineType from '~/components/DisciplineType';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
+import Note from '~/components/disciplineInfo/components/Note';
+import { TaskContainer } from '~/components/disciplineInfo/components/TaskContainer';
+import {
+  AudienceInfo,
+  GroupsInfo,
+  TeacherInfo,
+  TimeInfo,
+} from '~/components/disciplineInfo/components/info';
 import { useAppTheme } from '~/hooks/theme';
-import { EducationStackScreenProps } from '~/navigation/types';
 import { fontSize } from '~/utils/texts';
 import { getStyles } from '~/utils/webView';
 
-import Note from './components/Note';
-import { TaskContainer } from './components/TaskContainer';
-import { AudienceInfo, GroupsInfo, TeacherInfo, TimeInfo } from './components/info';
-
-const DisciplineInfo = ({ route }: EducationStackScreenProps<'DisciplineInfo'>) => {
+const DisciplineInfo = () => {
   const theme = useAppTheme();
-  const { date: stringDate, lesson, pairPosition } = route.params;
+  const { date: stringDate, lesson: $lesson, pairPosition } = useLocalSearchParams();
+  console.log("DI", $lesson)
+  const lesson = JSON.parse($lesson as string);
+
 
   // React navigation не позволяет передавать функции и экземпляры классов,
   // поэтому пришлось преобразовать dayjs в строку, а сейчас обратно
-  const date = dayjs(stringDate);
+  const date = dayjs(stringDate as string);
 
   return (
     <Screen>
@@ -42,7 +49,7 @@ const DisciplineInfo = ({ route }: EducationStackScreenProps<'DisciplineInfo'>) 
           </Card>
         )}
 
-        <TimeInfo date={date} pairPosition={pairPosition} />
+        <TimeInfo date={date} pairPosition={pairPosition as number} />
         <AudienceInfo lesson={lesson} />
         {lesson.teacher && <TeacherInfo teacher={lesson.teacher} />}
         {lesson.groups && <GroupsInfo groups={lesson.groups} />}

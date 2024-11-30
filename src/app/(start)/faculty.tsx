@@ -10,7 +10,6 @@ import NoData from '~/components/NoData';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
-import { StartStackScreenProps } from '~/navigation/types';
 import { fontSize } from '~/utils/texts';
 
 const FacultyButton = React.memo(
@@ -40,7 +39,7 @@ const FacultyButton = React.memo(
   }
 );
 
-const SelectFacultyScreen = ({ navigation }: StartStackScreenProps) => {
+const SelectFacultyScreen = () => {
   const globalStyles = useGlobalStyles();
   const [selectedFaculty, setSelectedFaculty] = useState<IFaculty>(null);
   const { data, isLoading, refetch } = useQuery({
@@ -49,7 +48,7 @@ const SelectFacultyScreen = ({ navigation }: StartStackScreenProps) => {
   });
 
   const handleConfirm = () => {
-    navigation.navigate('SelectGroup', { facultyId: selectedFaculty.id });
+    // navigation.navigate('SelectGroup', { facultyId: selectedFaculty.id });
   };
 
   if (isLoading) return <LoadingScreen variant={'texts'} />;

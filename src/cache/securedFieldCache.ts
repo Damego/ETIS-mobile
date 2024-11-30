@@ -1,4 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
+import { Platform } from 'react-native';
 
 export default class SecuredFieldCache<T> {
   private readonly key: string;
