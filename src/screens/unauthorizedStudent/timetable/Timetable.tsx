@@ -1,9 +1,14 @@
 import { useQuery as useTanstackQuery } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { getPeriodWeek } from '~/api/psutech/api';
 import { LoadingContainer } from '~/components/LoadingScreen';
 import Screen from '~/components/Screen';
+import Text from '~/components/Text';
 import TimetableContainer from '~/components/timetable/TimetableContainer';
+import BellScheduleButton from '~/components/timetable/buttons/BellScheduleButton';
+import DisciplineTasksButton from '~/components/timetable/buttons/DisciplineTasksButton';
+import ToggleModeButton from '~/components/timetable/buttons/ToggleModeButton';
 import { useClient } from '~/data/client';
 import { useAppSelector } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
@@ -83,6 +88,15 @@ const Timetable = ({ navigation }: UnauthorizedTeacherStackScreenProps) => {
 
   return (
     <Screen onUpdate={refresh}>
+      <View style={styles.titleContainer}>
+        <Text style={styles.titleText}>Расписание</Text>
+        <View style={styles.titleIconsContainer}>
+          <ToggleModeButton />
+          <BellScheduleButton />
+          <DisciplineTasksButton />
+        </View>
+      </View>
+
       <TimetableContainer
         data={data}
         timetable={timetable}
@@ -98,3 +112,19 @@ const Timetable = ({ navigation }: UnauthorizedTeacherStackScreenProps) => {
 };
 
 export default Timetable;
+
+const styles = StyleSheet.create({
+  titleText: {
+    fontWeight: '700',
+    fontSize: 22,
+  },
+  titleContainer: {
+    alignItems: 'flex-end',
+  },
+  titleIconsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 4,
+  },
+});
