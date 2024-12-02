@@ -89,7 +89,6 @@ const Timetable = ({ navigation }: UnauthorizedTeacherStackScreenProps) => {
   return (
     <Screen onUpdate={refresh}>
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>Расписание</Text>
         <View style={styles.titleIconsContainer}>
           <ToggleModeButton />
           <BellScheduleButton />
