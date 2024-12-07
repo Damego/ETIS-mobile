@@ -4,13 +4,14 @@ import { LoadingContainer } from '~/components/LoadingScreen';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import TimetableContainer from '~/components/timetable/TimetableContainer';
+import BellScheduleButton from '~/components/timetable/buttons/BellScheduleButton';
+import DisciplineTasksButton from '~/components/timetable/buttons/DisciplineTasksButton';
+import ToggleModeButton from '~/components/timetable/buttons/ToggleModeButton';
 import { useClient } from '~/data/client';
 import { useAppSelector } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
 import useTimeTableQuery from '~/hooks/useTimeTableQuery';
 import useTimetable from '~/hooks/useTimetable';
-import BellScheduleButton from '~/screens/etis/main/timetable/BellScheduleButton';
-import DisciplineTasksButton from '~/screens/etis/main/timetable/DisciplineTasksButton';
 
 export const Timetable = () => {
   const client = useClient();
@@ -36,6 +37,7 @@ export const Timetable = () => {
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>Расписание</Text>
         <View style={styles.titleIconsContainer}>
+          <ToggleModeButton />
           <BellScheduleButton />
           <DisciplineTasksButton />
         </View>

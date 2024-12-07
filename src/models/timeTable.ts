@@ -5,6 +5,7 @@ export enum DistancePlatformTypes {
   bbb,
   zoom,
   skype,
+  yandexTelemost,
 }
 
 export enum WeekTypes {

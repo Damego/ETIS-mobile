@@ -1,4 +1,5 @@
 import { AntDesign } from '@expo/vector-icons';
+import { FlashList } from '@shopify/flash-list';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
@@ -43,8 +44,11 @@ const SelectAudience = ({ navigation }: EducationStackScreenProps) => {
 
       {isLoading && <LoadingContainer />}
 
-      {data?.map((audience, index) => (
-        <View key={audience.id}>
+      <FlashList
+        data={data}
+        estimatedItemSize={100}
+        ItemSeparatorComponent={BorderLine}
+        renderItem={({ item: audience }) => (
           <ClickableText
             onPress={selectAudience(audience)}
             viewStyle={styles.teacherItem}
@@ -57,9 +61,8 @@ const SelectAudience = ({ navigation }: EducationStackScreenProps) => {
           >
             {audience.number}
           </ClickableText>
-          {index !== data.length - 1 && <BorderLine />}
-        </View>
-      ))}
+        )}
+      />
 
       {selectedAudience !== null && (
         <TouchableOpacity

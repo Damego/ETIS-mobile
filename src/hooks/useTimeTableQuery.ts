@@ -40,7 +40,7 @@ const useTimeTableQuery = ({
 
       if (result.type !== GetResultType.cached) {
         const cachedStudent = await cache.getStudent();
-        if (cachedStudent.firstWeek !== undefined && cachedStudent.firstWeek !== firstWeek) {
+        if (cachedStudent?.firstWeek !== undefined && cachedStudent.firstWeek !== firstWeek) {
           // Начался новый период учёбы, кэшированные ранее недели больше не нужны.
           await cache.clearTimeTable();
           await cache.placePartialStudent({ firstWeek });

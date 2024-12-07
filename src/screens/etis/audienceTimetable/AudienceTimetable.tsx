@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
 import { getAudienceTimetable } from '~/api/psutech/api';
-import LoadingScreen, { LoadingContainer } from '~/components/LoadingScreen';
+import { LoadingContainer } from '~/components/LoadingScreen';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import TimetableContainer from '~/components/timetable/TimetableContainer';
@@ -28,11 +28,9 @@ const AudienceTimetable = ({ route }: EducationStackScreenProps<'AudienceTimetab
 
   return (
     <Screen onUpdate={refetch}>
-      {data && (
-        <Text style={[fontSize.large, { fontWeight: 'bold', alignSelf: 'center' }]}>
-          Аудитория: {data.audience.string}
-        </Text>
-      )}
+      <Text style={[fontSize.large, { fontWeight: 'bold', alignSelf: 'center' }]}>
+        Аудитория: {audience.string}
+      </Text>
 
       <TimetableContainer
         timetable={timetable}
