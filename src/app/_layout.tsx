@@ -114,7 +114,7 @@ const RootNav = () => {
     } else if (accountType === AccountType.UNAUTHORIZED_STUDENT) {
       navigation.navigate('(group)');
     } else if (accountType === AccountType.AUTHORIZED_STUDENT) {
-      navigation.navigate('(student)');
+      navigation.navigate('(education)');
     }
   }, []);
 
@@ -122,12 +122,12 @@ const RootNav = () => {
     <Stack initialRouteName="(start)" screenOptions={{ headerShown: true, ...headerParams(theme) }}>
       <Stack.Screen name="(start)" options={{ headerShown: false }} />
       <Stack.Screen name="(settings)" options={{ title: 'Настройки' }} />
-      {/*<Stack.Screen name="ChangeAppUI" options={{ title: 'Интерфейс' }} />*/}
       <Stack.Screen name="(releaseNotes)" options={{ headerShown: false }} />
       <Stack.Screen name="(teacher)" options={{ headerShown: false }} />
       <Stack.Screen name="(about)" options={{ title: 'О приложении' }} />
-      {/*<Stack.Screen name="(profile)" options={{ title: 'Профиль' }} />*/}
-      <Stack.Screen name="disciplineInfo" />
+      <Stack.Screen name="(shared)" options={{ headerShown: false }} />
+      <Stack.Screen name="(education)" options={{ title: 'Обучение' }} />
+      <Stack.Screen name="auth" options={{ title: 'Вход' }} />
     </Stack>
   );
 };

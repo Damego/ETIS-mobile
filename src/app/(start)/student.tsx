@@ -7,6 +7,7 @@ import Text from '~/components/Text';
 import { useAppDispatch, useGlobalStyles } from '~/hooks';
 import { AccountType, setAccountState } from '~/redux/reducers/accountSlice';
 import { fontSize } from '~/utils/texts';
+import { useRouter } from 'expo-router';
 
 const WarningMessage = () => {
   const globalStyles = useGlobalStyles();
@@ -28,8 +29,8 @@ const WarningMessage = () => {
   );
 };
 
-const SelectStudentAccountTypeScreen = ({ navigation }) => {
-  const dispatch = useAppDispatch();
+const SelectStudentAccountTypeScreen = () => {
+  const router = useRouter();
   const [withAuth, setWithAuth] = useState<boolean>(true);
 
   const handleSelect = ($withAuth: boolean) => () => {
@@ -38,9 +39,9 @@ const SelectStudentAccountTypeScreen = ({ navigation }) => {
 
   const handleChoose = () => {
     if (withAuth) {
-      dispatch(setAccountState(AccountType.AUTHORIZED_STUDENT));
+      router.push("/auth")
     } else {
-      navigation.navigate('SelectFaculty');
+      // navigation.navigate('SelectFaculty');
     }
   };
 

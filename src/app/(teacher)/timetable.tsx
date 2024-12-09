@@ -19,8 +19,6 @@ const Timetable = () => {
     onRequestUpdate: (week) => update({ data: { week, teacherId } }),
   });
 
-  console.warn('WTF')
-
   const { data, isLoading, refresh, update } = useQuery({
     method: client.getCathedraTimetable,
     payload: {

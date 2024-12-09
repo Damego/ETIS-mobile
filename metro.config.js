@@ -7,7 +7,7 @@ config.resolver.assetExts.push('md');
 // Некоторые нативные модули не работают в вебе,
 // но при попытке сделать билд веб-версии выходит ошибка,
 // связанная как раз таки с неподдерживаемыми модулями, так как metro не создаёт модульный файл
-const webBlacklistedModules = ['sp-react-native-in-app-updates'];
+const webBlacklistedModules = ['sp-react-native-in-app-updates', 'react-native-pager-view'];
 config.resolver.resolveRequest = (context, moduleName, platform) => {
   if (platform === 'web' && webBlacklistedModules.includes(moduleName)) {
     return {

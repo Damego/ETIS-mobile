@@ -11,9 +11,9 @@ import {
 } from '~/models/timeTable';
 import { dateRegex, disciplineRegex } from '~/parser/regex';
 import { getDisciplineType, getTextField } from '~/parser/utils';
-import { lyceumBellSchedule } from '~/screens/etis/bellSchedule/lyceumBellSchedule';
-import { BellScheduleTypes, IBellSchedulePair } from '~/screens/etis/bellSchedule/types';
-import { universityBellSchedule } from '~/screens/etis/bellSchedule/universityBellSchedule';
+import { lyceumBellSchedule } from '~/utils/bellSchedule/lyceumBellSchedule';
+import { BellScheduleTypes, IBellSchedulePair } from '~/utils/bellSchedule/types';
+import { universityBellSchedule } from '~/utils/bellSchedule/universityBellSchedule';
 import { MAIN_ETIS_URL } from '~/utils/consts';
 
 const audienceRegex = /ауд-([\dа-яА-Я\s]+)(?:\/(\d+))?/;

@@ -39,7 +39,7 @@ const SelectTeacherScreen = () => {
     const teacher = { id: selectedTeacher.id, name: selectedTeacher.name };
     dispatch(setTeacher(teacher));
     cache.setTeacherData(teacher);
-    // router.push('(teacher)/timetable')
+    router.push('(teacher)/timetable')
   };
 
   return (

@@ -2,7 +2,7 @@ import { Stack } from 'expo-router/stack';
 import React from 'react';
 import { useAppTheme } from '~/hooks/theme';
 import { headerParams } from '~/navigation/header';
-import AccountSettingsButton from '~/navigation/headerButtons/AccountSettingsButton';
+import AccountButton from '~/navigation/headerButtons/AccountButton';
 
 const TeacherLayout = () => {
   const theme = useAppTheme();
@@ -13,7 +13,7 @@ const TeacherLayout = () => {
         name={'timetable'}
         options={{
           headerTitle: 'Расписание',
-          headerRight: AccountSettingsButton,
+          headerRight: AccountButton,
         }}
       />
       {/*<Stack.Screen*/}

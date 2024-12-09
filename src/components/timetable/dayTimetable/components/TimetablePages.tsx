@@ -1,10 +1,10 @@
 import React, { forwardRef } from 'react';
 import { NativeSyntheticEvent, StyleSheet, View } from 'react-native';
 import PagerView from 'react-native-pager-view';
+import NoPairs from '~/components/education/main/components/NoPairs';
 import { checkAllowedPairRender } from '~/components/timetable/checkAllowedPairRender';
 import { useAppSelector } from '~/hooks';
 import { ITimeTableDay } from '~/models/timeTable';
-import NoPairs from '~/screens/etis/main/components/NoPairs';
 
 import Pair from './Pair';
 

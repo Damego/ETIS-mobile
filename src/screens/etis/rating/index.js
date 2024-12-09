@@ -1,3 +1,3 @@
-import Rating from './Rating';
+import Rating from '../../../app/(education)/rating';
 
 export default Rating;

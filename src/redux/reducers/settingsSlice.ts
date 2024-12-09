@@ -54,7 +54,7 @@ const initialConfig: AppConfig = {
   sentryEnabled: true,
   events: {},
   ui: {
-    timetableMode: TimetableModes.days,
+    timetableMode: TimetableModes.weeks,
     showPastWeekDays: true,
     highlightCurrentDay: false,
     skipSunday: true,

@@ -2,7 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { useAppTheme } from '~/hooks/theme';
 import { headerParams } from '~/navigation/header';
-import AccountSettingsButton from '~/navigation/headerButtons/AccountSettingsButton';
+import AccountButton from '~/navigation/headerButtons/AccountButton';
 import AppSettingsButton from '~/navigation/headerButtons/AppSettingsButton';
 import { UnauthorizedStudentStackParamList } from '~/navigation/types';
 import DisciplineInfo from '~/screens/etis/disciplineInfo/DisciplineInfo';
@@ -21,7 +21,7 @@ const UnauthorizedStudentNavigator = () => {
         component={Timetable}
         options={{
           headerTitle: 'Расписание',
-          headerRight: AccountSettingsButton,
+          headerRight: AccountButton,
         }}
       />
       <Stack.Screen

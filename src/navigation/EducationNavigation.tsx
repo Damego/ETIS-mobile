@@ -3,28 +3,28 @@ import React from 'react';
 import { useAppSelector } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
 import { headerParams } from '~/navigation/header';
-import AccountSettingsButton from '~/navigation/headerButtons/AccountSettingsButton';
+import AccountButton from '~/navigation/headerButtons/AccountButton';
 import AppSettingsButton from '~/navigation/headerButtons/AppSettingsButton';
 import { EducationStackParamList } from '~/navigation/types';
 import Absences from '~/screens/etis/absences';
 import AccountSettings from '~/screens/etis/accountSettings/AccountSettings';
-import AudienceTimetable from '~/screens/etis/audienceTimetable/AudienceTimetable';
+import AudienceTimetable from '../app/(education)/audienceTimetable';
 import SelectAudience from '~/screens/etis/audienceTimetable/SelectAudience';
 import Auth from '~/screens/etis/auth/Auth';
 import BellSchedule from '~/screens/etis/bellSchedule/BellSchedule';
-import CathedraTimetable from '~/screens/etis/cathedraTimetable/CathedraTimetable';
+import CathedraTimetable from '../app/(education)/cathedraTimetable';
 import CertificateIncome from '~/screens/etis/certificate/CertificateIncome';
-import CertificateTable from '~/screens/etis/certificate/CertificateTable';
-import RequestCertificate from '~/screens/etis/certificate/RequestCertificate';
-import ChangeEmail from '~/screens/etis/changeCredentials/ChangeEmail';
-import ChangePassword from '~/screens/etis/changeCredentials/ChangePassword';
-import DigitalResources from '~/screens/etis/digitalResources/DigitalResources';
-import DisciplineEducationalComplex from '~/screens/etis/disciplineEducationalComplex/DisciplineEducationalComplex';
-import DisciplineEducationalComplexTheme from '~/screens/etis/disciplineEducationalComplexTheme/DisciplineEducationalComplexTheme';
+import CertificateTable from '../app/(education)/certificates';
+import RequestCertificate from '../app/(education)/requestCertificate';
+import ChangeEmail from '../app/(education)/changeEmail';
+import ChangePassword from '../app/(education)/changePassword';
+import DigitalResources from '../app/(education)/digitalResources';
+import DisciplineEducationalComplex from '../app/(education)/disciplineEducationalComplex';
+import DisciplineEducationalComplexTheme from '../app/(education)/disciplineEducationalComplexTheme';
 import DisciplineInfo from '~/screens/etis/disciplineInfo/DisciplineInfo';
-import DisciplinesTasks from '~/screens/etis/disciplinesTasks/DisciplinesTasks';
+import DisciplinesTasks from '~/app/(shared)/disciplinesTasks';
 import ETISScreen from '~/screens/etis/main/MainScreen';
-import MessageHistory from '~/screens/etis/messageHistory/MessageHistory';
+import MessageHistory from '../app/(education)/messageHistory';
 import Rating from '~/screens/etis/rating';
 import SessionQuestionnaire from '~/screens/etis/sessionQuestionnaire/SessionQuestionnaire';
 import SessionQuestionnaireList from '~/screens/etis/sessionQuestionnaire/SessionQuestionnaireList';
@@ -48,7 +48,7 @@ const EducationNavigation = () => {
           <Stack.Screen
             name={'Main'}
             component={ETISScreen}
-            options={{ title: 'Обучение', headerRight: () => <AccountSettingsButton /> }}
+            options={{ title: 'Обучение', headerRight: () => <AccountButton /> }}
           />
           <Stack.Screen
             name={'AccountSettings'}

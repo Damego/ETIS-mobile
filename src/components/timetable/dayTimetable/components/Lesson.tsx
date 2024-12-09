@@ -7,8 +7,10 @@ import DisciplineType from '~/components/DisciplineType';
 import TaskBadge from '~/components/TaskBadge';
 import Text from '~/components/Text';
 import { useTimetableContext } from '~/context/timetableContext';
+import { useAppDispatch } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
 import { ILesson } from '~/models/timeTable';
+import { setDisciplineInfoData } from '~/redux/reducers/sharedScreensSlice';
 import { getTeacherName } from '~/utils/teachers';
 import { formatAudience, formatGroups } from '~/utils/texts';
 
@@ -21,7 +23,8 @@ const Lesson = ({
   date: dayjs.Dayjs;
   pairPosition: number;
 }) => {
-  const navigation = useNavigation();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const theme = useAppTheme();
 
   const { teachers } = useTimetableContext();
@@ -29,11 +32,14 @@ const Lesson = ({
   const teacherName = lesson.teacher ? getTeacherName(teachers, lesson.teacher) : null;
 
   const onLessonPress = () => {
-    navigation.navigate('(disciplineInfo)', {
-      lesson: JSON.stringify(lesson),
-      date: date.toISOString(),
-      pairPosition,
-    });
+    dispatch(
+      setDisciplineInfoData({
+        lesson,
+        date: date.toISOString(),
+        pairPosition,
+      })
+    );
+    router.push("(shared)/disciplineInfo")
   };
 
   return (

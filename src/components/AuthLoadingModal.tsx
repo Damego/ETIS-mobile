@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Button, StyleSheet, ToastAndroid, View } from 'react-native';
 import { cache } from '~/cache/smartCache';
@@ -91,6 +92,7 @@ const makeLogin = async (
 
 const AuthLoadingModal = () => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const { userCredentials, saveUserCredentials, fromStorage, isAuthorizing } = useAppSelector(
     (state) => state.account
   );
@@ -133,6 +135,7 @@ const AuthLoadingModal = () => {
       dispatch(signOut({ cleanUserCredentials: true }));
     } else if (response === LoginResponseType.success) {
       dispatch(signIn({}));
+      router.replace('(education)/main');
     } else if (response === LoginResponseType.failed) {
       // fromStorage Для проверки, были ли загружены данные из хранилища или нет (т.е. пользователь ввёл данные в форме)
       // Возможно, что пользователь вышел из аккаунта или неудачная попытка ввода данных,

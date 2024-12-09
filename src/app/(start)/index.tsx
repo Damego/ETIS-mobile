@@ -5,8 +5,8 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Button } from '~/components/Button';
 import SafeAreaScreen from '~/components/SafeAreaScreen';
 import Text from '~/components/Text';
+import AuthFooter from '~/components/education/auth/AuthFooter';
 import { useGlobalStyles } from '~/hooks';
-import AuthFooter from '~/screens/etis/auth/AuthFooter';
 import { fontSize } from '~/utils/texts';
 
 type UserType = 'teacher' | 'student';
