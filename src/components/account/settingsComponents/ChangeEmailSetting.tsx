@@ -1,13 +1,12 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import BaseSettingButton from '~/components/baseSettingButton';
-import { EducationNavigationProp } from '~/navigation/types';
+import useAppRouter from '~/hooks/useAppRouter';
 
 const ChangeEmailSetting = () => {
-  const navigation = useNavigation<EducationNavigationProp>();
+  const router = useAppRouter();
 
   const handlePress = () => {
-    navigation.navigate('ChangeEmail');
+    router.push('changeEmail');
   };
 
   return <BaseSettingButton iconName={'mail'} label={'Изменить почту'} onPress={handlePress} />;

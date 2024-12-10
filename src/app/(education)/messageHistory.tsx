@@ -1,16 +1,18 @@
 import { ListRenderItemInfo } from '@shopify/flash-list';
+import { useNavigation } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import { ToastAndroid, View } from 'react-native';
 import { ListScreen } from '~/components/Screen';
+import Message from '~/components/education/messageHistory/Message';
+import MessageInput, { FilesPreview } from '~/components/education/messageHistory/MessageInput';
 import { useClient } from '~/data/client';
 import { useAppSelector } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
+import useRoutePayload from '~/hooks/useRoutePayload';
 import { IMessage } from '~/models/messages';
 import { UploadFile } from '~/models/other';
 import { IGetPayload, RequestType } from '~/models/results';
 import { parseDatetime } from '~/parser/utils';
-import Message from '~/screens/etis/messageHistory/Message';
-import MessageInput, { FilesPreview } from '~/screens/etis/messageHistory/MessageInput';
 import { httpClient } from '~/utils';
 
 const formatTeacherName = (name: string): string => {
@@ -31,8 +33,10 @@ const findMessageBlockById = (messages: IMessage[][], messageId: string) =>
   messages.find((messageBlock) => messageBlock.find((message) => message.messageID === messageId));
 
 export default function MessageHistory() {
-  const [messages, setMessages] = useState<IMessage[]>(route.params.data);
-  const pageRef = useRef<number>(route.params.page);
+  const navigation = useNavigation();
+  const { data, page } = useRoutePayload<{ data: IMessage[]; page: number }>();
+  const [messages, setMessages] = useState<IMessage[]>(data);
+  const pageRef = useRef<number>(page);
   const [isUploading, setUploading] = useState<boolean>(false);
   const [files, setFiles] = useState<UploadFile[]>([]);
   const isDemo = useAppSelector((state) => state.account.isDemo);

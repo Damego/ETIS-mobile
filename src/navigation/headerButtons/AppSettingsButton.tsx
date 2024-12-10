@@ -1,18 +1,17 @@
 import { AntDesign } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { useAppTheme } from '~/hooks/theme';
-import { RootStackNavigationProp } from '~/navigation/types';
+import useAppRouter from '~/hooks/useAppRouter';
 
 const AppSettingButton = () => {
-  const navigation = useNavigation<RootStackNavigationProp>();
+  const router = useAppRouter();
   const theme = useAppTheme();
 
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate('AppSettings');
+        router.push('(setting)');
       }}
       style={{ marginRight: '10%' }}
     >

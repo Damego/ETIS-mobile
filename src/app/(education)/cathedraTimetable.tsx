@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import { LoadingContainer } from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
 import Screen from '~/components/Screen';
+import TeachersBottomSheet from '~/components/education/cathedraTimetable/TeachersBottomSheet';
 import TimetableContainer from '~/components/timetable/TimetableContainer';
 import { useClient } from '~/data/client';
 import useQuery from '~/hooks/useQuery';
+import useRoutePayload from '~/hooks/useRoutePayload';
 import useTimetable from '~/hooks/useTimetable';
 import { RequestType } from '~/models/results';
 import { ITeacher } from '~/models/timeTable';
-import { EducationStackScreenProps } from '~/navigation/types';
-import TeachersBottomSheet from '~/screens/etis/cathedraTimetable/TeachersBottomSheet';
 
-const CathedraTimetable = ({ route }: EducationStackScreenProps<'CathedraTimetable'>) => {
+const CathedraTimetable = () => {
+  const { cathedraId, teacherId } = useRoutePayload<{ cathedraId: string; teacherId: number }>();
   const [currentTeacher, setCurrentTeacher] = useState<ITeacher>();
 
   const client = useClient();
@@ -23,8 +24,8 @@ const CathedraTimetable = ({ route }: EducationStackScreenProps<'CathedraTimetab
     method: client.getCathedraTimetable,
     payload: {
       data: {
-        cathedraId: route.params.cathedraId,
-        teacherId: route.params.teacherId,
+        cathedraId,
+        teacherId,
         week: timetable.currentWeek,
       },
       requestType: RequestType.forceFetch,

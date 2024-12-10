@@ -9,12 +9,12 @@ import Screen from '~/components/Screen';
 import { useClient } from '~/data/client';
 import { useGlobalStyles } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
-import { ButtonWithPopover } from '~/screens/etis/certificate/components/ButtonWithPopover';
-import CertificateCard from '~/screens/etis/certificate/components/CertificateCard';
+import { ButtonWithPopover } from '~/components/education/certificate/ButtonWithPopover';
+import CertificateCard from '~/components/education/certificate/CertificateCard';
 import {
   RequestCertificateButton,
   iconSize,
-} from '~/screens/etis/certificate/components/RequestCertificateButton';
+} from '~/components/education/certificate/RequestCertificateButton';
 import { fontSize } from '~/utils/texts';
 
 const CertificateTable = () => {
@@ -24,12 +24,12 @@ const CertificateTable = () => {
   });
   const globalStyles = useGlobalStyles();
 
-  useFocusEffect(
-    useCallback(() => {
-      // Если пользователь закажет справку, то список не обновится при возврате на этот экран
-      if (!isLoading) refresh();
-    }, [isLoading, refresh])
-  );
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     // Если пользователь закажет справку, то список не обновится при возврате на этот экран
+  //     if (!isLoading) refresh();
+  //   }, [isLoading, refresh])
+  // );
 
   if (isLoading) return <LoadingScreen onRefresh={refresh} />;
   if (!data) return <NoData />;

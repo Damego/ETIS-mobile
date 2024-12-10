@@ -1,5 +1,4 @@
 import { BottomSheetView } from '@gorhom/bottom-sheet';
-import { useNavigation } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import * as Clipboard from 'expo-clipboard';
 import { Image } from 'expo-image';
@@ -13,13 +12,13 @@ import ClickableText from '~/components/ClickableText';
 import DisciplineType from '~/components/DisciplineType';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
+import useAppRouter from '~/hooks/useAppRouter';
 import { ITeacher } from '~/models/teachers';
-import { EducationNavigationProp } from '~/navigation/types';
 import { fontSize } from '~/utils/texts';
 
 const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
+  const router = useAppRouter();
   const globalStyles = useGlobalStyles();
-  const navigation = useNavigation<EducationNavigationProp>();
   const { data } = useQuery({
     queryFn: () => getTeacherById(teacher.id),
     queryKey: ['teacher', teacher.id],
@@ -44,11 +43,11 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
   const openPSUPage = () => Linking.openURL(data.psu.page_url);
 
   const navigateToTeacherTimetable = () => {
-    navigation.navigate('CathedraTimetable', { teacherId: teacher.id });
+    router.push('cathedraTimetable', { payload: { teacherId: teacher.id } });
   };
 
   const navigateToCathedraTimetable = () => {
-    navigation.navigate('CathedraTimetable', { cathedraId: teacher.cathedraId });
+    router.push('cathedraTimetable', { payload: { cathedraId: teacher.cathedraId } });
   };
 
   return (

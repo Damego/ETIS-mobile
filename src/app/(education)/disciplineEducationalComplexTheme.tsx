@@ -3,19 +3,21 @@ import { StyleSheet, View } from 'react-native';
 import Card from '~/components/Card';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
+import { ControlBadge } from '~/components/education/disciplineEducationalComplex/ControlBadge';
+import ControlRequirements from '~/components/education/disciplineEducationalComplexTheme/ControlRequirements';
+import ListData from '~/components/education/disciplineEducationalComplexTheme/ListData';
 import { useClient } from '~/data/client';
 import useQuery from '~/hooks/useQuery';
+import useRoutePayload from '~/hooks/useRoutePayload';
+import { IDisciplineEducationalComplexThemeLink } from '~/models/disciplineEducationalComplex';
 import { RequestType } from '~/models/results';
-import { EducationStackScreenProps } from '~/navigation/types';
-import { ControlBadge } from '~/screens/etis/disciplineEducationalComplex/components/ControlBadge';
-import ControlRequirements from '~/screens/etis/disciplineEducationalComplexTheme/components/ControlRequirements';
-import ListData from '~/screens/etis/disciplineEducationalComplexTheme/components/ListData';
 import { fontSize } from '~/utils/texts';
 
-const DisciplineEducationalComplexTheme = ({
-  route,
-}: EducationStackScreenProps<'DisciplineEducationalComplexTheme'>) => {
-  const { disciplineName, theme } = route.params;
+const DisciplineEducationalComplexTheme = () => {
+  const { disciplineName, theme } = useRoutePayload<{
+    disciplineName: string;
+    theme: IDisciplineEducationalComplexThemeLink;
+  }>();
 
   const client = useClient();
   const { data } = useQuery({

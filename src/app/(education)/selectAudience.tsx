@@ -7,14 +7,15 @@ import BorderLine from '~/components/BorderLine';
 import ClickableText from '~/components/ClickableText';
 import { LoadingContainer } from '~/components/LoadingScreen';
 import Text from '~/components/Text';
+import SearchInput from '~/components/start/SearchInput';
 import { useGlobalStyles } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
+import useAppRouter from '~/hooks/useAppRouter';
 import { IAudience } from '~/models/timeTable';
-import { EducationStackScreenProps } from '~/navigation/types';
-import SearchInput from '~/screens/start/components/SearchInput';
 import { fontSize } from '~/utils/texts';
 
-const SelectAudience = ({ navigation }: EducationStackScreenProps) => {
+const SelectAudience = () => {
+  const router = useAppRouter();
   const theme = useAppTheme();
   const globalStyles = useGlobalStyles();
 
@@ -32,7 +33,7 @@ const SelectAudience = ({ navigation }: EducationStackScreenProps) => {
   };
 
   const handleConfirm = () => {
-    navigation.navigate('AudienceTimetable', { audience: selectedAudience });
+    router.push('audienceTimetable', { payload: { audience: selectedAudience } });
   };
 
   return (

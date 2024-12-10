@@ -8,12 +8,12 @@ import { useClient } from '~/data/client';
 import { useAppSelector, useGlobalStyles } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
 import { RequestType } from '~/models/results';
-import { PopoverElement } from '~/screens/etis/certificate/components/PopoverElement';
+import { PopoverElement } from '~/components/education/certificate/PopoverElement';
 import { getStudentYear } from '~/utils/datetime';
 import composeMail from '~/utils/email';
 import { fontSize } from '~/utils/texts';
 
-import Input from './components/Input';
+import Input from '../../components/education/certificate/Input';
 
 const stipEmail = 'stip@psu.ru';
 

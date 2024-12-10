@@ -4,7 +4,7 @@ import { useGlobalStyles } from '~/hooks';
 import { IAnswer, ITheme } from '~/models/sessionQuestionnaire';
 import { fontSize } from '~/utils/texts';
 
-import Question from './components/Question';
+import Question from './Question';
 
 export default function Theme({
   theme,

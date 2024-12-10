@@ -4,8 +4,8 @@ import BottomSheetModal from '~/components/BottomSheetModal';
 import ClickableText from '~/components/ClickableText';
 import FileTextLink from '~/components/FileTextLink';
 import Text from '~/components/Text';
+import RightIcon from '~/components/education/disciplineEducationalComplex/RightIcon';
 import { IAdditionalMaterials } from '~/models/disciplineEducationalComplex';
-import RightIcon from '~/screens/etis/disciplineEducationalComplex/RightIcon';
 import { fontSize } from '~/utils/texts';
 
 const AdditionalMaterialsBottomSheet = React.forwardRef<

@@ -1,13 +1,13 @@
 import { AntDesign } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import OptionButton from '~/app/(start)/components/OptionButton';
 import { Button } from '~/components/Button';
 import Text from '~/components/Text';
+import OptionButton from '~/components/start/OptionButton';
 import { useAppDispatch, useGlobalStyles } from '~/hooks';
 import { AccountType, setAccountState } from '~/redux/reducers/accountSlice';
 import { fontSize } from '~/utils/texts';
-import { useRouter } from 'expo-router';
 
 const WarningMessage = () => {
   const globalStyles = useGlobalStyles();
@@ -39,9 +39,9 @@ const SelectStudentAccountTypeScreen = () => {
 
   const handleChoose = () => {
     if (withAuth) {
-      router.push("/auth")
+      router.push('/auth');
     } else {
-      // navigation.navigate('SelectFaculty');
+      router.push('faculty');
     }
   };
 

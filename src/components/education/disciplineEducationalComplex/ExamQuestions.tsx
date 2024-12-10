@@ -5,10 +5,10 @@ import { View } from 'react-native';
 import BottomSheetModal from '~/components/BottomSheetModal';
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
+import RightIcon from '~/components/education/disciplineEducationalComplex/RightIcon';
 import { useClient } from '~/data/client';
 import { IExamQuestions } from '~/models/disciplineEducationalComplex';
 import { RequestType } from '~/models/results';
-import RightIcon from '~/screens/etis/disciplineEducationalComplex/RightIcon';
 import { fontSize } from '~/utils/texts';
 
 const Question = ({ question }: { question: IExamQuestions }) => {

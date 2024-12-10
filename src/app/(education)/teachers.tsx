@@ -6,8 +6,8 @@ import Screen from '~/components/Screen';
 import { useClient } from '~/data/client';
 import useQuery from '~/hooks/useQuery';
 import { ITeacher } from '~/models/teachers';
-import TeacherBottomSheet from '~/screens/etis/teachers/TeacherBottomSheet';
-import TeacherCard from '~/screens/etis/teachers/TeacherCard';
+import TeacherBottomSheet from '~/components/education/teachers/TeacherBottomSheet';
+import TeacherCard from '~/components/education/teachers/TeacherCard';
 
 const groupTeachers = (teachers: ITeacher[]) => {
   if (!teachers) return;

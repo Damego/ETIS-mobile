@@ -10,10 +10,10 @@ import NoData from '~/components/NoData';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import PeriodsBottomSheet from '~/components/bottomSheets/PeriodsBottomSheet';
+import RightText from '~/components/education/rating/RightText';
 import { useAppTheme } from '~/hooks/theme';
 import useRatingQuery from '~/hooks/useRatingQuery';
 import { IGroup } from '~/models/rating';
-import RightText from '~/screens/etis/rating/RightText';
 import { fontSize } from '~/utils/texts';
 
 const Group = ({ group }: { group: IGroup }) => {

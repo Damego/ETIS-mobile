@@ -2,9 +2,9 @@ import React from 'react';
 import LoadingScreen from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
 import Screen from '~/components/Screen';
+import Order from '~/components/education/orders/Order';
 import { useClient } from '~/data/client';
 import useQuery from '~/hooks/useQuery';
-import Order from '~/screens/etis/orders/Order';
 
 const OrderTable = () => {
   const client = useClient();

@@ -1,12 +1,11 @@
 import { AntDesign } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import DisciplineType from '~/components/DisciplineType';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
+import useAppRouter from '~/hooks/useAppRouter';
 import { ITeachPlanDiscipline } from '~/models/teachPlan';
-import { EducationNavigationProp } from '~/navigation/types';
 import { fontSize, getDisciplineTypeFromReporting } from '~/utils/texts';
 
 const styles = StyleSheet.create({
@@ -29,16 +28,15 @@ const styles = StyleSheet.create({
 });
 
 const Subject = ({ data, period }: { data: ITeachPlanDiscipline; period: string }) => {
-  const navigation = useNavigation<EducationNavigationProp>();
+  const router = useAppRouter();
   const globalStyles = useGlobalStyles();
 
   return (
     <>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('DisciplineEducationalComplex', {
-            disciplineTeachPlan: data,
-            period,
+          router.push('disciplineEducationalComplex', {
+            payload: { disciplineTeachPlan: data, period },
           });
         }}
         style={styles.subjectDropdownView}

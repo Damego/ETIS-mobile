@@ -1,13 +1,12 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import BaseSettingButton from '~/components/baseSettingButton';
-import { EducationNavigationProp } from '~/navigation/types';
+import useAppRouter from '~/hooks/useAppRouter';
 
 const ChangePasswordSetting = () => {
-  const navigation = useNavigation<EducationNavigationProp>();
+  const router = useAppRouter();
 
   const handlePress = () => {
-    navigation.navigate('ChangePassword');
+    router.push('changePassword');
   };
 
   return <BaseSettingButton iconName={'lock'} label={'Изменить пароль'} onPress={handlePress} />;

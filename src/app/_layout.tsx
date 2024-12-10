@@ -119,14 +119,14 @@ const RootNav = () => {
   }, []);
 
   return (
-    <Stack initialRouteName="(start)" screenOptions={{ headerShown: true, ...headerParams(theme) }}>
+    <Stack initialRouteName="(start)" screenOptions={{ ...headerParams(theme) }}>
       <Stack.Screen name="(start)" options={{ headerShown: false }} />
       <Stack.Screen name="(settings)" options={{ title: 'Настройки' }} />
       <Stack.Screen name="(releaseNotes)" options={{ headerShown: false }} />
       <Stack.Screen name="(teacher)" options={{ headerShown: false }} />
       <Stack.Screen name="(about)" options={{ title: 'О приложении' }} />
       <Stack.Screen name="(shared)" options={{ headerShown: false }} />
-      <Stack.Screen name="(education)" options={{ title: 'Обучение' }} />
+      <Stack.Screen name="(education)" options={{ headerShown: false }} />
       <Stack.Screen name="auth" options={{ title: 'Вход' }} />
     </Stack>
   );

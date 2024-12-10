@@ -9,12 +9,13 @@ import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { useClient } from '~/data/client';
 import { useAppSelector } from '~/hooks';
+import useAppRouter from '~/hooks/useAppRouter';
 import useQuery from '~/hooks/useQuery';
 import { RequestType } from '~/models/results';
-import { EducationStackScreenProps } from '~/navigation/types';
 import { fontSize } from '~/utils/texts';
 
-export default function SessionQuestionnaireList({ navigation }: EducationStackScreenProps) {
+export default function SessionQuestionnaireList() {
+  const router = useAppRouter();
   const { sessionTestID } = useAppSelector((state) => state.student);
   const client = useClient();
   const { data, isLoading, refresh } = useQuery({
@@ -24,12 +25,13 @@ export default function SessionQuestionnaireList({ navigation }: EducationStackS
       data: sessionTestID,
     },
   });
-  const isFocused = useIsFocused();
-
-  useEffect(() => {
-    // Если пользователь пройдёт тест, то список не обновится при нажатии кнопки "назад"
-    if (!isLoading && isFocused) refresh();
-  }, [isFocused]);
+  // TODO: Restore
+  // const isFocused = useIsFocused();
+  //
+  // useEffect(() => {
+  //   // Если пользователь пройдёт тест, то список не обновится при нажатии кнопки "назад"
+  //   if (!isLoading && isFocused) refresh();
+  // }, [isFocused]);
 
   if (isLoading) return <LoadingScreen />;
   if (!data) return <NoData onRefresh={refresh} />;
@@ -48,7 +50,7 @@ export default function SessionQuestionnaireList({ navigation }: EducationStackS
                 <ClickableText
                   text={link.name}
                   onPress={() => {
-                    navigation.navigate('SessionQuestionnaire', { url: link.url });
+                    router.push('sessionQuestionnaire', { payload: { url: link.url } });
                   }}
                   textStyle={fontSize.small}
                 />

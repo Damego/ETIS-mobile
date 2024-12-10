@@ -6,7 +6,7 @@ import Card from '~/components/Card';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { CertificateRequest } from '~/models/certificateRequest';
-import { DELIVERY_METHODS, KNOWN_CERTIFICATES } from '~/screens/etis/certificate/data';
+import { DELIVERY_METHODS, KNOWN_CERTIFICATES } from '~/components/education/certificate/data';
 import { fontSize } from '~/utils/texts';
 
 const RequestSentScreen = ({

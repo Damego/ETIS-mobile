@@ -4,12 +4,12 @@ import LoadingScreen from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
+import CalendarSchedule from '~/components/education/shortTeachPlan/CalendarSchedule';
+import SessionCard from '~/components/education/shortTeachPlan/SessionCard';
 import { useClient } from '~/data/client';
 import { useAppSelector, useGlobalStyles } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
 import { ISessionTeachPlan } from '~/models/teachPlan';
-import CalendarSchedule from '~/screens/etis/shortTeachPlan/CalendarSchedule';
-import SessionCard from '~/screens/etis/shortTeachPlan/SessionCard';
 
 const PeriodButton = React.memo(
   ({

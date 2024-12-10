@@ -10,6 +10,7 @@ import NoData from '~/components/NoData';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
+import useAppRouter from '~/hooks/useAppRouter';
 import { fontSize } from '~/utils/texts';
 
 const FacultyButton = React.memo(
@@ -40,6 +41,7 @@ const FacultyButton = React.memo(
 );
 
 const SelectFacultyScreen = () => {
+  const router = useAppRouter();
   const globalStyles = useGlobalStyles();
   const [selectedFaculty, setSelectedFaculty] = useState<IFaculty>(null);
   const { data, isLoading, refetch } = useQuery({
@@ -48,7 +50,7 @@ const SelectFacultyScreen = () => {
   });
 
   const handleConfirm = () => {
-    // navigation.navigate('SelectGroup', { facultyId: selectedFaculty.id });
+    router.push('group', { payload: { facultyId: selectedFaculty.id } });
   };
 
   if (isLoading) return <LoadingScreen variant={'texts'} />;

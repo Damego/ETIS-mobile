@@ -4,15 +4,16 @@ import Card from '~/components/Card';
 import DisciplineType from '~/components/DisciplineType';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
+import AdditionalMaterials from '~/components/education/disciplineEducationalComplex/AdditionalMaterials';
+import EvaluationIndicators from '~/components/education/disciplineEducationalComplex/EvaluationIndicators';
+import ExamQuestions from '~/components/education/disciplineEducationalComplex/ExamQuestions';
+import PlannedLearningOutcome from '~/components/education/disciplineEducationalComplex/PlannedLearningOutcome';
+import Themes from '~/components/education/disciplineEducationalComplex/Themes';
 import { useClient } from '~/data/client';
 import useQuery from '~/hooks/useQuery';
+import useRoutePayload from '~/hooks/useRoutePayload';
 import { RequestType } from '~/models/results';
-import { EducationStackScreenProps } from '~/navigation/types';
-import AdditionalMaterials from '~/screens/etis/disciplineEducationalComplex/components/AdditionalMaterials';
-import EvaluationIndicators from '~/screens/etis/disciplineEducationalComplex/components/EvaluationIndicators';
-import ExamQuestions from '~/screens/etis/disciplineEducationalComplex/components/ExamQuestions';
-import PlannedLearningOutcome from '~/screens/etis/disciplineEducationalComplex/components/PlannedLearningOutcome';
-import Themes from '~/screens/etis/disciplineEducationalComplex/components/Themes';
+import { ITeachPlanDiscipline } from '~/models/teachPlan';
 import { fontSize, getDisciplineTypeFromReporting } from '~/utils/texts';
 
 const DisciplineWorkHours = ({
@@ -37,10 +38,11 @@ const DisciplineWorkHours = ({
   );
 };
 
-const DisciplineEducationalComplex = ({
-  route,
-}: EducationStackScreenProps<'DisciplineEducationalComplex'>) => {
-  const { disciplineTeachPlan, period } = route.params;
+const DisciplineEducationalComplex = () => {
+  const { disciplineTeachPlan, period } = useRoutePayload<{
+    disciplineTeachPlan: ITeachPlanDiscipline;
+    period: number;
+  }>();
 
   const client = useClient();
   const { data } = useQuery({

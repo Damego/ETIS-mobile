@@ -4,7 +4,7 @@ import { useAppTheme } from '~/hooks/theme';
 import { headerParams } from '~/navigation/header';
 import AccountButton from '~/navigation/headerButtons/AccountButton';
 
-const TeacherLayout = () => {
+const GroupLayout = () => {
   const theme = useAppTheme();
 
   return (
@@ -20,4 +20,4 @@ const TeacherLayout = () => {
   );
 };
 
-export default TeacherLayout;
+export default GroupLayout;

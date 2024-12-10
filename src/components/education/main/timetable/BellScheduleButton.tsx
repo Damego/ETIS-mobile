@@ -1,16 +1,15 @@
 import { AntDesign } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { useAppTheme } from '~/hooks/theme';
-import { EducationNavigationProp } from '~/navigation/types';
+import { useRouter } from 'expo-router';
 
 const BellScheduleButton = () => {
-  const navigation = useNavigation<EducationNavigationProp>();
+  const router = useRouter()
   const theme = useAppTheme();
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('BellSchedule')}>
+    <TouchableOpacity onPress={() => router.push('(shared)/bellSchedule')}>
       <AntDesign name={'bells'} size={24} color={theme.colors.text} />
     </TouchableOpacity>
   );

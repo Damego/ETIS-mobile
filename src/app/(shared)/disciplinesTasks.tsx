@@ -13,9 +13,9 @@ import TaskItem from '~/components/disciplineInfo/components/TaskItem';
 import getGroupedTasks from '~/components/disciplineInfo/getGroupedTasks';
 import TaskContext, { ITaskContext } from '~/context/taskContext';
 import useBackPress from '~/hooks/useBackPress';
+import useRoutePayload from '~/hooks/useRoutePayload';
 import useTasks from '~/hooks/useTasks';
 import { DisciplineStorage, DisciplineTask } from '~/models/disciplinesTasks';
-import { EducationStackScreenProps } from '~/navigation/types';
 import {
   cancelScheduledTaskNotifications,
   rescheduleTaskNotifications,
@@ -45,7 +45,8 @@ const TaskGroup = ({ tasks }: { tasks: DisciplineTask[] }) => {
   );
 };
 
-const DisciplinesTasks = ({ route }: EducationStackScreenProps<'DisciplineTasks'>) => {
+const DisciplinesTasks = () => {
+  const { taskId } = useRoutePayload<{ taskId: string }>();
   const { tasks, saveTasks, removeTask } = useTasks();
 
   const [selectedTask, setSelectedTask] = useState<DisciplineTask>();
@@ -93,14 +94,14 @@ const DisciplinesTasks = ({ route }: EducationStackScreenProps<'DisciplineTasks'
   };
 
   useEffect(() => {
-    if (route.params?.taskId) {
+    if (taskId) {
       DisciplineStorage.getTasks().then((tasks) => {
-        const task = tasks.find((task) => task.id === route.params?.taskId);
+        const task = tasks.find((task) => task.id === taskId);
         setSelectedTask(task);
         openModal();
       });
     }
-  }, [route.params?.taskId]);
+  }, [taskId]);
 
   useBackPress(
     useCallback(() => {

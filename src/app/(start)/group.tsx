@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { searchGroups } from '~/api/psutech/api';
 import { IGroup } from '~/api/psutech/types';
-import SearchInput from '~/app/(start)/components/SearchInput';
+import SearchInput from '~/components/start/SearchInput';
 import { cache } from '~/cache/smartCache';
 import BorderLine from '~/components/BorderLine';
 import ClickableText from '~/components/ClickableText';

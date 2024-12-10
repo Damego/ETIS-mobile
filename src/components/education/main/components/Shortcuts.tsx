@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignSelf: 'center',
     paddingVertical: '2%',
-    boxShadow: '25 5 5 0 rgba(255, 0, 0, 0.5)'
+    boxShadow: '0 0 25 0 rgba(0, 0, 0, 0.5)'
   },
   iconView: {
     alignItems: 'center',

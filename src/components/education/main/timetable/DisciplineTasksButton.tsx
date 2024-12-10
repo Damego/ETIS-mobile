@@ -1,14 +1,14 @@
 import { AntDesign } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Text from '~/components/Text';
 import { useAppTheme } from '~/hooks/theme';
+import useAppRouter from '~/hooks/useAppRouter';
 import useTasks from '~/hooks/useTasks';
-import { EducationNavigationProp } from '~/navigation/types';
 
 const DisciplineTasksButton = () => {
+  const router = useAppRouter();
   const currentDate = dayjs().startOf('day');
   const weekEnd = currentDate.clone().endOf('week');
   const { tasks } = useTasks({
@@ -17,13 +17,12 @@ const DisciplineTasksButton = () => {
       return task.datetime >= currentDate && task.datetime <= weekEnd && !task.isComplete;
     },
   });
-  const navigation = useNavigation<EducationNavigationProp>();
   const theme = useAppTheme();
 
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate('DisciplineTasks');
+        router.push('(shared)/disciplinesTasks');
       }}
       style={{ justifyContent: 'center' }}
     >

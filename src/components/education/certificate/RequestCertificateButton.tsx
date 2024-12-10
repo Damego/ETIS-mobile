@@ -1,12 +1,11 @@
 import { AntDesign } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import Card from '~/components/Card';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
+import useAppRouter from '~/hooks/useAppRouter';
 import { IAvailableCertificate } from '~/models/certificate';
-import { EducationNavigationProp } from '~/navigation/types';
 import { fontSize } from '~/utils/texts';
 
 export const iconSize = 24;
@@ -17,12 +16,16 @@ export const RequestCertificateButton = ({
   availableCertificates: IAvailableCertificate[];
 }) => {
   const globalStyles = useGlobalStyles();
-  const navigation = useNavigation<EducationNavigationProp>();
+  const router = useAppRouter();
+
+  const handlePress = () => {
+    router.push('requestCertificate', { payload: availableCertificates });
+  };
 
   return (
     <Card>
       <TouchableOpacity
-        onPress={() => navigation.navigate('RequestCertificate', availableCertificates)}
+        onPress={handlePress}
         activeOpacity={0.9}
         style={{ flexDirection: 'row', paddingVertical: '2%', alignItems: 'center' }}
       >

@@ -5,9 +5,9 @@ import BorderLine from '~/components/BorderLine';
 import BottomSheetModal from '~/components/BottomSheetModal';
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
+import DropdownText from '~/components/education/disciplineEducationalComplex/DropdownText';
+import RightIcon from '~/components/education/disciplineEducationalComplex/RightIcon';
 import { IEvaluationIndicators } from '~/models/disciplineEducationalComplex';
-import RightIcon from '~/screens/etis/disciplineEducationalComplex/RightIcon';
-import DropdownText from '~/screens/etis/disciplineEducationalComplex/components/DropdownText';
 import { fontSize } from '~/utils/texts';
 
 const EvaluationIndicatorsBottomSheet = React.forwardRef<

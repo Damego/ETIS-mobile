@@ -4,20 +4,21 @@ import { Button } from '~/components/Button';
 import LoadingScreen from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
 import Screen from '~/components/Screen';
-import { useClient } from '~/data/client';
-import { useAppSelector } from '~/hooks';
-import useQuery from '~/hooks/useQuery';
-import { RequestType } from '~/models/results';
-import { IAnswer } from '~/models/sessionQuestionnaire';
-import { EducationStackScreenProps } from '~/navigation/types';
-import Theme from '~/screens/etis/sessionQuestionnaire/Theme';
-import AdditionalComment from '~/screens/etis/sessionQuestionnaire/components/AdditionalComment';
+import AdditionalComment from '~/components/education/sessionQuestionnaire/AdditionalComment';
 import {
   ConfirmResultView,
   ResultSentView,
   SendingResultView,
-} from '~/screens/etis/sessionQuestionnaire/components/ResultViews';
-import TeacherQuestionView from '~/screens/etis/sessionQuestionnaire/components/TeacherQuestionView';
+} from '~/components/education/sessionQuestionnaire/ResultViews';
+import TeacherQuestionView from '~/components/education/sessionQuestionnaire/TeacherQuestionView';
+import Theme from '~/components/education/sessionQuestionnaire/Theme';
+import { useClient } from '~/data/client';
+import { useAppSelector } from '~/hooks';
+import useQuery from '~/hooks/useQuery';
+import useRoutePayload from '~/hooks/useRoutePayload';
+import { RequestType } from '~/models/results';
+import { IAnswer } from '~/models/sessionQuestionnaire';
+import { EducationStackScreenProps } from '~/navigation/types';
 import { httpClient } from '~/utils';
 import toSessionTestPayload from '~/utils/sessionTest';
 
@@ -31,10 +32,8 @@ enum Steps {
   resultSent,
 }
 
-export default function SessionQuestionnaire({
-  route,
-}: EducationStackScreenProps<'SessionQuestionnaire'>) {
-  const { url } = route.params;
+export default function SessionQuestionnaire() {
+  const { url } = useRoutePayload<{ url: string }>();
   const [step, setStep] = useState<Steps>(1);
   const [themeIndex, setThemeIndex] = useState(0);
   const teacherRef = useRef<string>();

@@ -7,6 +7,7 @@ import TaskBadge from '~/components/TaskBadge';
 import Text from '~/components/Text';
 import TimeTableContext from '~/context/timetableContext';
 import { useAppSelector } from '~/hooks';
+import useAppRouter from '~/hooks/useAppRouter';
 import { ILesson, IPair } from '~/models/timeTable';
 import { EducationNavigationProp } from '~/navigation/types';
 import { getTeacherName } from '~/utils/teachers';
@@ -51,7 +52,7 @@ const Pair = ({ pair, date }: { pair: IPair; date: dayjs.Dayjs }) => {
 
 const Lesson = React.memo(
   ({ data, date, pairPosition }: { data: ILesson; date: dayjs.Dayjs; pairPosition: number }) => {
-    const navigation = useNavigation<EducationNavigationProp>();
+    const router = useAppRouter();
     const { teachers } = useContext(TimeTableContext);
 
     const audience = formatAudience(data);
@@ -61,10 +62,8 @@ const Lesson = React.memo(
       <TouchableOpacity
         style={styles.lessonContainer}
         onPress={() =>
-          navigation.navigate('DisciplineInfo', {
-            lesson: data,
-            date: date.toISOString(),
-            pairPosition,
+          router.push('(shared)/disciplineInfo', {
+            payload: { lesson: data, date: date.toISOString(), pairPosition },
           })
         }
       >

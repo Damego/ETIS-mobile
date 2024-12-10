@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Alert, Keyboard, StyleSheet, ToastAndroid, View } from 'react-native';
 import { RadioButtonProps, RadioGroup } from 'react-native-radio-buttons-group';
@@ -5,25 +6,23 @@ import { Button } from '~/components/Button';
 import Card from '~/components/Card';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
+import Input from '~/components/education/certificate/Input';
+import { PopoverElement } from '~/components/education/certificate/PopoverElement';
+import RequestSentScreen from '~/components/education/certificate/RequestSentScreen';
+import { KNOWN_CERTIFICATES, SPECIAL_CERTIFICATES } from '~/components/education/certificate/data';
 import { useAppSelector, useGlobalStyles } from '~/hooks';
+import useRoutePayload from '~/hooks/useRoutePayload';
 import { IAvailableCertificate } from '~/models/certificate';
 import { CertificateParam, CertificateRequest } from '~/models/certificateRequest';
-import { PopoverElement } from '~/screens/etis/certificate/components/PopoverElement';
-import RequestSentScreen from '~/screens/etis/certificate/components/RequestSentScreen';
-import { KNOWN_CERTIFICATES, SPECIAL_CERTIFICATES } from '~/screens/etis/certificate/data';
 import { httpClient } from '~/utils';
 import { toCertificatePayload } from '~/utils/certificate';
 import { fontSize } from '~/utils/texts';
 
-import Input from '~/screens/etis/certificate/components/Input';
-
 // TODO: add screen typing
-const specialCerts: [{ id: string; screen: string }] = [
-  { id: '-1', screen: 'CertificateIncome' },
-];
+const specialCerts: [{ id: string; screen: string }] = [{ id: '-1', screen: 'certificateIncome' }];
 
 const getAvailableCertificates = (
-  availableCertificates: readonly IAvailableCertificate[]
+  availableCertificates: IAvailableCertificate[]
 ): CertificateParam[] => {
   const $availableCertificates = [];
   const ids = availableCertificates.map((cert) => cert.id);
@@ -38,8 +37,10 @@ const getAvailableCertificates = (
 };
 
 export default function RequestCertificate() {
+  const router = useRouter();
   const globalStyles = useGlobalStyles();
-  const availableCertificates = getAvailableCertificates(route.params);
+  const studentAvailableCertificates = useRoutePayload<IAvailableCertificate[]>();
+  const availableCertificates = getAvailableCertificates(studentAvailableCertificates);
 
   const { isDemo } = useAppSelector((state) => state.account);
   const [{ certificateId, note, quantity, delivery, place }, setCertificate] =
@@ -229,7 +230,7 @@ export default function RequestCertificate() {
         <View style={styles.buttonContainer}>
           <Button
             text={'Продолжить'}
-            onPress={() => navigation.navigate(specialCert.screen)}
+            onPress={() => router.push(specialCert.screen)}
             variant={'primary'}
           />
         </View>

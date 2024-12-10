@@ -8,7 +8,7 @@ import Text from '~/components/Text';
 import { styles } from '~/components/education/auth/AuthForm';
 import { useAppDispatch, useGlobalStyles } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
-import { EducationStackScreenProps } from '~/navigation/types';
+import useRoutePayload from '~/hooks/useRoutePayload';
 import { parseChangeEmailPage } from '~/parser/changeCredentials';
 import { setUserCredentials } from '~/redux/reducers/accountSlice';
 import { httpClient } from '~/utils';
@@ -80,8 +80,8 @@ const Form = ({
   );
 };
 
-export default function ChangeEmail({ route }: EducationStackScreenProps<'ChangeEmail'>) {
-  const sendVerificationMail = route.params?.sendVerificationMail;
+export default function ChangeEmail() {
+  const { sendVerificationMail } = useRoutePayload<{ sendVerificationMail: boolean }>();
 
   const dispatch = useAppDispatch();
   const [isLoading, setLoading] = useState(false);

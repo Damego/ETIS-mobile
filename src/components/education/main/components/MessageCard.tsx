@@ -1,20 +1,19 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Text from '~/components/Text';
+import useAppRouter from '~/hooks/useAppRouter';
 import { IMessage } from '~/models/messages';
-import { EducationNavigationProp } from '~/navigation/types';
 import { parseDatetime } from '~/parser/utils';
 import { fontSize } from '~/utils/texts';
 
 const MessageCard = ({ data, page }: { data: IMessage[]; page: number }) => {
-  const navigation = useNavigation<EducationNavigationProp>();
+  const router = useAppRouter();
   const [mainMessage] = data;
   const { author, subject, theme } = mainMessage;
   const time = parseDatetime(mainMessage.time);
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('MessageHistory', { data, page })}>
+    <TouchableOpacity onPress={() => router.push('messageHistory', { payload: { data, page } })}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <Text style={styles.textBold}>{author}</Text>
         <Text>{time.format('DD MMMM')}</Text>
