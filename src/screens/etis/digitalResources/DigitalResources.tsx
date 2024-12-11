@@ -32,9 +32,9 @@ const Field = ({ value }: { value?: string }) => {
     >
       <Text selectable>{value}</Text>
       (value &&
-        <TouchableOpacity onPress={copyValue}>
-          <Feather name={'copy'} size={18} color={globalStyles.textColor.color} />
-        </TouchableOpacity>
+      <TouchableOpacity onPress={copyValue}>
+        <Feather name={'copy'} size={18} color={globalStyles.textColor.color} />
+      </TouchableOpacity>
       )
     </View>
   );
