@@ -37,11 +37,11 @@ const readJSONFromDocuments = async (fileName: string, defaultValue: any) => {
 
   try {
     stringData = await readAsStringAsync(`${documentDirectory}${fileName}`);
+    return JSON.parse(stringData);
   } catch (e) {
     await saveJSONToDocuments(defaultValue, fileName);
-    stringData = await readAsStringAsync(`${documentDirectory}${fileName}`);
+    return JSON.parse(defaultValue);
   }
-  return JSON.parse(stringData);
 };
 
 const saveDisciplineInfo = (data: IDisciplineInfo[]) =>
