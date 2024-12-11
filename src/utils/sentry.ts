@@ -42,8 +42,8 @@ export const executeRegex = (
 };
 
 export const ignoreErrors = [
-  "sp-react-native-in-app-updates",
-  "ExpoBackgroundFetch.registerTaskAsync",
-  "ExpoFontLoader",
-  "OutOfMemoryError",
-]
+  'sp-react-native-in-app-updates',
+  'ExpoBackgroundFetch.registerTaskAsync',
+  'ExpoFontLoader',
+  'OutOfMemoryError',
+];
