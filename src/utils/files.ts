@@ -40,7 +40,7 @@ const readJSONFromDocuments = async (fileName: string, defaultValue: any) => {
     return JSON.parse(stringData);
   } catch (e) {
     await saveJSONToDocuments(defaultValue, fileName);
-    return JSON.parse(defaultValue);
+    return defaultValue;
   }
 };
 
