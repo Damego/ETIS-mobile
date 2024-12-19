@@ -16,4 +16,5 @@ export interface StudentState {
   currentWeek?: number;
   currentSession?: number;
   hasUnverifiedEmail: boolean;
+  iCalToken?: string;
 }
