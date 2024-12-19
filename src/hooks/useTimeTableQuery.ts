@@ -11,9 +11,11 @@ import useQuery from './useQuery';
 const useTimeTableQuery = ({
   afterCallback,
   week,
+  enabled,
 }: {
   afterCallback?: (result: IGetResult<ITimeTable>) => void;
   week?: number;
+  enabled?: boolean;
 }) => {
   const dispatch = useAppDispatch();
   const client = useClient();
@@ -25,6 +27,7 @@ const useTimeTableQuery = ({
       data: week,
       requestType: RequestType.tryFetch,
     },
+    skipInitialGet: !enabled,
     method: client.getTimeTableData,
     onFail: async () => {
       const student = await cache.getStudent();

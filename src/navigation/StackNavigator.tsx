@@ -74,6 +74,8 @@ const StackNavigator = () => {
     educationScreen = UnauthorizedStudentNavigator;
   }
 
+  if (!appIsReady) return null;
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer theme={theme}>
