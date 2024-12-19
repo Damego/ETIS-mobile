@@ -112,3 +112,5 @@ test.ts
 test.jsx
 test.tsx
 android/
+# Local Netlify folder
+.netlify

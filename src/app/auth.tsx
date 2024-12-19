@@ -27,10 +27,10 @@ const AuthScreen = () => {
   }, [userCredentials]);
 
   const onFormSubmit = async (login: string, password: string) => {
-    if (!(await cache.hasAcceptedPrivacyPolicy())) {
-      showPrivacyPolicy();
-      return;
-    }
+    // if (!(await cache.hasAcceptedPrivacyPolicy())) {
+    //   showPrivacyPolicy();
+    //   return;
+    // }
 
     if (!login || !password) {
       setMessage('Вы не ввели логин или пароль');
@@ -41,7 +41,6 @@ const AuthScreen = () => {
       ToastAndroid.show('Нет интернет соединения!', ToastAndroid.SHORT);
       return;
     }
-
     dispatch(setUserCredentials({ userCredentials: { login, password }, fromStorage: false }));
     dispatch(setAuthorizing(true));
   };

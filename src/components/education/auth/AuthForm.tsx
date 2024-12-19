@@ -29,7 +29,6 @@ export const styles = StyleSheet.create({
     marginRight: '2%',
   },
   input: {
-    ...fontSize.large,
     paddingLeft: '2%',
     paddingVertical: '3%',
     width: '100%',
@@ -61,7 +60,7 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
       <Text colorVariant={'primary'}>{errorMessage}</Text>
 
       <TextInput
-        style={[styles.input, globalStyles.border, globalStyles.textColor]}
+        style={[styles.input, globalStyles.border, globalStyles.textColor, fontSize.large]}
         onChangeText={(newLogin) => {
           setLogin(newLogin);
         }}
@@ -74,7 +73,8 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
         autoCapitalize="none"
       />
       <PasswordInput
-        style={[styles.input, globalStyles.border, globalStyles.textColor]}
+        style={[styles.input, globalStyles.border, globalStyles.textColor, fontSize.large]}
+        containerStyle={{width: '100%'}}
         onChangeText={setPassword}
         placeholder="Пароль"
         placeholderTextColor={theme.colors.inputPlaceholder}

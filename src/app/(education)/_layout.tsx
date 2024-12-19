@@ -2,8 +2,11 @@ import { Redirect } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import React from 'react';
 import { useAppSelector } from '~/hooks';
+import { useAppTheme } from '~/hooks/theme';
+import { headerParams } from '~/navigation/header';
 
 const EducationLayout = () => {
+  const theme = useAppTheme();
   const { isSignedIn } = useAppSelector((state) => state.account);
 
   if (!isSignedIn) {
@@ -11,7 +14,7 @@ const EducationLayout = () => {
   }
 
   return (
-    <Stack initialRouteName="main">
+    <Stack initialRouteName="main" screenOptions={{ ...headerParams(theme) }}>
       <Stack.Screen name={'main'} options={{ title: 'Обучение' }} />
       <Stack.Screen name={'absences'} options={{ title: 'Пропуски' }} />
       <Stack.Screen name={'audienceTimetable'} options={{ title: 'Расписание' }} />

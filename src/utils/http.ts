@@ -3,6 +3,7 @@ import * as cheerio from 'cheerio';
 import CyrillicToTranslit from 'cyrillic-to-translit-js';
 import { documentDirectory, downloadAsync } from 'expo-file-system';
 import { getNetworkStateAsync } from 'expo-network';
+import { Platform } from 'react-native';
 import { ICathedraTimetablePayload } from '~/models/cathedraTimetable';
 import { ICertificate } from '~/models/certificate';
 import { IDisciplineEducationalComplexPayload } from '~/models/disciplineEducationalComplex';
@@ -12,7 +13,6 @@ import { CertificateRequestPayload } from './certificate';
 import { getCurrentEducationYear } from './datetime';
 import { toURLSearchParams } from './encoding';
 import { SessionQuestionnairePayload } from './sessionTest';
-import getRandomUserAgent from './userAgents';
 
 const cyrillicToTranslit = CyrillicToTranslit();
 
@@ -61,15 +61,15 @@ class HTTPClient {
   constructor() {
     this.sessionID = null;
     this.baseURL = `${this.siteURL}${this.siteSuffix}`;
+    this.useProxy = Platform.OS === 'web';
+    console.log('PLATFORM', Platform.OS, this.useProxy);
     this.createAxiosInstance();
   }
 
   private createAxiosInstance() {
     this.instance = axios.create({
+      withCredentials: true,
       baseURL: this.useProxy ? `${PROXY_SERVER_URL}${this.siteSuffix}` : this.baseURL,
-      headers: {
-        'User-Agent': getRandomUserAgent(),
-      },
     });
   }
 
@@ -79,6 +79,20 @@ class HTTPClient {
 
   getSessionID() {
     return this.sessionID;
+  }
+
+  private getPlatformHeaders() {
+    const isWeb = Platform.OS === 'web';
+
+    if (isWeb)
+      return {
+        // 'X-Authorization': this.sessionID,
+        // Cookie: this.sessionID,
+      };
+
+    return {
+      Cookie: this.sessionID,
+    };
   }
 
   async isInternetReachable() {
@@ -134,9 +148,7 @@ class HTTPClient {
       };
     }
 
-    const headers = {
-      Cookie: this.sessionID,
-    };
+    const headers = this.getPlatformHeaders();
 
     let $data;
     if (data) {
@@ -209,34 +221,41 @@ class HTTPClient {
       p_redirect: '/stu.blank_page',
       p_username: username.trim(),
       p_password: password.trim(),
-      p_recaptcha_ver: isInvisibleRecaptcha ? '3' : '2',
-      p_recaptcha_response: token,
+      // p_recaptcha_ver: isInvisibleRecaptcha ? '3' : '2',
+      // p_recaptcha_response: token,
     };
     const response = await this.request('POST', `/stu.login`, {
       data,
       returnResponse: true,
     });
 
+    console.log(response);
+
     if (response.error) return response;
-
+    let sessionId: string;
     const cookies = response.data.headers['set-cookie'];
-
-    if (!cookies) {
-      const $ = cheerio.load(response.data.data);
-      const errorMessage = $('.error_message').text();
-      if (!errorMessage)
-        return {
-          error: { code: ErrorCode.authError, message: 'Ошибка авторизации. Попробуйте ещё раз.' },
-        };
-      return { error: { code: ErrorCode.unknown, message: errorMessage } };
+    const authToken = response.data.headers['x-auth-token'];
+    if (cookies) {
+      [sessionId] = cookies[0].split(';');
+    } else if (authToken) {
+      sessionId = authToken;
     }
 
-    const [sessionID] = cookies[0].split(';');
-    this.sessionID = sessionID;
+    if (sessionId) {
+      window.document.cookie = `session_id=${sessionId}`
+      window.document.cookie = `session_id1=${sessionId}`
+      this.sessionID = sessionId;
+      console.log(`[HTTP] Successfully signed in`);
+      return null;
+    }
 
-    console.log(`[HTTP] Authorized with ${sessionID}`);
-
-    return null;
+    const $ = cheerio.load(response.data.data);
+    const errorMessage = $('.error_message').text();
+    if (!errorMessage)
+      return {
+        error: { code: ErrorCode.authError, message: 'Ошибка авторизации. Попробуйте ещё раз.' },
+      };
+    return { error: { code: ErrorCode.unknown, message: errorMessage } };
   }
 
   async sendRecoveryMail(email: string, token: string): Promise<Response<null>> {

@@ -6,7 +6,8 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import weekday from 'dayjs/plugin/weekday';
 import { isRunningInExpoGo } from 'expo';
-import { useNavigationContainerRef } from 'expo-router';
+import { useFonts } from 'expo-font';
+import { useNavigationContainerRef, useRouter } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import React, { useEffect } from 'react';
 import { Platform } from 'react-native';
@@ -14,6 +15,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
 import { cache } from '~/cache/smartCache';
+import ComposeChildren from '~/components/ComposeChildren';
+import WebFontsLoader from '~/components/web/WebFontsLoader';
 import { useAppSelector } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
 import ThemeProvider from '~/navigation/ThemeProvider';
@@ -87,17 +90,15 @@ const RootLayout = () => {
   };
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Provider store={store}>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <BottomSheetModalProvider>
-            <ThemeProvider>
-              <RootNav />
-            </ThemeProvider>
-          </BottomSheetModalProvider>
-        </GestureHandlerRootView>
-      </Provider>
-    </QueryClientProvider>
+    <ComposeChildren>
+      {Platform.OS === 'web' && <WebFontsLoader />}
+      <QueryClientProvider client={queryClient} />
+      <Provider store={store} />
+      <GestureHandlerRootView style={{ flex: 1 }} />
+      <BottomSheetModalProvider />
+      <ThemeProvider />
+      <RootNav />
+    </ComposeChildren>
   );
 };
 
@@ -110,11 +111,20 @@ const RootNav = () => {
 
   useEffect(() => {
     if (accountType === AccountType.UNAUTHORIZED_TEACHER) {
-      navigation.navigate('(teacher)');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: '(teacher)' }],
+      });
     } else if (accountType === AccountType.UNAUTHORIZED_STUDENT) {
-      navigation.navigate('(group)');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: '(group)' }],
+      });
     } else if (accountType === AccountType.AUTHORIZED_STUDENT) {
-      navigation.navigate('(education)');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: '(education)' }],
+      });
     }
   }, []);
 

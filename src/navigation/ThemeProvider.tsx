@@ -5,7 +5,7 @@ import { setBackgroundColorAsync } from 'expo-system-ui';
 import React, { useEffect } from 'react';
 import { useAppTheme } from '~/hooks/theme';
 
-const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
+const ThemeProvider = ({ children }: { children?: React.ReactNode }) => {
   const theme = useAppTheme();
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { usePathname, useSegments } from 'expo-router';
+import { useNavigation, usePathname, useSegments } from 'expo-router';
 import React, { useEffect } from 'react';
 import { SceneMap, TabView } from 'react-native-tab-view';
 import { cache } from '~/cache/smartCache';
@@ -29,11 +29,10 @@ const ETISScreen = () => {
   const client = useClient();
   const { isDemo, isOfflineMode } = useAppSelector((state) => state.account);
 
-  const pathname = usePathname();
-  const segments = useSegments();
+  const navigation = useNavigation();
 
   useEffect(() => {
-    console.log(pathname, segments);
+    navigation.setOptions({ headerLeft: () => <></> });
     loadData().then(() => {
       if (signNotificationEnabled && !isDemo && !isOfflineMode) {
         registerSignsFetchTask();

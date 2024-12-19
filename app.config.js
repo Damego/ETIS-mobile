@@ -40,6 +40,9 @@ export default {
       bundler: "metro",
       output: "single",
     },
+    experiments: {
+      baseUrl: "/"
+    },
     platforms: ['android'],
     extra: {
       eas: {

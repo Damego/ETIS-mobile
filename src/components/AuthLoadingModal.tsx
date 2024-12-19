@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Button, StyleSheet, ToastAndroid, View } from 'react-native';
+import { ActivityIndicator, Alert, Button, StyleSheet, ToastAndroid, View } from 'react-native';
 import { cache } from '~/cache/smartCache';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '~/hooks';
 import {
@@ -51,10 +51,10 @@ const makeLogin = async (
   saveUserCredentials: boolean,
   isInvisibleRecaptcha: boolean
 ): Promise<LoginResponseType> => {
-  if (!token) {
-    return LoginResponseType.missingToken;
-  }
-  if (!(await cache.hasAcceptedPrivacyPolicy())) return LoginResponseType.privacyPolicyNotAccepted;
+  // if (!token) {
+  //   return LoginResponseType.missingToken;
+  // }
+  // if (!(await cache.hasAcceptedPrivacyPolicy())) return LoginResponseType.privacyPolicyNotAccepted;
 
   const response = await httpClient.login(
     userCredentials.login,
@@ -70,14 +70,13 @@ const makeLogin = async (
     if (message.includes('проверк')) return LoginResponseType.invalidToken;
 
     if (message.includes('лимит')) {
-      ToastAndroid.show(
-        'Был превышен лимит (5) неудачных попыток. Повторите через 10 минут!',
-        ToastAndroid.SHORT
+      Alert.alert(
+        'Был превышен лимит (5) неудачных попыток. Повторите через 10 минут!'
       );
       return LoginResponseType.rateLimited;
     }
 
-    ToastAndroid.show(response.error.message, ToastAndroid.SHORT);
+    Alert.alert(response.error.message);
 
     if (message.includes('неверное')) return LoginResponseType.invalidUserCredentials;
 
@@ -113,7 +112,7 @@ const AuthLoadingModal = () => {
     }
 
     const response = await makeLogin(
-      token,
+      "token",
       userCredentials,
       saveUserCredentials,
       isInvisibleRecaptcha
@@ -128,15 +127,21 @@ const AuthLoadingModal = () => {
       return;
     }
 
+    console.log("CHECK 3")
+
+
     if (response === LoginResponseType.rateLimited) {
+      console.log("RATELIMITED")
       dispatch(signOut({}));
     } else if (response === LoginResponseType.invalidUserCredentials) {
       // Данные устарели, поэтому их стоит удалить
       dispatch(signOut({ cleanUserCredentials: true }));
     } else if (response === LoginResponseType.success) {
+      console.log("SUCCESS")
       dispatch(signIn({}));
       router.replace('(education)/main');
     } else if (response === LoginResponseType.failed) {
+      console.log("FAIL")
       // fromStorage Для проверки, были ли загружены данные из хранилища или нет (т.е. пользователь ввёл данные в форме)
       // Возможно, что пользователь вышел из аккаунта или неудачная попытка ввода данных,
       // то нам не нужно заходить в оффлайн режим в этих случаях
@@ -146,6 +151,7 @@ const AuthLoadingModal = () => {
       // при недоступности етиса или интернета
       signInOffline();
     }
+    console.log("STOP")
 
     dispatch(setAuthorizing(false));
     setLoading(false);
@@ -156,7 +162,8 @@ const AuthLoadingModal = () => {
   };
 
   useEffect(() => {
-    setMessageStatus('Получение токена...');
+    onReceiveToken()
+    // setMessageStatus('Получение токена...');
 
     // Вход в оффлайн режим слишком резкий, поэтому ставим таймер 1 сек.
     // TODO: В идеале, сразу после Splash включать оффлайн режим
@@ -184,11 +191,11 @@ const AuthLoadingModal = () => {
 
   return (
     <View style={styles.modalWrapper}>
-      <CustomReCaptcha
-        onReceiveToken={onReceiveToken}
-        size={isInvisibleRecaptcha ? 'invisible' : 'normal'}
-        onClose={onRecaptchaModalClose}
-      />
+      {/*<CustomReCaptcha*/}
+      {/*  onReceiveToken={onReceiveToken}*/}
+      {/*  size={isInvisibleRecaptcha ? 'invisible' : 'normal'}*/}
+      {/*  onClose={onRecaptchaModalClose}*/}
+      {/*/>*/}
       <View style={[styles.modalContainer, globalStyles.container]}>
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <ActivityIndicator size="large" color={globalStyles.primaryText.color} />
