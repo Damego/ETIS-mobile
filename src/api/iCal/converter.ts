@@ -60,7 +60,7 @@ const convertEventToPair = (event: VEventDayjs, isLyceum: boolean): IPair => {
 };
 
 export const convertICalToTimetable = (ical: CalendarResponse, isLyceum: boolean) => {
-  console.log('parsing 0...')
+  console.log('parsing 0...');
   const icalData: VEventDayjs[] = Object.values(ical)
     .filter((component) => component.type === 'VEVENT')
     .map((event: VEventDayjs) => {
@@ -69,7 +69,7 @@ export const convertICalToTimetable = (ical: CalendarResponse, isLyceum: boolean
       return event;
     })
     .sort((a, b) => compareTime(a.start, b.start));
-  console.log('parsing 1...')
+  console.log('parsing 1...');
 
   const data: { [week: number]: { [dayDate: string]: VEvent[] } } = {};
 
@@ -86,7 +86,7 @@ export const convertICalToTimetable = (ical: CalendarResponse, isLyceum: boolean
 
     data[week][startDate].push(event);
   });
-  console.log('parsing 2...')
+  console.log('parsing 2...');
 
   const weeks = Object.keys(data);
   const firstWeek = Number(weeks.at(0));
@@ -95,7 +95,7 @@ export const convertICalToTimetable = (ical: CalendarResponse, isLyceum: boolean
   const timetable: ITimeTable[] = [];
 
   Object.entries(data).forEach(([week, daysData]) => {
-    console.log('entry', week)
+    console.log('entry', week);
     const days: ITimeTableDay[] = [];
     Object.entries(daysData).forEach(([date, events]) => {
       days.push({
@@ -103,7 +103,7 @@ export const convertICalToTimetable = (ical: CalendarResponse, isLyceum: boolean
         pairs: events.map((event: VEventDayjs) => convertEventToPair(event, isLyceum)),
       });
     });
-    console.log('entry', week, 'parsed')
+    console.log('entry', week, 'parsed');
 
     timetable.push({
       weekInfo: {
