@@ -528,6 +528,10 @@ class HTTPClient {
     return this.request('GET', '/stu.exam_que', { params });
   }
 
+  getDigitalResources() {
+    return this.request('GET', '/stu.electr');
+  }
+
   subscribeICalendar() {
     return this.request('POST', '/stu_plus.cal_crt');
   }

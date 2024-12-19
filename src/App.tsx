@@ -5,7 +5,8 @@ import 'dayjs/locale/ru';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import weekday from 'dayjs/plugin/weekday';
-import React from 'react';
+import * as SplashScreen from 'expo-splash-screen';
+import React, { useEffect } from 'react';
 import 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
 
@@ -30,16 +31,19 @@ const store = setupStore();
 store.dispatch(loadStorage());
 store.dispatch(manageEventTheme(store));
 
-// defineSignsFetchTask();
-// addShortcuts();
-// rescheduleAllTaskNotifications();
+defineSignsFetchTask();
+addShortcuts();
+rescheduleAllTaskNotifications();
+
 const queryClient = new QueryClient();
 
+SplashScreen.preventAutoHideAsync();
+
 const App = () => {
-  // useEffect(() => {
-  //   requestNotificationPermission();
-  //   checkUpdate();
-  // }, []);
+  useEffect(() => {
+    requestNotificationPermission();
+    checkUpdate();
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

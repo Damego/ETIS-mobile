@@ -1,17 +1,15 @@
 import dayjs from 'dayjs';
 import React, { useContext } from 'react';
 import { View } from 'react-native';
-import BorderLine from '~/components/BorderLine';
-import CardHeaderOut from '~/components/CardHeaderOut';
 import Text from '~/components/Text';
+import { checkAllowedPairRender } from '~/components/timetable/checkAllowedPairRender';
+import Pair from '~/components/timetable/dayTimetable/components/Pair';
 import TimeTableContext from '~/context/timetableContext';
 import { useAppSelector, useGlobalStyles } from '~/hooks';
 import { ITimeTableDay } from '~/models/timeTable';
 import { ThemeType } from '~/styles/themes';
-import { fontSize } from '~/utils/texts';
+import { capitalizeWord, fontSize } from '~/utils/texts';
 import { getRandomItem } from '~/utils/utils';
-
-import Pair from './Pair';
 
 interface DayData {
   data: ITimeTableDay;
@@ -27,13 +25,14 @@ const getRandomResponse = (appTheme: ThemeType) => {
 };
 
 export const Day = React.memo(({ data, date }: DayData) => {
-  const { date: dateString, pairs } = data;
+  const { pairs } = data;
   const {
     theme,
-    ui: { highlightCurrentDay },
+    ui: { highlightCurrentDay, showEmptyPairs, showGapsBetweenPairs },
   } = useAppSelector((state) => state.settings.config);
   const globalStyles = useGlobalStyles();
   const { currentDate } = useContext(TimeTableContext);
+  let didRenderFirstPair = false;
 
   let textStyle = null;
   let cardStyle = null;
@@ -43,19 +42,27 @@ export const Day = React.memo(({ data, date }: DayData) => {
   }
 
   return (
-    <CardHeaderOut topText={dateString} topTextStyle={textStyle} style={cardStyle}>
+    <View style={[cardStyle, { gap: 10 }]}>
+      <Text style={[fontSize.medium, { fontWeight: 'bold' }, textStyle]}>
+        {capitalizeWord(date.format('dddd, DD MMMM'))}
+      </Text>
       {data.pairs.length === 0 ? (
         <View style={{ alignItems: 'center' }}>
           <Text style={{ ...fontSize.medium, fontWeight: '600' }}>{getRandomResponse(theme)}</Text>
         </View>
       ) : (
-        pairs.map((pair, index) => (
-          <View key={index + pair.time}>
-            <Pair pair={pair} date={date} />
-            {index !== pairs.length - 1 && <BorderLine />}
-          </View>
-        ))
+        <View style={{ gap: 8 }}>
+          {pairs.map((pair, index) => {
+            if (
+              checkAllowedPairRender(pair, didRenderFirstPair, showGapsBetweenPairs, showEmptyPairs)
+            ) {
+              didRenderFirstPair = true;
+              return <Pair pair={pair} key={index} />;
+            }
+            return null;
+          })}
+        </View>
       )}
-    </CardHeaderOut>
+    </View>
   );
 });

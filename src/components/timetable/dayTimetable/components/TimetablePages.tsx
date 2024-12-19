@@ -1,6 +1,8 @@
 import React, { forwardRef } from 'react';
 import { NativeSyntheticEvent, StyleSheet, View } from 'react-native';
 import PagerView from 'react-native-pager-view';
+import { checkAllowedPairRender } from '~/components/timetable/checkAllowedPairRender';
+import { useAppSelector } from '~/hooks';
 import { ITimeTableDay } from '~/models/timeTable';
 import NoPairs from '~/screens/etis/main/components/NoPairs';
 
@@ -13,10 +15,23 @@ interface TimetablePagesProps {
 }
 
 const Page = ({ day }: { day: ITimeTableDay }) => {
+  const { showGapsBetweenPairs, showEmptyPairs } = useAppSelector(
+    (state) => state.settings.config.ui
+  );
+  let didRenderFirstPair = false;
+
   return (
     <View style={styles.pairsList}>
       {!day.pairs.length && <NoPairs />}
-      {day.pairs.map((pair) => !!pair.lessons.length && <Pair pair={pair} key={pair.position} />)}
+      {day.pairs.map((pair) => {
+        if (
+          checkAllowedPairRender(pair, didRenderFirstPair, showGapsBetweenPairs, showEmptyPairs)
+        ) {
+          didRenderFirstPair = true;
+          return <Pair pair={pair} key={pair.position} />;
+        }
+        return null;
+      })}
     </View>
   );
 };

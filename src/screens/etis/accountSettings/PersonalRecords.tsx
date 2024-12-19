@@ -10,8 +10,6 @@ import {
   View,
 } from 'react-native';
 import Card from '~/components/Card';
-import LoadingScreen, { LoadingContainer } from '~/components/LoadingScreen';
-import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { useClient } from '~/data/client';
 import { useAppDispatch, useGlobalStyles } from '~/hooks';
@@ -44,9 +42,9 @@ const PersonalRecord = ({
   };
 
   return (
-    <>
+    <Card style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
       <View>
-        <Text colorVariant={'text2'}>
+        <Text>
           {record.year} {record.speciality}
         </Text>
         {!showStatus && <Text>Статус: {record.status}</Text>}
@@ -54,11 +52,11 @@ const PersonalRecord = ({
       {record.id && record.status === 'студент' && (
         <View>
           <TouchableOpacity onPress={changePersonalRecord}>
-            <AntDesign name="select1" size={24} color={globalStyles.textColor2.color} />
+            <AntDesign name="select1" size={24} color={globalStyles.textColor.color} />
           </TouchableOpacity>
         </View>
       )}
-    </>
+    </Card>
   );
 };
 
@@ -86,13 +84,15 @@ export default function PersonalRecords() {
   }
 
   return (
-    <Card>
+    <View>
       <Text style={styles.cardTitle}>Личные записи</Text>
       <Text style={textStyles}>Доступные записи</Text>
-      {activeRecords.map((record) => (
-        <PersonalRecord record={record} key={record.id + record.index} showStatus />
-      ))}
-    </Card>
+      <View style={{ gap: 8 }}>
+        {activeRecords.map((record) => (
+          <PersonalRecord record={record} key={record.id + record.index} showStatus />
+        ))}
+      </View>
+    </View>
   );
 }
 

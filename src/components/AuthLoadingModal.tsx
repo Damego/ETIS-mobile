@@ -29,6 +29,8 @@ const styles = StyleSheet.create({
     width: '60%',
     alignItems: 'center',
     justifyContent: 'center',
+    elevation: 5,
+    shadowColor: '#000',
   },
 });
 
@@ -187,7 +189,7 @@ const AuthLoadingModal = () => {
       <View style={[styles.modalContainer, globalStyles.container]}>
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <ActivityIndicator size="large" color={globalStyles.primaryText.color} />
-          <Text style={globalStyles.textColor2}>{messageStatus}</Text>
+          <Text style={globalStyles.textColor}>{messageStatus}</Text>
 
           {showOfflineButton && (
             <View style={{ marginTop: '15%' }}>

@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import dayjs from 'dayjs';
 import * as Clipboard from 'expo-clipboard';
 import { Image } from 'expo-image';
@@ -32,12 +32,22 @@ const lyceumTimeInfo = {
 
 const getAssetByPlatformType = (type: DistancePlatformTypes) => {
   const platformTypeToAsset = [
-    [DistancePlatformTypes.zoom, require('../../../../../assets/platforms/zoom.svg')],
-    [DistancePlatformTypes.bbb, require('../../../../../assets/platforms/bigbluebutton.svg')],
-    [DistancePlatformTypes.skype, require('../../../../../assets/platforms/skype.svg')],
+    [DistancePlatformTypes.zoom, require('../../../../../assets/platforms/zoom.svg'), false],
+    [
+      DistancePlatformTypes.bbb,
+      require('../../../../../assets/platforms/bigbluebutton.svg'),
+      false,
+    ],
+    [DistancePlatformTypes.skype, require('../../../../../assets/platforms/skype.svg'), false],
+    [
+      DistancePlatformTypes.yandexTelemost,
+      require('../../../../../assets/platforms/telemost.svg'),
+      true,
+    ],
   ];
 
-  return platformTypeToAsset.find(([$type]) => type === $type)[1];
+  const platform = platformTypeToAsset.find(([$type]) => type === $type);
+  if (platform) return [platform[1], platform[2]];
 };
 
 const IconInfo = ({ icon, text }: { icon: keyof typeof Ionicons.glyphMap; text: string }) => {
@@ -82,10 +92,18 @@ export const AudienceInfo = ({ lesson }: { lesson: ILesson }) => {
   const theme = useAppTheme();
 
   if (lesson.distancePlatform) {
-    const asset = getAssetByPlatformType(lesson.distancePlatform.type);
+    const assetDetails = getAssetByPlatformType(lesson.distancePlatform.type);
     return (
       <View style={styles.container}>
-        <Image source={asset} style={{ height: 30, width: 30 }} tintColor={theme.colors.text} />
+        {assetDetails ? (
+          <Image
+            source={assetDetails[0]}
+            style={{ height: 30, width: 30 }}
+            tintColor={!assetDetails[1] && theme.colors.text}
+          />
+        ) : (
+          <AntDesign name={'questioncircleo'} size={28} color={theme.colors.text} />
+        )}
         <ClickableText
           text={lesson.distancePlatform.name}
           onPress={() => {

@@ -236,7 +236,7 @@ export default function parseCathedraTimetable(html: string) {
     // 8 - препод + расписание для 1й пары
     // 2 - препод и нет расписания или время + 1 пара
     // 2+ - время и произвольное количество блоков с парами (обычно равно 7)
-    // Для учителей лицея стуктура таблицы сильно нарушена, поэтому количество блоков разнится
+    // Для учителей лицея структура таблицы сильно нарушена, поэтому количество блоков разнится, что сильно усложняет парсинг
     if (tdList.length === 2 && firstFieldIsTeacher) {
       teacherIndex += 1;
       data.timetable[teacherIndex] = {
@@ -281,6 +281,16 @@ export default function parseCathedraTimetable(html: string) {
       dayIndex += 1;
 
       const td = $(tdElement);
+      const rowspan = td.attr('rowspan');
+      if (rowspan === '2') {
+        // Исправление кривой структуры таблицы путём добавление недостающих ячеек в строки
+        const removeIndex = tdList.length === 8 ? 2 : 1;
+        const nextTrTag = table.find('tr').eq(index + 1);
+        nextTrTag
+          .find('td')
+          .eq(tdIndex - removeIndex)
+          .after('<td rowspan="1"></td>');
+      }
 
       const lessons = parsePairLessons($, td, weekInfo);
       const time = getTextField(tdList.length === 8 ? tdList.eq(1) : tdList.eq(0));

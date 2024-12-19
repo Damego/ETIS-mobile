@@ -8,6 +8,8 @@ import AppSettingsButton from '~/navigation/headerButtons/AppSettingsButton';
 import { EducationStackParamList } from '~/navigation/types';
 import Absences from '~/screens/etis/absences';
 import AccountSettings from '~/screens/etis/accountSettings/AccountSettings';
+import AudienceTimetable from '~/screens/etis/audienceTimetable/AudienceTimetable';
+import SelectAudience from '~/screens/etis/audienceTimetable/SelectAudience';
 import Auth from '~/screens/etis/auth/Auth';
 import BellSchedule from '~/screens/etis/bellSchedule/BellSchedule';
 import CathedraTimetable from '~/screens/etis/cathedraTimetable/CathedraTimetable';
@@ -16,6 +18,7 @@ import CertificateTable from '~/screens/etis/certificate/CertificateTable';
 import RequestCertificate from '~/screens/etis/certificate/RequestCertificate';
 import ChangeEmail from '~/screens/etis/changeCredentials/ChangeEmail';
 import ChangePassword from '~/screens/etis/changeCredentials/ChangePassword';
+import DigitalResources from '~/screens/etis/digitalResources/DigitalResources';
 import DisciplineEducationalComplex from '~/screens/etis/disciplineEducationalComplex/DisciplineEducationalComplex';
 import DisciplineEducationalComplexTheme from '~/screens/etis/disciplineEducationalComplexTheme/DisciplineEducationalComplexTheme';
 import DisciplineInfo from '~/screens/etis/disciplineInfo/DisciplineInfo';
@@ -137,6 +140,21 @@ const EducationNavigation = () => {
             name={'DisciplineEducationalComplexTheme'}
             component={DisciplineEducationalComplexTheme}
             options={{ title: 'УМК' }}
+          />
+          <Stack.Screen
+            name={'SelectAudience'}
+            component={SelectAudience}
+            options={{ title: 'Аудитория' }}
+          />
+          <Stack.Screen
+            name={'AudienceTimetable'}
+            component={AudienceTimetable}
+            options={{ title: 'Расписание' }}
+          />
+          <Stack.Screen
+            name={'DigitalResources'}
+            component={DigitalResources}
+            options={{ title: 'Ресурсы' }}
           />
         </>
       )}

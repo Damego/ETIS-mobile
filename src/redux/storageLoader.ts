@@ -29,6 +29,8 @@ export const loadUserCredentials = () => async (dispatch: AppDispatch) => {
 
 export const loadAccount = () => async (dispatch: AppDispatch) => {
   const data = await cache.getAccountData();
+
+  if (!data) return;
   if (data.teacher) dispatch(setTeacher(data.teacher));
   if (data.student) dispatch(setStudent(data.student));
 };

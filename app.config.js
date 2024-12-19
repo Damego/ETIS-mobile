@@ -4,7 +4,7 @@ export default {
   expo: {
     name: 'ЕТИС мобайл' + (IS_DEV ? ' (DEV)' : ''),
     slug: 'etis-mobile',
-    version: '1.3.0',
+    version: '1.4.1',
     owner: 'damego',
     orientation: 'portrait',
     icon: './assets/icon.png',
@@ -23,12 +23,12 @@ export default {
       supportsTablet: true,
     },
     android: {
-      versionCode: 10300007,
+      versionCode: 10401004,
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
         backgroundColor: '#FFFFFF',
       },
-      package: 'dev.damego.etismobile',
+      package: IS_DEV ? 'dev.damego.etismobile' : 'com.damego.etismobile',
       playStoreUrl: 'https://play.google.com/store/apps/details?id=com.damego.etismobile',
       userInterfaceStyle: 'automatic',
       allowBackup: false,
@@ -78,8 +78,6 @@ export default {
           android: {
             // Без этого билд будет крашиться
             extraMavenRepos: ['../../node_modules/@notifee/react-native/android/libs'],
-            enableProguardInReleaseBuilds: true,
-            extraProguardRules: '-keep public class com.horcrux.svg.** {*;}',
             allowBackup: false,
           },
         },

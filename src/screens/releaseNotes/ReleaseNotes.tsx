@@ -2,11 +2,13 @@ import { useAssets } from 'expo-asset';
 import * as FileSystem from 'expo-file-system';
 import React, { useEffect, useState } from 'react';
 import Markdown from 'react-native-markdown-display';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Card from '~/components/Card';
 import LoadingScreen from '~/components/LoadingScreen';
 import Screen from '~/components/Screen';
 import { useGlobalStyles } from '~/hooks';
-import releaseNotesFile from '~/release-notes.md';
+
+import releaseNotesFile from '../../../release-notes.md';
 
 const ReleaseNotes = () => {
   const [assets] = useAssets([releaseNotesFile]);
@@ -24,11 +26,13 @@ const ReleaseNotes = () => {
   if (!notes) return <LoadingScreen />;
 
   return (
-    <Screen>
-      <Card>
-        <Markdown style={{ text: globalStyles.fontColorForBlock }}>{notes}</Markdown>
-      </Card>
-    </Screen>
+    <SafeAreaView style={{ flex: 1 }}>
+      <Screen>
+        <Card>
+          <Markdown style={{ body: globalStyles.textColor }}>{notes}</Markdown>
+        </Card>
+      </Screen>
+    </SafeAreaView>
   );
 };
 

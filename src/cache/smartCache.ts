@@ -4,6 +4,7 @@ import { IAnnounce } from '~/models/announce';
 import { ICalendarSchedule } from '~/models/calendarSchedule';
 import { ICathedraTimetable, ICathedraTimetablePayload } from '~/models/cathedraTimetable';
 import { ICertificate, ICertificateResult } from '~/models/certificate';
+import { IDigitalResource } from '~/models/digitalResources';
 import {
   IDisciplineEducationalComplex,
   IDisciplineEducationalComplexPayload,
@@ -65,6 +66,7 @@ export default class SmartCache {
   groupTimetable: MappedCache<string, ITimeTable>;
   disciplineEducationalComplex: MappedCache<string, IDisciplineEducationalComplex>;
   disciplineEducationalComplexTheme: MappedCache<string, IDisciplineEducationalComplexTheme>;
+  digitalResources: FieldCache<IDigitalResource[]>;
 
   // Internal
   user: SecuredFieldCache<UserCredentials>;
@@ -93,6 +95,7 @@ export default class SmartCache {
     GROUP_TIMETABLE: 'GROUP_TIMETABLE',
     DISCIPLINE_EDUCATIONAL_COMPLEX: 'DISCIPLINE_EDUCATIONAL_COMPLEX',
     DISCIPLINE_EDUCATIONAL_COMPLEX_THEME: 'DISCIPLINE_EDUCATIONAL_COMPLEX_THEME',
+    DIGITAL_RESOURCES: 'DIGITAL_RESOURCES',
 
     // Internal keys
     USER: 'USER',
@@ -130,6 +133,7 @@ export default class SmartCache {
       string,
       IDisciplineEducationalComplexTheme
     >(this.keys.DISCIPLINE_EDUCATIONAL_COMPLEX_THEME);
+    this.digitalResources = new FieldCache<IDigitalResource[]>(this.keys.DIGITAL_RESOURCES);
 
     this.user = new SecuredFieldCache<UserCredentials>(this.keys.USER);
     this.app = new FieldCache<AppConfig>(this.keys.APP);
@@ -454,6 +458,20 @@ export default class SmartCache {
 
   // End Discipline Educational Complex region
 
+  //
+
+  async getDigitalResources() {
+    await this.digitalResources.init();
+    return this.digitalResources.get();
+  }
+
+  async placeDigitalResources(data: IDigitalResource[]) {
+    await this.digitalResources.init();
+    this.digitalResources.place(data);
+    await this.digitalResources.save();
+  }
+  //
+
   // Secure Region
 
   async getUserCredentials() {
@@ -670,6 +688,7 @@ export default class SmartCache {
 
   runMigrations() {
     this.migrateToV1_3_0();
+    this.migrateToV1_4_0();
   }
 
   /*
@@ -688,6 +707,28 @@ export default class SmartCache {
     await this.teachers.save();
 
     appConfig.cacheMigrations.v1_3_0 = true;
+    await this.updateAppConfig(appConfig);
+  }
+
+  /*
+  Изменилась структура объявлений
+  */
+  private async migrateToV1_4_0() {
+    const appConfig = await this.getAppConfig();
+    if (!appConfig.cacheMigrations) {
+      appConfig.cacheMigrations = {};
+    }
+    if (appConfig.cacheMigrations.v1_4_0) return;
+
+    await this.announce.init();
+    const announces = this.announce.get();
+    if (announces?.length && typeof announces[0] === 'string') {
+      this.announce.place(
+        announces.map((announce) => ({ isNew: false, html: announce as unknown as string }))
+      );
+    }
+
+    appConfig.cacheMigrations.v1_4_0 = true;
     await this.updateAppConfig(appConfig);
   }
 }

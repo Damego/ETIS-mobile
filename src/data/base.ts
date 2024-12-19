@@ -3,6 +3,7 @@ import { IAnnounce } from '~/models/announce';
 import { ICalendarSchedule } from '~/models/calendarSchedule';
 import { ICathedraTimetable, ICathedraTimetablePayload } from '~/models/cathedraTimetable';
 import { ICertificateResult } from '~/models/certificate';
+import { IDigitalResource } from '~/models/digitalResources';
 import {
   IDisciplineEducationalComplex,
   IDisciplineEducationalComplexPayload,
@@ -68,6 +69,7 @@ export interface BaseClient {
     payload: IGetPayload<IDisciplineEducationalComplexThemePayload>
   ): Promise<IGetResult<IDisciplineEducationalComplexTheme>>;
   getExamQuestions(payload: IGetPayload<string>): Promise<IGetResult<string>>;
+  getDigitalResources(payload: IGetPayload): Promise<IGetResult<IDigitalResource[]>>;
 }
 
 export class BasicClient<P extends IGetPayload, T> {

@@ -75,6 +75,8 @@ export const formatAudience = (lesson: ILesson) => {
     return lesson.distancePlatform.name;
   }
 
+  if (!audience) return;
+
   return audience.number && audience.building && audience.floor
     ? `ауд. ${audience.number} (${audience.building} корпус, ${audience.floor} этаж)`
     : audience.string;

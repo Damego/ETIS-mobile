@@ -6,6 +6,7 @@ import { IAnnounce } from '~/models/announce';
 import { ICalendarSchedule } from '~/models/calendarSchedule';
 import { ICathedraTimetable, ICathedraTimetablePayload } from '~/models/cathedraTimetable';
 import { ICertificateResult } from '~/models/certificate';
+import { IDigitalResource } from '~/models/digitalResources';
 import {
   IDisciplineEducationalComplex,
   IDisciplineEducationalComplexPayload,
@@ -41,6 +42,7 @@ import {
 import parseCalendarSchedule from '~/parser/calendar';
 import parseCathedraTimetable from '~/parser/cathedraTimetable';
 import { parseCertificateTable } from '~/parser/certificate';
+import { parseDigitalResources } from '~/parser/digitalResources';
 import { parseDisciplineEducationalComplex } from '~/parser/disciplineEducationalComplex';
 import { parseDisciplineEducationalComplexTheme } from '~/parser/disciplineEducationalComplexTheme';
 import { parseExamQuestions } from '~/parser/examQuestions';
@@ -99,6 +101,7 @@ class DisciplineEducationalComplexThemeClient extends BasicClient<
   IDisciplineEducationalComplexTheme
 > {}
 class ExamQuestionsClient extends BasicClient<IGetPayload<string>, string> {}
+class DigitalResourcesClient extends BasicClient<IGetPayload, IDigitalResource[]> {}
 
 export default class Client implements BaseClient {
   private absencesClient: AbsencesClient;
@@ -122,6 +125,7 @@ export default class Client implements BaseClient {
   private groupTimetableClient: GroupTimetableClient;
   private disciplineEducationalComplexClient: DisciplineEducationalComplexClient;
   private disciplineEducationalComplexThemeClient: DisciplineEducationalComplexThemeClient;
+  private digitalResourcesClient: DigitalResourcesClient;
   private examQuestionsClient: ExamQuestionsClient;
 
   constructor() {
@@ -257,6 +261,12 @@ export default class Client implements BaseClient {
       parseExamQuestions,
       emptyFunction
     );
+    this.digitalResourcesClient = new DigitalResourcesClient(
+      () => cache.getDigitalResources(),
+      () => httpClient.getDigitalResources(),
+      parseDigitalResources,
+      (data) => cache.placeDigitalResources(data)
+    );
 
     bind(this, Client);
   }
@@ -370,5 +380,9 @@ export default class Client implements BaseClient {
 
   getExamQuestions(payload: IGetPayload<string>) {
     return this.examQuestionsClient.getData(payload);
+  }
+
+  getDigitalResources(payload: IGetPayload): Promise<IGetResult<IDigitalResource[]>> {
+    return this.digitalResourcesClient.getData(payload);
   }
 }

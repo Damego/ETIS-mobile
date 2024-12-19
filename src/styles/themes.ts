@@ -5,6 +5,8 @@ export enum ThemeType {
   light = 'light',
   dark = 'dark',
   black = 'black',
+  halloween = 'halloween',
+  newYear = 'newYear',
 }
 
 export interface IThemeColors {

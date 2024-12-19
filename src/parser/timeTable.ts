@@ -37,18 +37,21 @@ const getWeekType = (week: cheerio.Cheerio): WeekTypes => {
 };
 
 const getDistancePlatformType = (platform: cheerio.Cheerio): DistancePlatformTypes => {
-  const title = platform.find('img').attr('title');
+  const title = platform.find('img').attr('title') ?? '';
   if (title.includes('bbb')) return DistancePlatformTypes.bbb;
   if (title.includes('zoom')) return DistancePlatformTypes.zoom; // maybe...
-  if (platform.attr('href').includes('skype')) return DistancePlatformTypes.skype;
 
-  return DistancePlatformTypes.unknown;
+  const platformUrl = platform.attr('href') ?? '';
+
+  if (platformUrl.includes('skype')) return DistancePlatformTypes.skype;
+  if (platformUrl.includes('telemost')) return DistancePlatformTypes.yandexTelemost;
 };
 
 const getDistancePlatformName = (platform: cheerio.Cheerio, type: DistancePlatformTypes) => {
   if (type === DistancePlatformTypes.zoom) return 'Платформа Zoom';
   if (type === DistancePlatformTypes.bbb) return 'Платформа BBB';
   if (type === DistancePlatformTypes.skype) return 'Skype';
+  if (type === DistancePlatformTypes.yandexTelemost) return 'Яндекс.Телемост';
 
   const image = platform.find('img');
 

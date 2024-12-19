@@ -16,6 +16,7 @@ export enum TimetableModes {
 
 export interface CacheMigrations {
   v1_3_0?: boolean;
+  v1_4_0?: boolean;
 }
 
 export interface UIConfig {
@@ -23,6 +24,8 @@ export interface UIConfig {
   showPastWeekDays: boolean;
   highlightCurrentDay: boolean;
   skipSunday: boolean;
+  showGapsBetweenPairs: boolean;
+  showEmptyPairs: boolean;
 }
 
 export interface AppConfig {
@@ -55,6 +58,8 @@ const initialConfig: AppConfig = {
     showPastWeekDays: true,
     highlightCurrentDay: false,
     skipSunday: true,
+    showGapsBetweenPairs: false,
+    showEmptyPairs: false,
   },
   cacheMigrations: {},
   reviewStep: 'pending',

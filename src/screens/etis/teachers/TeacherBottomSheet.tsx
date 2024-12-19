@@ -5,6 +5,7 @@ import * as Clipboard from 'expo-clipboard';
 import { Image } from 'expo-image';
 import React from 'react';
 import { Linking, StyleSheet, ToastAndroid, View } from 'react-native';
+import { getTeacherContacts } from '~/api/psu/api';
 import { getTeacherById } from '~/api/psutech/api';
 import BorderLine from '~/components/BorderLine';
 import BottomSheetModal from '~/components/BottomSheetModal';
@@ -22,6 +23,12 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
   const { data } = useQuery({
     queryFn: () => getTeacherById(teacher.id),
     queryKey: ['teacher', teacher.id],
+  });
+
+  const { data: contacts } = useQuery({
+    queryFn: () => getTeacherContacts(data.psu.page_url),
+    enabled: !!data?.psu?.page_url,
+    queryKey: ['teacher_contacts', data?.id],
   });
 
   const copyTeacherNameToClipboard = () => {
@@ -86,7 +93,7 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
         </ClickableText>
       </View>
 
-      {data?.psu && (
+      {contacts && (
         <>
           <ClickableText
             onPress={openPSUPage}
@@ -98,12 +105,12 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
           <BorderLine />
 
           <Text style={styles.title}>Контактная информация</Text>
-          {!!data.psu.contacts?.phones.length && (
+          {!!contacts.phones.length && (
             <>
               <Text style={styles.title} colorVariant={'text2'}>
                 Телефон
               </Text>
-              {data.psu.contacts.phones.map((phone) => (
+              {contacts.phones.map((phone) => (
                 <Text
                   key={phone}
                   style={fontSize.medium}
@@ -114,12 +121,12 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
               ))}
             </>
           )}
-          {!!data.psu.contacts?.emails.length && (
+          {!!contacts.emails.length && (
             <>
               <Text style={styles.title} colorVariant={'text2'}>
                 Электронная почта
               </Text>
-              {data.psu.contacts.emails.map((email) => (
+              {contacts.emails.map((email) => (
                 <Text
                   key={email}
                   style={fontSize.medium}

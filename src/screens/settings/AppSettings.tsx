@@ -2,6 +2,7 @@ import React from 'react';
 import Card from '~/components/Card';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
+import TelegramAppChannel from '~/screens/settings/components/TelegramAppChannel';
 import { fontSize } from '~/utils/texts';
 
 import AboutAppButton from './components/AboutApp';
@@ -31,6 +32,7 @@ export default function AppSettings() {
       <ShowReleaseNotes />
       <AboutAppButton />
       <ToggleSentrySetting />
+      <TelegramAppChannel />
     </Screen>
   );
 }

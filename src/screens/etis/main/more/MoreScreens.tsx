@@ -1,4 +1,4 @@
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { Image } from 'expo-image';
 import React from 'react';
@@ -64,6 +64,18 @@ const SCREENS: ScreenT[][] = [
       title: 'Анкетирование',
       icon: (color) => <AntDesign name={'copy1'} size={ICON_SIZE} color={color} />,
       screenName: 'SessionQuestionnaireList',
+    },
+    {
+      title: 'Расписание аудиторий',
+      icon: (color) => <Ionicons name={'business-outline'} size={ICON_SIZE} color={color} />,
+      screenName: 'SelectAudience',
+    },
+  ],
+  [
+    {
+      title: 'Электронные ресурсы',
+      icon: (color) => <AntDesign name={'copy1'} size={ICON_SIZE} color={color} />,
+      screenName: 'DigitalResources',
     },
   ],
 ];
