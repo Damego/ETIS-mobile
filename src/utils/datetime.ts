@@ -15,7 +15,7 @@ interface IFormatTimeProps {
 }
 
 const dateFormat = 'D MMMM';
-const timeFormat = 'HH:mm';
+const timeFormat = 'H:mm';
 export const formatTime = (
   date: DateType,
   { disableTime, disableDate }: IFormatTimeProps = { disableTime: false, disableDate: false }

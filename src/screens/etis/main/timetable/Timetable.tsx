@@ -1,39 +1,20 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { LoadingContainer } from '~/components/LoadingScreen';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
-import TimetableContainer from '~/components/timetable/TimetableContainer';
 import BellScheduleButton from '~/components/timetable/buttons/BellScheduleButton';
 import DisciplineTasksButton from '~/components/timetable/buttons/DisciplineTasksButton';
 import ToggleModeButton from '~/components/timetable/buttons/ToggleModeButton';
-import { useClient } from '~/data/client';
 import { useAppSelector } from '~/hooks';
-import useQuery from '~/hooks/useQuery';
-import useTimeTableQuery from '~/hooks/useTimeTableQuery';
-import useTimetable from '~/hooks/useTimetable';
+import EducationTimetable from '~/screens/etis/main/timetable/EducationTimetable';
+import ICalTimetable from '~/screens/etis/main/timetable/ICalTimetable';
 
 export const Timetable = () => {
-  const client = useClient();
-  const { skipSunday } = useAppSelector((state) => state.settings.config.ui);
-
-  const timetable = useTimetable({
-    skipSunday,
-    onRequestUpdate: (week) => loadWeek(week),
-  });
-
-  const { data, isLoading, loadWeek, refresh } = useTimeTableQuery({
-    week: timetable.selectedWeek,
-    afterCallback: (result) => {
-      timetable.updateData(result.data.weekInfo);
-    },
-  });
-  const { data: teachersData, isLoading: teachersIsLoading } = useQuery({
-    method: client.getTeacherData,
-  });
+  const iCalToken = useAppSelector((state) => state.student.iCalToken);
+  const ref = useRef();
 
   return (
-    <Screen onUpdate={refresh} containerStyle={{ paddingBottom: '20%' }}>
+    <Screen onUpdate={() => ref.current.refresh()} containerStyle={{ paddingBottom: '20%' }}>
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>Расписание</Text>
         <View style={styles.titleIconsContainer}>
@@ -43,13 +24,7 @@ export const Timetable = () => {
         </View>
       </View>
 
-      <TimetableContainer
-        data={data}
-        timetable={timetable}
-        teachers={teachersData}
-        isLoading={isLoading || teachersIsLoading || !data}
-        loadingComponent={() => <LoadingContainer />}
-      />
+      {iCalToken ? <ICalTimetable ref={ref} /> : <EducationTimetable ref={ref} />}
     </Screen>
   );
 };
