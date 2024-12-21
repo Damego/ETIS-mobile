@@ -21,6 +21,7 @@ export default () => {
           ]
         : [],
       debug: __DEV__, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
+      ignoreErrors,
     });
   }
 };
@@ -39,3 +40,10 @@ export const executeRegex = (
   }
   return result;
 };
+
+export const ignoreErrors = [
+  'sp-react-native-in-app-updates',
+  'ExpoBackgroundFetch.registerTaskAsync',
+  'ExpoFontLoader',
+  'OutOfMemoryError',
+];
