@@ -8,14 +8,20 @@ import BellScheduleButton from '~/components/timetable/buttons/BellScheduleButto
 import DisciplineTasksButton from '~/components/timetable/buttons/DisciplineTasksButton';
 import ToggleModeButton from '~/components/timetable/buttons/ToggleModeButton';
 import { useClient } from '~/data/client';
-import { useAppSelector } from '~/hooks';
+import { useAppDispatch, useAppSelector } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
 import useTimeTableQuery from '~/hooks/useTimeTableQuery';
 import useTimetable from '~/hooks/useTimetable';
+import { httpClient } from '~/utils';
+import { parseICalToken } from '~/parser/ical';
+import { setICalToken } from '~/redux/reducers/studentSlice';
+import { cache } from '~/cache/smartCache';
 
 export const Timetable = () => {
+  const dispatch = useAppDispatch();
   const client = useClient();
   const { skipSunday } = useAppSelector((state) => state.settings.config.ui);
+  const iCalToken = useAppSelector(state => state.student.iCalToken)
 
   const timetable = useTimetable({
     skipSunday,
@@ -26,6 +32,17 @@ export const Timetable = () => {
     week: timetable.selectedWeek,
     afterCallback: (result) => {
       timetable.updateData(result.data.weekInfo);
+
+      if (result.data.icalToken && result.data.icalToken !== iCalToken) {
+        dispatch(setICalToken(result.data.icalToken));
+        cache.placePartialStudent({ iCalToken: result.data.icalToken });
+      } else if (!result.data.icalToken) {
+        httpClient.subscribeICalendar().then((res) => {
+          const token = parseICalToken(res.data);
+          dispatch(setICalToken(token));
+          cache.placePartialStudent({ iCalToken: token });
+        });
+      }
     },
   });
   const { data: teachersData, isLoading: teachersIsLoading } = useQuery({

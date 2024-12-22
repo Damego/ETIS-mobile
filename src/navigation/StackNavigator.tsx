@@ -9,13 +9,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { cache } from '~/cache/smartCache';
 import { useAppSelector } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
-import useNotification from '~/hooks/useNotifications';
-import EducationNavigation from '~/navigation/EducationNavigation';
-import StartNavigator from '~/navigation/StartNavigator';
-import TeacherNavigator from '~/navigation/TeacherNavigator';
-import UnauthorizedStudentNavigator from '~/navigation/UnauthorizedStudentNavigator';
+import TabNavigator from '~/navigation/TabNavigation';
 import { headerParams } from '~/navigation/header';
-import { AccountType } from '~/redux/reducers/accountSlice';
 import About from '~/screens/about/About';
 import ReleaseNotes from '~/screens/releaseNotes/ReleaseNotes';
 import AppSettings from '~/screens/settings/AppSettings';
@@ -28,7 +23,6 @@ import { RootStackParamList } from './types';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const StackNavigator = () => {
-  const accountType = useAppSelector((state) => state.account.accountType);
   const {
     appIsReady,
     config: { sentryEnabled }, // todo: intro viewed new version
@@ -52,27 +46,13 @@ const StackNavigator = () => {
     setBackgroundColorAsync(theme.colors.background).catch((e) => e);
   }, [theme]);
 
-  useNotification(async (data) => {
-    if (data.type === 'task-reminder') {
-      // @ts-expect-error: TS2345
-      navigation.navigate('TabNavigator', { screen: 'DisciplineTasks', taskId: data.data.taskId });
-    }
-  });
-
   useEffect(() => {
     if (appIsReady) {
       SplashScreen.hideAsync();
     }
   }, [appIsReady]);
 
-  let educationScreen = StartNavigator;
-  if (accountType === AccountType.UNAUTHORIZED_TEACHER) {
-    educationScreen = TeacherNavigator;
-  } else if (accountType === AccountType.AUTHORIZED_STUDENT) {
-    educationScreen = EducationNavigation;
-  } else if (accountType === AccountType.UNAUTHORIZED_STUDENT) {
-    educationScreen = UnauthorizedStudentNavigator;
-  }
+  if (!appIsReady) return null;
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -81,7 +61,7 @@ const StackNavigator = () => {
           <Stack.Navigator screenOptions={{ headerShown: true, ...headerParams(theme) }}>
             <Stack.Screen
               name="TabNavigator"
-              component={educationScreen}
+              component={TabNavigator}
               options={{ headerShown: false }}
             />
             <Stack.Screen

@@ -10,6 +10,7 @@ const initialState: StudentState = {
   currentSession: null,
   currentWeek: null,
   hasUnverifiedEmail: false,
+  iCalToken: null,
 };
 
 const studentSlice = createSlice({
@@ -24,6 +25,7 @@ const studentSlice = createSlice({
       state.hasUnverifiedEmail = action.payload.hasUnverifiedEmail;
       state.currentSession = action.payload.currentSession;
       state.currentWeek = action.payload.currentWeek;
+      state.iCalToken = action.payload.iCalToken;
     },
     setStudentInfo(state, action: PayloadAction<StudentData>) {
       state.info = action.payload;
@@ -51,6 +53,9 @@ const studentSlice = createSlice({
       state.currentSession = null;
       state.currentWeek = null;
     },
+    setICalToken(state, action: PayloadAction<string>) {
+      state.iCalToken = action.payload;
+    },
   },
 });
 
@@ -63,4 +68,5 @@ export const {
   setCurrentWeek,
   setCurrentSession,
   resetForRecord,
+  setICalToken,
 } = studentSlice.actions;

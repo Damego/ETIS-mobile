@@ -14,6 +14,7 @@ export interface StudentInfo {
   currentSession?: number;
   firstWeek?: number;
   hasUnverifiedEmail: boolean;
+  iCalToken?: string;
 }
 
 export default function parseMenu(html: string, parseGroupJournal = false): StudentInfo {

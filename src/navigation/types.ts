@@ -1,9 +1,5 @@
 import type { BottomTabNavigationProp, BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import type { CompositeNavigationProp, CompositeScreenProps } from '@react-navigation/native';
-import type {
-  NativeStackNavigationProp,
-  NativeStackScreenProps,
-} from '@react-navigation/native-stack';
 import type { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { IAvailableCertificate } from '~/models/certificate';
 import { IDisciplineEducationalComplexThemeLink } from '~/models/disciplineEducationalComplex';
@@ -107,22 +103,18 @@ export type EducationStackParamList = {
   ChangeEmail: { sendVerificationMail: boolean };
   // Расписание преподавателей/кафедр
   CathedraTimetable: { teacherId?: string; cathedraId?: string };
+  // Список аудиторий университета для выбора
   SelectAudience: undefined;
+  // Расписание аудитории
   AudienceTimetable: { audience: IAudience };
+  // Электронные ресурсы в ЕТИС
   DigitalResources: undefined;
 };
 
 // Список экранов с нижними табами
 export type BottomTabsParamList = {
   Education: undefined;
-  Services: undefined;
-  NewsAndEvents: undefined;
-};
-
-// Список экранов для сервисов
-export type ServicesNativeStackParamList = {
-  Services: undefined;
-  // TODO: check Notion
+  Maps: undefined;
 };
 
 // Типы параметров для экранов-компонентов (navigation, route)
@@ -139,12 +131,6 @@ export type EducationStackScreenProps<
   RootStackScreenProps
 >;
 
-export type ServiceNativeStackScreenProps<
-  ScreenName extends keyof ServicesNativeStackParamList = undefined,
-> = CompositeScreenProps<
-  NativeStackScreenProps<ServicesNativeStackParamList, ScreenName>,
-  BottomTabsScreenProps
->;
 
 export type StartStackScreenProps<ScreenName extends keyof StartStackParamList = undefined> =
   CompositeScreenProps<StackScreenProps<StartStackParamList, ScreenName>, RootStackScreenProps>;
@@ -162,10 +148,6 @@ export type RootStackNavigationProp = StackNavigationProp<RootStackParamList>;
 export type BottomTabsNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<BottomTabsParamList>,
   RootStackNavigationProp
->;
-export type ServicesNavigationProp = CompositeNavigationProp<
-  NativeStackNavigationProp<ServicesNativeStackParamList>,
-  BottomTabsNavigationProp
 >;
 export type EducationNavigationProp = CompositeNavigationProp<
   StackNavigationProp<EducationStackParamList>,

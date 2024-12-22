@@ -16,6 +16,7 @@ import { getStyles } from '~/utils/webView';
 import Note from './components/Note';
 import { TaskContainer } from './components/TaskContainer';
 import { AudienceInfo, GroupsInfo, TeacherInfo, TimeInfo } from './components/info';
+import AudienceMap from '~/screens/etis/disciplineInfo/components/AudienceMap';
 
 const DisciplineInfo = ({ route }: EducationStackScreenProps<'DisciplineInfo'>) => {
   const theme = useAppTheme();
@@ -46,6 +47,8 @@ const DisciplineInfo = ({ route }: EducationStackScreenProps<'DisciplineInfo'>) 
         <AudienceInfo lesson={lesson} />
         {lesson.teacher && <TeacherInfo teacher={lesson.teacher} />}
         {lesson.groups && <GroupsInfo groups={lesson.groups} />}
+
+        <AudienceMap audience={lesson.audience} />
 
         <Note disciplineName={lesson.subject.discipline} />
         <BorderLine />
