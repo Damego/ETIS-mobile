@@ -16,7 +16,7 @@ export interface EducationTimetableMethods {
 }
 
 const EducationTimetable = React.forwardRef<EducationTimetableMethods>((props, ref) => {
-  console.log("IN EDUCATION TT")
+  console.log('IN EDUCATION TT');
   const client = useClient();
   const dispatch = useAppDispatch();
   const { skipSunday } = useAppSelector((state) => state.settings.config.ui);

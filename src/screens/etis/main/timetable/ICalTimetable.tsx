@@ -8,7 +8,7 @@ import useTimetable from '~/hooks/useTimetable';
 import { ITimeTable } from '~/models/timeTable';
 
 const ICalTimetable = React.forwardRef<{ refresh: () => void }>((props, ref) => {
-  console.log("IN ICAL TT")
+  console.log('IN ICAL TT');
   const student = useAppSelector((state) => state.student);
   const { skipSunday } = useAppSelector((state) => state.settings.config.ui);
   const [weekTimetable, setWeekTimetable] = React.useState<ITimeTable>();
@@ -29,7 +29,7 @@ const ICalTimetable = React.forwardRef<{ refresh: () => void }>((props, ref) => 
     queryFn: getInnerData,
     queryKey: ['ical', student.iCalToken],
     retry: false,
-    throwOnError: true
+    throwOnError: true,
   });
 
   const getTimetable = (week: number) => {

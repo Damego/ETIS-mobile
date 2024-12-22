@@ -16,7 +16,7 @@ const useAuth = () => {
       isInvisibleRecaptcha
     );
 
-    console.log(`[AUTH] ${code} ${message}`)
+    console.log(`[AUTH] ${code} ${message}`);
 
     if (code === LoginResponseType.rateLimited) {
       ToastAndroid.show(

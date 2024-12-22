@@ -1,14 +1,13 @@
 import React, { useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
-
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import BellScheduleButton from '~/components/timetable/buttons/BellScheduleButton';
 import DisciplineTasksButton from '~/components/timetable/buttons/DisciplineTasksButton';
 import ToggleModeButton from '~/components/timetable/buttons/ToggleModeButton';
 import { useAppSelector } from '~/hooks';
-import ICalTimetable from '~/screens/etis/main/timetable/ICalTimetable';
 import EducationTimetable from '~/screens/etis/main/timetable/EducationTimetable';
+import ICalTimetable from '~/screens/etis/main/timetable/ICalTimetable';
 
 export const Timetable = () => {
   const iCalToken = useAppSelector((state) => state.student.iCalToken);

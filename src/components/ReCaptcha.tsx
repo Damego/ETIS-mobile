@@ -30,7 +30,7 @@ export default function CustomReCaptcha({
       hideBadge
       loadingComponent={<></>}
       webViewStyle={size === 'invisible' ? { backgroundColor: undefined } : undefined}
-      action={"login"}
+      action={'login'}
     />
   );
 }

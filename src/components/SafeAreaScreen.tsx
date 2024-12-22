@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
+import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppTheme } from '~/hooks/theme';
-import { View } from 'react-native';
 
 const SafeAreaScreen = ({ children }: { children: React.ReactNode }) => {
   const theme = useAppTheme();
