@@ -1,14 +1,10 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Button, StyleSheet, ToastAndroid, View } from 'react-native';
-import { cache } from '~/cache/smartCache';
+import { ActivityIndicator, Button, StyleSheet, View } from 'react-native';
+import { LoginResponseType } from '~/api/etis/auth';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '~/hooks';
-import {
-  UserCredentials,
-  setAuthorizing,
-  signIn,
-  signInDemo,
-  signOut,
-} from '~/redux/reducers/accountSlice';
+import useAuth from '~/hooks/useAuth';
+import { setAuthorizing, signInDemo } from '~/redux/reducers/accountSlice';
 import { httpClient } from '~/utils';
 import isDemoCredentials from '~/utils/demo';
 
@@ -34,73 +30,33 @@ const styles = StyleSheet.create({
   },
 });
 
-enum LoginResponseType {
-  missingToken,
-  invalidToken,
-  success,
-  failed,
-  privacyPolicyNotAccepted,
-  invalidUserCredentials,
-  rateLimited,
-}
-
-const makeLogin = async (
-  token: string,
-  userCredentials: UserCredentials,
-  saveUserCredentials: boolean,
-  isInvisibleRecaptcha: boolean
-): Promise<LoginResponseType> => {
-  if (!token) {
-    return LoginResponseType.missingToken;
-  }
-  if (!(await cache.hasAcceptedPrivacyPolicy())) return LoginResponseType.privacyPolicyNotAccepted;
-
-  const response = await httpClient.login(
-    userCredentials.login,
-    userCredentials.password,
-    token,
-    isInvisibleRecaptcha
-  );
-
-  if (response && response.error) {
-    // У нас нет других вариантов проверять тип ошибки
-    const message: string = response.error.message.toLowerCase();
-
-    if (message.includes('проверк')) return LoginResponseType.invalidToken;
-
-    if (message.includes('лимит')) {
-      ToastAndroid.show(
-        'Был превышен лимит (5) неудачных попыток. Повторите через 10 минут!',
-        ToastAndroid.SHORT
-      );
-      return LoginResponseType.rateLimited;
-    }
-
-    ToastAndroid.show(response.error.message, ToastAndroid.SHORT);
-
-    if (message.includes('неверное')) return LoginResponseType.invalidUserCredentials;
-
-    return LoginResponseType.failed;
-  }
-
-  if (saveUserCredentials) {
-    await cache.placeUserCredentials(userCredentials);
-  }
-  return LoginResponseType.success;
-};
-
 const AuthLoadingModal = () => {
   const dispatch = useAppDispatch();
-  const { userCredentials, saveUserCredentials, fromStorage, isAuthorizing } = useAppSelector(
-    (state) => state.account
-  );
+  const { userCredentials, isAuthorizing } = useAppSelector((state) => state.account);
   const [showOfflineButton, setShowOfflineButton] = useState<boolean>(false);
   const [messageStatus, setMessageStatus] = useState<string>();
   const [isInvisibleRecaptcha, setIsInvisibleRecaptcha] = useState<boolean>(true);
   const [isLoading, setLoading] = useState(false);
   const globalStyles = useGlobalStyles();
 
+  const auth = useAuth();
+
   const onReceiveToken = async (token: string) => {
+    // console.log('TOKEN', token);
+    // const res = await axios.post(
+    //   `https://www.google.com/recaptcha/api/siteverify?secret=${
+    //     isInvisibleRecaptcha
+    //       ? '6LcXEKIqAAAAAH_iSx6AiFtbwHYDo8QEdVRR7dFh'
+    //       : '6LcaEKIqAAAAAM3GIu5BqSQ0GOB2b07ofUYiBkrU'
+    //   }&response=${token}`,
+    //   {},
+    //   {
+    //     headers: {
+    //       'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+    //     },
+    //   }
+    // );
+    // console.log('ReCaptcha RESPONSE:', res.data);
     setLoading(true);
     setMessageStatus('Авторизация...');
 
@@ -110,38 +66,12 @@ const AuthLoadingModal = () => {
       return;
     }
 
-    const response = await makeLogin(
-      token,
-      userCredentials,
-      saveUserCredentials,
-      isInvisibleRecaptcha
-    );
+    const code = await auth.login(token, isInvisibleRecaptcha);
 
-    if (
-      response === LoginResponseType.missingToken ||
-      response === LoginResponseType.invalidToken
-    ) {
+    if (code === LoginResponseType.missingToken || code === LoginResponseType.invalidToken) {
       setMessageStatus(`Получение токена...`);
       setIsInvisibleRecaptcha(false);
       return;
-    }
-
-    if (response === LoginResponseType.rateLimited) {
-      dispatch(signOut({}));
-    } else if (response === LoginResponseType.invalidUserCredentials) {
-      // Данные устарели, поэтому их стоит удалить
-      dispatch(signOut({ cleanUserCredentials: true }));
-    } else if (response === LoginResponseType.success) {
-      dispatch(signIn({}));
-    } else if (response === LoginResponseType.failed) {
-      // fromStorage Для проверки, были ли загружены данные из хранилища или нет (т.е. пользователь ввёл данные в форме)
-      // Возможно, что пользователь вышел из аккаунта или неудачная попытка ввода данных,
-      // то нам не нужно заходить в оффлайн режим в этих случаях
-      // Если же етис недоступен, но данные идут из хранилища, то разрешаем оффлайн режим
-
-      // Есть небольшая уязвимость, если пользователь сменит пароль, то приложение всё равно войдёт в оффлайн режим
-      // при недоступности етиса или интернета
-      signInOffline();
     }
 
     dispatch(setAuthorizing(false));
@@ -160,7 +90,7 @@ const AuthLoadingModal = () => {
 
     setTimeout(() => {
       httpClient.isInternetReachable().then((res) => {
-        if (!res) signInOffline();
+        if (!res) auth.signInOffline();
       });
     }, 1000);
 
@@ -170,14 +100,6 @@ const AuthLoadingModal = () => {
       setShowOfflineButton(true);
     }, 6000);
   }, []);
-
-  const signInOffline = () => {
-    if (fromStorage) {
-      console.log('[AUTH] Signed in as offline');
-      dispatch(signIn({ isOffline: true }));
-      dispatch(setAuthorizing(false));
-    }
-  };
 
   return (
     <View style={styles.modalWrapper}>
@@ -195,7 +117,7 @@ const AuthLoadingModal = () => {
             <View style={{ marginTop: '15%' }}>
               <Button
                 title="Оффлайн режим"
-                onPress={signInOffline}
+                // onPress={auth.signInOffline}
                 color={globalStyles.primaryText.color}
               />
             </View>

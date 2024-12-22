@@ -1,4 +1,5 @@
 import { cache } from '~/cache/smartCache';
+import { setStudentInfo, setStudentState } from '~/redux/reducers/studentSlice';
 
 import { setStudent, setTeacher, setUserCredentials } from './reducers/accountSlice';
 import { setAppReady, setConfig } from './reducers/settingsSlice';
@@ -35,11 +36,17 @@ export const loadAccount = () => async (dispatch: AppDispatch) => {
   if (data.student) dispatch(setStudent(data.student));
 };
 
+export const loadStudent = () => async (dispatch: AppDispatch) => {
+  const data = await cache.getStudent();
+  dispatch(setStudentState(data));
+};
+
 export const loadStorage = () => async (dispatch: AppDispatch) => {
   await Promise.all([
     loadSettings()(dispatch),
     loadUserCredentials()(dispatch),
     loadAccount()(dispatch),
+    loadStudent()(dispatch),
   ]);
 
   dispatch(setAppReady(true));

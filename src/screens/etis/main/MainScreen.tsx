@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { SceneMap, TabView } from 'react-native-tab-view';
 import { cache } from '~/cache/smartCache';
+import InvisibleAuthModal from '~/components/InvisibleAuthModal';
 import { useClient } from '~/data/client';
 import { useAppDispatch, useAppSelector } from '~/hooks';
 import { RequestType } from '~/models/results';
@@ -26,42 +27,35 @@ const ETISScreen = () => {
   const {
     config: { signNotificationEnabled },
   } = useAppSelector((state) => state.settings);
+  const { isSignedIn, userCredentials } = useAppSelector((state) => state.account);
+  const student = useAppSelector((state) => state.student);
   const client = useClient();
   const { isDemo, isOfflineMode } = useAppSelector((state) => state.account);
 
   useEffect(() => {
-    loadData().then(() => {
-      if (signNotificationEnabled && !isDemo && !isOfflineMode) {
+    if (!isSignedIn || isDemo || isOfflineMode) return;
+
+    updateStudentInfo().then(() => {
+      if (signNotificationEnabled) {
         registerSignsFetchTask();
       }
     });
-  }, []);
+  }, [isSignedIn]);
 
-  const loadData = async () => {
-    const cached = await client.getStudentInfoData({ requestType: RequestType.forceCache });
-    if (isDemo || isOfflineMode) {
-      if (cached.data) {
-        dispatch(setStudentState(cached.data));
-      }
-      return;
-    }
-
-    const cachedStudent = cached.data?.student ? { ...cached.data.student } : null;
+  const updateStudentInfo = async () => {
     const fetched = await client.getStudentInfoData({ requestType: RequestType.forceFetch });
 
-    if (!cached.data && !fetched.data) return; // edge case
+    if (!student && !fetched.data) return; // edge case
 
-    if (
-      cachedStudent &&
-      fetched.data?.student &&
-      cachedStudent.group !== fetched.data.student.group
-    ) {
+    const studentInfo = student.info ? { ...student.info } : null;
+
+    if (studentInfo && fetched.data?.student && studentInfo.group !== fetched.data.student.group) {
       await cache.clear();
       await cache.placePartialStudent(fetched.data);
     }
 
     let data: StudentInfo = {} as StudentInfo;
-    if (cached.data) data = { ...data, ...cached.data };
+    if (student) data = { ...data, ...student };
     if (fetched.data) data = { ...data, ...fetched.data };
     dispatch(setStudentState(data));
   };
@@ -75,14 +69,18 @@ const ETISScreen = () => {
   ]);
 
   return (
-    <TabView
-      lazy
-      swipeEnabled={false}
-      navigationState={{ index, routes }}
-      renderScene={renderScene}
-      onIndexChange={setIndex}
-      renderTabBar={Shortcuts}
-    />
+    <>
+      {!isSignedIn && student.iCalToken && userCredentials && <InvisibleAuthModal />}
+
+      <TabView
+        lazy
+        swipeEnabled={false}
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        renderTabBar={Shortcuts}
+      />
+    </>
   );
 };
 
