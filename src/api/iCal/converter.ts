@@ -6,7 +6,8 @@ import { getDisciplineType } from '~/parser/utils';
 import { lyceumBellSchedule } from '~/screens/etis/bellSchedule/lyceumBellSchedule';
 import { IBellSchedulePair } from '~/screens/etis/bellSchedule/types';
 import { universityBellSchedule } from '~/screens/etis/bellSchedule/universityBellSchedule';
-import { compareTime, formatTime, getEducationWeekByDate } from '~/utils/datetime';
+import { formatTime, getEducationWeekByDate } from '~/utils/datetime';
+import { groupItems } from '~/utils/utils';
 
 type VEventDayjs = VEvent & { start: dayjs.Dayjs };
 
@@ -64,31 +65,50 @@ const convertEventToPair = (event: VEventDayjs, isLyceum: boolean): IPair => {
   return pair;
 };
 
-export const convertICalToTimetable = (ical: CalendarResponse, isLyceum: boolean) => {
+const fillDaysForWeek = (week: number, event: VEventDayjs) => {
+  const days = [];
+  const monday = event.start.startOf('isoWeek');
+  for (let i = 0; i < 7; i += 1) {
+    days.push({ date: monday.add(i, 'day'), events: [] });
+  }
+  return days;
+};
+
+const convertIcalToWeeks = (ical: CalendarResponse) => {
   const icalData: VEventDayjs[] = Object.values(ical)
     .filter((component) => component.type === 'VEVENT')
     .map((event: VEventDayjs) => {
-      const date = dayjs(event.start);
-      event.start = date;
+      event.start = dayjs(event.start); // always iso
       return event;
     })
-    .sort((a, b) => compareTime(a.start, b.start));
 
-  const data: { [week: number]: { [dayDate: string]: VEvent[] } } = {};
+  const data: { [week: number]: { date: dayjs.Dayjs; events: VEvent[] }[] } = {};
 
   icalData.forEach((event) => {
     const week = getEducationWeekByDate(event.start);
     if (data[week] === undefined) {
-      data[week] = {};
+      data[week] = fillDaysForWeek(week, event);
     }
-    const startDate = event.start.startOf('date').toISOString();
-
-    if (data[week][startDate] === undefined) {
-      data[week][startDate] = [];
-    }
-
-    data[week][startDate].push(event);
+    const startDate = event.start.startOf('date');
+    const weekDays = data[week].find(({ date }) => date.diff(startDate, 'days') === 0);
+    weekDays.events.push(event);
   });
+  return data;
+};
+
+const fixPositionDuplicates = (pairs: IPair[]) => {
+  // Не забываем, что в одно время может быть несколько пар
+  const grouped = groupItems(pairs, (pair) => pair.position.toString());
+  return grouped.map((pairs) => {
+    if (pairs.length === 1) return pairs[0];
+    const first = pairs[0];
+    pairs.slice(1).forEach(($pair) => first.lessons.push(...$pair.lessons));
+    return first;
+  });
+}
+
+export const convertICalToTimetable = (ical: CalendarResponse, isLyceum: boolean) => {
+  const data = convertIcalToWeeks(ical);
 
   const weeks = Object.keys(data);
   const firstWeek = Number(weeks.at(0));
@@ -96,18 +116,15 @@ export const convertICalToTimetable = (ical: CalendarResponse, isLyceum: boolean
 
   const timetable: ITimeTable[] = [];
 
-  Object.entries(data).forEach(([week, daysData]) => {
-    let weekDate: dayjs.Dayjs = null;
-
-    const days: ITimeTableDay[] = [];
-    Object.entries(daysData).forEach(([date, events]) => {
-      if (!weekDate) {
-        weekDate = dayjs(date);
+  Object.entries(data).forEach(([week, dayEvents]) => {
+    const weekDate = dayEvents[0].date;
+    const days: ITimeTableDay[] = dayEvents.map(({ date, events }) => {
+      let pairs = events.map((event: VEventDayjs) => convertEventToPair(event, isLyceum));
+      if (pairs.length) {
+        pairs = fixPositionDuplicates(pairs);
       }
-      days.push({
-        date: formatTime(dayjs(date), { disableTime: true }),
-        pairs: events.map((event: VEventDayjs) => convertEventToPair(event, isLyceum)),
-      });
+
+      return { date: formatTime(date, { disableTime: true }), pairs };
     });
 
     timetable.push({
