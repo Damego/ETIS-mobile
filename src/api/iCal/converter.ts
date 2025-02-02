@@ -80,7 +80,7 @@ const convertIcalToWeeks = (ical: CalendarResponse) => {
     .map((event: VEventDayjs) => {
       event.start = dayjs(event.start); // always iso
       return event;
-    })
+    });
 
   const data: { [week: number]: { date: dayjs.Dayjs; events: VEvent[] }[] } = {};
 
@@ -105,7 +105,7 @@ const fixPositionDuplicates = (pairs: IPair[]) => {
     pairs.slice(1).forEach(($pair) => first.lessons.push(...$pair.lessons));
     return first;
   });
-}
+};
 
 export const convertICalToTimetable = (ical: CalendarResponse, isLyceum: boolean) => {
   const data = convertIcalToWeeks(ical);
