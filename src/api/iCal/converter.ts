@@ -65,10 +65,11 @@ const convertEventToPair = (event: VEventDayjs, isLyceum: boolean): IPair => {
   return pair;
 };
 
+const WEEK_LENGTH = 6; // Воскресенье - выходной всегда
 const fillDaysForWeek = (week: number, event: VEventDayjs) => {
   const days = [];
   const monday = event.start.startOf('isoWeek');
-  for (let i = 0; i < 7; i += 1) {
+  for (let i = 0; i < WEEK_LENGTH; i += 1) {
     days.push({ date: monday.add(i, 'day'), events: [] });
   }
   return days;
@@ -80,7 +81,7 @@ const convertIcalToWeeks = (ical: CalendarResponse) => {
     .map((event: VEventDayjs) => {
       event.start = dayjs(event.start); // always iso
       return event;
-    })
+    });
 
   const data: { [week: number]: { date: dayjs.Dayjs; events: VEvent[] }[] } = {};
 
@@ -105,7 +106,7 @@ const fixPositionDuplicates = (pairs: IPair[]) => {
     pairs.slice(1).forEach(($pair) => first.lessons.push(...$pair.lessons));
     return first;
   });
-}
+};
 
 export const convertICalToTimetable = (ical: CalendarResponse, isLyceum: boolean) => {
   const data = convertIcalToWeeks(ical);
