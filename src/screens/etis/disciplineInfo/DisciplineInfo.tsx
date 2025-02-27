@@ -10,13 +10,13 @@ import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { useAppTheme } from '~/hooks/theme';
 import { EducationStackScreenProps } from '~/navigation/types';
+import AudienceMap from '~/screens/etis/disciplineInfo/components/AudienceMap';
 import { fontSize } from '~/utils/texts';
 import { getStyles } from '~/utils/webView';
 
 import Note from './components/Note';
 import { TaskContainer } from './components/TaskContainer';
 import { AudienceInfo, GroupsInfo, TeacherInfo, TimeInfo } from './components/info';
-import AudienceMap from '~/screens/etis/disciplineInfo/components/AudienceMap';
 
 const DisciplineInfo = ({ route }: EducationStackScreenProps<'DisciplineInfo'>) => {
   const theme = useAppTheme();

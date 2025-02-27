@@ -11,11 +11,11 @@ import UnauthorizedStudentNavigator from '~/navigation/UnauthorizedStudentNaviga
 import { headerParams } from '~/navigation/header';
 import AppSettingButton from '~/navigation/headerButtons/AppSettingsButton';
 import { AccountType } from '~/redux/reducers/accountSlice';
+import Maps from '~/screens/Maps';
 import Events from '~/screens/events/Events';
 import Services from '~/screens/services/Services';
 
 import { BottomTabsParamList, BottomTabsScreenProps } from './types';
-import Maps from '~/screens/Maps';
 
 const Tab = createBottomTabNavigator<BottomTabsParamList>();
 
@@ -69,9 +69,7 @@ const TabNavigator = ({ navigation }: BottomTabsScreenProps) => {
         component={Maps}
         options={{
           title: 'Карта',
-          tabBarIcon: ({ size, color }) => (
-            <Feather name="map-pin" size={size} color={color} />
-          ),
+          tabBarIcon: ({ size, color }) => <Feather name="map-pin" size={size} color={color} />,
         }}
       />
     </Tab.Navigator>

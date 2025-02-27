@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { cache } from '~/cache/smartCache';
 import { LoadingContainer } from '~/components/LoadingScreen';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
@@ -12,16 +13,15 @@ import { useAppDispatch, useAppSelector } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
 import useTimeTableQuery from '~/hooks/useTimeTableQuery';
 import useTimetable from '~/hooks/useTimetable';
-import { httpClient } from '~/utils';
 import { parseICalToken } from '~/parser/ical';
 import { setICalToken } from '~/redux/reducers/studentSlice';
-import { cache } from '~/cache/smartCache';
+import { httpClient } from '~/utils';
 
 export const Timetable = () => {
   const dispatch = useAppDispatch();
   const client = useClient();
   const { skipSunday } = useAppSelector((state) => state.settings.config.ui);
-  const iCalToken = useAppSelector(state => state.student.iCalToken)
+  const iCalToken = useAppSelector((state) => state.student.iCalToken);
 
   const timetable = useTimetable({
     skipSunday,

@@ -131,7 +131,6 @@ export type EducationStackScreenProps<
   RootStackScreenProps
 >;
 
-
 export type StartStackScreenProps<ScreenName extends keyof StartStackParamList = undefined> =
   CompositeScreenProps<StackScreenProps<StartStackParamList, ScreenName>, RootStackScreenProps>;
 
