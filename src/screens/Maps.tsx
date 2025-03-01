@@ -3,7 +3,6 @@ import AutoHeightWebView from 'react-native-autoheight-webview';
 import { useAppSelector } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
 
-
 const getScript = (ical: string, theme: 'light' | 'dark') => `
 localStorage.setItem("ical_token", "${ical}");
 localStorage.setItem("theme", "${theme}");
