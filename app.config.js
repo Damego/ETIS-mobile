@@ -10,6 +10,7 @@ export default {
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
     backgroundColor: '#CE2539',
+    newArchEnabled: true,
     splash: {
       image: './assets/splash.png',
       resizeMode: 'contain',
@@ -44,7 +45,9 @@ export default {
     },
     plugins: [
       'expo-asset',
+      "expo-mail-composer",
       'expo-secure-store',
+      //'@notifee/react-native',
       [
         '@sentry/react-native/expo',
         {
@@ -71,7 +74,7 @@ export default {
           },
         },
       ],
-      ['./src/plugins/disabledForcedDarkModeAndroid.ts', {}],
+      //['./src/plugins/disabledForcedDarkModeAndroid.ts', {}],
       [
         'expo-build-properties',
         {
@@ -95,6 +98,17 @@ export default {
           ],
         },
       ],
+      [
+        './src/plugins/withCustomNetworkSecurityConfig.ts',
+        {
+          networkSecurityConfig: './assets/configs/network_security_config.xml',
+          certificatesFolderPath: './assets/certs',
+          enable: true,
+        },
+      ],
     ],
+    experiments: {
+      reactCompiler: true
+    }
   },
 };

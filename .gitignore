@@ -108,7 +108,7 @@ dist
 
 .idea
 test.js
-test.ts
+test.js
 test.jsx
 test.tsx
 android/

@@ -4,8 +4,8 @@ import {
   documentDirectory,
   readAsStringAsync,
   writeAsStringAsync,
-} from 'expo-file-system';
-import * as FileSystem from 'expo-file-system';
+} from 'expo-file-system/legacy';
+import * as FileSystem from 'expo-file-system/legacy';
 import * as IntentLauncher from 'expo-intent-launcher';
 
 import { IDisciplineInfo, IDisciplineTask } from '../models/disciplineInfo';

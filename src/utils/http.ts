@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import * as cheerio from 'cheerio';
 import CyrillicToTranslit from 'cyrillic-to-translit-js';
-import { documentDirectory, downloadAsync } from 'expo-file-system';
+import { documentDirectory, downloadAsync } from 'expo-file-system/legacy';
 import { getNetworkStateAsync } from 'expo-network';
 import { ICathedraTimetablePayload } from '~/models/cathedraTimetable';
 import { ICertificate } from '~/models/certificate';
@@ -48,15 +48,12 @@ export interface Response<T> {
   error?: HTTPError;
 }
 
-const PROXY_SERVER_URL = 'https://etisproxy0.damego.ru/student';
-
 class HTTPClient {
   private sessionID: string | null;
   private instance: AxiosInstance;
   private readonly siteSuffix: string = '/pls/stu_cus_et';
   private readonly siteURL: string = 'https://student.psu.ru';
   private readonly baseURL: string;
-  private useProxy: boolean;
 
   constructor() {
     this.sessionID = null;
@@ -66,7 +63,7 @@ class HTTPClient {
 
   private createAxiosInstance() {
     this.instance = axios.create({
-      baseURL: this.useProxy ? `${PROXY_SERVER_URL}${this.siteSuffix}` : this.baseURL,
+      baseURL: this.baseURL,
       headers: {
         'User-Agent': getRandomUserAgent(),
       },
@@ -74,7 +71,7 @@ class HTTPClient {
   }
 
   getSiteURL() {
-    return this.useProxy ? PROXY_SERVER_URL : this.siteURL;
+    return this.siteURL;
   }
 
   getSessionID() {
@@ -162,14 +159,6 @@ class HTTPClient {
     } catch (e) {
       console.warn('[HTTP]', e);
 
-      // https://github.com/Damego/ETIS-mobile/issues/168
-      if (!this.useProxy && (await this.detectNetworkIssue(e))) {
-        console.warn('[HTTP] Detected network issue. Switching to proxy server.');
-        this.useProxy = true;
-        this.createAxiosInstance();
-        return await this.request(method, endpoint, { params, data, returnResponse });
-      }
-
       return {
         error: {
           code: ErrorCode.invalidConnection,
@@ -209,13 +198,14 @@ class HTTPClient {
       p_redirect: '/stu.blank_page',
       p_username: username.trim(),
       p_password: password.trim(),
-      p_recaptcha_ver: isInvisibleRecaptcha ? '3' : '2',
-      p_recaptcha_response: token,
+      // p_recaptcha_ver: isInvisibleRecaptcha ? '3' : '2',
+      // p_recaptcha_response: token,
     };
     const response = await this.request('POST', `/stu.login`, {
       data,
       returnResponse: true,
     });
+    console.log("LOGIN RESP", response.data)
 
     if (response.error) return response;
 

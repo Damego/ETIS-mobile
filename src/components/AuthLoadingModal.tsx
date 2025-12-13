@@ -153,7 +153,8 @@ const AuthLoadingModal = () => {
   };
 
   useEffect(() => {
-    setMessageStatus('Получение токена...');
+    // setMessageStatus('Получение токена...');
+    onReceiveToken("foobar")
 
     // Вход в оффлайн режим слишком резкий, поэтому ставим таймер 1 сек.
     // TODO: В идеале, сразу после Splash включать оффлайн режим
@@ -181,11 +182,11 @@ const AuthLoadingModal = () => {
 
   return (
     <View style={styles.modalWrapper}>
-      <CustomReCaptcha
-        onReceiveToken={onReceiveToken}
-        size={isInvisibleRecaptcha ? 'invisible' : 'normal'}
-        onClose={onRecaptchaModalClose}
-      />
+      {/*<CustomReCaptcha*/}
+      {/*  onReceiveToken={onReceiveToken}*/}
+      {/*  size={isInvisibleRecaptcha ? 'invisible' : 'normal'}*/}
+      {/*  onClose={onRecaptchaModalClose}*/}
+      {/*/>*/}
       <View style={[styles.modalContainer, globalStyles.container]}>
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <ActivityIndicator size="large" color={globalStyles.primaryText.color} />

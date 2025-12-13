@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+
+    <domain-config>
+        <domain includeSubdomains="true">student.psu.ru</domain>
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="@raw/intermediate_cert" />
+        </trust-anchors>
+    </domain-config>
+</network-security-config>
