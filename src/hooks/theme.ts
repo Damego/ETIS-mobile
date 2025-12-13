@@ -2,6 +2,7 @@ import { useColorScheme } from 'react-native';
 
 import { APP_THEMES, ITheme, ThemeType } from '../styles/themes';
 import { useAppSelector } from './redux';
+import { DefaultTheme } from '@react-navigation/native';
 
 export const useAppTheme = (): ITheme => {
   const themeType = useAppSelector((state) => state.settings.config.theme);
@@ -15,6 +16,5 @@ export const useAppTheme = (): ITheme => {
   if (theme.light && theme.dark) {
     return theme[scheme];
   }
-
   return theme;
 };

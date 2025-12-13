@@ -1,4 +1,4 @@
-import { FileSystemDownloadResult } from 'expo-file-system';
+import { FileSystemDownloadResult } from 'expo-file-system/legacy';
 import { shareAsync } from 'expo-sharing';
 import React, { useRef } from 'react';
 import {

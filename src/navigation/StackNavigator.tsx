@@ -1,5 +1,5 @@
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { NavigationContainer } from '@react-navigation/native';
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { setBackgroundColorAsync as setBackgroundNavigationBarColorAsync } from 'expo-navigation-bar';
 import * as SplashScreen from 'expo-splash-screen';
@@ -76,7 +76,7 @@ const StackNavigator = () => {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <NavigationContainer theme={theme}>
+      <NavigationContainer theme={{ ...DefaultTheme, ...theme }}>
         <BottomSheetModalProvider>
           <Stack.Navigator screenOptions={{ headerShown: true, ...headerParams(theme) }}>
             <Stack.Screen
