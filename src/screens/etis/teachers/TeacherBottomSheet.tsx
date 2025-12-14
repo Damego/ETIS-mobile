@@ -32,12 +32,12 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
   });
 
   const copyTeacherNameToClipboard = () => {
-    Clipboard.setStringAsync(teacher.name);
+    if (teacher?.name) Clipboard.setStringAsync(teacher.name);
     ToastAndroid.show('Скопировано в буфер обмена', ToastAndroid.LONG);
   };
 
   const copyCathedraToClipboard = () => {
-    Clipboard.setStringAsync(teacher.cathedra);
+    if (teacher?.cathedra) Clipboard.setStringAsync(teacher.cathedra);
     ToastAndroid.show('Скопировано в буфер обмена', ToastAndroid.LONG);
   };
 
@@ -114,7 +114,7 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
                 <Text
                   key={phone}
                   style={fontSize.medium}
-                  onPress={() => Clipboard.setStringAsync(phone)}
+                  onPress={() => phone && Clipboard.setStringAsync(phone)}
                 >
                   • {phone}
                 </Text>
@@ -130,7 +130,7 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
                 <Text
                   key={email}
                   style={fontSize.medium}
-                  onPress={() => Clipboard.setStringAsync(email)}
+                  onPress={() => email && Clipboard.setStringAsync(email)}
                 >
                   • {email}
                 </Text>
