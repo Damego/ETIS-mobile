@@ -45,11 +45,24 @@ export const defineSignsFetchTask = () =>
   });
 
 async function registerBackgroundFetchAsync() {
-  return BackgroundFetch.registerTaskAsync(BACKGROUND_FETCH_TASK, {
-    minimumInterval: 10 * 60, // 10 minutes
-    stopOnTerminate: false, // android only,
-    startOnBoot: false, // android only
-  });
+  try {
+    const status = await BackgroundFetch.getStatusAsync();
+    if (status === BackgroundFetch.BackgroundFetchStatus.Restricted) {
+      console.warn('[FETCH] Background fetch restricted on this device. Skipping.');
+      return;
+    }
+
+    const isRegistered = await TaskManager.isTaskRegisteredAsync(BACKGROUND_FETCH_TASK);
+    if (!isRegistered) {
+      await BackgroundFetch.registerTaskAsync(BACKGROUND_FETCH_TASK, {
+        minimumInterval: 10 * 60, // 10 minutes
+        stopOnTerminate: false, // android only,
+        startOnBoot: false, // android only
+      });
+    }
+  } catch (err) {
+    console.warn('[FETCH] registerTaskAsync failed:', String(err?.message || err));
+  }
 }
 
 export async function unregisterBackgroundFetchAsync() {
