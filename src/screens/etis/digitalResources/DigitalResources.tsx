@@ -16,7 +16,7 @@ import { groupItems } from '~/utils/utils';
 const Field = ({ value }: { value?: string }) => {
   const globalStyles = useGlobalStyles();
 
-  const copyValue = () => Clipboard.setStringAsync(value);
+  const copyValue = () => value && Clipboard.setStringAsync(value);
 
   return (
     <View
@@ -31,11 +31,11 @@ const Field = ({ value }: { value?: string }) => {
       ]}
     >
       <Text selectable>{value}</Text>
-      (value &&
+      {value && (
       <TouchableOpacity onPress={copyValue}>
         <Feather name={'copy'} size={18} color={globalStyles.textColor.color} />
       </TouchableOpacity>
-      )
+      )}
     </View>
   );
 };
