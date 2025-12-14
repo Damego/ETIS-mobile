@@ -9,7 +9,9 @@ export const partitionItems = <T>(array: T[], callback: (item: T) => boolean): T
 
 type GroupT<T> = { [s: string]: T[] };
 
-export const groupItems = <T>(array: T[], keyExtractor: (item: T) => string) => {
+export const groupItems = <T>(array: T[] | undefined | null, keyExtractor: (item: T) => string) => {
+  if (!Array.isArray(array) || array.length === 0) return [] as T[][];
+
   const grouped: GroupT<T> = {} as GroupT<T>;
   array.forEach((item) => {
     const key = keyExtractor(item);
