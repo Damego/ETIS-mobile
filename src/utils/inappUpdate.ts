@@ -12,7 +12,9 @@ export const checkUpdate = () => {
   if (!__DEV__) {
     const inAppUpdates = new SpInAppUpdates(false);
     console.log('[INAPP] Checking store version');
-    inAppUpdates.checkNeedsUpdate({ curVersion: Constants.expoConfig.version }).then((result) => {
+    inAppUpdates
+      .checkNeedsUpdate({ curVersion: Constants.expoConfig.version })
+      .then((result) => {
       console.log(`[INAPP] result: ${JSON.stringify(result)}`);
       if (result.shouldUpdate) {
         if (Platform.OS === 'android') {
@@ -31,7 +33,17 @@ export const checkUpdate = () => {
           inAppUpdates.startUpdate(updateOptions); // https://github.com/SudoPlz/sp-react-native-in-app-updates/blob/master/src/types.ts#L78
         }
       }
-    });
+      })
+      .catch((err) => {
+        const msg = String(err?.message || err || 'Unknown error');
+        // Play Core InstallException -6: device state not allowed (battery, storage, etc.)
+        if (msg.includes('InstallException') && msg.includes(' -6')) {
+          console.warn('[INAPP] Update not allowed due to device state (-6). Skipping.');
+          return;
+        }
+        // Other non-critical errors from sp-react-native-in-app-updates should not crash the app
+        console.warn(`[INAPP] checkNeedsUpdate failed: ${msg}`);
+      });
     return inAppUpdates;
   }
 };
