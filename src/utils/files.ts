@@ -37,6 +37,10 @@ const readJSONFromDocuments = async (fileName: string, defaultValue: any) => {
 
   try {
     stringData = await readAsStringAsync(`${documentDirectory}${fileName}`);
+    if (!stringData || stringData.trim() === '') {
+      await saveJSONToDocuments(defaultValue, fileName);
+      return defaultValue;
+    }
     return JSON.parse(stringData);
   } catch (e) {
     await saveJSONToDocuments(defaultValue, fileName);
