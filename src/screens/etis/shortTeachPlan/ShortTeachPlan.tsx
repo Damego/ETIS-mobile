@@ -69,24 +69,26 @@ const ShortTeachPlan = () => {
   };
 
   if (isLoading) return <LoadingScreen onRefresh={refresh} />;
-  if (!data) return <NoData onRefresh={refresh} />;
+  if (!data || data.length === 0) return <NoData onRefresh={refresh} />;
 
   return (
     <Screen onUpdate={refresh} containerStyle={{ gap: 16 }}>
       <CalendarSchedule />
 
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
-        {data.map((period, index) => (
-          <PeriodButton
-            period={period}
-            currentSession={currentSession}
-            isOpened={period.period.number === openedPeriod}
-            onPress={handlePeriodPress}
-            key={index}
-          />
-        ))}
+        {data
+          .filter((period) => period?.period?.number != null)
+          .map((period, index) => (
+            <PeriodButton
+              period={period}
+              currentSession={currentSession}
+              isOpened={period.period.number === openedPeriod}
+              onPress={handlePeriodPress}
+              key={index}
+            />
+          ))}
       </View>
-      {openedPeriod && <SessionCard data={data[openedPeriod - 1]} />}
+      {openedPeriod && data[openedPeriod - 1] && <SessionCard data={data[openedPeriod - 1]} />}
     </Screen>
   );
 };
