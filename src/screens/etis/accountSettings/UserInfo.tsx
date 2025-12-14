@@ -6,15 +6,14 @@ import { useAppSelector } from '~/hooks';
 import { capitalizeWord, fontSize } from '~/utils/texts';
 
 function UserInfo() {
-  const { name, speciality, educationForm, year, group } = useAppSelector(
-    (state) => state.student.info
-  );
+  const info = useAppSelector((state) => state.student.info) || {} as any;
+  const { name, speciality, educationForm, year, group } = info;
   const nameTextStyle = useMemo(() => StyleSheet.compose(fontSize.medium, styles.boldText), []);
 
   return (
     <>
       <Card>
-        <Text style={styles.cardTitle}>{name}</Text>
+        <Text style={styles.cardTitle}>{name ?? '—'}</Text>
         {speciality && (
           <Text>
             <Text style={nameTextStyle}>Направление: </Text>
@@ -36,10 +35,12 @@ function UserInfo() {
           </Text>
         )}
 
-        <Text>
-          <Text style={nameTextStyle}>Группа: </Text>
-          <Text style={fontSize.medium}>{group}</Text>
-        </Text>
+        {group && (
+          <Text>
+            <Text style={nameTextStyle}>Группа: </Text>
+            <Text style={fontSize.medium}>{group}</Text>
+          </Text>
+        )}
       </Card>
     </>
   );
