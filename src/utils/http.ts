@@ -205,7 +205,6 @@ class HTTPClient {
       data,
       returnResponse: true,
     });
-    console.log("LOGIN RESP", response.data)
 
     if (response.error) return response;
 
