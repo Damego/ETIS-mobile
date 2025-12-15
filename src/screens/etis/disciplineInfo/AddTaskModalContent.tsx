@@ -46,7 +46,7 @@ const AddTaskModalContent = ({
 
   const openReminderModal = () => reminderModal.current?.present();
 
-  const closeReminderModal = () => reminderModal.current.close();
+  const closeReminderModal = () => reminderModal.current?.close();
 
   const removeReminder = (index: number) => () =>
     setReminders((prev) => [...prev.filter((_, ind) => ind !== index)]);
@@ -106,11 +106,11 @@ const AddTaskModalContent = ({
           <Text>Привязать задание к этой паре</Text>
         </View>
       )}
-
-      <View style={styles.row}>
+      {/* TODO: после обновления библиотек (react-native-webview не поддерживается) модалка вызывает краш */}
+      {/* <View style={styles.row}>
         <Text style={styles.titleText}>Напоминания</Text>
         <AddButton onPress={openReminderModal} />
-      </View>
+      </View> */}
 
       {reminders.length ? (
         reminders.map((rem, index) => (
