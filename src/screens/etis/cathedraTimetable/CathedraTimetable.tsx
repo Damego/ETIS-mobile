@@ -41,7 +41,7 @@ const CathedraTimetable = ({ route }: EducationStackScreenProps<'CathedraTimetab
   });
 
   const onTeacherSelect = (teacherId: string) => {
-    setCurrentTeacher(data.timetable.find((tt) => tt.teacher.id === teacherId).teacher);
+    setCurrentTeacher(data?.timetable.find((tt) => tt.teacher.id === teacherId).teacher);
   };
 
   if (!isLoading && (!data || !data.timetable || !data.timetable.length)) return <NoData />;

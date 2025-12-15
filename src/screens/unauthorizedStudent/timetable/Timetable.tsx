@@ -1,7 +1,7 @@
 import { useQuery as useTanstackQuery } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { getPeriodWeek } from '~/api/psutech/api';
+import { getPeriodWeek, isPsutechAvailable } from '~/api/psutech/api';
 import { LoadingContainer } from '~/components/LoadingScreen';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
@@ -21,6 +21,7 @@ import {
   getLastEducationWeekDate,
   getStudentYear,
 } from '~/utils/datetime';
+import { fontSize } from '~/utils/texts';
 
 const Timetable = ({ navigation }: UnauthorizedTeacherStackScreenProps) => {
   const { group } = useAppSelector((state) => state.account.student);
@@ -85,6 +86,16 @@ const Timetable = ({ navigation }: UnauthorizedTeacherStackScreenProps) => {
   useEffect(() => {
     navigation.setOptions({ headerLeft: () => <></> });
   }, []);
+
+  if (!periodWeek && isPsutechAvailable() === false) {
+    return (
+      <Screen onUpdate={refresh}>
+        <Text style={[fontSize.medium, { alignSelf: 'center', marginTop: 20 }]} colorVariant={'text2'}>
+          Сервис временно недоступен.{'\n'}Попробуйте позже.
+        </Text>
+      </Screen>
+    );
+  }
 
   return (
     <Screen onUpdate={refresh}>

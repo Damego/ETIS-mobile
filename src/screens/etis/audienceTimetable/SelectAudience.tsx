@@ -3,7 +3,7 @@ import { FlashList } from '@shopify/flash-list';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { searchAudience } from '~/api/psutech/api';
+import { isPsutechAvailable, searchAudience } from '~/api/psutech/api';
 import BorderLine from '~/components/BorderLine';
 import ClickableText from '~/components/ClickableText';
 import { LoadingContainer } from '~/components/LoadingScreen';
@@ -44,8 +44,16 @@ const SelectAudience = ({ navigation }: EducationStackScreenProps) => {
 
       {isLoading && <LoadingContainer />}
 
+      {!isLoading && isPsutechAvailable() === false && (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={fontSize.medium} colorVariant={'text2'}>
+            Сервис временно недоступен.{'\n'}Попробуйте позже.
+          </Text>
+        </View>
+      )}
+
       <FlashList
-        data={data}
+        data={data ?? []}
         estimatedItemSize={100}
         ItemSeparatorComponent={BorderLine}
         renderItem={({ item: audience }) => (

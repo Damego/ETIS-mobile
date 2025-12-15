@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { searchGroups } from '~/api/psutech/api';
+import { isPsutechAvailable, searchGroups } from '~/api/psutech/api';
 import { IGroup } from '~/api/psutech/types';
 import { cache } from '~/cache/smartCache';
 import BorderLine from '~/components/BorderLine';
@@ -79,6 +79,14 @@ const SelectGroupScreen = ({ route }: StartStackScreenProps<'SelectGroup'>) => {
       {isLoading && (
         <View style={{ flex: 1, marginHorizontal: '4%' }}>
           {isLoading && <LoadingContainer variant={'texts'} />}
+        </View>
+      )}
+
+      {!isLoading && isPsutechAvailable() === false && (
+        <View style={{ flex: 1, marginHorizontal: '4%', justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={fontSize.medium} colorVariant={'text2'}>
+            Сервис временно недоступен.{'\n'}Попробуйте позже.
+          </Text>
         </View>
       )}
 
