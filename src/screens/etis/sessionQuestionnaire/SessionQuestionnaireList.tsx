@@ -33,6 +33,7 @@ export default function SessionQuestionnaireList({ navigation }: EducationStackS
 
   if (isLoading) return <LoadingScreen />;
   if (!data) return <NoData onRefresh={refresh} />;
+  if (data.length == 0) return <NoData />;
 
   const available = data.filter((link) => link.url);
   const passed = data.filter((link) => !link.url);
