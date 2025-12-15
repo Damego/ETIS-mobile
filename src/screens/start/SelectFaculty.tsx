@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Image } from 'expo-image';
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { getFaculties } from '~/api/psutech/api';
+import { getFaculties, isPsutechAvailable } from '~/api/psutech/api';
 import { IFaculty } from '~/api/psutech/types';
 import BorderLine from '~/components/BorderLine';
 import LoadingScreen from '~/components/LoadingScreen';
@@ -49,11 +49,23 @@ const SelectFacultyScreen = ({ navigation }: StartStackScreenProps) => {
   });
 
   const handleConfirm = () => {
-    navigation.navigate('SelectGroup', { facultyId: selectedFaculty.id });
+    navigation.navigate('SelectGroup', { facultyId: selectedFaculty?.id });
   };
 
   if (isLoading) return <LoadingScreen variant={'texts'} />;
-  if (!data) return <NoData onRefresh={refetch} />;
+  if (!data || data.length === 0) {
+    const isServiceDown = isPsutechAvailable() === false;
+    return (
+      <NoData
+        onRefresh={refetch}
+        text={
+          isServiceDown
+            ? 'Сервис временно недоступен. Попробуйте позже.'
+            : 'Не удалось загрузить данные'
+        }
+      />
+    );
+  }
 
   return (
     <>

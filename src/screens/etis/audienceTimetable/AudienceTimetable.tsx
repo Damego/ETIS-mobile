@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
-import { getAudienceTimetable } from '~/api/psutech/api';
+import { getAudienceTimetable, isPsutechAvailable } from '~/api/psutech/api';
 import { LoadingContainer } from '~/components/LoadingScreen';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
@@ -25,6 +25,19 @@ const AudienceTimetable = ({ route }: EducationStackScreenProps<'AudienceTimetab
       timetable.updateData(data.weekInfo);
     }
   }, [data]);
+
+  if (!isLoading && !data && isPsutechAvailable() === false) {
+    return (
+      <Screen onUpdate={refetch}>
+        <Text style={[fontSize.large, { fontWeight: 'bold', alignSelf: 'center' }]}>
+          Аудитория: {audience.string}
+        </Text>
+        <Text style={[fontSize.medium, { alignSelf: 'center', marginTop: 20 }]} colorVariant={'text2'}>
+          Сервис временно недоступен.{'\n'}Попробуйте позже.
+        </Text>
+      </Screen>
+    );
+  }
 
   return (
     <Screen onUpdate={refetch}>

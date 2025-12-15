@@ -41,7 +41,11 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
     ToastAndroid.show('Скопировано в буфер обмена', ToastAndroid.LONG);
   };
 
-  const openPSUPage = () => Linking.openURL(data.psu.page_url);
+  const openPSUPage = () => {
+    if (data?.psu?.page_url) {
+      Linking.openURL(data.psu.page_url);
+    }
+  };
 
   const navigateToTeacherTimetable = () => {
     navigation.navigate('CathedraTimetable', { teacherId: teacher.id });
@@ -93,7 +97,7 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
         </ClickableText>
       </View>
 
-      {contacts && (
+      {data?.psu?.page_url && contacts && (
         <>
           <ClickableText
             onPress={openPSUPage}

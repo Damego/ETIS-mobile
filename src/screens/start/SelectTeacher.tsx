@@ -2,7 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { searchTeachers } from '~/api/psutech/api';
+import { isPsutechAvailable, searchTeachers } from '~/api/psutech/api';
 import { ITeacher } from '~/api/psutech/types';
 import { cache } from '~/cache/smartCache';
 import BorderLine from '~/components/BorderLine';
@@ -34,9 +34,11 @@ const SelectTeacherScreen = () => {
   };
 
   const handleConfirm = () => {
-    const teacher = { id: selectedTeacher.id, name: selectedTeacher.name };
-    dispatch(setTeacher(teacher));
-    cache.setTeacherData(teacher);
+    if (selectedTeacher?.id && selectedTeacher?.name) {
+      const teacher = { id: selectedTeacher.id, name: selectedTeacher.name };
+      dispatch(setTeacher(teacher));
+      cache.setTeacherData(teacher);
+    }
   };
 
   return (
@@ -48,19 +50,27 @@ const SelectTeacherScreen = () => {
 
         {isLoading && <LoadingContainer variant={'texts'} />}
 
+        {!isLoading && isPsutechAvailable() === false && (
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={fontSize.medium} colorVariant={'text2'}>
+              Сервис временно недоступен.{'\n'}Попробуйте позже.
+            </Text>
+          </View>
+        )}
+
         {data?.map((teacher, index) => (
-          <View key={teacher.id}>
+          <View key={teacher?.id || index}>
             <ClickableText
               onPress={handleTeacherSelect(teacher)}
               viewStyle={styles.teacherItem}
               textStyle={fontSize.medium}
               iconRight={
-                teacher.id === selectedTeacher?.id && (
+                teacher?.id === selectedTeacher?.id && (
                   <AntDesign name={'checkcircle'} color={theme.colors.primary} size={20} />
                 )
               }
             >
-              {teacher.name}
+              {teacher?.name || 'Неизвестный преподаватель'}
             </ClickableText>
             {index !== data.length - 1 && <BorderLine />}
           </View>
@@ -75,7 +85,7 @@ const SelectTeacherScreen = () => {
           <Text colorVariant={'primaryContrast'} style={fontSize.big}>
             Выбрать
           </Text>
-          <Text colorVariant={'primaryContrast'}>({selectedTeacher.name})</Text>
+          <Text colorVariant={'primaryContrast'}>({selectedTeacher?.name || ''})</Text>
         </TouchableOpacity>
       )}
     </>
