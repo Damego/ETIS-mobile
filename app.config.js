@@ -4,7 +4,7 @@ export default {
   expo: {
     name: 'ЕТИС мобайл' + (IS_DEV ? ' (DEV)' : ''),
     slug: 'etis-mobile',
-    version: '1.4.2-beta.1',
+    version: '1.4.2',
     owner: 'damego',
     orientation: 'portrait',
     icon: './assets/icon.png',
