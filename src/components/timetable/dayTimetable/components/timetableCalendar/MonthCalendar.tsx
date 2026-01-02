@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import React from 'react';
-import DateTimePicker from 'react-native-ui-datepicker';
+import DateTimePicker, { useDefaultStyles } from 'react-native-ui-datepicker';
 import { useAppTheme } from '~/hooks/theme';
 import { DatePressT } from '~/hooks/useTimetable';
 
@@ -16,6 +16,7 @@ const MonthCalendarComponent = ({
   onDatePress: DatePressT;
 }) => {
   const theme = useAppTheme();
+  const defaultStyles = useDefaultStyles(theme.dark ? 'dark' : 'light');
 
   return (
     <DateTimePicker
@@ -26,13 +27,17 @@ const MonthCalendarComponent = ({
       maxDate={periodEndDate}
       firstDayOfWeek={1}
       mode={'single'}
-      selectedItemColor={theme.colors.primary}
-      calendarTextStyle={{ color: theme.colors.text }}
-      headerTextStyle={{ color: theme.colors.text }}
-      headerButtonColor={theme.colors.text}
-      weekDaysTextStyle={{ color: theme.colors.text }}
-      yearContainerStyle={{ backgroundColor: theme.colors.container }}
-      monthContainerStyle={{ backgroundColor: theme.colors.container }}
+      styles={{
+        ...defaultStyles,
+        selected: {
+          ...defaultStyles.selected,
+          backgroundColor: theme.colors.primary,
+        },
+        selected_label: {
+          ...defaultStyles.selected_label,
+          color: theme.colors.background,
+        },
+      }}
     />
   );
 };

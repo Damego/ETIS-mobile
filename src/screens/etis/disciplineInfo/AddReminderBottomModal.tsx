@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, ToastAndroid, View } from 'react-native';
-import DateTimePicker from 'react-native-ui-datepicker';
+import DateTimePicker, { useDefaultStyles } from 'react-native-ui-datepicker';
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
@@ -53,6 +53,7 @@ const AddReminderBottomModal = ({ onSubmit }: { onSubmit: (datetime: dayjs.Dayjs
   const minimumDate = dayjs().add(5, 'minute');
 
   const theme = useAppTheme();
+  const defaultStyles = useDefaultStyles(theme.dark ? 'dark' : 'light');
   const [value, setValue] = useState<dayjs.Dayjs>(minimumDate);
 
   const handleDayChange = (date: dayjs.Dayjs) => {
@@ -77,12 +78,45 @@ const AddReminderBottomModal = ({ onSubmit }: { onSubmit: (datetime: dayjs.Dayjs
         minDate={minimumDate}
         firstDayOfWeek={1}
         mode={'single'}
-        selectedItemColor={theme.colors.primary}
-        calendarTextStyle={{ color: theme.colors.text2 }}
-        headerTextStyle={{ color: theme.colors.text2 }}
-        headerButtonColor={theme.colors.text2}
-        weekDaysTextStyle={{ color: theme.colors.text2 }}
-        yearContainerStyle={{ backgroundColor: theme.colors.container }}
+        styles={{
+          ...defaultStyles,
+          selected: {
+            ...defaultStyles.selected,
+            backgroundColor: theme.colors.primary,
+          },
+          selected_label: {
+            ...defaultStyles.selected_label,
+            color: theme.colors.background,
+          },
+          day_label: {
+            ...defaultStyles.day_label,
+            color: theme.colors.text2,
+          },
+          month_selector_label: {
+            ...defaultStyles.month_selector_label,
+            color: theme.colors.text2,
+          },
+          year_selector_label: {
+            ...defaultStyles.year_selector_label,
+            color: theme.colors.text2,
+          },
+          button_next_image: {
+            ...defaultStyles.button_next_image,
+            tintColor: theme.colors.text2,
+          },
+          button_prev_image: {
+            ...defaultStyles.button_prev_image,
+            tintColor: theme.colors.text2,
+          },
+          weekday_label: {
+            ...defaultStyles.weekday_label,
+            color: theme.colors.text2,
+          },
+          years: {
+            ...defaultStyles.years,
+            backgroundColor: theme.colors.container,
+          },
+        }}
       />
       <Text style={styles.text}>Укажите время</Text>
       <TimePicker value={value} onValueChange={setValue} />
