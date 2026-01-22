@@ -2,6 +2,7 @@ import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { useQuery } from '@tanstack/react-query';
 import React, { useRef } from 'react';
 import { View } from 'react-native';
+
 import BottomSheetModal from '~/components/BottomSheetModal';
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
@@ -30,21 +31,19 @@ const Question = ({ question }: { question: IExamQuestions }) => {
 };
 
 const QuestionsBottomSheet = React.forwardRef<BottomSheetModal, { questions: IExamQuestions[] }>(
-  ({ questions }, ref) => {
-    return (
-      <BottomSheetModal ref={ref} style={{ padding: '2%' }}>
-        <Text style={[fontSize.slarge, { fontWeight: 'bold', textAlign: 'center' }]}>
-          Вопросы промежуточной аттестации
-        </Text>
+  ({ questions }, ref) => (
+    <BottomSheetModal ref={ref} style={{ padding: '2%' }}>
+      <Text style={[fontSize.slarge, { fontWeight: 'bold', textAlign: 'center' }]}>
+        Вопросы промежуточной аттестации
+      </Text>
 
-        <BottomSheetScrollView>
-          {questions.map((question) => (
-            <Question question={question} key={question.id} />
-          ))}
-        </BottomSheetScrollView>
-      </BottomSheetModal>
-    );
-  }
+      <BottomSheetScrollView>
+        {questions.map((question) => (
+          <Question question={question} key={question.id} />
+        ))}
+      </BottomSheetScrollView>
+    </BottomSheetModal>
+  )
 );
 
 const ExamQuestions = ({ questions }: { questions: IExamQuestions[] }) => {

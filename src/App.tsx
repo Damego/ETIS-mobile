@@ -1,17 +1,18 @@
+import 'dayjs/locale/ru';
+import 'react-native-gesture-handler';
+import './notifications/handler';
+
 import * as Sentry from '@sentry/react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import dayjs from 'dayjs';
-import 'dayjs/locale/ru';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import weekday from 'dayjs/plugin/weekday';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect } from 'react';
-import 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
 
 import StackNavigator from './navigation/StackNavigator';
-import './notifications/handler';
 import requestNotificationPermission from './notifications/permission';
 import { rescheduleAllTaskNotifications } from './notifications/taskReminder';
 import setupStore from './redux';

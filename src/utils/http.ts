@@ -3,6 +3,7 @@ import * as cheerio from 'cheerio';
 import CyrillicToTranslit from 'cyrillic-to-translit-js';
 import { documentDirectory, downloadAsync } from 'expo-file-system/legacy';
 import { getNetworkStateAsync } from 'expo-network';
+
 import { ICathedraTimetablePayload } from '~/models/cathedraTimetable';
 import { ICertificate } from '~/models/certificate';
 import { IDisciplineEducationalComplexPayload } from '~/models/disciplineEducationalComplex';
@@ -201,7 +202,7 @@ class HTTPClient {
       // p_recaptcha_ver: isInvisibleRecaptcha ? '3' : '2',
       // p_recaptcha_response: token,
     };
-    const response = await this.request('POST', `/stu.login`, {
+    const response = await this.request('POST', '/stu.login', {
       data,
       returnResponse: true,
     });
@@ -390,7 +391,7 @@ class HTTPClient {
       p_creq_id: certificate.id,
       p_action: 'VIEW',
     };
-    return this.request('GET', `/cert_pkg.stu_certif`, { params });
+    return this.request('GET', '/cert_pkg.stu_certif', { params });
   }
 
   getPersonalRecords() {

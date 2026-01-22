@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ScrollView, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
+import {
+  ScrollView, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle
+} from 'react-native';
+
 import { useGlobalStyles } from '~/hooks';
 import { fontSize } from '~/utils/texts';
 
@@ -90,17 +93,19 @@ const PageNavigator = React.memo(
           showsHorizontalScrollIndicator={false}
         >
           {pages.map((number) =>
-            currentPage !== number ? (
-              <ClickableText
-                viewStyle={[styles.button, pageStyles[number]?.view]}
-                textStyle={[fontSize.large, globalStyles.textColor, pageStyles[number]?.text]}
-                text={number}
-                onPress={() => onPageChange(number)}
-                key={number}
-              />
-            ) : (
-              <ActiveButton number={number} key={number} />
-            )
+            currentPage !== number
+              ? (
+                <ClickableText
+                  viewStyle={[styles.button, pageStyles[number]?.view]}
+                  textStyle={[fontSize.large, globalStyles.textColor, pageStyles[number]?.text]}
+                  text={number}
+                  onPress={() => onPageChange(number)}
+                  key={number}
+                />
+              )
+              : (
+                <ActiveButton number={number} key={number} />
+              )
           )}
         </ScrollView>
       </View>

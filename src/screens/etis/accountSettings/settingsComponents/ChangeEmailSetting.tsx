@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
+
 import BaseSettingButton from '~/components/baseSettingButton';
 import { EducationNavigationProp } from '~/navigation/types';
 

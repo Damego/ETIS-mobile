@@ -2,6 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
+
 import Card from '~/components/Card';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
@@ -27,7 +28,7 @@ export const RequestCertificateButton = ({
         style={{ flexDirection: 'row', paddingVertical: '2%', alignItems: 'center' }}
       >
         <AntDesign
-          name="plus"
+          name='plus'
           size={iconSize}
           color={globalStyles.textColor.color}
           style={{ marginRight: '2%' }}

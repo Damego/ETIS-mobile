@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Image } from 'expo-image';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
@@ -98,23 +99,21 @@ const ScreenButton = ({ screen }: { screen: ScreenT }) => {
   );
 };
 
-const MoreScreens = () => {
-  return (
-    <Screen containerStyle={{ gap: 8, paddingBottom: '20%' }}>
-      <Text style={styles.titleText}>Меню ЕТИС</Text>
+const MoreScreens = () => (
+  <Screen containerStyle={{ gap: 8, paddingBottom: '20%' }}>
+    <Text style={styles.titleText}>Меню ЕТИС</Text>
 
-      <View style={{ gap: 10 }}>
-        {SCREENS.map((group, index) => (
-          <View style={{ flexDirection: 'row', gap: 10 }} key={index}>
-            {group.map((screen) => (
-              <ScreenButton screen={screen} key={screen.screenName} />
-            ))}
-          </View>
-        ))}
-      </View>
-    </Screen>
-  );
-};
+    <View style={{ gap: 10 }}>
+      {SCREENS.map((group, index) => (
+        <View style={{ flexDirection: 'row', gap: 10 }} key={index}>
+          {group.map((screen) => (
+            <ScreenButton screen={screen} key={screen.screenName} />
+          ))}
+        </View>
+      ))}
+    </View>
+  </Screen>
+);
 
 export default MoreScreens;
 

@@ -1,12 +1,13 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useRef } from 'react';
+
 import BottomSheetModal from '~/components/BottomSheetModal';
+import OptionsBottomSheet from '~/components/bottomSheets/OptionsBottomSheet';
 import ClickableText from '~/components/ClickableText';
 import { LoadingContainer } from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
-import OptionsBottomSheet from '~/components/bottomSheets/OptionsBottomSheet';
 import { useClient } from '~/data/client';
 import { useAppTheme } from '~/hooks/theme';
 import useQuery from '~/hooks/useQuery';
@@ -30,7 +31,7 @@ const AbsencesTable = () => {
   let component: React.ReactNode;
 
   if (isLoading) component = <LoadingContainer />;
-  else if (!data || !data.absences.length)
+  else if (!data?.absences.length)
     component = (
       <NoData
         text={data ? 'Нет пропущенных занятий!' : undefined}
@@ -53,7 +54,7 @@ const AbsencesTable = () => {
         <ClickableText
           onPress={() => modalRef.current.present()}
           textStyle={fontSize.big}
-          iconRight={<AntDesign name="swap" size={18} color={theme.colors.text} />}
+          iconRight={<AntDesign name='swap' size={18} color={theme.colors.text} />}
           viewStyle={{ gap: 4, alignSelf: 'flex-end' }}
         >
           {data.currentSession.name}

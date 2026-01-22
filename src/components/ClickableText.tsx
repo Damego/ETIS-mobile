@@ -8,6 +8,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
+
 import { IThemeColors } from '~/styles/themes';
 
 import Text, { TextProps } from './Text';
@@ -41,25 +42,23 @@ const ClickableText = React.forwardRef<TouchableOpacity, ClickableTextProps>(
       ...props
     },
     ref
-  ) => {
-    return (
-      <TouchableOpacity style={[styles.container, viewStyle]} ref={ref} {...props}>
-        {iconLeft}
-        <View>
-          <Text
-            adjustsFontSizeToFit={adjustsFontSizeToFit}
-            style={textStyle}
-            colorVariant={colorVariant}
-            {...textProps}
-          >
-            {text || children}
-          </Text>
-          {bottomComponent}
-        </View>
-        {iconRight}
-      </TouchableOpacity>
-    );
-  }
+  ) => (
+    <TouchableOpacity style={[styles.container, viewStyle]} ref={ref} {...props}>
+      {iconLeft}
+      <View>
+        <Text
+          adjustsFontSizeToFit={adjustsFontSizeToFit}
+          style={textStyle}
+          colorVariant={colorVariant}
+          {...textProps}
+        >
+          {text || children}
+        </Text>
+        {bottomComponent}
+      </View>
+      {iconRight}
+    </TouchableOpacity>
+  )
 );
 
 export default ClickableText;

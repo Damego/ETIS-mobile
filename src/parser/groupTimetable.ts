@@ -1,5 +1,6 @@
 import cheerio from 'cheerio';
 import dayjs from 'dayjs';
+
 import { ITeacherInfo } from '~/models/groupTimetable';
 import {
   IAudience,
@@ -143,7 +144,7 @@ export const parseGroupTimetable = (html: string): ITimeTable => {
 
   const pairTimes = (isLyceum ? lyceumBellSchedule : universityBellSchedule).filter(
     (item) => item.type === BellScheduleTypes.PAIR
-  ) as IBellSchedulePair[];
+  );
 
   dataRows
     .eq(1)

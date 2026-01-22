@@ -1,6 +1,7 @@
 import * as cheerio from 'cheerio';
 import React, { useState } from 'react';
 import { ToastAndroid, View } from 'react-native';
+
 import { cache } from '~/cache/smartCache';
 import { Button } from '~/components/Button';
 import PasswordInput from '~/components/PasswordInput';
@@ -84,9 +85,9 @@ const Form = ({
             : undefined,
         ]}
         onChangeText={setNewPassword}
-        placeholder="Придумайте пароль"
+        placeholder='Придумайте пароль'
         placeholderTextColor={theme.colors.inputPlaceholder}
-        autoComplete="password-new"
+        autoComplete='password-new'
         selectionColor={theme.colors.primary}
         onEndEditing={validateFirstInput}
         iconColor={theme.colors.text}
@@ -101,9 +102,9 @@ const Form = ({
           passwordUnconfirmed ? { borderColor: theme.colors.primary } : undefined,
         ]}
         onChangeText={setNewPasswordConfirm}
-        placeholder="Повторите пароль"
+        placeholder='Повторите пароль'
         placeholderTextColor={theme.colors.inputPlaceholder}
-        autoComplete="password"
+        autoComplete='password'
         selectionColor={theme.colors.primary}
         iconColor={theme.colors.text}
       />
@@ -149,15 +150,17 @@ export default function ChangePassword() {
 
   return (
     <Screen>
-      {!passwordChanged ? (
-        <Form onSubmit={submit} showLoading={isLoading} />
-      ) : (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={[globalStyles.textColor, fontSize.xlarge, { fontWeight: '500' }]}>
-            Пароль успешно изменён!
-          </Text>
-        </View>
-      )}
+      {!passwordChanged
+        ? (
+          <Form onSubmit={submit} showLoading={isLoading} />
+        )
+        : (
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={[globalStyles.textColor, fontSize.xlarge, { fontWeight: '500' }]}>
+              Пароль успешно изменён!
+            </Text>
+          </View>
+        )}
     </Screen>
   );
 }

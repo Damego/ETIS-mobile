@@ -1,4 +1,5 @@
 import React from 'react';
+
 import Screen from '~/components/Screen';
 import { useAppSelector } from '~/hooks';
 import { TimetableModes } from '~/redux/reducers/settingsSlice';

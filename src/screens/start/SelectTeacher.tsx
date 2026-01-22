@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { isPsutechAvailable, searchTeachers } from '~/api/psutech/api';
 import { ITeacher } from '~/api/psutech/types';
 import { cache } from '~/cache/smartCache';

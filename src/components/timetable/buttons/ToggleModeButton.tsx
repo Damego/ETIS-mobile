@@ -1,9 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
+
 import { useAppDispatch, useAppSelector } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
-import { TimetableModes, setUIConfig } from '~/redux/reducers/settingsSlice';
+import { setUIConfig, TimetableModes } from '~/redux/reducers/settingsSlice';
 
 const ToggleModeButton = () => {
   const dispatch = useAppDispatch();

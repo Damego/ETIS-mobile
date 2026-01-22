@@ -1,6 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+
 import { useGlobalStyles } from '~/hooks';
 import { fontSize } from '~/utils/texts';
 
@@ -49,21 +50,19 @@ const SelectOption = ({
 }: {
   option: IDropdownOption;
   onSelect: (value: unknown) => void;
-}) => {
-  return (
-    <TouchableOpacity
-      onPress={() => onSelect(option.value)}
-      key={`pressable-${option.label}`}
-      activeOpacity={0.7}
-      disabled={option.current}
-      style={styles.optionView}
-    >
-      <Text style={styles.optionText} colorVariant={option.current ? 'primary' : 'text2'}>
-        {option.label}
-      </Text>
-    </TouchableOpacity>
-  );
-};
+}) => (
+  <TouchableOpacity
+    onPress={() => onSelect(option.value)}
+    key={`pressable-${option.label}`}
+    activeOpacity={0.7}
+    disabled={option.current}
+    style={styles.optionView}
+  >
+    <Text style={styles.optionText} colorVariant={option.current ? 'primary' : 'text2'}>
+      {option.label}
+    </Text>
+  </TouchableOpacity>
+);
 
 function Menu({
   options,

@@ -1,4 +1,5 @@
 import { load } from 'cheerio';
+
 import { capitalizeWord } from '~/utils/texts';
 
 import { ICalendarSchedule } from '../models/calendarSchedule';
@@ -21,7 +22,7 @@ export default function parseCalendarSchedule(html: string): ICalendarSchedule {
     const el = $(element, block);
 
     if (el.is('h3')) {
-      const [course] = el.text().match(courseRegex);
+      const [course] = courseRegex.exec(el.text());
       data.course = parseInt(course);
       pending = true;
       return;

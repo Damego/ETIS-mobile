@@ -1,5 +1,6 @@
-import dayjs from 'dayjs';
 import 'react-native-get-random-values';
+
+import dayjs from 'dayjs';
 import { v4 as uuid4 } from 'uuid';
 
 import {

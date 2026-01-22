@@ -1,6 +1,7 @@
 import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+
 import { Button } from '~/components/Button';
 import SafeAreaScreen from '~/components/SafeAreaScreen';
 import Text from '~/components/Text';

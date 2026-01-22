@@ -1,22 +1,21 @@
 import dayjs from 'dayjs';
 import React, { useMemo, useRef } from 'react';
 import PagerView from 'react-native-pager-view';
+
 import CenteredText from '~/components/CenteredText';
-import TimetablePages from '~/components/timetable/dayTimetable/components/TimetablePages';
 import TimetableCalendar, {
   TimetableCalendarModes,
 } from '~/components/timetable/dayTimetable/components/timetableCalendar/TimetableCalendar';
+import TimetablePages from '~/components/timetable/dayTimetable/components/TimetablePages';
 import TimeTableContext from '~/context/timetableContext';
 import { DatePressT } from '~/hooks/useTimetable';
 import { ITeacher } from '~/models/teachers';
 import { ITimeTable } from '~/models/timeTable';
 
-const getWeekDiffDate = (date: dayjs.Dayjs, a: number, b: number) => {
-  return date
-    .clone()
-    .startOf('isoWeek')
-    .add(a - b, 'week');
-};
+const getWeekDiffDate = (date: dayjs.Dayjs, a: number, b: number) => date
+  .clone()
+  .startOf('isoWeek')
+  .add(a - b, 'week');
 
 const DayTimetable = ({
   data,
@@ -84,7 +83,7 @@ const DayTimetable = ({
         periodEndDate={endDate ?? $endDate}
         onDatePress={handleDatePress}
       />
-      {/* eslint-disable-next-line no-nested-ternary */}
+      { }
       {loadingComponent !== undefined && isLoading ? (
         loadingComponent()
       ) : data ? (

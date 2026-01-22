@@ -1,9 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+
 import { IAudience, ITimeTable } from '~/models/timeTable';
 
 import healthCheck, { isPsutechAvailable } from './healthCheck';
-import { IFaculty, IGroup, IPeriodWeek, ITeacher, PeriodTypes } from './types';
+import {
+  IFaculty, IGroup, IPeriodWeek, ITeacher, PeriodTypes
+} from './types';
 
 export { isPsutechAvailable };
 
@@ -33,7 +36,7 @@ export const searchTeachers = async (query: string): Promise<ITeacher[]> => {
   if (!(await checkServiceAvailability())) {
     return [];
   }
-  const res = await inst.get(`/teachers/search`, {
+  const res = await inst.get('/teachers/search', {
     params: {
       query,
     },
@@ -66,7 +69,7 @@ export const getPeriodWeek = async (
     if (cached) return JSON.parse(cached);
     return null;
   }
-  
+
   try {
     const res = await inst.get('/periods/', { params: { period_type: periodType, year } });
     // пока так. SmartCache лучше оставить исключительно на ЕТИС

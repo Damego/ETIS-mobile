@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, TextInput, View } from 'react-native';
+
 import { useGlobalStyles } from '~/hooks';
 import { fontSize } from '~/utils/texts';
 
@@ -19,10 +20,10 @@ export default function AdditionalComment({ onTextChange }: { onTextChange(text:
           { width: '100%', paddingVertical: '2%', paddingHorizontal: '2%' },
         ]}
         onChangeText={onTextChange}
-        placeholder="Топ препод"
+        placeholder='Топ препод'
         placeholderTextColor={globalStyles.inputPlaceholder.color}
-        inputMode="text"
-        keyboardType="default"
+        inputMode='text'
+        keyboardType='default'
         selectionColor={globalStyles.primaryText.color}
         autoCapitalize={'sentences'}
         multiline

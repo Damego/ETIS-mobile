@@ -7,6 +7,7 @@ import type {
   NavigationState,
   SceneRendererProps,
 } from 'react-native-tab-view/lib/typescript/src/types';
+
 import Text from '~/components/Text';
 import { useAppSelector, useGlobalStyles } from '~/hooks';
 
@@ -35,7 +36,7 @@ const Icon = ({
         color={isCurrent ? globalStyles.primaryText.color : globalStyles.textColor.color}
       />
 
-      {!!count && (
+      {Boolean(count) && (
         <View style={[styles.iconCounter, globalStyles.primaryBackgroundColor]}>
           <Text style={{ fontSize: 10, color: globalStyles.primaryContrastText.color }}>
             {count}

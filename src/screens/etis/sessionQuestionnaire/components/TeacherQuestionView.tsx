@@ -1,5 +1,6 @@
 import React from 'react';
 import { TextInput, View } from 'react-native';
+
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
 import { fontSize } from '~/utils/texts';
@@ -25,13 +26,13 @@ export default function TeacherQuestionView({
           { width: '80%', paddingVertical: '2%', paddingHorizontal: '2%' },
         ]}
         onChangeText={setTeacher}
-        placeholder="Иванов И.И."
+        placeholder='Иванов И.И.'
         placeholderTextColor={globalStyles.inputPlaceholder.color}
-        autoComplete="name"
-        inputMode="text"
-        keyboardType="default"
+        autoComplete='name'
+        inputMode='text'
+        keyboardType='default'
         selectionColor={globalStyles.primaryText.color}
-        autoCapitalize="words"
+        autoCapitalize='words'
       />
     </View>
   );

@@ -1,5 +1,6 @@
 import { BottomSheetView } from '@gorhom/bottom-sheet';
 import React from 'react';
+
 import BottomSheetModal from '~/components/BottomSheetModal';
 import ClickableText from '~/components/ClickableText';
 import { ISessionPoints } from '~/models/sessionPoints';

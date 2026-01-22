@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { isPsutechAvailable, searchGroups } from '~/api/psutech/api';
 import { IGroup } from '~/api/psutech/types';
 import { cache } from '~/cache/smartCache';
@@ -33,19 +34,17 @@ const GroupItem = React.memo(
     group: IGroup;
     isSelected: boolean;
     onPress: (group: IGroup) => void;
-  }) => {
-    return (
-      <ClickableText
-        onPress={() => onPress(group)}
-        textStyle={[{ fontWeight: 'bold' }, fontSize.big]}
-        viewStyle={{ paddingVertical: '2%' }}
-        bottomComponent={formatDegree(group.degree) && <Text>{formatDegree(group.degree)}</Text>}
-        colorVariant={isSelected ? 'primary' : 'text'}
-      >
-        {group.name.short}-{group.year}
-      </ClickableText>
-    );
-  }
+  }) => (
+    <ClickableText
+      onPress={() => onPress(group)}
+      textStyle={[{ fontWeight: 'bold' }, fontSize.big]}
+      viewStyle={{ paddingVertical: '2%' }}
+      bottomComponent={formatDegree(group.degree) && <Text>{formatDegree(group.degree)}</Text>}
+      colorVariant={isSelected ? 'primary' : 'text'}
+    >
+      {group.name.short}-{group.year}
+    </ClickableText>
+  )
 );
 
 const SelectGroupScreen = ({ route }: StartStackScreenProps<'SelectGroup'>) => {
@@ -85,7 +84,9 @@ const SelectGroupScreen = ({ route }: StartStackScreenProps<'SelectGroup'>) => {
       )}
 
       {!isLoading && isPsutechAvailable() === false && (
-        <View style={{ flex: 1, marginHorizontal: '4%', justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{
+          flex: 1, marginHorizontal: '4%', justifyContent: 'center', alignItems: 'center'
+        }}>
           <Text style={fontSize.medium} colorVariant={'text2'}>
             Сервис временно недоступен.{'\n'}Попробуйте позже.
           </Text>

@@ -1,8 +1,11 @@
 import { FlashList, FlashListProps, FlashListRef } from '@shopify/flash-list';
 import { StatusBar } from 'expo-status-bar';
 import React, { useRef, useState } from 'react';
-import { RefreshControl, ScrollView, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import {
+  RefreshControl, ScrollView, StyleProp, StyleSheet, View, ViewStyle
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { useAppSelector } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
 
@@ -53,15 +56,17 @@ const Screen = ({
         ]}
         style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
-        overScrollMode="never"
+        overScrollMode='never'
         refreshControl={
-          onUpdate ? (
-            <RefreshControl
-              colors={[theme.colors.primary]}
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-            />
-          ) : null
+          onUpdate
+            ? (
+              <RefreshControl
+                colors={[theme.colors.primary]}
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+              />
+            )
+            : null
         }
         onContentSizeChange={
           startScrollFromBottom ? () => scrollRef.current.scrollToEnd() : undefined
@@ -113,15 +118,17 @@ export const ListScreen = <T,>({
           refreshing={onUpdate ? refreshing : undefined}
           contentContainerStyle={{ paddingBottom: Math.max(insets.bottom + 60, 80) }}
           refreshControl={
-            onUpdate ? (
-              <RefreshControl
-                colors={[theme.colors.primary]}
-                refreshing={refreshing}
-                onRefresh={onRefresh}
-              />
-            ) : undefined
+            onUpdate
+              ? (
+                <RefreshControl
+                  colors={[theme.colors.primary]}
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                />
+              )
+              : undefined
           }
-          /* eslint-disable-next-line react/jsx-props-no-spreading */
+
           {...listProps}
         />
       </View>

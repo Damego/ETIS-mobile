@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { TextInput, ToastAndroid, View } from 'react-native';
+
 import { cache } from '~/cache/smartCache';
 import { Button } from '~/components/Button';
 import CenteredText from '~/components/CenteredText';
@@ -60,13 +61,13 @@ const Form = ({
           email && !emailRegex.test(email) ? { borderColor: theme.colors.primary } : undefined,
         ]}
         onChangeText={setEmail}
-        placeholder="Эл. почта"
+        placeholder='Эл. почта'
         placeholderTextColor={theme.colors.inputPlaceholder}
-        autoComplete="email"
-        inputMode="email"
-        keyboardType="email-address"
+        autoComplete='email'
+        inputMode='email'
+        keyboardType='email-address'
         selectionColor={theme.colors.primary}
-        autoCapitalize="none"
+        autoCapitalize='none'
       />
       <View style={{ width: '90%' }}>
         <Button

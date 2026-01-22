@@ -2,6 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
+
 import { useAppTheme } from '~/hooks/theme';
 import { EducationNavigationProp } from '~/navigation/types';
 
@@ -19,7 +20,7 @@ const AccountSettingsButton = () => {
         marginHorizontal: 14,
       }}
     >
-      <AntDesign name="user" size={28} color={theme.colors.text} />
+      <AntDesign name='user' size={28} color={theme.colors.text} />
     </TouchableOpacity>
   );
 };

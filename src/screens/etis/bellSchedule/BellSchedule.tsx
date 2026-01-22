@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+
 import { Button } from '~/components/Button';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
@@ -80,11 +81,13 @@ const BellSchedule = () => {
 
       <View style={styles.listView}>
         {array.map((item, index) =>
-          item.type === BellScheduleTypes.PAIR ? (
-            <PairSchedule schedule={item} isPair={mode !== BellScheduleModes.LYCEUM} key={index} />
-          ) : (
-            <BreakSchedule schedule={item} key={index} />
-          )
+          item.type === BellScheduleTypes.PAIR
+            ? (
+              <PairSchedule schedule={item} isPair={mode !== BellScheduleModes.LYCEUM} key={index} />
+            )
+            : (
+              <BreakSchedule schedule={item} key={index} />
+            )
         )}
       </View>
     </Screen>

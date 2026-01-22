@@ -1,5 +1,6 @@
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import React, { useRef } from 'react';
+
 import BottomSheetModal from '~/components/BottomSheetModal';
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
@@ -7,16 +8,14 @@ import RightIcon from '~/screens/etis/disciplineEducationalComplex/RightIcon';
 import { fontSize } from '~/utils/texts';
 
 const ControlRequirementsBottomSheet = React.forwardRef<BottomSheetModal, { data: string }>(
-  ({ data }, ref) => {
-    return (
-      <BottomSheetModal ref={ref} style={{ paddingHorizontal: '2%' }}>
-        <BottomSheetScrollView style={{ paddingBottom: '4%' }}>
-          <Text style={[fontSize.big, { fontWeight: 'bold' }]}>Контроль</Text>
-          <Text>{data}</Text>
-        </BottomSheetScrollView>
-      </BottomSheetModal>
-    );
-  }
+  ({ data }, ref) => (
+    <BottomSheetModal ref={ref} style={{ paddingHorizontal: '2%' }}>
+      <BottomSheetScrollView style={{ paddingBottom: '4%' }}>
+        <Text style={[fontSize.big, { fontWeight: 'bold' }]}>Контроль</Text>
+        <Text>{data}</Text>
+      </BottomSheetScrollView>
+    </BottomSheetModal>
+  )
 );
 
 const ControlRequirements = ({ data }: { data: string }) => {

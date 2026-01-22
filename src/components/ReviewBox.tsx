@@ -1,6 +1,8 @@
 import * as StoreReview from 'expo-store-review';
 import React from 'react';
-import { Alert, Button, Linking, Text, View } from 'react-native';
+import {
+  Alert, Button, Linking, Text, View
+} from 'react-native';
 
 import { useGlobalStyles } from '../hooks';
 import { fontSize } from '../utils/texts';
@@ -55,11 +57,11 @@ const ReviewBox = ({ setReviewed, setViewed }) => {
         }}
       >
         <View style={{ flex: 1, marginHorizontal: '1%' }}>
-          <Button title="Оставить отзыв" onPress={() => handleReview()} />
+          <Button title='Оставить отзыв' onPress={() => handleReview()} />
         </View>
 
         <View style={{ flex: 1, marginHorizontal: '1%' }}>
-          <Button title="Нет, спасибо" color="#999" onPress={() => handleDismiss()} />
+          <Button title='Нет, спасибо' color='#999' onPress={() => handleDismiss()} />
         </View>
       </View>
     </View>

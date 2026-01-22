@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import { LoadingContainer } from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
 import Screen from '~/components/Screen';
@@ -32,7 +33,7 @@ const CathedraTimetable = ({ route }: EducationStackScreenProps<'CathedraTimetab
     after: (result) => {
       const $timetable = result.data
         ? result.data.timetable.find((timetable) => timetable.teacher.id === currentTeacher?.id) ||
-          result.data.timetable[0]
+        result.data.timetable[0]
         : undefined;
       if (!$timetable) return;
 
@@ -44,11 +45,11 @@ const CathedraTimetable = ({ route }: EducationStackScreenProps<'CathedraTimetab
     setCurrentTeacher(data?.timetable.find((tt) => tt.teacher.id === teacherId).teacher);
   };
 
-  if (!isLoading && (!data || !data.timetable || !data.timetable.length)) return <NoData />;
+  if (!isLoading && (!data?.timetable?.length)) return <NoData />;
 
   const teacherTimetable = data
     ? data.timetable.find((timetable) => timetable.teacher.id === currentTeacher?.id) ||
-      data.timetable[0]
+    data.timetable[0]
     : undefined;
 
   return (

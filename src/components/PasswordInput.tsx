@@ -1,6 +1,8 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, TextInputProps, TouchableOpacity, View } from 'react-native';
+import {
+  StyleSheet, TextInput, TextInputProps, TouchableOpacity, View
+} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,7 +27,7 @@ const PasswordInput = (props: PasswordInputProps) => {
 
   return (
     <View style={styles.container}>
-      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+      { }
       <TextInput {...props} secureTextEntry={!showPassword} />
       <TouchableOpacity
         style={styles.iconContainer}

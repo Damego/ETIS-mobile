@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet } from 'react-native';
+
 import ClickableText from '~/components/ClickableText';
 import { useGlobalStyles } from '~/hooks';
 import { fontSize } from '~/utils/texts';
@@ -10,7 +11,7 @@ const HistoryButton = ({ onPress, showHistory }: { onPress: () => void; showHist
 
   return (
     <ClickableText
-      text={`История заданий`}
+      text={'История заданий'}
       onPress={onPress}
       textStyle={fontSize.big}
       viewStyle={styles.showInactiveButton}

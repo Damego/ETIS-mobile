@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
+
 import { getAudienceTimetable, isPsutechAvailable } from '~/api/psutech/api';
 import { LoadingContainer } from '~/components/LoadingScreen';
 import Screen from '~/components/Screen';

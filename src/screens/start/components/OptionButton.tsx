@@ -1,6 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet } from 'react-native';
+
 import ClickableText from '~/components/ClickableText';
 import { useGlobalStyles } from '~/hooks';
 import { fontSize } from '~/utils/texts';

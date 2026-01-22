@@ -1,6 +1,7 @@
 import { BottomSheetView } from '@gorhom/bottom-sheet';
 import React from 'react';
 import { StyleSheet } from 'react-native';
+
 import BottomSheetModal from '~/components/BottomSheetModal';
 import { useAppTheme } from '~/hooks/theme';
 import { DisciplineTask } from '~/models/disciplinesTasks';

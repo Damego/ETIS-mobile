@@ -3,6 +3,7 @@ import * as FileSystem from 'expo-file-system/legacy';
 import React, { useEffect, useState } from 'react';
 import Markdown from 'react-native-markdown-display';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import Card from '~/components/Card';
 import LoadingScreen from '~/components/LoadingScreen';
 import Screen from '~/components/Screen';
@@ -16,7 +17,7 @@ const ReleaseNotes = () => {
   const globalStyles = useGlobalStyles();
 
   useEffect(() => {
-    if (!assets || !assets.length) return;
+    if (!assets?.length) return;
 
     FileSystem.readAsStringAsync(assets[0].localUri).then((data) => {
       setNotes(data);

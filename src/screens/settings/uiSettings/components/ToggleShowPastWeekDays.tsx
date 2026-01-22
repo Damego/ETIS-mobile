@@ -1,5 +1,6 @@
 import React from 'react';
 import { Switch } from 'react-native';
+
 import { cache } from '~/cache/smartCache';
 import Card from '~/components/Card';
 import Text from '~/components/Text';
@@ -25,7 +26,7 @@ const ToggleShowPastWeekDays = () => {
 
       <Switch
         trackColor={{ false: 'gray', true: theme.colors.primary }}
-        thumbColor="white"
+        thumbColor='white'
         onValueChange={toggle}
         value={!showPastWeekDays}
       />

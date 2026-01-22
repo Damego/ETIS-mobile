@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SceneMap, TabView } from 'react-native-tab-view';
+
 import { cache } from '~/cache/smartCache';
 import { useClient } from '~/data/client';
 import { useAppDispatch, useAppSelector } from '~/hooks';

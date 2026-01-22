@@ -1,9 +1,13 @@
+import 'dayjs/locale/ru';
+
 import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 import dayjs from 'dayjs';
-import 'dayjs/locale/ru';
 import { Checkbox } from 'expo-checkbox';
 import React, { useRef, useState } from 'react';
-import { Alert, StyleSheet, TextInput, View } from 'react-native';
+import {
+  Alert, StyleSheet, TextInput, View
+} from 'react-native';
+
 import BottomSheetModalBackdrop from '~/components/BottomSheetModalBackdrop';
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
@@ -85,7 +89,7 @@ const AddTaskModalContent = ({
       <TextInput
         style={[globalStyles.border, styles.textInput, globalStyles.textColor2]}
         placeholderTextColor={globalStyles.inputPlaceholder.color}
-        placeholder="Решить 100 задач"
+        placeholder='Решить 100 задач'
         value={description}
         onChangeText={setDescription}
         multiline
@@ -112,25 +116,27 @@ const AddTaskModalContent = ({
         <AddButton onPress={openReminderModal} />
       </View> */}
 
-      {reminders.length ? (
-        reminders.map((rem, index) => (
-          <Reminder reminder={rem} onRemove={removeReminder(index)} key={index.toString()} />
-        ))
-      ) : (
-        <Text style={styles.noRemindersText}>Нет напоминаний</Text>
-      )}
+      {reminders.length
+        ? (
+          reminders.map((rem, index) => (
+            <Reminder reminder={rem} onRemove={removeReminder(index)} key={index.toString()} />
+          ))
+        )
+        : (
+          <Text style={styles.noRemindersText}>Нет напоминаний</Text>
+        )}
 
       <View style={{ height: '10%' }} />
 
       <View style={styles.buttonsList}>
-        {!!selectedTask && (
+        {Boolean(selectedTask) && (
           <ClickableText
             textStyle={[styles.button, globalStyles.primaryText]}
             text={'Удалить'}
             onPress={removeTask}
           />
         )}
-        {!!description && (
+        {Boolean(description) && (
           <ClickableText textStyle={styles.button} text={'Сохранить'} onPress={addTask} />
         )}
       </View>

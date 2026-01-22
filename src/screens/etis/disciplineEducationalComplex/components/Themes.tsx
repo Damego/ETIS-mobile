@@ -2,14 +2,15 @@ import { BottomSheetScrollView, useBottomSheetModal } from '@gorhom/bottom-sheet
 import { useNavigation } from '@react-navigation/native';
 import React, { useRef } from 'react';
 import { View } from 'react-native';
+
 import BorderLine from '~/components/BorderLine';
 import BottomSheetModal from '~/components/BottomSheetModal';
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
 import { IDisciplineEducationalComplexThemeLink } from '~/models/disciplineEducationalComplex';
 import { EducationNavigationProp } from '~/navigation/types';
-import RightIcon from '~/screens/etis/disciplineEducationalComplex/RightIcon';
 import { ControlBadge } from '~/screens/etis/disciplineEducationalComplex/components/ControlBadge';
+import RightIcon from '~/screens/etis/disciplineEducationalComplex/RightIcon';
 import { fontSize } from '~/utils/texts';
 
 const Theme = ({
@@ -40,15 +41,15 @@ const Theme = ({
         {theme.hasCheckPoint && <ControlBadge />}
       </View>
 
-      {!!theme.subthemes.length &&
-        theme.subthemes.map(($theme, index) => (
-          <React.Fragment key={$theme.id}>
-            <View style={{ flexDirection: 'row', marginLeft: '4%', alignItems: 'center' }}>
-              <Theme theme={$theme} disciplineName={disciplineName} />
-            </View>
-            {index !== theme.subthemes.length - 1 && <BorderLine />}
-          </React.Fragment>
-        ))}
+      {Boolean(theme.subthemes.length) &&
+      	theme.subthemes.map(($theme, index) => (
+      	  <React.Fragment key={$theme.id}>
+      	    <View style={{ flexDirection: 'row', marginLeft: '4%', alignItems: 'center' }}>
+      	      <Theme theme={$theme} disciplineName={disciplineName} />
+      	    </View>
+      	    {index !== theme.subthemes.length - 1 && <BorderLine />}
+      	  </React.Fragment>
+      	))}
     </View>
   );
 };
@@ -56,21 +57,19 @@ const Theme = ({
 const ThemesBottomSheet = React.forwardRef<
   BottomSheetModal,
   { themes: IDisciplineEducationalComplexThemeLink[]; disciplineName: string }
->(({ themes, disciplineName }, ref) => {
-  return (
-    <BottomSheetModal ref={ref} style={{ padding: '2%' }}>
-      <Text style={[fontSize.slarge, { fontWeight: 'bold', textAlign: 'center' }]}>Темы</Text>
-      <BottomSheetScrollView style={{ flex: 1 }}>
-        {themes.map((theme, index) => (
-          <React.Fragment key={index}>
-            <Theme theme={theme} disciplineName={disciplineName} />
-            {index !== themes.length - 1 && <BorderLine />}
-          </React.Fragment>
-        ))}
-      </BottomSheetScrollView>
-    </BottomSheetModal>
-  );
-});
+>(({ themes, disciplineName }, ref) => (
+  <BottomSheetModal ref={ref} style={{ padding: '2%' }}>
+    <Text style={[fontSize.slarge, { fontWeight: 'bold', textAlign: 'center' }]}>Темы</Text>
+    <BottomSheetScrollView style={{ flex: 1 }}>
+      {themes.map((theme, index) => (
+        <React.Fragment key={index}>
+          <Theme theme={theme} disciplineName={disciplineName} />
+          {index !== themes.length - 1 && <BorderLine />}
+        </React.Fragment>
+      ))}
+    </BottomSheetScrollView>
+  </BottomSheetModal>
+));
 
 const Themes = ({
   themes,

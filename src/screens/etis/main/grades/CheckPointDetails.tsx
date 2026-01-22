@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, ToastAndroid, View } from 'react-native';
+
 import CardHeaderIn from '~/components/CardHeaderIn';
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
@@ -45,7 +46,7 @@ const CheckPointDetails = ({ checkPoint, index }: { checkPoint: ICheckPoint; ind
       <Row first={'Проходной балл:'} second={checkPoint.passScore} />
       <Row first={'Текущий балл:'} second={checkPoint.currentScore} />
       <Row first={'Максимальный балл:'} second={checkPoint.maxScore} />
-      {!!checkPoint.teacher && (
+      {Boolean(checkPoint.teacher) && (
         <>
           <Row first={'Преподаватель:'} second={checkPoint.teacher} />
           <Row first={'Дата:'} second={isLoading ? 'Загрузка...' : lastDate} />

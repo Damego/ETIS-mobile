@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Button, StyleSheet, ToastAndroid, View } from 'react-native';
+import {
+  ActivityIndicator, Button, StyleSheet, ToastAndroid, View
+} from 'react-native';
+
 import { cache } from '~/cache/smartCache';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '~/hooks';
 import {
-  UserCredentials,
   setAuthorizing,
   signIn,
   signInDemo,
   signOut,
+  UserCredentials,
 } from '~/redux/reducers/accountSlice';
 import { httpClient } from '~/utils';
 import isDemoCredentials from '~/utils/demo';
@@ -121,7 +124,7 @@ const AuthLoadingModal = () => {
       response === LoginResponseType.missingToken ||
       response === LoginResponseType.invalidToken
     ) {
-      setMessageStatus(`Получение токена...`);
+      setMessageStatus('Получение токена...');
       setIsInvisibleRecaptcha(false);
       return;
     }
@@ -154,7 +157,7 @@ const AuthLoadingModal = () => {
 
   useEffect(() => {
     // setMessageStatus('Получение токена...');
-    onReceiveToken("foobar")
+    onReceiveToken('foobar');
 
     // Вход в оффлайн режим слишком резкий, поэтому ставим таймер 1 сек.
     // TODO: В идеале, сразу после Splash включать оффлайн режим
@@ -182,20 +185,20 @@ const AuthLoadingModal = () => {
 
   return (
     <View style={styles.modalWrapper}>
-      {/*<CustomReCaptcha*/}
-      {/*  onReceiveToken={onReceiveToken}*/}
-      {/*  size={isInvisibleRecaptcha ? 'invisible' : 'normal'}*/}
-      {/*  onClose={onRecaptchaModalClose}*/}
-      {/*/>*/}
+      {/* <CustomReCaptcha */}
+      {/*  onReceiveToken={onReceiveToken} */}
+      {/*  size={isInvisibleRecaptcha ? 'invisible' : 'normal'} */}
+      {/*  onClose={onRecaptchaModalClose} */}
+      {/* /> */}
       <View style={[styles.modalContainer, globalStyles.container]}>
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-          <ActivityIndicator size="large" color={globalStyles.primaryText.color} />
+          <ActivityIndicator size='large' color={globalStyles.primaryText.color} />
           <Text style={globalStyles.textColor}>{messageStatus}</Text>
 
           {showOfflineButton && (
             <View style={{ marginTop: '15%' }}>
               <Button
-                title="Оффлайн режим"
+                title='Оффлайн режим'
                 onPress={signInOffline}
                 color={globalStyles.primaryText.color}
               />

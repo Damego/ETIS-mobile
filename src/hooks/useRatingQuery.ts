@@ -15,7 +15,7 @@ const useRatingQuery = () => {
     },
     onFail: async () => {
       const student = await cache.getStudent();
-      if (!student || !student.currentSession) return;
+      if (!student?.currentSession) return;
 
       update({
         requestType: RequestType.forceCache,
@@ -36,7 +36,9 @@ const useRatingQuery = () => {
     });
   };
 
-  return { data, isLoading, refresh, loadSession };
+  return {
+    data, isLoading, refresh, loadSession
+  };
 };
 
 export default useRatingQuery;

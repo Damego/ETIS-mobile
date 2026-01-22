@@ -15,10 +15,10 @@ export default () => {
       tracesSampleRate: 1.0,
       integrations: __DEV__
         ? [
-            new Sentry.ReactNativeTracing({
-              shouldCreateSpanForRequest: (url) => !url.startsWith(`http://`),
-            }),
-          ]
+          new Sentry.ReactNativeTracing({
+            shouldCreateSpanForRequest: (url) => !url.startsWith('http://'),
+          }),
+        ]
         : [],
       debug: __DEV__, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
       ignoreErrors,

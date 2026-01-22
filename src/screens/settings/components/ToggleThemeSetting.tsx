@@ -1,10 +1,11 @@
 import { Octicons } from '@expo/vector-icons';
 import React, { useRef } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
+
 import { cache } from '~/cache/smartCache';
 import BottomSheetModal from '~/components/BottomSheetModal';
-import Text from '~/components/Text';
 import OptionsBottomSheet from '~/components/bottomSheets/OptionsBottomSheet';
+import Text from '~/components/Text';
 import { useAppDispatch, useAppSelector } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
 import { changeTheme, setEvents } from '~/redux/reducers/settingsSlice';

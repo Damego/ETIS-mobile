@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
+
 import LoadingScreen from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
 import Screen from '~/components/Screen';
@@ -33,7 +34,9 @@ const PeriodButton = React.memo(
         onPress={() => onPress(period.period.number)}
         style={[
           globalStyles.card,
-          { height: 100, width: 100, justifyContent: 'center', alignItems: 'center' },
+          {
+            height: 100, width: 100, justifyContent: 'center', alignItems: 'center'
+          },
           isCurrentPeriod && globalStyles.primaryBackgroundColor,
           isOpened && {
             borderWidth: 2,

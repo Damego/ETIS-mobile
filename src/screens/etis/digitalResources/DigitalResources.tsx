@@ -2,6 +2,7 @@ import { AntDesign, Feather } from '@expo/vector-icons';
 import * as Clipboard from 'expo-clipboard';
 import React from 'react';
 import { Linking, TouchableOpacity, View } from 'react-native';
+
 import Card from '~/components/Card';
 import ClickableText from '~/components/ClickableText';
 import LoadingScreen from '~/components/LoadingScreen';
@@ -32,9 +33,9 @@ const Field = ({ value }: { value?: string }) => {
     >
       <Text selectable>{value}</Text>
       {value && (
-      <TouchableOpacity onPress={copyValue}>
-        <Feather name={'copy'} size={18} color={globalStyles.textColor.color} />
-      </TouchableOpacity>
+        <TouchableOpacity onPress={copyValue}>
+          <Feather name={'copy'} size={18} color={globalStyles.textColor.color} />
+        </TouchableOpacity>
       )}
     </View>
   );
@@ -65,14 +66,16 @@ const DigitalResources = () => {
               >
                 {resource.name}
               </ClickableText>
-              {resource.accessCode ? (
-                <Field value={resource.accessCode} />
-              ) : (
-                <>
-                  <Field value={resource.login} />
-                  <Field value={resource.password} />
-                </>
-              )}
+              {resource.accessCode
+                ? (
+                  <Field value={resource.accessCode} />
+                )
+                : (
+                  <>
+                    <Field value={resource.login} />
+                    <Field value={resource.password} />
+                  </>
+                )}
             </Card>
           ))}
         </View>

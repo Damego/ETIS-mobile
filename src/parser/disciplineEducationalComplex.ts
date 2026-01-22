@@ -1,4 +1,5 @@
 import cheerio from 'cheerio';
+
 import {
   IAdditionalMaterials,
   ICriteria,
@@ -27,7 +28,7 @@ const parseTheme = (
     id: searchParams.get('p_tc_id'),
     name,
     disciplineTeachPlanId: searchParams.get('p_tpdl_id'),
-    hasCheckPoint: !!themeTag.find('.badge.ctl').length,
+    hasCheckPoint: Boolean(themeTag.find('.badge.ctl').length),
     subthemes: [],
     workHours: {
       total: Number(totalHours),
@@ -134,7 +135,9 @@ const parseEvaluationIndicators = (
       });
     });
 
-  return { control, method, duration, criteria };
+  return {
+    control, method, duration, criteria
+  };
 };
 
 export const parseDisciplineEducationalComplex = (html: string) => {

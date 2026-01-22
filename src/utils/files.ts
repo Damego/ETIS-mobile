@@ -1,8 +1,8 @@
 import {
-  EncodingType,
-  StorageAccessFramework,
   documentDirectory,
+  EncodingType,
   readAsStringAsync,
+  StorageAccessFramework,
   writeAsStringAsync,
 } from 'expo-file-system/legacy';
 import * as FileSystem from 'expo-file-system/legacy';
@@ -69,12 +69,12 @@ const openFile = (uri: string) => {
 
 export {
   downloadFile,
-  saveFileFromCache,
-  saveJSONToDocuments,
+  openFile,
+  readDisciplineInfo,
+  readDisciplinesTasks,
   readJSONFromDocuments,
   saveDisciplineInfo,
-  readDisciplineInfo,
   saveDisciplinesTasks,
-  readDisciplinesTasks,
-  openFile,
+  saveFileFromCache,
+  saveJSONToDocuments,
 };

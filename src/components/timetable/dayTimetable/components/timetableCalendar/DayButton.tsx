@@ -1,6 +1,9 @@
 import dayjs from 'dayjs';
 import React, { useMemo } from 'react';
-import { StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
+import {
+  StyleProp, StyleSheet, TouchableOpacity, ViewStyle
+} from 'react-native';
+
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';

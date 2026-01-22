@@ -1,13 +1,14 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useRef } from 'react';
 import { View } from 'react-native';
+
 import BottomSheetModal from '~/components/BottomSheetModal';
+import PeriodsBottomSheet from '~/components/bottomSheets/PeriodsBottomSheet';
 import ClickableText from '~/components/ClickableText';
 import { LoadingContainer } from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
-import PeriodsBottomSheet from '~/components/bottomSheets/PeriodsBottomSheet';
 import { useAppTheme } from '~/hooks/theme';
 import useSignsQuery from '~/hooks/useSignsQuery';
 import GradesContainer from '~/screens/etis/main/grades/GradesContainer';
@@ -34,13 +35,15 @@ const Grades = () => {
 
   return (
     <Screen onUpdate={refresh} containerStyle={{ paddingBottom: '20%' }}>
-      <View style={{ flexDirection: 'row', gap: 14, alignItems: 'center', marginBottom: '2%' }}>
+      <View style={{
+        flexDirection: 'row', gap: 14, alignItems: 'center', marginBottom: '2%'
+      }}>
         <Text style={{ fontWeight: '700', fontSize: 22, flex: 2 }}>Оценки</Text>
         {data && (
           <ClickableText
             onPress={() => ref.current.present()}
             textStyle={fontSize.big}
-            iconRight={<AntDesign name="swap" size={18} color={theme.colors.text} />}
+            iconRight={<AntDesign name='swap' size={18} color={theme.colors.text} />}
             viewStyle={{ gap: 4 }}
           >
             {data.currentSession} {data.sessionName}

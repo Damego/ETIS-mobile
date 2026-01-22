@@ -3,6 +3,7 @@ import { FlashList } from '@shopify/flash-list';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+
 import { isPsutechAvailable, searchAudience } from '~/api/psutech/api';
 import BorderLine from '~/components/BorderLine';
 import ClickableText from '~/components/ClickableText';

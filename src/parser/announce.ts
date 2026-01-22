@@ -1,4 +1,5 @@
 import { load } from 'cheerio';
+
 import { IAnnounce } from '~/models/announce';
 
 export default function parseAnnounce(html: string): IAnnounce[] {
@@ -17,11 +18,11 @@ export default function parseAnnounce(html: string): IAnnounce[] {
       // So why my code can't be fucked up?
       const messageHtml = tag
         .html()
-        .replaceAll('<a', `<a target="_blank"`)
-        .replaceAll(`href="df_pkg.`, `href="https://student.psu.ru/pls/stu_cus_et/df_pkg.`)
+        .replaceAll('<a', '<a target="_blank"')
+        .replaceAll('href="df_pkg.', 'href="https://student.psu.ru/pls/stu_cus_et/df_pkg.')
         .replaceAll(
-          `<a target="_blank" target="_blank" href="https://student.psu.ru/pls/stu_cus_et/df_pkg.`,
-          `<a href="https://student.psu.ru/pls/stu_cus_et/df_pkg.`
+          '<a target="_blank" target="_blank" href="https://student.psu.ru/pls/stu_cus_et/df_pkg.',
+          '<a href="https://student.psu.ru/pls/stu_cus_et/df_pkg.'
         );
       data.push({
         isNew: isNewAnnounceMessage,

@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleProp, TextStyle } from 'react-native';
+
 import { ITheme } from '~/styles/themes';
 
 export type HeaderParamList = {
@@ -29,17 +30,17 @@ export type HeaderParamList = {
    * Note that if you render a custom element by passing a function, animations for the title won't work.
    */
   headerTitle?:
-    | string
-    | ((props: {
-        /**
+  	| string
+  	| ((props: {
+  	  /**
          * The title text of the header.
          */
-        children: string;
-        /**
+  	  children: string;
+  	  /**
          * Tint color for the header.
          */
-        tintColor?: string;
-      }) => React.ReactNode);
+  	  tintColor?: string;
+  	}) => React.ReactNode);
   /**
    * Style object for header title. Supported properties:
    * - fontFamily
@@ -48,9 +49,9 @@ export type HeaderParamList = {
    * - color
    */
   headerTitleStyle?: StyleProp<
-    Pick<TextStyle, 'fontFamily' | 'fontSize' | 'fontWeight'> & {
-      color?: string;
-    }
+  	Pick<TextStyle, 'fontFamily' | 'fontSize' | 'fontWeight'> & {
+  	  color?: string;
+  	}
   >;
   /*
    * Whether to show the shadow of the header
@@ -74,17 +75,15 @@ export const headerParams = (theme: ITheme): HeaderParamList => ({
   headerTitleAlign: 'center',
 });
 
-export const progressiveHeaderShadowStyle = (theme: ITheme, offset: number) => {
-  return {
-    ...headerParams(theme).headerStyle,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 12,
-    },
-    shadowOpacity: 0.58,
-    shadowRadius: 16.0,
+export const progressiveHeaderShadowStyle = (theme: ITheme, offset: number) => ({
+  ...headerParams(theme).headerStyle,
+  shadowColor: '#000',
+  shadowOffset: {
+    width: 0,
+    height: 12,
+  },
+  shadowOpacity: 0.58,
+  shadowRadius: 16.0,
 
-    elevation: offset,
-  };
-};
+  elevation: offset,
+});

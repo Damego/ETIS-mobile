@@ -1,7 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useMemo, useState } from 'react';
-import { Alert, Keyboard, StyleSheet, ToastAndroid, View } from 'react-native';
+import {
+  Alert, Keyboard, StyleSheet, ToastAndroid, View
+} from 'react-native';
 import { RadioButtonProps, RadioGroup } from 'react-native-radio-buttons-group';
+
 import { Button } from '~/components/Button';
 import Card from '~/components/Card';
 import Screen from '~/components/Screen';
@@ -166,10 +169,10 @@ export default function RequestCertificate({
   const isApplicable =
     certificateId &&
     !keyboardOpen &&
-    !!place === currentCertificate.place &&
-    !!note <= currentCertificate.note &&
+    Boolean(place) === currentCertificate.place &&
+    Boolean(note) <= currentCertificate.note &&
     Number(quantity) <= currentCertificate.maxQuantity &&
-    !!currentCertificate.deliveryMethod.find((s) => delivery === s.id);
+    Boolean(currentCertificate.deliveryMethod.find((s) => delivery === s.id));
 
   const specialCert = specialCerts.find((s) => certificateId === s.id);
 
@@ -209,23 +212,23 @@ export default function RequestCertificate({
           <Card>
             {currentCertificate.note && (
               <Input
-                name="Примечание"
-                placeholder="Заберёт Иванов Андрей Алексеевич"
+                name='Примечание'
+                placeholder='Заберёт Иванов Андрей Алексеевич'
                 value={note}
                 onUpdate={(note: string) => changeCertificate({ note })}
                 popover={
-                  <PopoverElement text="Справки выдаются лично заявителю. Если Вы доверяете получить справку другому лицу, пишите в примечаниях фамилию, имя отчество того, кто будет справку забирать." />
+                  <PopoverElement text='Справки выдаются лично заявителю. Если Вы доверяете получить справку другому лицу, пишите в примечаниях фамилию, имя отчество того, кто будет справку забирать.' />
                 }
               />
             )}
             {currentCertificate.place && (
               <Input
-                name="Место предъявления (организация-работодатель) *"
-                placeholder="ОАО НефтьГаз"
+                name='Место предъявления (организация-работодатель) *'
+                placeholder='ОАО НефтьГаз'
                 value={place}
                 onUpdate={(place: string) => changeCertificate({ place })}
                 popover={
-                  <PopoverElement text="Название организации необходимо указывать в РОДИТЕЛЬНОМ падеже для соблюдения норм русского языка при формировании текста справки." />
+                  <PopoverElement text='Название организации необходимо указывать в РОДИТЕЛЬНОМ падеже для соблюдения норм русского языка при формировании текста справки.' />
                 }
               />
             )}

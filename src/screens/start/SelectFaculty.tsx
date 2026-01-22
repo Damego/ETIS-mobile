@@ -3,6 +3,7 @@ import { Image } from 'expo-image';
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { getFaculties, isPsutechAvailable } from '~/api/psutech/api';
 import { IFaculty } from '~/api/psutech/types';
 import BorderLine from '~/components/BorderLine';
@@ -23,22 +24,20 @@ const FacultyButton = React.memo(
     faculty: IFaculty;
     onPress: (faculty: IFaculty) => void;
     isSelected: boolean;
-  }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => onPress(faculty)}
-        style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}
-      >
-        <Image
-          source={faculty.logo_image_url}
-          style={{ height: 50, width: 50, borderRadius: 25 }}
-        />
-        <Text style={[{ flex: 1 }, fontSize.big]} colorVariant={isSelected && 'primary'}>
-          {faculty.name}
-        </Text>
-      </TouchableOpacity>
-    );
-  }
+  }) => (
+    <TouchableOpacity
+      onPress={() => onPress(faculty)}
+      style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}
+    >
+      <Image
+        source={faculty.logo_image_url}
+        style={{ height: 50, width: 50, borderRadius: 25 }}
+      />
+      <Text style={[{ flex: 1 }, fontSize.big]} colorVariant={isSelected && 'primary'}>
+        {faculty.name}
+      </Text>
+    </TouchableOpacity>
+  )
 );
 
 const SelectFacultyScreen = ({ navigation }: StartStackScreenProps) => {

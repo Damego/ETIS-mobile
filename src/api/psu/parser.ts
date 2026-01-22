@@ -1,10 +1,11 @@
 import cheerio from 'cheerio';
+
 import { ITeacherContacts } from '~/api/psu/models';
 
 const regex = /'([^']*)'/g;
 const phoneRegex = /\+?\d?\s?\(?\d{1,4}\)?[-\s\./0-9]+/g;
 
-const partsToString = (parts: string[]) => parts.map((part) => part.replaceAll("'", '')).join('');
+const partsToString = (parts: string[]) => parts.map((part) => part.replaceAll('\'', '')).join('');
 
 const parseEmail = (script: string) => {
   // хех

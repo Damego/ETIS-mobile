@@ -1,6 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
+
 import CardHeaderOut from '~/components/CardHeaderOut';
 import Text from '~/components/Text';
 import { useAppTheme } from '~/hooks/theme';
@@ -31,7 +32,7 @@ const AbsencesCard = ({ disciplineAbsences }: { disciplineAbsences: IDisciplineA
         </View>
         <View style={{ flex: 1 }}>
           <Text>{`Пропущенных занятий: ${disciplineAbsences.dates.length}`}</Text>
-          {!!covered && <Text>{`По уважительной причине: ${covered}`}</Text>}
+          {Boolean(covered) && <Text>{`По уважительной причине: ${covered}`}</Text>}
           {isOpened && (
             <>
               <Text>{`Преподаватель: ${disciplineAbsences.teacher}`}</Text>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+
 import CardHeaderOut from '~/components/CardHeaderOut';
 import FileTextLink from '~/components/FileTextLink';
 import Text from '~/components/Text';
@@ -16,23 +17,21 @@ const styles = StyleSheet.create({
   },
 });
 
-const AttachedFiles = ({ files }: { files: IFile[] }) => {
-  return (
-    <View style={{ flexDirection: 'column' }}>
-      <Text style={styles.subjectText}>Прикреплённые файлы: </Text>
-      {files.map((file, index) => (
-        <FileTextLink
-          src={file.uri}
-          fileName={file.name}
-          key={`${file.name}-${index}`}
-          style={fontSize.medium}
-        >
-          {file.name}
-        </FileTextLink>
-      ))}
-    </View>
-  );
-};
+const AttachedFiles = ({ files }: { files: IFile[] }) => (
+  <View style={{ flexDirection: 'column' }}>
+    <Text style={styles.subjectText}>Прикреплённые файлы: </Text>
+    {files.map((file, index) => (
+      <FileTextLink
+        src={file.uri}
+        fileName={file.name}
+        key={`${file.name}-${index}`}
+        style={fontSize.medium}
+      >
+        {file.name}
+      </FileTextLink>
+    ))}
+  </View>
+);
 
 function Message({ message }: { message: IMessage }) {
   const time = parseDatetime(message.time);
@@ -42,8 +41,8 @@ function Message({ message }: { message: IMessage }) {
 
   let cardTopText: string;
   if ([MessageType.message, MessageType.teacherReply].includes(message.type))
-    cardTopText = `Преподаватель`;
-  else if (message.type === MessageType.studentReply) cardTopText = `Вы`;
+    cardTopText = 'Преподаватель';
+  else if (message.type === MessageType.studentReply) cardTopText = 'Вы';
 
   return (
     <CardHeaderOut topText={cardTopText}>

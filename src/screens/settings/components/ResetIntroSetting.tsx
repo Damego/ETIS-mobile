@@ -1,4 +1,5 @@
 import React from 'react';
+
 import ClickableText from '~/components/ClickableText';
 import { useAppDispatch } from '~/hooks';
 import { setIntroViewed } from '~/redux/reducers/settingsSlice';
