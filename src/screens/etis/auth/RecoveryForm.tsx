@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Image, TextInput, View } from 'react-native';
 
 import { Button } from '~/components/Button';
-import Card from '~/components/Card';
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';

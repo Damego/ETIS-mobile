@@ -17,7 +17,6 @@ import { formatTime } from '~/utils/datetime';
 import { fontSize } from '~/utils/texts';
 
 import AddReminderBottomModal from './AddReminderBottomModal';
-import AddButton from './components/AddButton';
 import Reminder from './components/Reminder';
 
 export interface PartialTask {

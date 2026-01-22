@@ -7,7 +7,6 @@ import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { useAppDispatch, useAppSelector } from '~/hooks';
 import { clearAccountState } from '~/redux/reducers/accountSlice';
-import ChangeAppUI from '~/screens/settings/components/ChangeAppUI';
 import { fontSize } from '~/utils/texts';
 
 const LogOut = ({ onPress }: { onPress: () => void }) => (

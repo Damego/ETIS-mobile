@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, ToastAndroid, View } from 'react-native';
 
-import CardHeaderIn from '~/components/CardHeaderIn';
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
 import { useClient } from '~/data/client';

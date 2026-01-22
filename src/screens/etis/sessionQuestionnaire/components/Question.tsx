@@ -4,7 +4,6 @@ import { View } from 'react-native';
 import Card from '~/components/Card';
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
-import { useGlobalStyles } from '~/hooks';
 import { IAnswer, IQuestion } from '~/models/sessionQuestionnaire';
 import { fontSize } from '~/utils/texts';
 

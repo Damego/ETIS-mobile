@@ -3,7 +3,6 @@ import React from 'react';
 
 import BottomSheetModal from '~/components/BottomSheetModal';
 import ClickableText from '~/components/ClickableText';
-import { ISessionPoints } from '~/models/sessionPoints';
 
 interface Props {
   currentPeriod: number;

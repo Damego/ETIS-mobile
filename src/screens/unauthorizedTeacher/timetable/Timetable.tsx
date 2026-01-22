@@ -3,7 +3,6 @@ import { StyleSheet, View } from 'react-native';
 
 import { LoadingContainer } from '~/components/LoadingScreen';
 import Screen from '~/components/Screen';
-import Text from '~/components/Text';
 import BellScheduleButton from '~/components/timetable/buttons/BellScheduleButton';
 import DisciplineTasksButton from '~/components/timetable/buttons/DisciplineTasksButton';
 import ToggleModeButton from '~/components/timetable/buttons/ToggleModeButton';

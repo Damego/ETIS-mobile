@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View } from 'react-native';
 
 import BorderLine from '~/components/BorderLine';

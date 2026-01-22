@@ -1,5 +1,4 @@
-import axios, { AxiosError } from 'axios';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
