@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-import { ITeacherContacts } from '~/api/psu/models';
 import { parseTeacherContacts } from '~/api/psu/parser';
 
 export const getTeacherContacts = async (teacherPageUrl: string) => {

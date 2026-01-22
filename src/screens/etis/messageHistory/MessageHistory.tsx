@@ -2,7 +2,7 @@ import { ListRenderItemInfo } from '@shopify/flash-list';
 import React, { useEffect, useRef, useState } from 'react';
 import { ToastAndroid, View } from 'react-native';
 
-import Screen, { ListScreen } from '~/components/Screen';
+import { ListScreen } from '~/components/Screen';
 import { useClient } from '~/data/client';
 import { useAppSelector } from '~/hooks';
 import useQuery from '~/hooks/useQuery';

@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import {
-  NativeSyntheticEvent, ScrollView, StyleSheet, View
+  NativeSyntheticEvent, ScrollView, StyleSheet
 } from 'react-native';
 import PagerView from 'react-native-pager-view';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';

@@ -15,7 +15,6 @@ import {
 import { httpClient } from '~/utils';
 import isDemoCredentials from '~/utils/demo';
 
-import CustomReCaptcha from './ReCaptcha';
 import Text from './Text';
 
 const styles = StyleSheet.create({
