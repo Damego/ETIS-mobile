@@ -1,6 +1,7 @@
 import React, { forwardRef } from 'react';
-import { NativeSyntheticEvent, StyleSheet, View } from 'react-native';
+import { NativeSyntheticEvent, ScrollView, StyleSheet, View } from 'react-native';
 import PagerView from 'react-native-pager-view';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { checkAllowedPairRender } from '~/components/timetable/checkAllowedPairRender';
 import { useAppSelector } from '~/hooks';
 import { ITimeTableDay } from '~/models/timeTable';
@@ -18,10 +19,18 @@ const Page = ({ day }: { day: ITimeTableDay }) => {
   const { showGapsBetweenPairs, showEmptyPairs } = useAppSelector(
     (state) => state.settings.config.ui
   );
+  const insets = useSafeAreaInsets();
   let didRenderFirstPair = false;
 
   return (
-    <View style={styles.pairsList}>
+    <ScrollView
+      style={{ flex: 1 }}
+      contentContainerStyle={[
+        styles.pairsList,
+        { paddingBottom: Math.max(insets.bottom + 60, 80) },
+      ]}
+      showsVerticalScrollIndicator={false}
+    >
       {!day.pairs.length && <NoPairs />}
       {day.pairs.map((pair) => {
         if (
@@ -32,12 +41,13 @@ const Page = ({ day }: { day: ITimeTableDay }) => {
         }
         return null;
       })}
-    </View>
+    </ScrollView>
   );
 };
 
 const TimetablePages = forwardRef<PagerView, TimetablePagesProps>(
   ({ days, dayNumber, onPagePress }, ref) => {
+    const insets = useSafeAreaInsets();
     const handlePageSelected = (event: NativeSyntheticEvent<Readonly<{ position: number }>>) =>
       onPagePress(event.nativeEvent.position - dayNumber);
 
@@ -53,9 +63,16 @@ const TimetablePages = forwardRef<PagerView, TimetablePagesProps>(
         ))}
 
         {/* Воскресенья нет в данных */}
-        <View style={styles.pairsList}>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={[
+            styles.pairsList,
+            { paddingBottom: Math.max(insets.bottom + 60, 80) },
+          ]}
+          showsVerticalScrollIndicator={false}
+        >
           <NoPairs />
-        </View>
+        </ScrollView>
       </PagerView>
     );
   }

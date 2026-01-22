@@ -1,6 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Shadow } from 'react-native-shadow-2';
 import type {
   NavigationState,
@@ -51,6 +52,7 @@ const Shortcuts = (
   }
 ) => {
   const globalStyles = useGlobalStyles();
+  const insets = useSafeAreaInsets();
   const {
     jumpTo,
     navigationState,
@@ -74,7 +76,7 @@ const Shortcuts = (
       ]}
       containerStyle={[
         {
-          top: height * 0.9,
+          bottom: insets.bottom > 0 ? insets.bottom * 0.9 : 20,
           position: 'absolute',
           zIndex: 1,
           alignSelf: 'center',

@@ -1,6 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from '~/components/Button';
 import Text from '~/components/Text';
 import { useAppDispatch, useGlobalStyles } from '~/hooks';
@@ -45,30 +46,32 @@ const SelectStudentAccountTypeScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.screenContainer}>
-      <View style={styles.container}>
-        <OptionButton
-          isPressed={withAuth}
-          onPress={handleSelect(true)}
-          bottomComponent={<Text>Расписание, оценки, сообщения{'\n'}и многое другое!</Text>}
-        >
-          С авторизацией в ЕТИС
-        </OptionButton>
-        <OptionButton
-          isPressed={!withAuth}
-          onPress={handleSelect(false)}
-          bottomComponent={<Text>Доступно только расписание</Text>}
-        >
-          Без авторизации в ЕТИС
-        </OptionButton>
-      </View>
+    <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
+      <View style={styles.screenContainer}>
+        <View style={styles.container}>
+          <OptionButton
+            isPressed={withAuth}
+            onPress={handleSelect(true)}
+            bottomComponent={<Text>Расписание, оценки, сообщения{'\n'}и многое другое!</Text>}
+          >
+            С авторизацией в ЕТИС
+          </OptionButton>
+          <OptionButton
+            isPressed={!withAuth}
+            onPress={handleSelect(false)}
+            bottomComponent={<Text>Доступно только расписание</Text>}
+          >
+            Без авторизации в ЕТИС
+          </OptionButton>
+        </View>
 
-      {!withAuth && <WarningMessage />}
+        {!withAuth && <WarningMessage />}
 
-      <View style={styles.buttonWrapper}>
-        <Button text={'Выбрать'} onPress={handleChoose} variant={'primary'} />
+        <View style={styles.buttonWrapper}>
+          <Button text={'Выбрать'} onPress={handleChoose} variant={'primary'} />
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

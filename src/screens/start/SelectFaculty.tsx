@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Image } from 'expo-image';
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getFaculties, isPsutechAvailable } from '~/api/psutech/api';
 import { IFaculty } from '~/api/psutech/types';
 import BorderLine from '~/components/BorderLine';
@@ -42,6 +43,7 @@ const FacultyButton = React.memo(
 
 const SelectFacultyScreen = ({ navigation }: StartStackScreenProps) => {
   const globalStyles = useGlobalStyles();
+  const insets = useSafeAreaInsets();
   const [selectedFaculty, setSelectedFaculty] = useState<IFaculty>(null);
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['faculties'],
@@ -84,7 +86,12 @@ const SelectFacultyScreen = ({ navigation }: StartStackScreenProps) => {
       {selectedFaculty && (
         <TouchableOpacity
           onPress={handleConfirm}
-          style={[styles.button, globalStyles.primaryBackgroundColor, globalStyles.borderRadius]}
+          style={[
+            styles.button,
+            { bottom: Math.max(insets.bottom, 8) },
+            globalStyles.primaryBackgroundColor,
+            globalStyles.borderRadius,
+          ]}
         >
           <Text colorVariant={'primaryContrast'} style={fontSize.big}>
             Продолжить
@@ -113,7 +120,6 @@ const styles = StyleSheet.create({
   button: {
     marginHorizontal: '4%',
     position: 'absolute',
-    bottom: '2%',
     left: 0,
     right: 0,
     padding: '4%',

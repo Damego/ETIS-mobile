@@ -6,6 +6,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { setBackgroundColorAsync } from 'expo-system-ui';
 import React, { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { cache } from '~/cache/smartCache';
 import { useAppSelector } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
@@ -75,35 +76,37 @@ const StackNavigator = () => {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <NavigationContainer theme={{ ...DefaultTheme, ...theme }}>
-        <BottomSheetModalProvider>
-          <Stack.Navigator screenOptions={{ headerShown: true, ...headerParams(theme) }}>
-            <Stack.Screen
-              name="TabNavigator"
-              component={educationScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="AppSettings"
-              component={AppSettings}
-              options={{ title: 'Настройки' }}
-            />
-            <Stack.Screen
-              name="ChangeAppUI"
-              component={ChangeAppUI}
-              options={{ title: 'Интерфейс' }}
-            />
-            <Stack.Screen name="AboutApp" component={About} options={{ title: 'О приложении' }} />
-            <Stack.Screen
-              name="ReleaseNotes"
-              component={ReleaseNotes}
-              options={{ headerShown: false }}
-            />
-          </Stack.Navigator>
-        </BottomSheetModalProvider>
-      </NavigationContainer>
-    </GestureHandlerRootView>
+    <SafeAreaProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <NavigationContainer theme={{ ...DefaultTheme, ...theme }}>
+          <BottomSheetModalProvider>
+            <Stack.Navigator screenOptions={{ headerShown: true, ...headerParams(theme) }}>
+              <Stack.Screen
+                name="TabNavigator"
+                component={educationScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="AppSettings"
+                component={AppSettings}
+                options={{ title: 'Настройки' }}
+              />
+              <Stack.Screen
+                name="ChangeAppUI"
+                component={ChangeAppUI}
+                options={{ title: 'Интерфейс' }}
+              />
+              <Stack.Screen name="AboutApp" component={About} options={{ title: 'О приложении' }} />
+              <Stack.Screen
+                name="ReleaseNotes"
+                component={ReleaseNotes}
+                options={{ headerShown: false }}
+              />
+            </Stack.Navigator>
+          </BottomSheetModalProvider>
+        </NavigationContainer>
+      </GestureHandlerRootView>
+    </SafeAreaProvider>
   );
 };
 

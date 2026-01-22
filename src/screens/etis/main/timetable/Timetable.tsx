@@ -33,7 +33,7 @@ export const Timetable = () => {
   });
 
   return (
-    <Screen onUpdate={refresh} containerStyle={{ paddingBottom: '20%' }}>
+    <Screen onUpdate={refresh} containerStyle={{ paddingBottom: 0 }}>
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>Расписание</Text>
         <View style={styles.titleIconsContainer}>
