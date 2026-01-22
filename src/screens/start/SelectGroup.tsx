@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { isPsutechAvailable, searchGroups } from '~/api/psutech/api';
 import { IGroup } from '~/api/psutech/types';
 import { cache } from '~/cache/smartCache';
@@ -50,6 +51,7 @@ const GroupItem = React.memo(
 const SelectGroupScreen = ({ route }: StartStackScreenProps<'SelectGroup'>) => {
   const globalStyles = useGlobalStyles();
   const dispatch = useAppDispatch();
+  const insets = useSafeAreaInsets();
   const { facultyId } = route.params;
   const [selectedGroup, setSelectedGroup] = useState<IGroup>(null);
   const [query, setQuery] = useState('');
@@ -107,7 +109,12 @@ const SelectGroupScreen = ({ route }: StartStackScreenProps<'SelectGroup'>) => {
       {selectedGroup && (
         <TouchableOpacity
           onPress={handleConfirm}
-          style={[styles.button, globalStyles.primaryBackgroundColor, globalStyles.borderRadius]}
+          style={[
+            styles.button,
+            { bottom: Math.max(insets.bottom, 8) },
+            globalStyles.primaryBackgroundColor,
+            globalStyles.borderRadius,
+          ]}
         >
           <Text colorVariant={'primaryContrast'} style={fontSize.big}>
             Продолжить
@@ -125,7 +132,6 @@ const styles = StyleSheet.create({
   button: {
     marginHorizontal: '4%',
     position: 'absolute',
-    bottom: '2%',
     left: 0,
     right: 0,
     padding: '4%',

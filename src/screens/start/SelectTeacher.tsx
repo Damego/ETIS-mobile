@@ -2,6 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { isPsutechAvailable, searchTeachers } from '~/api/psutech/api';
 import { ITeacher } from '~/api/psutech/types';
 import { cache } from '~/cache/smartCache';
@@ -19,6 +20,7 @@ import { fontSize } from '~/utils/texts';
 const SelectTeacherScreen = () => {
   const theme = useAppTheme();
   const globalStyles = useGlobalStyles();
+  const insets = useSafeAreaInsets();
 
   const dispatch = useAppDispatch();
   const [selectedTeacher, setSelectedTeacher] = useState<ITeacher>(null);
@@ -80,7 +82,12 @@ const SelectTeacherScreen = () => {
       {selectedTeacher !== null && (
         <TouchableOpacity
           onPress={handleConfirm}
-          style={[styles.button, globalStyles.primaryBackgroundColor, globalStyles.borderRadius]}
+          style={[
+            styles.button,
+            { bottom: Math.max(insets.bottom, 8) },
+            globalStyles.primaryBackgroundColor,
+            globalStyles.borderRadius,
+          ]}
         >
           <Text colorVariant={'primaryContrast'} style={fontSize.big}>
             Выбрать
@@ -104,7 +111,6 @@ const styles = StyleSheet.create({
   },
   button: {
     position: 'absolute',
-    bottom: '2%',
     left: 0,
     right: 0,
     padding: '4%',

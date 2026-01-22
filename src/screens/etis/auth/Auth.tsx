@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ToastAndroid, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { cache } from '~/cache/smartCache';
 import Screen from '~/components/Screen';
 import { useAppDispatch, useAppSelector } from '~/hooks';
@@ -52,12 +53,14 @@ const AuthScreen = () => {
   }
 
   return (
-    <Screen>
-      <View style={{ flex: 1 }}>
-        <Form onSubmit={onFormSubmit} errorMessage={message} setShowRecovery={setShowRecovery} />
-      </View>
-      <Footer />
-    </Screen>
+    <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
+      <Screen>
+        <View style={{ flex: 1 }}>
+          <Form onSubmit={onFormSubmit} errorMessage={message} setShowRecovery={setShowRecovery} />
+        </View>
+        <Footer />
+      </Screen>
+    </SafeAreaView>
   );
 };
 

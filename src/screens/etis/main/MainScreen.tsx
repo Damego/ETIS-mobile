@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import { View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SceneMap, TabView } from 'react-native-tab-view';
 import { cache } from '~/cache/smartCache';
 import { useClient } from '~/data/client';
@@ -28,6 +30,7 @@ const ETISScreen = () => {
   } = useAppSelector((state) => state.settings);
   const client = useClient();
   const { isDemo, isOfflineMode } = useAppSelector((state) => state.account);
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     loadData().then(() => {
@@ -75,14 +78,16 @@ const ETISScreen = () => {
   ]);
 
   return (
-    <TabView
-      lazy
-      swipeEnabled={false}
-      navigationState={{ index, routes }}
-      renderScene={renderScene}
-      onIndexChange={setIndex}
-      renderTabBar={Shortcuts}
-    />
+    <View style={{ flex: 1, paddingBottom: insets.bottom }}>
+      <TabView
+        lazy
+        swipeEnabled={false}
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        renderTabBar={Shortcuts}
+      />
+    </View>
   );
 };
 

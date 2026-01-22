@@ -4,6 +4,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/src/types';
 import React, { useImperativeHandle, useRef } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import BottomSheetModalBackdrop from '~/components/BottomSheetModalBackdrop';
 import { useGlobalStyles } from '~/hooks';
 import useBackPress from '~/hooks/useBackPress';
@@ -14,6 +15,7 @@ const BottomSheetModalComponent = React.forwardRef<BottomSheetModal, BottomSheet
   (props, ref) => {
     const { children, onDismiss, ...restProps } = props;
     const globalStyles = useGlobalStyles();
+    const insets = useSafeAreaInsets();
     const modalRef = useRef<BottomSheetModal>();
     const stateRef = useRef({
       isOpened: false,
@@ -59,6 +61,7 @@ const BottomSheetModalComponent = React.forwardRef<BottomSheetModal, BottomSheet
         onDismiss={onDismiss ?? dismissModal}
         backgroundStyle={globalStyles.card}
         handleIndicatorStyle={{ backgroundColor: globalStyles.textColor.color }}
+        bottomInset={insets.bottom}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...restProps}
       >
