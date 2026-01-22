@@ -1,6 +1,7 @@
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import React, { useRef } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+
 import BorderLine from '~/components/BorderLine';
 import BottomSheetModal from '~/components/BottomSheetModal';
 import Text from '~/components/Text';

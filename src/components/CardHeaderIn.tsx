@@ -1,5 +1,8 @@
 import React from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import {
+  StyleProp, StyleSheet, View, ViewStyle
+} from 'react-native';
+
 import { fontSize } from '~/utils/texts';
 
 import Card from './Card';
@@ -23,15 +26,13 @@ const CardHeaderIn = ({
   topText: string;
   children: React.ReactNode;
   style?: StyleProp<ViewStyle>;
-}) => {
-  return (
-    <Card style={style}>
-      <View style={styles.cardHeaderView}>
-        <Text style={styles.cardHeaderText}>{topText}</Text>
-      </View>
-      {children}
-    </Card>
-  );
-};
+}) => (
+  <Card style={style}>
+    <View style={styles.cardHeaderView}>
+      <Text style={styles.cardHeaderText}>{topText}</Text>
+    </View>
+    {children}
+  </Card>
+);
 
 export default CardHeaderIn;

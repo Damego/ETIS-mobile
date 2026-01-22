@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import React, { useContext, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+
 import BorderLine from '~/components/BorderLine';
 import Text from '~/components/Text';
 import TaskContext from '~/context/taskContext';
@@ -8,8 +9,8 @@ import { DisciplineTask } from '~/models/disciplinesTasks';
 import { formatTime } from '~/utils/datetime';
 import { fontSize } from '~/utils/texts';
 
-import HistoryButton from '../HistoryButton';
 import getGroupedTasks from '../getGroupedTasks';
+import HistoryButton from '../HistoryButton';
 import TaskItem from './TaskItem';
 
 const GroupedTaskList = ({ tasks }: { tasks: DisciplineTask[] }) => {
@@ -51,7 +52,7 @@ const TaskList = ({ tasks }: { tasks: DisciplineTask[] }) => {
         </View>
       ))}
 
-      {!!groupedInactiveTasks.length && (
+      {Boolean(groupedInactiveTasks.length) && (
         <HistoryButton
           onPress={() => setShowInactiveTasks((prev) => !prev)}
           showHistory={showInactiveTasks}
@@ -59,12 +60,12 @@ const TaskList = ({ tasks }: { tasks: DisciplineTask[] }) => {
       )}
 
       {showInactiveTasks &&
-        groupedInactiveTasks.map((group, index) => (
-          <View key={group[0].id}>
-            <GroupedTaskList tasks={group} />
-            {groupedInactiveTasks.length - 1 !== index && <BorderLine />}
-          </View>
-        ))}
+      	groupedInactiveTasks.map((group, index) => (
+      	  <View key={group[0].id}>
+      	    <GroupedTaskList tasks={group} />
+      	    {groupedInactiveTasks.length - 1 !== index && <BorderLine />}
+      	  </View>
+      	))}
     </>
   );
 };

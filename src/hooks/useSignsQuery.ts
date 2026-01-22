@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+
 import { cache } from '~/cache/smartCache';
 import { useClient } from '~/data/client';
 import { composePointsAndMarks } from '~/data/signs';
@@ -41,7 +42,7 @@ const useSignsQuery = () => {
     },
     onFail: async () => {
       const student = await cache.getStudent();
-      if (!student || !student.currentSession) return;
+      if (!student?.currentSession) return;
       update({
         requestType: RequestType.forceCache,
         data: student.currentSession,
@@ -65,7 +66,7 @@ const useSignsQuery = () => {
     const hasDuty = marksQuery.data.find(
       (sessionMarks) =>
         sessionMarks.session === session &&
-        !!sessionMarks.disciplines.find((discipline) => ['2', 'незачет'].includes(discipline.mark))
+        Boolean(sessionMarks.disciplines.find((discipline) => ['2', 'незачет'].includes(discipline.mark)))
     );
 
     update({
@@ -77,7 +78,9 @@ const useSignsQuery = () => {
     });
   };
 
-  return { data, isLoading, refresh, loadSession };
+  return {
+    data, isLoading, refresh, loadSession
+  };
 };
 
 export default useSignsQuery;

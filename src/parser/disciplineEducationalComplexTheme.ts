@@ -1,4 +1,5 @@
 import cheerio from 'cheerio';
+
 import {
   IDisciplineEducationalComplexTheme,
   IThemeWorkHours,

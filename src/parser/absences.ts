@@ -1,6 +1,8 @@
 import { load } from 'cheerio';
 
-import { IAbsence, IAbsenceDate, IAbsenceSession, IDisciplineAbsences } from '../models/absences';
+import {
+  IAbsence, IAbsenceDate, IAbsenceSession, IDisciplineAbsences
+} from '../models/absences';
 import { getTextField } from './utils';
 
 export default function parseAbsences(html: string): IAbsence {
@@ -57,5 +59,7 @@ export default function parseAbsences(html: string): IAbsence {
 
   const overallMissed: string = $('div.span9').text().split(' ').at(-1);
 
-  return { currentSession, sessions, absences, overallMissed: parseInt(overallMissed) };
+  return {
+    currentSession, sessions, absences, overallMissed: parseInt(overallMissed)
+  };
 }

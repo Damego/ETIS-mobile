@@ -1,11 +1,12 @@
 import React from 'react';
 import {
-  Text as RNText,
-  TextProps as RNTextProps,
   StyleProp,
   StyleSheet,
+  Text as RNText,
+  TextProps as RNTextProps,
   TextStyle,
 } from 'react-native';
+
 import { useAppTheme } from '~/hooks/theme';
 import { IThemeColors } from '~/styles/themes';
 
@@ -14,10 +15,10 @@ export interface TextProps extends RNTextProps {
 }
 
 const fontWeightToUbuntuFamily = {
-  '400': 'Ubuntu-Regular',
-  '500': 'Ubuntu-Medium',
-  '600': 'Ubuntu-Bold',
-  '700': 'Ubuntu-Bold',
+  400: 'Ubuntu-Regular',
+  500: 'Ubuntu-Medium',
+  600: 'Ubuntu-Bold',
+  700: 'Ubuntu-Bold',
   bold: 'Ubuntu-Bold',
 };
 

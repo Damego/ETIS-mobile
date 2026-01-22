@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
+
 import { LessonTypes } from '~/models/other';
 import { getDisciplineTypeName } from '~/utils/texts';
 

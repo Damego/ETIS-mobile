@@ -1,7 +1,10 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import dayjs from 'dayjs';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  useCallback, useEffect, useMemo, useRef, useState
+} from 'react';
 import { StyleSheet } from 'react-native';
+
 import CardHeaderOut from '~/components/CardHeaderOut';
 import CenteredText from '~/components/CenteredText';
 import Screen from '~/components/Screen';
@@ -20,10 +23,10 @@ import { fontSize } from '~/utils/texts';
 import { groupItems } from '~/utils/utils';
 
 import { PartialTask } from '../disciplineInfo/AddTaskModalContent';
-import HistoryButton from '../disciplineInfo/HistoryButton';
-import TaskModal from '../disciplineInfo/TaskModal';
 import TaskItem from '../disciplineInfo/components/TaskItem';
 import getGroupedTasks from '../disciplineInfo/getGroupedTasks';
+import HistoryButton from '../disciplineInfo/HistoryButton';
+import TaskModal from '../disciplineInfo/TaskModal';
 
 const TaskGroup = ({ tasks }: { tasks: DisciplineTask[] }) => {
   const date = tasks[0].datetime ? formatTime(tasks[0].datetime, { disableTime: true }) : null;
@@ -137,7 +140,7 @@ const DisciplinesTasks = ({ route }: EducationStackScreenProps<'DisciplineTasks'
           <TaskGroup key={group[0].id} tasks={group} />
         ))}
 
-        {!!groupedInactiveTasks.length && (
+        {Boolean(groupedInactiveTasks.length) && (
           <HistoryButton
             onPress={() => setShowInactiveTasks((prev) => !prev)}
             showHistory={showInactiveTasks}
@@ -145,7 +148,7 @@ const DisciplinesTasks = ({ route }: EducationStackScreenProps<'DisciplineTasks'
         )}
 
         {showInactiveTasks &&
-          groupedInactiveTasks.map((group) => <TaskGroup key={group[0].id} tasks={group} />)}
+        	groupedInactiveTasks.map((group) => <TaskGroup key={group[0].id} tasks={group} />)}
       </TaskContext.Provider>
 
       <TaskModal

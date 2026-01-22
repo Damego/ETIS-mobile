@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+
 import { cache } from '~/cache/smartCache';
 import { useAppSelector } from '~/hooks';
 import { IAbsence } from '~/models/absences';
@@ -25,8 +26,8 @@ import { IGetPayload, IGetResult } from '~/models/results';
 import { ISessionMarks } from '~/models/sessionMarks';
 import { ISessionPoints } from '~/models/sessionPoints';
 import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '~/models/sessionQuestionnaire';
-import { ISessionTeachPlan } from '~/models/teachPlan';
 import { ITeacher } from '~/models/teachers';
+import { ISessionTeachPlan } from '~/models/teachPlan';
 import { ITimeTable } from '~/models/timeTable';
 import {
   parseAbsenses,
@@ -67,66 +68,89 @@ export const useClient: () => BaseClient = () => {
 
 const emptyFunction = <T>() => undefined as T;
 
-class AbsencesClient extends BasicClient<IGetPayload<number>, IAbsence> {}
-class AnnounceClient extends BasicClient<IGetPayload, IAnnounce[]> {}
-class TimeTableClient extends BasicClient<IGetPayload<number>, ITimeTable> {}
-class MessageClient extends BasicClient<IGetPayload<number>, IMessagesData> {}
-class OrderClient extends BasicClient<IGetPayload, IOrder[]> {}
-class RatingClient extends BasicClient<IGetPayload<number>, ISessionRating> {}
-class SignsClient extends BasicClient<IGetPayload<number>, ISessionPoints> {}
-class PointUpdatesClient extends BasicClient<IGetPayload<string>, IPointUpdates> {}
-class MarksClient extends BasicClient<IGetPayload, ISessionMarks[]> {}
-class StudentClient extends BasicClient<IGetPayload, StudentInfo> {}
-class TeachersClient extends BasicClient<IGetPayload, ITeacher[]> {}
-class TeachPlanClient extends BasicClient<IGetPayload, ISessionTeachPlan[]> {}
-class CalendarScheduleClient extends BasicClient<IGetPayload, ICalendarSchedule> {}
-class CertificateClient extends BasicClient<IGetPayload, ICertificateResult> {}
-class SessionQuestionnaireClient extends BasicClient<IGetPayload<string>, ISessionQuestionnaire> {}
+class AbsencesClient extends BasicClient<IGetPayload<number>, IAbsence> {
+}
+class AnnounceClient extends BasicClient<IGetPayload, IAnnounce[]> {
+}
+class TimeTableClient extends BasicClient<IGetPayload<number>, ITimeTable> {
+}
+class MessageClient extends BasicClient<IGetPayload<number>, IMessagesData> {
+}
+class OrderClient extends BasicClient<IGetPayload, IOrder[]> {
+}
+class RatingClient extends BasicClient<IGetPayload<number>, ISessionRating> {
+}
+class SignsClient extends BasicClient<IGetPayload<number>, ISessionPoints> {
+}
+class PointUpdatesClient extends BasicClient<IGetPayload<string>, IPointUpdates> {
+}
+class MarksClient extends BasicClient<IGetPayload, ISessionMarks[]> {
+}
+class StudentClient extends BasicClient<IGetPayload, StudentInfo> {
+}
+class TeachersClient extends BasicClient<IGetPayload, ITeacher[]> {
+}
+class TeachPlanClient extends BasicClient<IGetPayload, ISessionTeachPlan[]> {
+}
+class CalendarScheduleClient extends BasicClient<IGetPayload, ICalendarSchedule> {
+}
+class CertificateClient extends BasicClient<IGetPayload, ICertificateResult> {
+}
+class SessionQuestionnaireClient extends BasicClient<IGetPayload<string>, ISessionQuestionnaire> {
+}
 class SessionQuestionnaireListClient extends BasicClient<
   IGetPayload<string>,
   ISessionQuestionnaireLink[]
-> {}
-class PersonalRecordsClient extends BasicClient<IGetPayload, IPersonalRecord[]> {}
+> {
+}
+class PersonalRecordsClient extends BasicClient<IGetPayload, IPersonalRecord[]> {
+}
 class CathedraTimetableClient extends BasicClient<
   IGetPayload<ICathedraTimetablePayload>,
   ICathedraTimetable
-> {}
-class GroupTimetableClient extends BasicClient<IGetPayload<IGroupTimetablePayload>, ITimeTable> {}
+> {
+}
+class GroupTimetableClient extends BasicClient<IGetPayload<IGroupTimetablePayload>, ITimeTable> {
+}
 class DisciplineEducationalComplexClient extends BasicClient<
   IGetPayload<IDisciplineEducationalComplexPayload>,
   IDisciplineEducationalComplex
-> {}
+> {
+}
 class DisciplineEducationalComplexThemeClient extends BasicClient<
   IGetPayload<IDisciplineEducationalComplexThemePayload>,
   IDisciplineEducationalComplexTheme
-> {}
-class ExamQuestionsClient extends BasicClient<IGetPayload<string>, string> {}
-class DigitalResourcesClient extends BasicClient<IGetPayload, IDigitalResource[]> {}
+> {
+}
+class ExamQuestionsClient extends BasicClient<IGetPayload<string>, string> {
+}
+class DigitalResourcesClient extends BasicClient<IGetPayload, IDigitalResource[]> {
+}
 
 export default class Client implements BaseClient {
-  private absencesClient: AbsencesClient;
-  private announceClient: AnnounceClient;
-  private timeTableClient: TimeTableClient;
-  private messageClient: MessageClient;
-  private orderClient: OrderClient;
-  private ratingClient: RatingClient;
-  private signsClient: SignsClient;
-  private pointUpdatesClient: PointUpdatesClient;
-  private marksClient: MarksClient;
-  private studentClient: StudentClient;
-  private teacherClient: TeachersClient;
-  private teachPlanClient: TeachPlanClient;
-  private calendarScheduleClient: CalendarScheduleClient;
-  private certificateClient: CertificateClient;
-  private sessionQuestionnaireClient: SessionQuestionnaireClient;
-  private sessionQuestionnaireListClient: SessionQuestionnaireListClient;
-  private personalRecordsClient: PersonalRecordsClient;
-  private cathedraTimetableClient: CathedraTimetableClient;
-  private groupTimetableClient: GroupTimetableClient;
-  private disciplineEducationalComplexClient: DisciplineEducationalComplexClient;
-  private disciplineEducationalComplexThemeClient: DisciplineEducationalComplexThemeClient;
-  private digitalResourcesClient: DigitalResourcesClient;
-  private examQuestionsClient: ExamQuestionsClient;
+  private readonly absencesClient: AbsencesClient;
+  private readonly announceClient: AnnounceClient;
+  private readonly timeTableClient: TimeTableClient;
+  private readonly messageClient: MessageClient;
+  private readonly orderClient: OrderClient;
+  private readonly ratingClient: RatingClient;
+  private readonly signsClient: SignsClient;
+  private readonly pointUpdatesClient: PointUpdatesClient;
+  private readonly marksClient: MarksClient;
+  private readonly studentClient: StudentClient;
+  private readonly teacherClient: TeachersClient;
+  private readonly teachPlanClient: TeachPlanClient;
+  private readonly calendarScheduleClient: CalendarScheduleClient;
+  private readonly certificateClient: CertificateClient;
+  private readonly sessionQuestionnaireClient: SessionQuestionnaireClient;
+  private readonly sessionQuestionnaireListClient: SessionQuestionnaireListClient;
+  private readonly personalRecordsClient: PersonalRecordsClient;
+  private readonly cathedraTimetableClient: CathedraTimetableClient;
+  private readonly groupTimetableClient: GroupTimetableClient;
+  private readonly disciplineEducationalComplexClient: DisciplineEducationalComplexClient;
+  private readonly disciplineEducationalComplexThemeClient: DisciplineEducationalComplexThemeClient;
+  private readonly digitalResourcesClient: DigitalResourcesClient;
+  private readonly examQuestionsClient: ExamQuestionsClient;
 
   constructor() {
     this.absencesClient = new AbsencesClient(

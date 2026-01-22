@@ -1,6 +1,9 @@
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
-import { Linking, StyleSheet, Switch, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import {
+  Linking, StyleSheet, Switch, ToastAndroid, TouchableOpacity, View
+} from 'react-native';
+
 import { cache } from '~/cache/smartCache';
 import Text from '~/components/Text';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '~/hooks';
@@ -53,14 +56,14 @@ const ToggleSignNotification = () => {
 
       <TouchableOpacity onPress={() => Linking.openURL(NOTIFICATION_GUIDE_URL)}>
         <AntDesign // TODO: make as modal w/ blur
-          name="infocirlceo"
+          name='infocirlceo'
           size={24}
           color={globalStyles.textColor.color}
         />
       </TouchableOpacity>
       <Switch
         trackColor={{ false: 'gray', true: globalStyles.primaryText.color }}
-        thumbColor="white"
+        thumbColor='white'
         onValueChange={(value) => changeSignNotification(value)}
         value={signNotification}
       />

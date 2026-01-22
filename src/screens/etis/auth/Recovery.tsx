@@ -1,6 +1,7 @@
 // TODO: Refactor this component
 import React, { useState } from 'react';
 import { View } from 'react-native';
+
 import CustomReCaptcha from '~/components/ReCaptcha';
 import Screen from '~/components/Screen';
 import { httpClient } from '~/utils';

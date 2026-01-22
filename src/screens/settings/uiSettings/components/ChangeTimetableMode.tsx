@@ -1,11 +1,12 @@
 import { BottomSheetView } from '@gorhom/bottom-sheet';
 import React, { useRef } from 'react';
+
 import { cache } from '~/cache/smartCache';
 import BottomSheetModal from '~/components/BottomSheetModal';
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '~/hooks';
-import { TimetableModes, setUIConfig } from '~/redux/reducers/settingsSlice';
+import { setUIConfig, TimetableModes } from '~/redux/reducers/settingsSlice';
 import { fontSize } from '~/utils/texts';
 
 const formatTimetableMode = (mode: TimetableModes) =>

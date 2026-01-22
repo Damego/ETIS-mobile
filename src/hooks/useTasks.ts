@@ -35,7 +35,9 @@ const useTasks = ({ filter }: { filter?: (task: DisciplineTask) => boolean } = {
     []
   );
 
-  return { tasks, addTask, removeTask, saveTasks };
+  return {
+    tasks, addTask, removeTask, saveTasks
+  };
 };
 
 export default useTasks;

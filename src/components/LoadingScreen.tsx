@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+
 import { useGlobalStyles } from '~/hooks';
 
 import Screen from './Screen';
@@ -59,7 +60,7 @@ const TextsContainerVariant = () => (
 export const LoadingContainer = ({ variant }: { variant?: 'cards' | 'texts' }) => {
   if (!variant || variant === 'cards') {
     return <CardsContainerVariant />;
-  } else if (variant === 'texts') {
+  } if (variant === 'texts') {
     return <TextsContainerVariant />;
   }
 };

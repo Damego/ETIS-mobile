@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
+
 import { LoadingContainer } from '~/components/LoadingScreen';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
-import TimetableContainer from '~/components/timetable/TimetableContainer';
 import BellScheduleButton from '~/components/timetable/buttons/BellScheduleButton';
 import DisciplineTasksButton from '~/components/timetable/buttons/DisciplineTasksButton';
 import ToggleModeButton from '~/components/timetable/buttons/ToggleModeButton';
+import TimetableContainer from '~/components/timetable/TimetableContainer';
 import { useClient } from '~/data/client';
 import { useAppSelector } from '~/hooks';
 import useQuery from '~/hooks/useQuery';

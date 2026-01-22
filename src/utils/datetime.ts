@@ -1,5 +1,6 @@
-import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
+
+import dayjs from 'dayjs';
 
 type DateType = dayjs.Dayjs;
 
@@ -21,7 +22,7 @@ export const formatTime = (
   { disableTime, disableDate }: IFormatTimeProps = { disableTime: false, disableDate: false }
 ) => {
   if (disableTime && disableDate) return '';
-  date = date.locale('ru') as DateType;
+  date = date.locale('ru');
 
   if (disableTime) {
     return date.format(dateFormat);

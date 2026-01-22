@@ -2,6 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import dayjs from 'dayjs';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+
 import Text from '~/components/Text';
 import { useAppTheme } from '~/hooks/theme';
 import { capitalizeWord } from '~/utils/texts';
@@ -23,13 +24,15 @@ const WeekNavigation = ({
 
   return (
     <View style={styles.navigation}>
-      {selectedWeek !== 1 ? (
-        <TouchableOpacity onPress={onPrevPress}>
-          <AntDesign name={'left'} size={18} color={theme.colors.text} />
-        </TouchableOpacity>
-      ) : (
-        <View style={{ width: 20 }} />
-      )}
+      {selectedWeek !== 1
+        ? (
+          <TouchableOpacity onPress={onPrevPress}>
+            <AntDesign name={'left'} size={18} color={theme.colors.text} />
+          </TouchableOpacity>
+        )
+        : (
+          <View style={{ width: 20 }} />
+        )}
       <Text style={styles.infoText} onPress={onMainPress}>
         {capitalizeWord(selectedDate.format('MMMM'))}
         {selectedWeek ? ` • ${selectedWeek} неделя` : ''}

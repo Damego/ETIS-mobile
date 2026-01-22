@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+
 import ClickableText from '~/components/ClickableText';
 import { useGlobalStyles } from '~/hooks';
 

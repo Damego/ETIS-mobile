@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+
 import Card from '~/components/Card';
 import Text from '~/components/Text';
 import { useClient } from '~/data/client';
@@ -52,7 +53,7 @@ const PersonalRecord = ({
       {record.id && record.status === 'студент' && (
         <View>
           <TouchableOpacity onPress={changePersonalRecord}>
-            <AntDesign name="select1" size={24} color={globalStyles.textColor.color} />
+            <AntDesign name='select1' size={24} color={globalStyles.textColor.color} />
           </TouchableOpacity>
         </View>
       )}

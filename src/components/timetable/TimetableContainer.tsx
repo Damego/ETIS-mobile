@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import React from 'react';
+
 import DayTimetable from '~/components/timetable/dayTimetable/DayTimetable';
 import WeekTimetable from '~/components/timetable/weekTimetable/WeekTimetable';
 import { useAppSelector } from '~/hooks';

@@ -1,7 +1,10 @@
 import * as cheerio from 'cheerio';
 import dayjs from 'dayjs';
+
 import { ICathedraTimetable, IPeriod, TimetableTypes } from '~/models/cathedraTimetable';
-import { IAudience, ILesson, IPair, ISubject, ITeacher, WeekInfo } from '~/models/timeTable';
+import {
+  IAudience, ILesson, IPair, ISubject, ITeacher, WeekInfo
+} from '~/models/timeTable';
 import { dateRegex, disciplineRegex, numberRegex } from '~/parser/regex';
 
 import { getDisciplineType, getTextField } from './utils';

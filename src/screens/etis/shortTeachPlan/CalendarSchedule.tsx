@@ -1,6 +1,9 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator, StyleSheet, TouchableOpacity, View
+} from 'react-native';
+
 import BorderLine from '~/components/BorderLine';
 import Text from '~/components/Text';
 import { useClient } from '~/data/client';
@@ -40,16 +43,18 @@ const CalendarScheduleMenu = ({ data }: { data?: ICalendarSchedule }) => {
   return (
     <View>
       <BorderLine />
-      {data ? (
-        data.sessions.map((session, index) => (
-          <View key={session.title}>
-            <SessionSchedule session={session} />
-            {index !== data.sessions.length - 1 && <BorderLine />}
-          </View>
-        ))
-      ) : (
-        <ActivityIndicator size="large" color={globalStyles.primaryText.color} />
-      )}
+      {data
+        ? (
+          data.sessions.map((session, index) => (
+            <View key={session.title}>
+              <SessionSchedule session={session} />
+              {index !== data.sessions.length - 1 && <BorderLine />}
+            </View>
+          ))
+        )
+        : (
+          <ActivityIndicator size='large' color={globalStyles.primaryText.color} />
+        )}
     </View>
   );
 };

@@ -3,7 +3,10 @@ import dayjs from 'dayjs';
 import * as Clipboard from 'expo-clipboard';
 import { Image } from 'expo-image';
 import React from 'react';
-import { Linking, StyleSheet, ToastAndroid, View } from 'react-native';
+import {
+  Linking, StyleSheet, ToastAndroid, View
+} from 'react-native';
+
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
 import { useClient } from '~/data/client';
@@ -95,15 +98,17 @@ export const AudienceInfo = ({ lesson }: { lesson: ILesson }) => {
     const assetDetails = getAssetByPlatformType(lesson.distancePlatform.type);
     return (
       <View style={styles.container}>
-        {assetDetails ? (
-          <Image
-            source={assetDetails[0]}
-            style={{ height: 30, width: 30 }}
-            tintColor={!assetDetails[1] && theme.colors.text}
-          />
-        ) : (
-          <AntDesign name={'questioncircleo'} size={28} color={theme.colors.text} />
-        )}
+        {assetDetails
+          ? (
+            <Image
+              source={assetDetails[0]}
+              style={{ height: 30, width: 30 }}
+              tintColor={!assetDetails[1] && theme.colors.text}
+            />
+          )
+          : (
+            <AntDesign name={'questioncircleo'} size={28} color={theme.colors.text} />
+          )}
         <ClickableText
           text={lesson.distancePlatform.name}
           onPress={() => {
@@ -125,9 +130,7 @@ export const AudienceInfo = ({ lesson }: { lesson: ILesson }) => {
   return <IconInfo icon={'business-outline'} text={audience} />;
 };
 
-export const GroupsInfo = ({ groups }: { groups: string[] }) => {
-  return <IconInfo icon={'school-outline'} text={groups.join('\n')} />;
-};
+export const GroupsInfo = ({ groups }: { groups: string[] }) => <IconInfo icon={'school-outline'} text={groups.join('\n')} />;
 
 const styles = StyleSheet.create({
   container: {

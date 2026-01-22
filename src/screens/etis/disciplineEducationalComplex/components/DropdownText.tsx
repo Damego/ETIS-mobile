@@ -1,6 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
 import { View } from 'react-native';
+
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
 import { useAppTheme } from '~/hooks/theme';

@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
+
 import { useAppTheme } from '~/hooks/theme';
 import { headerParams } from '~/navigation/header';
 import AccountSettingsButton from '~/navigation/headerButtons/AccountSettingsButton';

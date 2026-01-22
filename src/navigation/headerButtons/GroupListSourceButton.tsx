@@ -2,6 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
 import { Linking, TouchableOpacity, View } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
+
 import ClickableText from '~/components/ClickableText';
 import { useGlobalStyles } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
@@ -23,7 +24,7 @@ const GroupListSourceButton = () => {
             marginHorizontal: 14,
           }}
         >
-          <AntDesign name="questioncircleo" size={28} color={theme.colors.text} />
+          <AntDesign name='questioncircleo' size={28} color={theme.colors.text} />
         </TouchableOpacity>
       )}
       popoverStyle={{

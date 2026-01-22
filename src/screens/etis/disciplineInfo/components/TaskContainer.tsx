@@ -1,7 +1,10 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import dayjs from 'dayjs';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, {
+  useCallback, useMemo, useRef, useState
+} from 'react';
 import { StyleSheet, View } from 'react-native';
+
 import Text from '~/components/Text';
 import TaskContext from '~/context/taskContext';
 import useTasks from '~/hooks/useTasks';

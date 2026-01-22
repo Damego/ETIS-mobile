@@ -1,8 +1,10 @@
-import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
+
+import dayjs from 'dayjs';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
+
 import BorderLine from '~/components/BorderLine';
 import Card from '~/components/Card';
 import DisciplineType from '~/components/DisciplineType';
@@ -13,9 +15,11 @@ import { EducationStackScreenProps } from '~/navigation/types';
 import { fontSize } from '~/utils/texts';
 import { getStyles } from '~/utils/webView';
 
+import {
+  AudienceInfo, GroupsInfo, TeacherInfo, TimeInfo
+} from './components/info';
 import Note from './components/Note';
 import { TaskContainer } from './components/TaskContainer';
-import { AudienceInfo, GroupsInfo, TeacherInfo, TimeInfo } from './components/info';
 
 const DisciplineInfo = ({ route }: EducationStackScreenProps<'DisciplineInfo'>) => {
   const theme = useAppTheme();

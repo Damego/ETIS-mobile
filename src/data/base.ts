@@ -19,19 +19,19 @@ import { IPersonalRecord } from '~/models/personalRecords';
 import { IPointUpdates } from '~/models/pointUpdates';
 import { ISessionRating } from '~/models/rating';
 import {
+  errorResult,
+  failedResult,
   GetResultType,
   IGetPayload,
   IGetResult,
-  RequestType,
-  errorResult,
-  failedResult,
   loginPageResult,
+  RequestType,
 } from '~/models/results';
 import { ISessionMarks } from '~/models/sessionMarks';
 import { ISessionPoints } from '~/models/sessionPoints';
 import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '~/models/sessionQuestionnaire';
-import { ISessionTeachPlan } from '~/models/teachPlan';
 import { ITeacher } from '~/models/teachers';
+import { ISessionTeachPlan } from '~/models/teachPlan';
 import { ITimeTable } from '~/models/timeTable';
 import { StudentInfo } from '~/parser/menu';
 import { isLoginPage } from '~/parser/utils';
@@ -89,7 +89,7 @@ export class BasicClient<P extends IGetPayload, T> {
     this.httpMethod = httpMethod;
     this.parseMethod = parseMethod;
     this.placeMethod = placeMethod;
-    // eslint-disable-next-line prefer-destructuring
+
     this.name = this.constructor.name.split('Client')[0];
   }
 

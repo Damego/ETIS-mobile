@@ -181,7 +181,7 @@ export default function parseTimeTable(html: string) {
           lessons.push({
             subject,
             audience,
-            isDistance: audience.string?.includes?.('Дистанционно') || !!distancePlatform,
+            isDistance: audience.string?.includes?.('Дистанционно') || Boolean(distancePlatform),
             distancePlatform,
             teacher: getTeacher(lesson),
             announceHTML,

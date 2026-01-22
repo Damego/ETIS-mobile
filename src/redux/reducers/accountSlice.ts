@@ -1,4 +1,5 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import { IGroup } from '~/api/psutech/types';
 
 export interface UserCredentials {
@@ -68,7 +69,7 @@ const accountSlice = createSlice({
       state.isSignedIn = true;
       state.isSignedOut = false;
       state.isDemo = false;
-      if (action && action.payload.isOffline !== undefined) {
+      if (action?.payload.isOffline !== undefined) {
         state.isOfflineMode = action.payload.isOffline;
       }
       state.accountType = AccountType.AUTHORIZED_STUDENT;

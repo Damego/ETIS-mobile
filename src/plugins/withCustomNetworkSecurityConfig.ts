@@ -37,7 +37,7 @@ module.exports = function withExpoNetworkSecurityConfig(config, { enable, networ
       await cp(
         join(projectRoot, certificatesFolderPath),
         join(resourcePath, '/raw'),
-        {recursive: true}
+        { recursive: true }
       );
 
       return config;

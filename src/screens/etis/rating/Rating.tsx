@@ -2,7 +2,9 @@ import { AntDesign } from '@expo/vector-icons';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import React, { useRef } from 'react';
 import { View } from 'react-native';
+
 import BorderLine from '~/components/BorderLine';
+import PeriodsBottomSheet from '~/components/bottomSheets/PeriodsBottomSheet';
 import CardHeaderOut from '~/components/CardHeaderOut';
 import ClickableText from '~/components/ClickableText';
 import LoadingScreen, { LoadingContainer } from '~/components/LoadingScreen';
@@ -10,7 +12,6 @@ import NoData from '~/components/NoData';
 import Screen from '~/components/Screen';
 import SessionDropdown from '~/components/SessionDropdown';
 import Text from '~/components/Text';
-import PeriodsBottomSheet from '~/components/bottomSheets/PeriodsBottomSheet';
 import { useAppTheme } from '~/hooks/theme';
 import useRatingQuery from '~/hooks/useRatingQuery';
 import { IGroup } from '~/models/rating';
@@ -68,7 +69,7 @@ export default function Rating() {
         <ClickableText
           onPress={() => modalRef.current.present()}
           textStyle={fontSize.big}
-          iconRight={<AntDesign name="swap" size={18} color={theme.colors.text} />}
+          iconRight={<AntDesign name='swap' size={18} color={theme.colors.text} />}
           viewStyle={{ gap: 4, alignSelf: 'flex-end' }}
         >
           {data.session.current} {data.session.name}

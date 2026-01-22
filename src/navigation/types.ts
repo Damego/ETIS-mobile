@@ -5,6 +5,7 @@ import type {
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
 import type { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
+
 import { IAvailableCertificate } from '~/models/certificate';
 import { IDisciplineEducationalComplexThemeLink } from '~/models/disciplineEducationalComplex';
 import { IMessage } from '~/models/messages';

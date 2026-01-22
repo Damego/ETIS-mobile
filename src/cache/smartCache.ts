@@ -1,4 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
+
 import { IAbsence } from '~/models/absences';
 import { IAnnounce } from '~/models/announce';
 import { ICalendarSchedule } from '~/models/calendarSchedule';
@@ -21,8 +22,8 @@ import { IPointUpdates } from '~/models/pointUpdates';
 import { ISessionRating } from '~/models/rating';
 import { ISessionMarks } from '~/models/sessionMarks';
 import { ISessionPoints } from '~/models/sessionPoints';
-import { ISessionTeachPlan } from '~/models/teachPlan';
 import { ITeacher } from '~/models/teachers';
+import { ISessionTeachPlan } from '~/models/teachPlan';
 import { ITimeTable } from '~/models/timeTable';
 import { StudentInfo } from '~/parser/menu';
 import {
@@ -51,6 +52,7 @@ export default class SmartCache {
     list: FieldCache<IOrder[]>;
     info: MappedCache<string, string>;
   };
+
   personalRecords: FieldCache<IPersonalRecord[]>;
   timeTable: MappedCache<number, ITimeTable>;
   teachers: FieldCache<ITeacher[]>;
@@ -73,7 +75,7 @@ export default class SmartCache {
   account: FieldCache<Account>;
   app: FieldCache<AppConfig>;
 
-  private keys = {
+  private readonly keys = {
     // ETIS related keys
     ABSENCES: 'ABSENCES',
     ANNOUNCES: 'ANNOUNCES',

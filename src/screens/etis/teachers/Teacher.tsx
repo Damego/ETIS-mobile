@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+
 import DisciplineType from '~/components/DisciplineType';
 import Text from '~/components/Text';
 import { ITeacher } from '~/models/teachers';

@@ -1,4 +1,5 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import { ISessionMarks } from '~/models/sessionMarks';
 
 interface SignsState {

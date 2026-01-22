@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+
 import Card from '~/components/Card';
 import DisciplineType from '~/components/DisciplineType';
 import Screen from '~/components/Screen';
@@ -23,19 +24,17 @@ const DisciplineWorkHours = ({
   classWorkHours: number;
   soloWorkHours: number;
   totalWorkHours: number;
-}) => {
-  return (
-    <>
-      <Text style={[fontSize.big, styles.boldText]}>Трудоёмкость:</Text>
+}) => (
+  <>
+    <Text style={[fontSize.big, styles.boldText]}>Трудоёмкость:</Text>
 
-      <Text style={fontSize.medium}>
-        Аудиторная работа: {classWorkHours} часов ({classWorkHours / 2} пар)
-      </Text>
-      <Text style={fontSize.medium}>Самостоятельная работа: {soloWorkHours} часов</Text>
-      <Text style={fontSize.medium}>Всего: {totalWorkHours} часов</Text>
-    </>
-  );
-};
+    <Text style={fontSize.medium}>
+      Аудиторная работа: {classWorkHours} часов ({classWorkHours / 2} пар)
+    </Text>
+    <Text style={fontSize.medium}>Самостоятельная работа: {soloWorkHours} часов</Text>
+    <Text style={fontSize.medium}>Всего: {totalWorkHours} часов</Text>
+  </>
+);
 
 const DisciplineEducationalComplex = ({
   route,
@@ -73,13 +72,13 @@ const DisciplineEducationalComplex = ({
 
       {data && (
         <Card style={{ marginTop: 'auto', marginBottom: '4%', gap: 8 }}>
-          {!!data.themes?.length && (
+          {Boolean(data.themes?.length) && (
             <Themes themes={data.themes} disciplineName={data.discipline} />
           )}
-          {!!data.examQuestions?.length && <ExamQuestions questions={data.examQuestions} />}
+          {Boolean(data.examQuestions?.length) && <ExamQuestions questions={data.examQuestions} />}
           {data.evaluationIndicators && <EvaluationIndicators data={data.evaluationIndicators} />}
           {data.additionalMaterials && <AdditionalMaterials data={data.additionalMaterials} />}
-          {!!data.plannedLearningOutcome?.length && (
+          {Boolean(data.plannedLearningOutcome?.length) && (
             <PlannedLearningOutcome data={data.plannedLearningOutcome} />
           )}
         </Card>

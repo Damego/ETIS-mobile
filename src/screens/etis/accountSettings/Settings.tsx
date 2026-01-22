@@ -5,15 +5,13 @@ import ChangeEmailSetting from './settingsComponents/ChangeEmailSetting';
 import ChangePasswordSetting from './settingsComponents/ChangePasswordSetting';
 import LogOut from './settingsComponents/LogOut';
 
-const Settings = () => {
-  return (
-    <View style={styles.card}>
-      <ChangeEmailSetting />
-      <ChangePasswordSetting />
-      <LogOut />
-    </View>
-  );
-};
+const Settings = () => (
+  <View style={styles.card}>
+    <ChangeEmailSetting />
+    <ChangePasswordSetting />
+    <LogOut />
+  </View>
+);
 
 export default Settings;
 

@@ -18,8 +18,8 @@ import { GetResultType, IGetPayload, IGetResult } from '~/models/results';
 import { ISessionMarks } from '~/models/sessionMarks';
 import { ISessionPoints } from '~/models/sessionPoints';
 import { ISessionQuestionnaire, ISessionQuestionnaireLink } from '~/models/sessionQuestionnaire';
-import { ISessionTeachPlan } from '~/models/teachPlan';
 import { ITeacher } from '~/models/teachers';
+import { ISessionTeachPlan } from '~/models/teachPlan';
 import { DistancePlatformTypes, ITimeTable, WeekTypes } from '~/models/timeTable';
 import { StudentInfo } from '~/parser/menu';
 import bind from '~/utils/methodBinder';
@@ -50,7 +50,7 @@ export default class DemoClient implements BaseClient {
 
   async getSessionQuestionnaire(): Promise<IGetResult<ISessionQuestionnaire>> {
     const data: ISessionQuestionnaire =
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
+
       require('./demo-questionnaire.json') as ISessionQuestionnaire;
     return this.toResult(data);
   }
@@ -123,127 +123,127 @@ export default class DemoClient implements BaseClient {
         pairs:
           i <= 2
             ? [
-                {
-                  position: 1,
-                  time: '8:00',
-                  lessons: [
-                    {
-                      audience: {
-                        string: 'ауд. 411/2 (2 корпус, 3 этаж)',
-                        number: '411/2',
-                        floor: '3',
-                        building: '2',
-                      },
-                      subject: {
-                        string: 'Математический анализ (лек)',
-                        discipline: 'Математический анализ',
-                        type: LessonTypes.LECTURE,
-                      },
-                      isDistance: false,
-                      teacher: {
-                        id: '0',
-                        name: 'Иванов И.П',
-                      },
+              {
+                position: 1,
+                time: '8:00',
+                lessons: [
+                  {
+                    audience: {
+                      string: 'ауд. 411/2 (2 корпус, 3 этаж)',
+                      number: '411/2',
+                      floor: '3',
+                      building: '2',
                     },
-                  ],
-                },
-                {
-                  position: 2,
-                  time: '9:45',
-                  lessons: [
-                    {
-                      audience: {
-                        string: 'ауд. 411/2 (2 корпус, 3 этаж)',
-                        number: '411/2',
-                        floor: '3',
-                        building: '2',
-                      },
-                      subject: {
-                        string: 'Комплексный анализ (практ)',
-                        discipline: 'Комплексный анализ',
-                        type: LessonTypes.PRACTICE,
-                      },
-                      isDistance: false,
-                      teacher: {
-                        id: '1',
-                        name: 'Иванов П.И',
-                      },
+                    subject: {
+                      string: 'Математический анализ (лек)',
+                      discipline: 'Математический анализ',
+                      type: LessonTypes.LECTURE,
                     },
-                  ],
-                },
-                {
-                  position: 3,
-                  time: '11: 30',
-                  lessons: [
-                    {
-                      audience: {
-                        string: 'ауд. 411/2 (2 корпус, 3 этаж)',
-                        number: '411/2',
-                        floor: '3',
-                        building: '2',
-                      },
-                      subject: {
-                        string: 'Функциональный анализ (лаб)',
-                        discipline: 'Функциональный анализ',
-                        type: LessonTypes.LABORATORY,
-                      },
-                      isDistance: false,
-                      teacher: {
-                        id: '0',
-                        name: 'Иванов И.П',
-                      },
+                    isDistance: false,
+                    teacher: {
+                      id: '0',
+                      name: 'Иванов И.П',
                     },
-                    {
-                      audience: {
-                        string: 'ауд. Дистанционно (on-line корпус)',
-                        number: 'Дистанционно',
-                        floor: undefined,
-                        building: 'on-line',
-                      },
-                      subject: {
-                        string: 'Программный анализ (лек)',
-                        discipline: 'Программный анализ',
-                        type: LessonTypes.LECTURE,
-                      },
-                      isDistance: true,
-                      teacher: {
-                        id: '0',
-                        name: 'Иванов И.П',
-                      },
+                  },
+                ],
+              },
+              {
+                position: 2,
+                time: '9:45',
+                lessons: [
+                  {
+                    audience: {
+                      string: 'ауд. 411/2 (2 корпус, 3 этаж)',
+                      number: '411/2',
+                      floor: '3',
+                      building: '2',
                     },
-                  ],
-                },
-                {
-                  position: 4,
-                  time: '13:30',
-                  lessons: [
-                    {
-                      audience: {
-                        string: 'ауд. Дистанционно (on-line корпус)',
-                        number: 'Дистанционно',
-                        floor: undefined,
-                        building: 'on-line',
-                      },
-                      subject: {
-                        string: 'Программный анализ (лек)',
-                        discipline: 'Программный анализ',
-                        type: LessonTypes.LECTURE,
-                      },
-                      isDistance: true,
-                      teacher: {
-                        id: '0',
-                        name: 'Иванов И.П',
-                      },
-                      distancePlatform: {
-                        name: 'Платформа BBB',
-                        url: 'https://bigbluebutton.org/',
-                        type: DistancePlatformTypes.bbb,
-                        imageUrl: '',
-                      },
+                    subject: {
+                      string: 'Комплексный анализ (практ)',
+                      discipline: 'Комплексный анализ',
+                      type: LessonTypes.PRACTICE,
                     },
-                  ],
-                },
-              ]
+                    isDistance: false,
+                    teacher: {
+                      id: '1',
+                      name: 'Иванов П.И',
+                    },
+                  },
+                ],
+              },
+              {
+                position: 3,
+                time: '11: 30',
+                lessons: [
+                  {
+                    audience: {
+                      string: 'ауд. 411/2 (2 корпус, 3 этаж)',
+                      number: '411/2',
+                      floor: '3',
+                      building: '2',
+                    },
+                    subject: {
+                      string: 'Функциональный анализ (лаб)',
+                      discipline: 'Функциональный анализ',
+                      type: LessonTypes.LABORATORY,
+                    },
+                    isDistance: false,
+                    teacher: {
+                      id: '0',
+                      name: 'Иванов И.П',
+                    },
+                  },
+                  {
+                    audience: {
+                      string: 'ауд. Дистанционно (on-line корпус)',
+                      number: 'Дистанционно',
+                      floor: undefined,
+                      building: 'on-line',
+                    },
+                    subject: {
+                      string: 'Программный анализ (лек)',
+                      discipline: 'Программный анализ',
+                      type: LessonTypes.LECTURE,
+                    },
+                    isDistance: true,
+                    teacher: {
+                      id: '0',
+                      name: 'Иванов И.П',
+                    },
+                  },
+                ],
+              },
+              {
+                position: 4,
+                time: '13:30',
+                lessons: [
+                  {
+                    audience: {
+                      string: 'ауд. Дистанционно (on-line корпус)',
+                      number: 'Дистанционно',
+                      floor: undefined,
+                      building: 'on-line',
+                    },
+                    subject: {
+                      string: 'Программный анализ (лек)',
+                      discipline: 'Программный анализ',
+                      type: LessonTypes.LECTURE,
+                    },
+                    isDistance: true,
+                    teacher: {
+                      id: '0',
+                      name: 'Иванов И.П',
+                    },
+                    distancePlatform: {
+                      name: 'Платформа BBB',
+                      url: 'https://bigbluebutton.org/',
+                      type: DistancePlatformTypes.bbb,
+                      imageUrl: '',
+                    },
+                  },
+                ],
+              },
+            ]
             : [],
       });
     }
@@ -840,7 +840,6 @@ export default class DemoClient implements BaseClient {
   async getCathedraTimetable(
     payload: IGetPayload<ICathedraTimetablePayload>
   ): Promise<IGetResult<ICathedraTimetable>> {
-    // eslint-disable-next-line import/no-dynamic-require
     let data: ICathedraTimetable;
     if (payload.data.teacherId) data = require('./teacherTimetable.json');
     else data = require('./cathedraTimetable.json');

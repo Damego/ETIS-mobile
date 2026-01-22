@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+
 import CenteredText from '~/components/CenteredText';
 import Text from '~/components/Text';
 import { getRandomItem } from '~/utils/utils';

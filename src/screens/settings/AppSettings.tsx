@@ -1,4 +1,5 @@
 import React from 'react';
+
 import Card from '~/components/Card';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
@@ -23,9 +24,9 @@ export default function AppSettings() {
       <Card>
         <ToggleSignNotification />
       </Card>
-      {/*<Card>*/}
-      {/*  <ResetIntroSetting />*/}
-      {/*</Card>*/}
+      {/* <Card> */}
+      {/*  <ResetIntroSetting /> */}
+      {/* </Card> */}
 
       {/* Настройки приложения */}
       <Text style={[fontSize.big, { fontWeight: 'bold' }]}>Приложение</Text>

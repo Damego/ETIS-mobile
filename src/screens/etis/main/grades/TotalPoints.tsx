@@ -1,5 +1,8 @@
 import React from 'react';
-import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
+import {
+  StyleProp, StyleSheet, TextStyle, View, ViewStyle
+} from 'react-native';
+
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
 import { ISubject } from '~/models/sessionPoints';

@@ -2,6 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+
 import DisciplineType from '~/components/DisciplineType';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';

@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio';
+
 import {
   IAvailableCertificate,
   ICertificate,

@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+
 import Text from '~/components/Text';
 import { useAppTheme } from '~/hooks/theme';
 import useTasks from '~/hooks/useTasks';
@@ -27,13 +28,15 @@ const DisciplineTasksButton = () => {
       }}
       style={{ justifyContent: 'center' }}
     >
-      {tasks.length ? (
-        <View style={[styles.circle, { borderColor: theme.colors.text }]}>
-          <Text style={[styles.text, { color: theme.colors.text }]}>{tasks.length}</Text>
-        </View>
-      ) : (
-        <AntDesign name="checkcircleo" size={24} color={theme.colors.text} />
-      )}
+      {tasks.length
+        ? (
+          <View style={[styles.circle, { borderColor: theme.colors.text }]}>
+            <Text style={[styles.text, { color: theme.colors.text }]}>{tasks.length}</Text>
+          </View>
+        )
+        : (
+          <AntDesign name='checkcircleo' size={24} color={theme.colors.text} />
+        )}
     </TouchableOpacity>
   );
 };

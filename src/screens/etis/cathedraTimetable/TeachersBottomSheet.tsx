@@ -1,10 +1,11 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useRef } from 'react';
 import { TouchableOpacity } from 'react-native';
+
 import BottomSheetModal from '~/components/BottomSheetModal';
+import OptionsBottomSheet from '~/components/bottomSheets/OptionsBottomSheet';
 import Card from '~/components/Card';
 import Text from '~/components/Text';
-import OptionsBottomSheet from '~/components/bottomSheets/OptionsBottomSheet';
 import { useGlobalStyles } from '~/hooks';
 import { ITeacher, ITimeTable } from '~/models/timeTable';
 import { fontSize } from '~/utils/texts';

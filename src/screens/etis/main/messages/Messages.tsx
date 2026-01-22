@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, useWindowDimensions } from 'react-native';
+import { useWindowDimensions, View } from 'react-native';
+
 import BorderLine from '~/components/BorderLine';
 import { LoadingContainer } from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
@@ -18,7 +19,7 @@ const Messages = ({ jumpTo, route }: SceneProps) => {
   const Navigation = () => (
     <View style={{ marginBottom: '2%', gap: 8 }}>
       <MessagesShortcuts onShortcutPress={jumpTo} currentShortcut={route.key} />
-      {!!data && (
+      {Boolean(data) && (
         <PageNavigator
           firstPage={1}
           lastPage={data.lastPage}

@@ -66,7 +66,9 @@ const FileTextLink = ({
 
     isDownloading.current = false;
     downloadedFiles[fileName] = fileData.uri;
-    await finishDownloadNotification({ id, channelId, fileName, fileUri: fileData.uri });
+    await finishDownloadNotification({
+      id, channelId, fileName, fileUri: fileData.uri
+    });
 
     try {
       await saveFileFromCache(fileData, fileName);

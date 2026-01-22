@@ -7,15 +7,16 @@ import { setBackgroundColorAsync } from 'expo-system-ui';
 import React, { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 import { cache } from '~/cache/smartCache';
 import { useAppSelector } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
 import useNotification from '~/hooks/useNotifications';
 import EducationNavigation from '~/navigation/EducationNavigation';
+import { headerParams } from '~/navigation/header';
 import StartNavigator from '~/navigation/StartNavigator';
 import TeacherNavigator from '~/navigation/TeacherNavigator';
 import UnauthorizedStudentNavigator from '~/navigation/UnauthorizedStudentNavigator';
-import { headerParams } from '~/navigation/header';
 import { AccountType } from '~/redux/reducers/accountSlice';
 import About from '~/screens/about/About';
 import ReleaseNotes from '~/screens/releaseNotes/ReleaseNotes';
@@ -82,23 +83,23 @@ const StackNavigator = () => {
           <BottomSheetModalProvider>
             <Stack.Navigator screenOptions={{ headerShown: true, ...headerParams(theme) }}>
               <Stack.Screen
-                name="TabNavigator"
+                name='TabNavigator'
                 component={educationScreen}
                 options={{ headerShown: false }}
               />
               <Stack.Screen
-                name="AppSettings"
+                name='AppSettings'
                 component={AppSettings}
                 options={{ title: 'Настройки' }}
               />
               <Stack.Screen
-                name="ChangeAppUI"
+                name='ChangeAppUI'
                 component={ChangeAppUI}
                 options={{ title: 'Интерфейс' }}
               />
-              <Stack.Screen name="AboutApp" component={About} options={{ title: 'О приложении' }} />
+              <Stack.Screen name='AboutApp' component={About} options={{ title: 'О приложении' }} />
               <Stack.Screen
-                name="ReleaseNotes"
+                name='ReleaseNotes'
                 component={ReleaseNotes}
                 options={{ headerShown: false }}
               />

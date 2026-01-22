@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+
 import { fontSize } from '~/utils/texts';
 
 import { useGlobalStyles } from '../hooks';
@@ -64,7 +65,7 @@ const Button = React.forwardRef<View | Text | TouchableOpacity, ButtonProps>(
     if (showLoading) {
       return (
         <View style={styles[variant].view} ref={ref as React.Ref<View>}>
-          <ActivityIndicator size="large" color={styles[variant].textColor} />
+          <ActivityIndicator size='large' color={styles[variant].textColor} />
         </View>
       );
     }

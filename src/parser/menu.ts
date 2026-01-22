@@ -1,4 +1,5 @@
 import { load } from 'cheerio';
+
 import { StudentData } from '~/models/student';
 
 import { getTextField } from './utils';

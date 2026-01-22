@@ -1,6 +1,9 @@
 import { Checkbox } from 'expo-checkbox';
 import React, { useState } from 'react';
-import { Image, StyleSheet, TextInput, View } from 'react-native';
+import {
+  Image, StyleSheet, TextInput, View
+} from 'react-native';
+
 import { Button } from '~/components/Button';
 import ClickableText from '~/components/ClickableText';
 import PasswordInput from '~/components/PasswordInput';
@@ -65,20 +68,20 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
         onChangeText={(newLogin) => {
           setLogin(newLogin);
         }}
-        placeholder="Эл. почта / фамилия"
+        placeholder='Эл. почта / фамилия'
         placeholderTextColor={theme.colors.inputPlaceholder}
-        autoComplete="email"
-        inputMode="email"
-        keyboardType="email-address"
+        autoComplete='email'
+        inputMode='email'
+        keyboardType='email-address'
         selectionColor={theme.colors.primary}
-        autoCapitalize="none"
+        autoCapitalize='none'
       />
       <PasswordInput
         style={[styles.input, globalStyles.border, globalStyles.textColor]}
         onChangeText={setPassword}
-        placeholder="Пароль"
+        placeholder='Пароль'
         placeholderTextColor={theme.colors.inputPlaceholder}
-        autoComplete="password"
+        autoComplete='password'
         selectionColor={theme.colors.primary}
         onSubmitEditing={() => onSubmit(login, password)}
         iconColor={theme.colors.text}
@@ -100,14 +103,14 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
 
         <ClickableText
           textStyle={fontSize.small}
-          text="Забыли пароль?"
+          text='Забыли пароль?'
           onPress={() => setShowRecovery(true)}
           colorVariant={'text2'}
         />
       </View>
 
       <View style={{ width: '100%' }}>
-        <Button text="Войти" onPress={() => onSubmit(login, password)} variant={'primary'} />
+        <Button text='Войти' onPress={() => onSubmit(login, password)} variant={'primary'} />
       </View>
     </View>
   );

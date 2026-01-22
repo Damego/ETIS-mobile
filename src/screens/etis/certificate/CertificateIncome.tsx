@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
+
 import { Button } from '~/components/Button';
 import Card from '~/components/Card';
 import Screen from '~/components/Screen';
@@ -27,13 +28,11 @@ const makeMailOptions = ({
   faculty: string;
   year: string;
   certPeriod: string;
-}) => {
-  return {
-    recipients: [stipEmail],
-    subject: 'Справка о доходах',
-    body: `1. ФИО: ${fio}\n2. Факультет: ${faculty}, курс: ${year}\n3. Период в месяцах: ${certPeriod}`,
-  };
-};
+}) => ({
+  recipients: [stipEmail],
+  subject: 'Справка о доходах',
+  body: `1. ФИО: ${fio}\n2. Факультет: ${faculty}, курс: ${year}\n3. Период в месяцах: ${certPeriod}`,
+});
 
 export default function CertificateIncome() {
   const globalStyles = useGlobalStyles();
@@ -54,7 +53,7 @@ export default function CertificateIncome() {
     },
   });
 
-  const isApplicable: boolean = !!fio && !!faculty && !!year && !!certPeriod;
+  const isApplicable: boolean = Boolean(fio) && Boolean(faculty) && Boolean(year) && Boolean(certPeriod);
 
   return (
     <Screen>
@@ -65,27 +64,27 @@ export default function CertificateIncome() {
         </Text>
         <Card style={{ marginTop: 10 }}>
           <Input
-            name="ФИО"
-            placeholder="Иванов Иван Иванович"
+            name='ФИО'
+            placeholder='Иванов Иван Иванович'
             value={fio}
             onUpdate={setFio}
             popover={<></>}
           />
           <Input
-            name="Факультет"
-            placeholder="Механико-математический"
+            name='Факультет'
+            placeholder='Механико-математический'
             value={faculty}
             onUpdate={setFaculty}
             popover={<></>}
           />
-          <Input name="Курс" placeholder="1" value={year} onUpdate={setYear} popover={<></>} />
+          <Input name='Курс' placeholder='1' value={year} onUpdate={setYear} popover={<></>} />
           <Input
-            name="Период (мес.)"
-            placeholder="3"
+            name='Период (мес.)'
+            placeholder='3'
             value={certPeriod}
             onUpdate={setCertPeriod}
             popover={
-              <PopoverElement text="Период, за который нужна справка. Если нужна за последний год, укажите 12." />
+              <PopoverElement text='Период, за который нужна справка. Если нужна за последний год, укажите 12.' />
             }
           />
         </Card>
@@ -116,7 +115,9 @@ export default function CertificateIncome() {
   );
 }
 
-const btnCompose: ViewStyle = { position: 'absolute', left: 0, right: 0, bottom: '1%' };
+const btnCompose: ViewStyle = {
+  position: 'absolute', left: 0, right: 0, bottom: '1%'
+};
 const styles = StyleSheet.create({
   btnCompose,
   btnComposeDisabled: {

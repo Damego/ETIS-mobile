@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio';
 import dayjs from 'dayjs';
+
 import { LessonTypes } from '~/models/other';
 
 export const getTextField = (component: cheerio.Cheerio): string => component.text().trim();
@@ -20,7 +21,7 @@ export const getAsNumber = (str: string, defaultValue: number = null): number | 
 
 export const isLoginPage = (html: string) => {
   const $ = cheerio.load(html);
-  return !!$('.login').html();
+  return Boolean($('.login').html());
 };
 
 export const getDisciplineType = (string: string): LessonTypes =>

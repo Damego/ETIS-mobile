@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Image, TextInput, View } from 'react-native';
+
 import { Button } from '~/components/Button';
 import Card from '~/components/Card';
 import ClickableText from '~/components/ClickableText';
@@ -27,19 +28,19 @@ const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequ
         onChangeText={(newLogin) => {
           setLogin(newLogin);
         }}
-        placeholder="Эл. почта"
+        placeholder='Эл. почта'
         placeholderTextColor={theme.colors.inputPlaceholder}
-        autoComplete="email"
-        inputMode="email"
-        keyboardType="email-address"
+        autoComplete='email'
+        inputMode='email'
+        keyboardType='email-address'
         selectionColor={theme.colors.primary}
-        autoCapitalize="none"
+        autoCapitalize='none'
         onSubmitEditing={() => onSubmit(login)}
       />
 
       <View style={{ width: '100%' }}>
         <Button
-          text="Отправить письмо"
+          text='Отправить письмо'
           onPress={() => onSubmit(login)}
           disabled={disabledRequestButton}
           showLoading={isLoading}
@@ -50,7 +51,7 @@ const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequ
       <ClickableText
         textStyle={[fontSize.large, globalStyles.textColor]}
         viewStyle={{ marginTop: '15%' }}
-        text="Назад"
+        text='Назад'
         onPress={() => setShowModal(false)}
       />
     </View>

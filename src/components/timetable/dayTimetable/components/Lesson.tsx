@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+
 import DisciplineType from '~/components/DisciplineType';
 import TaskBadge from '~/components/TaskBadge';
 import Text from '~/components/Text';
@@ -55,16 +56,16 @@ const Lesson = ({
       )}
       {lesson.announceHTML && (
         <View style={styles.row}>
-          <AntDesign name="warning" size={20} color={theme.colors.text} />
+          <AntDesign name='warning' size={20} color={theme.colors.text} />
           <Text>Объявление</Text>
         </View>
       )}
 
-      {(!!teacherName || !!lesson.shortGroups?.length) && (
+      {(Boolean(teacherName) || Boolean(lesson.shortGroups?.length)) && (
         <View style={styles.row}>
           <Ionicons name={'school-outline'} size={20} color={theme.colors.text} />
-          {!!teacherName && <Text>{teacherName}</Text>}
-          {!!lesson.shortGroups?.length && <Text>{formatGroups(lesson.shortGroups)}</Text>}
+          {Boolean(teacherName) && <Text>{teacherName}</Text>}
+          {Boolean(lesson.shortGroups?.length) && <Text>{formatGroups(lesson.shortGroups)}</Text>}
         </View>
       )}
     </TouchableOpacity>

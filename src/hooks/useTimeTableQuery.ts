@@ -1,4 +1,5 @@
 import { useCallback, useRef } from 'react';
+
 import { cache } from '~/cache/smartCache';
 import { useClient } from '~/data/client';
 import { GetResultType, IGetResult, RequestType } from '~/models/results';
@@ -28,7 +29,7 @@ const useTimeTableQuery = ({
     method: client.getTimeTableData,
     onFail: async () => {
       const student = await cache.getStudent();
-      if (!student || !student.currentWeek) return;
+      if (!student?.currentWeek) return;
 
       update({
         requestType: RequestType.forceCache,

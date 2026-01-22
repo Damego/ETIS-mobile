@@ -1,6 +1,9 @@
 import React from 'react';
-import { StyleProp, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
+import {
+  StyleProp, TextStyle, TouchableOpacity, ViewStyle
+} from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
+
 import Card from '~/components/Card';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';

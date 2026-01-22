@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import React, { useMemo } from 'react';
 import { View } from 'react-native';
+
 import CenteredText from '~/components/CenteredText';
 import PageNavigator from '~/components/PageNavigator';
 import TimeTableContext from '~/context/timetableContext';
@@ -56,7 +57,7 @@ const WeekTimeTable = ({
     [teachers, currentDate, selectedDate]
   );
 
-  const shouldRenderNavigator = (!!firstWeek && !!lastWeek) || !!data;
+  const shouldRenderNavigator = (Boolean(firstWeek) && Boolean(lastWeek)) || Boolean(data);
 
   return (
     <View style={{ flex: 1 }}>
@@ -77,24 +78,30 @@ const WeekTimeTable = ({
           }}
         />
       )}
-      {/* eslint-disable-next-line no-nested-ternary */}
-      {loadingComponent !== undefined && isLoading ? (
-        loadingComponent()
-      ) : data ? (
-        <>
-          <DatesContainer dates={data.weekInfo.dates} />
+      { }
+      {loadingComponent !== undefined && isLoading
+        ? (
+          loadingComponent()
+        )
+        : data
+          ? (
+            <>
+              <DatesContainer dates={data.weekInfo.dates} />
 
-          <TimeTableContext.Provider value={contextData}>
-            {isHolidayWeek(data.weekInfo) ? (
-              <HolidayView holidayInfo={data.weekInfo.holidayDates} />
-            ) : (
-              <DayArray data={data.days} weekDates={data.weekInfo.dates} />
-            )}
-          </TimeTableContext.Provider>
-        </>
-      ) : (
-        <CenteredText>Нет расписания</CenteredText>
-      )}
+              <TimeTableContext.Provider value={contextData}>
+                {isHolidayWeek(data.weekInfo)
+                  ? (
+                    <HolidayView holidayInfo={data.weekInfo.holidayDates} />
+                  )
+                  : (
+                    <DayArray data={data.days} weekDates={data.weekInfo.dates} />
+                  )}
+              </TimeTableContext.Provider>
+            </>
+          )
+          : (
+            <CenteredText>Нет расписания</CenteredText>
+          )}
     </View>
   );
 };

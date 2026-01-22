@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+
 import BorderLine from '~/components/BorderLine';
 import Text from '~/components/Text';
 import { useTimetableContext } from '~/context/timetableContext';
@@ -37,14 +38,12 @@ const Pair = ({ pair }: { pair: IPair }) => {
       </View>
 
       <View style={styles.lessonsContainer}>
-        {pair.lessons.map((lesson, index) => {
-          return (
-            <React.Fragment key={index}>
-              <Lesson lesson={lesson} pairPosition={pair.position} date={pairDate} />
-              {index !== pair.lessons.length - 1 && <BorderLine />}
-            </React.Fragment>
-          );
-        })}
+        {pair.lessons.map((lesson, index) => (
+          <React.Fragment key={index}>
+            <Lesson lesson={lesson} pairPosition={pair.position} date={pairDate} />
+            {index !== pair.lessons.length - 1 && <BorderLine />}
+          </React.Fragment>
+        ))}
         {pair.event && (
           <View>
             <Text style={styles.eventTitleText}>Мероприятие "{pair.event.name}"</Text>

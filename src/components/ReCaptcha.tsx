@@ -22,7 +22,7 @@ export default function CustomReCaptcha({
   return (
     <Recaptcha
       ref={ref}
-      baseUrl="https://student.psu.ru"
+      baseUrl='https://student.psu.ru'
       siteKey={size === 'invisible' ? PUBLIC_KEY_V3 : PUBLIC_KEY_V2}
       onVerify={onReceiveToken}
       size={size}

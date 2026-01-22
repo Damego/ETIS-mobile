@@ -10,7 +10,7 @@ export const differenceSigns = (marks1: ISubject[], marks2: ISubject[]): IDiffer
   return marks2
     .map((newRes) => {
       const oldRes = marks1.find((subject) => subject.name === newRes.name);
-      if (!oldRes || newRes.checkPoints.length !== oldRes.checkPoints.length) return [];
+      if (newRes.checkPoints.length !== oldRes?.checkPoints.length) return [];
 
       const diffCheckPoints: IDifferentCheckPoint[] = newRes.checkPoints
         .map((checkPoint, i) => {

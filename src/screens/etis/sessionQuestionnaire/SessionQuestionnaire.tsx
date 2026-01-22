@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { ToastAndroid, View } from 'react-native';
+
 import { Button } from '~/components/Button';
 import LoadingScreen from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
@@ -13,10 +14,10 @@ import { EducationStackScreenProps } from '~/navigation/types';
 import { httpClient } from '~/utils';
 import toSessionTestPayload from '~/utils/sessionTest';
 
-import Theme from './Theme';
 import AdditionalComment from './components/AdditionalComment';
 import { ConfirmResultView, ResultSentView, SendingResultView } from './components/ResultViews';
 import TeacherQuestionView from './components/TeacherQuestionView';
+import Theme from './Theme';
 
 enum Steps {
   inputTeacher = 1,

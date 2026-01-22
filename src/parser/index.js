@@ -4,18 +4,18 @@ import parseMenu from './menu';
 import parseMessages from './messages';
 import parseSessionMarks from './sessionMarks';
 import parseSessionPoints from './sessionPoints';
-import parseShortTeachPlan from './teachPlan';
 import parseTeachers from './teachers';
+import parseShortTeachPlan from './teachPlan';
 import parseTimeTable from './timeTable';
 
 export {
   parseAbsenses,
   parseAnnounce,
   parseMenu,
-  parseSessionPoints,
-  parseSessionMarks,
   parseMessages,
-  parseTeachers,
+  parseSessionMarks,
+  parseSessionPoints,
   parseShortTeachPlan,
+  parseTeachers,
   parseTimeTable,
 };

@@ -1,6 +1,7 @@
 import Constants from 'expo-constants';
 import React from 'react';
 import { Linking, StyleSheet, View } from 'react-native';
+
 import ClickableText from '~/components/ClickableText';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';

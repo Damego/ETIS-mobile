@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
+
 import { LoadingContainer } from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
 import PageNavigator from '~/components/PageNavigator';

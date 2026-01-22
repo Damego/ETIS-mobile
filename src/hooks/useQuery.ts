@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { GetResultType, IGetPayload, IGetResult, RequestType } from '../models/results';
+import {
+  GetResultType, IGetPayload, IGetResult, RequestType
+} from '../models/results';
 import { setAuthorizing } from '../redux/reducers/accountSlice';
 import { useAppDispatch, useAppSelector } from './redux';
 
-interface GetMethod<P, R> {
-  (payload: IGetPayload<P>): Promise<IGetResult<R>>;
-}
+type GetMethod<P, R> = (payload: IGetPayload<P>) => Promise<IGetResult<R>>;
 
 interface Query<P, R> {
   data: R;

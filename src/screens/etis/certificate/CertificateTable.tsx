@@ -2,6 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useIsFocused } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
+
 import BorderLine from '~/components/BorderLine';
 import LoadingScreen from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
@@ -11,8 +12,8 @@ import { useGlobalStyles } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
 import { ButtonWithPopover } from '~/screens/etis/certificate/components/ButtonWithPopover';
 import {
-  RequestCertificateButton,
   iconSize,
+  RequestCertificateButton,
 } from '~/screens/etis/certificate/components/RequestCertificateButton';
 import { fontSize } from '~/utils/texts';
 
@@ -40,7 +41,7 @@ const CertificateTable = () => {
       {data.announce.header && (
         <>
           <ButtonWithPopover
-            title="Объявление"
+            title='Объявление'
             info={data.announce.header}
             textStyle={[styles.announceButtonText, fontSize.large, globalStyles.primaryText]}
           />
@@ -53,12 +54,12 @@ const CertificateTable = () => {
         <>
           <RequestCertificateButton availableCertificates={data.availableCertificates} />
           <ButtonWithPopover
-            title="Сроки и выдача справок"
+            title='Сроки и выдача справок'
             info={data.announce.footer}
             textStyle={[fontSize.medium, { fontWeight: 'bold' }]}
             icon={
               <AntDesign
-                name="infocirlceo"
+                name='infocirlceo'
                 size={iconSize}
                 color={globalStyles.textColor.color}
                 style={{ marginRight: '2%' }}

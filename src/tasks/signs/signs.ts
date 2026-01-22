@@ -1,5 +1,6 @@
 import * as BackgroundFetch from 'expo-background-fetch';
 import * as TaskManager from 'expo-task-manager';
+
 import { BaseClient } from '~/data/base';
 import Client from '~/data/client';
 import { GetResultType, RequestType } from '~/models/results';

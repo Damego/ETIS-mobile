@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+
 import { useClient } from '~/data/client';
 import { GetResultType, RequestType } from '~/models/results';
 import { setMessageCount } from '~/redux/reducers/studentSlice';
@@ -39,7 +40,9 @@ const useMessagesQuery = () => {
     });
   };
 
-  return { data, isLoading, refresh, loadPage };
+  return {
+    data, isLoading, refresh, loadPage
+  };
 };
 
 export default useMessagesQuery;

@@ -1,6 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
+
 import Text from '~/components/Text';
 import { useAppTheme } from '~/hooks/theme';
 import { IThemeColors } from '~/styles/themes';

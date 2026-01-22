@@ -1,5 +1,8 @@
 import React from 'react';
-import { StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
+import {
+  StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle
+} from 'react-native';
+
 import { useGlobalStyles } from '~/hooks';
 import { fontSize } from '~/utils/texts';
 

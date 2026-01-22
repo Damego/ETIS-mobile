@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+
 import Card from '~/components/Card';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
@@ -35,7 +36,7 @@ const DisciplineEducationalComplexTheme = ({
       <Text style={fontSize.slarge}>{theme.name}</Text>
       {theme.hasCheckPoint && <ControlBadge />}
 
-      {!!data?.annotation && (
+      {Boolean(data?.annotation) && (
         <View>
           <Text style={[fontSize.big, { fontWeight: 'bold' }]}>Аннотация</Text>
           <Text style={fontSize.medium}>{data.annotation}</Text>
@@ -44,14 +45,14 @@ const DisciplineEducationalComplexTheme = ({
 
       {data && (
         <Card style={{ marginTop: 'auto', marginBottom: '4%', gap: 8 }}>
-          {!!data.controlRequirements && <ControlRequirements data={data.controlRequirements} />}
-          {!!data.links?.length && (
+          {Boolean(data.controlRequirements) && <ControlRequirements data={data.controlRequirements} />}
+          {Boolean(data.links?.length) && (
             <ListData label={'Другое обеспечение курса'} data={data.links} />
           )}
-          {!!data.requiredLiterature?.length && (
+          {Boolean(data.requiredLiterature?.length) && (
             <ListData label={'Обязательная литература'} data={data.requiredLiterature} />
           )}
-          {!!data.additionalLiterature?.length && (
+          {Boolean(data.additionalLiterature?.length) && (
             <ListData label={'Дополнительная литература'} data={data.additionalLiterature} />
           )}
         </Card>

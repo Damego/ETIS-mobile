@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+
 import Card from '~/components/Card';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';

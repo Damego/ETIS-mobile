@@ -22,7 +22,7 @@ export default function parseSessionPoints(html): ISessionPoints {
         return;
       }
 
-      const failed = !!tr.attr('style');
+      const failed = Boolean(tr.attr('style'));
       const tds = tr.find('td');
       const fields = [];
 

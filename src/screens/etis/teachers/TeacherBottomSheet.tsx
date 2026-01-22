@@ -4,7 +4,10 @@ import { useQuery } from '@tanstack/react-query';
 import * as Clipboard from 'expo-clipboard';
 import { Image } from 'expo-image';
 import React from 'react';
-import { Linking, StyleSheet, ToastAndroid, View } from 'react-native';
+import {
+  Linking, StyleSheet, ToastAndroid, View
+} from 'react-native';
+
 import { getTeacherContacts } from '~/api/psu/api';
 import { getTeacherById } from '~/api/psutech/api';
 import BorderLine from '~/components/BorderLine';
@@ -27,7 +30,7 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
 
   const { data: contacts } = useQuery({
     queryFn: () => getTeacherContacts(data.psu.page_url),
-    enabled: !!data?.psu?.page_url,
+    enabled: Boolean(data?.psu?.page_url),
     queryKey: ['teacher_contacts', data?.id],
   });
 
@@ -109,7 +112,7 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
           <BorderLine />
 
           <Text style={styles.title}>Контактная информация</Text>
-          {!!contacts.phones.length && (
+          {Boolean(contacts.phones.length) && (
             <>
               <Text style={styles.title} colorVariant={'text2'}>
                 Телефон
@@ -125,7 +128,7 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
               ))}
             </>
           )}
-          {!!contacts.emails.length && (
+          {Boolean(contacts.emails.length) && (
             <>
               <Text style={styles.title} colorVariant={'text2'}>
                 Электронная почта
@@ -169,13 +172,11 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
   );
 };
 
-const TeacherBottomSheet = React.forwardRef<BottomSheetModal>((_, ref) => {
-  return (
-    <BottomSheetModal ref={ref} snapPoints={['90%']}>
-      {({ data }) => <TeacherContainer teacher={data} />}
-    </BottomSheetModal>
-  );
-});
+const TeacherBottomSheet = React.forwardRef<BottomSheetModal>((_, ref) => (
+  <BottomSheetModal ref={ref} snapPoints={['90%']}>
+    {({ data }) => <TeacherContainer teacher={data} />}
+  </BottomSheetModal>
+));
 
 export default TeacherBottomSheet;
 

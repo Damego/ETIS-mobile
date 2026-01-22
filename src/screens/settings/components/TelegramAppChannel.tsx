@@ -1,6 +1,7 @@
 import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import React from 'react';
 import { Linking } from 'react-native';
+
 import Card from '~/components/Card';
 import ClickableText from '~/components/ClickableText';
 import { useAppTheme } from '~/hooks/theme';

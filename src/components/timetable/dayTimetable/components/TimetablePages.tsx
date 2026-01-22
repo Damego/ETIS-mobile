@@ -1,7 +1,10 @@
 import React, { forwardRef } from 'react';
-import { NativeSyntheticEvent, ScrollView, StyleSheet, View } from 'react-native';
+import {
+  NativeSyntheticEvent, ScrollView, StyleSheet, View
+} from 'react-native';
 import PagerView from 'react-native-pager-view';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { checkAllowedPairRender } from '~/components/timetable/checkAllowedPairRender';
 import { useAppSelector } from '~/hooks';
 import { ITimeTableDay } from '~/models/timeTable';

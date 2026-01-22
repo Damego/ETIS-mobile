@@ -2,6 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { Button } from '~/components/Button';
 import Text from '~/components/Text';
 import { useAppDispatch, useGlobalStyles } from '~/hooks';
@@ -20,7 +21,7 @@ const WarningMessage = () => {
         globalStyles.borderRadius,
       ]}
     >
-      <AntDesign name="warning" size={24} color={globalStyles.primaryText.color} />
+      <AntDesign name='warning' size={24} color={globalStyles.primaryText.color} />
       <Text style={[globalStyles.primaryText, { fontWeight: 'bold', flex: 1 }, fontSize.medium]}>
         Расписание может отличаться от действительного!{'\n'}Особенно, если у вас в текущем учебном
         периоде имеются дисциплины по выбору!
