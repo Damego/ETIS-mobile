@@ -1,0 +1,50 @@
+name: Update SSL intermediate certificate
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 1 * *'
+
+jobs:
+  update-cert:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Fetch current intermediate certificate chain
+        id: fetch
+        run: |
+          output=$(python3 .github/scripts/update_ssl_cert.py 2>&1)
+          echo "$output"
+          if echo "$output" | grep -q "^CERT_CHANGED=true"; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create Pull Request
+        if: steps.fetch.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: update student.psu.ru SSL intermediate certificate"
+          title: "Update student.psu.ru SSL intermediate certificate"
+          body: |
+            The SSL certificate chain for `student.psu.ru` has changed.
+
+            This PR updates `assets/certs/intermediate_cert` with the new intermediate
+            and root certificates so the Android app can trust the server's TLS connection.
+
+            > Generated automatically by the **Update SSL intermediate certificate** workflow.
+          branch: chore/update-ssl-cert
+          delete-branch: true
+          labels: dependencies
+
+      - name: No changes detected
+        if: steps.fetch.outputs.changed == 'false'
+        run: echo "Certificate chain is up to date, no PR needed."
