@@ -106,6 +106,10 @@ export default {
           enable: true,
         },
       ],
+      'expo-image',
+      'expo-sharing',
+      'expo-splash-screen',
+      'expo-status-bar',
     ],
     experiments: {
       reactCompiler: true
