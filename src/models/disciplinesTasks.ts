@@ -1,7 +1,4 @@
-import 'react-native-get-random-values';
-
 import dayjs from 'dayjs';
-import { v4 as uuid4 } from 'uuid';
 
 import {
   readDisciplineInfo,
@@ -9,6 +6,7 @@ import {
   saveDisciplineInfo,
   saveDisciplinesTasks,
 } from '../utils/files';
+import { generateId } from '../utils/utils';
 import { IDisciplineInfo, IDisciplineReminder, IDisciplineTask } from './disciplineInfo';
 
 export class DisciplineReminder {
@@ -64,7 +62,7 @@ export class DisciplineTask {
     isComplete: boolean
   ) {
     return new DisciplineTask(
-      uuid4(),
+      generateId(),
       disciplineName,
       description.trim(),
       datetime,

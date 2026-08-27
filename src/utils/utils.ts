@@ -1,5 +1,9 @@
 export const getRandomItem = <T>(array: T[]): T => array[Math.floor(Math.random() * array.length)];
 
+// Non-crypto unique id (Math.random based) — enough for local task/notification ids
+export const generateId = (): string =>
+  Array.from({ length: 4 }, () => Math.random().toString(36).slice(2, 10)).join('');
+
 export const partitionItems = <T>(array: T[], callback: (item: T) => boolean): T[][] =>
   array.reduce(
     ([group1, group2], item) =>

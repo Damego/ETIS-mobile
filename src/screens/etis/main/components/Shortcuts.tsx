@@ -2,7 +2,6 @@ import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Shadow } from 'react-native-shadow-2';
 import type {
   NavigationState,
   SceneRendererProps,
@@ -66,61 +65,71 @@ const Shortcuts = (
   const { messageCount, announceCount } = useAppSelector((state) => state.student);
 
   return (
-    <Shadow
-      distance={20}
-      stretch
-      safeRender
+    <View
       style={[
-        styles.shortcutsContainer,
-        globalStyles.containerBackground,
-        globalStyles.borderRadius,
-      ]}
-      containerStyle={[
+        styles.shortcutsWrapper,
         {
           bottom: insets.bottom > 0 ? insets.bottom * 0.9 : 20,
-          position: 'absolute',
-          zIndex: 1,
-          alignSelf: 'center',
         },
       ]}
     >
-      <Icon
-        iconName={'calendar'}
-        shortcut={'timetable'}
-        onPress={jumpTo}
-        isCurrent={currentShortcut === 'timetable'}
-      />
-      <Icon
-        iconName={'barschart'}
-        shortcut={'grades'}
-        onPress={jumpTo}
-        isCurrent={currentShortcut === 'grades'}
-      />
-      <Icon
-        iconName={'message1'}
-        shortcut={'messageTabs'}
-        count={messageCount + announceCount}
-        onPress={jumpTo}
-        isCurrent={currentShortcut === 'messageTabs'}
-      />
-      <Icon
-        iconName={'appstore-o'}
-        shortcut={'more'}
-        onPress={jumpTo}
-        isCurrent={currentShortcut === 'more'}
-      />
-    </Shadow>
+      <View
+        style={[
+          styles.shortcutsContainer,
+          globalStyles.containerBackground,
+          globalStyles.borderRadius,
+        ]}
+      >
+        <Icon
+          iconName={'calendar'}
+          shortcut={'timetable'}
+          onPress={jumpTo}
+          isCurrent={currentShortcut === 'timetable'}
+        />
+        <Icon
+          iconName={'barschart'}
+          shortcut={'grades'}
+          onPress={jumpTo}
+          isCurrent={currentShortcut === 'grades'}
+        />
+        <Icon
+          iconName={'message1'}
+          shortcut={'messageTabs'}
+          count={messageCount + announceCount}
+          onPress={jumpTo}
+          isCurrent={currentShortcut === 'messageTabs'}
+        />
+        <Icon
+          iconName={'appstore-o'}
+          shortcut={'more'}
+          onPress={jumpTo}
+          isCurrent={currentShortcut === 'more'}
+        />
+      </View>
+    </View>
   );
 };
 
 export default Shortcuts;
 
 const styles = StyleSheet.create({
+  shortcutsWrapper: {
+    position: 'absolute',
+    zIndex: 1,
+    alignSelf: 'center',
+  },
   shortcutsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignSelf: 'center',
     paddingVertical: '2%',
+    // Replaces react-native-shadow-2 (distance 20); works on all supported
+    // Android API levels, unlike RN boxShadow which needs API 28+
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
   },
   iconView: {
     alignItems: 'center',
