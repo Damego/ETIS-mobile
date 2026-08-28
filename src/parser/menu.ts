@@ -48,19 +48,26 @@ export default function parseMenu(html: string, parseGroupJournal = false): Stud
   const rawData = getTextField($('.span12'));
   const [nameWithBirthDate, speciality, educationForm, year] = rawData
     .split('\n')
-    .map((string) => string.trim());
+    .map((string) => string.trim())
+    .filter(Boolean);
 
   // Дата рождения игнорится для будущего возможного функционала (поздравление к примеру)
-  const [, name] = nameWithBirthDateRegex.exec(nameWithBirthDate);
+  let name: string = null;
+  const nameMatch = nameWithBirthDate
+    ? nameWithBirthDateRegex.exec(nameWithBirthDate)
+    : null;
+  if (nameMatch) {
+    [, name] = nameMatch;
+  }
 
   data.student = {
     name,
-    speciality,
-    educationForm,
-    year,
+    speciality: speciality ?? null,
+    educationForm: educationForm ?? null,
+    year: year ?? null,
     group: null,
     groupShort: null,
-    isLyceum: speciality.startsWith('Лицей') || speciality.endsWith('класс'), // TODO: Убрать лишнее, как только узнаем правду
+    isLyceum: Boolean(speciality) && (speciality.startsWith('Лицей') || speciality.endsWith('класс')), // TODO: Убрать лишнее, как только узнаем правду
   };
 
   const menu = $('.span3');
@@ -74,12 +81,15 @@ export default function parseMenu(html: string, parseGroupJournal = false): Stud
 
   // Получение группы студента
   if (parseGroupJournal) {
-    data.student.group = content.find('h3').text().split(' ').at(1);
-    // Структура группы: ГРП-1-2024
-    const [groupName, groupNumber] = data.student.group.split('-');
-    data.student.groupShort = `${groupName}-${groupNumber}`;
-    if (!data.student.isLyceum) {
-      data.student.isLyceum = data.student.group.startsWith('ЛЦ');
+    const group = content.find('h3').text().trim().split(' ').at(1);
+    if (typeof group === 'string' && group.length > 0) {
+      data.student.group = group;
+      // Структура группы: ГРП-1-2024
+      const [groupName, groupNumber] = group.split('-');
+      data.student.groupShort = `${groupName}-${groupNumber}`;
+      if (!data.student.isLyceum) {
+        data.student.isLyceum = group.startsWith('ЛЦ');
+      }
     }
   }
 
