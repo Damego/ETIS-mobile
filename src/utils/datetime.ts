@@ -33,30 +33,37 @@ export const formatTime = (
   return date.format(`${dateFormat} в ${timeFormat}`);
 };
 
-export const getCurrentEducationYear = () => {
-  const date = dayjs();
+export const getCurrentEducationYear = (date: dayjs.Dayjs = dayjs()) => {
   const year = date.year();
+  const newYearStart = dayjs(new Date(year, 8, 1));
 
-  // До сентября - старый учебный год
-  if (date.month() < 8) return year - 1;
+  // С 1 сентября (включительно) - новый учебный год
+  if (!date.isBefore(newYearStart, 'day')) return year;
 
-  // После сентября - новый
-  return year;
+  // До 1 сентября. Учебный год обычно начинается в последнюю неделю августа
+  // (неделя, предшествующая первой учебной неделе сентября). Если дата попадает
+  // в эту "переходную" неделю августа, она уже относится к новому учебному году.
+  const academicStart = newYearStart.startOf('isoWeek');
+  if (date.month() === 7 && !date.isBefore(academicStart.subtract(1, 'week'), 'day')) {
+    return year;
+  }
+
+  return year - 1;
 };
 
 export const getStudentYear = (entryYear: number) => getCurrentEducationYear() - entryYear + 1;
 
 export const getEducationWeekByDate = (date: dayjs.Dayjs) => {
-  const firstWeekDate = dayjs(new Date(getCurrentEducationYear(), 8, 2)).startOf('isoWeek');
-  return date.startOf('isoWeek').diff(firstWeekDate, 'week') + 1;
+  const firstWeekDate = dayjs(new Date(getCurrentEducationYear(date), 8, 1)).startOf('isoWeek');
+  return Math.max(1, date.startOf('isoWeek').diff(firstWeekDate, 'week') + 1);
 };
 
 export const getFirstEducationWeekDate = () => {
   const year = getCurrentEducationYear();
-  return dayjs().startOf('day').startOf('week').year(year).month(8).day(2);
+  return dayjs(new Date(year, 8, 1)).startOf('isoWeek');
 };
 
 export const getLastEducationWeekDate = () => {
   const year = getCurrentEducationYear() + 1;
-  return dayjs().year(year).month(8).date(1).startOf('day');
+  return dayjs(new Date(year, 8, 1)).startOf('isoWeek').subtract(1, 'day');
 };
