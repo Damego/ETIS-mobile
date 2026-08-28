@@ -1,5 +1,5 @@
+import { BottomSheetModal } from '@expo/ui/community/bottom-sheet';
 import { AntDesign } from '@expo/vector-icons';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import React, { useRef } from 'react';
 import { View } from 'react-native';
 

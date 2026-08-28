@@ -1,4 +1,4 @@
-import { BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import * as Clipboard from 'expo-clipboard';
@@ -172,11 +172,13 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
   );
 };
 
-const TeacherBottomSheet = React.forwardRef<BottomSheetModal>((_, ref) => (
-  <BottomSheetModal ref={ref} snapPoints={['90%']}>
-    {({ data }) => <TeacherContainer teacher={data} />}
-  </BottomSheetModal>
-));
+const TeacherBottomSheet = React.forwardRef<BottomSheetModal, { teacher: ITeacher | null }>(
+  ({ teacher }, ref) => (
+    <BottomSheetModal ref={ref} snapPoints={['50%', '90%']}>
+      {teacher ? <TeacherContainer teacher={teacher} /> : null}
+    </BottomSheetModal>
+  )
+);
 
 export default TeacherBottomSheet;
 

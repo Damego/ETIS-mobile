@@ -1,4 +1,4 @@
-import { BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import React from 'react';
 
 import BottomSheetModal from '~/components/BottomSheetModal';

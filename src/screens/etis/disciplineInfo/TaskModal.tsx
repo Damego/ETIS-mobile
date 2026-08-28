@@ -1,4 +1,4 @@
-import { BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
@@ -26,7 +26,7 @@ const TaskModal = React.forwardRef<BottomSheetModal, TaskModalProps>(
         ref={ref}
         backgroundStyle={{ backgroundColor: theme.colors.container }}
         onDismiss={onDismiss}
-        snapPoints={['50%']}
+        snapPoints={['50%', '100%']}
       >
         <BottomSheetView style={styles.modalContainer}>
           <AddTaskModalContent

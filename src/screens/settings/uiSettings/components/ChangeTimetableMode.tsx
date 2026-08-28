@@ -1,4 +1,4 @@
-import { BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import React, { useRef } from 'react';
 
 import { cache } from '~/cache/smartCache';

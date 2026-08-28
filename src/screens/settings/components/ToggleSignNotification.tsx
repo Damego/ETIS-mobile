@@ -1,11 +1,12 @@
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
 import {
-  Linking, StyleSheet, Switch, ToastAndroid, TouchableOpacity, View
+  Linking, StyleSheet, ToastAndroid, TouchableOpacity, View
 } from 'react-native';
 
 import { cache } from '~/cache/smartCache';
 import Text from '~/components/Text';
+import ThemedSwitch from '~/components/ThemedSwitch';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '~/hooks';
 import { setSignNotification } from '~/redux/reducers/settingsSlice';
 import { registerSignsFetchTask, unregisterBackgroundFetchAsync } from '~/tasks/signs/signs';
@@ -61,12 +62,7 @@ const ToggleSignNotification = () => {
           color={globalStyles.textColor.color}
         />
       </TouchableOpacity>
-      <Switch
-        trackColor={{ false: 'gray', true: globalStyles.primaryText.color }}
-        thumbColor='white'
-        onValueChange={(value) => changeSignNotification(value)}
-        value={signNotification}
-      />
+      <ThemedSwitch onValueChange={changeSignNotification} value={signNotification} />
     </View>
   );
 };

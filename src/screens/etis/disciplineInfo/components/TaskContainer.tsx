@@ -1,4 +1,4 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomSheetModal } from '@expo/ui/community/bottom-sheet';
 import dayjs from 'dayjs';
 import React, {
   useCallback, useMemo, useRef, useState

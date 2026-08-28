@@ -1,13 +1,14 @@
 import { AntDesign, Fontisto } from '@expo/vector-icons';
 import React from 'react';
 import {
-  Linking, Switch, ToastAndroid, TouchableOpacity, View
+  Linking, ToastAndroid, TouchableOpacity, View
 } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 
 import { cache } from '~/cache/smartCache';
 import Card from '~/components/Card';
 import Text from '~/components/Text';
+import ThemedSwitch from '~/components/ThemedSwitch';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
 import { setSentryEnabled } from '~/redux/reducers/settingsSlice';
@@ -68,12 +69,7 @@ const ToggleSentrySetting = () => {
 
       <AboutSentryPopover />
 
-      <Switch
-        trackColor={{ false: 'gray', true: theme.colors.primary }}
-        thumbColor='white'
-        onValueChange={toggleSentryEnabled}
-        value={sentryEnabled}
-      />
+      <ThemedSwitch onValueChange={toggleSentryEnabled} value={sentryEnabled} />
     </Card>
   );
 };

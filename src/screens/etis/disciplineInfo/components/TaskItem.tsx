@@ -1,9 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
-import { Checkbox } from 'expo-checkbox';
 import React, { useContext } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import Text from '~/components/Text';
+import ThemedCheckbox from '~/components/ThemedCheckbox';
 import TaskContext from '~/context/taskContext';
 import { useAppTheme } from '~/hooks/theme';
 import { DisciplineTask } from '~/models/disciplinesTasks';
@@ -15,11 +15,7 @@ const TaskItem = ({ task }: { task: DisciplineTask }) => {
   return (
     <View style={styles.container}>
       <View style={[styles.checkbox, styles.align]}>
-        <Checkbox
-          value={task.isComplete}
-          onValueChange={() => onComplete(task)}
-          color={theme.colors.primary}
-        />
+        <ThemedCheckbox value={task.isComplete} onValueChange={() => onComplete(task)} />
         <Text>{task.description}</Text>
       </View>
       <TouchableOpacity onPress={() => onRequestEdit(task)} style={styles.align}>
@@ -32,11 +28,6 @@ const TaskItem = ({ task }: { task: DisciplineTask }) => {
 export default TaskItem;
 
 const styles = StyleSheet.create({
-  disciplineNameText: {
-    fontWeight: '500',
-    ...fontSize.medium,
-    marginBottom: '1%',
-  },
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',

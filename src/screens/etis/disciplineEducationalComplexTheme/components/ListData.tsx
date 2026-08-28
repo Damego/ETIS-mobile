@@ -1,4 +1,4 @@
-import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { BottomSheetScrollView } from '@expo/ui/community/bottom-sheet';
 import React, { useRef } from 'react';
 import { Linking } from 'react-native';
 
@@ -17,8 +17,7 @@ const ListContainerBottomSheet = React.forwardRef<
   <BottomSheetModal
     ref={ref}
     style={{ paddingHorizontal: '2%' }}
-    snapPoints={['50%']}
-    enableDynamicSizing={false}
+    snapPoints={['50%', '100%']}
   >
     <Text style={[fontSize.slarge, { fontWeight: 'bold', textAlign: 'center' }]}>{label}</Text>
 

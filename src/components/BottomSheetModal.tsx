@@ -1,73 +1,29 @@
 import {
-  BottomSheetModal as GorhomBottomSheetModal,
-  BottomSheetModalProps,
-} from '@gorhom/bottom-sheet';
-import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/src/types';
-import React, { useImperativeHandle, useRef } from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+  BottomSheetMethods,
+  BottomSheetModal as ExpoBottomSheetModal,
+  BottomSheetProps,
+} from '@expo/ui/community/bottom-sheet';
+import React from 'react';
 
-import BottomSheetModalBackdrop from '~/components/BottomSheetModalBackdrop';
 import { useGlobalStyles } from '~/hooks';
-import useBackPress from '~/hooks/useBackPress';
 
-type BottomSheetModal = BottomSheetModalMethods;
+type BottomSheetModal = BottomSheetMethods;
 
-const BottomSheetModalComponent = React.forwardRef<BottomSheetModal, BottomSheetModalProps>(
-  (props, ref) => {
-    const { children, onDismiss, ...restProps } = props;
+const BottomSheetModalComponent = React.forwardRef<BottomSheetModal, BottomSheetProps>(
+  ({ children, onDismiss, ...restProps }, ref) => {
     const globalStyles = useGlobalStyles();
-    const insets = useSafeAreaInsets();
-    const modalRef = useRef<BottomSheetModal>();
-    const stateRef = useRef({
-      isOpened: false,
-    });
-
-    // Библиотека самостоятельно не отслеживает нажатие кнопки назад, поэтому делаем всё сами
-    useBackPress(() => {
-      if (stateRef.current.isOpened) {
-        modalRef.current.dismiss();
-        return true;
-      }
-      return false;
-    });
-
-    useImperativeHandle(
-      ref,
-      () => ({
-        ...modalRef.current,
-        present: (data) => {
-          modalRef.current.present(data);
-          stateRef.current.isOpened = true;
-        },
-        dismiss: () => {
-          modalRef.current.dismiss();
-          stateRef.current.isOpened = false;
-        },
-      }),
-      [modalRef.current]
-    );
-
-    const dismissModal = () => {
-      modalRef.current.dismiss();
-      stateRef.current.isOpened = false;
-    };
 
     return (
-      <GorhomBottomSheetModal
-        ref={modalRef}
-        backdropComponent={(props) => (
-
-          <BottomSheetModalBackdrop {...props} onPress={dismissModal} />
-        )}
-        onDismiss={onDismiss ?? dismissModal}
+      <ExpoBottomSheetModal
+        ref={ref}
+        onDismiss={onDismiss}
         backgroundStyle={globalStyles.card}
-        handleIndicatorStyle={{ backgroundColor: globalStyles.textColor.color }}
-        bottomInset={insets.bottom}
-
+        // Разрешаем закрытие свайпом вниз, тапом по фону и кнопкой «Назад»
+        enablePanDownToClose
         {...restProps}
       >
         {children}
-      </GorhomBottomSheetModal>
+      </ExpoBottomSheetModal>
     );
   }
 );

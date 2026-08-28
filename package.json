@@ -25,8 +25,8 @@
     }
   },
   "dependencies": {
+    "@expo/ui": "~57.0.14",
     "@expo/vector-icons": "^14.1.0",
-    "@gorhom/bottom-sheet": "^5.2.14",
     "@notifee/react-native": "^9.1.8",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-navigation/bottom-tabs": "^7.10.1",
@@ -48,7 +48,6 @@
     "expo-asset": "~57.0.15",
     "expo-background-fetch": "~57.0.14",
     "expo-build-properties": "~57.0.15",
-    "expo-checkbox": "~57.0.0",
     "expo-clipboard": "~57.0.1",
     "expo-constants": "~57.0.15",
     "expo-dev-client": "~57.0.16",
@@ -79,7 +78,6 @@
     "react-native-context-menu-view": "^1.21.0",
     "react-native-gesture-handler": "~2.32.0",
     "react-native-markdown-display": "^7.0.2",
-    "react-native-pager-view": "8.0.2",
     "react-native-popover-view": "^6.1.0",
     "react-native-radio-buttons-group": "^3.1.0",
     "react-native-reanimated": "4.5.1",

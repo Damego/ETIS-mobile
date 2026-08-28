@@ -1,4 +1,4 @@
-import { BottomSheetScrollView, useBottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomSheetScrollView, useBottomSheet } from '@expo/ui/community/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import React, { useRef } from 'react';
 import { View } from 'react-native';
@@ -21,7 +21,7 @@ const Theme = ({
   disciplineName: string;
 }) => {
   const navigation = useNavigation<EducationNavigationProp>();
-  const bottomSheetModal = useBottomSheetModal();
+  const bottomSheetModal = useBottomSheet();
 
   return (
     <View style={{ flex: 1, paddingVertical: '2%' }}>

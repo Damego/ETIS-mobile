@@ -1,16 +1,15 @@
 import 'dayjs/locale/ru';
 
-import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import dayjs from 'dayjs';
-import { Checkbox } from 'expo-checkbox';
 import React, { useRef, useState } from 'react';
 import {
   Alert, StyleSheet, TextInput, View
 } from 'react-native';
 
-import BottomSheetModalBackdrop from '~/components/BottomSheetModalBackdrop';
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
+import ThemedCheckbox from '~/components/ThemedCheckbox';
 import { useGlobalStyles } from '~/hooks';
 import { DisciplineReminder, DisciplineTask } from '~/models/disciplinesTasks';
 import { formatTime } from '~/utils/datetime';
@@ -101,10 +100,9 @@ const AddTaskModalContent = ({
       */}
       {!disableCheckbox && (
         <View style={styles.checkboxContainer}>
-          <Checkbox
+          <ThemedCheckbox
             value={isLinkedToPair}
             onValueChange={setLinkedToPair}
-            color={globalStyles.primaryText.color}
           />
           <Text>Привязать задание к этой паре</Text>
         </View>
@@ -142,7 +140,6 @@ const AddTaskModalContent = ({
 
       <BottomSheetModal
         ref={reminderModal}
-        backdropComponent={BottomSheetModalBackdrop}
         backgroundStyle={{ backgroundColor: globalStyles.containerBackground.backgroundColor }}
       >
         <BottomSheetView style={styles.modalView}>

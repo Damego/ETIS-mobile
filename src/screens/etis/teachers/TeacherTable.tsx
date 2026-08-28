@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 
 import BottomSheetModal from '~/components/BottomSheetModal';
 import LoadingScreen from '~/components/LoadingScreen';
@@ -34,6 +34,7 @@ const TeacherTable = () => {
     method: client.getTeacherData,
   });
   const modalRef = useRef<BottomSheetModal>();
+  const [selectedTeacher, setSelectedTeacher] = useState<ITeacher | null>(null);
   const grouped = useMemo(() => groupTeachers(data), [data]);
 
   if (isLoading) return <LoadingScreen onRefresh={refresh} />;
@@ -47,10 +48,13 @@ const TeacherTable = () => {
           discipline={discipline}
           teachers={teachers}
           key={discipline}
-          onPress={(teacher) => modalRef.current.present(teacher)}
+          onPress={(teacher) => {
+            setSelectedTeacher(teacher);
+            modalRef.current.present();
+          }}
         />
       ))}
-      <TeacherBottomSheet ref={modalRef} />
+      <TeacherBottomSheet ref={modalRef} teacher={selectedTeacher} />
     </Screen>
   );
 };

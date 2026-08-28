@@ -1,4 +1,4 @@
-import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { BottomSheetScrollView } from '@expo/ui/community/bottom-sheet';
 import { useQuery } from '@tanstack/react-query';
 import React, { useRef } from 'react';
 import { View } from 'react-native';

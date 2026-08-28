@@ -1,4 +1,4 @@
-import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { BottomSheetScrollView } from '@expo/ui/community/bottom-sheet';
 import React, { useRef } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
@@ -37,7 +37,11 @@ const CardSign = ({ subject }: { subject: ISubject }) => {
           </View>
         )}
       </View>
-      <BottomSheetModal ref={ref} onDismiss={() => ref.current.dismiss()} snapPoints={['50%']}>
+      <BottomSheetModal
+        ref={ref}
+        onDismiss={() => ref.current.dismiss()}
+        snapPoints={['50%', '100%']}
+      >
         <BottomSheetScrollView style={{ marginHorizontal: '2%' }}>
           <View style={styles.header}>
             <Text style={[fontSize.large, { flex: 1 }]}>{subject.name}</Text>

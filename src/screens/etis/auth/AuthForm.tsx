@@ -1,4 +1,3 @@
-import { Checkbox } from 'expo-checkbox';
 import React, { useState } from 'react';
 import {
   Image, StyleSheet, TextInput, View
@@ -8,6 +7,7 @@ import { Button } from '~/components/Button';
 import ClickableText from '~/components/ClickableText';
 import PasswordInput from '~/components/PasswordInput';
 import Text from '~/components/Text';
+import ThemedCheckbox from '~/components/ThemedCheckbox';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
 import { setSaveUserCredentials } from '~/redux/reducers/accountSlice';
@@ -90,8 +90,7 @@ const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
 
       <View style={styles.authPropContainer}>
         <View style={styles.checkboxContainer}>
-          <Checkbox
-            color={theme.colors.primary}
+          <ThemedCheckbox
             style={styles.checkbox}
             value={saveUserCredentials}
             onValueChange={toggleSaveUserCredentials}

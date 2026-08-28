@@ -1,6 +1,6 @@
+import PagerView from '@expo/ui/community/pager-view';
 import dayjs from 'dayjs';
 import React, { useMemo, useRef } from 'react';
-import PagerView from 'react-native-pager-view';
 
 import CenteredText from '~/components/CenteredText';
 import TimetableCalendar, {
