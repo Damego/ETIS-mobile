@@ -83,7 +83,7 @@ const WeekTimeTable = ({
         ? (
           loadingComponent()
         )
-        : data
+        : data?.weekInfo?.dates
           ? (
             <>
               <DatesContainer dates={data.weekInfo.dates} />
