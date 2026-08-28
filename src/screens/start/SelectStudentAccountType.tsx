@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button } from '~/components/Button';
 import Text from '~/components/Text';
-import { useAppDispatch, useGlobalStyles } from '~/hooks';
+import { useAppDispatch, useGlobalStyles, usePsutechHealth } from '~/hooks';
 import { AccountType, setAccountState } from '~/redux/reducers/accountSlice';
 import OptionButton from '~/screens/start/components/OptionButton';
 import { fontSize } from '~/utils/texts';
@@ -32,16 +32,19 @@ const WarningMessage = () => {
 
 const SelectStudentAccountTypeScreen = ({ navigation }) => {
   const dispatch = useAppDispatch();
+  const { isDown: psutechDown } = usePsutechHealth();
   const [withAuth, setWithAuth] = useState<boolean>(true);
+  const noAuthDisabled = psutechDown === true;
 
   const handleSelect = ($withAuth: boolean) => () => {
+    if (!$withAuth && noAuthDisabled) return;
     setWithAuth($withAuth);
   };
 
   const handleChoose = () => {
     if (withAuth) {
       dispatch(setAccountState(AccountType.AUTHORIZED_STUDENT));
-    } else {
+    } else if (!noAuthDisabled) {
       navigation.navigate('SelectFaculty');
     }
   };
@@ -60,7 +63,12 @@ const SelectStudentAccountTypeScreen = ({ navigation }) => {
           <OptionButton
             isPressed={!withAuth}
             onPress={handleSelect(false)}
-            bottomComponent={<Text>Доступно только расписание</Text>}
+            disabled={noAuthDisabled}
+            bottomComponent={
+              <Text colorVariant={noAuthDisabled ? 'text2' : undefined}>
+                {noAuthDisabled ? 'Сервис расписаний недоступен' : 'Доступно только расписание'}
+              </Text>
+            }
           >
             Без авторизации в ЕТИС
           </OptionButton>

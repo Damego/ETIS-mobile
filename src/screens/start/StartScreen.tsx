@@ -5,7 +5,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Button } from '~/components/Button';
 import SafeAreaScreen from '~/components/SafeAreaScreen';
 import Text from '~/components/Text';
-import { useGlobalStyles } from '~/hooks';
+import { useGlobalStyles, usePsutechHealth } from '~/hooks';
 import { StartStackScreenProps } from '~/navigation/types';
 import AuthFooter from '~/screens/etis/auth/AuthFooter';
 import { fontSize } from '~/utils/texts';
@@ -14,12 +14,13 @@ type UserType = 'teacher' | 'student';
 
 const StartScreen = ({ navigation }: StartStackScreenProps) => {
   const globalStyles = useGlobalStyles();
+  const { isDown: psutechDown } = usePsutechHealth();
   const [selectedType, setSelectedType] = useState<UserType>(null);
 
   const handleChoose = () => {
     if (selectedType === 'student') {
       navigation.navigate('SelectStudentAccountType');
-    } else {
+    } else if (psutechDown !== true) {
       navigation.navigate('SelectTeacher');
     }
   };
@@ -28,36 +29,43 @@ const StartScreen = ({ navigation }: StartStackScreenProps) => {
     setSelectedType(type);
   };
 
-  const renderButton = (text: string, type: UserType) => (
-    <TouchableOpacity
-      onPress={handlePress(type)}
-      style={[
-        styles.buttonView,
-        selectedType === type
-          ? globalStyles.primaryBorder
-          : [globalStyles.card, globalStyles.invisibleBorder],
-      ]}
-    >
-      <View style={{ width: 35, alignItems: 'center' }}>
-        <FontAwesome5
-          name={type === 'teacher' ? 'chalkboard-teacher' : 'male'}
-          size={24}
-          color={globalStyles.textColor.color}
-        />
-      </View>
+  const renderButton = (text: string, type: UserType) => {
+    const disabled = type === 'teacher' && psutechDown === true;
 
-      <Text style={styles.buttonText}>{text}</Text>
+    return (
+      <TouchableOpacity
+        onPress={handlePress(type)}
+        disabled={disabled}
+        style={[
+          styles.buttonView,
+          selectedType === type
+            ? globalStyles.primaryBorder
+            : [globalStyles.card, globalStyles.invisibleBorder],
+          disabled && styles.buttonDisabled,
+        ]}
+        accessibilityState={disabled ? { disabled: true } : undefined}
+      >
+        <View style={{ width: 35, alignItems: 'center' }}>
+          <FontAwesome5
+            name={type === 'teacher' ? 'chalkboard-teacher' : 'male'}
+            size={24}
+            color={disabled ? globalStyles.textColor2.color : globalStyles.textColor.color}
+          />
+        </View>
 
-      {selectedType === type && (
-        <AntDesign
-          name={'checkcircle'}
-          color={globalStyles.primaryText.color}
-          size={20}
-          style={{ marginLeft: 'auto' }}
-        />
-      )}
-    </TouchableOpacity>
-  );
+        <Text style={[styles.buttonText, disabled && globalStyles.textColor2]}>{text}</Text>
+
+        {selectedType === type && (
+          <AntDesign
+            name={'checkcircle'}
+            color={globalStyles.primaryText.color}
+            size={20}
+            style={{ marginLeft: 'auto' }}
+          />
+        )}
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <SafeAreaScreen>
@@ -99,6 +107,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingVertical: '8%',
     paddingHorizontal: '4%',
+  },
+  buttonDisabled: {
+    opacity: 0.5,
   },
   buttonText: {
     ...fontSize.big,

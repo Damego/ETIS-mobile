@@ -6,7 +6,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
-import { useGlobalStyles } from '~/hooks';
+import { useGlobalStyles, usePsutechHealth } from '~/hooks';
 import { EducationNavigationProp, EducationStackParamList } from '~/navigation/types';
 
 const ICON_SIZE = 40;
@@ -15,6 +15,7 @@ interface ScreenT {
   title: string;
   icon: (color: string) => React.ReactNode;
   screenName: keyof EducationStackParamList;
+  requiresPsutech?: boolean;
 }
 
 const SCREENS: ScreenT[][] = [
@@ -70,6 +71,7 @@ const SCREENS: ScreenT[][] = [
       title: 'Расписание аудиторий',
       icon: (color) => <Ionicons name={'business-outline'} size={ICON_SIZE} color={color} />,
       screenName: 'SelectAudience',
+      requiresPsutech: true,
     },
   ],
   [
@@ -82,19 +84,27 @@ const SCREENS: ScreenT[][] = [
 ];
 
 const ScreenButton = ({ screen }: { screen: ScreenT }) => {
-  const { title, screenName, icon } = screen;
+  const { title, screenName, icon, requiresPsutech } = screen;
 
   const globalStyles = useGlobalStyles();
   const navigation = useNavigation<EducationNavigationProp>();
+  const { isDown: psutechDown } = usePsutechHealth();
+  const disabled = requiresPsutech && psutechDown === true;
 
   const handlePress = () => {
+    if (disabled) return;
     navigation.navigate(screenName as never);
   };
 
   return (
-    <TouchableOpacity style={[styles.card, globalStyles.card]} onPress={handlePress}>
+    <TouchableOpacity
+      style={[styles.card, globalStyles.card, disabled && styles.cardDisabled]}
+      onPress={handlePress}
+      disabled={disabled}
+      accessibilityState={disabled ? { disabled: true } : undefined}
+    >
       {icon(globalStyles.textColor.color)}
-      <Text style={styles.cardText}>{title}</Text>
+      <Text style={[styles.cardText, disabled && globalStyles.textColor2]}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -120,5 +130,6 @@ export default MoreScreens;
 const styles = StyleSheet.create({
   titleText: { fontWeight: '700', fontSize: 22 },
   card: { padding: '4%', flex: 1, gap: 8 },
+  cardDisabled: { opacity: 0.5 },
   cardText: { fontWeight: '600', fontSize: 16 },
 });

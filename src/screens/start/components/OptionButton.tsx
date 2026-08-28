@@ -9,11 +9,13 @@ import { fontSize } from '~/utils/texts';
 const OptionButton = ({
   isPressed,
   onPress,
+  disabled,
   children,
   bottomComponent,
 }: {
   isPressed: boolean;
   onPress: () => void;
+  disabled?: boolean;
   children: React.ReactNode;
   bottomComponent?: React.ReactNode;
 }) => {
@@ -22,16 +24,18 @@ const OptionButton = ({
   return (
     <ClickableText
       onPress={onPress}
+      disabled={disabled}
       viewStyle={[
         styles.buttonView,
         isPressed ? globalStyles.primaryBorder : [globalStyles.card, globalStyles.invisibleBorder],
+        disabled && styles.buttonDisabled,
       ]}
       iconRight={
         isPressed && (
           <AntDesign name={'checkcircle'} color={globalStyles.primaryText.color} size={20} />
         )
       }
-      textStyle={styles.buttonText}
+      textStyle={[styles.buttonText, disabled && globalStyles.textColor2]}
       bottomComponent={bottomComponent}
     >
       {children}
@@ -47,6 +51,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: '4%',
     justifyContent: 'space-between',
     minWidth: '100%',
+  },
+  buttonDisabled: {
+    opacity: 0.5,
   },
   buttonText: {
     ...fontSize.big,
