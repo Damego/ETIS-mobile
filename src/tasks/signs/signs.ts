@@ -1,4 +1,4 @@
-import * as BackgroundFetch from 'expo-background-fetch';
+import * as BackgroundTask from 'expo-background-task';
 import * as TaskManager from 'expo-task-manager';
 
 import { BaseClient } from '~/data/base';
@@ -28,7 +28,7 @@ export const defineSignsFetchTask = () =>
     if (onlineResult.type === GetResultType.loginPage) {
       console.log('[FETCH] Token is expired. Canceling fetch...'); // TODO: re-actualize token
       unregisterBackgroundFetchAsync();
-      return BackgroundFetch.BackgroundFetchResult.Failed;
+      return BackgroundTask.BackgroundTaskResult.Success;
     }
 
     const difference = differenceSigns(cachedResult.data.subjects, onlineResult.data.subjects);
@@ -38,27 +38,24 @@ export const defineSignsFetchTask = () =>
       difference.forEach((checkPoint) => {
         displaySignNotification(checkPoint);
       });
-      return BackgroundFetch.BackgroundFetchResult.NewData;
     }
 
     console.log('[FETCH] Fetched no new data');
-    return BackgroundFetch.BackgroundFetchResult.NoData;
+    return BackgroundTask.BackgroundTaskResult.Success;
   });
 
-async function registerBackgroundFetchAsync() {
+async function registerBackgroundTaskAsync() {
   try {
-    const status = await BackgroundFetch.getStatusAsync();
-    if (status === BackgroundFetch.BackgroundFetchStatus.Restricted) {
-      console.warn('[FETCH] Background fetch restricted on this device. Skipping.');
+    const status = await BackgroundTask.getStatusAsync();
+    if (status === BackgroundTask.BackgroundTaskStatus.Restricted) {
+      console.warn('[FETCH] Background task restricted on this device. Skipping.');
       return;
     }
 
     const isRegistered = await TaskManager.isTaskRegisteredAsync(BACKGROUND_FETCH_TASK);
     if (!isRegistered) {
-      await BackgroundFetch.registerTaskAsync(BACKGROUND_FETCH_TASK, {
+      await BackgroundTask.registerTaskAsync(BACKGROUND_FETCH_TASK, {
         minimumInterval: 10 * 60, // 10 minutes
-        stopOnTerminate: false, // android only,
-        startOnBoot: false, // android only
       });
     }
   } catch (err) {
@@ -67,7 +64,7 @@ async function registerBackgroundFetchAsync() {
 }
 
 export async function unregisterBackgroundFetchAsync() {
-  return BackgroundFetch.unregisterTaskAsync(BACKGROUND_FETCH_TASK);
+  return BackgroundTask.unregisterTaskAsync(BACKGROUND_FETCH_TASK);
 }
 
 export const registerSignsFetchTask = async () => {
@@ -79,5 +76,5 @@ export const registerSignsFetchTask = async () => {
     console.warn('[FETCH] Unable to access current session. Task registering canceled.');
     return;
   }
-  registerBackgroundFetchAsync().then(() => console.log('[FETCH] Signs fetch task registered'));
+  registerBackgroundTaskAsync().then(() => console.log('[FETCH] Signs fetch task registered'));
 };
