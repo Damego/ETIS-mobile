@@ -20,7 +20,7 @@ const TeachersBottomSheet = ({
   onTeacherSelect: (teacherId: string) => void;
 }) => {
   const globalStyles = useGlobalStyles();
-  const modalRef = useRef<BottomSheetModal>();
+  const modalRef = useRef<BottomSheetModal | undefined>(undefined);
   const options = timetable.map((tt) => ({
     label: tt.teacher.name,
     value: tt.teacher.id,

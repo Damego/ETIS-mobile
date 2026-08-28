@@ -1,8 +1,14 @@
+import type { CheerioAPI } from 'cheerio';
+
 import { ISession } from '../models/session';
 import { getTextField } from './utils';
 
-export default function parseSessionData($: cheerio.Root): ISession {
-  const data: ISession = {};
+export default function parseSessionData($: CheerioAPI): ISession {
+  const data: ISession = {
+    current: 0,
+    latest: 0,
+    name: '',
+  };
 
   const subMenu = $('.submenu').last();
   $('.submenu-item', subMenu).each((i, el) => {

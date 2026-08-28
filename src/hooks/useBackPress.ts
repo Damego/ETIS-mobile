@@ -12,7 +12,7 @@ const useBackPress = (callback: () => boolean) => {
     navigation.addListener('beforeRemove', (event) => {
       const shouldPrevent = callback();
       if (shouldPrevent) {
-        event.preventDefault();
+        (event as unknown as { preventDefault: () => void }).preventDefault();
       }
     });
     const handler = BackHandler.addEventListener('hardwareBackPress', callback);

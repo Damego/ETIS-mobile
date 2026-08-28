@@ -32,7 +32,7 @@ interface ButtonProps {
   fontStyle?: StyleProp<TextStyle>;
 }
 
-const Button = React.forwardRef<View | Text | TouchableOpacity, ButtonProps>(
+const Button = React.forwardRef<React.ElementRef<typeof TouchableOpacity>, ButtonProps>(
   ({ text, onPress, disabled, showLoading, variant, fontStyle }, ref) => {
     const globalStyles = useGlobalStyles();
 
@@ -41,7 +41,7 @@ const Button = React.forwardRef<View | Text | TouchableOpacity, ButtonProps>(
         textColor: globalStyles.textColor.color,
         text: [
           globalStyles.primaryContrastText,
-          { fontWeight: '500' },
+          { fontWeight: '500' as const },
           fontStyle || fontSize.xlarge,
         ],
         view: [defaultStyles.container, globalStyles.primaryBackgroundColor],
@@ -50,14 +50,14 @@ const Button = React.forwardRef<View | Text | TouchableOpacity, ButtonProps>(
         textColor: globalStyles.textColor.color,
         text: [
           globalStyles.secondaryContrastText,
-          { fontWeight: '500' },
+          { fontWeight: '500' as const },
           fontStyle || fontSize.xlarge,
         ],
         view: [defaultStyles.container, globalStyles.secondaryBackgroundColor],
       },
       card: {
         textColor: globalStyles.textColor.color,
-        text: [globalStyles.textColor, { fontWeight: '500' }, fontStyle || fontSize.xlarge],
+        text: [globalStyles.textColor, { fontWeight: '500' as const }, fontStyle || fontSize.xlarge],
         view: [defaultStyles.container, { backgroundColor: globalStyles.card.backgroundColor }],
       },
     };
@@ -73,17 +73,17 @@ const Button = React.forwardRef<View | Text | TouchableOpacity, ButtonProps>(
     if (disabled) {
       return (
         <View style={styles[variant].view} ref={ref as React.Ref<View>}>
-          <Text style={styles[variant].text}>{text}</Text>
+          <Text style={styles[variant].text as StyleProp<TextStyle>}>{text}</Text>
         </View>
       );
     }
 
     return (
       <ClickableText
-        ref={ref as React.Ref<TouchableOpacity>}
+        ref={ref as React.Ref<React.ElementRef<typeof TouchableOpacity>>}
         text={text}
         onPress={onPress}
-        textStyle={styles[variant].text}
+        textStyle={styles[variant].text as StyleProp<TextStyle>}
         viewStyle={styles[variant].view}
       />
     );

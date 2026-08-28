@@ -47,7 +47,7 @@ const QuestionsBottomSheet = React.forwardRef<BottomSheetModal, { questions: IEx
 );
 
 const ExamQuestions = ({ questions }: { questions: IExamQuestions[] }) => {
-  const ref = useRef<BottomSheetModal>();
+  const ref = useRef<BottomSheetModal | undefined>(undefined);
 
   return (
     <>

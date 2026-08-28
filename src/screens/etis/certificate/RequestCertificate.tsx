@@ -240,7 +240,7 @@ export default function RequestCertificate({
         <View style={styles.buttonContainer}>
           <Button
             text={'Продолжить'}
-            onPress={() => navigation.navigate(specialCert.screen)}
+            onPress={() => navigation.navigate(specialCert.screen as never)}
             variant={'primary'}
           />
         </View>

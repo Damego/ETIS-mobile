@@ -60,7 +60,7 @@ const PageNavigator = React.memo(
   }) => {
     const globalStyles = useGlobalStyles();
     const [pages, setPages] = useState<number[]>([]);
-    const ref = useRef<ScrollView>();
+    const ref = useRef<ScrollView | undefined>(undefined);
 
     const generateButtons = () => {
       const array: number[] = [];

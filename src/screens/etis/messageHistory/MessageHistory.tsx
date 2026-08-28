@@ -133,7 +133,6 @@ export default function MessageHistory({
         startScrollFromBottom
         renderItem={renderMessage}
         data={messages.sort(compareMessages)}
-        estimatedItemSize={140}
         containerStyle={{ marginBottom: '2%' }}
         ItemSeparatorComponent={() => <View style={{ marginVertical: '1%' }} />}
       />

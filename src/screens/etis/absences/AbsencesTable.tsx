@@ -22,7 +22,7 @@ const AbsencesTable = () => {
   const { data, isLoading, refresh, update } = useQuery({
     method: client.getAbsencesData,
   });
-  const modalRef = useRef<BottomSheetModal>();
+  const modalRef = useRef<BottomSheetModal | undefined>(undefined);
 
   const loadSession = (session: number) => {
     update({ data: session, requestType: RequestType.tryFetch });

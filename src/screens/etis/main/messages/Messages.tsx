@@ -48,7 +48,6 @@ const Messages = ({ jumpTo, route }: SceneProps) => {
       data={data ? data.messages : []}
       renderItem={({ item }) => <MessageCard data={item} page={data.page} />}
       keyExtractor={(item) => item[0].time}
-      estimatedItemSize={10}
       ItemSeparatorComponent={BorderLine}
       contentContainerStyle={{ paddingBottom: height * 0.1 }}
     />

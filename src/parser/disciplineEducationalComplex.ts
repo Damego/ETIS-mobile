@@ -1,3 +1,4 @@
+import type { Cheerio, CheerioAPI, Element } from 'cheerio';
 import cheerio from 'cheerio';
 
 import {
@@ -13,8 +14,8 @@ import { IFile } from '~/models/other';
 import { getTextField } from '~/parser/utils';
 
 const parseTheme = (
-  $: cheerio.Root,
-  themeTag: cheerio.Cheerio
+  $: CheerioAPI,
+  themeTag: Cheerio<Element>
 ): IDisciplineEducationalComplexThemeLink => {
   const a = themeTag.find('a');
   const name = getTextField(a);
@@ -37,7 +38,7 @@ const parseTheme = (
   };
 };
 
-const parseThemes = ($: cheerio.Root) => {
+const parseThemes = ($: CheerioAPI) => {
   const themes: IDisciplineEducationalComplexThemeLink[] = [];
 
   $('.theme').each((_, element) => {
@@ -56,7 +57,7 @@ const parseThemes = ($: cheerio.Root) => {
   return themes;
 };
 
-const parseAdditionalMaterials = ($: cheerio.Root, tag: cheerio.Cheerio): IAdditionalMaterials => {
+const parseAdditionalMaterials = ($: CheerioAPI, tag: Cheerio<Element>): IAdditionalMaterials => {
   const files: IFile[] = [];
   tag
     .find('a')
@@ -71,7 +72,7 @@ const parseAdditionalMaterials = ($: cheerio.Root, tag: cheerio.Cheerio): IAddit
   return { files };
 };
 
-const parsePlannedLearningOutcome = ($: cheerio.Root, tag: cheerio.Cheerio) => {
+const parsePlannedLearningOutcome = ($: CheerioAPI, tag: Cheerio<Element>) => {
   const plannedLearningOutcome: IPlannedLearningOutcome[] = [];
 
   tag.children('div').each((_, element) => {
@@ -97,7 +98,7 @@ const parsePlannedLearningOutcome = ($: cheerio.Root, tag: cheerio.Cheerio) => {
   return plannedLearningOutcome;
 };
 
-const parseExamQuestions = ($: cheerio.Root, tag: cheerio.Cheerio) => {
+const parseExamQuestions = ($: CheerioAPI, tag: Cheerio<Element>) => {
   const examQuestions: IExamQuestions[] = [];
   tag.find('a').each((_, element) => {
     const linkTag = $(element);
@@ -112,8 +113,8 @@ const parseExamQuestions = ($: cheerio.Root, tag: cheerio.Cheerio) => {
 };
 
 const parseEvaluationIndicators = (
-  $: cheerio.Root,
-  tag: cheerio.Cheerio
+  $: CheerioAPI,
+  tag: Cheerio<Element>
 ): IEvaluationIndicators => {
   const divTags = tag.children('div');
   const data = [];

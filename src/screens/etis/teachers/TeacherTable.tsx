@@ -33,7 +33,7 @@ const TeacherTable = () => {
   const { data, isLoading, refresh } = useQuery({
     method: client.getTeacherData,
   });
-  const modalRef = useRef<BottomSheetModal>();
+  const modalRef = useRef<BottomSheetModal | undefined>(undefined);
   const [selectedTeacher, setSelectedTeacher] = useState<ITeacher | null>(null);
   const grouped = useMemo(() => groupTeachers(data), [data]);
 

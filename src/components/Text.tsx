@@ -22,23 +22,31 @@ const fontWeightToUbuntuFamily = {
   bold: 'Ubuntu-Bold',
 };
 
-const getFontFamily = (style: StyleProp<TextStyle>) => {
+const getFontFamily = (style: StyleProp<TextStyle>): string | undefined => {
   if (style instanceof Array) {
     for (const st of style) {
-      const fontFamily = getFontFamily(st);
+      const fontFamily = getFontFamily(st as StyleProp<TextStyle>);
       if (fontFamily) return fontFamily;
     }
+
+    return undefined;
   }
-  if (style instanceof Object) {
-    return fontWeightToUbuntuFamily[style?.fontWeight];
+
+  if (style && typeof style === 'object' && !Array.isArray(style)) {
+    const { fontWeight } = (style);
+    return fontWeightToUbuntuFamily[fontWeight as keyof typeof fontWeightToUbuntuFamily];
   }
+
+  return undefined;
 };
 
 export default function Text({ colorVariant = 'text', style, ...props }: TextProps) {
   const theme = useAppTheme();
 
   const $style = React.useMemo(() => {
-    const color: string = theme.colors[colorVariant] || theme.colors.text;
+    const color: string = (colorVariant && colorVariant in theme.colors
+      ? theme.colors[colorVariant]
+      : theme.colors.text) || theme.colors.text;
 
     return StyleSheet.compose(
       { color, fontFamily: getFontFamily(style) || 'Ubuntu-Regular' },

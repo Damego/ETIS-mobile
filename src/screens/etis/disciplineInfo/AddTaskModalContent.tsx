@@ -44,7 +44,7 @@ const AddTaskModalContent = ({
   const [reminders, setReminders] = useState<DisciplineReminder[]>(selectedTask?.reminders || []);
   const [isLinkedToPair, setLinkedToPair] = useState(!disableCheckbox);
   const globalStyles = useGlobalStyles();
-  const reminderModal = useRef<BottomSheetModal>();
+  const reminderModal = useRef<BottomSheetModal | undefined>(undefined);
 
   const openReminderModal = () => reminderModal.current?.present();
 

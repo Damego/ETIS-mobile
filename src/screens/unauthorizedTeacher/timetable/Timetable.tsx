@@ -20,17 +20,17 @@ const Timetable = ({ navigation }: UnauthorizedTeacherStackScreenProps) => {
   const client = useClient();
   const timetable = useTimetable({
     skipSunday,
-    onRequestUpdate: (week) => update({ data: { week, teacherId } }),
+    onRequestUpdate: (week) => update({ requestType: RequestType.tryFetch, data: { week, teacherId } }),
   });
 
   const { data, isLoading, refresh, update } = useQuery({
     method: client.getCathedraTimetable,
     payload: {
+      requestType: RequestType.tryFetch,
       data: {
         week: timetable.currentWeek,
         teacherId,
       },
-      requestType: RequestType.tryFetch,
     },
     after: (result) => {
       timetable.updateData(result.data.timetable[0].weekInfo);

@@ -8,6 +8,15 @@ import {
 } from '~/models/cathedraTimetable';
 import { ICertificateResult } from '~/models/certificate';
 import { IDigitalResource } from '~/models/digitalResources';
+import {
+  IDisciplineEducationalComplex,
+  IDisciplineEducationalComplexPayload,
+} from '~/models/disciplineEducationalComplex';
+import {
+  IDisciplineEducationalComplexTheme,
+  IDisciplineEducationalComplexThemePayload,
+} from '~/models/disciplineEducationalComplexTheme';
+import { IGroupTimetablePayload } from '~/models/groupTimetable';
 import { IMessagesData, MessageType } from '~/models/messages';
 import { IOrder } from '~/models/order';
 import { LessonTypes } from '~/models/other';
@@ -804,6 +813,7 @@ export default class DemoClient implements BaseClient {
     return this.toResult([
       {
         index: 0,
+        isCurrent: true,
         status: 'студент',
         name: 'Лейбниц Готфрид Вильгельм',
         group: 'Математика-1',
@@ -815,6 +825,7 @@ export default class DemoClient implements BaseClient {
       {
         id: '0',
         index: 1,
+        isCurrent: false,
         status: 'студент',
         name: 'Лейбниц Готфрид Вильгельм',
         group: 'Математика-1',
@@ -826,6 +837,7 @@ export default class DemoClient implements BaseClient {
       {
         id: '1',
         index: 2,
+        isCurrent: false,
         status: 'отчислен',
         name: 'Лейбниц Готфрид Вильгельм',
         group: 'Математика-1',
@@ -862,5 +874,27 @@ export default class DemoClient implements BaseClient {
         url: 'https://student.psu.ru',
       },
     ]);
+  }
+
+  async getGroupTimetable(
+    payload: IGetPayload<IGroupTimetablePayload>
+  ): Promise<IGetResult<ITimeTable>> {
+    return this.toResult({} as ITimeTable);
+  }
+
+  async getDisciplineEducationalComplex(
+    payload: IGetPayload<IDisciplineEducationalComplexPayload>
+  ): Promise<IGetResult<IDisciplineEducationalComplex>> {
+    return this.toResult({} as IDisciplineEducationalComplex);
+  }
+
+  async getDisciplineEducationalComplexTheme(
+    payload: IGetPayload<IDisciplineEducationalComplexThemePayload>
+  ): Promise<IGetResult<IDisciplineEducationalComplexTheme>> {
+    return this.toResult({} as IDisciplineEducationalComplexTheme);
+  }
+
+  async getExamQuestions(payload: IGetPayload<string>): Promise<IGetResult<string>> {
+    return this.toResult('');
   }
 }

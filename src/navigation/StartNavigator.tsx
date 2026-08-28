@@ -18,7 +18,7 @@ const StartNavigator = () => {
   const theme = useAppTheme();
 
   return (
-    <Stack.Navigator screenOptions={{ ...headerParams(theme), headerTitleStyle: { fontSize: 20 } }}>
+    <Stack.Navigator id={'start'} screenOptions={{ ...headerParams(theme), headerTitleStyle: { fontSize: 20 } }}>
       <Stack.Screen name={'Start'} component={StartScreen} options={{ headerShown: false }} />
       <Stack.Screen
         name={'SelectTeacher'}

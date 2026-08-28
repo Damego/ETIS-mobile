@@ -4,7 +4,7 @@ export interface StudentData {
   educationForm: string;
   year: string;
   group: string;
-  groupShort: string;
+  groupShort?: string;
   isLyceum: boolean;
 }
 

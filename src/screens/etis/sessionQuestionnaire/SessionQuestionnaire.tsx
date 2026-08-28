@@ -35,9 +35,9 @@ export default function SessionQuestionnaire({
   const { url } = route.params;
   const [step, setStep] = useState<Steps>(1);
   const [themeIndex, setThemeIndex] = useState(0);
-  const teacherRef = useRef<string>();
+  const teacherRef = useRef<string | undefined>(undefined);
   const answersRef = useRef<IAnswer[]>([]);
-  const additionalCommentRef = useRef<string>();
+  const additionalCommentRef = useRef<string | undefined>(undefined);
   const questionCount = useRef(0);
 
   const client = useClient();

@@ -16,7 +16,7 @@ import { fontSize } from '~/utils/texts';
 
 const Grades = () => {
   const { data, isLoading, refresh, loadSession } = useSignsQuery();
-  const ref = useRef<BottomSheetModal>();
+  const ref = useRef<BottomSheetModal | undefined>(undefined);
   const theme = useAppTheme();
 
   let component: React.ReactNode;

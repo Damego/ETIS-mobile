@@ -88,7 +88,7 @@ const ScreenButton = ({ screen }: { screen: ScreenT }) => {
   const navigation = useNavigation<EducationNavigationProp>();
 
   const handlePress = () => {
-    navigation.navigate(screenName);
+    navigation.navigate(screenName as never);
   };
 
   return (

@@ -41,7 +41,7 @@ export default function CertificateIncome() {
   const { info } = useAppSelector((state) => state.student);
   const [fio, setFio] = useState<string>(info.name);
   const [faculty, setFaculty] = useState<string>();
-  const [year, setYear] = useState<string>(getStudentYear(Number.parseInt(info.year)));
+  const [year, setYear] = useState<string>(String(getStudentYear(Number.parseInt(info.year))));
   const [certPeriod, setCertPeriod] = useState<string>();
   useQuery({
     method: client.getPersonalRecords,

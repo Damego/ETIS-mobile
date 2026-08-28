@@ -16,7 +16,7 @@ const TeacherNavigator = () => {
   const theme = useAppTheme();
 
   return (
-    <Stack.Navigator screenOptions={{ ...headerParams(theme) }}>
+    <Stack.Navigator id={'unauthorized-teacher'} screenOptions={{ ...headerParams(theme) }}>
       <Stack.Screen
         name={'Timetable'}
         component={Timetable}

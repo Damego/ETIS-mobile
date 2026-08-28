@@ -62,6 +62,14 @@ const getGlobalStyles = ({ colors }: { colors: IThemeColors }) =>
     inputPlaceholder: {
       color: colors.inputPlaceholder,
     },
+    block: {
+      borderRadius: 20,
+      backgroundColor: colors.container,
+      padding: '4%',
+    },
+    fontColorForBlock: {
+      color: colors.text,
+    },
   });
 
 export default getGlobalStyles;

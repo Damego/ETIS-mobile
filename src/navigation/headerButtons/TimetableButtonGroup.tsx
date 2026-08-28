@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import BellScheduleButton from '../../screens/etis/main/timetable/BellScheduleButton';
-import DisciplineTasksButton from '../../screens/etis/main/timetable/DisciplineTasksButton';
+import BellScheduleButton from '~/components/timetable/buttons/BellScheduleButton';
+import DisciplineTasksButton from '~/components/timetable/buttons/DisciplineTasksButton';
 
 const TimetableButtonGroup = () => (
   <View style={styles.view}>

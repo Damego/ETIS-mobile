@@ -77,7 +77,7 @@ const StackNavigator = () => {
     <SafeAreaProvider>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <NavigationContainer theme={{ ...DefaultTheme, ...theme }}>
-          <Stack.Navigator screenOptions={{ headerShown: true, ...headerParams(theme) }}>
+          <Stack.Navigator id={'root'} screenOptions={{ headerShown: true, ...headerParams(theme) }}>
             <Stack.Screen
               name='TabNavigator'
               component={educationScreen}

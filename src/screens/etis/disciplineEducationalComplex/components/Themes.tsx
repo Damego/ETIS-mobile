@@ -78,7 +78,7 @@ const Themes = ({
   themes: IDisciplineEducationalComplexThemeLink[];
   disciplineName: string;
 }) => {
-  const ref = useRef<BottomSheetModal>();
+  const ref = useRef<BottomSheetModal | undefined>(undefined);
 
   return (
     <>

@@ -1,3 +1,4 @@
+import type { Cheerio, CheerioAPI, Element } from 'cheerio';
 import cheerio from 'cheerio';
 
 import {
@@ -6,7 +7,7 @@ import {
 } from '~/models/disciplineEducationalComplexTheme';
 import { getTextField } from '~/parser/utils';
 
-const parseWorkHours = ($: cheerio.Root, tag: cheerio.Cheerio) => {
+const parseWorkHours = ($: CheerioAPI, tag: Cheerio<Element>) => {
   const workHours: IThemeWorkHours[] = [];
 
   tag.find('div').each((_, element) => {
@@ -21,7 +22,7 @@ const parseWorkHours = ($: cheerio.Root, tag: cheerio.Cheerio) => {
   return workHours;
 };
 
-const parseList = ($: cheerio.Root, tag: cheerio.Cheerio) => {
+const parseList = ($: CheerioAPI, tag: Cheerio<Element>) => {
   const data = [];
   tag.find('li').each((_, element) => {
     const tag = $(element);

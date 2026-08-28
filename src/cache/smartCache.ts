@@ -333,7 +333,7 @@ export default class SmartCache {
 
   async getCertificate(): Promise<ICertificateResult> {
     if (!this.certificate.isReady()) await this.certificate.init();
-    return { certificates: this.certificate.get(), announce: {} };
+    return { certificates: this.certificate.get(), announce: {}, availableCertificates: [] };
   }
 
   async placeCertificate(data: ICertificateResult) {
@@ -347,7 +347,7 @@ export default class SmartCache {
     const certificates = this.certificate.get();
     certificates[certificates.findIndex((c) => c.id === certificate.id)] = certificate;
 
-    this.placeCertificate({ certificates, announce: {} });
+    this.placeCertificate({ certificates, announce: {}, availableCertificates: [] });
   }
 
   // // End Certificate Region

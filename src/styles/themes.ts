@@ -1,4 +1,4 @@
-import { StatusBarStyle } from 'expo-status-bar/src/StatusBar.types';
+export type StatusBarStyle = 'auto' | 'inverted' | 'light' | 'dark';
 
 export enum ThemeType {
   auto = 'auto',
@@ -38,7 +38,7 @@ export interface IThemeColors {
 
 export interface ITheme {
   dark: boolean;
-  statusBarStyle: StatusBarStyle;
+  statusBarStyle?: StatusBarStyle;
   backgroundImage?: any;
   colors: IThemeColors;
 }

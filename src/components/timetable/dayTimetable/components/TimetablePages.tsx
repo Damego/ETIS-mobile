@@ -1,4 +1,4 @@
-import PagerView from '@expo/ui/community/pager-view';
+import PagerView, { type PagerViewRef } from '@expo/ui/community/pager-view';
 import React, { forwardRef } from 'react';
 import {
   NativeSyntheticEvent, ScrollView, StyleSheet
@@ -48,7 +48,7 @@ const Page = ({ day }: { day: ITimeTableDay }) => {
   );
 };
 
-const TimetablePages = forwardRef<PagerView, TimetablePagesProps>(
+const TimetablePages = forwardRef<PagerViewRef, TimetablePagesProps>(
   ({ days, dayNumber, onPagePress }, ref) => {
     const insets = useSafeAreaInsets();
     const handlePageSelected = (event: NativeSyntheticEvent<Readonly<{ position: number }>>) =>

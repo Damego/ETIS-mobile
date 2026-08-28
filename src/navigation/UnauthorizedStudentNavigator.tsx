@@ -16,7 +16,7 @@ const UnauthorizedStudentNavigator = () => {
   const theme = useAppTheme();
 
   return (
-    <Stack.Navigator screenOptions={{ ...headerParams(theme) }}>
+    <Stack.Navigator id={'unauthorized-student'} screenOptions={{ ...headerParams(theme) }}>
       <Stack.Screen
         name={'Timetable'}
         component={Timetable}

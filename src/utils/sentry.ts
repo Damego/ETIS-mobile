@@ -15,7 +15,7 @@ export default () => {
       tracesSampleRate: 1.0,
       integrations: __DEV__
         ? [
-          new Sentry.ReactNativeTracing({
+          Sentry.reactNativeTracingIntegration({
             shouldCreateSpanForRequest: (url) => !url.startsWith('http://'),
           }),
         ]

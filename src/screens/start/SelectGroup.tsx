@@ -105,7 +105,6 @@ const SelectGroupScreen = ({ route }: StartStackScreenProps<'SelectGroup'>) => {
         data={data ?? []}
         extraData={selectedGroup}
         ItemSeparatorComponent={() => <BorderLine />}
-        estimatedItemSize={66}
       />
       {selectedGroup && (
         <TouchableOpacity

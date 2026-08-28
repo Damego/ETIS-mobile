@@ -1,3 +1,4 @@
+import type { Cheerio, CheerioAPI, Element } from 'cheerio';
 import * as cheerio from 'cheerio';
 import dayjs from 'dayjs';
 
@@ -9,7 +10,7 @@ import { dateRegex, disciplineRegex, numberRegex } from '~/parser/regex';
 
 import { getDisciplineType, getTextField } from './utils';
 
-const parsePeriodsAndWeeks = ($: cheerio.Root) => {
+const parsePeriodsAndWeeks = ($: CheerioAPI) => {
   const data: {
     periods: IPeriod[];
     weekInfo: WeekInfo;
@@ -99,9 +100,9 @@ const getAudienceFromText = (text: string): IAudience => {
   };
 };
 
-const parseAudience = ($: cheerio.Root, tag: cheerio.Cheerio, weekInfo: WeekInfo) => {
+const parseAudience = ($: CheerioAPI, tag: Cheerio<Element>, weekInfo: WeekInfo) => {
   let audience: IAudience | undefined;
-  tag.contents().each(function (_, el: cheerio.TagElement) {
+  tag.contents().each(function (_, el: Element) {
     const tag = $(el);
     if (this.type === 'text') {
       let audienceString = getAudienceByWeek(getTextField(tag), weekInfo);
@@ -117,7 +118,7 @@ const parseAudience = ($: cheerio.Root, tag: cheerio.Cheerio, weekInfo: WeekInfo
           ...aud,
           info:
             // Изображение говорит о наличии некой информации об аудитории
-            (el.next as cheerio.TagElement)?.name === 'img'
+            (el.next as Element)?.name === 'img'
               ? $(el.next).attr('title').replaceAll('<br>', '\n')
               : undefined,
         };
@@ -135,7 +136,7 @@ const cutGroupName = (group: string) => {
   return `${speciality}-${year.slice(2)}`;
 };
 
-const parsePairLessons = ($: cheerio.Root, td: cheerio.Cheerio, weekInfo: WeekInfo): ILesson[] => {
+const parsePairLessons = ($: CheerioAPI, td: Cheerio<Element>, weekInfo: WeekInfo): ILesson[] => {
   const divs = td.children();
   if (divs.length === 0) {
     return [];
@@ -202,7 +203,7 @@ const cleanupPairs = (pairs: IPair[]) => {
 const generateNextDayDateString = (date: dayjs.Dayjs, addValue: number) =>
   date.add(addValue, 'day').format('DD.MM.YYYY');
 
-const parseTeacher = (tdTag: cheerio.Cheerio): ITeacher => {
+const parseTeacher = (tdTag: Cheerio<Element>): ITeacher => {
   const teacherTextTag = tdTag.contents().eq(0);
   const [teacherId] = tdTag.find('a').attr('href').match(numberRegex);
   return {

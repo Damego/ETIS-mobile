@@ -15,7 +15,7 @@ import TotalPoints from './TotalPoints';
 
 const CardSign = ({ subject }: { subject: ISubject }) => {
   const globalStyles = useGlobalStyles();
-  const ref = useRef<BottomSheetModal>();
+  const ref = useRef<BottomSheetModal | undefined>(undefined);
 
   return (
     <View style={{ gap: 8 }}>

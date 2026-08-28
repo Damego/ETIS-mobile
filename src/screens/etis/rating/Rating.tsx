@@ -55,7 +55,7 @@ export default function Rating() {
   const { data, isLoading, refresh, loadSession } = useRatingQuery();
 
   const theme = useAppTheme();
-  const modalRef = useRef<BottomSheetModal>();
+  const modalRef = useRef<BottomSheetModal | undefined>(undefined);
 
   let component: React.ReactNode;
   if (isLoading) component = <LoadingContainer />;

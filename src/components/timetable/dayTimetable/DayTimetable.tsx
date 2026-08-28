@@ -1,4 +1,4 @@
-import PagerView from '@expo/ui/community/pager-view';
+import PagerView, { type PagerViewRef } from '@expo/ui/community/pager-view';
 import dayjs from 'dayjs';
 import React, { useMemo, useRef } from 'react';
 
@@ -42,7 +42,7 @@ const DayTimetable = ({
   isLoading?: boolean;
   loadingComponent?: () => React.ReactNode;
 }) => {
-  const pagerRef = useRef<PagerView>(null);
+  const pagerRef = useRef<PagerViewRef>(null);
 
   const contextData = useMemo(
     () => ({

@@ -41,7 +41,7 @@ const EducationNavigation = () => {
   const theme = useAppTheme();
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: true, ...headerParams(theme) }}>
+    <Stack.Navigator id='education' screenOptions={{ headerShown: true, ...headerParams(theme) }}>
       {!isSignedIn
         ? (
           <Stack.Screen name={'Auth'} component={Auth} options={{ title: 'Вход' }} />

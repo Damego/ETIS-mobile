@@ -26,7 +26,7 @@ interface ClickableTextProps extends TouchableOpacityProps {
   textProps?: TextProps;
 }
 
-const ClickableText = React.forwardRef<TouchableOpacity, ClickableTextProps>(
+const ClickableText = React.forwardRef<React.ElementRef<typeof TouchableOpacity>, ClickableTextProps>(
   (
     {
       text,

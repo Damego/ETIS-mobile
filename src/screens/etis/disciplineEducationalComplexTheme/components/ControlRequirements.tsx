@@ -19,7 +19,7 @@ const ControlRequirementsBottomSheet = React.forwardRef<BottomSheetModal, { data
 );
 
 const ControlRequirements = ({ data }: { data: string }) => {
-  const ref = useRef<BottomSheetModal>();
+  const ref = useRef<BottomSheetModal | undefined>(undefined);
 
   return (
     <>

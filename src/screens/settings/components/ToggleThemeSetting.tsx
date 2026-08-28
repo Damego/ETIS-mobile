@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 const ToggleThemeSetting = () => {
   const dispatch = useAppDispatch();
   const { events, theme: themeType } = useAppSelector((state) => state.settings.config);
-  const modalRef = useRef<BottomSheetModal>();
+  const modalRef = useRef<BottomSheetModal | undefined>(undefined);
   const theme = useAppTheme();
 
   const changeAppTheme = (selectedTheme: ThemeType) => {

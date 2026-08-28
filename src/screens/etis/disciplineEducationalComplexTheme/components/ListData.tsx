@@ -39,7 +39,7 @@ const ListContainerBottomSheet = React.forwardRef<
 ));
 
 const ListData = ({ label, data }: { label: string; data: IListItem[] }) => {
-  const ref = useRef<BottomSheetModal>();
+  const ref = useRef<BottomSheetModal | undefined>(undefined);
 
   return (
     <>

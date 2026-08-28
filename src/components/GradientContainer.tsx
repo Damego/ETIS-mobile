@@ -4,7 +4,7 @@ import React from 'react';
 const GradientContainer = ({ disabled, colors }: { disabled: boolean; colors: string[] }) => {
   if (disabled) return;
 
-  return <LinearGradient colors={colors} style={{ flex: 1 }} />;
+  return <LinearGradient colors={colors as [string, string, ...string[]]} style={{ flex: 1 }} />;
 };
 
 export default GradientContainer;

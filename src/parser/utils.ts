@@ -1,9 +1,12 @@
+import type {
+  AnyNode, Cheerio, CheerioAPI, Element
+} from 'cheerio';
 import * as cheerio from 'cheerio';
 import dayjs from 'dayjs';
 
 import { LessonTypes } from '~/models/other';
 
-export const getTextField = (component: cheerio.Cheerio): string => component.text().trim();
+export const getTextField = (component: Cheerio<AnyNode>): string => component.text().trim();
 
 export const parseDate = (date: string) => {
   if (date.length === 8) {

@@ -54,7 +54,7 @@ const DisciplinesTasks = ({ route }: EducationStackScreenProps<'DisciplineTasks'
 
   const [selectedTask, setSelectedTask] = useState<DisciplineTask>();
   const [showInactiveTasks, setShowInactiveTasks] = useState<boolean>(false);
-  const modalRef = useRef<BottomSheetModal>();
+  const modalRef = useRef<BottomSheetModal | undefined>(undefined);
   const modalOpened = useRef(false);
 
   const openModal = () => {

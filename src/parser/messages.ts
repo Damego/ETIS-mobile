@@ -1,3 +1,4 @@
+import type { Cheerio, CheerioAPI, Element } from 'cheerio';
 import { load } from 'cheerio';
 
 import { IFile } from '~/models/other';
@@ -5,7 +6,7 @@ import { IFile } from '~/models/other';
 import { IMessage, IMessagesData, MessageType } from '../models/messages';
 import { getTextField } from './utils';
 
-const getMessageFiles = ($: cheerio.Root, message: cheerio.Cheerio): IFile[] => {
+const getMessageFiles = ($: CheerioAPI, message: Cheerio<Element>): IFile[] => {
   const files: IFile[] = [];
 
   message.find('a').each((index, element) => {
@@ -19,7 +20,7 @@ const getMessageFiles = ($: cheerio.Root, message: cheerio.Cheerio): IFile[] => 
   return files;
 };
 
-const getMessageContent = (message: cheerio.Cheerio): string =>
+const getMessageContent = (message: Cheerio<Element>): string =>
   getTextField(
     message
       .find('li')
@@ -29,7 +30,7 @@ const getMessageContent = (message: cheerio.Cheerio): string =>
       })
   );
 
-const parseTeacherMessage = (message: cheerio.Cheerio): IMessage => {
+const parseTeacherMessage = (message: Cheerio<Element>): IMessage => {
   const fontComponent = message.find('font');
   const bComponent = message.find('b');
 
@@ -46,7 +47,7 @@ const parseTeacherMessage = (message: cheerio.Cheerio): IMessage => {
   };
 };
 
-const parseStudentMessage = ($: cheerio.Root, message: cheerio.Cheerio): IMessage => {
+const parseStudentMessage = ($: CheerioAPI, message: Cheerio<Element>): IMessage => {
   const fontComponent = message.find('font');
 
   const type = MessageType.studentReply;
@@ -71,7 +72,7 @@ const parseStudentMessage = ($: cheerio.Root, message: cheerio.Cheerio): IMessag
   };
 };
 
-const parseStartMessage = ($: cheerio.Root, message: cheerio.Cheerio): IMessage => {
+const parseStartMessage = ($: CheerioAPI, message: Cheerio<Element>): IMessage => {
   const fontComponent = message.find('font');
   const bComponent = message.find('b');
 

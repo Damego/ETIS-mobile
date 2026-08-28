@@ -1,3 +1,4 @@
+import type { Cheerio, CheerioAPI, Element } from 'cheerio';
 import cheerio from 'cheerio';
 import dayjs from 'dayjs';
 
@@ -19,7 +20,7 @@ import { MAIN_ETIS_URL } from '~/utils/consts';
 
 const audienceRegex = /ауд-([\dа-яА-Я\s]+)(?:\/(\d+))?/;
 
-const parseWeekInfo = ($: cheerio.Root, element: cheerio.Cheerio): WeekInfo => {
+const parseWeekInfo = ($: CheerioAPI, element: Cheerio<Element>): WeekInfo => {
   const METADATA_LENGTH = 4;
   const datesExec = $('script').last().text().match(dateRegex);
 
@@ -36,7 +37,7 @@ const parseWeekInfo = ($: cheerio.Root, element: cheerio.Cheerio): WeekInfo => {
     .find('td')
     .eq(1)
     .contents()
-    .filter(function () {
+    .filter(function (this: { type: string; name?: string }) {
       return this.type !== 'text' && this.name !== 'br';
     });
   const firstWeek = Number(getTextField(data.eq(1)));
@@ -81,7 +82,7 @@ const parseAudience = (stringAudience: string): IAudience => {
 const generateNextDayDateString = (date: dayjs.Dayjs, value: number) =>
   date.add(value, 'day').format('DD.MM.YYYY');
 
-const parseTeachers = ($: cheerio.Root, table: cheerio.Cheerio) => {
+const parseTeachers = ($: CheerioAPI, table: Cheerio<Element>) => {
   const teachers: ITeacherInfo[] = [];
 
   table.children().each((_, rowElement) => {
@@ -94,7 +95,7 @@ const parseTeachers = ($: cheerio.Root, table: cheerio.Cheerio) => {
         .find('td')
         .eq(1)
         .contents()
-        .each(function (index, element) {
+        .each(function (this: { type: string; name?: string }, index, element) {
           if (this.type === 'text') {
             const text = getTextField($(element));
             if (text.startsWith('(')) return false;

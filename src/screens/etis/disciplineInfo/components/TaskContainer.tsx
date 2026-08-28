@@ -28,7 +28,7 @@ export const TaskContainer = ({
   disciplineName: string;
   disciplineDate: dayjs.Dayjs;
 }) => {
-  const modalRef = useRef<BottomSheetModal>();
+  const modalRef = useRef<BottomSheetModal | undefined>(undefined);
   const [selectedTask, setSelectedTask] = useState<DisciplineTask | null>(null);
   const { tasks, addTask, saveTasks, removeTask } = useTasks({
     filter: (task) => task.disciplineName === disciplineName,

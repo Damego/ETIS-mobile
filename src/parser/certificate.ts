@@ -1,3 +1,4 @@
+import type { Cheerio, CheerioAPI, Element } from 'cheerio';
 import * as cheerio from 'cheerio';
 
 import {
@@ -19,7 +20,7 @@ export function parseCertificateTable(html: string): ICertificateResult {
   };
 }
 
-function parseCertificates($: cheerio.Root): ICertificate[] {
+function parseCertificates($: CheerioAPI): ICertificate[] {
   const data: ICertificate[] = [];
 
   $('.ord').each((el, orderEl) => {
@@ -43,7 +44,7 @@ function parseCertificates($: cheerio.Root): ICertificate[] {
   return data;
 }
 
-const parseAvailableCertificates = ($: cheerio.Root) => {
+const parseAvailableCertificates = ($: CheerioAPI) => {
   const availableCertificates: IAvailableCertificate[] = [];
 
   $('.orders')
@@ -61,20 +62,20 @@ const parseAvailableCertificates = ($: cheerio.Root) => {
   return availableCertificates;
 };
 
-const parseAnnounceText = (item: cheerio.Cheerio) =>
+const parseAnnounceText = (item: Cheerio<Element>) =>
   item
     .contents()
-    .map((_index, element: cheerio.TagElement) => {
-      if (element.name === 'br' && (element.next as cheerio.TagElement).name === 'br') return '\n';
+    .map((_index, element: Element) => {
+      if (element.name === 'br' && (element.next as Element).name === 'br') return '\n';
       return item.find(element).text();
     })
     .toArray()
     .join('')
     .trim();
 
-function parseAnnounces($: cheerio.Root): ICertificateAnnounce {
+function parseAnnounces($: CheerioAPI): ICertificateAnnounce {
   const content = $('.span9');
-  let selector: cheerio.Cheerio;
+  let selector: Cheerio<Element>;
   // Объявление с подтверждением почты похожа по структуре на объявления на странице заказа справок
   // поэтому просто игнорим
   if (content.length === 2) selector = content.eq(1).children().filter('font');

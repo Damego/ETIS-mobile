@@ -26,7 +26,7 @@ const AdditionalMaterialsBottomSheet = React.forwardRef<
 ));
 
 const AdditionalMaterials = ({ data }: { data: IAdditionalMaterials }) => {
-  const ref = useRef<BottomSheetModal>();
+  const ref = useRef<BottomSheetModal | undefined>(undefined);
 
   return (
     <>

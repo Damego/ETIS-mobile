@@ -25,7 +25,7 @@ const CathedraTimetable = ({ route }: EducationStackScreenProps<'CathedraTimetab
     payload: {
       data: {
         cathedraId: route.params.cathedraId,
-        teacherId: route.params.teacherId,
+        teacherId: Number(route.params.teacherId),
         week: timetable.currentWeek,
       },
       requestType: RequestType.forceFetch,

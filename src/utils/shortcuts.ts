@@ -1,9 +1,7 @@
 import { Action, setItems } from 'expo-quick-actions';
 
-import { BottomTabsParamList } from '../navigation/types';
-
 export interface AppShortcutItem extends Action {
-  id: keyof BottomTabsParamList;
+  id: string;
 }
 
 const SHORTCUTS_ITEMS: AppShortcutItem[] = [

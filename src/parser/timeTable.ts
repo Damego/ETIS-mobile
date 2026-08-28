@@ -1,3 +1,4 @@
+import type { Cheerio, CheerioAPI, Element } from 'cheerio';
 import * as cheerio from 'cheerio';
 
 import {
@@ -20,7 +21,7 @@ import { getDisciplineType, getTextField } from './utils';
 const audienceRegex = /ауд\. (.*)\/.* \((.*) корпус(?:, (\d) этаж)?\)/s;
 const idRegex = /[a-z]*\.[a-z]*\?\#([0-9]*)/s;
 
-const getWeekType = (week: cheerio.Cheerio): WeekTypes => {
+const getWeekType = (week: Cheerio<Element>): WeekTypes => {
   if (week.hasClass('holiday')) {
     return WeekTypes.holiday;
   }
@@ -36,7 +37,7 @@ const getWeekType = (week: cheerio.Cheerio): WeekTypes => {
   return WeekTypes.common;
 };
 
-const getDistancePlatformType = (platform: cheerio.Cheerio): DistancePlatformTypes => {
+const getDistancePlatformType = (platform: Cheerio<Element>): DistancePlatformTypes => {
   const title = platform.find('img').attr('title') ?? '';
   if (title.includes('bbb')) return DistancePlatformTypes.bbb;
   if (title.includes('zoom')) return DistancePlatformTypes.zoom; // maybe...
@@ -47,7 +48,7 @@ const getDistancePlatformType = (platform: cheerio.Cheerio): DistancePlatformTyp
   if (platformUrl.includes('telemost')) return DistancePlatformTypes.yandexTelemost;
 };
 
-const getDistancePlatformName = (platform: cheerio.Cheerio, type: DistancePlatformTypes) => {
+const getDistancePlatformName = (platform: Cheerio<Element>, type: DistancePlatformTypes) => {
   if (type === DistancePlatformTypes.zoom) return 'Платформа Zoom';
   if (type === DistancePlatformTypes.bbb) return 'Платформа BBB';
   if (type === DistancePlatformTypes.skype) return 'Skype';
@@ -58,7 +59,7 @@ const getDistancePlatformName = (platform: cheerio.Cheerio, type: DistancePlatfo
   return image.attr('title') || platform.attr('href');
 };
 
-const getDistancePlatform = (platform: cheerio.Cheerio): DistancePlatform => {
+const getDistancePlatform = (platform: Cheerio<Element>): DistancePlatform => {
   const image = platform.find('img');
   const type = getDistancePlatformType(platform);
 
@@ -70,7 +71,7 @@ const getDistancePlatform = (platform: cheerio.Cheerio): DistancePlatform => {
   };
 };
 
-const getTeacher = (lesson: cheerio.Cheerio): ITeacher => {
+const getTeacher = (lesson: Cheerio<Element>): ITeacher => {
   // TODO: parse list of teachers
   const teacherAnchor = lesson.find('.teacher').find('a').first();
   if (!teacherAnchor.length) return;

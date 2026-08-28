@@ -45,7 +45,7 @@ const PlannedLearningOutcomeBottomSheet = React.forwardRef<
 ));
 
 const PlannedLearningOutcome = ({ data }: { data: IPlannedLearningOutcome[] }) => {
-  const ref = useRef<BottomSheetModal>();
+  const ref = useRef<BottomSheetModal | undefined>(undefined);
 
   return (
     <>

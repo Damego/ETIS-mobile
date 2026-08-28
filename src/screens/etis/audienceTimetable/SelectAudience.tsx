@@ -55,7 +55,6 @@ const SelectAudience = ({ navigation }: EducationStackScreenProps) => {
 
       <FlashList
         data={data ?? []}
-        estimatedItemSize={100}
         ItemSeparatorComponent={BorderLine}
         renderItem={({ item: audience }) => (
           <ClickableText

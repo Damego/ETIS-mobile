@@ -19,7 +19,7 @@ const ChangeTimetableModeButton = () => {
   const globalStyles = useGlobalStyles();
   const dispatch = useAppDispatch();
   const { timetableMode } = useAppSelector((state) => state.settings.config.ui);
-  const modalRef = useRef<BottomSheetModal>();
+  const modalRef = useRef<BottomSheetModal | undefined>(undefined);
 
   const handlePress = () => modalRef.current.present();
 

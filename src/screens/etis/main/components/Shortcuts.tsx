@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type {
   NavigationState,
   SceneRendererProps,
-} from 'react-native-tab-view/lib/typescript/src/types';
+} from 'react-native-tab-view';
 
 import Text from '~/components/Text';
 import { useAppSelector, useGlobalStyles } from '~/hooks';
