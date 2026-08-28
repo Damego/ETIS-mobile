@@ -5,7 +5,11 @@ Unofficial React Native (Expo) Android app for ETIS, the student/teacher portal 
 ## Dev environment
 
 - Package manager is **Bun** (CI uses `bun install --frozen-lockfile`; lockfile is `bun.lock`).
-- Expo SDK ~54, React Native 0.81, React 19, TypeScript, new architecture enabled, React Compiler experiment on.
+- Expo SDK 57 (`expo ^57.0.0`), React Native 0.86, React 19.2, TypeScript, new architecture enabled, React Compiler
+  experiment on.
+- UI primitives come from `@expo/ui` (~57): RN core Switch/Checkbox are replaced by themed wrappers (
+  `src/components/ThemedSwitch.tsx`, `ThemedCheckbox.tsx` using Host `matchContents`/`seedColor`); bottom sheets use
+  `@expo/ui/community/bottom-sheet`; pagers use `@expo/ui/community/pager-view`.
 - Install: `bun install`
 - Dev server: `bun run start` (Expo Go); `bun run android` builds/runs on a device with `expo-dev-client`.
 
@@ -46,4 +50,5 @@ Unofficial React Native (Expo) Android app for ETIS, the student/teacher portal 
   - `expo-module` / `expo-migrate-module` — native module work (rarely needed here).
   - The `update_ssl_cert.yml` workflow runs monthly and auto-opens a PR when the student.psu.ru intermediate cert rotates — check open PRs before manually running `update_ssl_cert.py`.
 - If Expo MCP tools are available to the agent (`mcp__expo__*`: `build_list`/`build_info`/`build_logs`, `appstore_reviews`, `playstore_reviews`, ...), prefer them for EAS build status and store review handling over scraping the web.
-- Expo CLI's own MCP server (SDK 54) is **not enabled** here: it requires the `expo-mcp` package (not in `package.json`) plus the `EXPO_UNSTABLE_MCP_SERVER` env var. Don't add it without asking — it's experimental.
+- Expo CLI's own MCP server is **not enabled** here: it requires the `expo-mcp` package (not in `package.json`) plus the
+  `EXPO_UNSTABLE_MCP_SERVER` env var. Don't add it without asking — it's experimental.
