@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 import BorderLine from '~/components/BorderLine';
@@ -20,6 +20,10 @@ interface IDayArrayProps {
 const DayArray = ({ data, weekDates }: IDayArrayProps) => {
   const { showPastWeekDays } = useAppSelector((state) => state.settings.config.ui);
   const [localShowPastWeekDays, setShowPastWeekDays] = useState(showPastWeekDays);
+
+  useEffect(() => {
+    setShowPastWeekDays(showPastWeekDays);
+  }, [showPastWeekDays]);
 
   const { currentDate } = useContext(TimeTableContext);
 
