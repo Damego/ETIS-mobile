@@ -25,6 +25,10 @@ const useSignsQuery = () => {
     refresh,
   } = useQuery({
     method: client.getSessionSignsData,
+    payload: {
+      data: currentSession,
+      requestType: RequestType.tryCache,
+    },
     after: async (result) => {
       // Очевидно, что в самом начале мы получаем текущую сессию
       const { currentSession } = result.data;
@@ -52,6 +56,9 @@ const useSignsQuery = () => {
 
   const marksQuery = useQuery({
     method: client.getSessionMarksData,
+    payload: {
+      requestType: RequestType.tryCache,
+    },
   });
 
   useEffect(() => {

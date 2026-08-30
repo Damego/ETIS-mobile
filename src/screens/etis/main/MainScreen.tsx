@@ -8,9 +8,14 @@ import { useClient } from '~/data/client';
 import { useAppDispatch, useAppSelector } from '~/hooks';
 import { RequestType } from '~/models/results';
 import { StudentInfo } from '~/parser/menu';
-import { setStudentState } from '~/redux/reducers/studentSlice';
+import {
+  setCurrentSession,
+  setCurrentWeek,
+  setStudentState,
+} from '~/redux/reducers/studentSlice';
 import Shortcuts from '~/screens/etis/main/components/Shortcuts';
 import MoreScreens from '~/screens/etis/main/more/MoreScreens';
+import prefetch from '~/tasks/prefetch/prefetch';
 import { registerSignsFetchTask } from '~/tasks/signs/signs';
 
 import Grades from './grades/Grades';
@@ -35,8 +40,14 @@ const ETISScreen = () => {
 
   useEffect(() => {
     loadData().then(() => {
-      if (signNotificationEnabled && !isDemo && !isOfflineMode) {
-        registerSignsFetchTask();
+      if (!isDemo && !isOfflineMode) {
+        prefetch(client).then((result) => {
+          if (result?.currentWeek) dispatch(setCurrentWeek(result.currentWeek));
+          if (result?.currentSession) dispatch(setCurrentSession(result.currentSession));
+          if (signNotificationEnabled) {
+            registerSignsFetchTask(result?.currentSession);
+          }
+        });
       }
     });
   }, []);

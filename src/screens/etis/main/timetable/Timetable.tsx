@@ -13,6 +13,7 @@ import { useAppSelector } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
 import useTimetable from '~/hooks/useTimetable';
 import useTimeTableQuery from '~/hooks/useTimeTableQuery';
+import { RequestType } from '~/models/results';
 
 export const Timetable = () => {
   const client = useClient();
@@ -31,6 +32,9 @@ export const Timetable = () => {
   });
   const { data: teachersData, isLoading: teachersIsLoading } = useQuery({
     method: client.getTeacherData,
+    payload: {
+      requestType: RequestType.tryCache,
+    },
   });
 
   return (

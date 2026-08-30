@@ -52,6 +52,7 @@ export interface Response<T> {
 class HTTPClient {
   private sessionID: string | null;
   private instance: AxiosInstance;
+  private readonly pendingGetRequests = new Map<string, Promise<Response<string | AxiosResponse>>>();
   private readonly siteSuffix: string = '/pls/stu_cus_et';
   private readonly siteURL: string = 'https://student.psu.ru';
   private readonly baseURL: string;
@@ -112,6 +113,31 @@ class HTTPClient {
   async request(method: string, endpoint: string): Promise<Response<string>>;
 
   async request(
+    method: string,
+    endpoint: string,
+    { params, data, returnResponse }: Payload = { returnResponse: false }
+  ): Promise<Response<string | AxiosResponse>> {
+    const requestKey = method === 'GET'
+      ? JSON.stringify({ endpoint, params, returnResponse: Boolean(returnResponse) })
+      : null;
+    const pendingRequest = requestKey && this.pendingGetRequests.get(requestKey);
+    if (pendingRequest) {
+      console.log(`[HTTP] Reusing pending GET request to '${endpoint}'`);
+      return pendingRequest;
+    }
+
+    const request = this.performRequest(method, endpoint, { params, data, returnResponse });
+    if (!requestKey) return request;
+
+    this.pendingGetRequests.set(requestKey, request);
+    try {
+      return await request;
+    } finally {
+      this.pendingGetRequests.delete(requestKey);
+    }
+  }
+
+  private async performRequest(
     method: string,
     endpoint: string,
     { params, data, returnResponse }: Payload = { returnResponse: false }

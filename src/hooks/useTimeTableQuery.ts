@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback } from 'react';
 
 import { cache } from '~/cache/smartCache';
 import { useClient } from '~/data/client';
@@ -18,13 +18,12 @@ const useTimeTableQuery = ({
 }) => {
   const dispatch = useAppDispatch();
   const client = useClient();
-  const fetchedWeeks = useRef<number[]>([]);
   const { currentWeek } = useAppSelector((state) => state.student);
 
   const { data, isLoading, update, refresh } = useQuery({
     payload: {
       data: week,
-      requestType: RequestType.tryFetch,
+      requestType: RequestType.tryCache,
     },
     method: client.getTimeTableData,
     onFail: async () => {
@@ -52,9 +51,6 @@ const useTimeTableQuery = ({
         cache.placePartialStudent({ currentWeek: selectedWeek, firstWeek });
       }
 
-      if (!fetchedWeeks.current.includes(selectedWeek)) {
-        fetchedWeeks.current.push(selectedWeek);
-      }
       afterCallback?.(result);
     },
   });
@@ -62,14 +58,11 @@ const useTimeTableQuery = ({
   const loadWeek = useCallback(
     (week: number) => {
       update({
-        requestType:
-          (data && week < currentWeek) || fetchedWeeks.current.includes(week)
-            ? RequestType.tryCache
-            : RequestType.tryFetch,
+        requestType: RequestType.tryCache,
         data: week,
       });
     },
-    [data, currentWeek, fetchedWeeks.current, update]
+    [update]
   );
 
   return {
