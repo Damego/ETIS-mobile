@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import React from 'react';
 
+import type { PagerScrollState } from '~/components/timetable/dayTimetable/components/TimetablePages';
 import DayTimetable from '~/components/timetable/dayTimetable/DayTimetable';
 import WeekTimetable from '~/components/timetable/weekTimetable/WeekTimetable';
 import { useAppSelector } from '~/hooks';
@@ -20,6 +21,7 @@ const TimetableContainer = ({
   firstWeek,
   lastWeek,
   onRetry,
+  onPagerScrollStateChange,
 }: {
   timetable: IUseTimetable;
   data: ITimeTable;
@@ -31,6 +33,7 @@ const TimetableContainer = ({
   firstWeek?: number;
   lastWeek?: number;
   onRetry?: () => void;
+  onPagerScrollStateChange?: (state: PagerScrollState) => void;
 }) => {
   const { timetableMode } = useAppSelector((state) => state.settings.config.ui);
   const { currentDate, currentWeek, selectedDate, selectedWeek, onDatePress, onWeekPress } =
@@ -72,6 +75,7 @@ const TimetableContainer = ({
       isLoading={isLoading}
       loadingComponent={loadingComponent}
       onRetry={onRetry}
+      onPagerScrollStateChange={onPagerScrollStateChange}
     />
   );
 };

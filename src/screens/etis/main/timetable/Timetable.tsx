@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { LoadingContainer } from '~/components/LoadingScreen';
@@ -7,6 +7,7 @@ import Text from '~/components/Text';
 import BellScheduleButton from '~/components/timetable/buttons/BellScheduleButton';
 import DisciplineTasksButton from '~/components/timetable/buttons/DisciplineTasksButton';
 import ToggleModeButton from '~/components/timetable/buttons/ToggleModeButton';
+import type { PagerScrollState } from '~/components/timetable/dayTimetable/components/TimetablePages';
 import TimetableContainer from '~/components/timetable/TimetableContainer';
 import { useClient } from '~/data/client';
 import { useAppSelector } from '~/hooks';
@@ -42,8 +43,17 @@ export const Timetable = () => {
     },
   });
 
+  // Пока пейджер дней перелистывается (dragging/settling), блокируем
+  // pull-to-refresh, чтобы случайная вертикальная составляющая свайпа
+  // не запускала обновление расписания
+  const [pagerActive, setPagerActive] = useState(false);
+
+  const handlePagerScrollStateChange = (state: PagerScrollState) => {
+    setPagerActive(state !== 'idle');
+  };
+
   return (
-    <Screen onUpdate={refresh} containerStyle={{ paddingBottom: 0 }}>
+    <Screen onUpdate={refresh} containerStyle={{ paddingBottom: 0 }} refreshEnabled={!pagerActive}>
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>Расписание</Text>
         <View style={styles.titleIconsContainer}>
@@ -60,6 +70,7 @@ export const Timetable = () => {
         isLoading={!data && (isLoading || teachersIsLoading)}
         loadingComponent={() => <LoadingContainer />}
         onRetry={refresh}
+        onPagerScrollStateChange={handlePagerScrollStateChange}
       />
     </Screen>
   );

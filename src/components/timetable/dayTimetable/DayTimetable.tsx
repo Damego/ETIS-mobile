@@ -8,7 +8,7 @@ import CenteredText from '~/components/CenteredText';
 import TimetableCalendar, {
   TimetableCalendarModes,
 } from '~/components/timetable/dayTimetable/components/timetableCalendar/TimetableCalendar';
-import TimetablePages from '~/components/timetable/dayTimetable/components/TimetablePages';
+import TimetablePages, { type PagerScrollState } from '~/components/timetable/dayTimetable/components/TimetablePages';
 import TimeTableContext from '~/context/timetableContext';
 import { DatePressT } from '~/hooks/useTimetable';
 import { ITeacher } from '~/models/teachers';
@@ -39,6 +39,7 @@ const DayTimetable = ({
   isLoading,
   loadingComponent,
   onRetry,
+  onPagerScrollStateChange,
 }: {
   data: ITimeTable;
   selectedDate: dayjs.Dayjs;
@@ -52,6 +53,7 @@ const DayTimetable = ({
   isLoading?: boolean;
   loadingComponent?: () => React.ReactNode;
   onRetry?: () => void;
+  onPagerScrollStateChange?: (state: PagerScrollState) => void;
 }) => {
   const pagerRef = useRef<PagerViewRef>(null);
 
@@ -106,6 +108,7 @@ const DayTimetable = ({
             // Нужно для свайпа между днями
             onDatePress({ date: selectedDate.clone().add(direction, 'day') });
           }}
+          onPagerScrollStateChange={onPagerScrollStateChange}
           days={data.days}
           dayNumber={selectedDate.weekday()}
         />

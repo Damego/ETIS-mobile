@@ -1,4 +1,4 @@
-import PagerView, { type PagerViewRef } from '@expo/ui/community/pager-view';
+import PagerView, { type PagerViewRef, type PageScrollStateChangedEvent } from '@expo/ui/community/pager-view';
 import React, { forwardRef } from 'react';
 import {
   NativeSyntheticEvent, ScrollView, StyleSheet
@@ -16,7 +16,10 @@ interface TimetablePagesProps {
   days: ITimeTableDay[];
   dayNumber: number;
   onPagePress: (pageNumber: number) => void;
+  onPagerScrollStateChange?: (state: PagerScrollState) => void;
 }
+
+export type PagerScrollState = 'idle' | 'dragging' | 'settling';
 
 const Page = ({ day }: { day: ITimeTableDay }) => {
   const { showGapsBetweenPairs, showEmptyPairs } = useAppSelector(
@@ -49,10 +52,14 @@ const Page = ({ day }: { day: ITimeTableDay }) => {
 };
 
 const TimetablePages = forwardRef<PagerViewRef, TimetablePagesProps>(
-  ({ days, dayNumber, onPagePress }, ref) => {
+  ({ days, dayNumber, onPagePress, onPagerScrollStateChange }, ref) => {
     const insets = useSafeAreaInsets();
     const handlePageSelected = (event: NativeSyntheticEvent<Readonly<{ position: number }>>) =>
       onPagePress(event.nativeEvent.position - dayNumber);
+
+    const handleScrollStateChanged = (event: PageScrollStateChangedEvent) => {
+      onPagerScrollStateChange?.(event.nativeEvent.pageScrollState);
+    };
 
     return (
       <PagerView
@@ -60,6 +67,7 @@ const TimetablePages = forwardRef<PagerViewRef, TimetablePagesProps>(
         initialPage={dayNumber}
         style={{ flex: 1 }}
         onPageSelected={handlePageSelected}
+        onPageScrollStateChanged={handleScrollStateChanged}
       >
         {days.map((day, index) => (
           <Page day={day} key={index} />

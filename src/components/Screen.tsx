@@ -19,6 +19,7 @@ interface ScreenProps {
   startScrollFromBottom?: boolean;
   statusBarStyle?: StatusBarStyle;
   containerStyle?: StyleProp<ViewStyle>;
+  refreshEnabled?: boolean;
 }
 
 const Screen = ({
@@ -27,6 +28,7 @@ const Screen = ({
   startScrollFromBottom,
   statusBarStyle,
   containerStyle,
+  refreshEnabled = true,
 }: ScreenProps) => {
   const { isAuthorizing } = useAppSelector((state) => state.account);
   const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -64,6 +66,7 @@ const Screen = ({
                 colors={[theme.colors.primary]}
                 refreshing={refreshing}
                 onRefresh={onRefresh}
+                enabled={refreshEnabled}
               />
             )
             : null
