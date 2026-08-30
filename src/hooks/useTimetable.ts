@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { WeekInfo } from '~/models/timeTable';
 import { parseDate } from '~/parser/utils';
@@ -23,8 +23,6 @@ export interface IUseTimetable {
   onDatePress: DatePressT;
   onWeekPress: (week: number) => void;
 }
-
-let preSelectedDate: dayjs.Dayjs = null;
 
 const useTimetable = ({
   onRequestUpdate,
@@ -50,15 +48,17 @@ const useTimetable = ({
       })()
     );
 
+  const preSelectedDate = useRef<dayjs.Dayjs>(null);
+
   const updateData = (weekInfo: WeekInfo) => {
-    if (preSelectedDate) {
+    if (preSelectedDate.current) {
       setTimetable({
         currentDate,
         currentWeek,
-        selectedDate: preSelectedDate.clone(),
+        selectedDate: preSelectedDate.current.clone(),
         selectedWeek: weekInfo.selected ?? selectedWeek,
       });
-      preSelectedDate = null;
+      preSelectedDate.current = null;
     } else if (weekInfo.selected !== null && weekInfo.dates !== null) {
       const startWeekDate = parseDate(weekInfo.dates.start);
 
@@ -83,7 +83,7 @@ const useTimetable = ({
 
     const $week = getEducationWeekByDate(date);
     onRequestUpdate($week);
-    preSelectedDate = date;
+    preSelectedDate.current = date;
   };
 
   const onWeekPress = (week: number) => {
