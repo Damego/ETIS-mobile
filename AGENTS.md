@@ -15,9 +15,19 @@ Unofficial React Native (Expo) Android app for ETIS, the student/teacher portal 
 
 ## Commands
 
-- `bun run lint` — ESLint over the whole repo (this is the only check; there is no test suite or typecheck script).
+- `bun run lint` — ESLint over the whole repo (there is no test suite).
+- `bunx tsc --noEmit` — TypeScript check. Not wired as a script and not run in CI, so run it manually.
+- `bunx expo-doctor` — validates Expo SDK dependency versions and native peer dependencies (Expo Go bundles some native modules that dev/EAS builds don't — doctor catches those). If it reports duplicate package copies in node_modules after an in-place bump, `rm -rf node_modules && bun install` fixes it.
 - `bun run lint:fix` — auto-fix; also used as `format`.
 - CI (`.github/workflows/lint.yml`) runs `bun run lint` on PRs and pushes to `development`; on failure it commits auto-fixes as "ci: fix linting issues" — so never push code that fails lint.
+
+## Review checklist
+
+Before handing work off, run and pass all three:
+
+1. `bun run lint` — must be clean.
+2. `bunx tsc --noEmit` — must be clean.
+3. `bunx expo-doctor` — must pass 21/21 (or have every failure explained).
 
 ## Layout & conventions
 
@@ -33,7 +43,7 @@ Unofficial React Native (Expo) Android app for ETIS, the student/teacher portal 
 
 ## Pitfalls
 
-- **No tests, no `tsc` script** — `bun run lint` is the only gate; type errors surface at build time on EAS.
+- **No tests** — `bun run lint`, `bunx tsc --noEmit`, and `bunx expo-doctor` are the review gates (see Review checklist); CI only runs lint, so type errors otherwise surface at build time on EAS.
 - **Releases need a version bump in two places** in `app.config.js`: `expo.version` and `android.versionCode` (e.g. 1.4.4 → 10404000).
 - `app.config.js` reads `APP_VARIANT=development` to switch the Android package to `dev.damego.etismobile` (dev builds don't clobber the Play Store install).
 - `babel.config.js` aliases `react-native-device-info` to a local stub `src/plugins/react-native-device-info.js` — that package is NOT actually installed.

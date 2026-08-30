@@ -6,7 +6,7 @@ import xoTypescript from 'eslint-config-xo-typescript';
 
 export default tseslint.config(
   {
-    ignores: ['node_modules/', 'dist/', '.expo/', 'android/', 'ios/', '**/*.json', 'eslint.config.mjs', 'metro.config.js', 'babel.config.js', 'app.config.js'],
+    ignores: ['node_modules/', 'dist/', '.expo/', 'android/', 'ios/', '**/*.json', 'eslint.config.mjs', 'metro.config.js', 'babel.config.js', 'app.config.js', '.agents/'],
   },
   ...xoTypescript,
   {
