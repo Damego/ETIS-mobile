@@ -78,7 +78,6 @@ const WeekTimeTable = ({
           }}
         />
       )}
-      { }
       {loadingComponent !== undefined && isLoading
         ? (
           loadingComponent()

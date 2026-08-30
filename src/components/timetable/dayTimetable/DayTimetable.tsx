@@ -83,7 +83,6 @@ const DayTimetable = ({
         periodEndDate={endDate ?? $endDate}
         onDatePress={handleDatePress}
       />
-      { }
       {loadingComponent !== undefined && isLoading ? (
         loadingComponent()
       ) : data ? (
