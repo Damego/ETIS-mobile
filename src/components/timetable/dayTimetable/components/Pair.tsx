@@ -23,7 +23,7 @@ const Pair = ({ pair }: { pair: IPair }) => {
       <View style={styles.timeContainer}>
         <View
           style={{
-            backgroundColor: '#fbf0f1',
+            backgroundColor: globalStyles.card.backgroundColor,
             paddingVertical: 2,
             paddingHorizontal: 4,
             borderRadius: 4,
@@ -32,7 +32,7 @@ const Pair = ({ pair }: { pair: IPair }) => {
           <Text style={[globalStyles.primaryText, { fontWeight: '500' }]}>{pairText}</Text>
         </View>
         <Text style={styles.timeStartText}>{pair.time}</Text>
-        <Text style={styles.timeEndText}>
+        <Text style={[styles.timeEndText, { color: globalStyles.textColor2.color }]}>
           {time.clone().add(1, 'hour').add(35, 'minute').format('H:mm')}
         </Text>
       </View>
@@ -76,7 +76,6 @@ const styles = StyleSheet.create({
   },
   timeEndText: {
     fontSize: 16,
-    color: '#808080',
   },
   eventTitleText: {
     fontSize: 16,

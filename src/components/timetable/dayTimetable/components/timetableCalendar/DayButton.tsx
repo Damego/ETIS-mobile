@@ -61,7 +61,13 @@ const DayButton = ({
       >
         {dayDate.format('dd').toUpperCase()}
       </Text>
-      <Text style={isSelectedDay ? styles.selectedDayNumberText : styles.dayNumberText}>
+      <Text
+        style={
+          isSelectedDay
+            ? [globalStyles.primaryContrastText, styles.selectedDayNumberText]
+            : styles.dayNumberText
+        }
+      >
         {dayDate.format('D')}
       </Text>
     </TouchableOpacity>
@@ -96,7 +102,6 @@ const styles = StyleSheet.create({
   selectedDayNumberText: {
     fontSize: 24,
     fontWeight: '500',
-    color: '#FFFFFF',
   },
   dayNumberText: {
     fontSize: 24,
