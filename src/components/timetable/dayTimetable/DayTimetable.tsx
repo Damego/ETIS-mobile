@@ -81,6 +81,8 @@ const DayTimetable = ({
       <TimetableCalendar
         periodStartDate={startDate ?? $startDate}
         periodEndDate={endDate ?? $endDate}
+        firstWeek={data?.weekInfo.first}
+        lastWeek={data?.weekInfo.last}
         onDatePress={handleDatePress}
       />
       {loadingComponent !== undefined && isLoading ? (

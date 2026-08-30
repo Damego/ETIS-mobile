@@ -13,10 +13,14 @@ export type TimetableCalendarModes = 'week' | 'month';
 const TimetableCalendar = ({
   periodStartDate,
   periodEndDate,
+  firstWeek,
+  lastWeek,
   onDatePress,
 }: {
   periodStartDate?: dayjs.Dayjs;
   periodEndDate?: dayjs.Dayjs;
+  firstWeek?: number;
+  lastWeek?: number;
   onDatePress: (
     { date, week }: { date?: dayjs.Dayjs; week?: number },
     mode: TimetableCalendarModes
@@ -48,6 +52,8 @@ const TimetableCalendar = ({
               )
             }
             selectedWeek={selectedWeek}
+            firstWeek={firstWeek}
+            lastWeek={lastWeek}
           />
         ) : (
           <MonthCalendar

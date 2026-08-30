@@ -11,11 +11,15 @@ const WeekCalendar = ({
   currentDate,
   onDatePress,
   selectedWeek,
+  firstWeek,
+  lastWeek,
 }: {
   selectedDate: dayjs.Dayjs;
   currentDate: dayjs.Dayjs;
   onDatePress: DatePressT;
   selectedWeek: number;
+  firstWeek?: number;
+  lastWeek?: number;
 }) => {
   const week = selectedDate.startOf('week');
 
@@ -39,6 +43,8 @@ const WeekCalendar = ({
         onMainPress={handleMainPress}
         selectedWeek={selectedWeek}
         selectedDate={selectedDate}
+        firstWeek={firstWeek}
+        lastWeek={lastWeek}
       />
 
       <View style={styles.daysListContainer}>

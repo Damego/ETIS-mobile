@@ -10,21 +10,27 @@ import { capitalizeWord } from '~/utils/texts';
 const WeekNavigation = ({
   selectedDate,
   selectedWeek,
+  firstWeek = 1,
+  lastWeek = Number.POSITIVE_INFINITY,
   onPrevPress,
   onNextPress,
   onMainPress,
 }: {
   selectedDate: dayjs.Dayjs;
   selectedWeek: number;
+  firstWeek?: number;
+  lastWeek?: number;
   onPrevPress: () => void;
   onNextPress: () => void;
   onMainPress: () => void;
 }) => {
   const theme = useAppTheme();
+  const canPrev = selectedWeek > firstWeek;
+  const canNext = selectedWeek < lastWeek;
 
   return (
     <View style={styles.navigation}>
-      {selectedWeek !== 1
+      {canPrev
         ? (
           <TouchableOpacity onPress={onPrevPress}>
             <AntDesign name={'left'} size={18} color={theme.colors.text} />
@@ -37,9 +43,15 @@ const WeekNavigation = ({
         {capitalizeWord(selectedDate.format('MMMM'))}
         {selectedWeek ? ` • ${selectedWeek} неделя` : ''}
       </Text>
-      <TouchableOpacity onPress={onNextPress}>
-        <AntDesign name={'right'} size={18} color={theme.colors.text} />
-      </TouchableOpacity>
+      {canNext
+        ? (
+          <TouchableOpacity onPress={onNextPress}>
+            <AntDesign name={'right'} size={18} color={theme.colors.text} />
+          </TouchableOpacity>
+        )
+        : (
+          <View style={{ width: 20 }} />
+        )}
     </View>
   );
 };
