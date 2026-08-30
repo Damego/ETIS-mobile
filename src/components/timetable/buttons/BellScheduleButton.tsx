@@ -11,7 +11,19 @@ const BellScheduleButton = () => {
   const theme = useAppTheme();
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('BellSchedule')}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('BellSchedule')}
+      accessibilityRole='button'
+      accessibilityLabel='Расписание звонков'
+      hitSlop={
+        {
+          top: 12,
+          bottom: 12,
+          left: 12,
+          right: 12,
+        }
+      }
+    >
       <AntDesign name={'bells'} size={24} color={theme.colors.text} />
     </TouchableOpacity>
   );

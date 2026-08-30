@@ -27,6 +27,20 @@ const DisciplineTasksButton = () => {
         navigation.navigate('DisciplineTasks');
       }}
       style={{ justifyContent: 'center' }}
+      accessibilityRole='button'
+      accessibilityLabel={
+        tasks.length
+          ? `Задания по дисциплинам, непрочитанных: ${tasks.length}`
+          : 'Задания по дисциплинам'
+      }
+      hitSlop={
+        {
+          top: 12,
+          bottom: 12,
+          left: 12,
+          right: 12,
+        }
+      }
     >
       {tasks.length
         ? (

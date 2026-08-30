@@ -21,7 +21,19 @@ const ToggleModeButton = () => {
   };
 
   return (
-    <TouchableOpacity onPress={toggle}>
+    <TouchableOpacity
+      onPress={toggle}
+      accessibilityRole='button'
+      accessibilityLabel='Переключить вид расписания'
+      hitSlop={
+        {
+          top: 12,
+          bottom: 12,
+          left: 12,
+          right: 12,
+        }
+      }
+    >
       {timetableMode === TimetableModes.weeks && (
         <Ionicons name={'menu'} size={24} color={theme.colors.text} />
       )}
