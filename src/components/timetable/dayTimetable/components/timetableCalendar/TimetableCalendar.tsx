@@ -26,7 +26,7 @@ const TimetableCalendar = ({
     mode: TimetableCalendarModes
   ) => void;
 }) => {
-  const { selectedDate, currentDate, selectedWeek } = useTimetableContext();
+  const { selectedDate, currentDate, selectedWeek, currentWeek } = useTimetableContext();
   const [mode, setMode] = useState<TimetableCalendarModes>('week');
 
   const setCalendarMode = (mode: TimetableCalendarModes) => setMode(mode);
@@ -52,6 +52,7 @@ const TimetableCalendar = ({
               )
             }
             selectedWeek={selectedWeek}
+            currentWeek={currentWeek}
             firstWeek={firstWeek}
             lastWeek={lastWeek}
           />

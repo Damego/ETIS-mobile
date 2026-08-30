@@ -10,6 +10,7 @@ import { capitalizeWord } from '~/utils/texts';
 const WeekNavigation = ({
   selectedDate,
   selectedWeek,
+  currentWeek,
   firstWeek = 1,
   lastWeek = Number.POSITIVE_INFINITY,
   onPrevPress,
@@ -18,6 +19,7 @@ const WeekNavigation = ({
 }: {
   selectedDate: dayjs.Dayjs;
   selectedWeek: number;
+  currentWeek?: number;
   firstWeek?: number;
   lastWeek?: number;
   onPrevPress: () => void;
@@ -39,10 +41,24 @@ const WeekNavigation = ({
         : (
           <View style={{ width: 20 }} />
         )}
-      <Text style={styles.infoText} onPress={onMainPress}>
-        {capitalizeWord(selectedDate.format('MMMM'))}
-        {selectedWeek ? ` • ${selectedWeek} неделя` : ''}
-      </Text>
+      <View style={styles.titleRow}>
+        <Text style={styles.infoText} onPress={onMainPress}>
+          {capitalizeWord(selectedDate.format('MMMM'))}
+          {selectedWeek ? ` • ${selectedWeek} неделя` : ''}
+        </Text>
+        {currentWeek !== undefined && selectedWeek !== currentWeek && (
+          <TouchableOpacity
+            onPress={onMainPress}
+            accessibilityRole='button'
+            accessibilityLabel='Вернуться к текущей неделе'
+            hitSlop={{
+              top: 8, bottom: 8, left: 8, right: 8
+            }}
+          >
+            <Text style={[styles.todayText, { color: theme.colors.primary }]}>Сегодня</Text>
+          </TouchableOpacity>
+        )}
+      </View>
       {canNext
         ? (
           <TouchableOpacity onPress={onNextPress}>
@@ -67,5 +83,14 @@ const styles = StyleSheet.create({
   infoText: {
     fontWeight: '500',
     fontSize: 18,
+  },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    gap: 8,
+  },
+  todayText: {
+    fontWeight: '500',
+    fontSize: 14,
   },
 });
