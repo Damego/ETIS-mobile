@@ -31,11 +31,24 @@ const TimetableCalendar = ({
 
   const setCalendarMode = (mode: TimetableCalendarModes) => setMode(mode);
 
-  const gesture = Gesture.Pan().onEnd((event) => {
-    if (event.translationY > 0) {
-      if (mode !== 'month') runOnJS(setCalendarMode)('month');
-    } else if (mode !== 'week') runOnJS(setCalendarMode)('week');
-  });
+  const gesture = Gesture.Pan()
+    // Активируем жест только после заметного вертикального движения:
+    // горизонтальные свайпы (пейджер дней) и мелкие дрожания пальца
+    // не должны переключать режим календаря
+    .activeOffsetY([-25, 25])
+    .failOffsetX([-25, 25])
+    .onEnd((event) => {
+      // Переключаем только на быстром, доминантно вертикальном свайпе:
+      // медленный drag (например, прокрутка страницы под календарём)
+      // не должен менять режим
+      const isVertical = Math.abs(event.translationY) > Math.abs(event.translationX);
+      if (!isVertical || Math.abs(event.translationY) < 50) return;
+      if (Math.abs(event.velocityY) < 500) return;
+
+      if (event.translationY > 0) {
+        if (mode !== 'month') runOnJS(setCalendarMode)('month');
+      } else if (mode !== 'week') runOnJS(setCalendarMode)('week');
+    });
 
   return (
     <GestureDetector gesture={gesture}>
