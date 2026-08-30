@@ -5,6 +5,7 @@ import {
 } from '../models/results';
 import { setAuthorizing } from '../redux/reducers/accountSlice';
 import { useAppDispatch, useAppSelector } from './redux';
+import useDebounce from './useDebounce';
 
 type GetMethod<P, R> = (payload: IGetPayload<P>) => Promise<IGetResult<R>>;
 
@@ -104,8 +105,10 @@ const useQuery = <P, R>({
     disableLoading();
   };
 
+  const debouncedLoadData = useDebounce(loadData, 300);
+
   const refresh = () =>
-    loadData({ requestType: RequestType.forceFetch, data: payloadData.current });
+    debouncedLoadData({ requestType: RequestType.forceFetch, data: payloadData.current });
 
   const get = async (payload?: IGetPayload<P>): Promise<IGetResult<R>> => {
     payload = payload || { requestType, data: payloadData.current };
@@ -124,7 +127,7 @@ const useQuery = <P, R>({
     data,
     isLoading,
     refresh,
-    update: (payload?) => loadData(payload),
+    update: (payload?) => debouncedLoadData(payload),
     get,
     initialPayload: payloadData.current,
   };
