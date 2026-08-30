@@ -52,7 +52,7 @@ const DayTimetable = ({
       selectedWeek,
       currentWeek,
     }),
-    [teachers, selectedDate]
+    [teachers, selectedDate, currentDate, selectedWeek, currentWeek]
   );
 
   const handleDatePress = (
