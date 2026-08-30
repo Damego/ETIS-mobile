@@ -57,7 +57,7 @@ export const Timetable = () => {
         data={data}
         timetable={timetable}
         teachers={teachersData}
-        isLoading={isLoading || teachersIsLoading || !data}
+        isLoading={!data && (isLoading || teachersIsLoading)}
         loadingComponent={() => <LoadingContainer />}
         onRetry={refresh}
       />
