@@ -24,7 +24,12 @@ export const Timetable = () => {
     onRequestUpdate: (week) => loadWeek(week),
   });
 
-  const { data, isLoading, loadWeek, refresh } = useTimeTableQuery({
+  const {
+    data,
+    isLoading,
+    loadWeek,
+    refresh,
+  } = useTimeTableQuery({
     week: timetable.selectedWeek,
     afterCallback: (result) => {
       timetable.updateData(result.data.weekInfo);
@@ -54,6 +59,7 @@ export const Timetable = () => {
         teachers={teachersData}
         isLoading={isLoading || teachersIsLoading || !data}
         loadingComponent={() => <LoadingContainer />}
+        onRetry={refresh}
       />
     </Screen>
   );

@@ -19,6 +19,7 @@ const TimetableContainer = ({
   loadingComponent,
   firstWeek,
   lastWeek,
+  onRetry,
 }: {
   timetable: IUseTimetable;
   data: ITimeTable;
@@ -29,6 +30,7 @@ const TimetableContainer = ({
   loadingComponent?: () => React.ReactNode;
   firstWeek?: number;
   lastWeek?: number;
+  onRetry?: () => void;
 }) => {
   const { timetableMode } = useAppSelector((state) => state.settings.config.ui);
   const { currentDate, currentWeek, selectedDate, selectedWeek, onDatePress, onWeekPress } =
@@ -52,6 +54,7 @@ const TimetableContainer = ({
         lastWeek={lastWeek}
         isLoading={isLoading}
         loadingComponent={loadingComponent}
+        onRetry={onRetry}
       />
     );
   }
@@ -68,6 +71,7 @@ const TimetableContainer = ({
       endDate={endDate}
       isLoading={isLoading}
       loadingComponent={loadingComponent}
+      onRetry={onRetry}
     />
   );
 };

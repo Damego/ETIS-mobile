@@ -1,7 +1,9 @@
 import PagerView, { type PagerViewRef } from '@expo/ui/community/pager-view';
 import dayjs from 'dayjs';
 import React, { useMemo, useRef } from 'react';
+import { StyleSheet, View } from 'react-native';
 
+import { Button } from '~/components/Button';
 import CenteredText from '~/components/CenteredText';
 import TimetableCalendar, {
   TimetableCalendarModes,
@@ -17,6 +19,13 @@ const getWeekDiffDate = (date: dayjs.Dayjs, a: number, b: number) => date
   .startOf('isoWeek')
   .add(a - b, 'week');
 
+const styles = StyleSheet.create({
+  emptyContainer: {
+    alignItems: 'center',
+    gap: 8,
+  },
+});
+
 const DayTimetable = ({
   data,
   selectedDate,
@@ -29,6 +38,7 @@ const DayTimetable = ({
   onDatePress,
   isLoading,
   loadingComponent,
+  onRetry,
 }: {
   data: ITimeTable;
   selectedDate: dayjs.Dayjs;
@@ -41,6 +51,7 @@ const DayTimetable = ({
   onDatePress: DatePressT;
   isLoading?: boolean;
   loadingComponent?: () => React.ReactNode;
+  onRetry?: () => void;
 }) => {
   const pagerRef = useRef<PagerViewRef>(null);
 
@@ -99,7 +110,10 @@ const DayTimetable = ({
           dayNumber={selectedDate.weekday()}
         />
       ) : (
-        <CenteredText>Расписания нет</CenteredText>
+        <View style={styles.emptyContainer}>
+          <CenteredText>Расписания нет</CenteredText>
+          {onRetry && <Button text='Обновить' onPress={onRetry} variant='card' />}
+        </View>
       )}
     </TimeTableContext.Provider>
   );

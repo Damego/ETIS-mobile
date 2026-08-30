@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
 import React, { useMemo } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
+import { Button } from '~/components/Button';
 import CenteredText from '~/components/CenteredText';
 import PageNavigator from '~/components/PageNavigator';
 import TimeTableContext from '~/context/timetableContext';
@@ -37,6 +38,7 @@ const WeekTimeTable = ({
   lastWeek,
   isLoading,
   loadingComponent,
+  onRetry,
 }: {
   data: ITimeTable;
   currentDate: dayjs.Dayjs;
@@ -49,6 +51,7 @@ const WeekTimeTable = ({
   lastWeek?: number;
   isLoading?: boolean;
   loadingComponent?: () => React.ReactNode;
+  onRetry?: () => void;
 }) => {
   const globalStyles = useGlobalStyles();
 
@@ -99,10 +102,20 @@ const WeekTimeTable = ({
             </>
           )
           : (
-            <CenteredText>Нет расписания</CenteredText>
+            <View style={styles.emptyContainer}>
+              <CenteredText>Нет расписания</CenteredText>
+              {onRetry && <Button text='Обновить' onPress={onRetry} variant='card' />}
+            </View>
           )}
     </View>
   );
 };
 
 export default React.memo(WeekTimeTable);
+
+const styles = StyleSheet.create({
+  emptyContainer: {
+    alignItems: 'center',
+    gap: 8,
+  },
+});
