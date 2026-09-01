@@ -3,8 +3,8 @@ import 'dayjs/locale/ru';
 import dayjs from 'dayjs';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import AutoHeightWebView from 'react-native-autoheight-webview';
 
+import AutoHeightWebView from '~/components/AutoHeightWebView';
 import BorderLine from '~/components/BorderLine';
 import Card from '~/components/Card';
 import DisciplineType from '~/components/DisciplineType';
