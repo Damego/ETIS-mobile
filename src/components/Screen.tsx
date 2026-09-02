@@ -4,10 +4,10 @@ import React, { useRef, useState } from 'react';
 import {
   RefreshControl, ScrollView, StyleProp, StyleSheet, View, ViewStyle
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAppSelector } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
+import { useBottomNavPadding } from '~/utils/bottomNav';
 
 import AuthLoadingModal from './AuthLoadingModal';
 
@@ -34,7 +34,7 @@ const Screen = ({
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const scrollRef = useRef<ScrollView>(null);
   const theme = useAppTheme();
-  const insets = useSafeAreaInsets();
+  const bottomNavPadding = useBottomNavPadding();
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -52,7 +52,7 @@ const Screen = ({
         ref={scrollRef}
         nestedScrollEnabled
         contentContainerStyle={[
-          { flexGrow: 1, paddingBottom: Math.max(insets.bottom + 60, 80) },
+          { flexGrow: 1, paddingBottom: bottomNavPadding },
           styles.screen,
           containerStyle,
         ]}
@@ -97,7 +97,7 @@ export const ListScreen = <T,>({
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const theme = useAppTheme();
   const ref = useRef<FlashListRef<T>>(null);
-  const insets = useSafeAreaInsets();
+  const bottomNavPadding = useBottomNavPadding();
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -119,7 +119,7 @@ export const ListScreen = <T,>({
           showsVerticalScrollIndicator={false}
           onRefresh={onUpdate ? onRefresh : undefined}
           refreshing={onUpdate ? refreshing : undefined}
-          contentContainerStyle={{ paddingBottom: Math.max(insets.bottom + 60, 80) }}
+          contentContainerStyle={{ paddingBottom: bottomNavPadding }}
           refreshControl={
             onUpdate
               ? (
