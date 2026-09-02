@@ -1,23 +1,22 @@
-import { BottomSheetScrollView } from '@expo/ui/community/bottom-sheet';
 import React, { useRef } from 'react';
 import { View } from 'react-native';
 
 import BorderLine from '~/components/BorderLine';
+import BottomSheetContent from '~/components/BottomSheetContent';
 import BottomSheetModal from '~/components/BottomSheetModal';
-import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
 import { IEvaluationIndicators } from '~/models/disciplineEducationalComplex';
 import DropdownText from '~/screens/etis/disciplineEducationalComplex/components/DropdownText';
-import RightIcon from '~/screens/etis/disciplineEducationalComplex/RightIcon';
+import SectionRow from '~/screens/etis/disciplineEducationalComplex/components/SectionRow';
 import { fontSize } from '~/utils/texts';
 
 const EvaluationIndicatorsBottomSheet = React.forwardRef<
   BottomSheetModal,
   { data: IEvaluationIndicators }
 >(({ data }, ref) => (
-  <BottomSheetModal ref={ref} style={{ paddingHorizontal: '2%' }}>
-    <BottomSheetScrollView style={{ paddingBottom: '4%' }}>
-      <View>
+  <BottomSheetModal ref={ref}>
+    <BottomSheetContent title='Показатели оценивания'>
+      <View style={{ gap: 4 }}>
         <Text style={[fontSize.medium, { fontWeight: 'bold' }]}>
           Промежуточный контроль: <Text>{data.control}</Text>
         </Text>
@@ -36,7 +35,7 @@ const EvaluationIndicatorsBottomSheet = React.forwardRef<
           {data.criteria.length - 1 !== index && <BorderLine />}
         </React.Fragment>
       ))}
-    </BottomSheetScrollView>
+    </BottomSheetContent>
   </BottomSheetModal>
 ));
 
@@ -45,14 +44,7 @@ const EvaluationIndicators = ({ data }: { data: IEvaluationIndicators }) => {
 
   return (
     <>
-      <ClickableText
-        onPress={() => ref.current.present()}
-        iconRight={<RightIcon />}
-        textStyle={[fontSize.big, { fontWeight: 'bold' }]}
-        viewStyle={{ justifyContent: 'space-between' }}
-      >
-        Показатели оценивания
-      </ClickableText>
+      <SectionRow label='Показатели оценивания' onPress={() => ref.current.present()} />
       <EvaluationIndicatorsBottomSheet ref={ref} data={data} />
     </>
   );

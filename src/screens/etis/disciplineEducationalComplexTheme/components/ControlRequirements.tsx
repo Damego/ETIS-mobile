@@ -1,19 +1,17 @@
-import { BottomSheetScrollView } from '@expo/ui/community/bottom-sheet';
 import React, { useRef } from 'react';
 
+import BottomSheetContent from '~/components/BottomSheetContent';
 import BottomSheetModal from '~/components/BottomSheetModal';
-import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
-import RightIcon from '~/screens/etis/disciplineEducationalComplex/RightIcon';
+import SectionRow from '~/screens/etis/disciplineEducationalComplex/components/SectionRow';
 import { fontSize } from '~/utils/texts';
 
 const ControlRequirementsBottomSheet = React.forwardRef<BottomSheetModal, { data: string }>(
   ({ data }, ref) => (
-    <BottomSheetModal ref={ref} style={{ paddingHorizontal: '2%' }}>
-      <BottomSheetScrollView style={{ paddingBottom: '4%' }}>
-        <Text style={[fontSize.big, { fontWeight: 'bold' }]}>Контроль</Text>
-        <Text>{data}</Text>
-      </BottomSheetScrollView>
+    <BottomSheetModal ref={ref}>
+      <BottomSheetContent title='Контроль'>
+        <Text style={fontSize.medium}>{data}</Text>
+      </BottomSheetContent>
     </BottomSheetModal>
   )
 );
@@ -23,14 +21,7 @@ const ControlRequirements = ({ data }: { data: string }) => {
 
   return (
     <>
-      <ClickableText
-        onPress={() => ref.current.present()}
-        iconRight={<RightIcon />}
-        textStyle={[fontSize.big, { fontWeight: 'bold' }]}
-        viewStyle={{ justifyContent: 'space-between' }}
-      >
-        Контроль
-      </ClickableText>
+      <SectionRow label='Контроль' onPress={() => ref.current.present()} />
       <ControlRequirementsBottomSheet ref={ref} data={data} />
     </>
   );

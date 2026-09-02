@@ -1,20 +1,19 @@
-import { BottomSheetScrollView } from '@expo/ui/community/bottom-sheet';
 import React, { useRef } from 'react';
 import { View } from 'react-native';
 
 import BorderLine from '~/components/BorderLine';
+import BottomSheetContent from '~/components/BottomSheetContent';
 import BottomSheetModal from '~/components/BottomSheetModal';
-import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
 import { IPlannedLearningOutcome } from '~/models/disciplineEducationalComplex';
 import DropdownText from '~/screens/etis/disciplineEducationalComplex/components/DropdownText';
-import RightIcon from '~/screens/etis/disciplineEducationalComplex/RightIcon';
+import SectionRow from '~/screens/etis/disciplineEducationalComplex/components/SectionRow';
 import { fontSize } from '~/utils/texts';
 
 const Outcome = ({ data }: { data: IPlannedLearningOutcome }) => (
-  <View>
+  <View style={{ gap: 4 }}>
     <Text style={fontSize.medium}>{data.outcome}</Text>
-    <Text style={[fontSize.big, { fontWeight: 'bold', marginBottom: '2%' }]}>Критерии</Text>
+    <Text style={[fontSize.big, { fontWeight: 'bold' }]}>Критерии</Text>
     {data.criteria.map((criteria, index) => (
       <React.Fragment key={index}>
         <DropdownText title={criteria.title} value={criteria.description} />
@@ -28,19 +27,15 @@ const PlannedLearningOutcomeBottomSheet = React.forwardRef<
   BottomSheetModal,
   { data: IPlannedLearningOutcome[] }
 >(({ data }, ref) => (
-  <BottomSheetModal ref={ref} style={{ paddingHorizontal: '2%' }}>
-    <Text style={[fontSize.slarge, { fontWeight: 'bold', textAlign: 'center' }]}>
-      Планируемый результат обучения
-    </Text>
-
-    <BottomSheetScrollView>
+  <BottomSheetModal ref={ref}>
+    <BottomSheetContent title='Планируемый результат обучения'>
       {data.map(($data, index) => (
-        <View key={index} style={{ marginVertical: '2%', gap: 16 }}>
+        <View key={index}>
           <Outcome data={$data} />
           {index !== data.length - 1 && <BorderLine />}
         </View>
       ))}
-    </BottomSheetScrollView>
+    </BottomSheetContent>
   </BottomSheetModal>
 ));
 
@@ -49,14 +44,7 @@ const PlannedLearningOutcome = ({ data }: { data: IPlannedLearningOutcome[] }) =
 
   return (
     <>
-      <ClickableText
-        onPress={() => ref.current.present()}
-        iconRight={<RightIcon />}
-        textStyle={[fontSize.big, { fontWeight: 'bold' }]}
-        viewStyle={{ justifyContent: 'space-between' }}
-      >
-        Планируемый результат обучения
-      </ClickableText>
+      <SectionRow label='Планируемый результат обучения' onPress={() => ref.current.present()} />
       <PlannedLearningOutcomeBottomSheet ref={ref} data={data} />
     </>
   );
