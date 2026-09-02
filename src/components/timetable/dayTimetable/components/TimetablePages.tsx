@@ -3,7 +3,6 @@ import React, { forwardRef } from 'react';
 import {
   NativeSyntheticEvent, ScrollView, StyleSheet
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { checkAllowedPairRender } from '~/components/timetable/checkAllowedPairRender';
 import { useAppSelector } from '~/hooks';
@@ -25,16 +24,12 @@ const Page = ({ day }: { day: ITimeTableDay }) => {
   const { showGapsBetweenPairs, showEmptyPairs } = useAppSelector(
     (state) => state.settings.config.ui
   );
-  const insets = useSafeAreaInsets();
   let didRenderFirstPair = false;
 
   return (
     <ScrollView
       style={{ flex: 1 }}
-      contentContainerStyle={[
-        styles.pairsList,
-        { paddingBottom: Math.max(insets.bottom + 60, 80) },
-      ]}
+      contentContainerStyle={styles.pairsList}
       showsVerticalScrollIndicator={false}
     >
       {!day.pairs.length && <NoPairs />}
@@ -53,7 +48,6 @@ const Page = ({ day }: { day: ITimeTableDay }) => {
 
 const TimetablePages = forwardRef<PagerViewRef, TimetablePagesProps>(
   ({ days, dayNumber, onPagePress, onPagerScrollStateChange }, ref) => {
-    const insets = useSafeAreaInsets();
     const handlePageSelected = (event: NativeSyntheticEvent<Readonly<{ position: number }>>) =>
       onPagePress(event.nativeEvent.position - dayNumber);
 
@@ -76,10 +70,7 @@ const TimetablePages = forwardRef<PagerViewRef, TimetablePagesProps>(
         {/* Воскресенья нет в данных */}
         <ScrollView
           style={{ flex: 1 }}
-          contentContainerStyle={[
-            styles.pairsList,
-            { paddingBottom: Math.max(insets.bottom + 60, 80) },
-          ]}
+          contentContainerStyle={styles.pairsList}
           showsVerticalScrollIndicator={false}
         >
           <NoPairs />
