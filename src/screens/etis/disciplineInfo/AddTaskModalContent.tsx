@@ -1,12 +1,13 @@
 import 'dayjs/locale/ru';
 
-import { BottomSheetModal, BottomSheetView } from '@expo/ui/community/bottom-sheet';
+import { BottomSheetModal } from '@expo/ui/community/bottom-sheet';
 import dayjs from 'dayjs';
 import React, { useRef, useState } from 'react';
 import {
   Alert, StyleSheet, TextInput, View
 } from 'react-native';
 
+import BottomSheetContent from '~/components/BottomSheetContent';
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
 import ThemedCheckbox from '~/components/ThemedCheckbox';
@@ -141,10 +142,11 @@ const AddTaskModalContent = ({
       <BottomSheetModal
         ref={reminderModal}
         backgroundStyle={{ backgroundColor: globalStyles.containerBackground.backgroundColor }}
+        snapPoints={['50%', '100%']}
       >
-        <BottomSheetView style={styles.modalView}>
+        <BottomSheetContent>
           <AddReminderBottomModal onSubmit={addReminder} />
-        </BottomSheetView>
+        </BottomSheetContent>
       </BottomSheetModal>
     </>
   );
@@ -153,9 +155,6 @@ const AddTaskModalContent = ({
 export default AddTaskModalContent;
 
 const styles = StyleSheet.create({
-  modalView: {
-    marginHorizontal: '2%',
-  },
   disciplineText: {
     fontWeight: '600',
     ...fontSize.large,
