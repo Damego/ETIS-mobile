@@ -4,10 +4,10 @@ import {
   NativeSyntheticEvent, ScrollView, StyleSheet
 } from 'react-native';
 
+import NoPairs from '~/components/NoPairs';
 import { checkAllowedPairRender } from '~/components/timetable/checkAllowedPairRender';
 import { useAppSelector } from '~/hooks';
 import { ITimeTableDay } from '~/models/timeTable';
-import NoPairs from '~/screens/etis/main/components/NoPairs';
 
 import Pair from './Pair';
 
