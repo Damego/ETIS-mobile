@@ -14,7 +14,7 @@ const EvaluationIndicatorsBottomSheet = React.forwardRef<
   BottomSheetModal,
   { data: IEvaluationIndicators }
 >(({ data }, ref) => (
-  <BottomSheetModal ref={ref}>
+  <BottomSheetModal ref={ref} snapPoints={['50%', '100%']}>
     <BottomSheetContent title='Показатели оценивания'>
       <View style={{ gap: 4 }}>
         <Text style={[fontSize.medium, { fontWeight: 'bold' }]}>

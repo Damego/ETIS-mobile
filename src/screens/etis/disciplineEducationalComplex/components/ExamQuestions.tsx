@@ -32,7 +32,7 @@ const Question = ({ question, index }: { question: IExamQuestions; index: number
 
 const QuestionsBottomSheet = React.forwardRef<BottomSheetModal, { questions: IExamQuestions[] }>(
   ({ questions }, ref) => (
-    <BottomSheetModal ref={ref}>
+    <BottomSheetModal ref={ref} snapPoints={['50%', '100%']}>
       <BottomSheetContent title='Вопросы промежуточной аттестации'>
         {questions.map((question, index) => (
           <Question question={question} index={index} key={question.id} />

@@ -63,7 +63,7 @@ const ThemesBottomSheet = React.forwardRef<
   BottomSheetModal,
   { themes: IDisciplineEducationalComplexThemeLink[]; disciplineName: string }
 >(({ themes, disciplineName }, ref) => (
-  <BottomSheetModal ref={ref}>
+  <BottomSheetModal ref={ref} snapPoints={['50%', '100%']}>
     <BottomSheetContent title='Темы'>
       {themes.map((theme, index) => (
         <React.Fragment key={index}>

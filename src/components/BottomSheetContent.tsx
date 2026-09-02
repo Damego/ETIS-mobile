@@ -1,12 +1,13 @@
 import { BottomSheetScrollView } from '@expo/ui/community/bottom-sheet';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
 import Text from '~/components/Text';
 import { fontSize } from '~/utils/texts';
 
 interface BottomSheetContentProps {
   title?: string;
+  style?: StyleProp<ViewStyle>;
   children: React.ReactNode;
 }
 
@@ -21,8 +22,11 @@ interface BottomSheetContentProps {
  * высоту по контенту) и необходим при явных snapPoints, чтобы прокрутка
  * работала по всей высоте шторки.
  */
-const BottomSheetContent = ({ title, children }: BottomSheetContentProps) => (
-  <BottomSheetScrollView style={{ flex: 1 }} contentContainerStyle={styles.content}>
+const BottomSheetContent = ({ title, style, children }: BottomSheetContentProps) => (
+  <BottomSheetScrollView
+    style={{ flex: 1 }}
+    contentContainerStyle={[styles.content, style]}
+  >
     {Boolean(title) && <Text style={styles.title}>{title}</Text>}
     {children}
   </BottomSheetScrollView>

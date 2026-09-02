@@ -1,7 +1,6 @@
-import { BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import React from 'react';
-import { StyleSheet } from 'react-native';
 
+import BottomSheetContent from '~/components/BottomSheetContent';
 import BottomSheetModal from '~/components/BottomSheetModal';
 import { useAppTheme } from '~/hooks/theme';
 import { DisciplineTask } from '~/models/disciplinesTasks';
@@ -28,7 +27,7 @@ const TaskModal = React.forwardRef<BottomSheetModal, TaskModalProps>(
         onDismiss={onDismiss}
         snapPoints={['50%', '100%']}
       >
-        <BottomSheetView style={styles.modalContainer}>
+        <BottomSheetContent style={{ gap: 8 }}>
           <AddTaskModalContent
             onTaskAdd={onTaskAdd}
             selectedTask={task}
@@ -36,17 +35,10 @@ const TaskModal = React.forwardRef<BottomSheetModal, TaskModalProps>(
             showDisciplineInfo={showDisciplineInfo}
             disableCheckbox={disableCheckbox}
           />
-        </BottomSheetView>
+        </BottomSheetContent>
       </BottomSheetModal>
     );
   }
 );
 
 export default TaskModal;
-
-const styles = StyleSheet.create({
-  modalContainer: {
-    padding: '4%',
-    gap: 8,
-  },
-});

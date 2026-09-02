@@ -27,7 +27,7 @@ const PlannedLearningOutcomeBottomSheet = React.forwardRef<
   BottomSheetModal,
   { data: IPlannedLearningOutcome[] }
 >(({ data }, ref) => (
-  <BottomSheetModal ref={ref}>
+  <BottomSheetModal ref={ref} snapPoints={['50%', '100%']}>
     <BottomSheetContent title='Планируемый результат обучения'>
       {data.map(($data, index) => (
         <View key={index}>

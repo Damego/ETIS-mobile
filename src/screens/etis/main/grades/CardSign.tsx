@@ -1,8 +1,8 @@
-import { BottomSheetScrollView } from '@expo/ui/community/bottom-sheet';
 import React, { useRef } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import BorderLine from '~/components/BorderLine';
+import BottomSheetContent from '~/components/BottomSheetContent';
 import BottomSheetModal from '~/components/BottomSheetModal';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
@@ -42,7 +42,7 @@ const CardSign = ({ subject }: { subject: ISubject }) => {
         onDismiss={() => ref.current.dismiss()}
         snapPoints={['50%', '100%']}
       >
-        <BottomSheetScrollView style={{ marginHorizontal: '2%' }}>
+        <BottomSheetContent>
           <View style={styles.header}>
             <Text style={[fontSize.large, { flex: 1 }]}>{subject.name}</Text>
             <TotalPoints subject={subject} style={{ alignItems: 'center' }} />
@@ -54,7 +54,7 @@ const CardSign = ({ subject }: { subject: ISubject }) => {
               {index !== subject.checkPoints.length - 1 && <BorderLine />}
             </React.Fragment>
           ))}
-        </BottomSheetScrollView>
+        </BottomSheetContent>
       </BottomSheetModal>
     </View>
   );

@@ -12,7 +12,7 @@ const AdditionalMaterialsBottomSheet = React.forwardRef<
   BottomSheetModal,
   { data: IAdditionalMaterials }
 >(({ data }, ref) => (
-  <BottomSheetModal ref={ref}>
+  <BottomSheetModal ref={ref} snapPoints={['50%', '100%']}>
     <BottomSheetContent title='Дополнительные материалы'>
       <Text style={[fontSize.big, { fontWeight: 'bold' }]}>Файлы</Text>
       {data.files.map((file, index) => (

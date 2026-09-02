@@ -11,6 +11,7 @@ import {
 import { getTeacherContacts } from '~/api/psu/api';
 import { getTeacherById } from '~/api/psutech/api';
 import BorderLine from '~/components/BorderLine';
+import BottomSheetContent from '~/components/BottomSheetContent';
 import BottomSheetModal from '~/components/BottomSheetModal';
 import ClickableText from '~/components/ClickableText';
 import DisciplineType from '~/components/DisciplineType';
@@ -59,7 +60,7 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
   };
 
   return (
-    <BottomSheetView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.centeredContainer}>
         <Image
           source={{
@@ -168,14 +169,18 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
           </View>
         </React.Fragment>
       ))}
-    </BottomSheetView>
+    </View>
   );
 };
 
 const TeacherBottomSheet = React.forwardRef<BottomSheetModal, { teacher: ITeacher | null }>(
   ({ teacher }, ref) => (
     <BottomSheetModal ref={ref} snapPoints={['50%', '90%']}>
-      {teacher ? <TeacherContainer teacher={teacher} /> : null}
+      {teacher ? (
+        <BottomSheetContent>
+          <TeacherContainer teacher={teacher} />
+        </BottomSheetContent>
+      ) : null}
     </BottomSheetModal>
   )
 );
