@@ -1,10 +1,10 @@
 import { Octicons } from '@expo/vector-icons';
 import React, { useRef } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import { cache } from '~/cache/smartCache';
 import BottomSheetModal from '~/components/BottomSheetModal';
 import OptionsBottomSheet from '~/components/bottomSheets/OptionsBottomSheet';
+import SettingRow from '~/components/SettingRow';
 import Text from '~/components/Text';
 import { useAppDispatch, useAppSelector } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
@@ -35,17 +35,6 @@ const options = [
   },
 ];
 
-const styles = StyleSheet.create({
-  cardView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  settingTitle: {
-    ...fontSize.medium,
-  },
-});
-
 const ToggleThemeSetting = () => {
   const dispatch = useAppDispatch();
   const { events, theme: themeType } = useAppSelector((state) => state.settings.config);
@@ -68,20 +57,24 @@ const ToggleThemeSetting = () => {
   };
 
   return (
-    <TouchableOpacity style={styles.cardView} onPress={() => modalRef.current.present()}>
-      <Octicons name={'paintbrush'} size={22} color={theme.colors.text} />
-      <Text style={styles.settingTitle}>Тема</Text>
-      <Text style={[styles.settingTitle, { marginLeft: 'auto' }]}>
-        {options.find((opt) => opt.value === themeType).label}
-      </Text>
-
+    <>
+      <SettingRow
+        label='Тема'
+        icon={<Octicons name={'paintbrush'} size={24} color={theme.colors.text} />}
+        onPress={() => modalRef.current.present()}
+        right={
+          <Text style={fontSize.medium}>
+            {options.find((opt) => opt.value === themeType).label}
+          </Text>
+        }
+      />
       <OptionsBottomSheet
         ref={modalRef}
         options={options}
         onOptionPress={changeAppTheme}
         currentOptionValue={themeType}
       />
-    </TouchableOpacity>
+    </>
   );
 };
 

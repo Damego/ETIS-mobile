@@ -1,12 +1,12 @@
 import { AntDesign, Fontisto } from '@expo/vector-icons';
 import React from 'react';
 import {
-  Linking, ToastAndroid, TouchableOpacity, View
+  Linking, ToastAndroid, TouchableOpacity
 } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 
 import { cache } from '~/cache/smartCache';
-import Card from '~/components/Card';
+import SettingRow from '~/components/SettingRow';
 import Text from '~/components/Text';
 import ThemedSwitch from '~/components/ThemedSwitch';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '~/hooks';
@@ -61,16 +61,12 @@ const ToggleSentrySetting = () => {
   };
 
   return (
-    <Card style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-      <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center' }}>
-        <Fontisto name={'sentry'} size={22} color={theme.colors.text} />
-        <Text style={fontSize.medium}>Отправлять ошибки</Text>
-      </View>
-
-      <AboutSentryPopover />
-
-      <ThemedSwitch onValueChange={toggleSentryEnabled} value={sentryEnabled} />
-    </Card>
+    <SettingRow
+      label='Отправлять ошибки'
+      icon={<Fontisto name={'sentry'} size={24} color={theme.colors.text} />}
+      hint={<AboutSentryPopover />}
+      right={<ThemedSwitch onValueChange={toggleSentryEnabled} value={sentryEnabled} />}
+    />
   );
 };
 

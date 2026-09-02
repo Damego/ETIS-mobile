@@ -1,31 +1,14 @@
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
-import {
-  Linking, StyleSheet, ToastAndroid, TouchableOpacity, View
-} from 'react-native';
+import { Linking, ToastAndroid, TouchableOpacity } from 'react-native';
 
 import { cache } from '~/cache/smartCache';
-import Text from '~/components/Text';
+import SettingRow from '~/components/SettingRow';
 import ThemedSwitch from '~/components/ThemedSwitch';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '~/hooks';
 import { setSignNotification } from '~/redux/reducers/settingsSlice';
 import { registerSignsFetchTask, unregisterBackgroundFetchAsync } from '~/tasks/signs/signs';
 import { NOTIFICATION_GUIDE_URL } from '~/utils';
-import { fontSize } from '~/utils/texts';
-
-const styles = StyleSheet.create({
-  cardView: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  header: { ...fontSize.medium },
-  textWithIcon: {
-    flexDirection: 'row',
-    gap: 8,
-    alignItems: 'center',
-  },
-});
 
 const ToggleSignNotification = () => {
   const dispatch = useAppDispatch();
@@ -49,21 +32,20 @@ const ToggleSignNotification = () => {
   };
 
   return (
-    <View style={styles.cardView}>
-      <View style={styles.textWithIcon}>
-        <AntDesign name={'notification'} size={26} color={globalStyles.textColor.color} />
-        <Text style={styles.header}>Уведомлять об оценках</Text>
-      </View>
-
-      <TouchableOpacity onPress={() => Linking.openURL(NOTIFICATION_GUIDE_URL)}>
-        <AntDesign // TODO: make as modal w/ blur
-          name='infocirlceo'
-          size={24}
-          color={globalStyles.textColor.color}
-        />
-      </TouchableOpacity>
-      <ThemedSwitch onValueChange={changeSignNotification} value={signNotification} />
-    </View>
+    <SettingRow
+      label='Уведомлять об оценках'
+      icon={<AntDesign name={'notification'} size={24} color={globalStyles.textColor.color} />}
+      hint={
+        <TouchableOpacity onPress={() => Linking.openURL(NOTIFICATION_GUIDE_URL)}>
+          <AntDesign // TODO: make as modal w/ blur
+            name='infocirlceo'
+            size={24}
+            color={globalStyles.textColor.color}
+          />
+        </TouchableOpacity>
+      }
+      right={<ThemedSwitch onValueChange={changeSignNotification} value={signNotification} />}
+    />
   );
 };
 

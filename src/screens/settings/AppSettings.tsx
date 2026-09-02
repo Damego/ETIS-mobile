@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Card from '~/components/Card';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import TelegramAppChannel from '~/screens/settings/components/TelegramAppChannel';
@@ -17,16 +16,9 @@ export default function AppSettings() {
   return (
     <Screen containerStyle={{ gap: 8 }}>
       {/* Общие настройки */}
-      <Card style={{ zIndex: 1 }}>
-        <ToggleThemeSetting />
-      </Card>
+      <ToggleThemeSetting />
       <ChangeAppUI />
-      <Card>
-        <ToggleSignNotification />
-      </Card>
-      {/* <Card> */}
-      {/*  <ResetIntroSetting /> */}
-      {/* </Card> */}
+      <ToggleSignNotification />
 
       {/* Настройки приложения */}
       <Text style={[fontSize.big, { fontWeight: 'bold' }]}>Приложение</Text>
