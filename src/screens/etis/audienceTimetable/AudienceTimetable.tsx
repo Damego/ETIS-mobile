@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { getAudienceTimetable, isPsutechAvailable } from '~/api/psutech/api';
 import { LoadingContainer } from '~/components/LoadingScreen';
@@ -7,6 +7,7 @@ import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import TimetableContainer from '~/components/timetable/TimetableContainer';
 import useTimetable from '~/hooks/useTimetable';
+import useTimetableSync from '~/hooks/useTimetableSync';
 import { EducationStackScreenProps } from '~/navigation/types';
 import { fontSize } from '~/utils/texts';
 
@@ -21,11 +22,7 @@ const AudienceTimetable = ({ route }: EducationStackScreenProps<'AudienceTimetab
     queryKey: ['aud-timetable', fetchWeek, audience.id],
   });
 
-  useEffect(() => {
-    if (data) {
-      timetable.updateData(data.weekInfo);
-    }
-  }, [data]);
+  useTimetableSync(timetable, data, ($data) => $data.weekInfo);
 
   if (!isLoading && !data && isPsutechAvailable() === false) {
     return (

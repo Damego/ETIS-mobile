@@ -14,6 +14,7 @@ import { useClient } from '~/data/client';
 import { useAppSelector } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
 import useTimetable from '~/hooks/useTimetable';
+import useTimetableSync from '~/hooks/useTimetableSync';
 import { RequestType } from '~/models/results';
 import { UnauthorizedTeacherStackScreenProps } from '~/navigation/types';
 import {
@@ -49,9 +50,6 @@ const Timetable = ({ navigation }: UnauthorizedTeacherStackScreenProps) => {
       requestType: RequestType.tryFetch,
     },
     skipInitialGet: true,
-    after: (result) => {
-      timetable.updateData(result.data.weekInfo);
-    },
   });
 
   const loadData = (week: number) => {
@@ -83,6 +81,7 @@ const Timetable = ({ navigation }: UnauthorizedTeacherStackScreenProps) => {
     skipSunday,
     onRequestUpdate: loadData,
   });
+  useTimetableSync(timetable, data, ($data) => $data?.weekInfo);
 
   useEffect(() => {
     navigation.setOptions({ headerLeft: () => <></> });

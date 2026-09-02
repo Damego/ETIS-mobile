@@ -14,6 +14,7 @@ import { useAppSelector } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
 import useTimetable from '~/hooks/useTimetable';
 import useTimeTableQuery from '~/hooks/useTimeTableQuery';
+import useTimetableSync from '~/hooks/useTimetableSync';
 import { RequestType } from '~/models/results';
 import { fontSize } from '~/utils/texts';
 
@@ -33,10 +34,8 @@ export const Timetable = () => {
     refresh,
   } = useTimeTableQuery({
     week: timetable.selectedWeek,
-    afterCallback: (result) => {
-      timetable.updateData(result.data.weekInfo);
-    },
   });
+  useTimetableSync(timetable, data, ($data) => $data.weekInfo);
   const { data: teachersData, isLoading: teachersIsLoading } = useQuery({
     method: client.getTeacherData,
     payload: {

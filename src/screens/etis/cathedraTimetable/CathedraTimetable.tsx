@@ -7,6 +7,7 @@ import TimetableContainer from '~/components/timetable/TimetableContainer';
 import { useClient } from '~/data/client';
 import useQuery from '~/hooks/useQuery';
 import useTimetable from '~/hooks/useTimetable';
+import useTimetableSync from '~/hooks/useTimetableSync';
 import { RequestType } from '~/models/results';
 import { ITeacher } from '~/models/timeTable';
 import { EducationStackScreenProps } from '~/navigation/types';
@@ -30,16 +31,15 @@ const CathedraTimetable = ({ route }: EducationStackScreenProps<'CathedraTimetab
       },
       requestType: RequestType.forceFetch,
     },
-    after: (result) => {
-      const $timetable = result.data
-        ? result.data.timetable.find((timetable) => timetable.teacher.id === currentTeacher?.id) ||
-        result.data.timetable[0]
-        : undefined;
-      if (!$timetable) return;
-
-      timetable.updateData($timetable.weekInfo);
-    },
   });
+
+  useTimetableSync(timetable, data, ($data) =>
+    ($data
+      ? $data.timetable.find((timetable) => timetable.teacher.id === currentTeacher?.id) ||
+      $data.timetable[0]
+      : undefined
+    )?.weekInfo
+  );
 
   const onTeacherSelect = (teacherId: string) => {
     setCurrentTeacher(data?.timetable.find((tt) => tt.teacher.id === teacherId).teacher);

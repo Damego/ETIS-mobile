@@ -11,6 +11,7 @@ import { useClient } from '~/data/client';
 import { useAppSelector } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
 import useTimetable from '~/hooks/useTimetable';
+import useTimetableSync from '~/hooks/useTimetableSync';
 import { RequestType } from '~/models/results';
 import { UnauthorizedTeacherStackScreenProps } from '~/navigation/types';
 import { fontSize } from '~/utils/texts';
@@ -33,10 +34,8 @@ const Timetable = ({ navigation }: UnauthorizedTeacherStackScreenProps) => {
         teacherId,
       },
     },
-    after: (result) => {
-      timetable.updateData(result.data.timetable[0].weekInfo);
-    },
   });
+  useTimetableSync(timetable, data, ($data) => $data.timetable[0]?.weekInfo);
 
   useEffect(() => {
     navigation.setOptions({ headerLeft: () => <></> });
