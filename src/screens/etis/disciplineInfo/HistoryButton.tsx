@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 
 import ClickableText from '~/components/ClickableText';
 import { useGlobalStyles } from '~/hooks';
-import { fontSize } from '~/utils/texts';
+import { fontSize, iconSize } from '~/utils/texts';
 
 const HistoryButton = ({ onPress, showHistory }: { onPress: () => void; showHistory: boolean }) => {
   const globalStyles = useGlobalStyles();
@@ -15,12 +15,12 @@ const HistoryButton = ({ onPress, showHistory }: { onPress: () => void; showHist
       onPress={onPress}
       textStyle={fontSize.big}
       viewStyle={styles.showInactiveButton}
-      iconLeft={<Ionicons name={'time-outline'} size={26} color={globalStyles.textColor.color} />}
+      iconLeft={<Ionicons name={'time-outline'} size={iconSize.medium} color={globalStyles.textColor.color} />}
       iconRight={
         <Ionicons
           name={showHistory ? 'arrow-up-outline' : 'arrow-down-outline'}
           style={{ marginLeft: 'auto' }}
-          size={22}
+          size={iconSize.medium}
           color={globalStyles.textColor.color}
         />
       }

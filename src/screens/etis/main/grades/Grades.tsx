@@ -38,7 +38,7 @@ const Grades = () => {
       <View style={{
         flexDirection: 'row', gap: 14, alignItems: 'center', marginBottom: '2%'
       }}>
-        <Text style={{ fontWeight: '700', fontSize: 22, flex: 2 }}>Оценки</Text>
+        <Text style={[{ fontWeight: '700', flex: 2 }, fontSize.slarge]}>Оценки</Text>
         {data && (
           <ClickableText
             onPress={() => ref.current.present()}

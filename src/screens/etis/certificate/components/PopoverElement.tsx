@@ -5,7 +5,7 @@ import Popover, { PopoverPlacement } from 'react-native-popover-view';
 
 import Text from '~/components/Text';
 import { useAppTheme } from '~/hooks/theme';
-import { fontSize } from '~/utils/texts';
+import { borderRadius, fontSize } from '~/utils/texts';
 
 export const PopoverElement = ({ text }) => {
   const appTheme = useAppTheme();
@@ -26,7 +26,7 @@ export const PopoverElement = ({ text }) => {
 
 const styles = StyleSheet.create({
   popover: {
-    borderRadius: 10,
+    borderRadius: borderRadius.medium,
     padding: '2%',
   },
 });

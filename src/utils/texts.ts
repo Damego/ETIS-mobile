@@ -57,6 +57,23 @@ export const fontSize = StyleSheet.create({
   },
 });
 
+// Размеры иконок, применяемые по всему приложению.
+// Обычная иконка в строке/кнопке — iconSize.medium,
+// крупная в шапке экрана — iconSize.large
+export const iconSize = {
+  small: 20,
+  medium: 24,
+  large: 28,
+};
+
+// Радиусы скругления углов. small — бейджи/мелкие элементы,
+// medium — карточки и инпуты, large — крупные блоки и модалки
+export const borderRadius = {
+  small: 5,
+  medium: 10,
+  large: 20,
+};
+
 export const disciplineTypeNames: { [key in LessonTypes]: string } = {
   LECTURE: 'Лекция',
   PRACTICE: 'Практика',

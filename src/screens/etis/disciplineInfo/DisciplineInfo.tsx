@@ -12,7 +12,7 @@ import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { useAppTheme } from '~/hooks/theme';
 import { EducationStackScreenProps } from '~/navigation/types';
-import { fontSize } from '~/utils/texts';
+import { borderRadius, fontSize } from '~/utils/texts';
 import { getStyles } from '~/utils/webView';
 
 import {
@@ -62,7 +62,7 @@ const DisciplineInfo = ({ route }: EducationStackScreenProps<'DisciplineInfo'>) 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderRadius: 20,
+    borderRadius: borderRadius.large,
     gap: 8,
     padding: '2%',
     marginBottom: '2%',

@@ -15,6 +15,7 @@ import useQuery from '~/hooks/useQuery';
 import useTimetable from '~/hooks/useTimetable';
 import useTimeTableQuery from '~/hooks/useTimeTableQuery';
 import { RequestType } from '~/models/results';
+import { fontSize } from '~/utils/texts';
 
 export const Timetable = () => {
   const client = useClient();
@@ -79,7 +80,7 @@ export const Timetable = () => {
 const styles = StyleSheet.create({
   titleText: {
     fontWeight: '700',
-    fontSize: 22,
+    ...fontSize.slarge,
   },
   titleContainer: {
     flexDirection: 'row',

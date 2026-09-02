@@ -12,7 +12,7 @@ import useBackPress from '~/hooks/useBackPress';
 import { IDisciplineInfo } from '~/models/disciplineInfo';
 import { DisciplineStorage } from '~/models/disciplinesTasks';
 import { RootStackNavigationProp } from '~/navigation/types';
-import { fontSize } from '~/utils/texts';
+import { fontSize, iconSize } from '~/utils/texts';
 
 const findDiscipline = (disciplineName: string, disciplines: IDisciplineInfo[]) => {
   let info = disciplines.find((info) => info.name === disciplineName);
@@ -102,7 +102,7 @@ const Note = ({ disciplineName }: { disciplineName: string }) => {
 
           {isTextChanged && (
             <TouchableOpacity style={styles.saveIcon} onPress={handleNoteSave}>
-              <Ionicons name={'save-outline'} size={26} color={globalStyles.textColor2.color} />
+              <Ionicons name={'save-outline'} size={iconSize.medium} color={globalStyles.textColor2.color} />
             </TouchableOpacity>
           )}
         </View>

@@ -11,11 +11,8 @@ import { useClient } from '~/data/client';
 import { useGlobalStyles } from '~/hooks';
 import useQuery from '~/hooks/useQuery';
 import { ButtonWithPopover } from '~/screens/etis/certificate/components/ButtonWithPopover';
-import {
-  iconSize,
-  RequestCertificateButton,
-} from '~/screens/etis/certificate/components/RequestCertificateButton';
-import { fontSize } from '~/utils/texts';
+import { RequestCertificateButton } from '~/screens/etis/certificate/components/RequestCertificateButton';
+import { fontSize, iconSize } from '~/utils/texts';
 
 import CertificateCard from './components/CertificateCard';
 
@@ -60,7 +57,7 @@ const CertificateTable = () => {
             icon={
               <AntDesign
                 name='infocirlceo'
-                size={iconSize}
+                size={iconSize.medium}
                 color={globalStyles.textColor.color}
                 style={{ marginRight: '2%' }}
               />

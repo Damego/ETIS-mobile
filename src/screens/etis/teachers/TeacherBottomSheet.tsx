@@ -19,7 +19,7 @@ import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
 import { ITeacher } from '~/models/teachers';
 import { EducationNavigationProp } from '~/navigation/types';
-import { fontSize } from '~/utils/texts';
+import { borderRadius as radii, fontSize } from '~/utils/texts';
 
 const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
   const globalStyles = useGlobalStyles();
@@ -189,7 +189,7 @@ export default TeacherBottomSheet;
 
 const styles = StyleSheet.create({
   container: { marginHorizontal: '2%', gap: 4 },
-  photo: { width: 140, height: 140, borderRadius: 10 },
+  photo: { width: 140, height: 140, borderRadius: radii.medium },
   centeredContainer: { alignItems: 'center' },
   title: { ...fontSize.medium, fontWeight: 'bold' },
   button: { paddingVertical: '2%', paddingHorizontal: '4%', justifyContent: 'center' },

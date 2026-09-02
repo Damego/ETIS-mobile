@@ -13,6 +13,7 @@ import useQuery from '~/hooks/useQuery';
 import useTimetable from '~/hooks/useTimetable';
 import { RequestType } from '~/models/results';
 import { UnauthorizedTeacherStackScreenProps } from '~/navigation/types';
+import { fontSize } from '~/utils/texts';
 
 const Timetable = ({ navigation }: UnauthorizedTeacherStackScreenProps) => {
   const { skipSunday } = useAppSelector((state) => state.settings.config.ui);
@@ -66,7 +67,7 @@ export default Timetable;
 const styles = StyleSheet.create({
   titleText: {
     fontWeight: '700',
-    fontSize: 22,
+    ...fontSize.slarge,
   },
   titleContainer: {
     alignItems: 'flex-end',

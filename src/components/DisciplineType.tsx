@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { LessonTypes } from '~/models/other';
-import { getDisciplineTypeName } from '~/utils/texts';
+import { borderRadius, getDisciplineTypeName } from '~/utils/texts';
 
 import Text from './Text';
 
@@ -30,7 +30,7 @@ export default DisciplineType;
 
 const styles = StyleSheet.create({
   base: {
-    borderRadius: 5,
+    borderRadius: borderRadius.small,
     paddingHorizontal: '2%',
     paddingVertical: '1%',
     alignSelf: 'flex-start',

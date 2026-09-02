@@ -127,7 +127,7 @@ export default Timetable;
 const styles = StyleSheet.create({
   titleText: {
     fontWeight: '700',
-    fontSize: 22,
+    ...fontSize.slarge,
   },
   titleContainer: {
     alignItems: 'flex-end',

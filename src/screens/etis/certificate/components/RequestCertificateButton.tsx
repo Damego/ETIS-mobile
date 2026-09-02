@@ -8,9 +8,7 @@ import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
 import { IAvailableCertificate } from '~/models/certificate';
 import { EducationNavigationProp } from '~/navigation/types';
-import { fontSize } from '~/utils/texts';
-
-export const iconSize = 24;
+import { fontSize, iconSize } from '~/utils/texts';
 
 export const RequestCertificateButton = ({
   availableCertificates,
@@ -29,7 +27,7 @@ export const RequestCertificateButton = ({
       >
         <AntDesign
           name='plus'
-          size={iconSize}
+          size={iconSize.medium}
           color={globalStyles.textColor.color}
           style={{ marginRight: '2%' }}
         />

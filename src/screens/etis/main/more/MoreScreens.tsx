@@ -8,6 +8,7 @@ import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { useGlobalStyles, usePsutechHealth } from '~/hooks';
 import { EducationNavigationProp, EducationStackParamList } from '~/navigation/types';
+import { fontSize } from '~/utils/texts';
 
 const ICON_SIZE = 40;
 
@@ -128,7 +129,7 @@ const MoreScreens = () => (
 export default MoreScreens;
 
 const styles = StyleSheet.create({
-  titleText: { fontWeight: '700', fontSize: 22 },
+  titleText: { fontWeight: '700', ...fontSize.slarge },
   card: { padding: '4%', flex: 1, gap: 8 },
   cardDisabled: { opacity: 0.5 },
   cardText: { fontWeight: '600', fontSize: 16 },

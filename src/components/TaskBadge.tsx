@@ -6,6 +6,7 @@ import { StyleSheet, View } from 'react-native';
 import { useAppTheme } from '~/hooks/theme';
 import useTasks from '~/hooks/useTasks';
 import { ISubject } from '~/models/timeTable';
+import { borderRadius } from '~/utils/texts';
 
 const TaskBadge = ({ subject, date }: { subject: ISubject; date: dayjs.Dayjs }) => {
   const theme = useAppTheme();
@@ -29,7 +30,7 @@ export default TaskBadge;
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 5,
+    borderRadius: borderRadius.small,
     paddingHorizontal: '1%',
     paddingVertical: '1%',
     alignSelf: 'flex-start',

@@ -8,7 +8,7 @@ import Card from '~/components/Card';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
 import { ITeacher, ITimeTable } from '~/models/timeTable';
-import { fontSize } from '~/utils/texts';
+import { fontSize, iconSize } from '~/utils/texts';
 
 const TeachersBottomSheet = ({
   selectedTeacher,
@@ -34,7 +34,7 @@ const TeachersBottomSheet = ({
           style={{ justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}
         >
           <Text style={[fontSize.medium, { fontWeight: '500' }]}>{selectedTeacher.name}</Text>
-          <AntDesign name={'swap'} size={22} color={globalStyles.textColor.color} />
+          <AntDesign name={'swap'} size={iconSize.medium} color={globalStyles.textColor.color} />
         </Card>
       </TouchableOpacity>
       <OptionsBottomSheet ref={modalRef} options={options} onOptionPress={onTeacherSelect} />
