@@ -34,7 +34,7 @@ const Grades = () => {
   };
 
   return (
-    <Screen onUpdate={refresh} containerStyle={{ paddingBottom: '20%' }}>
+    <Screen onUpdate={refresh} containerStyle={{ gap: 8 }}>
       <View style={{
         flexDirection: 'row', gap: 14, alignItems: 'center', marginBottom: '2%'
       }}>

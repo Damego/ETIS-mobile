@@ -70,7 +70,7 @@ const SelectFacultyScreen = ({ navigation }: StartStackScreenProps) => {
 
   return (
     <>
-      <Screen containerStyle={{ gap: 8, paddingBottom: '30%' }}>
+      <Screen containerStyle={{ gap: 8 }}>
         {data.map((faculty, index) => (
           <View style={{ gap: 8 }} key={faculty.id}>
             <FacultyButton
