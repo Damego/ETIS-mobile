@@ -24,8 +24,8 @@ interface EventCheck {
  * Для каждого события:
  * - событие активно + тема ещё не предлагалась → включаем событийную тему,
  *   прежняя сохраняется в events.<event>.previousTheme;
- * - событие активно + событийная тема уже стоит → previousTheme обновляется,
- *   чтобы после окончания вернуться к текущему выбору пользователя;
+ * - событие активно + событийная тема уже стоит → previousTheme не трогаем
+ *   (обновляем только невалидное/отсутствующее значение);
  * - событие закончилось + стоит событийная тема → возвращаем previousTheme
  *   (или auto, если он сам событийный/не сохранился) и очищаем данные события.
  *
@@ -56,12 +56,12 @@ const eventChecks: EventCheck[] = [
 ];
 
 const manageEventTheme = (store: AppStore) => async (dispatch: AppDispatch) => {
-  const state = store.getState();
-  const {
-    config: { theme: currentTheme, events },
-  } = state.settings;
-
   for (const { event, isActive, theme } of eventChecks) {
+    // Стейт перечитывается на каждой итерации: предыдущие итерации
+    // могли изменить тему/события, и копия до цикла была бы протухшей
+    const {
+      config: { theme: currentTheme, events },
+    } = store.getState().settings;
     const eventData = events[event];
 
     if (isActive()) {
@@ -89,7 +89,7 @@ const manageEventTheme = (store: AppStore) => async (dispatch: AppDispatch) => {
         ...events,
         [event]: { suggestedTheme: true, previousTheme: currentTheme },
       });
-      return;
+      continue;
     }
 
     // Событие закончилось, а тема ещё активна — возвращаем прежнюю
