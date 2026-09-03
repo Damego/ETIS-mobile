@@ -1,7 +1,8 @@
 import { cache } from '~/cache/smartCache';
 import { ThemeType } from '~/styles/themes';
+import { isEventTheme } from '~/styles/themes';
 import {
-  EventData, Events, isHalloween, isNewYear
+  Events, isHalloween, isNewYear
 } from '~/utils/events';
 
 import { changeTheme, setEvents } from './reducers/settingsSlice';
@@ -65,11 +66,17 @@ const manageEventTheme = (store: AppStore) => async (dispatch: AppDispatch) => {
 
     if (isActive()) {
       if (currentTheme === theme) {
-        // Событийная тема активна (включена авто или вручную) — обновляем
-        // previousTheme, чтобы после события вернуться к выбору пользователя
-        if (eventData && eventData.previousTheme !== theme) {
-          const updated: EventData = { suggestedTheme: true, previousTheme: currentTheme };
-          persistEvents(dispatch, { ...events, [event]: updated });
+        // Тема уже событийная (включена авто или вручную). Сохранённая
+        // тема пользователя валидна — не трогаем её. Перезаписываем только
+        // невалидное значение (событийная тема или отсутствие данных):
+        // тема события не может быть previousTheme, иначе после события
+        // нечего будет возвращать и останется fallback на auto.
+        const previousTheme = eventData?.previousTheme;
+        if (!eventData || !previousTheme || isEventTheme(previousTheme)) {
+          persistEvents(dispatch, {
+            ...events,
+            [event]: { suggestedTheme: true, previousTheme: ThemeType.auto },
+          });
         }
         continue;
       }
