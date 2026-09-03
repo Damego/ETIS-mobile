@@ -37,9 +37,24 @@ Before handing work off, run and pass all three:
   - `src/models/` — TypeScript interfaces/enums (`ITimeTable`, `ILesson`, `WeekTypes`, ...), prefix interfaces with `I`.
   - `src/redux/` — Redux Toolkit store; reducers live in `src/redux/reducers/*Slice.ts` (camelCase + `Slice` suffix).
   - `src/screens/<feature>/` — screens grouped by feature folder; `src/components/`, `src/hooks/`, `src/utils/`, `src/navigation/`, `src/cache/`, `src/plugins/`.
-- Path alias `~/` maps to `src/` (babel-plugin-module-resolver + tsconfig paths). Use `~/...` for cross-folder imports.
+- Path alias `~/` maps to `src/` (tsconfig `paths` with a relative anchor — no `baseUrl`, which is deprecated in TS 6). Use `~/...` for cross-folder imports.
 - ESLint is XO-based (xo-typescript + xo-react) with many rules relaxed — see `eslint.config.mjs` before assuming a rule fires. Enforced style: 2-space indent, semicolons, always parenthesized arrow params, `simple-import-sort` ordering (imports must be sorted).
 - Commit messages follow conventional prefixes: `fix:`, `chore:`, `deps:`, `refactor:`, `ci:` (see `git log`).
+
+## TypeScript strict mode
+
+`tsconfig.json` has `strict: true` (migrated from `strict: false` in Sept 2026; 861 errors were fixed, zero `any`-escapes). Rules for new code:
+
+- **No `any` escapes and no unjustified `!` assertions.** Prefer null-guards matching runtime behavior; non-null `!` only when trivially provable (e.g. right after a truthiness check, or an invariant guaranteed by the caller).
+- **Widen the model instead of asserting** when a value is genuinely absent at runtime (add `?` / `| null` to the interface). Example: `useQuery`'s `data: R | undefined`, cache `get(): T | null` before init.
+- **Honest signatures**: a function that can fail to produce a value declares it (`Promise<X | null>`, `RegExpExecArray | null`). Callers then handle the miss — see `executeRegex` consumers.
+- **Contexts throw on missing provider** (`useTimetableContext`, `useTaskContext` return the value or throw — no silent `undefined` default).
+- **`useRef` for bottom sheets**: `useRef<BottomSheetModal | null>(null)` + `ref.current?.present()`. Never `useRef<X | undefined>(undefined)`.
+- **State narrowing**: don't destructure state you need to narrow in the same expression; early returns must come AFTER all hooks (react-hooks/rules-of-hooks fires otherwise).
+- **React Compiler purity**: `Math.random()` and friends must live inside `useMemo`/handlers, never in the render body (lint rule `react-hooks/purity`).
+- **Generic result variance**: shared sentinel objects (`errorResult as IGetResult<T>`) need an explicit cast — TS won't coerce `IGetResult<null>` to `IGetResult<T>` for an unconstrained `T`.
+- `tsc --noEmit` must stay at **0 errors**; it is the strongest gate (CI only runs lint).
+
 
 ## Pitfalls
 
