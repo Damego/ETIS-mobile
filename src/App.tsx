@@ -29,8 +29,11 @@ dayjs.extend(isoWeek);
 
 const store = setupStore();
 
-store.dispatch(loadStorage());
-store.dispatch(manageEventTheme(store));
+// manageEventTheme читает theme/events из стейта, поэтому обязан
+// выполняться после загрузки конфига из хранилища
+store.dispatch(loadStorage()).then(() => {
+  store.dispatch(manageEventTheme(store));
+});
 
 defineSignsFetchTask();
 addShortcuts();
