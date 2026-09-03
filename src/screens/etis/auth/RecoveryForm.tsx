@@ -32,7 +32,15 @@ const RecoveryForm = ({
     <View style={styles.container}>
       <Image style={styles.logoImage} source={require('../../../../assets/logo_red.png')} />
 
-      <Text>{message}</Text>
+      <Text
+        style={[
+          message?.includes('отправлено')
+            ? [globalStyles.primaryText, { fontWeight: '600', textAlign: 'center' }]
+            : { textAlign: 'center' },
+        ]}
+      >
+        {message}
+      </Text>
 
       <TextInput
         style={[styles.input, globalStyles.border, globalStyles.textColor2]}
@@ -49,7 +57,7 @@ const RecoveryForm = ({
         onSubmitEditing={() => onSubmit(login)}
       />
 
-      <View style={{ width: '100%' }}>
+      <View style={{ width: '100%', marginTop: '2%' }}>
         <Button
           text='Отправить письмо'
           onPress={() => onSubmit(login)}
@@ -59,12 +67,9 @@ const RecoveryForm = ({
         />
       </View>
 
-      <ClickableText
-        textStyle={[fontSize.large, globalStyles.textColor]}
-        viewStyle={{ marginTop: '15%' }}
-        text='Назад'
-        onPress={() => setShowModal(false)}
-      />
+      <View style={{ width: '100%', marginTop: '4%' }}>
+        <Button text='Назад' onPress={() => setShowModal(false)} variant={'secondary'} />
+      </View>
     </View>
   );
 };

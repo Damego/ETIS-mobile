@@ -44,7 +44,7 @@ const Recovery = ({ setShowModal }: { setShowModal: (showModal: boolean) => void
     }
 
     setDisabledRequestButton(true);
-    changeMessage('Письмо успешно отправлено.');
+    changeMessage('Письмо со ссылкой для восстановления отправлено. Проверьте почту — оно может попасть в папку «Спам».');
   };
 
   const onReceiveRecaptchaToken = async (token: string) => {
