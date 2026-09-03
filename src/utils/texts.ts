@@ -18,9 +18,12 @@ export const getPointsWord = (points: number) => {
   return pointsWord;
 };
 
-export const formatCheckPointScore = (checkPoint: ICheckPoint) => {
+// Сокращённая подпись балла контрольной точки:
+// 'н' — студент отсутствовал, '-' — балла нет, иначе — сам балл
+export const formatCheckPointScore = (checkPoint: ICheckPoint): string | number => {
   if (checkPoint.isAbsent) return 'н';
   if (Number.isNaN(checkPoint.points) || !checkPoint.points) return '-';
+  return checkPoint.points;
 };
 
 // todo: rename every size to character like format

@@ -28,7 +28,7 @@ const CheckPointDetails = ({ checkPoint, index }: { checkPoint: ICheckPoint; ind
     skipInitialGet: !checkPoint.teacher || !checkPoint.updatesUrl,
   });
 
-  let scoreText: string | number = formatCheckPointScore(checkPoint) || checkPoint.points;
+  const scoreText: string | number = formatCheckPointScore(checkPoint);
   const lastDate = data && data.date ? data.date : checkPoint.date;
 
   const Row = ({ first, second }: { first: string | number; second: string | number }) => (

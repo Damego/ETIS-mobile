@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 
 export const getCheckPointScore = (checkPoint: ICheckPoint) => {
   const formatted = formatCheckPointScore(checkPoint);
-  if (formatted) return formatted;
+  if (formatted !== '-') return formatted;
 
   // Вводные работы в рейтинге не показываются, поэтому выводим просто полученные баллы
   return checkPoint.isIntroductionWork ? checkPoint.points : checkPoint.currentScore;
