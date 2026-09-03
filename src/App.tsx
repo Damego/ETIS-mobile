@@ -30,10 +30,17 @@ dayjs.extend(isoWeek);
 const store = setupStore();
 
 // manageEventTheme читает theme/events из стейта, поэтому обязан
-// выполняться после загрузки конфига из хранилища
-store.dispatch(loadStorage()).then(() => {
-  store.dispatch(manageEventTheme(store));
-});
+// выполняться после загрузки конфига из хранилища.
+// Ошибка загрузки (битый кэш/хранилище) не должна оставаться
+// unhandled rejection — логируем и продолжаем с дефолтным стейтом.
+store.dispatch(loadStorage()).then(
+  () => {
+    store.dispatch(manageEventTheme(store));
+  },
+  (error) => {
+    console.warn('loadStorage failed', error);
+  },
+);
 
 defineSignsFetchTask();
 addShortcuts();
