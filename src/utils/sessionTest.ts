@@ -13,9 +13,9 @@ export default function toSessionTestPayload({
   additionalComment,
 }: {
   data: ISessionQuestionnaire;
-  teacher: string;
+  teacher: string | null;
   answers: IAnswer[];
-  additionalComment: string;
+  additionalComment: string | null;
 }): SessionQuestionnairePayload {
   const payload: SessionQuestionnairePayload = data.meta as SessionQuestionnairePayload;
 
@@ -23,7 +23,7 @@ export default function toSessionTestPayload({
     payload.p_peo = 'another';
     payload.p_teacher_fio = teacher;
   } else {
-    payload.p_peo = payload.p_peo_id;
+    payload.p_peo = payload.p_peo_id ?? '';
     payload.p_teacher_fio = '';
   }
 

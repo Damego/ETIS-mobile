@@ -11,12 +11,13 @@ const prefetch = async (client: BaseClient) => {
       client.getSessionMarksData({ requestType: RequestType.forceFetch }),
     ]);
 
-    const currentWeek = timetable.data?.weekInfo.selected;
-    if (currentWeek) {
-      const { first, last } = timetable.data.weekInfo;
+    const timetableData = timetable.data;
+    const currentWeek = timetableData?.weekInfo.selected;
+    if (currentWeek && timetableData) {
+      const { first, last } = timetableData.weekInfo;
       if (cachedStudent?.firstWeek !== undefined && cachedStudent.firstWeek !== first) {
         await cache.clearTimeTable();
-        await cache.placeTimeTable(timetable.data);
+        await cache.placeTimeTable(timetableData);
       }
 
       const adjacentWeeks = [currentWeek - 1, currentWeek + 1].filter(
@@ -43,7 +44,7 @@ const prefetch = async (client: BaseClient) => {
 
     return { currentWeek, currentSession };
   } catch (error) {
-    console.warn('[PREFETCH] Failed:', String(error?.message || error));
+    console.warn('[PREFETCH] Failed:', String(error instanceof Error ? error.message : error));
   }
 };
 

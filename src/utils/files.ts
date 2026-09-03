@@ -11,9 +11,12 @@ import * as IntentLauncher from 'expo-intent-launcher';
 import { IDisciplineInfo, IDisciplineTask } from '../models/disciplineInfo';
 import httpClient from './http';
 
-const downloadFile = (url, fileName) => httpClient.downloadFile(url, fileName);
+const downloadFile = (url: string, fileName: string) => httpClient.downloadFile(url, fileName);
 
-const saveFileFromCache = async (fileData, fileName) => {
+const saveFileFromCache = async (
+  fileData: { uri: string; headers?: Record<string, string> },
+  fileName: string
+) => {
   const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync();
   if (permissions.granted) {
     const base64 = await readAsStringAsync(fileData.uri, { encoding: EncodingType.Base64 });
@@ -21,7 +24,7 @@ const saveFileFromCache = async (fileData, fileName) => {
     const newFileUrl = await StorageAccessFramework.createFileAsync(
       permissions.directoryUri,
       fileName,
-      fileData.headers['Content-Type']
+      fileData.headers?.['Content-Type'] ?? 'application/octet-stream'
     );
     await writeAsStringAsync(newFileUrl, base64, { encoding: EncodingType.Base64 });
   }

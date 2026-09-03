@@ -51,7 +51,7 @@ export interface Response<T> {
 
 class HTTPClient {
   private sessionID: string | null;
-  private instance: AxiosInstance;
+  private readonly instance: AxiosInstance;
   private readonly pendingGetRequests = new Map<string, Promise<Response<string | AxiosResponse>>>();
   private readonly siteSuffix: string = '/pls/stu_cus_et';
   private readonly siteURL: string = 'https://student.psu.ru';
@@ -60,11 +60,13 @@ class HTTPClient {
   constructor() {
     this.sessionID = null;
     this.baseURL = `${this.siteURL}${this.siteSuffix}`;
-    this.createAxiosInstance();
+    this.instance = this.createAxiosInstance();
   }
 
-  private createAxiosInstance() {
-    this.instance = axios.create({
+  // Вынесено в метод, чтобы показать TS факт инициализации в конструкторе
+  // (strictPropertyInitialization): присвоение происходит в constructor
+  private createAxiosInstance(): AxiosInstance {
+    return axios.create({
       baseURL: this.baseURL,
       headers: {
         'User-Agent': getRandomUserAgent(),
@@ -158,7 +160,7 @@ class HTTPClient {
       };
     }
 
-    const headers = {
+    const headers: Record<string, string | null> = {
       Cookie: this.sessionID,
     };
 
@@ -168,7 +170,7 @@ class HTTPClient {
         headers['Content-Type'] = 'multipart/form-data';
         $data = data;
       } else {
-        $data = toURLSearchParams(data);
+        $data = toURLSearchParams(data as Record<string, unknown>);
       }
     }
 
@@ -202,7 +204,7 @@ class HTTPClient {
 
     return downloadAsync(url, `${documentDirectory}${fileName}`, {
       headers: {
-        Cookie: this.sessionID,
+        Cookie: this.sessionID ?? '',
       },
     });
   }
@@ -220,7 +222,7 @@ class HTTPClient {
     password: string,
     token: string,
     isInvisibleRecaptcha: boolean
-  ): Promise<Response<AxiosResponse | null>> {
+  ): Promise<Response<AxiosResponse> | null> {
     const data = {
       p_redirect: '/stu.blank_page',
       p_username: username.trim(),
@@ -235,10 +237,11 @@ class HTTPClient {
 
     if (response.error) return response;
 
-    const cookies = response.data.headers['set-cookie'];
+    const responseData = response.data!;
+    const cookies = responseData.headers['set-cookie'];
 
     if (!cookies) {
-      const $ = cheerio.load(response.data.data);
+      const $ = cheerio.load((response.data!).data as string);
       const errorMessage = $('.error_message').text();
       if (!errorMessage)
         return {
@@ -255,7 +258,7 @@ class HTTPClient {
     return null;
   }
 
-  async sendRecoveryMail(email: string, token: string): Promise<Response<null>> {
+  async sendRecoveryMail(email: string, token: string): Promise<Response<null> | null> {
     const data = new FormData();
     data.append('p_step', '1');
     data.append('p_email', email.trim());
@@ -267,7 +270,7 @@ class HTTPClient {
 
     if (response.error) return null;
 
-    const $ = cheerio.load(response.data);
+    const $ = cheerio.load(response.data ?? '');
     if ($('#sbmt > span').text() === 'Получить письмо') {
       return {
         error: {
@@ -294,7 +297,7 @@ class HTTPClient {
 
     `week`: неделя в триместре.
    */
-  getTimeTable({ showConsultations = null, week = null } = {}) {
+  getTimeTable({ showConsultations, week }: { showConsultations?: boolean; week?: number } = {}) {
     const showConsultationsParam = showConsultations ? 'y' : 'n';
 
     return this.request('GET', '/stu.timetable', {
@@ -316,7 +319,7 @@ class HTTPClient {
     - diplom: оценки в диплом
     */
   getSigns(mode: string, trimester?: number) {
-    const params = { p_mode: mode, p_term: undefined };
+    const params: { p_mode: string; p_term?: number } = { p_mode: mode };
 
     if (trimester !== undefined) {
       params.p_term = trimester;
@@ -429,7 +432,7 @@ class HTTPClient {
       p_pr_id: id,
     };
     const response = await this.request('GET', '/stu.change_pr', { params, returnResponse: true });
-    return response.data.status === 200;
+    return (response.data!).status === 200;
   }
 
   changePassword(oldPassword: string, newPassword: string) {

@@ -25,7 +25,7 @@ export default () => {
     });
   }
 };
-export const reportParserError = (error) => {
+export const reportParserError = (error: unknown) => {
   if (!__DEV__) Sentry.captureException(error);
 };
 
@@ -33,7 +33,7 @@ export const executeRegex = (
   regex: RegExp,
   str: string,
   sendReport: boolean = true
-): RegExpExecArray => {
+): RegExpExecArray | null => {
   const result = regex.exec(str);
   if (!result && sendReport) {
     Sentry.captureMessage(`String ${str} mismatched with regex ${regex}`, 'error');

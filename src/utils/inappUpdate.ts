@@ -13,7 +13,7 @@ export const checkUpdate = () => {
     const inAppUpdates = new SpInAppUpdates(false);
     console.log('[INAPP] Checking store version');
     inAppUpdates
-      .checkNeedsUpdate({ curVersion: Constants.expoConfig.version })
+      .checkNeedsUpdate({ curVersion: Constants.expoConfig?.version ?? '1.0.0' })
       .then((result) => {
         console.log(`[INAPP] result: ${JSON.stringify(result)}`);
         if (result.shouldUpdate) {

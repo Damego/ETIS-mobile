@@ -10,12 +10,13 @@ import useDebounce from './useDebounce';
 type GetMethod<P, R> = (payload: IGetPayload<P>) => Promise<IGetResult<R>>;
 
 interface Query<P, R> {
-  data: R;
+  // data/initialPayload опциональны: до первого запроса их нет
+  data: R | undefined;
   isLoading: boolean;
   refresh: () => void;
   update: (payload?: IGetPayload<P>) => void;
   get: (payload?: IGetPayload<P>) => Promise<IGetResult<R>>;
-  initialPayload: P;
+  initialPayload: P | undefined;
 }
 
 const useQuery = <P, R>({
@@ -66,7 +67,7 @@ const useQuery = <P, R>({
   }, [isAuthorizing]);
 
   const handleAfter = async (result: IGetResult<R>) => {
-    const afterReturn = after(result);
+    const afterReturn = after?.(result);
     if (afterReturn instanceof Promise) {
       await afterReturn;
     }
@@ -78,7 +79,7 @@ const useQuery = <P, R>({
       return;
     }
     fromFail.current = true;
-    onFail(result);
+    onFail?.(result);
     fromFail.current = false;
   };
 

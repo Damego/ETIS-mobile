@@ -18,7 +18,7 @@ export const differenceSigns = (marks1: ISubjectPoints[], marks2: ISubjectPoints
             return {
               newResult: checkPoint,
               oldResult: oldRes.checkPoints[i],
-              subjectName: newRes.name,
+              subjectName: newRes.name ?? '',
             };
           }
           return null;

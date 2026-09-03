@@ -5,14 +5,21 @@ import { ITeacher } from '~/models/teachers';
 
 interface ITimeTableContext {
   teachers?: ITeacher[];
-  currentDate?: dayjs.Dayjs;
+  currentDate: dayjs.Dayjs;
   currentWeek?: number;
-  selectedDate?: dayjs.Dayjs;
+  selectedDate: dayjs.Dayjs;
   selectedWeek?: number;
 }
 
-const TimeTableContext = createContext<ITimeTableContext>({});
+// Провайдеры (DayTimetable/WeekTimetable) всегда задают currentDate/selectedDate
+const TimeTableContext = createContext<ITimeTableContext | undefined>(undefined);
 
 export default TimeTableContext;
 
-export const useTimetableContext = () => useContext(TimeTableContext);
+export const useTimetableContext = (): ITimeTableContext => {
+  const context = useContext(TimeTableContext);
+  if (!context) {
+    throw new Error('useTimetableContext must be used within TimeTableContext.Provider');
+  }
+  return context;
+};

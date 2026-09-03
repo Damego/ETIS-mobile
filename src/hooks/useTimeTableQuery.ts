@@ -36,17 +36,17 @@ const useTimeTableQuery = ({
       });
     },
     after: async (result) => {
-      const { first: firstWeek, selected: selectedWeek } = result.data.weekInfo;
+      const { first: firstWeek, selected: selectedWeek } = result.data?.weekInfo ?? {};
 
       if (result.type !== GetResultType.cached) {
         const cachedStudent = await cache.getStudent();
-        if (cachedStudent?.firstWeek !== undefined && cachedStudent.firstWeek !== firstWeek) {
+        if (cachedStudent?.firstWeek !== undefined && firstWeek !== undefined && cachedStudent.firstWeek !== firstWeek) {
           // Начался новый период учёбы, кэшированные ранее недели больше не нужны.
           await cache.clearTimeTable();
           await cache.placePartialStudent({ firstWeek });
         }
       }
-      if (!data) {
+      if (!data && selectedWeek != null) {
         dispatch(setCurrentWeek(selectedWeek));
         cache.placePartialStudent({ currentWeek: selectedWeek, firstWeek });
       }

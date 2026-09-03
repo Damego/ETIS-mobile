@@ -19,7 +19,9 @@ const useNotification = (callback: (data: INotificationData) => void) => {
 
     return notifee.onForegroundEvent(async (event) => {
       if (event.type !== EventType.PRESS) return;
-      callbackRef.current(event.detail.notification.data as unknown as INotificationData);
+      if (event.detail.notification) {
+        callbackRef.current(event.detail.notification.data as unknown as INotificationData);
+      }
     });
   }, []);
 };

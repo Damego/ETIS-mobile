@@ -4,11 +4,11 @@ export const getRandomItem = <T>(array: T[]): T => array[Math.floor(Math.random(
 export const generateId = (): string =>
   Array.from({ length: 4 }, () => Math.random().toString(36).slice(2, 10)).join('');
 
-export const partitionItems = <T>(array: T[], callback: (item: T) => boolean): T[][] =>
+export const partitionItems = <T>(array: T[], callback: (item: T) => boolean): [T[], T[]] =>
   array.reduce(
     ([group1, group2], item) =>
       callback(item) ? [[...group1, item], group2] : [group1, [...group2, item]],
-    [[], []]
+    [[] as T[], [] as T[]]
   );
 
 type GroupT<T> = { [s: string]: T[] };

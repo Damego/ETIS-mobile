@@ -20,6 +20,6 @@ export function toCertificatePayload(certificate: CertificateRequest): Certifica
     p_stu_cmnt: certificate.note || '',
     p_crdt_id: certificate.delivery,
     p_copy: certificate.quantity,
-    p_crtt_id: certificate.certificateId,
+    p_crtt_id: certificate.certificateId ?? '',
   };
 }

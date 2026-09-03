@@ -15,7 +15,7 @@ const useMessagesQuery = () => {
   const { data, isLoading, refresh, update } = useQuery({
     method: client.getMessagesData,
     after: (result) => {
-      if (!fetchedPages.current.includes(result.data.page)) {
+      if (result.data && !fetchedPages.current.includes(result.data.page)) {
         fetchedPages.current.push(result.data.page);
       }
       if (result.data && result.type === GetResultType.fetched) {

@@ -85,7 +85,8 @@ export const disciplineTypeNames: { [key in LessonTypes]: string } = {
   EXAM: 'Экзамен',
 };
 
-export const getDisciplineTypeName = (type: string): string => disciplineTypeNames[type] || type;
+export const getDisciplineTypeName = (type: string): string =>
+  (disciplineTypeNames as Record<string, string>)[type] || type;
 
 export const formatAudience = (lesson: ILesson) => {
   const { audience } = lesson;

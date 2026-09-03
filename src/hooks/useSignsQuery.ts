@@ -15,7 +15,7 @@ const useSignsQuery = () => {
   const dispatch = useAppDispatch();
   const { currentSession } = useAppSelector((state) => state.student);
   const client = useClient();
-  const [data, setData] = useState<ISessionPoints>(null);
+  const [data, setData] = useState<ISessionPoints | null>(null);
   const [isLoading, setLoading] = useState(true);
 
   const {
@@ -26,12 +26,12 @@ const useSignsQuery = () => {
   } = useQuery({
     method: client.getSessionSignsData,
     payload: {
-      data: currentSession,
+      data: currentSession ?? undefined,
       requestType: RequestType.tryCache,
     },
     after: async (result) => {
       // Очевидно, что в самом начале мы получаем текущую сессию
-      const { currentSession } = result.data;
+      const currentSession = result.data?.currentSession ?? 1;
       if (!pointsData) {
         dispatch(setCurrentSession(currentSession));
 
@@ -70,16 +70,16 @@ const useSignsQuery = () => {
   }, [isPointsLoading, marksQuery.isLoading]);
 
   const loadSession = (session: number) => {
-    const hasDuty = marksQuery.data.find(
+    const hasDuty = (marksQuery.data ?? []).find(
       (sessionMarks) =>
         sessionMarks.session === session &&
-        Boolean(sessionMarks.disciplines.find((discipline) => ['2', 'незачет'].includes(discipline.mark)))
+        Boolean(sessionMarks.disciplines.find((discipline) => ['2', 'незачет'].includes(discipline.mark ?? '')))
     );
 
     update({
       data: session,
       requestType:
-        (session < currentSession || fetchedSessions.current.includes(session)) && !hasDuty
+        (currentSession != null && (session < currentSession || fetchedSessions.current.includes(session))) && !hasDuty
           ? RequestType.tryCache
           : RequestType.tryFetch,
     });

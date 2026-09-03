@@ -21,6 +21,8 @@ const isInDateRange = (startDate: Date, endDate: Date, checkCondition: 'and' | '
   // Применимо исключительно к промежутку, который начинается в одном году, а заканчивается в следующем
   if (checkCondition === 'or')
     return currentDateTime > stateDateTime || currentDateTime < endDateTime;
+
+  return false;
 };
 
 export const isHalloween = () => {

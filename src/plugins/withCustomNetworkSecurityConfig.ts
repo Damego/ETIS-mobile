@@ -12,7 +12,16 @@ const { join } = require('path');
  * @param {{networkSecurityConfig: string, enable?: boolean}} options
  * @returns {import('@expo/config-types').ExpoConfig} config
  */
-module.exports = function withExpoNetworkSecurityConfig(config, { enable, networkSecurityConfig, certificatesFolderPath }) {
+interface Options {
+  enable?: boolean;
+  networkSecurityConfig: string;
+  certificatesFolderPath: string;
+}
+
+module.exports = function withExpoNetworkSecurityConfig(
+  config: Record<string, unknown>,
+  { enable, networkSecurityConfig, certificatesFolderPath }: Options
+) {
   // Early return switch
   if (!enable) return config;
 
@@ -22,7 +31,7 @@ module.exports = function withExpoNetworkSecurityConfig(config, { enable, networ
   // Copy network_security_config.xml to android/app/src/main/res/xml
   withDangerousMod(config, [
     'android',
-    async (config) => {
+    async (config: { modRequest: { projectRoot: string } }) => {
       const { projectRoot } = config.modRequest;
       const resourcePath = await getResourceFolderAsync(projectRoot);
 
@@ -45,7 +54,7 @@ module.exports = function withExpoNetworkSecurityConfig(config, { enable, networ
   ]);
 
   // Add networkSecurityConfig to AndroidManifest.xml
-  withAndroidManifest(config, (config) => {
+  withAndroidManifest(config, (config: { modResults: Record<string, unknown> }) => {
     const mainApplication = getMainApplicationOrThrow(config.modResults);
 
     mainApplication.$['android:networkSecurityConfig'] = '@xml/network_security_config';

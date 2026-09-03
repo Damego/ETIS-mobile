@@ -9,7 +9,7 @@ import { displaySignNotification } from '~/notifications/signs';
 import { differenceSigns } from './math';
 
 const BACKGROUND_FETCH_TASK = 'signs-fetch';
-let currentSession: number;
+let currentSession: number | undefined;
 let client: BaseClient;
 
 export const defineSignsFetchTask = () =>
@@ -31,7 +31,7 @@ export const defineSignsFetchTask = () =>
       return BackgroundTask.BackgroundTaskResult.Success;
     }
 
-    const difference = differenceSigns(cachedResult.data.subjects, onlineResult.data.subjects);
+    const difference = differenceSigns(cachedResult.data?.subjects ?? [], onlineResult.data?.subjects ?? []);
 
     if (difference?.length !== 0) {
       console.log('[FETCH] Fetched new data!');
@@ -59,7 +59,7 @@ async function registerBackgroundTaskAsync() {
       });
     }
   } catch (err) {
-    console.warn('[FETCH] registerTaskAsync failed:', String(err?.message || err));
+    console.warn('[FETCH] registerTaskAsync failed:', String(err instanceof Error ? err.message : err));
   }
 }
 
@@ -74,7 +74,7 @@ export const registerSignsFetchTask = async (session?: number) => {
   if (!currentSession) {
     currentSession = (
       await client.getSessionSignsData({ requestType: RequestType.forceCache })
-    ).data?.currentSession;
+    ).data?.currentSession ?? undefined;
   }
 
   if (!currentSession) {

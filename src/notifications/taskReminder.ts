@@ -48,7 +48,9 @@ export const cancelScheduledTaskNotifications = ({
   task?: DisciplineTask;
   notificationIds?: string[];
 }) => {
-  notificationIds = notificationIds ?? task.reminders.map((rem) => rem.notificationId);
+  notificationIds =
+    notificationIds ??
+    (task?.reminders ?? []).map((rem) => rem.notificationId).filter((id): id is string => Boolean(id));
   return notifee.cancelTriggerNotifications(notificationIds);
 };
 
@@ -65,7 +67,10 @@ const getTasks = async ({
   taskId?: string;
 } = {}): Promise<DisciplineTask[]> => {
   if (task) return [task];
-  if (taskId) return [await DisciplineStorage.getTaskById(taskId)];
+  if (taskId) {
+    const taskById = await DisciplineStorage.getTaskById(taskId);
+    return taskById ? [taskById] : [];
+  }
   return DisciplineStorage.getTasks();
 };
 
@@ -84,7 +89,9 @@ export const rescheduleAllTaskNotifications = async ({
       task.reminders,
       (reminder) => currentDate.diff(reminder.datetime, 'minute') >= 0
     );
-    const notificationIds = oldReminders.map((rem) => rem.notificationId);
+    const notificationIds = oldReminders
+      .map((rem) => rem.notificationId)
+      .filter((id): id is string => Boolean(id));
     task.reminders = futureReminders;
 
     rescheduleTaskNotifications(notificationIds, task).then(() => DisciplineStorage.saveTasks());

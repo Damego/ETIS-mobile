@@ -1,6 +1,6 @@
 const { createRunOncePlugin, withAndroidStyles, AndroidConfig } = require('@expo/config-plugins');
 
-const disableForcedDarkMode = (styles) => {
+const disableForcedDarkMode = (styles: Record<string, unknown>) => {
   styles = AndroidConfig.Styles.assignStylesValue(styles, {
     add: true,
     parent: AndroidConfig.Styles.getAppThemeLightNoActionBarGroup(),
@@ -11,9 +11,9 @@ const disableForcedDarkMode = (styles) => {
   return styles;
 };
 
-const disabledForcedDarkModeAndroid = (config) =>
-  withAndroidStyles(config, (config) => {
-    config.modResults = disableForcedDarkMode(config.modResults);
+const disabledForcedDarkModeAndroid = (config: Record<string, unknown>) =>
+  withAndroidStyles(config, (config: Record<string, unknown>) => {
+    config.modResults = disableForcedDarkMode(config.modResults as Record<string, unknown>);
     return config;
   });
 

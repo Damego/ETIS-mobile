@@ -9,7 +9,8 @@ export const useAppTheme = (): ITheme => {
   const scheme = useColorScheme() ?? 'light';
 
   if (themeType === ThemeType.auto) {
-    return (APP_THEMES[scheme] ?? DefaultTheme) as unknown as ITheme;
+    const theme = (APP_THEMES as Record<string, ITheme | undefined>)[scheme];
+    return (theme ?? DefaultTheme) as unknown as ITheme;
   }
 
   const theme = APP_THEMES[themeType];

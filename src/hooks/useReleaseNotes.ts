@@ -12,7 +12,8 @@ import { useAppDispatch, useAppSelector } from './index';
 Возвращает null, если текущая версия - бета
 */
 const getAppVersion = () => {
-  const appVersion = Constants.expoConfig.version;
+  const appVersion = Constants.expoConfig?.version;
+  if (!appVersion) return null;
   if (appVersion.includes('beta')) return null;
 
   const [major, minor] = appVersion.split('.');

@@ -12,11 +12,11 @@ export function encodeTextURI(data: string) {
   return URIString;
 }
 
-export function toURLSearchParams(obj) {
-  const params = [];
+export function toURLSearchParams(obj: Record<string, unknown>) {
+  const params: string[] = [];
 
   Object.entries(obj).forEach(([key, value]) => {
-    params.push(`${key}=${encodeTextURI(value.toString())}`);
+    params.push(`${key}=${encodeTextURI(String(value ?? ''))}`);
   });
 
   return params.join('&');
