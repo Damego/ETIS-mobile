@@ -19,7 +19,7 @@ const ChangeEventTheme = () => {
   if (!isEventTheme(theme)) return;
 
   const disableEventTheme = () => {
-    const eventData = theme === 'halloween' ? events.halloween : events.newYear;
+    const eventData = theme === ThemeType.halloween ? events.halloween : events.newYear;
     const returnTheme: ThemeType =
       eventData?.previousTheme && !isEventTheme(eventData.previousTheme)
         ? eventData.previousTheme
@@ -40,7 +40,7 @@ const ChangeEventTheme = () => {
       onPress={disableEventTheme}
       right={
         <Text style={[{ fontWeight: '500' }, fontSize.medium]}>
-          {theme === 'halloween' ? 'Хэллоуин' : 'Новый год'}
+          {theme === ThemeType.halloween ? 'Хэллоуин' : 'Новый год'}
         </Text>
       }
     />

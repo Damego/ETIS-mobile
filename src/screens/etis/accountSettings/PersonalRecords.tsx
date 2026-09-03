@@ -29,7 +29,7 @@ const PersonalRecord = ({
   showStatus: boolean;
 }) => {
   const globalStyles = useGlobalStyles();
-  const navigation = useNavigation<RootStackNavigationProp>(); // what?
+  const navigation = useNavigation<RootStackNavigationProp>();
   const dispatch = useAppDispatch();
 
   const changePersonalRecord = async () => {

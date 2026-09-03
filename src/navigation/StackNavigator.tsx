@@ -54,7 +54,9 @@ const StackNavigator = () => {
 
   useNotification(async (data) => {
     if (data.type === 'task-reminder') {
-      // @ts-expect-error: TS2345
+      // @ts-expect-error — вложенный навигационный параметр DisciplineTasks
+      // не описан в типах таба; тело колбэка будет заменено в fix навигации
+      // по уведомлениям (navigation в этом компоненте не существует)
       navigation.navigate('TabNavigator', { screen: 'DisciplineTasks', taskId: data.data.taskId });
     }
   });
