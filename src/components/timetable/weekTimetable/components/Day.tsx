@@ -9,6 +9,10 @@ import TimeTableContext from '~/context/timetableContext';
 import { useAppSelector, useGlobalStyles } from '~/hooks';
 import { ITimeTableDay } from '~/models/timeTable';
 import { ThemeType } from '~/styles/themes';
+import {
+  halloweenEmptyDayResponses,
+  newYearEmptyDayResponse,
+} from '~/utils/events';
 import { capitalizeWord, fontSize } from '~/utils/texts';
 import { getRandomItem } from '~/utils/utils';
 
@@ -19,10 +23,12 @@ interface DayData {
 
 const responses = ['Пар нет', 'Отдых', '💤', '😴', '🎮', '(๑ᵕ⌓ᵕ̤)'];
 
-const getRandomResponse = (appTheme: ThemeType) =>
-  // if (appTheme === ThemeType.halloween) return getRandomItem(halloweenEmptyDayResponses);
-  // if (isNewYearTheme(appTheme)) return getRandomItem(newYearEmptyDayResponse);
-  getRandomItem(responses);
+const getResponses = (appTheme: ThemeType): string[] => {
+  if (appTheme === ThemeType.halloween) return halloweenEmptyDayResponses;
+  if (appTheme === ThemeType.newYear) return newYearEmptyDayResponse;
+  return responses;
+};
+
 export const Day = React.memo(({ data, date }: DayData) => {
   const { pairs } = data;
   const {
@@ -31,6 +37,8 @@ export const Day = React.memo(({ data, date }: DayData) => {
   } = useAppSelector((state) => state.settings.config);
   const globalStyles = useGlobalStyles();
   const { currentDate } = useContext(TimeTableContext);
+  // Ответ для пустого дня фиксирован на день, а не меняется при каждом ре-рендере
+  const emptyDayResponse = React.useMemo(() => getRandomItem(getResponses(theme)), [theme, date]);
   let didRenderFirstPair = false;
 
   let textStyle = null;
@@ -48,7 +56,7 @@ export const Day = React.memo(({ data, date }: DayData) => {
       {data.pairs.length === 0
         ? (
           <View style={{ alignItems: 'center' }}>
-            <Text style={{ ...fontSize.medium, fontWeight: '600' }}>{getRandomResponse(theme)}</Text>
+            <Text style={{ ...fontSize.medium, fontWeight: '600' }}>{emptyDayResponse}</Text>
           </View>
         )
         : (

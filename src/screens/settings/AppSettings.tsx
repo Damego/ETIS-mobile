@@ -7,6 +7,7 @@ import { fontSize } from '~/utils/texts';
 
 import AboutAppButton from './components/AboutApp';
 import ChangeAppUI from './components/ChangeAppUI';
+import ChangeEventTheme from './components/ChangeEventTheme';
 import ShowReleaseNotes from './components/ShowReleaseNotes';
 import ToggleSentrySetting from './components/ToggleSentrySetting';
 import ToggleSignNotification from './components/ToggleSignNotification';
@@ -17,6 +18,7 @@ export default function AppSettings() {
     <Screen containerStyle={{ gap: 8 }}>
       {/* Общие настройки */}
       <ToggleThemeSetting />
+      <ChangeEventTheme />
       <ChangeAppUI />
       <ToggleSignNotification />
 
