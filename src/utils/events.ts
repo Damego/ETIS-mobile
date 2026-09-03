@@ -52,7 +52,7 @@ export const isNewYear = () => {
   return isInDateRange(startDate, endDate, 'or');
 };
 
-export const newYearEmptyDayResponse = [
+export const newYearEmptyDayResponses = [
   'Едим мандарины 🍊',
   'Наряжаем ёлку 🎄',
   'Пишем Деду Морозу 🎅',
@@ -67,3 +67,21 @@ export const newYearEmptyDayResponse = [
   '☃️',
   '🎉',
 ];
+
+const defaultEmptyDayResponses = [
+  'Пар нет',
+  'Отдых',
+  '💤',
+  '😴',
+  '🎮',
+  '(๑ᵕ⌓ᵕ̤)',
+];
+
+// Ответ для пустого дня в зависимости от текущей темы.
+// Единый источник для всех мест, где показывается «занятий нет»
+// (NoPairs, weekTimetable/Day) — списки больше не дублируются.
+export const getEmptyDayResponses = (theme: ThemeType): string[] => {
+  if (theme === ThemeType.halloween) return halloweenEmptyDayResponses;
+  if (theme === ThemeType.newYear) return newYearEmptyDayResponses;
+  return defaultEmptyDayResponses;
+};
