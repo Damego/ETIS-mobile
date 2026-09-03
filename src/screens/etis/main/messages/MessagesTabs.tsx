@@ -2,8 +2,8 @@ import React from 'react';
 import { useWindowDimensions } from 'react-native';
 import { SceneMap, TabView } from 'react-native-tab-view';
 
-import Messages from '~/screens/etis/main/messages//Messages';
 import Announces from '~/screens/etis/main/messages/Announces';
+import Messages from '~/screens/etis/main/messages/Messages';
 
 const renderScene = SceneMap({
   messages: Messages,
