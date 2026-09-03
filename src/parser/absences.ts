@@ -13,7 +13,7 @@ export default function parseAbsences(html: string): IAbsence {
     if (index === 0) return;
 
     const td = $('td', element);
-    const fields = [];
+    const fields: string[] = [];
 
     // We will skip the number as it's not important info
     const dates: IAbsenceDate[] = [];
@@ -39,7 +39,7 @@ export default function parseAbsences(html: string): IAbsence {
     });
   });
 
-  let currentSession: IAbsenceSession;
+  let currentSession: IAbsenceSession | undefined;
   const sessions: IAbsenceSession[] = [];
 
   $('span.submenu-item').each((index, element) => {
@@ -57,7 +57,7 @@ export default function parseAbsences(html: string): IAbsence {
       };
   });
 
-  const overallMissed: string = $('div.span9').text().split(' ').at(-1);
+  const overallMissed = $('div.span9').text().split(' ').at(-1) ?? '';
 
   return {
     currentSession, sessions, absences, overallMissed: parseInt(overallMissed)

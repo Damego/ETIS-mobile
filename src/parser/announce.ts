@@ -16,8 +16,7 @@ export default function parseAnnounce(html: string): IAnnounce[] {
       const isNewAnnounceMessage = tag.hasClass('answ');
       // source code is fucked up. WebView is fucked up (it always throws an error if link tag doesn't have a target)
       // So why my code can't be fucked up?
-      const messageHtml = tag
-        .html()
+      const messageHtml = (tag.html() ?? '')
         .replaceAll('<a', '<a target="_blank"')
         .replaceAll('href="df_pkg.', 'href="https://student.psu.ru/pls/stu_cus_et/df_pkg.')
         .replaceAll(

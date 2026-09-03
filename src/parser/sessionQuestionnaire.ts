@@ -1,6 +1,9 @@
 import cheerio from 'cheerio';
 
-import { IMetaData, ISessionQuestionnaire } from '../models/sessionQuestionnaire';
+import {
+  IMetaData, IQuestion, IQuestionnaireTheme,
+  ISessionQuestionnaire
+} from '../models/sessionQuestionnaire';
 import { getTextField } from './utils';
 
 export default function parseSessionQuestionnaire(html: string) {
@@ -20,13 +23,13 @@ export default function parseSessionQuestionnaire(html: string) {
 
     // Бесполезная информация для нас, но важная для ЕТИС
     if (element.is('input')) {
-      data.meta[element.attr('name')] = element.attr('value');
+      data.meta[element.attr('name') ?? ''] = element.attr('value');
     }
     if (element.hasClass('question')) {
       const input = element.find('input').first();
       data.teacher = {
         name: getTextField(input.parent()),
-        id: input.attr('value'),
+        id: input.attr('value') ?? '',
       };
     }
 
@@ -47,13 +50,13 @@ export default function parseSessionQuestionnaire(html: string) {
             if (tdIndex === 0) return;
 
             const td = $(tdElement, tr);
-            data.themes[index].answerTitles.push(getTextField(td));
+            data.themes[index]?.answerTitles.push(getTextField(td));
           });
           return;
         }
 
-        const question = {
-          name: null,
+        const question: IQuestion = {
+          name: '',
           answers: [],
         };
 
@@ -65,11 +68,11 @@ export default function parseSessionQuestionnaire(html: string) {
           } else {
             const input = td.find('input');
 
-            question.answers.push({ id: input.attr('name'), value: input.attr('value') });
+            question.answers.push({ id: input.attr('name') ?? '', value: input.attr('value') ?? '' });
           }
         });
 
-        data.themes[index].questions.push(question);
+        data.themes[index]?.questions.push(question);
       });
     }
   });

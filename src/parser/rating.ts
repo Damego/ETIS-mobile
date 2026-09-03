@@ -1,6 +1,6 @@
 import { load } from 'cheerio';
 
-import { ISessionRating, OverallRating } from '../models/rating';
+import { IDisciplineRanking, ISessionRating, OverallRating } from '../models/rating';
 import parseSessionData from './session';
 import { getTextField } from './utils';
 
@@ -25,19 +25,19 @@ export default function parseRating(html: string) {
     const groupName = getTextField(tds.eq(0));
     const rawRating = getTextField(tds.eq(1));
 
-    let overall: OverallRating;
+    let overall: OverallRating | undefined;
     if (rawRating) {
-      const [top, total] = rawRating.match(numberRegex);
+      const [top, total] = rawRating.match(numberRegex) ?? [];
 
       overall = {
-        top: parseInt(top),
-        total: parseInt(total),
+        top: parseInt(top ?? ''),
+        total: parseInt(total ?? ''),
       };
     }
 
-    const disciplineRanking = [];
+    const disciplineRanking: IDisciplineRanking[] = [];
 
-    const $$ = load(tds.eq(1).attr('title'));
+    const $$ = load(tds.eq(1).attr('title') ?? '');
     $$('tr').each((ind, innerElement) => {
       if (ind === 0) return;
 
@@ -47,16 +47,16 @@ export default function parseRating(html: string) {
       for (let i = 0; i < 5; i += 1) {
         pre.push(getTextField(innerTds.eq(i)));
       }
-      const [discipline, controlPoints, passedControlPoints, points, rawRating] = pre;
-      const [top, total] = rawRating.match(numberRegex);
+      const [discipline, controlPoints, passedControlPoints, points, innerRawRating] = pre;
+      const [top, total] = innerRawRating.match(numberRegex) ?? [];
 
       disciplineRanking.push({
         discipline,
         controlPoints: parseInt(controlPoints),
         passedControlPoints: parseInt(passedControlPoints),
         points: parseInt(points),
-        top: parseInt(top),
-        total: parseInt(total),
+        top: parseInt(top ?? ''),
+        total: parseInt(total ?? ''),
       });
     });
 

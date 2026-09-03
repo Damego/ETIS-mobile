@@ -7,7 +7,7 @@ export const parseDigitalResources = (html: string) => {
   const data: IDigitalResource[] = [];
   const $ = cheerio.load(html);
 
-  let currentCategory: string;
+  let currentCategory = '';
 
   const table = $('#resources');
   table.find('tr').each((index, element) => {
@@ -24,7 +24,7 @@ export const parseDigitalResources = (html: string) => {
     const [name, loginOrCode, password] = td
       .map((_, tdElement) => getTextField($(tdElement)))
       .get();
-    let url: string = null;
+    let url: string | undefined;
 
     const linkTag = td.eq(0).find('a');
     if (linkTag.length) {
@@ -35,7 +35,7 @@ export const parseDigitalResources = (html: string) => {
       name,
       login: password ? loginOrCode : undefined,
       password,
-      accessCode: !password ? loginOrCode.split(':')[1] : undefined,
+      accessCode: !password ? loginOrCode?.split(':')[1] : undefined,
       url,
       category: currentCategory,
     });

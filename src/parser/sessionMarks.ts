@@ -22,7 +22,7 @@ export default function parseSessionMarks(html: string): ISessionMarks[] {
 
     if (title.length === 1) {
       const stringData = getTextField(title).replaceAll('\n', ' ');
-      const [, session, sessionName, course, endDate] = executeRegex(tableTitleRegex, stringData);
+      const [, session, sessionName, course, endDate] = executeRegex(tableTitleRegex, stringData) ?? [];
 
       sessionIndex += 1;
       data[sessionIndex] = {

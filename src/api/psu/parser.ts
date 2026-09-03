@@ -10,10 +10,10 @@ const partsToString = (parts: string[]) => parts.map((part) => part.replaceAll('
 const parseEmail = (script: string) => {
   // хех
   const lines = script.split('\n');
-  const part2 = lines.at(-4).match(regex);
-  const part1 = lines.at(-5).match(regex);
+  const part2 = lines.at(-4)?.match(regex) ?? [];
+  const part1 = lines.at(-5)?.match(regex) ?? [];
 
-  const cursedEmail = partsToString(part1) + partsToString(part2);
+  const cursedEmail = partsToString([...part1]) + partsToString([...part2]);
   return cursedEmail.replaceAll(/&#\d+;/g, (match) => {
     const charCode = Number(match.slice(2, match.length - 1));
     return String.fromCharCode(charCode);
@@ -26,14 +26,14 @@ export const parseTeacherContacts = (html: string): ITeacherContacts => {
 
   const emails: string[] = article
     .find('script')
-    .map((_, el) => parseEmail($(el).html()))
+    .map((_, el) => parseEmail($(el).html() ?? ''))
     .get();
 
-  const phones = [];
+  const phones: string[] = [];
   article.contents().each((_, el) => {
     const text = $(el).text();
     if (text.trim().toLowerCase().startsWith('тел')) {
-      const matches = text.match(phoneRegex);
+      const matches = text.match(phoneRegex) ?? [];
       phones.push(...matches.map((match) => match.trim()));
     }
   });

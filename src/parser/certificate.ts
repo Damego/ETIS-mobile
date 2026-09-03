@@ -51,7 +51,7 @@ const parseAvailableCertificates = ($: CheerioAPI) => {
     .find('a')
     .each((ind, aElement) => {
       const aTag = $(aElement);
-      const partialUrl = aTag.attr('href');
+      const partialUrl = aTag.attr('href') ?? '';
       const searchParams = new URLSearchParams(partialUrl.split('?')[1]);
       availableCertificates.push({
         id: searchParams.get('p_crtt_id'),
@@ -65,9 +65,11 @@ const parseAvailableCertificates = ($: CheerioAPI) => {
 const parseAnnounceText = (item: Cheerio<Element>) =>
   item
     .contents()
-    .map((_index, element: Element) => {
-      if (element.name === 'br' && (element.next as Element).name === 'br') return '\n';
-      return item.find(element).text();
+    .map((_index, element) => {
+      if (element.type === 'tag' && element.name === 'br' && (element.next as Element)?.name === 'br')
+        return '\n';
+      if (element.type === 'tag') return item.find(element).text();
+      return '';
     })
     .toArray()
     .join('')
@@ -93,7 +95,7 @@ function parseAnnounces($: CheerioAPI): ICertificateAnnounce {
   };
 }
 
-export function cutCertificateHTML(html: string): string {
+export function cutCertificateHTML(html: string): string | null {
   const $ = cheerio.load(html);
   return $('.bgprj').html();
 }

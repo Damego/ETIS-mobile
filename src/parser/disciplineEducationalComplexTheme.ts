@@ -3,6 +3,7 @@ import cheerio from 'cheerio';
 
 import {
   IDisciplineEducationalComplexTheme,
+  IListItem,
   IThemeWorkHours,
 } from '~/models/disciplineEducationalComplexTheme';
 import { getTextField } from '~/parser/utils';
@@ -14,8 +15,8 @@ const parseWorkHours = ($: CheerioAPI, tag: Cheerio<Element>) => {
     const divs = $(element).contents();
 
     workHours.push({
-      label: getTextField(divs.eq(0)).split('-').at(0).trim(),
-      hours: getTextField(divs.eq(1)).split(' ').at(0).trim(),
+      label: getTextField(divs.eq(0)).split('-').at(0)?.trim() ?? '',
+      hours: getTextField(divs.eq(1)).split(' ').at(0)?.trim() ?? '',
     });
   });
 
@@ -23,7 +24,7 @@ const parseWorkHours = ($: CheerioAPI, tag: Cheerio<Element>) => {
 };
 
 const parseList = ($: CheerioAPI, tag: Cheerio<Element>) => {
-  const data = [];
+  const data: IListItem[] = [];
   tag.find('li').each((_, element) => {
     const tag = $(element);
     const aTag = tag.find('a');
@@ -43,11 +44,11 @@ export const parseDisciplineEducationalComplexTheme = (
   const $ = cheerio.load(html);
 
   let workHours: IThemeWorkHours[] = [];
-  let annotation: string;
-  let requiredLiterature = [];
-  let additionalLiterature = [];
-  let otherLinks = [];
-  let controlRequirements = null;
+  let annotation = '';
+  let requiredLiterature: IListItem[] = [];
+  let additionalLiterature: IListItem[] = [];
+  let otherLinks: IListItem[] = [];
+  let controlRequirements = '';
 
   $('.span9')
     .children()

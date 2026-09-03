@@ -19,7 +19,7 @@ import { dateRegex, disciplineRegex } from './regex';
 import { getDisciplineType, getTextField } from './utils';
 
 const audienceRegex = /ауд\. (.*)\/.* \((.*) корпус(?:, (\d) этаж)?\)/s;
-const idRegex = /[a-z]*\.[a-z]*\?\#([0-9]*)/s;
+const idRegex = /[a-z]*\.[a-z]*\?#([0-9]*)/s;
 
 const getWeekType = (week: Cheerio<Element>): WeekTypes => {
   if (week.hasClass('holiday')) {
@@ -46,6 +46,7 @@ const getDistancePlatformType = (platform: Cheerio<Element>): DistancePlatformTy
 
   if (platformUrl.includes('skype')) return DistancePlatformTypes.skype;
   if (platformUrl.includes('telemost')) return DistancePlatformTypes.yandexTelemost;
+  return DistancePlatformTypes.unknown;
 };
 
 const getDistancePlatformName = (platform: Cheerio<Element>, type: DistancePlatformTypes) => {
@@ -56,7 +57,7 @@ const getDistancePlatformName = (platform: Cheerio<Element>, type: DistancePlatf
 
   const image = platform.find('img');
 
-  return image.attr('title') || platform.attr('href');
+  return image.attr('title') || platform.attr('href') || '';
 };
 
 const getDistancePlatform = (platform: Cheerio<Element>): DistancePlatform => {
@@ -65,21 +66,21 @@ const getDistancePlatform = (platform: Cheerio<Element>): DistancePlatform => {
 
   return {
     name: getDistancePlatformName(platform, type),
-    url: platform.attr('href'),
+    url: platform.attr('href') ?? '',
     type,
-    imageUrl: httpClient.getSiteURL() + image.attr('src'),
+    imageUrl: httpClient.getSiteURL() + (image.attr('src') ?? ''),
   };
 };
 
-const getTeacher = (lesson: Cheerio<Element>): ITimeTableTeacher => {
+const getTeacher = (lesson: Cheerio<Element>): ITimeTableTeacher | undefined => {
   // TODO: parse list of teachers
   const teacherAnchor = lesson.find('.teacher').find('a').first();
-  if (!teacherAnchor.length) return;
+  if (!teacherAnchor.length) return undefined;
 
   const teacherAnchorHref = teacherAnchor.attr('href');
   const name = getTextField(teacherAnchor);
 
-  if (!name) return null;
+  if (!name) return undefined;
 
   if (!teacherAnchorHref) return { name };
 
@@ -101,20 +102,14 @@ export default function parseTimeTable(html: string) {
     selected: parseInt(currentWeek.text()),
     last: parseInt(week.last().text()),
     type: getWeekType(currentWeek),
-    holidayDates: null,
-    dates: null,
   };
 
   const dates = getTextField($('.week-select').children().last());
   if (dates) {
-    const [weekStart, weekEnd, holidayStart, holidayEnd] = dates.match(dateRegex);
+    const [weekStart, weekEnd] = dates.match(dateRegex) ?? [];
     weekInfo.dates = {
-      start: weekStart,
-      end: weekEnd,
-    };
-    weekInfo.holidayDates = {
-      start: holidayStart,
-      end: holidayEnd,
+      start: weekStart ?? '',
+      end: weekEnd ?? '',
     };
   }
 
@@ -150,12 +145,12 @@ export default function parseTimeTable(html: string) {
             subject.type = getDisciplineType(type);
           }
           const audienceElement = lesson.find('.aud');
-          let audienceText: string;
-          let floor: string;
-          let building: string;
-          let number: string;
-          let distancePlatform: DistancePlatform;
-          let announceHTML: string;
+          let audienceText: string | undefined;
+          let floor: string | undefined;
+          let building: string | undefined;
+          let number: string | undefined;
+          let distancePlatform: DistancePlatform | undefined;
+          let announceHTML: string | undefined;
 
           const platform = audienceElement.find('a');
           if (platform.length === 1) {
@@ -173,7 +168,7 @@ export default function parseTimeTable(html: string) {
           }
 
           const audience: IAudience = {
-            string: audienceText,
+            string: audienceText ?? '',
             number,
             building,
             floor,
@@ -182,7 +177,7 @@ export default function parseTimeTable(html: string) {
           lessons.push({
             subject,
             audience,
-            isDistance: audience.string?.includes?.('Дистанционно') || Boolean(distancePlatform),
+            isDistance: audience.string?.includes('Дистанционно') || Boolean(distancePlatform),
             distancePlatform,
             teacher: getTeacher(lesson),
             announceHTML,

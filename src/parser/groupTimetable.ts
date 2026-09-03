@@ -71,12 +71,12 @@ const parseSubject = (stringSubject: string) => {
 
 const parseAudience = (stringAudience: string): IAudience => {
   const execArr = audienceRegex.exec(stringAudience);
-  const [, number, building] = execArr;
+  const [, number, building] = execArr ?? [];
   return {
     string: stringAudience.slice(0, stringAudience.length - 3),
     number,
     building,
-    floor: !Number.isNaN(Number(number[0])) ? number[0] : null,
+    floor: !Number.isNaN(Number(number?.[0])) ? number?.[0] : undefined,
   };
 };
 const generateNextDayDateString = (date: dayjs.Dayjs, value: number) =>
@@ -107,9 +107,9 @@ const parseTeachers = ($: CheerioAPI, table: Cheerio<Element>) => {
       const [first, middle, last] = name.split(' ');
 
       const teacherImage = teacherTag.find('img');
-      const imageSource = teacherImage.attr('src').replace('..', '');
+      const imageSource = (teacherImage.attr('src') ?? '').replace('..', '');
       const photoUrl = `${MAIN_ETIS_URL}/pls${imageSource}`;
-      const [, , photoLoadedDate] = teacherImage.attr('alt').split(' ');
+      const [, , photoLoadedDate] = teacherImage.attr('alt')?.split(' ') ?? [];
       teachers.push({
         name,
         shortName: `${first} ${middle.charAt(0)}.${last.charAt(0)}.`,
@@ -122,7 +122,7 @@ const parseTeachers = ($: CheerioAPI, table: Cheerio<Element>) => {
   return teachers;
 };
 
-export const parseGroupTimetable = (html: string): ITimeTable => {
+export const parseGroupTimetable = (html: string): ITimeTable | null => {
   const $ = cheerio.load(html);
   const timetable = {} as ITimeTable;
   const mainTable = $('table').eq(0);
@@ -136,7 +136,7 @@ export const parseGroupTimetable = (html: string): ITimeTable => {
   }
 
   const teachers = parseTeachers($, dataRows.eq(1).children().eq(1).children().find('tbody').eq(0));
-  const date = dayjs(timetable.weekInfo.dates.start, 'DD.MM.YYYY');
+  const date = dayjs(timetable.weekInfo?.dates?.start, 'DD.MM.YYYY');
   let dayIndex = -1;
   const days: ITimeTableDay[] = [];
   let isLyceum = getTextField(
@@ -198,7 +198,7 @@ export const parseGroupTimetable = (html: string): ITimeTable => {
           pairs: [],
           date:
             dayIndex === 0
-              ? timetable.weekInfo.dates.start
+              ? timetable.weekInfo?.dates?.start ?? ''
               : generateNextDayDateString(date, dayIndex),
         });
       }

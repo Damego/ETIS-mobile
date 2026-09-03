@@ -13,7 +13,7 @@ const getMessageFiles = ($: CheerioAPI, message: Cheerio<Element>): IFile[] => {
     const link = $(element);
     files.push({
       name: link.text(),
-      uri: link.attr('href'),
+      uri: link.attr('href') ?? '',
     });
   });
 
@@ -55,11 +55,11 @@ const parseStudentMessage = ($: CheerioAPI, message: Cheerio<Element>): IMessage
   const content = getMessageContent(message);
   const files = getMessageFiles($, message);
 
-  let answerMessageID;
+  let answerMessageID: string | undefined;
   message.find('input').each((index, element) => {
     const input = $(element);
     if (input.attr('type') === 'button') {
-      answerMessageID = input.attr('id').split('_').at(-1);
+      answerMessageID = input.attr('id')?.split('_').at(-1);
     }
   });
 
@@ -78,7 +78,7 @@ const parseStartMessage = ($: CheerioAPI, message: Cheerio<Element>): IMessage =
 
   const type = MessageType.message;
   const author = getTextField(bComponent.eq(0));
-  const fields = [];
+  const fields: string[] = [];
   for (let i = 0; i < 2; i += 1) {
     fields[i] = getTextField(fontComponent.eq(i));
   }
@@ -89,12 +89,12 @@ const parseStartMessage = ($: CheerioAPI, message: Cheerio<Element>): IMessage =
 
   const content = getMessageContent(message);
 
-  let messageID;
-  let answerID;
+  let messageID: string | undefined;
+  let answerID: string | undefined;
   message.find('input').each((index, element) => {
     const input = $(element);
     if (input.attr('type') === 'hidden') answerID = input.attr('value');
-    else if (input.attr('type') === 'button') messageID = input.attr('id').split('_').at(1);
+    else if (input.attr('type') === 'button') messageID = input.attr('id')?.split('_').at(1);
   });
 
   return {
@@ -128,9 +128,9 @@ export default function parseMessages(html: string) {
     const message = $(messageElement);
 
     if (message.hasClass('repl_t')) {
-      messages[messageThemeIndex].push(parseTeacherMessage(message));
+      messages[messageThemeIndex]?.push(parseTeacherMessage(message));
     } else if (message.hasClass('repl_s')) {
-      messages[messageThemeIndex].push(parseStudentMessage($, message));
+      messages[messageThemeIndex]?.push(parseStudentMessage($, message));
     } else {
       messageThemeIndex += 1;
       messages.push([parseStartMessage($, message)]);

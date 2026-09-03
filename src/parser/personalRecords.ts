@@ -14,15 +14,15 @@ const parsePersonalRecords = (html: string): IPersonalRecord[] => {
 
     const tr = $(trElement);
     const td = tr.find('td');
-    const fields = [];
+    const fields: string[] = [];
     for (let i = 0; i < 6; i += 1) {
       fields.push(getTextField(td.eq(i)));
     }
 
-    let recordID: string;
+    let recordID: string | undefined;
     const recordElement = td.eq(5).find('a');
     if (recordElement.length === 1) {
-      recordID = recordElement.attr('href').split('=').at(1);
+      recordID = recordElement.attr('href')?.split('=').at(1);
     }
 
     const [year, speciality, faculty, educationForm, status, note] = fields;

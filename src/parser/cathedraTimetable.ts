@@ -1,4 +1,6 @@
-import type { Cheerio, CheerioAPI, Element } from 'cheerio';
+import type {
+  AnyNode, Cheerio, CheerioAPI, Element
+} from 'cheerio';
 import * as cheerio from 'cheerio';
 import dayjs from 'dayjs';
 
@@ -13,12 +15,12 @@ import { getDisciplineType, getTextField } from './utils';
 const parsePeriodsAndWeeks = ($: CheerioAPI) => {
   const data: {
     periods: IPeriod[];
-    weekInfo: WeekInfo;
+    weekInfo: WeekInfo | undefined;
     type: TimetableTypes;
   } = {
     periods: [],
-    weekInfo: null,
-    type: null,
+    weekInfo: undefined,
+    type: TimetableTypes.sessions,
   };
   let periodNumber = 1;
   const $spanList = $('body').children().filter('span');
@@ -34,21 +36,18 @@ const parsePeriodsAndWeeks = ($: CheerioAPI) => {
     if (!Number.isNaN(parseInt(text))) {
       const rawDates = getTextField($('h4'));
       const dates = rawDates.match(dateRegex);
-      let startDate: string;
-      let endDate: string;
-      if (dates) {
-        [startDate, endDate] = dates;
-      }
+      const [startDate, endDate] = dates ?? [];
 
-      data.weekInfo = {
+      const weekInfo: WeekInfo = {
         first: parseInt(text),
         last: parseInt(getTextField($spanList.last())),
         selected: isWeeksMode ? parseInt(selected) : null,
         dates: {
-          start: startDate,
-          end: endDate,
+          start: startDate ?? '',
+          end: endDate ?? '',
         },
       };
+      data.weekInfo = weekInfo;
       return false;
     }
     data.periods.push({
@@ -66,14 +65,14 @@ const parsePeriodsAndWeeks = ($: CheerioAPI) => {
   Разбирает строку и ищет аудиторию в неделе
   Пример входных данных: "1, 2, 3, 4 - 5 к. ауд.300/5"
 */
-const getAudienceByWeek = (text: string, weekInfo: WeekInfo): string => {
+const getAudienceByWeek = (text: string, weekInfo: WeekInfo): string | undefined => {
   const [weeksRaw, audienceRaw] = text.split('-');
-  const [, audience] = audienceRaw.split('к.');
+  const [, audience] = audienceRaw?.split('к.') ?? [];
   const weeks = weeksRaw.split(',').map((week) => week.trim());
 
   // Аудитория может отсутствовать вовсе
   // Пример: 32, 33 -
-  if (audience && weeks.includes(weekInfo.selected.toString())) {
+  if (audience && weekInfo.selected !== null && weeks.includes(weekInfo.selected.toString())) {
     return audience.trim();
   }
 };
@@ -102,15 +101,17 @@ const getAudienceFromText = (text: string): IAudience => {
 
 const parseAudience = ($: CheerioAPI, tag: Cheerio<Element>, weekInfo: WeekInfo) => {
   let audience: IAudience | undefined;
-  tag.contents().each(function (_, el: Element) {
+  tag.contents().each(function (_: number, el: AnyNode) {
     const tag = $(el);
     if (this.type === 'text') {
       let audienceString = getAudienceByWeek(getTextField(tag), weekInfo);
       if (!audienceString) {
         // Аудитория указана для недели, но на другой строке.
         // Возможно, что это онлайн пара. Следующий тег является span с img и текстом
-        const distanceAudienceTag = $(el.next);
-        audienceString = getTextField(distanceAudienceTag);
+        if (el.nextSibling) {
+          const distanceAudienceTag = $(el.nextSibling);
+          audienceString = getTextField(distanceAudienceTag);
+        }
       }
       if (audienceString) {
         const aud = getAudienceFromText(audienceString);
@@ -118,8 +119,8 @@ const parseAudience = ($: CheerioAPI, tag: Cheerio<Element>, weekInfo: WeekInfo)
           ...aud,
           info:
             // Изображение говорит о наличии некой информации об аудитории
-            (el.next as Element)?.name === 'img'
-              ? $(el.next).attr('title').replaceAll('<br>', '\n')
+            (el.next as Element | null)?.name === 'img'
+              ? $((el.next as Element | null)!).attr('title')?.replaceAll('<br>', '\n')
               : undefined,
         };
       }
@@ -165,8 +166,8 @@ const parsePairLessons = ($: CheerioAPI, td: Cheerio<Element>, weekInfo: WeekInf
 
     const audience = parseAudience($, divs.eq(2 + i * interval), weekInfo);
     const groupsText = getTextField(divs.eq(4 + i * interval));
-    let groups: string[];
-    let shortGroups: string[];
+    let groups: string[] | undefined;
+    let shortGroups: string[] | undefined;
     if (groupsText) {
       groups = groupsText.split('\n');
       shortGroups = [...new Set(groups.map(cutGroupName))];
@@ -205,7 +206,7 @@ const generateNextDayDateString = (date: dayjs.Dayjs, addValue: number) =>
 
 const parseTeacher = (tdTag: Cheerio<Element>): ITimeTableTeacher => {
   const teacherTextTag = tdTag.contents().eq(0);
-  const [teacherId] = tdTag.find('a').attr('href').match(numberRegex);
+  const [teacherId] = tdTag.find('a').attr('href')?.match(numberRegex) ?? [];
   return {
     id: teacherId,
     name: getTextField(teacherTextTag),
@@ -216,6 +217,9 @@ export default function parseCathedraTimetable(html: string) {
   const $ = cheerio.load(html);
 
   const { periods, type, weekInfo } = parsePeriodsAndWeeks($);
+  // На валидной странице расписания список недель (span) всегда присутствует,
+  // поэтому weekInfo заполнен к моменту разбора строк таблицы.
+  const $weekInfo = weekInfo!;
   const data: ICathedraTimetable = {
     periods,
     timetable: [],
@@ -246,7 +250,7 @@ export default function parseCathedraTimetable(html: string) {
       data.timetable[teacherIndex] = {
         teacher: parseTeacher(firstTdTag),
         days: [],
-        weekInfo,
+        weekInfo: $weekInfo,
       };
       return;
     }
@@ -257,13 +261,14 @@ export default function parseCathedraTimetable(html: string) {
       teacherIndex += 1;
       dayIndex = -1;
 
-      const date = dayjs(weekInfo.dates.start, 'DD.MM.YYYY');
+      // weekInfo.dates всегда заполнен парсером периодов
+      const date = dayjs($weekInfo.dates!.start, 'DD.MM.YYYY');
 
       data.timetable[teacherIndex] = {
         teacher: parseTeacher(firstTdTag),
-        weekInfo,
+        weekInfo: $weekInfo,
         days: [
-          { pairs: [], date: weekInfo.dates.start },
+          { pairs: [], date: $weekInfo.dates!.start },
           { pairs: [], date: generateNextDayDateString(date, 1) },
           { pairs: [], date: generateNextDayDateString(date, 2) },
           { pairs: [], date: generateNextDayDateString(date, 3) },
@@ -296,7 +301,7 @@ export default function parseCathedraTimetable(html: string) {
           .after('<td rowspan="1"></td>');
       }
 
-      const lessons = parsePairLessons($, td, weekInfo);
+      const lessons = parsePairLessons($, td, $weekInfo);
       const time = getTextField(tdList.length === 8 ? tdList.eq(1) : tdList.eq(0));
 
       data.timetable[teacherIndex].days[dayIndex].pairs.push({

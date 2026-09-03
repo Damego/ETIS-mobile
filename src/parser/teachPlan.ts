@@ -7,7 +7,7 @@ const FIELDS_NUM = 5;
 
 export default function parseShortTeachPlan(html: string) {
   const $ = load(html);
-  const sessionName = $('h3').first().text().split(' ').at(-1);
+  const sessionName = $('h3').first().text().split(' ').at(-1) ?? '';
   const data: ISessionTeachPlan[] = [];
 
   $('.common', html).each((index, table) => {
@@ -20,21 +20,21 @@ export default function parseShortTeachPlan(html: string) {
       let electiveOffset = 0;
       while (getTextField(td.eq(electiveOffset)) === '{') electiveOffset += 1;
 
-      const fields = [];
+      const fields: string[] = [];
       for (let i = 0; i < FIELDS_NUM + electiveOffset; i += 1) {
         fields.push(getTextField(td.eq(i + electiveOffset)));
       }
       const [name, reporting, classWorkHours, soloWorkHours, totalWorkHours] = fields;
 
-      let id: string;
-      let teachPlanId: string;
+      let id: string | undefined;
+      let teachPlanId: string | undefined;
 
       const href = td.eq(electiveOffset).find('a').attr('href');
       if (href) {
         const [, searchParamsString] = href.split('?');
         const searchParams = new URLSearchParams(searchParamsString);
-        id = searchParams.get('p_tpr_id');
-        teachPlanId = searchParams.get('p_tpdl_id');
+        id = searchParams.get('p_tpr_id') ?? undefined;
+        teachPlanId = searchParams.get('p_tpdl_id') ?? undefined;
       }
 
       disciplines.push({

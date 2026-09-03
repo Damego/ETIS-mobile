@@ -63,7 +63,7 @@ export const searchGroups = async (query: string, facultyId: string): Promise<IG
 export const getPeriodWeek = async (
   periodType: PeriodTypes,
   year: number
-): Promise<IPeriodWeek> => {
+): Promise<IPeriodWeek | null> => {
   if (!(await checkServiceAvailability())) {
     const cached = await AsyncStorage.getItem('GROUP_TIMETABLE_PERIOD_WEEK');
     if (cached) return JSON.parse(cached);

@@ -19,16 +19,16 @@ const parseTheme = (
 ): IDisciplineEducationalComplexThemeLink => {
   const a = themeTag.find('a');
   const name = getTextField(a);
-  const [, params] = a.attr('href').split('?');
+  const [, params] = (a.attr('href') ?? '').split('?');
   const searchParams = new URLSearchParams(params);
 
   const stringHours = getTextField(themeTag.find('.hour'));
-  const [totalHours, classHours] = stringHours.match(/(\d+)/g);
+  const [totalHours, classHours] = stringHours.match(/(\d+)/g) ?? [];
 
   return {
-    id: searchParams.get('p_tc_id'),
+    id: searchParams.get('p_tc_id') ?? '',
     name,
-    disciplineTeachPlanId: searchParams.get('p_tpdl_id'),
+    disciplineTeachPlanId: searchParams.get('p_tpdl_id') ?? '',
     hasCheckPoint: Boolean(themeTag.find('.badge.ctl').length),
     subthemes: [],
     workHours: {
@@ -49,9 +49,9 @@ const parseThemes = ($: CheerioAPI) => {
     if (style === 'padding-left: 0px;') {
       themes.push($theme);
     } else if (style === 'padding-left: 25px;') {
-      themes.at(-1).subthemes.push($theme);
+      themes.at(-1)?.subthemes.push($theme);
     } else if (style === 'padding-left: 50px;') {
-      themes.at(-1).subthemes.at(-1).subthemes.push($theme);
+      themes.at(-1)?.subthemes.at(-1)?.subthemes.push($theme);
     }
   });
   return themes;
@@ -65,7 +65,7 @@ const parseAdditionalMaterials = ($: CheerioAPI, tag: Cheerio<Element>): IAdditi
       const linkTag = $(element);
       files.push({
         name: getTextField(linkTag),
-        uri: linkTag.attr('href'),
+        uri: linkTag.attr('href') ?? '',
       });
     })
     .get();
@@ -102,7 +102,7 @@ const parseExamQuestions = ($: CheerioAPI, tag: Cheerio<Element>) => {
   const examQuestions: IExamQuestions[] = [];
   tag.find('a').each((_, element) => {
     const linkTag = $(element);
-    const [, id] = linkTag.attr('href').split('=');
+    const [, id] = (linkTag.attr('href') ?? '').split('=');
     examQuestions.push({
       title: getTextField(linkTag),
       id,
@@ -117,7 +117,7 @@ const parseEvaluationIndicators = (
   tag: Cheerio<Element>
 ): IEvaluationIndicators => {
   const divTags = tag.children('div');
-  const data = [];
+  const data: string[] = [];
   for (let i = 0; i < 3; i += 1) {
     data.push(getTextField(divTags.eq(i).contents().eq(1)));
   }
@@ -144,10 +144,10 @@ const parseEvaluationIndicators = (
 export const parseDisciplineEducationalComplex = (html: string) => {
   const $ = cheerio.load(html);
 
-  let additionalMaterials: IAdditionalMaterials;
+  let additionalMaterials: IAdditionalMaterials | undefined;
   let plannedLearningOutcome: IPlannedLearningOutcome[] = [];
   let examQuestions: IExamQuestions[] = [];
-  let evaluationIndicators: IEvaluationIndicators;
+  let evaluationIndicators: IEvaluationIndicators | undefined;
 
   $('.span9')
     .children()

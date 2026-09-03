@@ -16,22 +16,26 @@ export const parseDate = (date: string) => {
 };
 export const parseDatetime = (date: string) => dayjs(date, 'DD.MM.YYYY HH:mm:ss');
 
-export const getAsNumber = (str: string, defaultValue: number = null): number | null => {
+export function getAsNumber(str: string, defaultValue: number): number;
+export function getAsNumber(str: string, defaultValue?: number | null): number | null;
+export function getAsNumber(str: string, defaultValue: number | null = null): number | null {
   const number = parseFloat(str);
   if (Number.isNaN(number)) return defaultValue;
   return number;
-};
+}
 
 export const isLoginPage = (html: string) => {
   const $ = cheerio.load(html);
   return Boolean($('.login').html());
 };
 
-export const getDisciplineType = (string: string): LessonTypes =>
-  ({
-    лек: LessonTypes.LECTURE,
-    практ: LessonTypes.PRACTICE,
-    лаб: LessonTypes.LABORATORY,
-    экзамен: LessonTypes.EXAM,
-    зачет: LessonTypes.TEST,
-  })[string];
+export const getDisciplineType = (string: string): LessonTypes | undefined =>
+  (
+    {
+      лек: LessonTypes.LECTURE,
+      практ: LessonTypes.PRACTICE,
+      лаб: LessonTypes.LABORATORY,
+      экзамен: LessonTypes.EXAM,
+      зачет: LessonTypes.TEST,
+    } as Record<string, LessonTypes>
+  )[string];

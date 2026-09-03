@@ -37,7 +37,7 @@ class PsutechHealthCheck {
       return true;
     } catch (error) {
       this.isAvailable = false;
-      console.warn('[PsutechHealthCheck] Service is unavailable:', error.message);
+      console.warn('[PsutechHealthCheck] Service is unavailable:', error instanceof Error ? error.message : error);
       return false;
     }
   }

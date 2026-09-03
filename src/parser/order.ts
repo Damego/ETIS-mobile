@@ -3,7 +3,7 @@ import { load } from 'cheerio';
 import { IOrder } from '../models/order';
 import { getTextField } from './utils';
 
-export default function parseOrders(html) {
+export default function parseOrders(html: string) {
   const $ = load(html);
 
   const data: IOrder[] = [];
@@ -18,8 +18,8 @@ export default function parseOrders(html) {
     const dateName = /от (\d\d\.\d\d\.\d{4})\. (.+)/.exec(rawText);
     data.push({
       id: /№(\d+)/.exec(rawText)?.[1],
-      date: dateName[1],
-      name: dateName[2],
+      date: dateName?.[1],
+      name: dateName?.[2],
       uri,
     });
   });

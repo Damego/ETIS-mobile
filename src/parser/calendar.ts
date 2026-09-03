@@ -2,7 +2,7 @@ import { load } from 'cheerio';
 
 import { capitalizeWord } from '~/utils/texts';
 
-import { ICalendarSchedule } from '../models/calendarSchedule';
+import { ICalendarSchedule, ISessionSchedule } from '../models/calendarSchedule';
 
 const courseRegex = /\d/;
 
@@ -12,8 +12,8 @@ export default function parseCalendarSchedule(html: string): ICalendarSchedule {
     course: null,
     sessions: [],
   };
-  let d = {
-    title: null,
+  let d: ISessionSchedule = {
+    title: '',
     dates: [],
   };
   const block = $('.span9');
@@ -22,8 +22,10 @@ export default function parseCalendarSchedule(html: string): ICalendarSchedule {
     const el = $(element, block);
 
     if (el.is('h3')) {
-      const [course] = courseRegex.exec(el.text());
-      data.course = parseInt(course);
+      const course = courseRegex.exec(el.text());
+      if (course) {
+        data.course = parseInt(course[0]);
+      }
       pending = true;
       return;
     }
@@ -40,7 +42,7 @@ export default function parseCalendarSchedule(html: string): ICalendarSchedule {
       if (d.title) {
         data.sessions.push(d);
         d = {
-          title: null,
+          title: '',
           dates: [],
         };
       }

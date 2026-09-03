@@ -3,7 +3,7 @@ import { load } from 'cheerio';
 import { ICheckPoint, ISessionPoints } from '../models/sessionPoints';
 import { getAsNumber, getTextField } from './utils';
 
-export default function parseSessionPoints(html): ISessionPoints {
+export default function parseSessionPoints(html: string): ISessionPoints {
   const $ = load(html);
   const data: ISessionPoints = {
     subjects: [],
@@ -24,7 +24,7 @@ export default function parseSessionPoints(html): ISessionPoints {
 
       const failed = Boolean(tr.attr('style'));
       const tds = tr.find('td');
-      const fields = [];
+      const fields: string[] = [];
 
       for (let j = 0; j < 9; j += 1) {
         fields.push(getTextField(tds.eq(j)));
@@ -41,7 +41,7 @@ export default function parseSessionPoints(html): ISessionPoints {
         teacher,
       ] = fields;
 
-      const updatesUrl = '/' + tds.eq(3).attr('data-url');
+      const updatesUrl = '/' + (tds.eq(3).attr('data-url') ?? '');
 
       const points = getAsNumber(rawPoints, 0);
       const isAbsent = rawPoints === 'н';
@@ -76,7 +76,7 @@ export default function parseSessionPoints(html): ISessionPoints {
     });
   });
   $('h3', html).each((index, element) => {
-    data.subjects[index].name = getTextField($(element));
+    if (data.subjects[index]) data.subjects[index].name = getTextField($(element));
   });
 
   const subMenu = $('.submenu').last();
@@ -88,7 +88,7 @@ export default function parseSessionPoints(html): ISessionPoints {
   });
   const latestSession = $('.submenu-item', subMenu).last();
   data.latestSession = latestSession.index() + 1;
-  data.sessionName = getTextField(latestSession).split(' ').at(-1);
+  data.sessionName = getTextField(latestSession).split(' ').at(-1) ?? null;
 
   return data;
 }

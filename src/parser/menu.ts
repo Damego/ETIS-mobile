@@ -7,10 +7,10 @@ import { getTextField } from './utils';
 const nameWithBirthDateRegex = /([а-яА-ЯёЁ\s\w]+) \((\d{2}\.\d{2}\.\d{4}) г\.р\.\)/s;
 
 export interface StudentInfo {
-  announceCount: number;
-  messageCount: number;
+  announceCount: number | null;
+  messageCount: number | null;
   student: StudentData;
-  sessionTestID: string;
+  sessionTestID: string | null;
   currentWeek?: number;
   currentSession?: number;
   firstWeek?: number;
@@ -52,7 +52,7 @@ export default function parseMenu(html: string, parseGroupJournal = false): Stud
     .filter(Boolean);
 
   // Дата рождения игнорится для будущего возможного функционала (поздравление к примеру)
-  let name: string = null;
+  let name: string | null = null;
   const nameMatch = nameWithBirthDate
     ? nameWithBirthDateRegex.exec(nameWithBirthDate)
     : null;
@@ -73,11 +73,11 @@ export default function parseMenu(html: string, parseGroupJournal = false): Stud
   const menu = $('.span3');
   const menuBlocks = menu.find('.nav.nav-tabs.nav-stacked');
   const sessionTestURL = menuBlocks.eq(1).find('li').first().find('a').attr('href');
-  let sessionTestID: string;
+  let sessionTestID: string | undefined;
   if (sessionTestURL) {
     [, sessionTestID] = sessionTestURL.split('=');
   }
-  data.sessionTestID = sessionTestID;
+  data.sessionTestID = sessionTestID ?? null;
 
   // Получение группы студента
   if (parseGroupJournal) {

@@ -19,7 +19,7 @@ export default function parseSessionData($: CheerioAPI): ISession {
   });
   const latestSession = $('.submenu-item', subMenu).last();
   data.latest = latestSession.index() + 1;
-  data.name = getTextField(latestSession).split(' ').at(-1);
+  data.name = getTextField(latestSession).split(' ').at(-1) ?? '';
 
   return data;
 }
