@@ -1,6 +1,8 @@
 import { cache } from '~/cache/smartCache';
 
-import { setStudent, setTeacher, setUserCredentials } from './reducers/accountSlice';
+import {
+  setStudent, setTeacher, setUserCredentials, UserCredentials
+} from './reducers/accountSlice';
 import { setAppReady, setConfig } from './reducers/settingsSlice';
 import { AppDispatch } from './store';
 
@@ -13,18 +15,14 @@ export const loadSettings = () => async (dispatch: AppDispatch) => {
 };
 
 export const loadUserCredentials = () => async (dispatch: AppDispatch) => {
-  let userCredentials = await cache.getUserCredentials();
+  let userCredentials: UserCredentials | null | undefined = await cache.getUserCredentials();
 
   // TODO: Remove in the future
   if (!userCredentials) {
     userCredentials = await cache.migrateLegacyUserCredentials();
   }
 
-  const payload = {
-    userCredentials,
-    fromStorage: true,
-  };
-  dispatch(setUserCredentials(payload));
+  dispatch(setUserCredentials({ userCredentials: userCredentials ?? undefined, fromStorage: true }));
 };
 
 export const loadAccount = () => async (dispatch: AppDispatch) => {

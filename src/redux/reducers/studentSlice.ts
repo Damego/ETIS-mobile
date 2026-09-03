@@ -29,10 +29,10 @@ const studentSlice = createSlice({
     setStudentInfo(state, action: PayloadAction<StudentData>) {
       state.info = action.payload;
     },
-    setMessageCount(state, action: PayloadAction<number>) {
+    setMessageCount(state, action: PayloadAction<number | null>) {
       state.messageCount = action.payload;
     },
-    setAnnounceCount(state, action: PayloadAction<number>) {
+    setAnnounceCount(state, action: PayloadAction<number | null>) {
       state.announceCount = action.payload;
     },
     setSessionTestID(state, action: PayloadAction<string>) {

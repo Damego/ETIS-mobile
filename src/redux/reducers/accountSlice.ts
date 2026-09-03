@@ -8,7 +8,7 @@ export interface UserCredentials {
 }
 
 export interface SetUserCredentialsPayload {
-  userCredentials: UserCredentials;
+  userCredentials?: UserCredentials;
   fromStorage: boolean;
 }
 
@@ -46,8 +46,8 @@ interface AccountState {
   isSignedOut: boolean;
   isDemo: boolean;
   accountType: AccountType;
-  student?: UnauthorizedStudentState;
-  teacher?: TeacherState;
+  student?: UnauthorizedStudentState | null;
+  teacher?: TeacherState | null;
 }
 
 const initialState: AccountState = {

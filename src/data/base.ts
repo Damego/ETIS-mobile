@@ -73,14 +73,14 @@ export interface BaseClient {
 }
 
 export class BasicClient<P extends IGetPayload, T> {
-  cacheMethod: (payload?: P) => Promise<T>;
+  cacheMethod: (payload?: P) => Promise<T | null>;
   httpMethod: (payload?: P) => Promise<Response<string>>;
   parseMethod: (data: string, payload?: P) => T;
   placeMethod: (data: T, payload: P) => void | Promise<void>;
   name: string;
 
   constructor(
-    cacheMethod: (payload?: P) => Promise<T>,
+    cacheMethod: (payload?: P) => Promise<T | null>,
     httpMethod: (payload?: P) => Promise<Response<string>>,
     parseMethod: (data: string, payload?: P) => T,
     placeMethod: (data: T, payload: P) => void | Promise<void>
@@ -93,7 +93,7 @@ export class BasicClient<P extends IGetPayload, T> {
     this.name = this.constructor.name.split('Client')[0];
   }
 
-  async tryCached(payload: P): Promise<IGetResult<T>> | null {
+  async tryCached(payload: P): Promise<IGetResult<T> | null> {
     if (
       payload.requestType === RequestType.forceCache ||
       payload.requestType === RequestType.tryCache
@@ -101,9 +101,10 @@ export class BasicClient<P extends IGetPayload, T> {
       const cached = await this.cacheMethod(payload);
 
       return cached || payload.requestType === RequestType.tryCache
-        ? { data: cached, type: GetResultType.cached }
-        : errorResult;
+        ? { data: cached as T, type: GetResultType.cached }
+        : (errorResult as IGetResult<T>);
     }
+    return null;
   }
 
   tryFetch(payload: P): Promise<Response<string>> {
@@ -111,21 +112,22 @@ export class BasicClient<P extends IGetPayload, T> {
   }
 
   /* применяется на сырых данных после tryFetch */
-  checkLoginPage({ data }: Response<string>): IGetResult<T> {
-    if (isLoginPage(data)) {
-      return loginPageResult;
+  checkLoginPage({ data }: Response<string>): IGetResult<T> | null {
+    if (data != null && isLoginPage(data)) {
+      return loginPageResult as IGetResult<T>;
     }
+    return null;
   }
 
   async tryParse({ data }: Response<string>, payload: P): Promise<IGetResult<T>> {
-    let parsedData: T;
+    let parsedData: T | undefined;
     try {
-      parsedData = this.parseMethod(data, payload);
+      parsedData = this.parseMethod(data ?? '', payload);
     } catch (e) {
-      console.error(`[PARSER] Ignoring an error from ${this.name}`, e.stack || e);
+      console.error(`[PARSER] Ignoring an error from ${this.name}`, e instanceof Error ? e.stack : e);
       reportParserError(e);
     }
-    if (!parsedData) return failedResult;
+    if (!parsedData) return failedResult as IGetResult<T>;
 
     return {
       data: parsedData,
@@ -135,22 +137,22 @@ export class BasicClient<P extends IGetPayload, T> {
 
   async getData(payload: P): Promise<IGetResult<T>> {
     console.log(`[DATA] Try retrieve ${this.name}`);
-    const cached: IGetResult<T> = await this.tryCached(payload);
+    const cached: IGetResult<T> | null = await this.tryCached(payload);
     if (cached?.data) {
       console.log(`[DATA] Retrieved ${this.name} from cache`);
       return cached;
     }
     if (payload.requestType === RequestType.forceCache) {
-      return errorResult;
+      return errorResult as IGetResult<T>;
     }
     const fetched = await this.tryFetch(payload);
 
     if (!fetched || fetched?.error) {
       if (payload.requestType === RequestType.forceFetch) {
         console.log(`[DATA] Failed to force retrieve ${this.name} from server`);
-        return errorResult;
+        return errorResult as IGetResult<T>;
       }
-      return this.tryCached({ ...payload, requestType: RequestType.forceCache });
+      return (await this.tryCached({ ...payload, requestType: RequestType.forceCache })) ?? (errorResult as IGetResult<T>);
     }
 
     const loginPage = this.checkLoginPage(fetched);
@@ -164,7 +166,7 @@ export class BasicClient<P extends IGetPayload, T> {
       return parsed;
     }
 
-    await this.placeMethod(parsed.data, payload);
+    await this.placeMethod(parsed.data as T, payload);
     console.log(`[DATA] Retrieved and cached ${this.name} from server`);
     return parsed;
   }

@@ -154,8 +154,8 @@ export default class Client implements BaseClient {
 
   constructor() {
     this.absencesClient = new AbsencesClient(
-      ({ data }) => cache.getAbsences(data),
-      ({ data }) => httpClient.getAbsences(data),
+      (payload) => cache.getAbsences(payload!.data!),
+      (payload) => httpClient.getAbsences(payload!.data),
       parseAbsenses,
       (data) => cache.placeAbsences(data)
     );
@@ -166,14 +166,14 @@ export default class Client implements BaseClient {
       (data) => cache.placeAnnounce(data)
     );
     this.timeTableClient = new TimeTableClient(
-      ({ data }) => cache.getTimeTable(data),
-      ({ data }) => httpClient.getTimeTable({ week: data }),
+      (payload) => cache.getTimeTable(payload!.data!),
+      (payload) => httpClient.getTimeTable({ week: payload!.data! }),
       parseTimeTable,
       (data) => cache.placeTimeTable(data)
     );
     this.messageClient = new MessageClient(
-      ({ data }) => cache.getMessages(data),
-      ({ data }) => httpClient.getMessages(data),
+      (payload) => cache.getMessages(payload!.data!),
+      (payload) => httpClient.getMessages(payload!.data!),
       parseMessages,
       (data) => cache.placeMessages(data)
     );
@@ -184,21 +184,21 @@ export default class Client implements BaseClient {
       (data) => cache.placeOrders(data)
     );
     this.ratingClient = new RatingClient(
-      ({ data }) => cache.getSessionRating(data),
-      ({ data }) => httpClient.getSigns('rating', data),
+      (payload) => cache.getSessionRating(payload!.data!),
+      (payload) => httpClient.getSigns('rating', payload!.data),
       parseRating,
       (data) => cache.placeSessionRating(data)
     );
     this.signsClient = new SignsClient(
-      ({ data }) => cache.getSessionPoints(data),
-      ({ data }) => httpClient.getSigns('current', data),
+      (payload) => cache.getSessionPoints(payload!.data!),
+      (payload) => httpClient.getSigns('current', payload!.data),
       parseSessionPoints,
       (data) => cache.placeSessionPoints(data)
     );
     this.pointUpdatesClient = new PointUpdatesClient(
-      ({ data }) => cache.getPointUpdates(data),
-      ({ data }) => httpClient.getPointUpdates(data),
-      (data, { data: url }) => parsePointUpdates(data, url),
+      (payload) => cache.getPointUpdates(payload!.data!),
+      (payload) => httpClient.getPointUpdates(payload!.data!),
+      (data, payload) => parsePointUpdates(data, payload!.data!)!,
       (data) => cache.placePointUpdates(data)
     );
     this.marksClient = new MarksClient(
@@ -239,13 +239,13 @@ export default class Client implements BaseClient {
     );
     this.sessionQuestionnaireClient = new SessionQuestionnaireClient(
       emptyFunction,
-      (url) => httpClient.getSessionQuestionnaire(url.data),
+      (url) => httpClient.getSessionQuestionnaire(url!.data!),
       parseSessionQuestionnaire,
       emptyFunction
     );
     this.sessionQuestionnaireListClient = new SessionQuestionnaireListClient(
       emptyFunction,
-      (url) => httpClient.getSessionQuestionnaireList(url.data),
+      (url) => httpClient.getSessionQuestionnaireList(url!.data!),
       parseSessionQuestionnaireList,
       emptyFunction
     );
@@ -256,32 +256,32 @@ export default class Client implements BaseClient {
       (data) => cache.placePersonalRecords(data)
     );
     this.cathedraTimetableClient = new CathedraTimetableClient(
-      (payload) => cache.getCathedraTimetable(payload.data),
-      (payload) => httpClient.getCathedraTimetable(payload.data),
+      (payload) => cache.getCathedraTimetable(payload!.data!),
+      (payload) => httpClient.getCathedraTimetable(payload!.data!),
       parseCathedraTimetable,
-      (data, payload) => cache.placeCathedraTimetable(payload.data, data)
+      (data, payload) => cache.placeCathedraTimetable(payload.data!, data)
     );
     this.groupTimetableClient = new GroupTimetableClient(
-      (payload) => cache.getGroupTimetable(payload.data),
-      (payload) => httpClient.getGroupTimetable(payload.data),
-      parseGroupTimetable,
-      (data, payload) => cache.placeGroupTimetable(payload.data, data)
+      (payload) => cache.getGroupTimetable(payload!.data!),
+      (payload) => httpClient.getGroupTimetable(payload!.data!),
+      (html) => parseGroupTimetable(html)!,
+      (data, payload) => cache.placeGroupTimetable(payload.data!, data)
     );
     this.disciplineEducationalComplexClient = new DisciplineEducationalComplexClient(
-      (payload) => cache.getDisciplineEducationalComplex(payload.data),
-      (payload) => httpClient.getDisciplineEducationalComplex(payload.data),
+      (payload) => cache.getDisciplineEducationalComplex(payload!.data!),
+      (payload) => httpClient.getDisciplineEducationalComplex(payload!.data!),
       parseDisciplineEducationalComplex,
-      (data, payload) => cache.placeDisciplineEducationalComplex(payload.data, data)
+      (data, payload) => cache.placeDisciplineEducationalComplex(payload.data!, data)
     );
     this.disciplineEducationalComplexThemeClient = new DisciplineEducationalComplexThemeClient(
-      (payload) => cache.getDisciplineEducationalComplexTheme(payload.data),
-      (payload) => httpClient.getDisciplineEducationalComplexTheme(payload.data),
+      (payload) => cache.getDisciplineEducationalComplexTheme(payload!.data!),
+      (payload) => httpClient.getDisciplineEducationalComplexTheme(payload!.data!),
       parseDisciplineEducationalComplexTheme,
-      (data, payload) => cache.placeDisciplineEducationalComplexTheme(payload.data, data)
+      (data, payload) => cache.placeDisciplineEducationalComplexTheme(payload.data!, data)
     );
     this.examQuestionsClient = new ExamQuestionsClient(
       emptyFunction,
-      (payload) => httpClient.getExamQuestions(payload.data),
+      (payload) => httpClient.getExamQuestions(payload!.data!),
       parseExamQuestions,
       emptyFunction
     );

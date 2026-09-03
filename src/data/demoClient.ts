@@ -767,6 +767,8 @@ export default class DemoClient implements BaseClient {
       currentSession = { name: 'Весенний триместр', number: 2 };
     } else if (payload.data === 3) {
       currentSession = { name: 'Летний триместр', number: 3 };
+    } else {
+      currentSession = { name: 'Осенний триместр', number: 1 };
     }
     const data: IAbsence = {
       overallMissed: 3,
@@ -853,18 +855,18 @@ export default class DemoClient implements BaseClient {
     payload: IGetPayload<ICathedraTimetablePayload>
   ): Promise<IGetResult<ICathedraTimetable>> {
     let data: ICathedraTimetable;
-    if (payload.data.teacherId) data = require('./teacherTimetable.json');
+    if (payload.data?.teacherId) data = require('./teacherTimetable.json');
     else data = require('./cathedraTimetable.json');
 
     data.type = TimetableTypes.weeks;
     data.timetable.forEach((timetable) => {
-      timetable.weekInfo.selected = payload.data.week;
+      timetable.weekInfo.selected = payload.data?.week ?? 1;
     });
 
     return this.toResult(data);
   }
 
-  async getDigitalResources(payload): Promise<IGetResult<IDigitalResource[]>> {
+  async getDigitalResources(_payload?: IGetPayload): Promise<IGetResult<IDigitalResource[]>> {
     return this.toResult([
       {
         category: 'Отечественные ресурсы',
