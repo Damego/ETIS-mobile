@@ -42,8 +42,21 @@ const useQuery = <P, R>({
 
   const [data, setData] = useState<R>();
   const [isLoading, setLoading] = useState<boolean>(true);
+  // Зеркало data для loadData: колбэк и debounce замыкают стейл-значение,
+  // а решать «первая загрузка или фоновый refresh» нужно по актуальному наличию данных
+  const dataRef = useRef<R | undefined>(undefined);
+  const applyData = (value: R) => {
+    dataRef.current = value;
+    setData(value);
+  };
 
-  const enableLoading = () => setLoading(true);
+  // isLoading означает только ПЕРВУЮ загрузку (когда данных ещё нет).
+  // Повторные загрузки (pull-to-refresh, refresh по focus, update)
+  // его не поднимают — экраны с ранним `if (isLoading) return <LoadingScreen>`
+  // не должны схлопываться в лоадер при фоновом обновлении.
+  const enableLoading = () => {
+    if (dataRef.current === undefined) setLoading(true);
+  };
   const disableLoading = () => setLoading(false);
 
   useEffect(() => {
@@ -101,7 +114,7 @@ const useQuery = <P, R>({
       if (onFail) handleFailedQuery(result);
     } else {
       if (after) await handleAfter(result);
-      setData(result.data);
+      applyData(result.data);
     }
     disableLoading();
   };
