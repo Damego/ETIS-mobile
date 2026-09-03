@@ -66,9 +66,13 @@ const parseAnnounceText = (item: Cheerio<Element>) =>
   item
     .contents()
     .map((_index, element) => {
+      // Двойной <br> — перенос абзаца
       if (element.type === 'tag' && element.name === 'br' && (element.next as Element)?.name === 'br')
         return '\n';
+      // Тег — его текстовое содержимое
       if (element.type === 'tag') return item.find(element).text();
+      // Текстовая нода — её значение (раньше терялась из-за find() по тексту)
+      if (element.type === 'text') return (element as unknown as { data: string }).data;
       return '';
     })
     .toArray()
