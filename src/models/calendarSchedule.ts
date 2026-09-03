@@ -4,6 +4,6 @@ export interface ISessionSchedule {
 }
 
 export interface ICalendarSchedule {
-  course: number;
+  course: number | null;
   sessions: ISessionSchedule[];
 }

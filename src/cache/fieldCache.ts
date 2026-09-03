@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default class FieldCache<T> {
   private readonly key: string;
   private ready: boolean;
-  private data: T;
+  private data: T | null;
   private timestamp: number;
 
   constructor(key: string) {
@@ -21,9 +21,9 @@ export default class FieldCache<T> {
     if (this.isReady()) return;
 
     const stringData = await AsyncStorage.getItem(this.key);
-    const parsed = JSON.parse(stringData);
-    this.data = parsed?.data;
-    this.timestamp = parsed?.timestamp;
+    const parsed = stringData != null ? JSON.parse(stringData) : null;
+    this.data = parsed?.data ?? null;
+    this.timestamp = parsed?.timestamp ?? 0;
     this.ready = true;
   }
 

@@ -28,7 +28,7 @@ export interface ICertificateAnnounce {
 // Доступная студенту справка для заявки
 export interface IAvailableCertificate {
   // Идентификатор справки
-  id: string;
+  id: string | null;
   // Название справки
   name: string;
 }

@@ -14,7 +14,7 @@ export interface IMessage {
   files?: IFile[];
   answerMessageID?: string;
   subject?: string;
-  theme?: string;
+  theme?: string | null;
   answerID?: string;
   messageID?: string;
 }

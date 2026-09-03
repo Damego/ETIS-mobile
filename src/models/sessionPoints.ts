@@ -19,12 +19,12 @@ export interface ISubjectPoints {
   name?: string;
   checkPoints: ICheckPoint[];
   totalPoints: number;
-  mark?: string;
+  mark?: string | null;
 }
 
 export interface ISessionPoints {
   subjects: ISubjectPoints[];
-  currentSession: number;
-  latestSession: number;
-  sessionName: string;
+  currentSession: number | null;
+  latestSession: number | null;
+  sessionName: string | null;
 }

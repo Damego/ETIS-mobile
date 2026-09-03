@@ -27,7 +27,7 @@ export interface WeekInfo {
   // Первая неделя
   first: number;
   // Выбранная неделя
-  selected: number;
+  selected: number | null;
   // Последняя неделя
   last: number;
   // Тип недели
@@ -85,7 +85,7 @@ export interface ILesson {
   // Предмет занятия
   subject: ISubject;
   // Аудитория
-  audience: IAudience;
+  audience?: IAudience;
   // Является ли занятие дистанционным
   isDistance: boolean;
   // Информация об дистанционной платформе

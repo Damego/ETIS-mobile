@@ -21,7 +21,7 @@ export class DisciplineReminder {
   toJSON(): IDisciplineReminder {
     return {
       datetime: this.datetime.toISOString(),
-      notificationId: this.notificationId,
+      notificationId: this.notificationId ?? '',
     };
   }
 
@@ -140,7 +140,7 @@ export class DisciplineStorage {
     return DisciplineStorage.info;
   }
 
-  static async getTaskById(id: string): Promise<DisciplineTask> {
+  static async getTaskById(id: string): Promise<DisciplineTask | undefined> {
     const tasks = await this.getTasks();
     return tasks.find((task) => task.id === id);
   }

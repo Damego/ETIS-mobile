@@ -1,7 +1,7 @@
 // Интерфейс для заказа справки в ЕТИС
 export interface CertificateRequest {
   // Идентификатор справки
-  certificateId: string;
+  certificateId: string | undefined;
   // Примечание к справке
   note: string;
   // Место предъявление справки

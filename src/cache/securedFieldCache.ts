@@ -2,7 +2,7 @@ import * as SecureStore from 'expo-secure-store';
 
 export default class SecuredFieldCache<T> {
   private readonly key: string;
-  private data: T;
+  private data: T | null;
   private ready: boolean;
 
   constructor(key: string) {
@@ -22,7 +22,7 @@ export default class SecuredFieldCache<T> {
   async init() {
     if (this.isReady()) return;
     const stringData = await SecureStore.getItemAsync(this.key);
-    this.data = JSON.parse(stringData);
+    this.data = stringData != null ? JSON.parse(stringData) : null;
     this.ready = true;
   }
 

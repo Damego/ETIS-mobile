@@ -17,7 +17,7 @@ export interface IAbsenceSession {
 
 export interface IAbsence {
   absences: IDisciplineAbsences[];
-  currentSession: IAbsenceSession;
+  currentSession?: IAbsenceSession;
   sessions: IAbsenceSession[];
   overallMissed: number;
 }

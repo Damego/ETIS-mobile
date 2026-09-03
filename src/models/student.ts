@@ -1,19 +1,19 @@
 export interface StudentData {
-  name: string;
-  speciality: string;
-  educationForm: string;
-  year: string;
-  group: string;
-  groupShort?: string;
+  name: string | null;
+  speciality: string | null;
+  educationForm: string | null;
+  year: string | null;
+  group: string | null;
+  groupShort?: string | null;
   isLyceum: boolean;
 }
 
 export interface StudentState {
-  info: StudentData;
+  info: StudentData | null;
   messageCount: number | null;
   announceCount: number | null;
-  sessionTestID: string;
-  currentWeek?: number;
-  currentSession?: number;
+  sessionTestID: string | null;
+  currentWeek?: number | null;
+  currentSession?: number | null;
   hasUnverifiedEmail: boolean;
 }

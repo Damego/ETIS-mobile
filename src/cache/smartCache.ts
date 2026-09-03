@@ -150,7 +150,7 @@ export default class SmartCache {
   }
 
   async placeAbsences(data: IAbsence) {
-    this.absences.place(data.currentSession.number, data);
+    this.absences.place(data.currentSession?.number ?? 0, data);
     await this.absences.save();
   }
 
@@ -217,7 +217,7 @@ export default class SmartCache {
   }
 
   async placeTimeTable(data: ITimeTable) {
-    this.timeTable.place(data.weekInfo.selected, data);
+    this.timeTable.place(data.weekInfo.selected ?? 0, data);
     await this.timeTable.save();
   }
 
@@ -307,7 +307,7 @@ export default class SmartCache {
   }
 
   async placeSessionPoints(data: ISessionPoints) {
-    this.signsPoints.place(data.currentSession, data);
+    this.signsPoints.place(data.currentSession ?? 0, data);
     await this.signsPoints.save();
   }
 
@@ -333,7 +333,7 @@ export default class SmartCache {
 
   async getCertificate(): Promise<ICertificateResult> {
     if (!this.certificate.isReady()) await this.certificate.init();
-    return { certificates: this.certificate.get(), announce: {}, availableCertificates: [] };
+    return { certificates: this.certificate.get() ?? [], announce: {}, availableCertificates: [] };
   }
 
   async placeCertificate(data: ICertificateResult) {
@@ -344,8 +344,9 @@ export default class SmartCache {
   async placeOneCertificate(certificate: ICertificate) {
     if (!this.certificate.isReady()) await this.certificate.init();
 
-    const certificates = this.certificate.get();
-    certificates[certificates.findIndex((c) => c.id === certificate.id)] = certificate;
+    const certificates = this.certificate.get() ?? [];
+    const index = certificates.findIndex((c) => c.id === certificate.id);
+    if (index !== -1) certificates[index] = certificate;
 
     this.placeCertificate({ certificates, announce: {}, availableCertificates: [] });
   }
@@ -369,7 +370,7 @@ export default class SmartCache {
     const student = (await this.getStudent()) || ({} as StudentInfo);
 
     Object.entries(data).forEach(([key, value]) => {
-      student[key] = value;
+      (student as unknown as Record<string, unknown>)[key] = value;
     });
 
     await this.placeStudent(student);
@@ -670,15 +671,15 @@ export default class SmartCache {
   // Legacy
 
   // TODO: Remove in the future
-  async migrateLegacyUserCredentials(): Promise<UserCredentials> {
+  async migrateLegacyUserCredentials(): Promise<UserCredentials | null> {
     const login = await SecureStore.getItemAsync('userLogin');
 
     if (!login) return null;
 
     const password = await SecureStore.getItemAsync('userPassword');
-    const userCredentials = {
+    const userCredentials: UserCredentials = {
       login,
-      password,
+      password: password ?? '',
     };
 
     this.placeUserCredentials(userCredentials);

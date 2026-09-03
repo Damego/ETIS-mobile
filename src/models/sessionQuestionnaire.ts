@@ -19,18 +19,21 @@ export interface IQuestionnaireTheme {
   questions: IQuestion[];
 }
 
+// Метаданные собираются с input'ов формы и зависят от страницы анкеты,
+// поэтому парсер заполняет их динамически — все поля опциональны.
 export interface IMetaData {
-  p_course: string;
-  p_dis_id: string;
-  p_peo_id: string;
-  p_que_str: string;
-  p_term: string;
-  p_ty_id: string;
+  p_course?: string;
+  p_dis_id?: string;
+  p_peo_id?: string;
+  p_que_str?: string;
+  p_term?: string;
+  p_ty_id?: string;
+  [key: string]: string | undefined;
 }
 
 export interface ISessionQuestionnaire {
   meta: IMetaData;
-  teacher: IDefaultTeacher;
+  teacher: IDefaultTeacher | null;
   themes: IQuestionnaireTheme[];
 }
 
