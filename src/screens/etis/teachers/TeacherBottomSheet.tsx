@@ -10,6 +10,7 @@ import {
 
 import { getTeacherContacts } from '~/api/psu/api';
 import { getTeacherById } from '~/api/psutech/api';
+import type { ITeacherPSU } from '~/api/psutech/types';
 import BorderLine from '~/components/BorderLine';
 import BottomSheetContent from '~/components/BottomSheetContent';
 import BottomSheetModal from '~/components/BottomSheetModal';
@@ -24,15 +25,15 @@ import { borderRadius as radii, fontSize } from '~/utils/texts';
 const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
   const globalStyles = useGlobalStyles();
   const navigation = useNavigation<EducationNavigationProp>();
-  const { data } = useQuery({
+  const { data: psuTeacher } = useQuery({
     queryFn: () => getTeacherById(teacher.id),
     queryKey: ['teacher', teacher.id],
   });
 
   const { data: contacts } = useQuery({
-    queryFn: () => getTeacherContacts(data.psu.page_url),
-    enabled: Boolean(data?.psu?.page_url),
-    queryKey: ['teacher_contacts', data?.id],
+    queryFn: () => getTeacherContacts(psuTeacher?.psu?.page_url),
+    enabled: Boolean(psuTeacher?.psu?.page_url),
+    queryKey: ['teacher_contacts', teacher.id],
   });
 
   const copyTeacherNameToClipboard = () => {
@@ -46,8 +47,9 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
   };
 
   const openPSUPage = () => {
-    if (data?.psu?.page_url) {
-      Linking.openURL(data.psu.page_url);
+    const pageUrl = psuTeacher?.psu?.page_url;
+    if (pageUrl) {
+      Linking.openURL(pageUrl);
     }
   };
 
@@ -101,7 +103,7 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
         </ClickableText>
       </View>
 
-      {data?.psu?.page_url && contacts && (
+      {psuTeacher?.psu?.page_url && contacts && (
         <>
           <ClickableText
             onPress={openPSUPage}

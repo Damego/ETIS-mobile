@@ -5,7 +5,7 @@ import { IAudience, ITimeTable } from '~/models/timeTable';
 
 import healthCheck, { isPsutechAvailable } from './healthCheck';
 import {
-  IFaculty, IGroup, IPeriodWeek, ITeacher, PeriodTypes
+  IFaculty, IGroup, IPeriodWeek, ITeacherPSU, PeriodTypes
 } from './types';
 
 export { isPsutechAvailable };
@@ -24,15 +24,15 @@ const checkServiceAvailability = async (): Promise<boolean> => {
   return serviceAvailable;
 };
 
-export const getTeacherById = async (teacherId: string) => {
+export const getTeacherById = async (teacherId: string): Promise<ITeacherPSU | null> => {
   if (!(await checkServiceAvailability())) {
     return null;
   }
-  const res = await inst.get<ITeacher>(`/teachers/${teacherId}`);
+  const res = await inst.get<ITeacherPSU>(`/teachers/${teacherId}`);
   return res.data;
 };
 
-export const searchTeachers = async (query: string): Promise<ITeacher[]> => {
+export const searchTeachers = async (query: string): Promise<ITeacherPSU[]> => {
   if (!(await checkServiceAvailability())) {
     return [];
   }

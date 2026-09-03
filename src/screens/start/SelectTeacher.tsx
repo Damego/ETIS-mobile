@@ -5,7 +5,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { isPsutechAvailable, searchTeachers } from '~/api/psutech/api';
-import { ITeacher } from '~/api/psutech/types';
+import { ITeacherPSU } from '~/api/psutech/types';
 import { cache } from '~/cache/smartCache';
 import BorderLine from '~/components/BorderLine';
 import ClickableText from '~/components/ClickableText';
@@ -24,7 +24,7 @@ const SelectTeacherScreen = () => {
   const insets = useSafeAreaInsets();
 
   const dispatch = useAppDispatch();
-  const [selectedTeacher, setSelectedTeacher] = useState<ITeacher>(null);
+  const [selectedTeacher, setSelectedTeacher] = useState<ITeacherPSU>(null);
 
   const [query, setQuery] = useState('');
   const { data, isLoading, refetch } = useQuery({
@@ -32,7 +32,7 @@ const SelectTeacherScreen = () => {
     queryFn: () => searchTeachers(query),
   });
 
-  const handleTeacherSelect = (teacher: ITeacher) => () => {
+  const handleTeacherSelect = (teacher: ITeacherPSU) => () => {
     setSelectedTeacher(teacher);
   };
 

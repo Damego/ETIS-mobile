@@ -2,7 +2,9 @@ export interface ITeacherPSUData {
   page_url: string;
 }
 
-export interface ITeacher {
+// Преподаватель из API psutech — не путать с ITeacher из models/teachers
+// (полные данные для UI) и ITeacher из models/timeTable (мини-версия в паре)
+export interface ITeacherPSU {
   id: number;
   name: string;
 
