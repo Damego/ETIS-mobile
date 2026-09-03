@@ -10,6 +10,7 @@ import TimetableCalendar, {
 } from '~/components/timetable/dayTimetable/components/timetableCalendar/TimetableCalendar';
 import TimetablePages, { type PagerScrollState } from '~/components/timetable/dayTimetable/components/TimetablePages';
 import TimeTableContext from '~/context/timetableContext';
+import { useAppSelector } from '~/hooks';
 import { DatePressT } from '~/hooks/useTimetable';
 import { ITeacher } from '~/models/teachers';
 import { ITimeTable } from '~/models/timeTable';
@@ -56,6 +57,7 @@ const DayTimetable = ({
   onPagerScrollStateChange?: (state: PagerScrollState) => void;
 }) => {
   const pagerRef = useRef<PagerViewRef>(null);
+  const { skipSunday } = useAppSelector((state) => state.settings.config.ui);
 
   const contextData = useMemo(
     () => ({
@@ -96,6 +98,7 @@ const DayTimetable = ({
         periodEndDate={endDate ?? $endDate ?? undefined}
         firstWeek={data?.weekInfo.first}
         lastWeek={data?.weekInfo.last}
+        skipSunday={skipSunday}
         onDatePress={handleDatePress}
       />
       {loadingComponent !== undefined && isLoading ? (
