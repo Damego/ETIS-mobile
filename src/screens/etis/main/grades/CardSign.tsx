@@ -39,7 +39,6 @@ const CardSign = ({ subject }: { subject: ISubject }) => {
       </View>
       <BottomSheetModal
         ref={ref}
-        onDismiss={() => ref.current.dismiss()}
         snapPoints={['50%', '100%']}
       >
         <BottomSheetContent>
