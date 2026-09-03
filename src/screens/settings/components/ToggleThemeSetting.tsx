@@ -12,28 +12,22 @@ import { changeTheme, setEvents } from '~/redux/reducers/settingsSlice';
 import { ThemeType } from '~/styles/themes';
 import { fontSize } from '~/utils/texts';
 
-const options = [
-  {
-    label: 'Автоматическая',
-    value: ThemeType.auto,
+const themeLabels: Partial<Record<ThemeType, string>> = {
+  [ThemeType.auto]: 'Автоматическая',
+  [ThemeType.light]: 'Светлая',
+  [ThemeType.dark]: 'Тёмная',
+  [ThemeType.black]: 'Чёрная',
+  [ThemeType.halloween]: 'Хэллоуин',
+  [ThemeType.newYear]: 'Новый год',
+};
+
+const options = (Object.entries(themeLabels) as Array<[ThemeType, string]>)
+  .filter(([value]) => value !== ThemeType.halloween && value !== ThemeType.newYear)
+  .map(([value, label]) => ({
+    label,
+    value,
     isCurrent: false,
-  },
-  {
-    label: 'Светлая',
-    value: ThemeType.light,
-    isCurrent: false,
-  },
-  {
-    label: 'Тёмная',
-    value: ThemeType.dark,
-    isCurrent: false,
-  },
-  {
-    label: 'Чёрная',
-    value: ThemeType.black,
-    isCurrent: false,
-  },
-];
+  }));
 
 const ToggleThemeSetting = () => {
   const dispatch = useAppDispatch();
@@ -46,7 +40,7 @@ const ToggleThemeSetting = () => {
       const $events = { ...events };
       $events.newYear = {
         suggestedTheme: false,
-        previousTheme: events.newYear.previousTheme,
+        previousTheme: events.newYear?.previousTheme ?? ThemeType.auto,
       };
       dispatch(setEvents($events));
       cache.placeEvents($events);
@@ -64,7 +58,7 @@ const ToggleThemeSetting = () => {
         onPress={() => modalRef.current.present()}
         right={
           <Text style={fontSize.medium}>
-            {options.find((opt) => opt.value === themeType).label}
+            {themeLabels[themeType] ?? 'Автоматическая'}
           </Text>
         }
       />
