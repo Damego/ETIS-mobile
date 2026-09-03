@@ -53,17 +53,19 @@ const Timetable = ({ navigation }: UnauthorizedTeacherStackScreenProps) => {
   });
 
   const loadData = (week: number) => {
-    let periodNumber: number;
-    periodWeek.periods_to_weeks.forEach(([start, end], index) => {
-      if (start <= week && end >= week) {
-        periodNumber = index + 1;
-      }
-    });
+    if (!periodWeek) return;
+
+    // Период обучения, в который попадает запрошенная неделя
+    // (номер периода = индекс в periods_to_weeks + 1)
+    const periodIndex = periodWeek.periods_to_weeks.findIndex(
+      ([start, end]) => start <= week && week <= end
+    );
+    if (periodIndex === -1) return;
 
     const payload = {
       data: {
         ...initialPayload,
-        period: periodNumber,
+        period: periodIndex + 1,
         week,
       },
       requestType: RequestType.tryFetch,
