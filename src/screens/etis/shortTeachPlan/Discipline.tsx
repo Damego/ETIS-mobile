@@ -6,6 +6,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import DisciplineType from '~/components/DisciplineType';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
+import { LessonTypes } from '~/models/other';
 import { ITeachPlanDiscipline } from '~/models/teachPlan';
 import { EducationNavigationProp } from '~/navigation/types';
 import { fontSize, getDisciplineTypeFromReporting } from '~/utils/texts';
@@ -47,7 +48,7 @@ const Subject = ({ data, period }: { data: ITeachPlanDiscipline; period: string 
       >
         <View style={styles.subjectTitleView}>
           <Text style={styles.subjectNameText}>{data.name}</Text>
-          <DisciplineType type={getDisciplineTypeFromReporting(data.reporting)} />
+          <DisciplineType type={getDisciplineTypeFromReporting(data.reporting) ?? LessonTypes.TEST} />
         </View>
 
         <AntDesign name={'right'} size={18} color={globalStyles.textColor.color} />

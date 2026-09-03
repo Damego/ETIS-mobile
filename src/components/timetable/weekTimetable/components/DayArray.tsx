@@ -5,7 +5,7 @@ import { View } from 'react-native';
 import BorderLine from '~/components/BorderLine';
 import { Button } from '~/components/Button';
 import Text from '~/components/Text';
-import TimeTableContext from '~/context/timetableContext';
+import { useTimetableContext } from '~/context/timetableContext';
 import { useAppSelector } from '~/hooks';
 import { ITimeTableDay, WeekDates } from '~/models/timeTable';
 import { fontSize } from '~/utils/texts';
@@ -25,7 +25,7 @@ const DayArray = ({ data, weekDates }: IDayArrayProps) => {
     setShowPastWeekDays(showPastWeekDays);
   }, [showPastWeekDays]);
 
-  const { currentDate } = useContext(TimeTableContext);
+  const { currentDate } = useTimetableContext();
 
   let date = dayjs(weekDates.start, 'DD.MM.YYYY');
   const weekEndDate = dayjs(weekDates.end, 'DD.MM.YYYY');

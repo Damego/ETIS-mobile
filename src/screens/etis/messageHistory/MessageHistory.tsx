@@ -44,7 +44,7 @@ export default function MessageHistory({
   const isDemo = useAppSelector((state) => state.account.isDemo);
 
   const [firstMessage] = messages;
-  const shortAuthor = formatTeacherName(firstMessage.author);
+  const shortAuthor = formatTeacherName(firstMessage.author ?? '');
 
   const client = useClient();
   const query = useQuery({
@@ -70,8 +70,8 @@ export default function MessageHistory({
       return;
     }
 
-    const $messages = findMessageBlockById(result.data.messages, firstMessage.messageID);
-    setMessages($messages);
+    const $messages = findMessageBlockById(result.data.messages, firstMessage.messageID ?? '');
+    setMessages($messages ?? []);
     return $messages;
   };
 
@@ -95,7 +95,7 @@ export default function MessageHistory({
     }
 
     setUploading(true);
-    const response = await httpClient.replyToMessage(firstMessage.answerID, text);
+    const response = await httpClient.replyToMessage(firstMessage.answerID ?? '', text);
 
     if (response.error) {
       setUploading(false);
@@ -112,7 +112,11 @@ export default function MessageHistory({
     const message = messageBlock.at(-1);
 
     const promises = files.map((file) =>
-      httpClient.attachFileToMessage(firstMessage.messageID, message.answerMessageID, file)
+      httpClient.attachFileToMessage(
+        firstMessage.messageID ?? '',
+        message?.answerMessageID ?? '',
+        file
+      )
     );
     await Promise.all(promises);
 

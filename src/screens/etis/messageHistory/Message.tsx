@@ -36,20 +36,21 @@ const AttachedFiles = ({ files }: { files: IFile[] }) => (
 function Message({ message }: { message: IMessage }) {
   const time = parseDatetime(message.time);
   const formattedTime = time.format('DD.MM.YYYY HH:mm');
-  const hasFiles = message.files && message.files.length !== 0;
+  const hasFiles = message.files != null && message.files.length !== 0;
   const theme = useAppTheme();
 
   let cardTopText: string;
   if ([MessageType.message, MessageType.teacherReply].includes(message.type))
     cardTopText = 'Преподаватель';
   else if (message.type === MessageType.studentReply) cardTopText = 'Вы';
+  else return null;
 
   return (
     <CardHeaderOut topText={cardTopText}>
       <Text selectable selectionColor={theme.colors.primary}>
         {message.content}
       </Text>
-      {hasFiles ? <AttachedFiles files={message.files} /> : ''}
+      {hasFiles ? <AttachedFiles files={message.files!} /> : null}
       <View style={{ alignItems: 'flex-end' }}>
         <Text>{formattedTime}</Text>
       </View>

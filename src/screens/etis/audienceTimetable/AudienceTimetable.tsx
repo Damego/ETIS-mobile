@@ -15,14 +15,14 @@ const AudienceTimetable = ({ route }: EducationStackScreenProps<'AudienceTimetab
   const { audience } = route.params;
 
   const timetable = useTimetable({ onRequestUpdate: (week) => setFetchWeek(week) });
-  const [fetchWeek, setFetchWeek] = React.useState<number>(timetable.selectedWeek);
+  const [fetchWeek, setFetchWeek] = React.useState<number>(timetable.selectedWeek ?? 1);
 
   const { data, isLoading, refetch } = useQuery({
-    queryFn: () => getAudienceTimetable(audience.id, fetchWeek),
+    queryFn: () => getAudienceTimetable(audience.id ?? 0, fetchWeek ?? 1),
     queryKey: ['aud-timetable', fetchWeek, audience.id],
   });
 
-  useTimetableSync(timetable, data, ($data) => $data.weekInfo);
+  useTimetableSync(timetable, data, ($data) => $data?.weekInfo);
 
   if (!isLoading && !data && isPsutechAvailable() === false) {
     return (

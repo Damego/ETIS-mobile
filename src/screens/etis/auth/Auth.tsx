@@ -18,7 +18,7 @@ const AuthScreen = () => {
 
   const { userCredentials, isSignedOut } = useAppSelector((state) => state.account);
 
-  const [message, setMessage] = useState(null);
+  const [message, setMessage] = useState<string | null>(null);
   const [showRecovery, setShowRecovery] = useState(false);
 
   useEffect(() => {

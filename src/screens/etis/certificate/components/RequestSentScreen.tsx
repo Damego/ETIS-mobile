@@ -19,8 +19,8 @@ const RequestSentScreen = ({
 }: CertificateRequest) => {
   const navigation = useNavigation();
 
-  const certificateName = KNOWN_CERTIFICATES.find((cert) => cert.id === certificateId).name;
-  const deliveryMethodName = DELIVERY_METHODS.find((method) => method.id === delivery).name;
+  const certificateName = KNOWN_CERTIFICATES.find((cert) => cert.id === certificateId)?.name;
+  const deliveryMethodName = DELIVERY_METHODS.find((method) => method.id === delivery)?.name;
 
   return (
     <Screen>

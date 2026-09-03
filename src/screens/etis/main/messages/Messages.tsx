@@ -19,7 +19,7 @@ const Messages = ({ jumpTo, route }: SceneProps) => {
   const Navigation = () => (
     <View style={{ marginBottom: '2%', gap: 8 }}>
       <MessagesShortcuts onShortcutPress={jumpTo} currentShortcut={route.key} />
-      {Boolean(data) && (
+      {data != null && (
         <PageNavigator
           firstPage={1}
           lastPage={data.lastPage}

@@ -24,7 +24,7 @@ const SelectTeacherScreen = () => {
   const insets = useSafeAreaInsets();
 
   const dispatch = useAppDispatch();
-  const [selectedTeacher, setSelectedTeacher] = useState<ITeacherPSU>(null);
+  const [selectedTeacher, setSelectedTeacher] = useState<ITeacherPSU | null>(null);
 
   const [query, setQuery] = useState('');
   const { data, isLoading, refetch } = useQuery({

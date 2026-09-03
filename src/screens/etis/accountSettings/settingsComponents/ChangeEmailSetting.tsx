@@ -8,7 +8,7 @@ const ChangeEmailSetting = () => {
   const navigation = useNavigation<EducationNavigationProp>();
 
   const handlePress = () => {
-    navigation.navigate('ChangeEmail');
+    navigation.navigate('ChangeEmail', { sendVerificationMail: false });
   };
 
   return <BaseSettingButton iconName={'mail'} label={'Изменить почту'} onPress={handlePress} />;

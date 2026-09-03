@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
 
 const MAX_FILE_SIZE_LIMIT = 2 * 1024 * 1024;
 
-const File = ({ name, onRemove }) => {
+const File = ({ name, onRemove }: { name: string; onRemove: (name: string) => void }) => {
   const globalStyles = useGlobalStyles();
   const fileFormat = name.split('.').at(-1);
   const cutFileName = name.length < 14 ? name : `${name.substring(0, 10)}....${fileFormat}`;
@@ -73,14 +73,20 @@ const File = ({ name, onRemove }) => {
   );
 };
 
-export const FilesPreview = ({ files, onFileRemove }) => (
+export const FilesPreview = ({
+  files,
+  onFileRemove,
+}: {
+  files: UploadFile[];
+  onFileRemove: (fileName: string) => void;
+}) => (
   <View style={styles.wrapperContainer}>
     <ScrollView
       style={styles.scrollContainer}
       contentContainerStyle={styles.innerScrollContainer}
       horizontal
     >
-      {files.map(({ name }, index) => (
+      {files.map(({ name }, index: number) => (
         <File name={name} onRemove={onFileRemove} key={`${name}-${index}`} />
       ))}
     </ScrollView>
@@ -94,7 +100,7 @@ const MessageInput = ({
   disabled,
 }: {
   onFileSelect(file: UploadFile[]): void;
-  onSubmit(text: string): Promise<Response<string>>;
+  onSubmit(text: string): Promise<Response<string> | undefined>;
   showLoading: boolean;
   disabled: boolean;
 }) => {
@@ -116,17 +122,17 @@ const MessageInput = ({
 
     const docs = result.assets
       .map((doc) => {
-        if (doc.size > MAX_FILE_SIZE_LIMIT) {
+        if ((doc.size ?? 0) > MAX_FILE_SIZE_LIMIT) {
           ToastAndroid.show('Файл должен быть не более 2 МБ!', ToastAndroid.SHORT);
           return;
         }
         return {
           name: doc.name,
-          type: doc.mimeType,
+          type: doc.mimeType ?? 'application/octet-stream',
           uri: doc.uri,
         };
       })
-      .filter((s) => Boolean(s));
+      .filter((s): s is UploadFile => Boolean(s));
     onFileSelect(docs);
   };
 

@@ -25,11 +25,11 @@ const AdditionalMaterialsBottomSheet = React.forwardRef<
 ));
 
 const AdditionalMaterials = ({ data }: { data: IAdditionalMaterials }) => {
-  const ref = useRef<BottomSheetModal | undefined>(undefined);
+  const ref = useRef<BottomSheetModal | null>(null);
 
   return (
     <>
-      <SectionRow label='Дополнительные материалы' onPress={() => ref.current.present()} />
+      <SectionRow label='Дополнительные материалы' onPress={() => ref.current?.present()} />
       <AdditionalMaterialsBottomSheet ref={ref} data={data} />
     </>
   );

@@ -4,14 +4,14 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import Text from '~/components/Text';
 import ThemedCheckbox from '~/components/ThemedCheckbox';
-import TaskContext from '~/context/taskContext';
+import { useTaskContext } from '~/context/taskContext';
 import { useAppTheme } from '~/hooks/theme';
 import { DisciplineTask } from '~/models/disciplinesTasks';
 import { fontSize } from '~/utils/texts';
 
 const TaskItem = ({ task }: { task: DisciplineTask }) => {
   const theme = useAppTheme();
-  const { onRequestEdit, onComplete } = useContext(TaskContext);
+  const { onRequestEdit, onComplete } = useTaskContext();
   return (
     <View style={styles.container}>
       <View style={[styles.checkbox, styles.align]}>

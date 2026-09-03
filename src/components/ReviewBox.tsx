@@ -7,7 +7,13 @@ import {
 import { useGlobalStyles } from '../hooks';
 import { fontSize } from '../utils/texts';
 
-const ReviewBox = ({ setReviewed, setViewed }) => {
+const ReviewBox = ({
+  setReviewed,
+  setViewed,
+}: {
+  setReviewed: () => void;
+  setViewed: () => void;
+}) => {
   const globalStyles = useGlobalStyles();
 
   const handleReview = async () => {

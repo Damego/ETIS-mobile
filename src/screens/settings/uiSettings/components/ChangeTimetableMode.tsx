@@ -19,9 +19,9 @@ const formatTimetableMode = (mode: TimetableModes) =>
 const ChangeTimetableModeButton = () => {
   const dispatch = useAppDispatch();
   const { timetableMode } = useAppSelector((state) => state.settings.config.ui);
-  const modalRef = useRef<BottomSheetModal | undefined>(undefined);
+  const modalRef = useRef<BottomSheetModal | null>(null);
 
-  const handlePress = () => modalRef.current.present();
+  const handlePress = () => modalRef.current?.present();
 
   const handleModeSelect = (mode: TimetableModes) => () => {
     dispatch(setUIConfig({ timetableMode: mode }));
@@ -43,7 +43,7 @@ const ChangeTimetableModeButton = () => {
               <ClickableText
                 onPress={handleModeSelect(mode)}
                 textStyle={[{ fontWeight: '500' }, fontSize.big]}
-                colorVariant={mode === timetableMode && 'primary'}
+                colorVariant={mode === timetableMode ? 'primary' : undefined}
                 key={mode}
               >
                 {formatTimetableMode(mode)}

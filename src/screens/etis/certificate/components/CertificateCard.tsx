@@ -43,7 +43,7 @@ const CertificateCard = ({ certificate }: { certificate: ICertificate }) => {
 
   return (
     <>
-      {isOpened && <CertificateModal html={html} closeModal={closeModal} />}
+      {isOpened && <CertificateModal html={html ?? ''} closeModal={closeModal} />}
 
       <TouchableOpacity onPress={openModal}>
         <CardHeaderIn topText={`№${certificate.id ?? '-'} от ${certificate.date}`}>

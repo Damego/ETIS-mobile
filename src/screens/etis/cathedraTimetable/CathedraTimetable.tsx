@@ -19,14 +19,21 @@ const CathedraTimetable = ({ route }: EducationStackScreenProps<'CathedraTimetab
   const client = useClient();
   const timetable = useTimetable({
     onRequestUpdate: (week) =>
-      update({ data: { ...initialPayload, week }, requestType: RequestType.tryFetch }),
+      update({
+        data: {
+          cathedraId: initialPayload?.cathedraId ?? '',
+          teacherId: initialPayload?.teacherId ?? 0,
+          week,
+        },
+        requestType: RequestType.tryFetch,
+      }),
   });
   const { data, isLoading, refresh, update, initialPayload } = useQuery({
     method: client.getCathedraTimetable,
     payload: {
       data: {
-        cathedraId: route.params.cathedraId,
-        teacherId: Number(route.params.teacherId),
+        cathedraId: route.params.cathedraId ?? '',
+        teacherId: Number(route.params.teacherId ?? 0),
         week: timetable.currentWeek,
       },
       requestType: RequestType.forceFetch,
@@ -35,26 +42,24 @@ const CathedraTimetable = ({ route }: EducationStackScreenProps<'CathedraTimetab
 
   useTimetableSync(timetable, data, ($data) =>
     ($data
-      ? $data.timetable.find((timetable) => timetable.teacher.id === currentTeacher?.id) ||
-      $data.timetable[0]
+      ? $data.timetable.find((tt) => tt.teacher?.id === currentTeacher?.id) || $data.timetable[0]
       : undefined
     )?.weekInfo
   );
 
   const onTeacherSelect = (teacherId: string) => {
-    setCurrentTeacher(data?.timetable.find((tt) => tt.teacher.id === teacherId).teacher);
+    setCurrentTeacher(data?.timetable.find((tt) => tt.teacher?.id === teacherId)?.teacher);
   };
 
   if (!isLoading && (!data?.timetable?.length)) return <NoData />;
 
   const teacherTimetable = data
-    ? data.timetable.find((timetable) => timetable.teacher.id === currentTeacher?.id) ||
-    data.timetable[0]
+    ? data.timetable.find((tt) => tt.teacher?.id === currentTeacher?.id) || data.timetable[0]
     : undefined;
 
   return (
     <Screen onUpdate={refresh}>
-      {data?.timetable?.length > 1 && (
+      {data != null && data.timetable?.length > 1 && teacherTimetable?.teacher && (
         <TeachersBottomSheet
           selectedTeacher={teacherTimetable.teacher}
           timetable={data.timetable}

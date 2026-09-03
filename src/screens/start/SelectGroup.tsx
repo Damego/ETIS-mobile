@@ -52,7 +52,7 @@ const SelectGroupScreen = ({ route }: StartStackScreenProps<'SelectGroup'>) => {
   const dispatch = useAppDispatch();
   const insets = useSafeAreaInsets();
   const { facultyId } = route.params;
-  const [selectedGroup, setSelectedGroup] = useState<IGroup>(null);
+  const [selectedGroup, setSelectedGroup] = useState<IGroup | null>(null);
   const [query, setQuery] = useState('');
   const { data, isLoading } = useQuery({
     queryKey: ['groups', query],
@@ -63,6 +63,7 @@ const SelectGroupScreen = ({ route }: StartStackScreenProps<'SelectGroup'>) => {
     setSelectedGroup(group);
   };
   const handleConfirm = () => {
+    if (!selectedGroup) return;
     cache.setStudentData({ group: selectedGroup });
     dispatch(setStudent({ group: selectedGroup }));
   };

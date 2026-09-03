@@ -29,7 +29,7 @@ import HistoryButton from '../disciplineInfo/HistoryButton';
 import TaskModal from '../disciplineInfo/TaskModal';
 
 const TaskGroup = ({ tasks }: { tasks: DisciplineTask[] }) => {
-  const date = tasks[0].datetime ? formatTime(tasks[0].datetime, { disableTime: true }) : null;
+  const date = tasks[0].datetime ? formatTime(tasks[0].datetime, { disableTime: true }) : undefined;
 
   const innerGroup = groupItems(tasks, (task) => task.disciplineName);
 
@@ -54,16 +54,16 @@ const DisciplinesTasks = ({ route }: EducationStackScreenProps<'DisciplineTasks'
 
   const [selectedTask, setSelectedTask] = useState<DisciplineTask>();
   const [showInactiveTasks, setShowInactiveTasks] = useState<boolean>(false);
-  const modalRef = useRef<BottomSheetModal | undefined>(undefined);
+  const modalRef = useRef<BottomSheetModal | null>(null);
   const modalOpened = useRef(false);
 
   const openModal = () => {
-    modalRef.current.present();
+    modalRef.current?.present();
     modalOpened.current = true;
   };
 
   const closeModal = () => {
-    modalRef.current.dismiss();
+    modalRef.current?.dismiss();
     modalOpened.current = false;
   };
 
@@ -74,7 +74,9 @@ const DisciplinesTasks = ({ route }: EducationStackScreenProps<'DisciplineTasks'
 
   const handleTaskAdd = async (partial: PartialTask) => {
     if (!selectedTask) return; // impossible in this case;
-    const notificationIds = selectedTask.reminders.map((rem) => rem.notificationId);
+    const notificationIds = selectedTask.reminders
+      .map((rem) => rem.notificationId)
+      .filter((id): id is string => Boolean(id));
     selectedTask.description = partial.description;
     selectedTask.reminders = partial.reminders;
 
@@ -82,7 +84,7 @@ const DisciplinesTasks = ({ route }: EducationStackScreenProps<'DisciplineTasks'
     await saveTasks();
 
     closeModal();
-    setSelectedTask(null);
+    setSelectedTask(undefined);
   };
 
   const handleTaskRemove = async (task: DisciplineTask) => {

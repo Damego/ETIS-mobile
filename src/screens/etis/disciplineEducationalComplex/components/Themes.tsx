@@ -82,11 +82,11 @@ const Themes = ({
   themes: IDisciplineEducationalComplexThemeLink[];
   disciplineName: string;
 }) => {
-  const ref = useRef<BottomSheetModal | undefined>(undefined);
+  const ref = useRef<BottomSheetModal | null>(null);
 
   return (
     <>
-      <SectionRow label='Темы' onPress={() => ref.current.present()} />
+      <SectionRow label='Темы' onPress={() => ref.current?.present()} />
       <ThemesBottomSheet ref={ref} themes={themes} disciplineName={disciplineName} />
     </>
   );

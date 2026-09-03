@@ -55,7 +55,7 @@ export default function Rating() {
   const { data, isLoading, refresh, loadSession } = useRatingQuery();
 
   const theme = useAppTheme();
-  const modalRef = useRef<BottomSheetModal | undefined>(undefined);
+  const modalRef = useRef<BottomSheetModal | null>(null);
 
   let component: React.ReactNode;
   if (isLoading) component = <LoadingContainer />;
@@ -66,7 +66,7 @@ export default function Rating() {
     <Screen onUpdate={refresh}>
       {data && (
         <ClickableText
-          onPress={() => modalRef.current.present()}
+          onPress={() => modalRef.current?.present()}
           textStyle={fontSize.big}
           iconRight={<AntDesign name='swap' size={18} color={theme.colors.text} />}
           viewStyle={{ gap: 4, alignSelf: 'flex-end' }}

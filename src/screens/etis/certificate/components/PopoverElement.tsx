@@ -7,7 +7,7 @@ import Text from '~/components/Text';
 import { useAppTheme } from '~/hooks/theme';
 import { borderRadius, fontSize } from '~/utils/texts';
 
-export const PopoverElement = ({ text }) => {
+export const PopoverElement = ({ text }: { text: string }) => {
   const appTheme = useAppTheme();
   return (
     <Popover

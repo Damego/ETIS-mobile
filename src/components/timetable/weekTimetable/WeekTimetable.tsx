@@ -17,8 +17,8 @@ import HolidayView from './components/HolidayView';
 const isHolidayWeek = (weekInfo: WeekInfo) => {
   if (weekInfo.type !== WeekTypes.holiday) return false;
 
-  const weekStart = dayjs(weekInfo.dates.start, 'DD.MM.YYYY');
-  const holidayStart = dayjs(weekInfo.holidayDates.start, 'DD.MM.YYYY');
+  const weekStart = dayjs(weekInfo.dates?.start ?? '', 'DD.MM.YYYY');
+  const holidayStart = dayjs(weekInfo.holidayDates?.start ?? '', 'DD.MM.YYYY');
 
   // Если каникулы заканчиваются на следующей неделе от её начала,
   // то тип недели уже не является каникулами,
@@ -40,7 +40,7 @@ const WeekTimeTable = ({
   loadingComponent,
   onRetry,
 }: {
-  data: ITimeTable;
+  data?: ITimeTable | null;
   currentDate: dayjs.Dayjs;
   currentWeek: number;
   selectedDate: dayjs.Dayjs;
@@ -66,8 +66,8 @@ const WeekTimeTable = ({
     <View style={{ flex: 1 }}>
       {shouldRenderNavigator && (
         <PageNavigator
-          firstPage={firstWeek ?? data.weekInfo.first}
-          lastPage={lastWeek ?? data.weekInfo.last}
+          firstPage={firstWeek ?? data?.weekInfo.first ?? 1}
+          lastPage={lastWeek ?? data?.weekInfo.last ?? 1}
           currentPage={selectedWeek}
           onPageChange={onWeekPress}
           pageStyles={{
@@ -93,7 +93,7 @@ const WeekTimeTable = ({
               <TimeTableContext.Provider value={contextData}>
                 {isHolidayWeek(data.weekInfo)
                   ? (
-                    <HolidayView holidayInfo={data.weekInfo.holidayDates} />
+                    <HolidayView holidayInfo={data.weekInfo.holidayDates!} />
                   )
                   : (
                     <DayArray data={data.days} weekDates={data.weekInfo.dates} />

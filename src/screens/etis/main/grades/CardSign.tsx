@@ -15,14 +15,14 @@ import TotalPoints from './TotalPoints';
 
 const CardSign = ({ subject }: { subject: ISubjectPoints }) => {
   const globalStyles = useGlobalStyles();
-  const ref = useRef<BottomSheetModal | undefined>(undefined);
+  const ref = useRef<BottomSheetModal | null>(null);
 
   return (
     <View style={{ gap: 8 }}>
       <Text style={styles.subjectNameText}>{subject.name}</Text>
       <View style={styles.pointsView}>
         <TouchableOpacity
-          onPress={() => ref.current.present()}
+          onPress={() => ref.current?.present()}
           activeOpacity={0.45}
           style={[globalStyles.card, { padding: '2%' }]}
         >

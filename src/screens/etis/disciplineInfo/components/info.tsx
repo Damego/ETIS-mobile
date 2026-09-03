@@ -87,15 +87,17 @@ export const TeacherInfo = ({ teacher }: { teacher?: ITimeTableTeacher }) => {
     skipInitialGet: !teacher?.id,
   });
 
-  const teacherName = getTeacherName(data, teacher);
-  return <IconInfo icon={'school-outline'} text={teacherName} />;
+  const teacherName = teacher ? getTeacherName(data ?? [], teacher) : undefined;
+  return teacherName ? <IconInfo icon={'school-outline'} text={teacherName} /> : null;
 };
 
 export const AudienceInfo = ({ lesson }: { lesson: ILesson }) => {
   const theme = useAppTheme();
 
-  if (lesson.distancePlatform) {
-    const assetDetails = getAssetByPlatformType(lesson.distancePlatform.type);
+  const platform = lesson.distancePlatform;
+
+  if (platform) {
+    const assetDetails = getAssetByPlatformType(platform.type);
     return (
       <View style={styles.container}>
         {assetDetails
@@ -103,19 +105,19 @@ export const AudienceInfo = ({ lesson }: { lesson: ILesson }) => {
             <Image
               source={assetDetails[0]}
               style={{ height: 30, width: 30 }}
-              tintColor={!assetDetails[1] && theme.colors.text}
+              tintColor={assetDetails[1] ? undefined : theme.colors.text}
             />
           )
           : (
             <AntDesign name={'questioncircleo'} size={28} color={theme.colors.text} />
           )}
         <ClickableText
-          text={lesson.distancePlatform.name}
+          text={platform.name}
           onPress={() => {
-            Linking.openURL(lesson.distancePlatform.url);
+            Linking.openURL(platform.url);
           }}
           onLongPress={() => {
-            Clipboard.setStringAsync(lesson.distancePlatform.url).then(() => {
+            Clipboard.setStringAsync(platform.url).then(() => {
               ToastAndroid.show('Скопировано в буфер обмена', ToastAndroid.LONG);
             });
           }}

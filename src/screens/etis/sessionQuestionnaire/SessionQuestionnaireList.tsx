@@ -22,7 +22,7 @@ export default function SessionQuestionnaireList({ navigation }: EducationStackS
     method: client.getSessionQuestionnaireList,
     payload: {
       requestType: RequestType.forceFetch,
-      data: sessionTestID,
+      data: sessionTestID ?? undefined,
     },
   });
   const isFocused = useIsFocused();
@@ -50,7 +50,7 @@ export default function SessionQuestionnaireList({ navigation }: EducationStackS
                 <ClickableText
                   text={link.name}
                   onPress={() => {
-                    navigation.navigate('SessionQuestionnaire', { url: link.url });
+                    navigation.navigate('SessionQuestionnaire', { url: link.url ?? '' });
                   }}
                   textStyle={fontSize.small}
                 />

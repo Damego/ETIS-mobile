@@ -33,6 +33,7 @@ const PersonalRecord = ({
   const dispatch = useAppDispatch();
 
   const changePersonalRecord = async () => {
+    if (!record.id) return;
     const success = await httpClient.changePersonalRecord(record.id);
     if (!success) {
       return ToastAndroid.show('Невозможно сменить личную запись', ToastAndroid.LONG);
@@ -90,7 +91,7 @@ export default function PersonalRecords() {
       <Text style={textStyles}>Доступные записи</Text>
       <View style={{ gap: 8 }}>
         {activeRecords.map((record) => (
-          <PersonalRecord record={record} key={record.id + record.index} showStatus />
+          <PersonalRecord record={record} key={(record.id ?? '') + record.index} showStatus />
         ))}
       </View>
     </View>

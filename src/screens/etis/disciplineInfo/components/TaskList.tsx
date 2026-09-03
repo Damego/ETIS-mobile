@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 
 import BorderLine from '~/components/BorderLine';
 import Text from '~/components/Text';
-import TaskContext from '~/context/taskContext';
+import { useTaskContext } from '~/context/taskContext';
 import { DisciplineTask } from '~/models/disciplinesTasks';
 import { formatTime } from '~/utils/datetime';
 import { fontSize } from '~/utils/texts';
@@ -14,12 +14,12 @@ import HistoryButton from '../HistoryButton';
 import TaskItem from './TaskItem';
 
 const GroupedTaskList = ({ tasks }: { tasks: DisciplineTask[] }) => {
-  const { disciplineDate } = useContext(TaskContext);
+  const { disciplineDate } = useTaskContext();
   const { datetime } = tasks[0];
-  let time: string;
+  let time: string | null;
 
-  if (tasks[0].datetime === null) time = null;
-  else if (disciplineDate.isSame(datetime)) time = 'На эту пару';
+  if (datetime === null) time = null;
+  else if (disciplineDate?.isSame(datetime)) time = 'На эту пару';
   else time = formatTime(datetime);
 
   return (

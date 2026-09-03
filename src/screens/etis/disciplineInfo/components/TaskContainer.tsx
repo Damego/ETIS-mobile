@@ -28,8 +28,8 @@ export const TaskContainer = ({
   disciplineName: string;
   disciplineDate: dayjs.Dayjs;
 }) => {
-  const modalRef = useRef<BottomSheetModal | undefined>(undefined);
-  const [selectedTask, setSelectedTask] = useState<DisciplineTask | null>(null);
+  const modalRef = useRef<BottomSheetModal | null>(null);
+  const [selectedTask, setSelectedTask] = useState<DisciplineTask | undefined>(undefined);
   const { tasks, addTask, saveTasks, removeTask } = useTasks({
     filter: (task) => task.disciplineName === disciplineName,
   });
@@ -37,12 +37,14 @@ export const TaskContainer = ({
   const handleAddTask = ({ description, reminders, isLinkedToPair }: PartialTask) => {
     if (selectedTask) {
       selectedTask.description = description;
-      const notificationIds = selectedTask.reminders.map((rem) => rem.notificationId);
+      const notificationIds = selectedTask.reminders
+        .map((rem) => rem.notificationId)
+        .filter((id): id is string => Boolean(id));
       selectedTask.reminders = reminders;
-      rescheduleTaskNotifications(notificationIds, selectedTask);
+      rescheduleTaskNotifications(notificationIds, selectedTask).catch((e) => console.warn(e));
       saveTasks().then(() => {
-        modalRef.current.dismiss();
-        setSelectedTask(null);
+        modalRef.current?.dismiss();
+        setSelectedTask(undefined);
       });
       return;
     }
@@ -54,18 +56,18 @@ export const TaskContainer = ({
       reminders,
       false
     );
-    scheduleTaskNotifications(task);
-    addTask(task).then(() => modalRef.current.dismiss());
+    scheduleTaskNotifications(task).catch((e) => console.warn(e));
+    addTask(task).then(() => modalRef.current?.dismiss());
   };
 
   const onRequestEdit = useCallback((task: DisciplineTask) => {
     setSelectedTask(task);
-    modalRef.current.present();
+    modalRef.current?.present();
   }, []);
 
   const handleTaskRemove = (task: DisciplineTask) => {
-    cancelScheduledTaskNotifications({ task });
-    removeTask(task).then(() => modalRef.current.dismiss());
+    cancelScheduledTaskNotifications({ task }).catch((e) => console.warn(e));
+    removeTask(task).then(() => modalRef.current?.dismiss());
   };
 
   const onTaskComplete = (task: DisciplineTask) => {
@@ -79,7 +81,7 @@ export const TaskContainer = ({
     <View>
       <View style={styles.taskContainer}>
         <Text style={styles.taskText}>Задания</Text>
-        <AddButton onPress={() => modalRef.current.present()} />
+        <AddButton onPress={() => modalRef.current?.present()} />
       </View>
 
       <TaskContext.Provider
@@ -96,7 +98,9 @@ export const TaskContainer = ({
         onTaskAdd={handleAddTask}
         onTaskRemove={handleTaskRemove}
         task={selectedTask}
-        disableCheckbox={currentDate > disciplineDate || (selectedTask && !selectedTask.datetime)}
+        disableCheckbox={Boolean(
+          currentDate > disciplineDate || (selectedTask && !selectedTask.datetime)
+        )}
       />
     </View>
   );

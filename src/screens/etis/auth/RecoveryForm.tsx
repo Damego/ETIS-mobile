@@ -10,7 +10,19 @@ import { fontSize } from '~/utils/texts';
 
 import { styles } from './AuthForm';
 
-const RecoveryForm = ({ onSubmit, isLoading, message, setShowModal, disabledRequestButton }) => {
+const RecoveryForm = ({
+  onSubmit,
+  isLoading,
+  message,
+  setShowModal,
+  disabledRequestButton,
+}: {
+  onSubmit: (login: string) => void;
+  isLoading?: boolean;
+  message: string | null;
+  setShowModal: (showModal: boolean) => void;
+  disabledRequestButton: boolean;
+}) => {
   const globalStyles = useGlobalStyles();
   const theme = useAppTheme();
 

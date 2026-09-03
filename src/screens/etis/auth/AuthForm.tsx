@@ -44,7 +44,15 @@ export const styles = StyleSheet.create({
   },
 });
 
-const Form = ({ onSubmit, errorMessage, setShowRecovery }) => {
+const Form = ({
+  onSubmit,
+  errorMessage,
+  setShowRecovery,
+}: {
+  onSubmit: (login: string, password: string) => void;
+  errorMessage: string | null;
+  setShowRecovery: (showRecovery: boolean) => void;
+}) => {
   const dispatch = useAppDispatch();
   const { saveUserCredentials } = useAppSelector((state) => state.account);
   const globalStyles = useGlobalStyles();

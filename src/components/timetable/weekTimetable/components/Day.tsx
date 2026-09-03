@@ -5,7 +5,7 @@ import { View } from 'react-native';
 import Text from '~/components/Text';
 import { checkAllowedPairRender } from '~/components/timetable/checkAllowedPairRender';
 import Pair from '~/components/timetable/dayTimetable/components/Pair';
-import TimeTableContext from '~/context/timetableContext';
+import { useTimetableContext } from '~/context/timetableContext';
 import { useAppSelector, useGlobalStyles } from '~/hooks';
 import { ITimeTableDay } from '~/models/timeTable';
 import { getEmptyDayResponses } from '~/utils/events';
@@ -24,7 +24,7 @@ export const Day = React.memo(({ data, date }: DayData) => {
     ui: { highlightCurrentDay, showEmptyPairs, showGapsBetweenPairs },
   } = useAppSelector((state) => state.settings.config);
   const globalStyles = useGlobalStyles();
-  const { currentDate } = useContext(TimeTableContext);
+  const { currentDate } = useTimetableContext();
   // Ответ для пустого дня фиксирован на день, а не меняется при каждом ре-рендере
   const emptyDayResponse = React.useMemo(() => getRandomItem(getEmptyDayResponses(theme)), [theme, date]);
   let didRenderFirstPair = false;

@@ -39,17 +39,18 @@ export default function CertificateIncome() {
   const client = useClient();
 
   const { info } = useAppSelector((state) => state.student);
-  const [fio, setFio] = useState<string>(info.name);
-  const [faculty, setFaculty] = useState<string>();
-  const [year, setYear] = useState<string>(String(getStudentYear(Number.parseInt(info.year))));
-  const [certPeriod, setCertPeriod] = useState<string>();
+  const [fio, setFio] = useState<string>(info?.name ?? '');
+  const [faculty, setFaculty] = useState<string>('');
+  const [year, setYear] = useState<string>(String(getStudentYear(Number.parseInt(info?.year ?? '1'))));
+  const [certPeriod, setCertPeriod] = useState<string>('');
   useQuery({
     method: client.getPersonalRecords,
     payload: {
       requestType: RequestType.tryCache,
     },
     after: (result) => {
-      setFaculty(result.data.find((record) => record.isCurrent).faculty);
+      const record = result.data?.find((item) => item.isCurrent);
+      if (record?.faculty) setFaculty(record.faculty);
     },
   });
 
@@ -100,10 +101,10 @@ export default function CertificateIncome() {
           onPress={() =>
             composeMail(
               makeMailOptions({
-                fio,
-                faculty,
-                year,
-                certPeriod,
+                fio: fio ?? '',
+                faculty: faculty ?? '',
+                year: year ?? '',
+                certPeriod: certPeriod ?? '',
               })
             )
           }

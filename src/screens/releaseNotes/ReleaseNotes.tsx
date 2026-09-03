@@ -19,7 +19,7 @@ const ReleaseNotes = () => {
   useEffect(() => {
     if (!assets?.length) return;
 
-    FileSystem.readAsStringAsync(assets[0].localUri).then((data) => {
+    FileSystem.readAsStringAsync(assets[0].localUri ?? '').then((data) => {
       setNotes(data);
     });
   }, [assets]);

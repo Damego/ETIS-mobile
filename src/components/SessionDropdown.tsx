@@ -33,8 +33,12 @@ export default function SessionDropdown({
 }) {
   const options = buildSessionOptions(currentSession, latestSession, sessionName);
 
+  const handleSelect = (value: unknown) => {
+    if (typeof value === 'number') onSelect(value);
+  };
+
   return (
-    <Dropdown onSelect={onSelect} selectedOption={options.current} options={options.options} />
+    <Dropdown onSelect={handleSelect} selectedOption={options.current} options={options.options} />
   );
 }
 

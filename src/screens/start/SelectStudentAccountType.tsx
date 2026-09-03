@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from '~/components/Button';
 import Text from '~/components/Text';
 import { useAppDispatch, useGlobalStyles, usePsutechHealth } from '~/hooks';
+import { StartStackScreenProps } from '~/navigation/types';
 import { AccountType, setAccountState } from '~/redux/reducers/accountSlice';
 import OptionButton from '~/screens/start/components/OptionButton';
 import { fontSize } from '~/utils/texts';
@@ -30,7 +31,7 @@ const WarningMessage = () => {
   );
 };
 
-const SelectStudentAccountTypeScreen = ({ navigation }) => {
+const SelectStudentAccountTypeScreen = ({ navigation }: StartStackScreenProps) => {
   const dispatch = useAppDispatch();
   const { isDown: psutechDown } = usePsutechHealth();
   const [withAuth, setWithAuth] = useState<boolean>(true);

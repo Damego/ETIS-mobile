@@ -15,7 +15,13 @@ const getStyles = (textColor: string): string => `
 }
 `;
 
-export default function OrderModal({ html, closeModal }) {
+export default function OrderModal({
+  html,
+  closeModal,
+}: {
+  html: string;
+  closeModal: () => void;
+}) {
   const globalStyles = useGlobalStyles();
 
   return (

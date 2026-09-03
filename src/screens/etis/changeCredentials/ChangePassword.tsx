@@ -16,14 +16,15 @@ import { fontSize } from '~/utils/texts';
 
 import { styles } from '../auth/AuthForm';
 
-const changePassword = async (oldPassword: string, newPassword: string): Promise<string> => {
+const changePassword = async (oldPassword: string, newPassword: string): Promise<string | undefined> => {
   const response = await httpClient.changePassword(oldPassword, newPassword);
-  const $ = cheerio.load(response.data);
+  const $ = cheerio.load(response.data ?? '');
 
   const error = $('.error');
   if (error.length) {
     return getTextField(error);
   }
+  return undefined;
 };
 
 const Form = ({
@@ -55,7 +56,7 @@ const Form = ({
   };
 
   const preSubmit = () => {
-    if (passwordUnconfirmed) return;
+    if (passwordUnconfirmed || !newPassword) return;
 
     onSubmit(newPassword);
   };
@@ -127,17 +128,18 @@ export default function ChangePassword() {
   const globalStyles = useGlobalStyles();
 
   const [isLoading, setLoading] = useState<boolean>(false);
-  const oldPassword = useAppSelector((state) => state.account.userCredentials.password);
+  const oldPassword = useAppSelector((state) => state.account.userCredentials?.password);
   const [passwordChanged, setPasswordChanged] = useState<boolean>(false);
 
   const submit = async (password: string) => {
     setLoading(true);
 
-    const error = await changePassword(oldPassword, password);
+    const error = await changePassword(oldPassword ?? '', password);
     if (error) ToastAndroid.show(error, ToastAndroid.LONG);
     else {
+      const cachedCredentials = (await cache.getUserCredentials()) ?? { login: '', password: '' };
       const userCredentials = {
-        ...(await cache.getUserCredentials()),
+        ...cachedCredentials,
         password,
       };
 

@@ -32,7 +32,7 @@ const Order = ({ order }: { order: IOrder }) => {
 
   return (
     <>
-      {isOpened && <OrderModal html={html} closeModal={closeModal} />}
+      {isOpened && <OrderModal html={html ?? ''} closeModal={closeModal} />}
 
       <TouchableOpacity onPress={openModal}>
         <CardHeaderIn topText={`№${order.id ?? '-'} от ${order.date}`}>

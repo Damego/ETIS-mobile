@@ -51,9 +51,9 @@ const DisciplineInfo = ({ route }: EducationStackScreenProps<'DisciplineInfo'>) 
         {lesson.teacher && <TeacherInfo teacher={lesson.teacher} />}
         {lesson.groups && <GroupsInfo groups={lesson.groups} />}
 
-        <Note disciplineName={lesson.subject.discipline} />
+        <Note disciplineName={lesson.subject.discipline ?? ''} />
         <BorderLine />
-        <TaskContainer disciplineName={lesson.subject.discipline} disciplineDate={date} />
+        <TaskContainer disciplineName={lesson.subject.discipline ?? ''} disciplineDate={date} />
       </View>
     </Screen>
   );

@@ -31,7 +31,7 @@ const options = (Object.entries(themeLabels) as Array<[ThemeType, string]>)
 const ToggleThemeSetting = () => {
   const dispatch = useAppDispatch();
   const { events, theme: themeType } = useAppSelector((state) => state.settings.config);
-  const modalRef = useRef<BottomSheetModal | undefined>(undefined);
+  const modalRef = useRef<BottomSheetModal | null>(null);
   const theme = useAppTheme();
 
   const changeAppTheme = (selectedTheme: ThemeType) => {
@@ -52,7 +52,7 @@ const ToggleThemeSetting = () => {
       <SettingRow
         label='Тема'
         icon={<Octicons name={'paintbrush'} size={24} color={theme.colors.text} />}
-        onPress={() => modalRef.current.present()}
+        onPress={() => modalRef.current?.present()}
         right={
           <Text style={fontSize.medium}>
             {themeLabels[themeType] ?? 'Автоматическая'}
@@ -62,7 +62,7 @@ const ToggleThemeSetting = () => {
       <OptionsBottomSheet
         ref={modalRef}
         options={options}
-        onOptionPress={changeAppTheme}
+        onOptionPress={(value) => changeAppTheme(value as ThemeType)}
         currentOptionValue={themeType}
       />
     </>

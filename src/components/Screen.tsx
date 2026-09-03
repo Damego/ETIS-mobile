@@ -14,7 +14,7 @@ import AuthLoadingModal from './AuthLoadingModal';
 type StatusBarStyle = 'auto' | 'inverted' | 'light' | 'dark';
 
 interface ScreenProps {
-  onUpdate?(...args): unknown;
+  onUpdate?(...args: unknown[]): unknown;
   children: React.ReactNode;
   startScrollFromBottom?: boolean;
   statusBarStyle?: StatusBarStyle;
@@ -38,7 +38,7 @@ const Screen = ({
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await onUpdate();
+    await onUpdate?.();
     setRefreshing(false);
   };
 
@@ -69,10 +69,10 @@ const Screen = ({
                 enabled={refreshEnabled}
               />
             )
-            : null
+            : undefined
         }
         onContentSizeChange={
-          startScrollFromBottom ? () => scrollRef.current.scrollToEnd() : undefined
+          startScrollFromBottom ? () => scrollRef.current?.scrollToEnd() : undefined
         }
       >
         {children}
@@ -101,7 +101,7 @@ export const ListScreen = <T,>({
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await onUpdate();
+    await onUpdate?.();
     setRefreshing(false);
   };
 
@@ -114,7 +114,7 @@ export const ListScreen = <T,>({
       <View style={[{ flex: 1 }, styles.screen, containerStyle]}>
         <FlashList
           ref={ref}
-          data={startScrollFromBottom ? data.toReversed() : data}
+          data={startScrollFromBottom ? data?.toReversed() : data}
           overScrollMode={'never'}
           showsVerticalScrollIndicator={false}
           onRefresh={onUpdate ? onRefresh : undefined}

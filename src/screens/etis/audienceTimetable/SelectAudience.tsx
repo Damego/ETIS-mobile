@@ -21,11 +21,11 @@ const SelectAudience = ({ navigation }: EducationStackScreenProps) => {
   const globalStyles = useGlobalStyles();
 
   const [query, setQuery] = React.useState('');
-  const [selectedAudience, setSelectedAudience] = React.useState<IAudience>(null);
-  const [selectedBuilding, setSelectedBuilding] = React.useState(null);
+  const [selectedAudience, setSelectedAudience] = React.useState<IAudience | null>(null);
+  const [selectedBuilding, setSelectedBuilding] = React.useState<string | null>(null);
 
   const { data, isLoading } = useQuery({
-    queryFn: () => searchAudience(query, selectedBuilding),
+    queryFn: () => searchAudience(query, selectedBuilding ?? ''),
     queryKey: ['aud-search', query, selectedBuilding],
   });
 
@@ -34,7 +34,9 @@ const SelectAudience = ({ navigation }: EducationStackScreenProps) => {
   };
 
   const handleConfirm = () => {
-    navigation.navigate('AudienceTimetable', { audience: selectedAudience });
+    if (selectedAudience) {
+      navigation.navigate('AudienceTimetable', { audience: selectedAudience });
+    }
   };
 
   return (

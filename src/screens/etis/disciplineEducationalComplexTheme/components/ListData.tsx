@@ -19,7 +19,7 @@ const ListContainerBottomSheet = React.forwardRef<
       {data.map(($data, index) => (
         <React.Fragment key={index}>
           <ClickableText
-            onPress={() => Linking.openURL($data.url)}
+            onPress={() => Linking.openURL($data.url ?? '#')}
             disabled={!$data.url}
             textStyle={fontSize.medium}
             textProps={{ selectable: true }}
@@ -35,11 +35,11 @@ const ListContainerBottomSheet = React.forwardRef<
 ));
 
 const ListData = ({ label, data }: { label: string; data: IListItem[] }) => {
-  const ref = useRef<BottomSheetModal | undefined>(undefined);
+  const ref = useRef<BottomSheetModal | null>(null);
 
   return (
     <>
-      <SectionRow label={label} onPress={() => ref.current.present()} />
+      <SectionRow label={label} onPress={() => ref.current?.present()} />
       <ListContainerBottomSheet ref={ref} label={label} data={data} />
     </>
   );

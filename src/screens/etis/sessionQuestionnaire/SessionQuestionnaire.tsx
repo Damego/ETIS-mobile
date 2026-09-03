@@ -48,7 +48,7 @@ export default function SessionQuestionnaire({
       data: url,
     },
     after: (result) => {
-      questionCount.current = result.data.themes.reduce(
+      questionCount.current = (result.data?.themes ?? []).reduce(
         (count, theme) => count + theme.questions.length,
         0
       );
@@ -66,7 +66,7 @@ export default function SessionQuestionnaire({
   const onThemeAnswer = (answers: IAnswer[]) => {
     answersRef.current = [...answersRef.current, ...answers];
 
-    if (themeIndex + 1 === data.themes.length) {
+    if (data && themeIndex + 1 === data.themes.length) {
       setStep(Steps.inputAdditionalComment);
       return;
     }
@@ -81,11 +81,12 @@ export default function SessionQuestionnaire({
         ToastAndroid.show('Запросы в демо режиме невозможны!', ToastAndroid.LONG);
       } else {
         setStep(Steps.sendResult);
+        if (!data) return;
         const payload = toSessionTestPayload({
           data,
           answers: answersRef.current,
-          teacher: teacherRef.current,
-          additionalComment: additionalCommentRef.current,
+          teacher: teacherRef.current ?? null,
+          additionalComment: additionalCommentRef.current ?? null,
         });
         httpClient.sendSessionQuestionnaireResult(payload).then(() => {
           setStep(Steps.resultSent);
@@ -101,7 +102,7 @@ export default function SessionQuestionnaire({
 
   let component: React.ReactNode;
   if (step === Steps.inputTeacher) {
-    component = <TeacherQuestionView teacher={data.teacher.name} setTeacher={setTeacher} />;
+    component = <TeacherQuestionView teacher={data.teacher?.name ?? ''} setTeacher={setTeacher} />;
   } else if (step === Steps.showThemeTitle || step === Steps.showThemeQuestions) {
     component = (
       <Theme

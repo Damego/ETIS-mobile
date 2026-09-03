@@ -19,14 +19,15 @@ const PAGE_ITEMS_LENGTH = 5;
 
 const Announces = ({ jumpTo, route }: SceneProps) => {
   const dispatch = useAppDispatch();
-  const [pageCount, setPageCount] = useState<number>();
+  const [pageCount, setPageCount] = useState<number>(1);
   const [currentPageNum, setCurrentPageNum] = useState<number>(1);
   const client = useClient();
   const { data, isLoading, refresh } = useQuery({
     method: client.getAnnounceData,
     after: (result) => {
       // WebView сильно нагружает устройство, поэтому распределяем объявления по страницам по 5 штук
-      setPageCount(Math.ceil(result.data.length / PAGE_ITEMS_LENGTH));
+      const announces = result.data ?? [];
+      setPageCount(Math.ceil(announces.length / PAGE_ITEMS_LENGTH));
 
       if (result.data && result.type === GetResultType.fetched) {
         dispatch(setAnnounceCount(null));

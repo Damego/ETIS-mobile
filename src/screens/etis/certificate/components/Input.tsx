@@ -5,7 +5,19 @@ import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
 import { borderRadius, fontSize } from '~/utils/texts';
 
-const Input = ({ name, placeholder, onUpdate, value, popover }) => {
+const Input = ({
+  name,
+  placeholder,
+  onUpdate,
+  value,
+  popover,
+}: {
+  name: string;
+  placeholder: string;
+  onUpdate: (value: string) => void;
+  value: string;
+  popover?: React.ReactNode;
+}) => {
   const globalStyles = useGlobalStyles();
   return (
     <>

@@ -17,6 +17,8 @@ const Settings = () => {
   const student = useAppSelector((state) => state.account.student);
   const dispatch = useAppDispatch();
 
+  if (!student) return null;
+
   const handleLogOut = () => {
     dispatch(clearAccountState());
     cache.clearAccountData();

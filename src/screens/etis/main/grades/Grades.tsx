@@ -16,7 +16,7 @@ import { fontSize } from '~/utils/texts';
 
 const Grades = () => {
   const { data, isLoading, refresh, loadSession } = useSignsQuery();
-  const ref = useRef<BottomSheetModal | undefined>(undefined);
+  const ref = useRef<BottomSheetModal | null>(null);
   const theme = useAppTheme();
 
   let component: React.ReactNode;
@@ -41,7 +41,7 @@ const Grades = () => {
         <Text style={[{ fontWeight: '700', flex: 2 }, fontSize.slarge]}>Оценки</Text>
         {data && (
           <ClickableText
-            onPress={() => ref.current.present()}
+            onPress={() => ref.current?.present()}
             textStyle={fontSize.big}
             iconRight={<AntDesign name='swap' size={18} color={theme.colors.text} />}
             viewStyle={{ gap: 4 }}
@@ -56,9 +56,9 @@ const Grades = () => {
       {data && (
         <PeriodsBottomSheet
           ref={ref}
-          currentPeriod={data.currentSession}
-          latestPeriod={data.latestSession}
-          periodName={data.sessionName}
+          currentPeriod={data.currentSession ?? 1}
+          latestPeriod={data.latestSession ?? 1}
+          periodName={data.sessionName ?? ''}
           onChange={handlePeriodPress}
         />
       )}

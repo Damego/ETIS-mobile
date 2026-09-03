@@ -13,7 +13,13 @@ const getStyles = (textColor: string): string => `
 }
 `;
 
-export default function CertificateModal({ html, closeModal }) {
+export default function CertificateModal({
+  html,
+  closeModal,
+}: {
+  html: string;
+  closeModal: () => void;
+}) {
   const globalStyles = useGlobalStyles();
 
   return (

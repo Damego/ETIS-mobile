@@ -24,7 +24,7 @@ const TimetableContainer = ({
   onPagerScrollStateChange,
 }: {
   timetable: IUseTimetable;
-  data: ITimeTable;
+  data?: ITimeTable | null;
   teachers?: ITeacher[];
   startDate?: dayjs.Dayjs;
   endDate?: dayjs.Dayjs;
@@ -47,7 +47,7 @@ const TimetableContainer = ({
     return (
       <WeekTimetable
         data={data}
-        teachers={teachers}
+        teachers={teachers ?? []}
         currentDate={currentDate}
         currentWeek={currentWeek}
         selectedWeek={selectedWeek}
@@ -64,7 +64,7 @@ const TimetableContainer = ({
   return (
     <DayTimetable
       data={data}
-      teachers={teachers}
+      teachers={teachers ?? []}
       currentDate={currentDate}
       currentWeek={currentWeek}
       selectedWeek={selectedWeek}

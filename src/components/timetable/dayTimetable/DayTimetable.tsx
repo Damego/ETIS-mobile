@@ -41,7 +41,7 @@ const DayTimetable = ({
   onRetry,
   onPagerScrollStateChange,
 }: {
-  data: ITimeTable;
+  data?: ITimeTable | null;
   selectedDate: dayjs.Dayjs;
   selectedWeek: number;
   currentDate: dayjs.Dayjs;
@@ -92,8 +92,8 @@ const DayTimetable = ({
   return (
     <TimeTableContext.Provider value={contextData}>
       <TimetableCalendar
-        periodStartDate={startDate ?? $startDate}
-        periodEndDate={endDate ?? $endDate}
+        periodStartDate={startDate ?? $startDate ?? undefined}
+        periodEndDate={endDate ?? $endDate ?? undefined}
         firstWeek={data?.weekInfo.first}
         lastWeek={data?.weekInfo.last}
         onDatePress={handleDatePress}

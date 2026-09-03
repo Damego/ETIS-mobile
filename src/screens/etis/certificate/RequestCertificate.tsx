@@ -53,28 +53,23 @@ export default function RequestCertificate({
   const availableCertificates = getAvailableCertificates(route.params);
 
   const { isDemo } = useAppSelector((state) => state.account);
-  const [{ certificateId, note, quantity, delivery, place }, setCertificate] =
-    useState<CertificateRequest>({
-      certificateId: undefined,
-      note: '',
-      quantity: '1',
-      delivery: '1',
-      place: '',
-    });
+  const [certificateRequest, setCertificate] = useState<CertificateRequest>({
+    certificateId: undefined,
+    note: '',
+    quantity: '1',
+    delivery: '1',
+    place: '',
+  });
+  const { certificateId, note, quantity, delivery, place } = certificateRequest;
 
   const [keyboardOpen, setKeyboardOpen] = useState<boolean>(false);
   const [requestSent, setRequestSent] = useState<boolean>(false);
 
   const changeCertificate = (certificate: Partial<CertificateRequest>) => {
-    setCertificate(($cert) => {
-      const updatedCert = { ...$cert };
-      Object.entries(certificate)
-        .filter(([, v]) => v !== undefined)
-        .forEach(([k, v]) => {
-          updatedCert[k] = v;
-        });
-      return updatedCert;
-    });
+    setCertificate(($cert) => ({
+      ...$cert,
+      ...Object.fromEntries(Object.entries(certificate).filter(([, v]) => v !== undefined)),
+    }));
   };
 
   Keyboard.addListener('keyboardDidShow', () => {
@@ -85,6 +80,7 @@ export default function RequestCertificate({
     setTimeout(() => setKeyboardOpen(false), 60);
   });
 
+  // Доступные опции зависят от выбранной справки; без выбора — пустые
   const currentCertificate = useMemo(
     () => availableCertificates.find((s) => s.id === certificateId),
     [certificateId]
@@ -111,7 +107,7 @@ export default function RequestCertificate({
 
   const [deliveryWayRadioButtons, quantityRadioButtons]: RadioButtonProps[][] = useMemo(
     () => [
-      currentCertificate?.deliveryMethod.map((deliveryWay) =>
+      (currentCertificate?.deliveryMethod ?? []).map((deliveryWay) =>
         radioFactory(deliveryWay.id, deliveryWay.name)
       ),
       ['1', '2', '3'].slice(0, currentCertificate?.maxQuantity).map((i) => radioFactory(i, i)),
@@ -167,7 +163,8 @@ export default function RequestCertificate({
   }
 
   const isApplicable =
-    certificateId &&
+    currentCertificate != null &&
+    certificateId != null &&
     !keyboardOpen &&
     Boolean(place) === currentCertificate.place &&
     Boolean(note) <= currentCertificate.note &&
@@ -188,7 +185,7 @@ export default function RequestCertificate({
         />
       </Card>
 
-      {certificateId && !specialCert && (
+      {currentCertificate && certificateId && !specialCert && (
         <>
           <Card>
             <Text style={fontSize.big}>Метод вручения</Text>

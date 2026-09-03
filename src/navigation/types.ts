@@ -128,30 +128,30 @@ export type ServicesNativeStackParamList = {
 
 // Типы параметров для экранов-компонентов (navigation, route)
 
-export type RootStackScreenProps<ScreenName extends keyof RootStackParamList = undefined> =
+export type RootStackScreenProps<ScreenName extends keyof RootStackParamList = keyof RootStackParamList> =
   StackScreenProps<RootStackParamList, ScreenName>;
-export type BottomTabsScreenProps<ScreenName extends keyof BottomTabsParamList = undefined> =
+export type BottomTabsScreenProps<ScreenName extends keyof BottomTabsParamList = keyof BottomTabsParamList> =
   CompositeScreenProps<BottomTabScreenProps<BottomTabsParamList, ScreenName>, RootStackScreenProps>;
 
 export type EducationStackScreenProps<
-  ScreenName extends keyof EducationStackParamList = undefined,
+  ScreenName extends keyof EducationStackParamList = keyof EducationStackParamList,
 > = CompositeScreenProps<
   StackScreenProps<EducationStackParamList, ScreenName>,
   RootStackScreenProps
 >;
 
 export type ServiceNativeStackScreenProps<
-  ScreenName extends keyof ServicesNativeStackParamList = undefined,
+  ScreenName extends keyof ServicesNativeStackParamList = keyof ServicesNativeStackParamList,
 > = CompositeScreenProps<
   NativeStackScreenProps<ServicesNativeStackParamList, ScreenName>,
   BottomTabsScreenProps
 >;
 
-export type StartStackScreenProps<ScreenName extends keyof StartStackParamList = undefined> =
+export type StartStackScreenProps<ScreenName extends keyof StartStackParamList = keyof StartStackParamList> =
   CompositeScreenProps<StackScreenProps<StartStackParamList, ScreenName>, RootStackScreenProps>;
 
 export type UnauthorizedTeacherStackScreenProps<
-  ScreenName extends keyof UnauthorizedTeacherStackParamList = undefined,
+  ScreenName extends keyof UnauthorizedTeacherStackParamList = keyof UnauthorizedTeacherStackParamList,
 > = CompositeScreenProps<
   StackScreenProps<UnauthorizedTeacherStackParamList, ScreenName>,
   StartStackScreenProps

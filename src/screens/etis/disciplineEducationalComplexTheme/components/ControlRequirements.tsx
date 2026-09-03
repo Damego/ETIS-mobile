@@ -17,11 +17,11 @@ const ControlRequirementsBottomSheet = React.forwardRef<BottomSheetModal, { data
 );
 
 const ControlRequirements = ({ data }: { data: string }) => {
-  const ref = useRef<BottomSheetModal | undefined>(undefined);
+  const ref = useRef<BottomSheetModal | null>(null);
 
   return (
     <>
-      <SectionRow label='Контроль' onPress={() => ref.current.present()} />
+      <SectionRow label='Контроль' onPress={() => ref.current?.present()} />
       <ControlRequirementsBottomSheet ref={ref} data={data} />
     </>
   );

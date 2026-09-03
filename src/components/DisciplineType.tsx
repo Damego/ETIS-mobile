@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const disciplineTypeStyles: { [key in LessonTypes] } = StyleSheet.create({
+const disciplineTypeStyles: { [key in LessonTypes]: { backgroundColor: string } } = StyleSheet.create({
   LECTURE: {
     backgroundColor: '#C62E3E',
   },

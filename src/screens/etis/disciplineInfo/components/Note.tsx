@@ -36,14 +36,14 @@ const Note = ({ disciplineName }: { disciplineName: string }) => {
   }, []);
 
   const handleEditNote = (value: string) => {
-    setInfo((info) => ({ ...info, note: value }));
+    setInfo((info) => ({ ...info, name: disciplineName, note: value }));
     setTextChanged(true);
   };
 
   const handleNoteSave = () => {
     DisciplineStorage.getInfo().then((infos) => {
       const $info = findDiscipline(disciplineName, infos);
-      $info.note = info.note;
+      if (info) $info.note = info.note;
       DisciplineStorage.saveInfo().then(() => {
         ToastAndroid.show('Сохранено!', ToastAndroid.LONG);
         setTextChanged(false);

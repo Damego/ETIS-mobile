@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { getPeriodWeek, isPsutechAvailable } from '~/api/psutech/api';
+import { PeriodTypes } from '~/api/psutech/types';
 import { LoadingContainer } from '~/components/LoadingScreen';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
@@ -26,22 +27,23 @@ import {
 import { fontSize } from '~/utils/texts';
 
 const Timetable = ({ navigation }: UnauthorizedTeacherStackScreenProps) => {
-  const { group } = useAppSelector((state) => state.account.student);
+  const { group } = useAppSelector((state) => state.account.student) ?? {};
   const { skipSunday } = useAppSelector((state) => state.settings.config.ui);
   const client = useClient();
 
   const { data: periodWeek } = useTanstackQuery({
-    queryFn: () => getPeriodWeek(group.period_type, getCurrentEducationYear()),
+    queryFn: () => getPeriodWeek(group?.period_type ?? PeriodTypes.SEMESTER, getCurrentEducationYear()),
     queryKey: ['periods'],
+    enabled: Boolean(group),
   });
 
   const { data, isLoading, refresh, update, initialPayload } = useQuery({
     method: client.getGroupTimetable,
     payload: {
       data: {
-        facultyId: group.faculty.id,
-        groupId: group.id,
-        course: getStudentYear(group.year),
+        facultyId: group?.faculty.id ?? '',
+        groupId: group?.id ?? '',
+        course: getStudentYear(group?.year ?? 0),
         year: getCurrentEducationYear(),
         // Будет заполнено позже
         period: 0,
@@ -64,7 +66,10 @@ const Timetable = ({ navigation }: UnauthorizedTeacherStackScreenProps) => {
 
     const payload = {
       data: {
-        ...initialPayload,
+        facultyId: group?.faculty.id ?? '',
+        groupId: group?.id ?? '',
+        course: getStudentYear(group?.year ?? 0),
+        year: getCurrentEducationYear(),
         period: periodIndex + 1,
         week,
       },

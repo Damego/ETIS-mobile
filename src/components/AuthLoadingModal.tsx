@@ -103,6 +103,8 @@ const AuthLoadingModal = () => {
   const globalStyles = useGlobalStyles();
 
   const onReceiveToken = async (token: string) => {
+    // Модал показывается только при авторизации, когда креды уже введены/загружены
+    if (!userCredentials) return;
     setLoading(true);
     setMessageStatus('Авторизация...');
 

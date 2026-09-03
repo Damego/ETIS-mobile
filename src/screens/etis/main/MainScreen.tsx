@@ -45,7 +45,7 @@ const ETISScreen = () => {
           if (result?.currentWeek) dispatch(setCurrentWeek(result.currentWeek));
           if (result?.currentSession) dispatch(setCurrentSession(result.currentSession));
           if (signNotificationEnabled) {
-            registerSignsFetchTask(result?.currentSession);
+            registerSignsFetchTask(result?.currentSession ?? undefined);
           }
         });
       }

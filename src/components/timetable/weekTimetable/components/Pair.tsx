@@ -6,7 +6,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import DisciplineType from '~/components/DisciplineType';
 import TaskBadge from '~/components/TaskBadge';
 import Text from '~/components/Text';
-import TimeTableContext from '~/context/timetableContext';
+import { useTimetableContext } from '~/context/timetableContext';
 import { useAppSelector } from '~/hooks';
 import { ILesson, IPair } from '~/models/timeTable';
 import { EducationNavigationProp } from '~/navigation/types';
@@ -53,10 +53,10 @@ const Pair = ({ pair, date }: { pair: IPair; date: dayjs.Dayjs }) => {
 const Lesson = React.memo(
   ({ data, date, pairPosition }: { data: ILesson; date: dayjs.Dayjs; pairPosition: number }) => {
     const navigation = useNavigation<EducationNavigationProp>();
-    const { teachers } = useContext(TimeTableContext);
+    const { teachers } = useTimetableContext();
 
     const audience = formatAudience(data);
-    const teacherName = getTeacherName(teachers, data.teacher);
+    const teacherName = data.teacher ? getTeacherName(teachers ?? [], data.teacher) : null;
 
     return (
       <TouchableOpacity

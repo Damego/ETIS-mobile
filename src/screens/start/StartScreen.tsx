@@ -15,7 +15,7 @@ type UserType = 'teacher' | 'student';
 const StartScreen = ({ navigation }: StartStackScreenProps) => {
   const globalStyles = useGlobalStyles();
   const { isDown: psutechDown } = usePsutechHealth();
-  const [selectedType, setSelectedType] = useState<UserType>(null);
+  const [selectedType, setSelectedType] = useState<UserType | null>(null);
 
   const handleChoose = () => {
     if (selectedType === 'student') {

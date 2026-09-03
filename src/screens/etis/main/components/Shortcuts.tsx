@@ -96,7 +96,7 @@ const Shortcuts = (
         <Icon
           iconName={'message1'}
           shortcut={'messageTabs'}
-          count={messageCount + announceCount}
+          count={(messageCount ?? 0) + (announceCount ?? 0)}
           onPress={jumpTo}
           isCurrent={currentShortcut === 'messageTabs'}
         />

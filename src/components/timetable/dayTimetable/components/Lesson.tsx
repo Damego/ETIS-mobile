@@ -28,7 +28,7 @@ const Lesson = ({
 
   const { teachers } = useTimetableContext();
   const audience = formatAudience(lesson);
-  const teacherName = lesson.teacher ? getTeacherName(teachers, lesson.teacher) : null;
+  const teacherName = lesson.teacher ? getTeacherName(teachers ?? [], lesson.teacher) : null;
 
   const onLessonPress = () => {
     navigation.navigate('DisciplineInfo', {
@@ -65,7 +65,9 @@ const Lesson = ({
         <View style={styles.row}>
           <Ionicons name={'school-outline'} size={20} color={theme.colors.text} />
           {Boolean(teacherName) && <Text>{teacherName}</Text>}
-          {Boolean(lesson.shortGroups?.length) && <Text>{formatGroups(lesson.shortGroups)}</Text>}
+          {Boolean(lesson.shortGroups?.length) && (
+            <Text>{formatGroups(lesson.shortGroups ?? [])}</Text>
+          )}
         </View>
       )}
     </TouchableOpacity>

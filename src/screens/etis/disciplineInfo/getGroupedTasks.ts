@@ -5,10 +5,12 @@ import { compareTime } from '~/utils/datetime';
 import { groupItems } from '~/utils/utils';
 
 const sortTaskGroups = (group1: DisciplineTask[], group2: DisciplineTask[]) => {
-  if (!group1[0].datetime) return -1;
-  if (!group1[0].datetime) return 1;
+  const first = group1[0].datetime;
+  const second = group2[0].datetime;
+  if (!first) return -1;
+  if (!second) return 1;
 
-  return compareTime(group1[0].datetime, group2[0].datetime);
+  return compareTime(first, second);
 };
 
 const getGroupedTasks = (tasks: DisciplineTask[], currentDate: dayjs.Dayjs) => {

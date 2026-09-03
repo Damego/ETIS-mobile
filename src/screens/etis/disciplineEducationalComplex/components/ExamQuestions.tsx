@@ -25,7 +25,7 @@ const Question = ({ question, index }: { question: IExamQuestions; index: number
       <Text style={{ fontWeight: 'bold' }}>
         {index + 1}. {question.title}
       </Text>
-      {Boolean(data?.data) && `\n${data.data}`}
+      {Boolean(data?.data) && `\n${data?.data}`}
     </Text>
   );
 };
@@ -43,13 +43,13 @@ const QuestionsBottomSheet = React.forwardRef<BottomSheetModal, { questions: IEx
 );
 
 const ExamQuestions = ({ questions }: { questions: IExamQuestions[] }) => {
-  const ref = useRef<BottomSheetModal | undefined>(undefined);
+  const ref = useRef<BottomSheetModal | null>(null);
 
   return (
     <>
       <SectionRow
         label='Вопросы промежуточной аттестации'
-        onPress={() => ref.current.present()}
+        onPress={() => ref.current?.present()}
       />
       <QuestionsBottomSheet ref={ref} questions={questions} />
     </>

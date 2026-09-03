@@ -11,10 +11,10 @@ import TeacherBottomSheet from '~/screens/etis/teachers/TeacherBottomSheet';
 
 import TeacherCard from './TeacherCard';
 
-const groupTeachers = (teachers: ITeacher[]) => {
+const groupTeachers = (teachers?: ITeacher[] | null) => {
   if (!teachers) return;
 
-  const dataGrouped = {};
+  const dataGrouped: Record<string, ITeacher[]> = {};
   teachers.forEach((teacher) => {
     teacher.subjects.forEach((subject) => {
       if (dataGrouped[subject.discipline]) {
@@ -33,7 +33,7 @@ const TeacherTable = () => {
   const { data, isLoading, refresh } = useQuery({
     method: client.getTeacherData,
   });
-  const modalRef = useRef<BottomSheetModal | undefined>(undefined);
+  const modalRef = useRef<BottomSheetModal | null>(null);
   const [selectedTeacher, setSelectedTeacher] = useState<ITeacher | null>(null);
   const grouped = useMemo(() => groupTeachers(data), [data]);
 
@@ -43,14 +43,14 @@ const TeacherTable = () => {
 
   return (
     <Screen onUpdate={refresh}>
-      {grouped.map(([discipline, teachers]) => (
+      {(grouped ?? []).map(([discipline, teachers]) => (
         <TeacherCard
           discipline={discipline}
           teachers={teachers}
           key={discipline}
           onPress={(teacher) => {
             setSelectedTeacher(teacher);
-            modalRef.current.present();
+            modalRef.current?.present();
           }}
         />
       ))}

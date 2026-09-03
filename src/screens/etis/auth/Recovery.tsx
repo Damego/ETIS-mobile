@@ -9,14 +9,14 @@ import { httpClient } from '~/utils';
 import Footer from './AuthFooter';
 import RecoveryForm from './RecoveryForm';
 
-const Recovery = ({ setShowModal }) => {
-  const [isLoading, setLoading] = useState<boolean>();
-  const [message, changeMessage] = useState(null);
-  const [recaptchaToken, setRecaptchaToken] = useState();
+const Recovery = ({ setShowModal }: { setShowModal: (showModal: boolean) => void }) => {
+  const [isLoading, setLoading] = useState<boolean>(false);
+  const [message, changeMessage] = useState<string | null>(null);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [disabledRequestButton, setDisabledRequestButton] = useState(false);
   const [isInvisibleRecaptcha, setIsInvisibleRecaptcha] = useState<boolean>(true);
 
-  const makeRequest = async ({ mail }) => {
+  const makeRequest = async ({ mail }: { mail: string }) => {
     if (isLoading || disabledRequestButton) return;
 
     if (!mail) {
@@ -47,7 +47,7 @@ const Recovery = ({ setShowModal }) => {
     changeMessage('Письмо успешно отправлено.');
   };
 
-  const onReceiveRecaptchaToken = async (token) => {
+  const onReceiveRecaptchaToken = async (token: string) => {
     setRecaptchaToken(token);
   };
 
@@ -62,7 +62,7 @@ const Recovery = ({ setShowModal }) => {
 
       <View style={{ flex: 1 }}>
         <RecoveryForm
-          onSubmit={(mail) => makeRequest({ mail })}
+          onSubmit={(mail: string) => makeRequest({ mail })}
           isLoading={isLoading}
           message={message}
           setShowModal={setShowModal}

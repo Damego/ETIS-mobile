@@ -45,7 +45,7 @@ const AddTaskModalContent = ({
   const [reminders, setReminders] = useState<DisciplineReminder[]>(selectedTask?.reminders || []);
   const [isLinkedToPair, setLinkedToPair] = useState(!disableCheckbox);
   const globalStyles = useGlobalStyles();
-  const reminderModal = useRef<BottomSheetModal | undefined>(undefined);
+  const reminderModal = useRef<BottomSheetModal | null>(null);
 
   const openReminderModal = () => reminderModal.current?.present();
 
@@ -68,7 +68,9 @@ const AddTaskModalContent = ({
       { text: 'Отмена' },
       {
         text: 'Удалить',
-        onPress: () => onTaskRemove(selectedTask),
+        onPress: () => {
+          if (selectedTask) onTaskRemove(selectedTask);
+        },
       },
     ]);
   };

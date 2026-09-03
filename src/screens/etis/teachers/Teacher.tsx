@@ -10,6 +10,7 @@ import {
 
 import DisciplineType from '~/components/DisciplineType';
 import Text from '~/components/Text';
+import { LessonTypes } from '~/models/other';
 import { ITeacher } from '~/models/teachers';
 import { fontSize } from '~/utils/texts';
 
@@ -28,7 +29,7 @@ const Teacher = ({ discipline, data, onPress }: TeacherProps) => {
         <View style={styles.teacherNameView}>
           <Text style={styles.textTitle}>{data.name}</Text>
           <View style={styles.typesContainer}>
-            {subject.types.map((type) => (
+            {subject?.types.filter((t): t is LessonTypes => t != null).map((type) => (
               <DisciplineType key={type} type={type} size={'small'} />
             ))}
           </View>

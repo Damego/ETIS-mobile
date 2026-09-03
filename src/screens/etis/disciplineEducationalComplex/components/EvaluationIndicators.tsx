@@ -40,11 +40,11 @@ const EvaluationIndicatorsBottomSheet = React.forwardRef<
 ));
 
 const EvaluationIndicators = ({ data }: { data: IEvaluationIndicators }) => {
-  const ref = useRef<BottomSheetModal | undefined>(undefined);
+  const ref = useRef<BottomSheetModal | null>(null);
 
   return (
     <>
-      <SectionRow label='Показатели оценивания' onPress={() => ref.current.present()} />
+      <SectionRow label='Показатели оценивания' onPress={() => ref.current?.present()} />
       <EvaluationIndicatorsBottomSheet ref={ref} data={data} />
     </>
   );

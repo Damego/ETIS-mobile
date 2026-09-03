@@ -22,7 +22,7 @@ const AbsencesTable = () => {
   const { data, isLoading, refresh, update } = useQuery({
     method: client.getAbsencesData,
   });
-  const modalRef = useRef<BottomSheetModal | undefined>(undefined);
+  const modalRef = useRef<BottomSheetModal | null>(null);
 
   const loadSession = (session: number) => {
     update({ data: session, requestType: RequestType.tryFetch });
@@ -50,9 +50,9 @@ const AbsencesTable = () => {
 
   return (
     <Screen onUpdate={refresh}>
-      {data && (
+      {data?.currentSession && (
         <ClickableText
-          onPress={() => modalRef.current.present()}
+          onPress={() => modalRef.current?.present()}
           textStyle={fontSize.big}
           iconRight={<AntDesign name='swap' size={18} color={theme.colors.text} />}
           viewStyle={{ gap: 4, alignSelf: 'flex-end' }}
@@ -68,7 +68,7 @@ const AbsencesTable = () => {
           options={data.sessions.map((session) => ({
             label: session.name,
             value: session.number.toString(),
-            isCurrent: session.number === data.currentSession.number,
+            isCurrent: session.number === data.currentSession?.number,
           }))}
           onOptionPress={(value) => loadSession(Number(value))}
         />

@@ -18,6 +18,7 @@ import ClickableText from '~/components/ClickableText';
 import DisciplineType from '~/components/DisciplineType';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
+import { LessonTypes } from '~/models/other';
 import { ITeacher } from '~/models/teachers';
 import { EducationNavigationProp } from '~/navigation/types';
 import { borderRadius as radii, fontSize } from '~/utils/texts';
@@ -31,7 +32,8 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
   });
 
   const { data: contacts } = useQuery({
-    queryFn: () => getTeacherContacts(psuTeacher?.psu?.page_url),
+    // enabled гарантирует наличие page_url к моменту вызова queryFn
+    queryFn: () => getTeacherContacts(psuTeacher?.psu?.page_url ?? ''),
     enabled: Boolean(psuTeacher?.psu?.page_url),
     queryKey: ['teacher_contacts', teacher.id],
   });
@@ -165,7 +167,7 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
         <React.Fragment key={index}>
           <Text style={fontSize.medium}>• {subject.discipline}</Text>
           <View style={styles.typesContainer}>
-            {subject.types.map((type, index) => (
+            {subject.types.filter((t): t is LessonTypes => t != null).map((type, index) => (
               <DisciplineType type={type} size={'small'} key={index} />
             ))}
           </View>

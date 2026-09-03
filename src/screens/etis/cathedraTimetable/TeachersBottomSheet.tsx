@@ -20,16 +20,18 @@ const TeachersBottomSheet = ({
   onTeacherSelect: (teacherId: string) => void;
 }) => {
   const globalStyles = useGlobalStyles();
-  const modalRef = useRef<BottomSheetModal | undefined>(undefined);
-  const options = timetable.map((tt) => ({
-    label: tt.teacher.name,
-    value: tt.teacher.id,
-    isCurrent: selectedTeacher.id === tt.teacher.id,
-  }));
+  const modalRef = useRef<BottomSheetModal | null>(null);
+  const options = timetable
+    .filter((tt) => Boolean(tt.teacher))
+    .map((tt) => ({
+      label: tt.teacher!.name,
+      value: tt.teacher!.id ?? '',
+      isCurrent: selectedTeacher.id === tt.teacher!.id,
+    }));
 
   return (
     <>
-      <TouchableOpacity onPress={() => modalRef.current.present()} style={{ marginBottom: '2%' }}>
+      <TouchableOpacity onPress={() => modalRef.current?.present()} style={{ marginBottom: '2%' }}>
         <Card
           style={{ justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}
         >

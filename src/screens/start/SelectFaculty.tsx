@@ -33,7 +33,7 @@ const FacultyButton = React.memo(
         source={faculty.logo_image_url}
         style={{ height: 50, width: 50, borderRadius: 25 }}
       />
-      <Text style={[{ flex: 1 }, fontSize.big]} colorVariant={isSelected && 'primary'}>
+      <Text style={[{ flex: 1 }, fontSize.big]} colorVariant={isSelected ? 'primary' : undefined}>
         {faculty.name}
       </Text>
     </TouchableOpacity>
@@ -43,14 +43,16 @@ const FacultyButton = React.memo(
 const SelectFacultyScreen = ({ navigation }: StartStackScreenProps) => {
   const globalStyles = useGlobalStyles();
   const insets = useSafeAreaInsets();
-  const [selectedFaculty, setSelectedFaculty] = useState<IFaculty>(null);
+  const [selectedFaculty, setSelectedFaculty] = useState<IFaculty | null>(null);
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['faculties'],
     queryFn: getFaculties,
   });
 
   const handleConfirm = () => {
-    navigation.navigate('SelectGroup', { facultyId: selectedFaculty?.id });
+    if (selectedFaculty) {
+      navigation.navigate('SelectGroup', { facultyId: selectedFaculty.id });
+    }
   };
 
   if (isLoading) return <LoadingScreen variant={'texts'} />;

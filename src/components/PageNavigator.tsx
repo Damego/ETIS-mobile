@@ -60,7 +60,7 @@ const PageNavigator = React.memo(
   }) => {
     const globalStyles = useGlobalStyles();
     const [pages, setPages] = useState<number[]>([]);
-    const ref = useRef<ScrollView | undefined>(undefined);
+    const ref = useRef<ScrollView | null>(null);
 
     const generateButtons = () => {
       const array: number[] = [];
@@ -81,7 +81,7 @@ const PageNavigator = React.memo(
         (currentPage - firstPage) * styles.button.width +
         (currentPage - firstPage) * styles.scrollContainer.gap;
 
-      ref.current.scrollTo({ x });
+      ref.current?.scrollTo({ x });
     }, [pages]);
 
     return (

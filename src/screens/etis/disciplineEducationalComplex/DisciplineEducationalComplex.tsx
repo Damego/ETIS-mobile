@@ -7,6 +7,7 @@ import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { useClient } from '~/data/client';
 import useQuery from '~/hooks/useQuery';
+import { LessonTypes } from '~/models/other';
 import { RequestType } from '~/models/results';
 import { EducationStackScreenProps } from '~/navigation/types';
 import AdditionalMaterials from '~/screens/etis/disciplineEducationalComplex/components/AdditionalMaterials';
@@ -46,8 +47,8 @@ const DisciplineEducationalComplex = ({
     method: client.getDisciplineEducationalComplex,
     payload: {
       data: {
-        disciplineId: disciplineTeachPlan.id,
-        disciplineTeachPlanId: disciplineTeachPlan.teachPlanId,
+        disciplineId: disciplineTeachPlan.id ?? '',
+        disciplineTeachPlanId: disciplineTeachPlan.teachPlanId ?? '',
       },
       requestType: RequestType.tryFetch,
     },
@@ -56,7 +57,9 @@ const DisciplineEducationalComplex = ({
   return (
     <Screen>
       <Text style={[fontSize.slarge, styles.boldText]}>{disciplineTeachPlan.name}</Text>
-      <DisciplineType type={getDisciplineTypeFromReporting(disciplineTeachPlan.reporting)} />
+      <DisciplineType
+        type={getDisciplineTypeFromReporting(disciplineTeachPlan.reporting) ?? LessonTypes.TEST}
+      />
 
       <View style={{ flexDirection: 'row', gap: 16, alignItems: 'center' }}>
         <Text style={[fontSize.big, styles.boldText]}>
@@ -73,13 +76,13 @@ const DisciplineEducationalComplex = ({
       {data && (
         <Card style={{ marginTop: 'auto', marginBottom: '4%', gap: 8 }}>
           {Boolean(data.themes?.length) && (
-            <Themes themes={data.themes} disciplineName={data.discipline} />
+            <Themes themes={data.themes!} disciplineName={data.discipline} />
           )}
-          {Boolean(data.examQuestions?.length) && <ExamQuestions questions={data.examQuestions} />}
+          {Boolean(data.examQuestions?.length) && <ExamQuestions questions={data.examQuestions!} />}
           {data.evaluationIndicators && <EvaluationIndicators data={data.evaluationIndicators} />}
           {data.additionalMaterials && <AdditionalMaterials data={data.additionalMaterials} />}
           {Boolean(data.plannedLearningOutcome?.length) && (
-            <PlannedLearningOutcome data={data.plannedLearningOutcome} />
+            <PlannedLearningOutcome data={data.plannedLearningOutcome!} />
           )}
         </Card>
       )}

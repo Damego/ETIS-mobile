@@ -46,11 +46,13 @@ const PeriodButton = React.memo(
       >
         <Text
           style={{ fontSize: 30, fontWeight: 'bold' }}
-          colorVariant={isCurrentPeriod && 'primaryContrast'}
+          colorVariant={isCurrentPeriod ? 'primaryContrast' : undefined}
         >
           {period.period.number}
         </Text>
-        <Text colorVariant={isCurrentPeriod && 'primaryContrast'}>{period.period.name}</Text>
+        <Text colorVariant={isCurrentPeriod ? 'primaryContrast' : undefined}>
+          {period.period.name}
+        </Text>
       </TouchableOpacity>
     );
   }
@@ -62,7 +64,8 @@ const ShortTeachPlan = () => {
     method: client.getTeachPlanData,
   });
   const currentSession = useAppSelector((state) => state.student.currentSession);
-  const [openedPeriod, setOpenedPeriod] = useState<number>(currentSession);
+  // null = все периоды закрыты (повторный тап по открытому периоду закрывает его)
+  const [openedPeriod, setOpenedPeriod] = useState<number | null>(currentSession ?? null);
 
   const handlePeriodPress = (period: number) => {
     setOpenedPeriod(($period) => {
@@ -84,7 +87,7 @@ const ShortTeachPlan = () => {
           .map((period, index) => (
             <PeriodButton
               period={period}
-              currentSession={currentSession}
+              currentSession={currentSession ?? 0}
               isOpened={period.period.number === openedPeriod}
               onPress={handlePeriodPress}
               key={index}

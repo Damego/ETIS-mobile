@@ -13,10 +13,10 @@ export default function CustomReCaptcha({
   size: 'invisible' | 'normal';
   onClose?(): void;
 }) {
-  const ref = useRef<RecaptchaHandles | undefined>(undefined);
+  const ref = useRef<RecaptchaHandles | null>(null);
 
   useEffect(() => {
-    ref.current.open();
+    ref.current?.open();
   }, [size]);
 
   return (

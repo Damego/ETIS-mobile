@@ -39,7 +39,7 @@ const DisciplineEducationalComplexTheme = ({
       {Boolean(data?.annotation) && (
         <View>
           <Text style={[fontSize.big, { fontWeight: 'bold' }]}>Аннотация</Text>
-          <Text style={fontSize.medium}>{data.annotation}</Text>
+          <Text style={fontSize.medium}>{data?.annotation}</Text>
         </View>
       )}
 

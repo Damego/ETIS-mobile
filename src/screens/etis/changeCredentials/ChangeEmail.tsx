@@ -19,7 +19,7 @@ import { styles } from '../auth/AuthForm';
 const emailRegex = /(.+)@(.+){2,}\.(.+){2,}/;
 const changeEmail = async (email: string) => {
   const response = await httpClient.changeEmail(email);
-  const error = parseChangeEmailPage(response.data);
+  const error = parseChangeEmailPage(response.data ?? '');
   if (error) return error;
 
   // Хотя в ЕТИСе сказано, что письмо было отправлено, но на самом деле нет.
@@ -102,7 +102,7 @@ export default function ChangeEmail({ route }: EducationStackScreenProps<'Change
     setMailSent(true);
 
     let userCredentials = await cache.getUserCredentials();
-    if (emailRegex.test(userCredentials.login)) {
+    if (userCredentials && emailRegex.test(userCredentials.login)) {
       userCredentials = { ...userCredentials, login: email };
       cache.placeUserCredentials(userCredentials);
       dispatch(setUserCredentials({ userCredentials, fromStorage: true }));

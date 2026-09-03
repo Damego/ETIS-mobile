@@ -18,7 +18,7 @@ import { fontSize } from '~/utils/texts';
 
 const Timetable = ({ navigation }: UnauthorizedTeacherStackScreenProps) => {
   const { skipSunday } = useAppSelector((state) => state.settings.config.ui);
-  const teacherId = useAppSelector((state) => state.account.teacher.id);
+  const teacherId = useAppSelector((state) => state.account.teacher?.id);
   const client = useClient();
   const timetable = useTimetable({
     skipSunday,

@@ -64,7 +64,7 @@ const TimetableCalendar = ({
                 data.date ? 'week' : 'month'
               )
             }
-            selectedWeek={selectedWeek}
+            selectedWeek={selectedWeek ?? 1}
             currentWeek={currentWeek}
             firstWeek={firstWeek}
             lastWeek={lastWeek}
@@ -72,8 +72,8 @@ const TimetableCalendar = ({
         ) : (
           <MonthCalendar
             date={selectedDate}
-            periodStartDate={periodStartDate}
-            periodEndDate={periodEndDate}
+            periodStartDate={periodStartDate ?? selectedDate}
+            periodEndDate={periodEndDate ?? selectedDate}
             onDatePress={(data) => onDatePress(data, 'month')}
           />
         )}
