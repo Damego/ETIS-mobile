@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 
 import { ICathedraTimetable, IPeriod, TimetableTypes } from '~/models/cathedraTimetable';
 import {
-  IAudience, ILesson, IPair, ISubject, ITeacher, WeekInfo
+  IAudience, ILesson, IPair, ISubject, ITimeTableTeacher, WeekInfo
 } from '~/models/timeTable';
 import { dateRegex, disciplineRegex, numberRegex } from '~/parser/regex';
 
@@ -203,7 +203,7 @@ const cleanupPairs = (pairs: IPair[]) => {
 const generateNextDayDateString = (date: dayjs.Dayjs, addValue: number) =>
   date.add(addValue, 'day').format('DD.MM.YYYY');
 
-const parseTeacher = (tdTag: Cheerio<Element>): ITeacher => {
+const parseTeacher = (tdTag: Cheerio<Element>): ITimeTableTeacher => {
   const teacherTextTag = tdTag.contents().eq(0);
   const [teacherId] = tdTag.find('a').attr('href').match(numberRegex);
   return {

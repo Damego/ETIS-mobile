@@ -3,7 +3,7 @@ export interface ITeacherPSUData {
 }
 
 // Преподаватель из API psutech — не путать с ITeacher из models/teachers
-// (полные данные для UI) и ITeacher из models/timeTable (мини-версия в паре)
+// (полные данные для UI) и ITimeTableTeacher из models/timeTable (мини-версия в паре)
 export interface ITeacherPSU {
   id: number;
   name: string;

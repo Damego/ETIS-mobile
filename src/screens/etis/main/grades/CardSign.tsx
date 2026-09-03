@@ -6,14 +6,14 @@ import BottomSheetContent from '~/components/BottomSheetContent';
 import BottomSheetModal from '~/components/BottomSheetModal';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
-import { ICheckPoint, ISubject } from '~/models/sessionPoints';
+import { ICheckPoint, ISubjectPoints } from '~/models/sessionPoints';
 import { fontSize } from '~/utils/texts';
 
 import CheckPointDetails from './CheckPointDetails';
 import SubjectCheckPoints from './SubjectCheckPoints';
 import TotalPoints from './TotalPoints';
 
-const CardSign = ({ subject }: { subject: ISubject }) => {
+const CardSign = ({ subject }: { subject: ISubjectPoints }) => {
   const globalStyles = useGlobalStyles();
   const ref = useRef<BottomSheetModal | undefined>(undefined);
 

@@ -13,7 +13,7 @@ export interface IQuestion {
   answers: IAnswer[];
 }
 
-export interface ITheme {
+export interface IQuestionnaireTheme {
   title: string;
   answerTitles: string[];
   questions: IQuestion[];
@@ -31,7 +31,7 @@ export interface IMetaData {
 export interface ISessionQuestionnaire {
   meta: IMetaData;
   teacher: IDefaultTeacher;
-  themes: ITheme[];
+  themes: IQuestionnaireTheme[];
 }
 
 export interface ISessionQuestionnaireLink {

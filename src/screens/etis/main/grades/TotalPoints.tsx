@@ -5,7 +5,7 @@ import {
 
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
-import { ISubject } from '~/models/sessionPoints';
+import { ISubjectPoints } from '~/models/sessionPoints';
 import { fontSize, getPointsWord } from '~/utils/texts';
 
 const styles = StyleSheet.create({
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 });
 
 const getSubjectPointsStyle = (
-  subject: ISubject,
+  subject: ISubjectPoints,
   defaultTextStyle: StyleProp<TextStyle>
 ): StyleProp<TextStyle> => {
   if (subject.checkPoints.length === 0) return defaultTextStyle;
@@ -51,7 +51,7 @@ const getSubjectPointsStyle = (
   return styles.colorMark5;
 };
 
-const TotalPoints = ({ subject, style }: { subject: ISubject; style?: StyleProp<ViewStyle> }) => {
+const TotalPoints = ({ subject, style }: { subject: ISubjectPoints; style?: StyleProp<ViewStyle> }) => {
   const globalStyles = useGlobalStyles();
 
   const textStyle = getSubjectPointsStyle(subject, globalStyles.textColor);

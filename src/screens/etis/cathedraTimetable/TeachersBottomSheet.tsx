@@ -7,7 +7,7 @@ import OptionsBottomSheet from '~/components/bottomSheets/OptionsBottomSheet';
 import Card from '~/components/Card';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
-import { ITeacher, ITimeTable } from '~/models/timeTable';
+import { ITimeTable, ITimeTableTeacher } from '~/models/timeTable';
 import { fontSize, iconSize } from '~/utils/texts';
 
 const TeachersBottomSheet = ({
@@ -15,7 +15,7 @@ const TeachersBottomSheet = ({
   timetable,
   onTeacherSelect,
 }: {
-  selectedTeacher: ITeacher;
+  selectedTeacher: ITimeTableTeacher;
   timetable: ITimeTable[];
   onTeacherSelect: (teacherId: string) => void;
 }) => {

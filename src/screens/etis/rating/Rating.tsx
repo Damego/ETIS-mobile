@@ -13,12 +13,12 @@ import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { useAppTheme } from '~/hooks/theme';
 import useRatingQuery from '~/hooks/useRatingQuery';
-import { IGroup } from '~/models/rating';
+import { IRatingGroup } from '~/models/rating';
 import { fontSize } from '~/utils/texts';
 
 import RightText from './RightText';
 
-const Group = ({ group }: { group: IGroup }) => {
+const Group = ({ group }: { group: IRatingGroup }) => {
   if (!group.overall) {
     return (
       <CardHeaderOut topText={group.name}>

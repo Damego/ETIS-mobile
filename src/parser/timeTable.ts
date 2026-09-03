@@ -8,8 +8,8 @@ import {
   ILesson,
   IPair,
   ISubject,
-  ITeacher,
   ITimeTable,
+  ITimeTableTeacher,
   WeekInfo,
   WeekTypes,
 } from '../models/timeTable';
@@ -71,7 +71,7 @@ const getDistancePlatform = (platform: Cheerio<Element>): DistancePlatform => {
   };
 };
 
-const getTeacher = (lesson: Cheerio<Element>): ITeacher => {
+const getTeacher = (lesson: Cheerio<Element>): ITimeTableTeacher => {
   // TODO: parse list of teachers
   const teacherAnchor = lesson.find('.teacher').find('a').first();
   if (!teacherAnchor.length) return;

@@ -14,7 +14,7 @@ import { useAppSelector } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
 import useQuery from '~/hooks/useQuery';
 import { RequestType } from '~/models/results';
-import { DistancePlatformTypes, ILesson, ITeacher } from '~/models/timeTable';
+import { DistancePlatformTypes, ILesson, ITimeTableTeacher } from '~/models/timeTable';
 import { getTeacherName } from '~/utils/teachers';
 import { fontSize, formatAudience } from '~/utils/texts';
 
@@ -77,7 +77,7 @@ export const TimeInfo = ({ date, pairPosition }: { date: dayjs.Dayjs; pairPositi
   return <IconInfo icon={'time-outline'} text={text} />;
 };
 
-export const TeacherInfo = ({ teacher }: { teacher?: ITeacher }) => {
+export const TeacherInfo = ({ teacher }: { teacher?: ITimeTableTeacher }) => {
   const client = useClient();
   const { data } = useQuery({
     method: client.getTeacherData,

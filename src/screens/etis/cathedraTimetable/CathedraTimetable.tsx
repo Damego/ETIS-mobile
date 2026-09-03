@@ -9,12 +9,12 @@ import useQuery from '~/hooks/useQuery';
 import useTimetable from '~/hooks/useTimetable';
 import useTimetableSync from '~/hooks/useTimetableSync';
 import { RequestType } from '~/models/results';
-import { ITeacher } from '~/models/timeTable';
+import { ITimeTableTeacher } from '~/models/timeTable';
 import { EducationStackScreenProps } from '~/navigation/types';
 import TeachersBottomSheet from '~/screens/etis/cathedraTimetable/TeachersBottomSheet';
 
 const CathedraTimetable = ({ route }: EducationStackScreenProps<'CathedraTimetable'>) => {
-  const [currentTeacher, setCurrentTeacher] = useState<ITeacher>();
+  const [currentTeacher, setCurrentTeacher] = useState<ITimeTableTeacher>();
 
   const client = useClient();
   const timetable = useTimetable({

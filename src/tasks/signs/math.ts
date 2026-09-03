@@ -1,8 +1,8 @@
-import { ISubject } from '~/models/sessionPoints';
+import { ISubjectPoints } from '~/models/sessionPoints';
 
 import { IDifferentCheckPoint } from './types';
 
-export const differenceSigns = (marks1: ISubject[], marks2: ISubject[]): IDifferentCheckPoint[] => {
+export const differenceSigns = (marks1: ISubjectPoints[], marks2: ISubjectPoints[]): IDifferentCheckPoint[] => {
   if (marks1.length !== marks2.length) {
     return [];
   }

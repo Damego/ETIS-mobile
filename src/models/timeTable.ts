@@ -49,7 +49,7 @@ export interface DistancePlatform {
   imageUrl: string;
 }
 
-export interface ITeacher {
+export interface ITimeTableTeacher {
   // Идентификатор преподавателя
   id?: string;
   // ФИО преподавателя
@@ -91,7 +91,7 @@ export interface ILesson {
   // Информация об дистанционной платформе
   distancePlatform?: DistancePlatform;
   // Преподаватель занятия
-  teacher?: ITeacher;
+  teacher?: ITimeTableTeacher;
   // HTML-код объявления
   announceHTML?: string;
 
@@ -136,7 +136,7 @@ export interface ITimeTable {
   days: ITimeTableDay[];
 
   // Преподаватель. Только в расписании преподавателей
-  teacher?: ITeacher;
+  teacher?: ITimeTableTeacher;
 
   // Аудитория. Только в расписании аудиторий
   audience?: IAudience;

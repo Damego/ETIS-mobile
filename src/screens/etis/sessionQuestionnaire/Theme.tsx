@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { useGlobalStyles } from '~/hooks';
-import { IAnswer, ITheme } from '~/models/sessionQuestionnaire';
+import { IAnswer, IQuestionnaireTheme } from '~/models/sessionQuestionnaire';
 import { fontSize } from '~/utils/texts';
 
 import Question from './components/Question';
@@ -16,7 +16,7 @@ export default function Theme({
   answeredCount,
   questionCount,
 }: {
-  theme: ITheme;
+  theme: IQuestionnaireTheme;
   showTitle: boolean;
   onSubmit(answers: IAnswer[]): void;
   themeNumber: number;

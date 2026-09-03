@@ -15,7 +15,7 @@ export interface ICheckPoint {
   failed: boolean;
 }
 
-export interface ISubject {
+export interface ISubjectPoints {
   name?: string;
   checkPoints: ICheckPoint[];
   totalPoints: number;
@@ -23,7 +23,7 @@ export interface ISubject {
 }
 
 export interface ISessionPoints {
-  subjects: ISubject[];
+  subjects: ISubjectPoints[];
   currentSession: number;
   latestSession: number;
   sessionName: string;
