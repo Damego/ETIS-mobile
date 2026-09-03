@@ -30,7 +30,9 @@ const CertificateTable = () => {
     if (!isLoading && isFocused) refresh();
   }, [isFocused]);
 
-  if (isLoading) return <LoadingScreen onRefresh={refresh} />;
+  // Полноэкранный лоадер — только первая загрузка; при возврате
+  // на экран данные уже есть, и refresh идёт поверх старого списка
+  if (isLoading && !data) return <LoadingScreen onRefresh={refresh} />;
   if (!data) return <NoData />;
 
   return (
