@@ -72,13 +72,21 @@ export default function RequestCertificate({
     }));
   };
 
-  Keyboard.addListener('keyboardDidShow', () => {
-    setKeyboardOpen(true);
-  });
+  // Подписка на клавиатуру в теле рендера копила бы листенеры
+  // без отписки; держим одну пару подписок на монтировании
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardOpen(true);
+    });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setTimeout(() => setKeyboardOpen(false), 60);
+    });
 
-  Keyboard.addListener('keyboardDidHide', () => {
-    setTimeout(() => setKeyboardOpen(false), 60);
-  });
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   // Доступные опции зависят от выбранной справки; без выбора — пустые
   const currentCertificate = useMemo(

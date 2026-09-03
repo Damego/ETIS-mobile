@@ -9,7 +9,7 @@ import { BackHandler } from 'react-native';
 const useBackPress = (callback: () => boolean) => {
   const navigation = useNavigation();
   useEffect(() => {
-    navigation.addListener('beforeRemove', (event) => {
+    const unsubscribe = navigation.addListener('beforeRemove', (event) => {
       const shouldPrevent = callback();
       if (shouldPrevent) {
         (event as unknown as { preventDefault: () => void }).preventDefault();
@@ -18,8 +18,8 @@ const useBackPress = (callback: () => boolean) => {
     const handler = BackHandler.addEventListener('hardwareBackPress', callback);
 
     return () => {
+      unsubscribe();
       handler.remove();
-      // navigation.removeListener()
     };
   }, []);
 };
