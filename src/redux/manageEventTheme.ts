@@ -1,11 +1,9 @@
-import { cache } from '~/cache/smartCache';
-import { ThemeType } from '~/styles/themes';
-import { isEventTheme } from '~/styles/themes';
+import { isEventTheme, ThemeType } from '~/styles/themes';
 import {
   Events, isHalloween, isNewYear
 } from '~/utils/events';
 
-import { changeTheme, setEvents } from './reducers/settingsSlice';
+import { persistEvents, persistTheme } from './persistSettings';
 import { AppDispatch, AppStore } from './store';
 
 interface EventCheck {
@@ -31,16 +29,6 @@ interface EventCheck {
  *
  * Вызывается после загрузки стейта из хранилища (см. App.tsx).
  */
-
-const persistTheme = (dispatch: AppDispatch, theme: ThemeType) => {
-  dispatch(changeTheme(theme));
-  cache.placeTheme(theme);
-};
-
-const persistEvents = (dispatch: AppDispatch, events: Events) => {
-  dispatch(setEvents(events));
-  cache.placeEvents(events);
-};
 
 const eventChecks: EventCheck[] = [
   {

@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { cache } from '~/cache/smartCache';
 import SettingRow from '~/components/SettingRow';
 import Text from '~/components/Text';
 import { useAppDispatch, useAppSelector } from '~/hooks';
-import { changeTheme, setEvents } from '~/redux/reducers/settingsSlice';
+import { persistEvents, persistTheme } from '~/redux/persistSettings';
 import { isEventTheme, ThemeType } from '~/styles/themes';
 import { fontSize } from '~/utils/texts';
 
@@ -26,16 +25,13 @@ const ChangeEventTheme = () => {
         ? eventData.previousTheme
         : ThemeType.auto;
 
-    dispatch(changeTheme(returnTheme));
-    cache.placeTheme(returnTheme);
+    persistTheme(dispatch, returnTheme);
 
     // Отмечаем, что тему уже предлагали — до конца события повторно включаться не будет
-    const $events = {
+    persistEvents(dispatch, {
       ...events,
       [theme]: { suggestedTheme: true, previousTheme: returnTheme },
-    };
-    dispatch(setEvents($events));
-    cache.placeEvents($events);
+    });
   };
 
   return (

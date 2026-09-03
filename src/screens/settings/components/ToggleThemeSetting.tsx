@@ -1,14 +1,13 @@
 import { Octicons } from '@expo/vector-icons';
 import React, { useRef } from 'react';
 
-import { cache } from '~/cache/smartCache';
 import BottomSheetModal from '~/components/BottomSheetModal';
 import OptionsBottomSheet from '~/components/bottomSheets/OptionsBottomSheet';
 import SettingRow from '~/components/SettingRow';
 import Text from '~/components/Text';
 import { useAppDispatch, useAppSelector } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
-import { changeTheme, setEvents } from '~/redux/reducers/settingsSlice';
+import { persistEvents, persistTheme } from '~/redux/persistSettings';
 import { ThemeType } from '~/styles/themes';
 import { fontSize } from '~/utils/texts';
 
@@ -42,11 +41,9 @@ const ToggleThemeSetting = () => {
         suggestedTheme: false,
         previousTheme: events.newYear?.previousTheme ?? ThemeType.auto,
       };
-      dispatch(setEvents($events));
-      cache.placeEvents($events);
+      persistEvents(dispatch, $events);
     } else {
-      dispatch(changeTheme(selectedTheme));
-      cache.placeTheme(selectedTheme);
+      persistTheme(dispatch, selectedTheme);
     }
   };
 
