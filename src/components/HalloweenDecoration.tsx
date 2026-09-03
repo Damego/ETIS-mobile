@@ -37,15 +37,22 @@ export const HalloweenEmoji = () => (
 export const HalloweenDecoration = () => {
   const { theme } = useAppSelector((state) => state.settings.config);
 
+  // Эмодзи фиксированы на монтирование, а не перебрасываются
+  // при каждом ре-рендере (redux-апдейты не должны их менять)
+  const [topEmoji, bottomEmoji] = React.useMemo(
+    () => [getRandomItem(EMOJI), getRandomItem(EMOJI)],
+    []
+  );
+
   if (theme !== ThemeType.halloween) return;
 
   return (
     <>
       <View style={emojiStyles.topContainer}>
-        <Text style={emojiStyles.bigEmoji}>{getRandomItem(EMOJI)}</Text>
+        <Text style={emojiStyles.bigEmoji}>{topEmoji}</Text>
       </View>
       <View style={emojiStyles.bottomContainer}>
-        <Text style={emojiStyles.bigEmoji}>{getRandomItem(EMOJI)}</Text>
+        <Text style={emojiStyles.bigEmoji}>{bottomEmoji}</Text>
       </View>
     </>
   );
