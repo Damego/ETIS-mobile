@@ -10,7 +10,11 @@ import { INotificationData } from './types';
 const handleEvent = async (event: Event) => {
   if (event.type !== EventType.PRESS) return;
 
-  const data = event.detail.notification?.data as unknown as INotificationData;
+  const data = event.detail.notification?.data as unknown as INotificationData | undefined;
+  // https://sentry.io/issues/ETIS-MOBILE-GY — remote push payloads may lack
+  // the `data` field the app attaches to its own notifications.
+  if (!data || typeof data.data !== 'object' || data.data === null) return;
+
   if (data.type === 'file') {
     openFile(data.data.uri);
   }
