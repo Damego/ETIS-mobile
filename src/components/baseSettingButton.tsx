@@ -1,8 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
 
-import Text from '~/components/Text';
+import SettingRow from '~/components/SettingRow';
 import { useAppTheme } from '~/hooks/theme';
 import { IThemeColors } from '~/styles/themes';
 
@@ -21,24 +20,12 @@ const BaseSettingButton = ({
   const $color = color ? theme.colors[color] : theme.colors.text;
 
   return (
-    <TouchableOpacity onPress={onPress} style={styles.container}>
-      <AntDesign name={iconName} size={28} color={$color} />
-      <Text style={styles.text} colorVariant={color}>
-        {label}
-      </Text>
-    </TouchableOpacity>
+    <SettingRow
+      icon={<AntDesign name={iconName} size={24} color={$color} />}
+      label={label}
+      labelColorVariant={color}
+      onPress={onPress}
+    />
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    gap: 8,
-  },
-  text: {
-    fontWeight: '500',
-    fontSize: 16,
-  },
-});
 export default BaseSettingButton;

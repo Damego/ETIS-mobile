@@ -1,18 +1,20 @@
+import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
 
-import ClickableText from '~/components/ClickableText';
+import SettingRow from '~/components/SettingRow';
 import { useAppDispatch } from '~/hooks';
+import { useAppTheme } from '~/hooks/theme';
 import { setIntroViewed } from '~/redux/reducers/settingsSlice';
-import { fontSize } from '~/utils/texts';
 
 const ResetIntroSetting = () => {
   const dispatch = useAppDispatch();
+  const theme = useAppTheme();
 
   return (
-    <ClickableText
-      text={'Сбросить обучение'}
+    <SettingRow
+      icon={<AntDesign name={'reload1'} size={24} color={theme.colors.text} />}
+      label='Сбросить обучение'
       onPress={() => dispatch(setIntroViewed(false))}
-      textStyle={[fontSize.medium, { fontWeight: '500' }]}
     />
   );
 };
