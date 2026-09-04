@@ -10,7 +10,7 @@ export default function parseShortTeachPlan(html: string) {
   const sessionName = $('h3').first().text().split(' ').at(-1) ?? '';
   const data: ISessionTeachPlan[] = [];
 
-  $('.common', html).each((index, table) => {
+  $('.common').each((index, table) => {
     const disciplines: ITeachPlanDiscipline[] = [];
 
     $('.cgrldatarow', table).each((ind, tr) => {

@@ -8,7 +8,7 @@ export default function parseOrders(html: string) {
 
   const data: IOrder[] = [];
 
-  $('.ord', html).each((el, orderEl) => {
+  $('.ord').each((el, orderEl) => {
     const order = $(orderEl).find('.ord-name');
     const uri = order.find('a').attr('href');
 

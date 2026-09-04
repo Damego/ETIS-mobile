@@ -122,7 +122,7 @@ export default function parseTimeTable(html: string) {
   };
   const { days } = data;
 
-  $('.day', html).each((el, day) => {
+  $('.day').each((el, day) => {
     const daySelector = $(day);
     const pairs: IPair[] = [];
     const date = getTextField(daySelector.find('h3'));

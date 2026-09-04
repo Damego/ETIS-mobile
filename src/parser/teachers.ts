@@ -9,7 +9,7 @@ export default function parseTeachers(html: string): ITeacher[] {
   const $ = load(html);
   const data: ITeacher[] = [];
 
-  $('.teacher_info', html).each((index, element) => {
+  $('.teacher_info').each((index, element) => {
     const teacherEl = $(element);
     const id = teacherEl.attr('id') ?? '';
     const photo = teacherEl.find('img').attr('src') ?? '';

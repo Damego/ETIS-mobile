@@ -11,7 +11,7 @@ export default function parseSessionPoints(html: string): ISessionPoints {
     latestSession: null,
     sessionName: null,
   };
-  $('.common', html).each((index, tableElement) => {
+  $('.common').each((index, tableElement) => {
     const table = $(tableElement);
     const checkPoints: ICheckPoint[] = [];
 
@@ -75,7 +75,7 @@ export default function parseSessionPoints(html: string): ISessionPoints {
       mark: null,
     });
   });
-  $('h3', html).each((index, element) => {
+  $('h3').each((index, element) => {
     if (data.subjects[index]) data.subjects[index].name = getTextField($(element));
   });
 
