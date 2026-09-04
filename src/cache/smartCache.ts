@@ -331,9 +331,13 @@ export default class SmartCache {
 
   // // Certificate Region
 
-  async getCertificate(): Promise<ICertificateResult> {
+  async getCertificate(): Promise<ICertificateResult | null> {
     if (!this.certificate.isReady()) await this.certificate.init();
-    return { certificates: this.certificate.get() ?? [], announce: {}, availableCertificates: [] };
+    const certificates = this.certificate.get();
+    // Пустой кэш должен отдавать null, иначе в оффлайде BasicClient
+    // считает подставной пустой объект валидными данными, и экран
+    // рисует пустое меню вместо NoData
+    return certificates ? { certificates, announce: {}, availableCertificates: [] } : null;
   }
 
   async placeCertificate(data: ICertificateResult) {
