@@ -116,6 +116,7 @@ export default {
       ],
       'expo-splash-screen',
       'expo-status-bar',
+      'expo-background-task'
     ],
     experiments: {
       reactCompiler: true
