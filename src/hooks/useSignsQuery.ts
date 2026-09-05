@@ -47,10 +47,10 @@ const useSignsQuery = () => {
     onFail: async () => {
       const student = await cache.getStudent();
       if (!student?.currentSession) return;
-      update({
+      return {
         requestType: RequestType.forceCache,
         data: student.currentSession,
-      });
+      };
     },
   });
 

@@ -30,10 +30,10 @@ const useTimeTableQuery = ({
       const student = await cache.getStudent();
       if (!student?.currentWeek) return;
 
-      update({
+      return {
         requestType: RequestType.forceCache,
         data: student.currentWeek,
-      });
+      };
     },
     after: async (result) => {
       const { first: firstWeek, selected: selectedWeek } = result.data?.weekInfo ?? {};

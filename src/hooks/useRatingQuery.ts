@@ -17,10 +17,10 @@ const useRatingQuery = () => {
       const student = await cache.getStudent();
       if (!student?.currentSession) return;
 
-      update({
+      return {
         requestType: RequestType.forceCache,
         data: student.currentSession,
-      });
+      };
     },
     after: () => {
       if (!fetchedFirstTime.current) {

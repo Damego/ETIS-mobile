@@ -29,13 +29,16 @@ const useQuery = <P, R>({
   method: GetMethod<P, R>;
   payload?: IGetPayload<P>;
   after?: (result: IGetResult<R>) => void | Promise<void>;
-  onFail?: (result: IGetResult<R>) => void;
+  // onFail вызывается, когда запрос не дал данных. Может вернуть payload
+  // (или его Promise) для немедленной повторной попытки (например, фолбэк
+  // на кеш с другим ключом); повтор выполняется внутри той же загрузки —
+  // лоадер не роняется и не дебаунсится.
+  onFail?: (result: IGetResult<R>) => IGetPayload<P> | void | Promise<IGetPayload<P> | void>;
   skipInitialGet?: boolean;
 }): Query<P, R> => {
   const dispatch = useAppDispatch();
   const payloadData = useRef<P>(initialData);
   const skippedInitialGet = useRef<boolean>(false);
-  const fromFail = useRef<boolean>(false);
   const calledAuthorizing = useRef<boolean>(false);
   const didInitialGet = useRef<boolean>(false);
   const { isAuthorizing, isOfflineMode } = useAppSelector((state) => state.account);
@@ -86,16 +89,6 @@ const useQuery = <P, R>({
     }
   };
 
-  const handleFailedQuery = (result: IGetResult<R>) => {
-    if (fromFail.current) {
-      console.warn('[QUERY] Recursion caught. Ignoring next calling');
-      return;
-    }
-    fromFail.current = true;
-    onFail?.(result);
-    fromFail.current = false;
-  };
-
   const checkLoginPage = (result: IGetResult<R>) => {
     if (result.type === GetResultType.loginPage) {
       calledAuthorizing.current = true;
@@ -106,13 +99,18 @@ const useQuery = <P, R>({
   const loadData = async (payload?: IGetPayload<P>) => {
     enableLoading();
 
-    const result = await get(payload);
+    let result = await get(payload);
 
     if (result.type === GetResultType.loginPage) return;
 
     if (!result.data) {
-      if (onFail) handleFailedQuery(result);
-    } else {
+      const retryPayload = await onFail?.(result);
+      if (retryPayload) result = await get(retryPayload);
+    }
+
+    if (result.type === GetResultType.loginPage) return;
+
+    if (result.data) {
       if (after) await handleAfter(result);
       applyData(result.data);
     }

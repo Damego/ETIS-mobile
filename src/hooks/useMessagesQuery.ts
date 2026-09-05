@@ -24,10 +24,10 @@ const useMessagesQuery = () => {
     },
     onFail: (result) => {
       console.log('fail');
-      update({
+      return {
         data: 1,
         requestType: RequestType.forceCache,
-      });
+      };
     },
   });
 
