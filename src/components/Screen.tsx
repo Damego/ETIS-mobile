@@ -10,6 +10,7 @@ import { useAppTheme } from '~/hooks/theme';
 import { useBottomNavPadding } from '~/utils/bottomNav';
 
 import AuthLoadingModal from './AuthLoadingModal';
+import OfflineBanner from './OfflineBanner';
 
 type StatusBarStyle = 'auto' | 'inverted' | 'light' | 'dark';
 
@@ -47,6 +48,8 @@ const Screen = ({
       {isAuthorizing && <AuthLoadingModal />}
 
       <StatusBar style={statusBarStyle || theme.statusBarStyle} />
+
+      <OfflineBanner />
 
       <ScrollView
         ref={scrollRef}
@@ -110,6 +113,8 @@ export const ListScreen = <T,>({
       {isAuthorizing && <AuthLoadingModal />}
 
       <StatusBar style={statusBarStyle || theme.statusBarStyle} />
+
+      <OfflineBanner />
 
       <View style={[{ flex: 1 }, styles.screen, containerStyle]}>
         <FlashList
