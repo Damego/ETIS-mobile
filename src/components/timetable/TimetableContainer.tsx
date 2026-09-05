@@ -5,6 +5,7 @@ import type { PagerScrollState } from '~/components/timetable/dayTimetable/compo
 import DayTimetable from '~/components/timetable/dayTimetable/DayTimetable';
 import WeekTimetable from '~/components/timetable/weekTimetable/WeekTimetable';
 import { useAppSelector } from '~/hooks';
+import useOfflineMode from '~/hooks/useOfflineMode';
 import { IUseTimetable } from '~/hooks/useTimetable';
 import { ITeacher } from '~/models/teachers';
 import { ITimeTable } from '~/models/timeTable';
@@ -36,6 +37,8 @@ const TimetableContainer = ({
   onPagerScrollStateChange?: (state: PagerScrollState) => void;
 }) => {
   const { timetableMode } = useAppSelector((state) => state.settings.config.ui);
+  // В оффлайн-режиме кнопка «Обновить» не имеет смысла — не пробрасываем onRetry
+  const retryHandler = useOfflineMode() ? undefined : onRetry;
   const { currentDate, currentWeek, selectedDate, selectedWeek, onDatePress, onWeekPress } =
     timetable;
 
@@ -57,7 +60,7 @@ const TimetableContainer = ({
         lastWeek={lastWeek}
         isLoading={isLoading}
         loadingComponent={loadingComponent}
-        onRetry={onRetry}
+        onRetry={retryHandler}
       />
     );
   }
@@ -74,7 +77,7 @@ const TimetableContainer = ({
       endDate={endDate}
       isLoading={isLoading}
       loadingComponent={loadingComponent}
-      onRetry={onRetry}
+      onRetry={retryHandler}
       onPagerScrollStateChange={onPagerScrollStateChange}
     />
   );

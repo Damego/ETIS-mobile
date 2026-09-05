@@ -7,6 +7,7 @@ import {
 
 import { useAppSelector } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
+import useOfflineMode from '~/hooks/useOfflineMode';
 import { useBottomNavPadding } from '~/utils/bottomNav';
 
 import AuthLoadingModal from './AuthLoadingModal';
@@ -32,6 +33,7 @@ const Screen = ({
   refreshEnabled = true,
 }: ScreenProps) => {
   const { isAuthorizing } = useAppSelector((state) => state.account);
+  const isOfflineMode = useOfflineMode();
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const scrollRef = useRef<ScrollView>(null);
   const theme = useAppTheme();
@@ -63,7 +65,7 @@ const Screen = ({
         showsVerticalScrollIndicator={false}
         overScrollMode='never'
         refreshControl={
-          onUpdate
+          onUpdate && !isOfflineMode
             ? (
               <RefreshControl
                 colors={[theme.colors.primary]}
@@ -97,6 +99,7 @@ export const ListScreen = <T,>({
   ...listProps
 }: ListScreenProps<T>) => {
   const { isAuthorizing } = useAppSelector((state) => state.account);
+  const isOfflineMode = useOfflineMode();
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const theme = useAppTheme();
   const ref = useRef<FlashListRef<T>>(null);
@@ -122,11 +125,11 @@ export const ListScreen = <T,>({
           data={startScrollFromBottom ? data?.toReversed() : data}
           overScrollMode={'never'}
           showsVerticalScrollIndicator={false}
-          onRefresh={onUpdate ? onRefresh : undefined}
-          refreshing={onUpdate ? refreshing : undefined}
+          onRefresh={onUpdate && !isOfflineMode ? onRefresh : undefined}
+          refreshing={onUpdate && !isOfflineMode ? refreshing : undefined}
           contentContainerStyle={{ paddingBottom: bottomNavPadding }}
           refreshControl={
-            onUpdate
+            onUpdate && !isOfflineMode
               ? (
                 <RefreshControl
                   colors={[theme.colors.primary]}
