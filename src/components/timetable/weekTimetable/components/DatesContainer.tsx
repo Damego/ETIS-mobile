@@ -6,7 +6,7 @@ import { WeekDates } from '~/models/timeTable';
 import { parseDate } from '~/parser/utils';
 import { fontSize } from '~/utils/texts';
 
-const DatesContainer = ({ dates }: { dates: WeekDates }) => {
+const DatesContainer = ({ dates }: { readonly dates: WeekDates }) => {
   const globalStyles = useGlobalStyles();
   if (!dates) return;
 

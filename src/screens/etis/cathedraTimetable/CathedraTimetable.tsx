@@ -59,13 +59,11 @@ const CathedraTimetable = ({ route }: EducationStackScreenProps<'CathedraTimetab
 
   return (
     <Screen onUpdate={refresh}>
-      {data != null && data.timetable?.length > 1 && teacherTimetable?.teacher && (
-        <TeachersBottomSheet
-          selectedTeacher={teacherTimetable.teacher}
-          timetable={data.timetable}
-          onTeacherSelect={onTeacherSelect}
-        />
-      )}
+      {data != null && data.timetable?.length > 1 && teacherTimetable?.teacher ? <TeachersBottomSheet
+        selectedTeacher={teacherTimetable.teacher}
+        timetable={data.timetable}
+        onTeacherSelect={onTeacherSelect}
+      /> : null}
       <TimetableContainer
         data={teacherTimetable}
         timetable={timetable}

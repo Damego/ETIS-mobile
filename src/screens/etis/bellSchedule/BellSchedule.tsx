@@ -29,7 +29,7 @@ const Line = () => {
   return <View style={[{ borderBottomColor: globalStyles.border.borderColor }, styles.line]} />;
 };
 
-const PairSchedule = ({ schedule, isPair }: { schedule: IBellSchedulePair; isPair: boolean }) => {
+const PairSchedule = ({ schedule, isPair }: { readonly schedule: IBellSchedulePair; readonly isPair: boolean }) => {
   const { t } = useTranslation();
   return (
     <View style={styles.pairView}>
@@ -45,7 +45,7 @@ const PairSchedule = ({ schedule, isPair }: { schedule: IBellSchedulePair; isPai
   );
 };
 
-const BreakSchedule = ({ schedule }: { schedule: IBellScheduleBreak }) => {
+const BreakSchedule = ({ schedule }: { readonly schedule: IBellScheduleBreak }) => {
   const { t } = useTranslation();
   return (
     <View style={{ flexDirection: 'row' }}>
@@ -70,21 +70,21 @@ const BellSchedule = () => {
       <View style={styles.buttonView}>
         <Button
           text={t('bellSchedule.university')}
-          onPress={handleModeChange(BellScheduleModes.UNIVERSITY)}
           variant={mode === BellScheduleModes.UNIVERSITY ? 'primary' : 'card'}
           fontStyle={fontSize.medium}
+          onPress={handleModeChange(BellScheduleModes.UNIVERSITY)}
         />
         <Button
           text={t('bellSchedule.lyceum')}
-          onPress={handleModeChange(BellScheduleModes.LYCEUM)}
           variant={mode === BellScheduleModes.LYCEUM ? 'primary' : 'card'}
           fontStyle={fontSize.medium}
+          onPress={handleModeChange(BellScheduleModes.LYCEUM)}
         />
         <Button
           text={t('bellSchedule.skiBase')}
-          onPress={handleModeChange(BellScheduleModes.SKI_BASE)}
           variant={mode === BellScheduleModes.SKI_BASE ? 'primary' : 'card'}
           fontStyle={fontSize.medium}
+          onPress={handleModeChange(BellScheduleModes.SKI_BASE)}
         />
       </View>
 
@@ -92,10 +92,10 @@ const BellSchedule = () => {
         {array.map((item, index) =>
           item.type === BellScheduleTypes.PAIR
             ? (
-              <PairSchedule schedule={item} isPair={mode !== BellScheduleModes.LYCEUM} key={index} />
+              <PairSchedule key={index} schedule={item} isPair={mode !== BellScheduleModes.LYCEUM} />
             )
             : (
-              <BreakSchedule schedule={item} key={index} />
+              <BreakSchedule key={index} schedule={item} />
             )
         )}
       </View>

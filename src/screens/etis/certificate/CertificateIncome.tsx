@@ -69,25 +69,23 @@ export default function CertificateIncome() {
             name={t('certificate.income.fio')}
             placeholder={t('certificate.income.fioPlaceholder')}
             value={fio}
-            onUpdate={setFio}
             popover={<></>}
+            onUpdate={setFio}
           />
           <Input
             name={t('certificate.income.faculty')}
             placeholder={t('certificate.income.facultyPlaceholder')}
             value={faculty}
-            onUpdate={setFaculty}
             popover={<></>}
+            onUpdate={setFaculty}
           />
-          <Input name={t('certificate.income.year')} placeholder='1' value={year} onUpdate={setYear} popover={<></>} />
+          <Input name={t('certificate.income.year')} placeholder='1' value={year} popover={<></>} onUpdate={setYear} />
           <Input
             name={t('certificate.income.period')}
             placeholder='3'
             value={certPeriod}
+            popover={<PopoverElement text={t('certificate.income.periodPopover')} />}
             onUpdate={setCertPeriod}
-            popover={
-              <PopoverElement text={t('certificate.income.periodPopover')} />
-            }
           />
         </Card>
         <Text style={[globalStyles.textColor, fontSize.medium]}>
@@ -97,6 +95,8 @@ export default function CertificateIncome() {
       <View style={isApplicable ? styles.btnCompose : styles.btnComposeDisabled}>
         <Button
           text={t('certificate.income.composeMail')}
+          variant={'primary'}
+          disabled={!isApplicable}
           onPress={() =>
             composeMail(
               makeMailOptions({
@@ -105,10 +105,7 @@ export default function CertificateIncome() {
                 year: year ?? '',
                 certPeriod: certPeriod ?? '',
               })
-            )
-          }
-          variant={'primary'}
-          disabled={!isApplicable}
+            )}
         />
       </View>
     </Screen>

@@ -14,8 +14,8 @@ import { fontSize } from '~/utils/texts';
 import { Day } from './Day';
 
 interface IDayArrayProps {
-  data: ITimeTableDay[];
-  weekDates: WeekDates;
+  readonly data: ITimeTableDay[];
+  readonly weekDates: WeekDates;
 }
 
 const DayArray = ({ data, weekDates }: IDayArrayProps) => {
@@ -62,9 +62,9 @@ const DayArray = ({ data, weekDates }: IDayArrayProps) => {
           </Text>
           <Button
             text={t('timetable.showPastDays')}
-            onPress={showPastDays}
             variant={'card'}
             fontStyle={fontSize.medium}
+            onPress={showPastDays}
           />
         </View>
       </>
@@ -76,9 +76,9 @@ const DayArray = ({ data, weekDates }: IDayArrayProps) => {
       {components.length < 6 && (
         <Button
           text={t('timetable.showPastDays')}
-          onPress={showPastDays}
           variant={'card'}
           fontStyle={fontSize.medium}
+          onPress={showPastDays}
         />
       )}
       {components}

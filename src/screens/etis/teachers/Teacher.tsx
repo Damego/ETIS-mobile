@@ -15,16 +15,16 @@ import { ITeacher } from '~/models/teachers';
 import { fontSize } from '~/utils/texts';
 
 interface TeacherProps {
-  discipline: string;
-  data: ITeacher;
-  onPress: (teacher: ITeacher) => void;
+  readonly discipline: string;
+  readonly data: ITeacher;
+  readonly onPress: (teacher: ITeacher) => void;
 }
 
 const Teacher = ({ discipline, data, onPress }: TeacherProps) => {
   const subject = data.subjects.find((sub) => sub.discipline === discipline);
 
   return (
-    <TouchableOpacity onPress={() => onPress(data)} style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={() => onPress(data)}>
       <View style={styles.teacherInfo}>
         <View style={styles.teacherNameView}>
           <Text style={styles.textTitle}>{data.name}</Text>

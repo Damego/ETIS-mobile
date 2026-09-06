@@ -34,8 +34,8 @@ const Settings = () => {
       <BaseSettingButton
         iconName={'logout'}
         label={t('settings.logOut')}
-        onPress={handleLogOut}
         color={'primary'}
+        onPress={handleLogOut}
       />
     </Screen>
   );

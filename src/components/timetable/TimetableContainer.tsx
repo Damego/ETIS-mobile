@@ -24,17 +24,17 @@ const TimetableContainer = ({
   onRetry,
   onPagerScrollStateChange,
 }: {
-  timetable: IUseTimetable;
-  data?: ITimeTable | null;
-  teachers?: ITeacher[];
-  startDate?: dayjs.Dayjs;
-  endDate?: dayjs.Dayjs;
-  isLoading?: boolean;
-  loadingComponent?: () => React.ReactNode;
-  firstWeek?: number;
-  lastWeek?: number;
-  onRetry?: () => void;
-  onPagerScrollStateChange?: (state: PagerScrollState) => void;
+  readonly timetable: IUseTimetable;
+  readonly data?: ITimeTable | null;
+  readonly teachers?: ITeacher[];
+  readonly startDate?: dayjs.Dayjs;
+  readonly endDate?: dayjs.Dayjs;
+  readonly isLoading?: boolean;
+  readonly loadingComponent?: () => React.ReactNode;
+  readonly firstWeek?: number;
+  readonly lastWeek?: number;
+  readonly onRetry?: () => void;
+  readonly onPagerScrollStateChange?: (state: PagerScrollState) => void;
 }) => {
   const { timetableMode } = useAppSelector((state) => state.settings.config.ui);
   // В оффлайн-режиме кнопка «Обновить» не имеет смысла — не пробрасываем onRetry
@@ -55,11 +55,11 @@ const TimetableContainer = ({
         currentWeek={currentWeek}
         selectedWeek={selectedWeek}
         selectedDate={selectedDate}
-        onWeekPress={onWeekPress}
         firstWeek={firstWeek}
         lastWeek={lastWeek}
         isLoading={isLoading}
         loadingComponent={loadingComponent}
+        onWeekPress={onWeekPress}
         onRetry={retryHandler}
       />
     );
@@ -72,11 +72,11 @@ const TimetableContainer = ({
       currentWeek={currentWeek}
       selectedWeek={selectedWeek}
       selectedDate={selectedDate}
-      onDatePress={onDatePress}
       startDate={startDate}
       endDate={endDate}
       isLoading={isLoading}
       loadingComponent={loadingComponent}
+      onDatePress={onDatePress}
       onRetry={retryHandler}
       onPagerScrollStateChange={onPagerScrollStateChange}
     />

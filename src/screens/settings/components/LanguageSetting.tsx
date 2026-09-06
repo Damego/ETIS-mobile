@@ -45,16 +45,14 @@ const LanguageSetting = () => {
       <SettingRow
         label={t('settings.language')}
         icon={<Octicons name={'globe'} size={24} color={theme.colors.text} />}
+        right={<Text style={fontSize.medium}>{languageLabels[language ?? 'system']}</Text>}
         onPress={() => modalRef.current?.present()}
-        right={
-          <Text style={fontSize.medium}>{languageLabels[language ?? 'system']}</Text>
-        }
       />
       <OptionsBottomSheet
         ref={modalRef}
         options={options}
-        onOptionPress={(value) => selectLanguage(value as LanguagePreference)}
         currentOptionValue={language ?? 'system'}
+        onOptionPress={(value) => selectLanguage(value as LanguagePreference)}
       />
     </>
   );

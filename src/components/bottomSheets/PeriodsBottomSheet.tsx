@@ -5,10 +5,10 @@ import BottomSheetModal from '~/components/BottomSheetModal';
 import ClickableText from '~/components/ClickableText';
 
 interface Props {
-  currentPeriod: number;
-  latestPeriod: number;
-  periodName: string;
-  onChange: (value: number) => void;
+  readonly currentPeriod: number;
+  readonly latestPeriod: number;
+  readonly periodName: string;
+  readonly onChange: (value: number) => void;
 }
 
 const getOptions = ({
@@ -43,10 +43,10 @@ const PeriodsBottomSheet = React.forwardRef<BottomSheetModal, Props>(
           {options?.map((item) => (
             <ClickableText
               key={item.value}
-              onPress={() => onChange(item.value)}
               viewStyle={{ padding: '2%', width: '100%', justifyContent: 'center' }}
               textStyle={{ fontSize: 18, fontWeight: '600' }}
               colorVariant={item.isCurrent ? 'primary' : 'text'}
+              onPress={() => onChange(item.value)}
             >
               {item.label}
             </ClickableText>

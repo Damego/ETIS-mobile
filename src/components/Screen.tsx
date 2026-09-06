@@ -17,11 +17,11 @@ type StatusBarStyle = 'auto' | 'inverted' | 'light' | 'dark';
 
 interface ScreenProps {
   onUpdate?(...args: unknown[]): unknown;
-  children: React.ReactNode;
-  startScrollFromBottom?: boolean;
-  statusBarStyle?: StatusBarStyle;
-  containerStyle?: StyleProp<ViewStyle>;
-  refreshEnabled?: boolean;
+  readonly children: React.ReactNode;
+  readonly startScrollFromBottom?: boolean;
+  readonly statusBarStyle?: StatusBarStyle;
+  readonly containerStyle?: StyleProp<ViewStyle>;
+  readonly refreshEnabled?: boolean;
 }
 
 const Screen = ({
@@ -47,7 +47,7 @@ const Screen = ({
 
   return (
     <View style={{ flex: 1 }}>
-      {isAuthorizing && <AuthLoadingModal />}
+      {isAuthorizing ? <AuthLoadingModal /> : null}
 
       <StatusBar style={statusBarStyle || theme.statusBarStyle} />
 
@@ -70,15 +70,13 @@ const Screen = ({
               <RefreshControl
                 colors={[theme.colors.primary]}
                 refreshing={refreshing}
-                onRefresh={onRefresh}
                 enabled={refreshEnabled}
+                onRefresh={onRefresh}
               />
             )
             : undefined
         }
-        onContentSizeChange={
-          startScrollFromBottom ? () => scrollRef.current?.scrollToEnd() : undefined
-        }
+        onContentSizeChange={startScrollFromBottom ? () => scrollRef.current?.scrollToEnd() : undefined}
       >
         {children}
       </ScrollView>
@@ -120,7 +118,7 @@ export const ListScreen = <T,>({
 
   return (
     <View style={{ flex: 1 }}>
-      {isAuthorizing && <AuthLoadingModal />}
+      {isAuthorizing ? <AuthLoadingModal /> : null}
 
       <StatusBar style={statusBarStyle || theme.statusBarStyle} />
 
@@ -132,7 +130,6 @@ export const ListScreen = <T,>({
           data={listData}
           overScrollMode={'never'}
           showsVerticalScrollIndicator={false}
-          onRefresh={onUpdate && !isOfflineMode ? onRefresh : undefined}
           refreshing={onUpdate && !isOfflineMode ? refreshing : undefined}
           contentContainerStyle={{ paddingBottom: bottomNavPadding }}
           refreshControl={
@@ -146,7 +143,7 @@ export const ListScreen = <T,>({
               )
               : undefined
           }
-
+          onRefresh={onUpdate && !isOfflineMode ? onRefresh : undefined}
           {...listProps}
         />
       </View>

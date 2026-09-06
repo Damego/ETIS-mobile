@@ -7,14 +7,13 @@ import ClickableText from '~/components/ClickableText';
 import { useGlobalStyles } from '~/hooks';
 import { fontSize, iconSize } from '~/utils/texts';
 
-const HistoryButton = ({ onPress, showHistory }: { onPress: () => void; showHistory: boolean }) => {
+const HistoryButton = ({ onPress, showHistory }: { readonly onPress: () => void; readonly showHistory: boolean }) => {
   const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
 
   return (
     <ClickableText
       text={t('disciplineInfo.tasksHistory')}
-      onPress={onPress}
       textStyle={fontSize.big}
       viewStyle={styles.showInactiveButton}
       iconLeft={<Ionicons name={'time-outline'} size={iconSize.medium} color={globalStyles.textColor.color} />}
@@ -26,6 +25,7 @@ const HistoryButton = ({ onPress, showHistory }: { onPress: () => void; showHist
           color={globalStyles.textColor.color}
         />
       }
+      onPress={onPress}
     />
   );
 };

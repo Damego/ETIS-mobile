@@ -14,7 +14,7 @@ import useQuery from '~/hooks/useQuery';
 import { fontSize } from '~/utils/texts';
 import { groupItems } from '~/utils/utils';
 
-const Field = ({ value }: { value?: string }) => {
+const Field = ({ value }: { readonly value?: string }) => {
   const globalStyles = useGlobalStyles();
 
   const copyValue = () => value && Clipboard.setStringAsync(value);
@@ -32,11 +32,9 @@ const Field = ({ value }: { value?: string }) => {
       ]}
     >
       <Text selectable>{value}</Text>
-      {value && (
-        <TouchableOpacity onPress={copyValue}>
-          <Feather name={'copy'} size={18} color={globalStyles.textColor.color} />
-        </TouchableOpacity>
-      )}
+      {value ? <TouchableOpacity onPress={copyValue}>
+        <Feather name={'copy'} size={18} color={globalStyles.textColor.color} />
+      </TouchableOpacity> : null}
     </View>
   );
 };
@@ -61,8 +59,8 @@ const DigitalResources = () => {
           {resources.map((resource) => (
             <Card key={resource.name} style={{ gap: 4 }}>
               <ClickableText
-                onPress={() => resource.url && Linking.openURL(resource.url)}
                 textStyle={[fontSize.medium]}
+                onPress={() => resource.url && Linking.openURL(resource.url)}
               >
                 {resource.name}
               </ClickableText>

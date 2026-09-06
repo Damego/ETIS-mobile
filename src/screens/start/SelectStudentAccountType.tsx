@@ -58,20 +58,20 @@ const SelectStudentAccountTypeScreen = ({ navigation }: StartStackScreenProps) =
         <View style={styles.container}>
           <OptionButton
             isPressed={withAuth}
-            onPress={handleSelect(true)}
             bottomComponent={<Text>{t('start.fullAccessFeatures')}</Text>}
+            onPress={handleSelect(true)}
           >
             {t('start.withEtisAuth')}
           </OptionButton>
           <OptionButton
             isPressed={!withAuth}
-            onPress={handleSelect(false)}
             disabled={noAuthDisabled}
             bottomComponent={
               <Text colorVariant={noAuthDisabled ? 'text2' : undefined}>
                 {noAuthDisabled ? t('start.scheduleServiceUnavailable') : t('start.scheduleOnly')}
               </Text>
             }
+            onPress={handleSelect(false)}
           >
             {t('start.withoutEtisAuth')}
           </OptionButton>
@@ -80,7 +80,7 @@ const SelectStudentAccountTypeScreen = ({ navigation }: StartStackScreenProps) =
         {!withAuth && <WarningMessage />}
 
         <View style={styles.buttonWrapper}>
-          <Button text={t('start.choose')} onPress={handleChoose} variant={'primary'} />
+          <Button text={t('start.choose')} variant={'primary'} onPress={handleChoose} />
         </View>
       </View>
     </SafeAreaView>

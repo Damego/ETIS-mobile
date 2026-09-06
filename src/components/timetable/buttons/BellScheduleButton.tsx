@@ -14,7 +14,6 @@ const BellScheduleButton = () => {
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('BellSchedule')}
       accessibilityRole='button'
       accessibilityLabel={t('navigation.bellSchedule')}
       hitSlop={
@@ -25,6 +24,7 @@ const BellScheduleButton = () => {
           right: 12,
         }
       }
+      onPress={() => navigation.navigate('BellSchedule')}
     >
       <AntDesign name={'bells'} size={24} color={theme.colors.text} />
     </TouchableOpacity>

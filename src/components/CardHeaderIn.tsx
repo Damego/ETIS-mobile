@@ -23,9 +23,9 @@ const CardHeaderIn = ({
   children,
   style,
 }: {
-  topText: string;
-  children: React.ReactNode;
-  style?: StyleProp<ViewStyle>;
+  readonly topText: string;
+  readonly children: React.ReactNode;
+  readonly style?: StyleProp<ViewStyle>;
 }) => (
   <Card style={style}>
     <View style={styles.cardHeaderView}>

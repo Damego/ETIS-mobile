@@ -41,18 +41,18 @@ const WeekTimeTable = ({
   loadingComponent,
   onRetry,
 }: {
-  data?: ITimeTable | null;
-  currentDate: dayjs.Dayjs;
-  currentWeek: number;
-  selectedDate: dayjs.Dayjs;
-  selectedWeek: number;
-  teachers: ITeacher[];
-  onWeekPress: (week: number) => void;
-  firstWeek?: number;
-  lastWeek?: number;
-  isLoading?: boolean;
-  loadingComponent?: () => React.ReactNode;
-  onRetry?: () => void;
+  readonly data?: ITimeTable | null;
+  readonly currentDate: dayjs.Dayjs;
+  readonly currentWeek: number;
+  readonly selectedDate: dayjs.Dayjs;
+  readonly selectedWeek: number;
+  readonly teachers: ITeacher[];
+  readonly onWeekPress: (week: number) => void;
+  readonly firstWeek?: number;
+  readonly lastWeek?: number;
+  readonly isLoading?: boolean;
+  readonly loadingComponent?: () => React.ReactNode;
+  readonly onRetry?: () => void;
 }) => {
   const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
@@ -66,23 +66,21 @@ const WeekTimeTable = ({
 
   return (
     <View style={{ flex: 1 }}>
-      {shouldRenderNavigator && (
-        <PageNavigator
-          firstPage={firstWeek ?? data?.weekInfo.first ?? 1}
-          lastPage={lastWeek ?? data?.weekInfo.last ?? 1}
-          currentPage={selectedWeek}
-          onPageChange={onWeekPress}
-          pageStyles={{
-            [currentWeek]: {
-              view: {
-                borderWidth: 2,
-                borderRadius: 50,
-                borderColor: globalStyles.primaryText.color,
-              },
+      {shouldRenderNavigator ? <PageNavigator
+        firstPage={firstWeek ?? data?.weekInfo.first ?? 1}
+        lastPage={lastWeek ?? data?.weekInfo.last ?? 1}
+        currentPage={selectedWeek}
+        pageStyles={{
+          [currentWeek]: {
+            view: {
+              borderWidth: 2,
+              borderRadius: 50,
+              borderColor: globalStyles.primaryText.color,
             },
-          }}
-        />
-      )}
+          },
+        }}
+        onPageChange={onWeekPress}
+      /> : null}
       {loadingComponent !== undefined && isLoading
         ? (
           loadingComponent()
@@ -106,7 +104,7 @@ const WeekTimeTable = ({
           : (
             <View style={styles.emptyContainer}>
               <CenteredText>Нет расписания</CenteredText>
-              {onRetry && <Button text={t('common.refresh')} onPress={onRetry} variant='card' />}
+              {onRetry ? <Button text={t('common.refresh')} variant='card' onPress={onRetry} /> : null}
             </View>
           )}
     </View>

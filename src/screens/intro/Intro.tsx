@@ -61,7 +61,7 @@ const DOT_SIZE = 8;
 // Отступ между точками
 const DOT_GAP = 8;
 
-const Slide = ({ slide, title, text }: { slide: ISlide; title: string; text: string }) => (
+const Slide = ({ slide, title, text }: { readonly slide: ISlide; readonly title: string; readonly text: string }) => (
   <LinearGradient
     colors={slide.colors}
     // Направление из варианта «в градиент» (160°): слева-сверху вправо-вниз
@@ -107,7 +107,9 @@ const Intro = () => {
 
   return (
     <View style={styles.container}>
-      {/* Белый текст на градиенте — только светлые иконки статус-бара */}
+      {/* Белый текст на градиенте — только светлые иконки статус-бара;
+          style — строковый проп expo-status-bar, не RN style */}
+      {/* eslint-disable-next-line react/style-prop-object */}
       <StatusBar style='light' />
 
       <PagerView
@@ -147,17 +149,17 @@ const Intro = () => {
 
         <View style={styles.buttons}>
           <Pressable
-            onPress={back}
             disabled={position === 0}
             style={[styles.button, styles.buttonBack, position === 0 && styles.buttonHidden]}
+            onPress={back}
           >
             <Text style={styles.buttonBackText}>{t('common.back')}</Text>
           </Pressable>
 
           <Pressable
-            onPress={next}
             style={[styles.button, styles.buttonNext]}
             accessibilityLabel={isLast ? t('intro.done') : t('intro.next')}
+            onPress={next}
           >
             {isLast ? (
               <AntDesign name='arrowright' size={24} color='#FFFFFF' />

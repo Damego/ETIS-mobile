@@ -5,7 +5,7 @@ import { Text, View } from 'react-native';
 import { useGlobalStyles } from '~/hooks';
 import { fontSize } from '~/utils/texts';
 
-function ResultView({ textKey }: { textKey: string }) {
+function ResultView({ textKey }: { readonly textKey: string }) {
   const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
 

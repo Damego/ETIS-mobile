@@ -14,16 +14,16 @@ import { IThemeColors } from '~/styles/themes';
 import Text, { TextProps } from './Text';
 
 interface ClickableTextProps extends TouchableOpacityProps {
-  text?: string | number;
-  textStyle?: StyleProp<TextStyle>;
-  viewStyle?: StyleProp<ViewStyle>;
+  readonly text?: string | number;
+  readonly textStyle?: StyleProp<TextStyle>;
+  readonly viewStyle?: StyleProp<ViewStyle>;
   onPress(): void;
-  adjustsFontSizeToFit?: boolean;
-  colorVariant?: '' | keyof IThemeColors;
-  iconLeft?: React.ReactNode;
-  iconRight?: React.ReactNode;
-  bottomComponent?: React.ReactNode;
-  textProps?: TextProps;
+  readonly adjustsFontSizeToFit?: boolean;
+  readonly colorVariant?: '' | keyof IThemeColors;
+  readonly iconLeft?: React.ReactNode;
+  readonly iconRight?: React.ReactNode;
+  readonly bottomComponent?: React.ReactNode;
+  readonly textProps?: TextProps;
 }
 
 const ClickableText = React.forwardRef<React.ElementRef<typeof TouchableOpacity>, ClickableTextProps>(
@@ -43,7 +43,7 @@ const ClickableText = React.forwardRef<React.ElementRef<typeof TouchableOpacity>
     },
     ref
   ) => (
-    <TouchableOpacity style={[styles.container, viewStyle]} ref={ref} {...props}>
+    <TouchableOpacity ref={ref} style={[styles.container, viewStyle]} {...props}>
       {iconLeft}
       <View>
         <Text

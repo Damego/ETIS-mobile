@@ -12,7 +12,7 @@ import { fontSize } from '~/utils/texts';
 
 import CertificateModal from './CertificateModal';
 
-const CertificateCard = ({ certificate }: { certificate: ICertificate }) => {
+const CertificateCard = ({ certificate }: { readonly certificate: ICertificate }) => {
   const { t } = useTranslation();
   const [isOpened, setOpened] = useState<boolean>(false);
   const [html, setHTML] = useState<string>();
@@ -45,7 +45,7 @@ const CertificateCard = ({ certificate }: { certificate: ICertificate }) => {
 
   return (
     <>
-      {isOpened && <CertificateModal html={html ?? ''} closeModal={closeModal} />}
+      {isOpened ? <CertificateModal html={html ?? ''} closeModal={closeModal} /> : null}
 
       <TouchableOpacity onPress={openModal}>
         <CardHeaderIn

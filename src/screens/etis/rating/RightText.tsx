@@ -8,8 +8,8 @@ const RightText = ({
   topText,
   bottomText,
 }: {
-  topText: React.ReactNode;
-  bottomText: React.ReactNode;
+  readonly topText: React.ReactNode;
+  readonly bottomText: React.ReactNode;
 }) => (
   <View style={styles.container}>
     <Text style={styles.topText}>{topText}</Text>

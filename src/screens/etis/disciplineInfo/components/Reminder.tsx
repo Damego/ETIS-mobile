@@ -12,8 +12,8 @@ const Reminder = ({
   reminder,
   onRemove,
 }: {
-  reminder: DisciplineReminder;
-  onRemove: () => void;
+  readonly reminder: DisciplineReminder;
+  readonly onRemove: () => void;
 }) => {
   const theme = useAppTheme();
 

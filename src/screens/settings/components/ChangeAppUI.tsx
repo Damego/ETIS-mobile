@@ -20,8 +20,8 @@ const ChangeAppUI = () => {
     <SettingRow
       label={t('settings.interfaceSettings')}
       icon={<AntDesign name={'picture'} size={24} color={theme.colors.text} />}
-      onPress={onPress}
       right={<AntDesign name={'right'} size={20} color={theme.colors.text} />}
+      onPress={onPress}
     />
   );
 };

@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const ActiveButton = ({ number }: { number: string | number }) => {
+const ActiveButton = ({ number }: { readonly number: string | number }) => {
   const globalStyles = useGlobalStyles();
 
   return (
@@ -47,11 +47,11 @@ const PageNavigator = React.memo(
     onPageChange,
     pageStyles = {},
   }: {
-    firstPage: number;
-    currentPage: number;
-    lastPage: number;
+    readonly firstPage: number;
+    readonly currentPage: number;
+    readonly lastPage: number;
     onPageChange(page: number): void;
-    pageStyles?: {
+    readonly pageStyles?: {
       [page: number]: {
         view?: StyleProp<ViewStyle>;
         text?: StyleProp<TextStyle>;
@@ -96,15 +96,15 @@ const PageNavigator = React.memo(
             currentPage !== number
               ? (
                 <ClickableText
+                  key={number}
                   viewStyle={[styles.button, pageStyles[number]?.view]}
                   textStyle={[fontSize.large, globalStyles.textColor, pageStyles[number]?.text]}
                   text={number}
                   onPress={() => onPageChange(number)}
-                  key={number}
                 />
               )
               : (
-                <ActiveButton number={number} key={number} />
+                <ActiveButton key={number} number={number} />
               )
           )}
         </ScrollView>

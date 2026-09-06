@@ -54,18 +54,18 @@ const ToggleThemeSetting = () => {
       <SettingRow
         label={t('settings.theme')}
         icon={<Octicons name={'paintbrush'} size={24} color={theme.colors.text} />}
-        onPress={() => modalRef.current?.present()}
         right={
           <Text style={fontSize.medium}>
             {themeLabels[themeType] ?? t('settings.themeAuto')}
           </Text>
         }
+        onPress={() => modalRef.current?.present()}
       />
       <OptionsBottomSheet
         ref={modalRef}
         options={options}
-        onOptionPress={(value) => changeAppTheme(value as ThemeType)}
         currentOptionValue={themeType}
+        onOptionPress={(value) => changeAppTheme(value as ThemeType)}
       />
     </>
   );

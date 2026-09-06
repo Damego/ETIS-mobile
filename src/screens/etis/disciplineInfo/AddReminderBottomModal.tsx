@@ -19,8 +19,8 @@ const TimePicker = ({
   value,
   onValueChange,
 }: {
-  value: dayjs.Dayjs;
-  onValueChange: (value: dayjs.Dayjs) => void;
+  readonly value: dayjs.Dayjs;
+  readonly onValueChange: (value: dayjs.Dayjs) => void;
 }) => {
   const globalStyles = useGlobalStyles();
 
@@ -39,22 +39,22 @@ const TimePicker = ({
         style={[globalStyles.border, timePickerStyles.textInput, globalStyles.textColor2]}
         placeholderTextColor={globalStyles.inputPlaceholder.color}
         value={value.hour().toString().padStart(2, '0')}
-        onChangeText={handleChange('hours')}
         keyboardType={'numeric'}
+        onChangeText={handleChange('hours')}
       />
       <Text style={fontSize.xlarge}>:</Text>
       <TextInput
         style={[globalStyles.border, timePickerStyles.textInput, globalStyles.textColor2]}
         placeholderTextColor={globalStyles.inputPlaceholder.color}
         value={value.minute().toString().padStart(2, '0')}
-        onChangeText={handleChange('minutes')}
         keyboardType={'numeric'}
+        onChangeText={handleChange('minutes')}
       />
     </View>
   );
 };
 
-const AddReminderBottomModal = ({ onSubmit }: { onSubmit: (datetime: dayjs.Dayjs) => void }) => {
+const AddReminderBottomModal = ({ onSubmit }: { readonly onSubmit: (datetime: dayjs.Dayjs) => void }) => {
   const { t } = useTranslation();
   const minimumDate = dayjs().add(5, 'minute');
 
@@ -79,7 +79,6 @@ const AddReminderBottomModal = ({ onSubmit }: { onSubmit: (datetime: dayjs.Dayjs
     <>
       <DateTimePicker
         date={value}
-        onChange={({ date }) => handleDayChange(dayjs(date))}
         locale={'ru'}
         minDate={minimumDate}
         firstDayOfWeek={1}
@@ -123,14 +122,15 @@ const AddReminderBottomModal = ({ onSubmit }: { onSubmit: (datetime: dayjs.Dayjs
             backgroundColor: theme.colors.container,
           },
         }}
+        onChange={({ date }) => handleDayChange(dayjs(date))}
       />
       <Text style={styles.text}>{t('disciplineInfo.setTime')}</Text>
       <TimePicker value={value} onValueChange={setValue} />
       <ClickableText
         text={t('common.save')}
-        onPress={preSubmit}
         viewStyle={styles.saveButton}
         textStyle={styles.text}
+        onPress={preSubmit}
       />
     </>
   );

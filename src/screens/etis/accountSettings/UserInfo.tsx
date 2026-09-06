@@ -15,33 +15,25 @@ function UserInfo() {
     <>
       <Card>
         <Text style={styles.cardTitle}>{name ?? '—'}</Text>
-        {speciality && (
-          <Text>
-            <Text style={nameTextStyle}>Направление: </Text>
-            <Text style={fontSize.medium}>{speciality}</Text>
-          </Text>
-        )}
+        {speciality ? <Text>
+          <Text style={nameTextStyle}>Направление: </Text>
+          <Text style={fontSize.medium}>{speciality}</Text>
+        </Text> : null}
 
-        {educationForm && (
-          <Text>
-            <Text style={nameTextStyle}>Форма обучения: </Text>
-            <Text style={fontSize.medium}>{capitalizeWord(educationForm)}</Text>
-          </Text>
-        )}
+        {educationForm ? <Text>
+          <Text style={nameTextStyle}>Форма обучения: </Text>
+          <Text style={fontSize.medium}>{capitalizeWord(educationForm)}</Text>
+        </Text> : null}
 
-        {year && (
-          <Text>
-            <Text style={nameTextStyle}>Год: </Text>
-            <Text style={fontSize.medium}>{year}</Text>
-          </Text>
-        )}
+        {year ? <Text>
+          <Text style={nameTextStyle}>Год: </Text>
+          <Text style={fontSize.medium}>{year}</Text>
+        </Text> : null}
 
-        {group && (
-          <Text>
-            <Text style={nameTextStyle}>Группа: </Text>
-            <Text style={fontSize.medium}>{group}</Text>
-          </Text>
-        )}
+        {group ? <Text>
+          <Text style={nameTextStyle}>Группа: </Text>
+          <Text style={fontSize.medium}>{group}</Text>
+        </Text> : null}
       </Card>
     </>
   );

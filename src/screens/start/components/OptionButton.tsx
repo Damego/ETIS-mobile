@@ -13,30 +13,26 @@ const OptionButton = ({
   children,
   bottomComponent,
 }: {
-  isPressed: boolean;
-  onPress: () => void;
-  disabled?: boolean;
-  children: React.ReactNode;
-  bottomComponent?: React.ReactNode;
+  readonly isPressed: boolean;
+  readonly onPress: () => void;
+  readonly disabled?: boolean;
+  readonly children: React.ReactNode;
+  readonly bottomComponent?: React.ReactNode;
 }) => {
   const globalStyles = useGlobalStyles();
 
   return (
     <ClickableText
-      onPress={onPress}
       disabled={disabled}
       viewStyle={[
         styles.buttonView,
         isPressed ? globalStyles.primaryBorder : [globalStyles.card, globalStyles.invisibleBorder],
         disabled && styles.buttonDisabled,
       ]}
-      iconRight={
-        isPressed && (
-          <AntDesign name={'checkcircle'} color={globalStyles.primaryText.color} size={20} />
-        )
-      }
+      iconRight={isPressed ? <AntDesign name={'checkcircle'} color={globalStyles.primaryText.color} size={20} /> : null}
       textStyle={[styles.buttonText, disabled && globalStyles.textColor2]}
       bottomComponent={bottomComponent}
+      onPress={onPress}
     >
       {children}
     </ClickableText>

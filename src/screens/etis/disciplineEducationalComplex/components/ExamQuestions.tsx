@@ -11,7 +11,7 @@ import { RequestType } from '~/models/results';
 import SectionRow from '~/screens/etis/disciplineEducationalComplex/components/SectionRow';
 import { fontSize } from '~/utils/texts';
 
-const Question = ({ question, index }: { question: IExamQuestions; index: number }) => {
+const Question = ({ question, index }: { readonly question: IExamQuestions; readonly index: number }) => {
   const client = useClient();
 
   // Не требует авторизации в ЕТИС, поэтому несущественно, что здесь использовать
@@ -31,14 +31,14 @@ const Question = ({ question, index }: { question: IExamQuestions; index: number
   );
 };
 
-const QuestionsBottomSheet = React.forwardRef<BottomSheetModal, { questions: IExamQuestions[] }>(
+const QuestionsBottomSheet = React.forwardRef<BottomSheetModal, { readonly questions: IExamQuestions[] }>(
   ({ questions }, ref) => {
     const { t } = useTranslation();
     return (
       <BottomSheetModal ref={ref} snapPoints={['50%', '100%']}>
         <BottomSheetContent title={t('dec.examQuestions')}>
           {questions.map((question, index) => (
-            <Question question={question} index={index} key={question.id} />
+            <Question key={question.id} question={question} index={index} />
           ))}
         </BottomSheetContent>
       </BottomSheetModal>
@@ -46,7 +46,7 @@ const QuestionsBottomSheet = React.forwardRef<BottomSheetModal, { questions: IEx
   }
 );
 
-const ExamQuestions = ({ questions }: { questions: IExamQuestions[] }) => {
+const ExamQuestions = ({ questions }: { readonly questions: IExamQuestions[] }) => {
   const { t } = useTranslation();
   const ref = useRef<BottomSheetModal | null>(null);
 

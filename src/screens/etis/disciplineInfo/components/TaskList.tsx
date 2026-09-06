@@ -14,7 +14,7 @@ import getGroupedTasks from '../getGroupedTasks';
 import HistoryButton from '../HistoryButton';
 import TaskItem from './TaskItem';
 
-const GroupedTaskList = ({ tasks }: { tasks: DisciplineTask[] }) => {
+const GroupedTaskList = ({ tasks }: { readonly tasks: DisciplineTask[] }) => {
   const { t } = useTranslation();
   const { disciplineDate } = useTaskContext();
   const { datetime } = tasks[0];
@@ -26,17 +26,17 @@ const GroupedTaskList = ({ tasks }: { tasks: DisciplineTask[] }) => {
 
   return (
     <>
-      {time && <Text style={styles.title}>{time}</Text>}
+      {time ? <Text style={styles.title}>{time}</Text> : null}
       <View style={styles.taskListContainer}>
         {tasks.map((task) => (
-          <TaskItem task={task} key={task.id} />
+          <TaskItem key={task.id} task={task} />
         ))}
       </View>
     </>
   );
 };
 
-const TaskList = ({ tasks }: { tasks: DisciplineTask[] }) => {
+const TaskList = ({ tasks }: { readonly tasks: DisciplineTask[] }) => {
   const [showInactiveTasks, setShowInactiveTasks] = useState<boolean>(false);
 
   const currentDate = dayjs();
@@ -56,18 +56,17 @@ const TaskList = ({ tasks }: { tasks: DisciplineTask[] }) => {
 
       {Boolean(groupedInactiveTasks.length) && (
         <HistoryButton
-          onPress={() => setShowInactiveTasks((prev) => !prev)}
           showHistory={showInactiveTasks}
+          onPress={() => setShowInactiveTasks((prev) => !prev)}
         />
       )}
 
-      {showInactiveTasks &&
-      	groupedInactiveTasks.map((group, index) => (
-      	  <View key={group[0].id}>
-      	    <GroupedTaskList tasks={group} />
-      	    {groupedInactiveTasks.length - 1 !== index && <BorderLine />}
-      	  </View>
-      	))}
+      {showInactiveTasks ? groupedInactiveTasks.map((group, index) => (
+        <View key={group[0].id}>
+          <GroupedTaskList tasks={group} />
+          {groupedInactiveTasks.length - 1 !== index && <BorderLine />}
+        </View>
+      )) : null}
     </>
   );
 };

@@ -53,7 +53,7 @@ const SelectTeacherScreen = () => {
           <SearchInput value={query} onValueChange={setQuery} />
         </View>
 
-        {isLoading && <LoadingContainer variant={'texts'} />}
+        {isLoading ? <LoadingContainer variant={'texts'} /> : null}
 
         {!isLoading && isPsutechAvailable() === false && (
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -66,7 +66,6 @@ const SelectTeacherScreen = () => {
         {data?.map((teacher, index) => (
           <View key={teacher?.id || index}>
             <ClickableText
-              onPress={handleTeacherSelect(teacher)}
               viewStyle={styles.teacherItem}
               textStyle={fontSize.medium}
               iconRight={
@@ -74,6 +73,7 @@ const SelectTeacherScreen = () => {
                   <AntDesign name={'checkcircle'} color={theme.colors.primary} size={20} />
                 )
               }
+              onPress={handleTeacherSelect(teacher)}
             >
               {teacher?.name || t('start.unknownTeacher')}
             </ClickableText>
@@ -84,13 +84,13 @@ const SelectTeacherScreen = () => {
 
       {selectedTeacher !== null && (
         <TouchableOpacity
-          onPress={handleConfirm}
           style={[
             styles.button,
             { bottom: Math.max(insets.bottom, 8) },
             globalStyles.primaryBackgroundColor,
             globalStyles.borderRadius,
           ]}
+          onPress={handleConfirm}
         >
           <Text colorVariant={'primaryContrast'} style={fontSize.big}>
             {t('start.choose')}

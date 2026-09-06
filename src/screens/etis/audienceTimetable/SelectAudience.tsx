@@ -47,7 +47,7 @@ const SelectAudience = ({ navigation }: EducationStackScreenProps) => {
         <SearchInput value={query} onValueChange={setQuery} />
       </View>
 
-      {isLoading && <LoadingContainer />}
+      {isLoading ? <LoadingContainer /> : null}
 
       {!isLoading && isPsutechAvailable() === false && (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -62,7 +62,6 @@ const SelectAudience = ({ navigation }: EducationStackScreenProps) => {
         ItemSeparatorComponent={BorderLine}
         renderItem={({ item: audience }) => (
           <ClickableText
-            onPress={selectAudience(audience)}
             viewStyle={styles.teacherItem}
             textStyle={fontSize.medium}
             iconRight={
@@ -70,6 +69,7 @@ const SelectAudience = ({ navigation }: EducationStackScreenProps) => {
                 <AntDesign name={'checkcircle'} color={theme.colors.primary} size={20} />
               )
             }
+            onPress={selectAudience(audience)}
           >
             {audience.number}
           </ClickableText>
@@ -78,8 +78,8 @@ const SelectAudience = ({ navigation }: EducationStackScreenProps) => {
 
       {selectedAudience !== null && (
         <TouchableOpacity
-          onPress={handleConfirm}
           style={[styles.button, globalStyles.primaryBackgroundColor, globalStyles.borderRadius]}
+          onPress={handleConfirm}
         >
           <Text colorVariant={'primaryContrast'} style={fontSize.big}>
             {t('audienceTimetable.select')}

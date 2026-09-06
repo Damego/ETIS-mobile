@@ -12,12 +12,12 @@ const AccountSettingsButton = () => {
 
   return (
     <TouchableOpacity
-      onPress={() => {
-        navigation.navigate('AccountSettings');
-      }}
       style={{
         justifyContent: 'center',
         marginHorizontal: 14,
+      }}
+      onPress={() => {
+        navigation.navigate('AccountSettings');
       }}
     >
       <AntDesign name='user' size={28} color={theme.colors.text} />

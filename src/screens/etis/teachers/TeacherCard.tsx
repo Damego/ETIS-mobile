@@ -8,9 +8,9 @@ import { ITeacher } from '~/models/teachers';
 import Teacher from './Teacher';
 
 interface TeacherCardProps {
-  discipline: string;
-  teachers: ITeacher[];
-  onPress: (teacher: ITeacher) => void;
+  readonly discipline: string;
+  readonly teachers: ITeacher[];
+  readonly onPress: (teacher: ITeacher) => void;
 }
 
 const TeacherCard = ({ discipline, teachers, onPress }: TeacherCardProps) => (

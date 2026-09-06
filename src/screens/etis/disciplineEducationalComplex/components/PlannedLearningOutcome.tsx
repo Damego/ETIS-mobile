@@ -11,7 +11,7 @@ import DropdownText from '~/screens/etis/disciplineEducationalComplex/components
 import SectionRow from '~/screens/etis/disciplineEducationalComplex/components/SectionRow';
 import { fontSize } from '~/utils/texts';
 
-const Outcome = ({ data }: { data: IPlannedLearningOutcome }) => {
+const Outcome = ({ data }: { readonly data: IPlannedLearningOutcome }) => {
   const { t } = useTranslation();
   return (
     <View style={{ gap: 4 }}>
@@ -29,7 +29,7 @@ const Outcome = ({ data }: { data: IPlannedLearningOutcome }) => {
 
 const PlannedLearningOutcomeBottomSheet = React.forwardRef<
   BottomSheetModal,
-  { data: IPlannedLearningOutcome[] }
+  { readonly data: IPlannedLearningOutcome[] }
 >(({ data }, ref) => {
   const { t } = useTranslation();
   return (
@@ -46,7 +46,7 @@ const PlannedLearningOutcomeBottomSheet = React.forwardRef<
   );
 });
 
-const PlannedLearningOutcome = ({ data }: { data: IPlannedLearningOutcome[] }) => {
+const PlannedLearningOutcome = ({ data }: { readonly data: IPlannedLearningOutcome[] }) => {
   const { t } = useTranslation();
   const ref = useRef<BottomSheetModal | null>(null);
 

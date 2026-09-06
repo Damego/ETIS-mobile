@@ -20,8 +20,8 @@ export default function OrderModal({
   html,
   closeModal,
 }: {
-  html: string;
-  closeModal: () => void;
+  readonly html: string;
+  readonly closeModal: () => void;
 }) {
   const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
@@ -30,16 +30,16 @@ export default function OrderModal({
     <Modal transparent onRequestClose={closeModal}>
       <View style={[styles.container, globalStyles.card, globalStyles.border]}>
         <AutoHeightWebView
-          source={{ html }}
           scalesPageToFit
+          source={{ html }}
           style={{ marginHorizontal: '20%' }}
           customStyle={getStyles(globalStyles.textColor.color)}
         />
         <ClickableText
           text={t('common.close')}
-          onPress={closeModal}
           textStyle={[fontSize.large, globalStyles.textColor]}
           viewStyle={{ marginBottom: '2%' }}
+          onPress={closeModal}
         />
       </View>
     </Modal>

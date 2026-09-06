@@ -12,8 +12,8 @@ export default function Question({
   answerTitles,
   onAnswer,
 }: {
-  question: IQuestion;
-  answerTitles: string[];
+  readonly question: IQuestion;
+  readonly answerTitles: string[];
   onAnswer(answer: IAnswer): void;
 }) {
   return (
@@ -25,9 +25,9 @@ export default function Question({
           <Card key={answerTitles[index]}>
             <ClickableText
               text={answerTitles[index]}
-              onPress={() => onAnswer(answer)}
               textStyle={fontSize.large}
               viewStyle={{ justifyContent: 'center', alignItems: 'center' }}
+              onPress={() => onAnswer(answer)}
             />
           </Card>
         ))}

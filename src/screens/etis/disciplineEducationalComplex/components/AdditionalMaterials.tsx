@@ -11,7 +11,7 @@ import { fontSize } from '~/utils/texts';
 
 const AdditionalMaterialsBottomSheet = React.forwardRef<
   BottomSheetModal,
-  { data: IAdditionalMaterials }
+  { readonly data: IAdditionalMaterials }
 >(({ data }, ref) => {
   const { t } = useTranslation();
   return (
@@ -19,7 +19,7 @@ const AdditionalMaterialsBottomSheet = React.forwardRef<
       <BottomSheetContent title={t('dec.additionalMaterials')}>
         <Text style={[fontSize.big, { fontWeight: 'bold' }]}>{t('dec.files')}</Text>
         {data.files.map((file, index) => (
-          <FileTextLink src={file.uri} fileName={file.name} key={index} style={fontSize.medium}>
+          <FileTextLink key={index} src={file.uri} fileName={file.name} style={fontSize.medium}>
             {file.name}
           </FileTextLink>
         ))}
@@ -28,7 +28,7 @@ const AdditionalMaterialsBottomSheet = React.forwardRef<
   );
 });
 
-const AdditionalMaterials = ({ data }: { data: IAdditionalMaterials }) => {
+const AdditionalMaterials = ({ data }: { readonly data: IAdditionalMaterials }) => {
   const { t } = useTranslation();
   const ref = useRef<BottomSheetModal | null>(null);
 

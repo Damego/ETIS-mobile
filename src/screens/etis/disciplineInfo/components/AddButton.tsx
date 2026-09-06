@@ -4,10 +4,10 @@ import { StyleSheet } from 'react-native';
 import ClickableText from '~/components/ClickableText';
 import { useGlobalStyles } from '~/hooks';
 
-const AddButton = ({ onPress }: { onPress: () => void }) => {
+const AddButton = ({ onPress }: { readonly onPress: () => void }) => {
   const globalStyles = useGlobalStyles();
   return (
-    <ClickableText onPress={onPress} textStyle={[globalStyles.primaryText, styles.text]}>
+    <ClickableText textStyle={[globalStyles.primaryText, styles.text]} onPress={onPress}>
       Добавить
     </ClickableText>
   );

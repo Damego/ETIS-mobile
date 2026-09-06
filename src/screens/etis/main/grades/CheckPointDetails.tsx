@@ -16,7 +16,7 @@ const cutTypeControl = (typeControl: string): string =>
     .map((char) => char.charAt(0).toUpperCase())
     .join('');
 
-const CheckPointDetails = ({ checkPoint, index }: { checkPoint: ICheckPoint; index: number }) => {
+const CheckPointDetails = ({ checkPoint, index }: { readonly checkPoint: ICheckPoint; readonly index: number }) => {
   const { t } = useTranslation();
   const client = useClient();
   const { data, isLoading } = useQuery({
@@ -31,7 +31,7 @@ const CheckPointDetails = ({ checkPoint, index }: { checkPoint: ICheckPoint; ind
   const scoreText: string | number = formatCheckPointScore(checkPoint);
   const lastDate = data && data.date ? data.date : checkPoint.date;
 
-  const Row = ({ first, second }: { first: string | number; second: string | number }) => (
+  const Row = ({ first, second }: { readonly first: string | number; readonly second: string | number }) => (
     <View style={styles.row}>
       <Text style={styles.rowText}>{first}</Text>
       <Text style={styles.rowText}>{second}</Text>
@@ -56,10 +56,10 @@ const CheckPointDetails = ({ checkPoint, index }: { checkPoint: ICheckPoint; ind
         <Text style={styles.rowText}>{t('checkPoint.controlType')}</Text>
         <ClickableText
           text={cutTypeControl(checkPoint.typeControl)}
+          textStyle={styles.clickableText}
           onPress={() => {
             ToastAndroid.show(checkPoint.typeControl, ToastAndroid.LONG);
           }}
-          textStyle={styles.clickableText}
         />
       </View>
     </View>

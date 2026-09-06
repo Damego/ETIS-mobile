@@ -12,10 +12,10 @@ const AppSettingButton = () => {
 
   return (
     <TouchableOpacity
+      style={{ marginRight: '10%' }}
       onPress={() => {
         navigation.navigate('AppSettings');
       }}
-      style={{ marginRight: '10%' }}
     >
       <AntDesign name='setting' size={28} color={theme.colors.text} />
     </TouchableOpacity>

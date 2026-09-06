@@ -16,20 +16,20 @@ export default function AdditionalComment({ onTextChange }: { onTextChange(text:
       </Text>
 
       <TextInput
+        multiline
         style={[
           globalStyles.textColor,
           globalStyles.border,
           { width: '100%', paddingVertical: '2%', paddingHorizontal: '2%' },
         ]}
-        onChangeText={onTextChange}
         placeholder={t('questionnaire.commentPlaceholder')}
         placeholderTextColor={globalStyles.inputPlaceholder.color}
         inputMode='text'
         keyboardType='default'
         selectionColor={globalStyles.primaryText.color}
         autoCapitalize={'sentences'}
-        multiline
         maxLength={4000}
+        onChangeText={onTextChange}
       />
     </View>
   );

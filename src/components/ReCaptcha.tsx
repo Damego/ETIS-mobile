@@ -10,7 +10,7 @@ export default function CustomReCaptcha({
   onClose,
 }: {
   onReceiveToken(token: string): void;
-  size: 'invisible' | 'normal';
+  readonly size: 'invisible' | 'normal';
   onClose?(): void;
 }) {
   const ref = useRef<RecaptchaHandles | null>(null);
@@ -22,14 +22,14 @@ export default function CustomReCaptcha({
   return (
     <Recaptcha
       ref={ref}
+      hideBadge
       baseUrl='https://student.psu.ru'
       siteKey={size === 'invisible' ? PUBLIC_KEY_V3 : PUBLIC_KEY_V2}
-      onVerify={onReceiveToken}
       size={size}
-      onClose={onClose}
-      hideBadge
       loadingComponent={<></>}
       webViewStyle={size === 'invisible' ? { backgroundColor: undefined } : undefined}
+      onVerify={onReceiveToken}
+      onClose={onClose}
     />
   );
 }

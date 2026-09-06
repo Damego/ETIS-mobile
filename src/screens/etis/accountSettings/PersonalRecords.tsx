@@ -26,8 +26,8 @@ const PersonalRecord = ({
   record,
   showStatus,
 }: {
-  record: IPersonalRecord;
-  showStatus: boolean;
+  readonly record: IPersonalRecord;
+  readonly showStatus: boolean;
 }) => {
   const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
@@ -53,13 +53,11 @@ const PersonalRecord = ({
         </Text>
         {!showStatus && <Text>{t('account.statusLine', { status: record.status })}</Text>}
       </View>
-      {record.id && record.status === 'студент' && (
-        <View>
-          <TouchableOpacity onPress={changePersonalRecord}>
-            <AntDesign name='select1' size={24} color={globalStyles.textColor.color} />
-          </TouchableOpacity>
-        </View>
-      )}
+      {record.id && record.status === 'студент' ? <View>
+        <TouchableOpacity onPress={changePersonalRecord}>
+          <AntDesign name='select1' size={24} color={globalStyles.textColor.color} />
+        </TouchableOpacity>
+      </View> : null}
     </Card>
   );
 };
@@ -94,7 +92,7 @@ export default function PersonalRecords() {
       <Text style={textStyles}>{t('account.availableRecords')}</Text>
       <View style={{ gap: 8 }}>
         {activeRecords.map((record) => (
-          <PersonalRecord record={record} key={(record.id ?? '') + record.index} showStatus />
+          <PersonalRecord key={(record.id ?? '') + record.index} showStatus record={record} />
         ))}
       </View>
     </View>

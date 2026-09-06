@@ -18,7 +18,7 @@ const OrderTable = () => {
   if (!data) return <NoData onRefresh={refresh} />;
 
   return (
-    <Screen onUpdate={refresh} containerStyle={{ gap: 8 }}>
+    <Screen containerStyle={{ gap: 8 }} onUpdate={refresh}>
       {data.map((order, index) => (
         <Order key={index} order={order} />
       ))}

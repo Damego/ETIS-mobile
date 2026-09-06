@@ -12,8 +12,8 @@ const ReviewBox = ({
   setReviewed,
   setViewed,
 }: {
-  setReviewed: () => void;
-  setViewed: () => void;
+  readonly setReviewed: () => void;
+  readonly setViewed: () => void;
 }) => {
   const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
@@ -57,11 +57,11 @@ const ReviewBox = ({
         }}
       >
         <View style={{ flex: 1, marginHorizontal: '1%' }}>
-          <Button text={t('review.leaveReview')} onPress={() => handleReview()} variant={'primary'} />
+          <Button text={t('review.leaveReview')} variant={'primary'} onPress={() => handleReview()} />
         </View>
 
         <View style={{ flex: 1, marginHorizontal: '1%' }}>
-          <Button text={t('review.noThanks')} onPress={() => handleDismiss()} variant={'secondary'} />
+          <Button text={t('review.noThanks')} variant={'secondary'} onPress={() => handleDismiss()} />
         </View>
       </View>
     </View>

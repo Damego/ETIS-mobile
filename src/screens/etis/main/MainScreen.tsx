@@ -96,8 +96,8 @@ const ETISScreen = () => {
         swipeEnabled={false}
         navigationState={{ index, routes }}
         renderScene={renderScene}
-        onIndexChange={setIndex}
         renderTabBar={Shortcuts}
+        onIndexChange={setIndex}
       />
     </View>
   );

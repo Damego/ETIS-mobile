@@ -30,21 +30,21 @@ const styles = StyleSheet.create({
   },
 });
 
-const Subject = ({ data, period }: { data: ITeachPlanDiscipline; period: string }) => {
+const Subject = ({ data, period }: { readonly data: ITeachPlanDiscipline; readonly period: string }) => {
   const navigation = useNavigation<EducationNavigationProp>();
   const globalStyles = useGlobalStyles();
 
   return (
     <>
       <TouchableOpacity
+        style={styles.subjectDropdownView}
+        activeOpacity={0.45}
         onPress={() => {
           navigation.navigate('DisciplineEducationalComplex', {
             disciplineTeachPlan: data,
             period,
           });
         }}
-        style={styles.subjectDropdownView}
-        activeOpacity={0.45}
       >
         <View style={styles.subjectTitleView}>
           <Text style={styles.subjectNameText}>{data.name}</Text>

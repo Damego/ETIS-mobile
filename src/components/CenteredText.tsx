@@ -5,7 +5,7 @@ import { fontSize } from '~/utils/texts';
 
 import Text from './Text';
 
-const CenteredText = ({ children }: { children: string }) => (
+const CenteredText = ({ children }: { readonly children: string }) => (
   <View style={styles.container}>
     <Text style={styles.text}>{children}</Text>
   </View>

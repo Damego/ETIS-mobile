@@ -10,7 +10,7 @@ export default function TeacherQuestionView({
   teacher,
   setTeacher,
 }: {
-  teacher?: string;
+  readonly teacher?: string;
   setTeacher(teacher: string): void;
 }) {
   const { t } = useTranslation();
@@ -27,7 +27,6 @@ export default function TeacherQuestionView({
           globalStyles.border,
           { width: '80%', paddingVertical: '2%', paddingHorizontal: '2%' },
         ]}
-        onChangeText={setTeacher}
         placeholder={t('questionnaire.teacherPlaceholder')}
         placeholderTextColor={globalStyles.inputPlaceholder.color}
         autoComplete='name'
@@ -35,6 +34,7 @@ export default function TeacherQuestionView({
         keyboardType='default'
         selectionColor={globalStyles.primaryText.color}
         autoCapitalize='words'
+        onChangeText={setTeacher}
       />
     </View>
   );

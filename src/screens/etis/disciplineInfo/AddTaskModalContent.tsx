@@ -36,11 +36,11 @@ const AddTaskModalContent = ({
   showDisciplineInfo,
   disableCheckbox,
 }: {
-  onTaskAdd: (task: PartialTask) => void;
-  onTaskRemove: (task: DisciplineTask) => void;
-  selectedTask?: DisciplineTask;
-  showDisciplineInfo?: boolean;
-  disableCheckbox?: boolean;
+  readonly onTaskAdd: (task: PartialTask) => void;
+  readonly onTaskRemove: (task: DisciplineTask) => void;
+  readonly selectedTask?: DisciplineTask;
+  readonly showDisciplineInfo?: boolean;
+  readonly disableCheckbox?: boolean;
 }) => {
   const { t } = useTranslation();
   const [description, setDescription] = useState(selectedTask?.description || '');
@@ -79,24 +79,20 @@ const AddTaskModalContent = ({
 
   return (
     <>
-      {showDisciplineInfo && selectedTask && (
-        <>
-          <Text style={styles.disciplineText}>{selectedTask.disciplineName}</Text>
-          {selectedTask.datetime && (
-            <Text style={styles.timeText}>{formatTime(selectedTask.datetime)}</Text>
-          )}
-        </>
-      )}
+      {showDisciplineInfo && selectedTask ? <>
+        <Text style={styles.disciplineText}>{selectedTask.disciplineName}</Text>
+        {selectedTask.datetime ? <Text style={styles.timeText}>{formatTime(selectedTask.datetime)}</Text> : null}
+      </> : null}
       {/* BottomSheetTextInput просто закрывается при открытии клавиатуры */}
       <Text style={styles.titleText}>{t('disciplineInfo.description')}</Text>
       <TextInput
+        multiline
         style={[globalStyles.border, styles.textInput, globalStyles.textColor2]}
         placeholderTextColor={globalStyles.inputPlaceholder.color}
         placeholder={t('disciplineInfo.descriptionPlaceholder')}
         value={description}
-        onChangeText={setDescription}
-        multiline
         autoComplete={'off'}
+        onChangeText={setDescription}
       />
 
       {/*
@@ -121,7 +117,7 @@ const AddTaskModalContent = ({
       {reminders.length
         ? (
           reminders.map((rem, index) => (
-            <Reminder reminder={rem} onRemove={removeReminder(index)} key={index.toString()} />
+            <Reminder key={index.toString()} reminder={rem} onRemove={removeReminder(index)} />
           ))
         )
         : (

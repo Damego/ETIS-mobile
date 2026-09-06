@@ -50,9 +50,9 @@ const Form = ({
   errorMessage,
   setShowRecovery,
 }: {
-  onSubmit: (login: string, password: string) => void;
-  errorMessage: string | null;
-  setShowRecovery: (showRecovery: boolean) => void;
+  readonly onSubmit: (login: string, password: string) => void;
+  readonly errorMessage: string | null;
+  readonly setShowRecovery: (showRecovery: boolean) => void;
 }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
@@ -75,9 +75,6 @@ const Form = ({
 
       <TextInput
         style={[styles.input, globalStyles.border, globalStyles.textColor]}
-        onChangeText={(newLogin) => {
-          setLogin(newLogin);
-        }}
         placeholder={t('auth.loginPlaceholder')}
         placeholderTextColor={theme.colors.inputPlaceholder}
         autoComplete='email'
@@ -85,17 +82,20 @@ const Form = ({
         keyboardType='email-address'
         selectionColor={theme.colors.primary}
         autoCapitalize='none'
+        onChangeText={(newLogin) => {
+          setLogin(newLogin);
+        }}
       />
       <PasswordInput
         style={[styles.input, globalStyles.border, globalStyles.textColor]}
-        onChangeText={setPassword}
         placeholder={t('auth.passwordPlaceholder')}
         placeholderTextColor={theme.colors.inputPlaceholder}
         autoComplete='password'
         selectionColor={theme.colors.primary}
-        onSubmitEditing={() => onSubmit(login, password)}
         iconColor={theme.colors.text}
         autoCapitalize={'none'}
+        onChangeText={setPassword}
+        onSubmitEditing={() => onSubmit(login, password)}
       />
 
       <View style={styles.authPropContainer}>
@@ -113,13 +113,13 @@ const Form = ({
         <ClickableText
           textStyle={fontSize.small}
           text={t('auth.forgotPassword')}
-          onPress={() => setShowRecovery(true)}
           colorVariant={'text2'}
+          onPress={() => setShowRecovery(true)}
         />
       </View>
 
       <View style={{ width: '100%' }}>
-        <Button text={t('auth.signIn')} onPress={() => onSubmit(login, password)} variant={'primary'} />
+        <Button text={t('auth.signIn')} variant={'primary'} onPress={() => onSubmit(login, password)} />
       </View>
     </View>
   );

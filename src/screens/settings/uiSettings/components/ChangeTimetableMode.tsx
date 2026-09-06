@@ -34,8 +34,8 @@ const ChangeTimetableModeButton = () => {
     <>
       <SettingRow
         label={t('settings.timetableMode')}
-        onPress={handlePress}
         right={<Text style={[{ fontWeight: '500' }, fontSize.medium]}>{formatTimetableMode(timetableMode)}</Text>}
+        onPress={handlePress}
       />
       <BottomSheetModal ref={modalRef}>
         <BottomSheetView style={{ alignItems: 'center', gap: 16 }}>
@@ -43,10 +43,10 @@ const ChangeTimetableModeButton = () => {
             .filter((mode) => typeof mode === 'number')
             .map((mode: TimetableModes) => (
               <ClickableText
-                onPress={handleModeSelect(mode)}
+                key={mode}
                 textStyle={[{ fontWeight: '500' }, fontSize.big]}
                 colorVariant={mode === timetableMode ? 'primary' : undefined}
-                key={mode}
+                onPress={handleModeSelect(mode)}
               >
                 {formatTimetableMode(mode)}
               </ClickableText>

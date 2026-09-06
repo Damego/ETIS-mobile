@@ -18,16 +18,16 @@ const styles = StyleSheet.create({
   },
 });
 
-const AttachedFiles = ({ files }: { files: IFile[] }) => {
+const AttachedFiles = ({ files }: { readonly files: IFile[] }) => {
   const { t } = useTranslation();
   return (
     <View style={{ flexDirection: 'column' }}>
       <Text style={styles.subjectText}>{t('messages.attachedFiles')}</Text>
       {files.map((file, index) => (
         <FileTextLink
+          key={`${file.name}-${index}`}
           src={file.uri}
           fileName={file.name}
-          key={`${file.name}-${index}`}
           style={fontSize.medium}
         >
           {file.name}
@@ -37,7 +37,7 @@ const AttachedFiles = ({ files }: { files: IFile[] }) => {
   );
 };
 
-function Message({ message }: { message: IMessage }) {
+function Message({ message }: { readonly message: IMessage }) {
   const { t } = useTranslation();
   const time = parseDatetime(message.time);
   const formattedTime = time.format('DD.MM.YYYY HH:mm');

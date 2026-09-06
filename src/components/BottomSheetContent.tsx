@@ -6,9 +6,9 @@ import Text from '~/components/Text';
 import { fontSize } from '~/utils/texts';
 
 interface BottomSheetContentProps {
-  title?: string;
-  style?: StyleProp<ViewStyle>;
-  children: React.ReactNode;
+  readonly title?: string;
+  readonly style?: StyleProp<ViewStyle>;
+  readonly children: React.ReactNode;
 }
 
 /**

@@ -10,9 +10,9 @@ const SearchInput = ({
   onValueChange,
   autoCapitalize,
 }: {
-  value: string;
-  onValueChange: (value: string) => void;
-  autoCapitalize?: boolean;
+  readonly value: string;
+  readonly onValueChange: (value: string) => void;
+  readonly autoCapitalize?: boolean;
 }) => {
   const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
@@ -25,8 +25,8 @@ const SearchInput = ({
         placeholder={t('common.search')}
         style={[styles.input, globalStyles.textColor]}
         value={value}
-        onChangeText={onValueChange}
         placeholderTextColor={globalStyles.textColor2.color}
+        onChangeText={onValueChange}
       />
     </View>
   );

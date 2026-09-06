@@ -20,16 +20,16 @@ const Icon = ({
   count,
   isCurrent,
 }: {
-  iconName: keyof typeof AntDesign.glyphMap;
-  shortcut: Shortcut;
-  onPress: (shortcut: Shortcut) => void;
-  count?: number;
-  isCurrent: boolean;
+  readonly iconName: keyof typeof AntDesign.glyphMap;
+  readonly shortcut: Shortcut;
+  readonly onPress: (shortcut: Shortcut) => void;
+  readonly count?: number;
+  readonly isCurrent: boolean;
 }) => {
   const globalStyles = useGlobalStyles();
 
   return (
-    <TouchableOpacity onPress={() => onPress(shortcut)} style={styles.iconView}>
+    <TouchableOpacity style={styles.iconView} onPress={() => onPress(shortcut)}>
       <AntDesign
         name={iconName}
         size={24}
@@ -49,7 +49,7 @@ const Icon = ({
 
 const Shortcuts = (
   props: SceneRendererProps & {
-    navigationState: NavigationState<any>;
+    readonly navigationState: NavigationState<any>;
   }
 ) => {
   const globalStyles = useGlobalStyles();
@@ -84,27 +84,27 @@ const Shortcuts = (
         <Icon
           iconName={'calendar'}
           shortcut={'timetable'}
-          onPress={jumpTo}
           isCurrent={currentShortcut === 'timetable'}
+          onPress={jumpTo}
         />
         <Icon
           iconName={'barschart'}
           shortcut={'grades'}
-          onPress={jumpTo}
           isCurrent={currentShortcut === 'grades'}
+          onPress={jumpTo}
         />
         <Icon
           iconName={'message1'}
           shortcut={'messageTabs'}
           count={(messageCount ?? 0) + (announceCount ?? 0)}
-          onPress={jumpTo}
           isCurrent={currentShortcut === 'messageTabs'}
+          onPress={jumpTo}
         />
         <Icon
           iconName={'appstore-o'}
           shortcut={'more'}
-          onPress={jumpTo}
           isCurrent={currentShortcut === 'more'}
+          onPress={jumpTo}
         />
       </View>
     </View>

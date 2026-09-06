@@ -39,7 +39,6 @@ const ChangeEventTheme = () => {
   return (
     <SettingRow
       label={t('settings.disableEventTheme')}
-      onPress={disableEventTheme}
       right={
         <Text style={[{ fontWeight: '500' }, fontSize.medium]}>
           {theme === ThemeType.halloween
@@ -47,6 +46,7 @@ const ChangeEventTheme = () => {
             : t('settings.themeNewYear')}
         </Text>
       }
+      onPress={disableEventTheme}
     />
   );
 };

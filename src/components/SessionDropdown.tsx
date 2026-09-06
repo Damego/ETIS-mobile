@@ -26,9 +26,9 @@ export default function SessionDropdown({
   sessionName,
   onSelect,
 }: {
-  currentSession: number;
-  latestSession: number;
-  sessionName: string;
+  readonly currentSession: number;
+  readonly latestSession: number;
+  readonly sessionName: string;
   onSelect(session: number): unknown;
 }) {
   const options = buildSessionOptions(currentSession, latestSession, sessionName);
@@ -38,7 +38,7 @@ export default function SessionDropdown({
   };
 
   return (
-    <Dropdown onSelect={handleSelect} selectedOption={options.current} options={options.options} />
+    <Dropdown selectedOption={options.current} options={options.options} onSelect={handleSelect} />
   );
 }
 

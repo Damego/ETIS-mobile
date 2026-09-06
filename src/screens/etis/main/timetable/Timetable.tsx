@@ -53,7 +53,7 @@ export const Timetable = () => {
   };
 
   return (
-    <Screen onUpdate={refresh} refreshEnabled={!pagerActive}>
+    <Screen refreshEnabled={!pagerActive} onUpdate={refresh}>
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>Расписание</Text>
         <View style={styles.titleIconsContainer}>

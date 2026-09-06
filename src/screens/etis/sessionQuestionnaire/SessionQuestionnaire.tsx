@@ -110,11 +110,11 @@ export default function SessionQuestionnaire({
       <Theme
         theme={data.themes[themeIndex]}
         showTitle={step === Steps.showThemeQuestions}
-        onSubmit={onThemeAnswer}
         themeNumber={themeIndex + 1}
         themeCount={data.themes.length}
         answeredCount={answersRef.current.length}
         questionCount={questionCount.current}
+        onSubmit={onThemeAnswer}
       />
     );
   } else if (step === Steps.inputAdditionalComment) {
@@ -135,7 +135,7 @@ export default function SessionQuestionnaire({
 
       {!hideButton && (
         <View style={{ marginVertical: '5%' }}>
-          <Button onPress={onButtonClick} text={t('questionnaire.next')} variant={'primary'} />
+          <Button text={t('questionnaire.next')} variant={'primary'} onPress={onButtonClick} />
         </View>
       )}
     </Screen>

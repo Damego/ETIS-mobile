@@ -18,14 +18,14 @@ const WeekNavigation = ({
   onNextPress,
   onMainPress,
 }: {
-  selectedDate: dayjs.Dayjs;
-  selectedWeek: number;
-  currentWeek?: number;
-  firstWeek?: number;
-  lastWeek?: number;
-  onPrevPress: () => void;
-  onNextPress: () => void;
-  onMainPress: () => void;
+  readonly selectedDate: dayjs.Dayjs;
+  readonly selectedWeek: number;
+  readonly currentWeek?: number;
+  readonly firstWeek?: number;
+  readonly lastWeek?: number;
+  readonly onPrevPress: () => void;
+  readonly onNextPress: () => void;
+  readonly onMainPress: () => void;
 }) => {
   const { t } = useTranslation();
   const theme = useAppTheme();
@@ -50,12 +50,12 @@ const WeekNavigation = ({
         </Text>
         {currentWeek !== undefined && selectedWeek !== currentWeek && (
           <TouchableOpacity
-            onPress={onMainPress}
             accessibilityRole='button'
             accessibilityLabel={t('timetable.backToCurrentWeek')}
             hitSlop={{
               top: 8, bottom: 8, left: 8, right: 8
             }}
+            onPress={onMainPress}
           >
             <Text style={[styles.todayText, { color: theme.colors.primary }]}>{t('common.today')}</Text>
           </TouchableOpacity>

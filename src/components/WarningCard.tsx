@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const WarningCard = ({ text }: { text: string }) => {
+const WarningCard = ({ text }: { readonly text: string }) => {
   const globalStyles = useGlobalStyles();
 
   return (

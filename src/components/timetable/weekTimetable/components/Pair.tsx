@@ -14,7 +14,7 @@ import { EducationNavigationProp } from '~/navigation/types';
 import { getTeacherName } from '~/utils/teachers';
 import { fontSize, formatAudience } from '~/utils/texts';
 
-const Pair = ({ pair, date }: { pair: IPair; date: dayjs.Dayjs }) => {
+const Pair = ({ pair, date }: { readonly pair: IPair; readonly date: dayjs.Dayjs }) => {
   const { t } = useTranslation();
   const isLyceum = useAppSelector((state) => state.student.info?.isLyceum);
   const pairText = `${pair.position} ${isLyceum ? t('timetable.lesson') : t('timetable.pair')}`;
@@ -40,20 +40,18 @@ const Pair = ({ pair, date }: { pair: IPair; date: dayjs.Dayjs }) => {
             />
           );
         })}
-        {pair.event && (
-          <View>
-            <Text style={styles.eventTitleText}>Мероприятие "{pair.event.name}"</Text>
-            <Text style={styles.eventNameText}>{pair.event.contact_info}</Text>
-            <Text style={styles.eventNameText}>{pair.event.department}</Text>
-          </View>
-        )}
+        {pair.event ? <View>
+          <Text style={styles.eventTitleText}>Мероприятие "{pair.event.name}"</Text>
+          <Text style={styles.eventNameText}>{pair.event.contact_info}</Text>
+          <Text style={styles.eventNameText}>{pair.event.department}</Text>
+        </View> : null}
       </View>
     </View>
   );
 };
 
 const Lesson = React.memo(
-  ({ data, date, pairPosition }: { data: ILesson; date: dayjs.Dayjs; pairPosition: number }) => {
+  ({ data, date, pairPosition }: { readonly data: ILesson; readonly date: dayjs.Dayjs; readonly pairPosition: number }) => {
     const navigation = useNavigation<EducationNavigationProp>();
     const { teachers } = useTimetableContext();
 
@@ -68,22 +66,21 @@ const Lesson = React.memo(
             lesson: data,
             date: date.toISOString(),
             pairPosition,
-          })
-        }
+          })}
       >
         <Text style={[fontSize.medium, styles.lessonInfoText]}>
           {data.subject.discipline ?? data.subject.string}
         </Text>
         <View style={styles.badges}>
-          {data.subject.type && <DisciplineType type={data.subject.type} size={'small'} />}
+          {data.subject.type ? <DisciplineType type={data.subject.type} size={'small'} /> : null}
           <TaskBadge subject={data.subject} date={date} />
         </View>
 
-        {data.distancePlatform && <Text>{data.distancePlatform.name}</Text>}
-        {!data.distancePlatform && audience && <Text>{audience}</Text>}
-        {data.announceHTML && <Text>Объявление</Text>}
+        {data.distancePlatform ? <Text>{data.distancePlatform.name}</Text> : null}
+        {!data.distancePlatform && audience ? <Text>{audience}</Text> : null}
+        {data.announceHTML ? <Text>Объявление</Text> : null}
 
-        {teacherName && <Text>{teacherName}</Text>}
+        {teacherName ? <Text>{teacherName}</Text> : null}
       </TouchableOpacity>
     );
   }

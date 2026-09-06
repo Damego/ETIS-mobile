@@ -38,30 +38,26 @@ const RequestSentScreen = ({
           <Text style={styles.paragraphText}>{t('certificate.quantityLabel')}</Text>
           <Text style={fontSize.big}>{t('certificate.piecesCount', { quantity })}</Text>
 
-          {note && (
-            <>
-              <Text style={styles.paragraphText}>{t('certificate.noteLabel')}</Text>
-              <Text style={fontSize.big}>{note}</Text>
-            </>
-          )}
+          {note ? <>
+            <Text style={styles.paragraphText}>{t('certificate.noteLabel')}</Text>
+            <Text style={fontSize.big}>{note}</Text>
+          </> : null}
 
           <Text style={styles.paragraphText}>{t('certificate.deliveryMethod')}</Text>
           <Text style={fontSize.big}>{deliveryMethodName}</Text>
 
-          {place && (
-            <>
-              <Text style={styles.paragraphText}>{t('certificate.placeLabel')}</Text>
-              <Text style={fontSize.big}>{place}</Text>
-            </>
-          )}
+          {place ? <>
+            <Text style={styles.paragraphText}>{t('certificate.placeLabel')}</Text>
+            <Text style={fontSize.big}>{place}</Text>
+          </> : null}
         </Card>
       </View>
 
       <View style={{ bottom: '1%' }}>
         <Button
           text={t('certificate.backButton')}
-          onPress={() => navigation.goBack()}
           variant={'primary'}
+          onPress={() => navigation.goBack()}
         />
       </View>
     </Screen>

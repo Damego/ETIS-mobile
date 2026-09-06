@@ -6,7 +6,7 @@ import { useGlobalStyles } from '~/hooks';
 import useOfflineMode from '~/hooks/useOfflineMode';
 import { fontSize } from '~/utils/texts';
 
-export default function NoData({ text, onRefresh }: { text?: string; onRefresh?: () => void }) {
+export default function NoData({ text, onRefresh }: { readonly text?: string; readonly onRefresh?: () => void }) {
   const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
   const isOfflineMode = useOfflineMode();
@@ -18,9 +18,7 @@ export default function NoData({ text, onRefresh }: { text?: string; onRefresh?:
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text style={[globalStyles.textColor, fontSize.large, { textAlign: 'center' }]}>{$text}</Text>
-      {showRetry && (
-        <Button title={t('common.retry')} onPress={onRefresh} color={globalStyles.primaryText.color} />
-      )}
+      {showRetry ? <Button title={t('common.retry')} color={globalStyles.primaryText.color} onPress={onRefresh} /> : null}
     </View>
   );
 }

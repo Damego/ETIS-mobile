@@ -15,9 +15,9 @@ const TeachersBottomSheet = ({
   timetable,
   onTeacherSelect,
 }: {
-  selectedTeacher: ITimeTableTeacher;
-  timetable: ITimeTable[];
-  onTeacherSelect: (teacherId: string) => void;
+  readonly selectedTeacher: ITimeTableTeacher;
+  readonly timetable: ITimeTable[];
+  readonly onTeacherSelect: (teacherId: string) => void;
 }) => {
   const globalStyles = useGlobalStyles();
   const modalRef = useRef<BottomSheetModal | null>(null);
@@ -31,7 +31,7 @@ const TeachersBottomSheet = ({
 
   return (
     <>
-      <TouchableOpacity onPress={() => modalRef.current?.present()} style={{ marginBottom: '2%' }}>
+      <TouchableOpacity style={{ marginBottom: '2%' }} onPress={() => modalRef.current?.present()}>
         <Card
           style={{ justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}
         >

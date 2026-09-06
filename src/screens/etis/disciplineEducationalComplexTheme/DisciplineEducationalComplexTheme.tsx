@@ -36,7 +36,7 @@ const DisciplineEducationalComplexTheme = ({
     <Screen containerStyle={{ gap: 8 }}>
       <Text style={[fontSize.slarge, styles.boldText]}>{disciplineName}</Text>
       <Text style={fontSize.slarge}>{theme.name}</Text>
-      {theme.hasCheckPoint && <ControlBadge />}
+      {theme.hasCheckPoint ? <ControlBadge /> : null}
 
       {Boolean(data?.annotation) && (
         <View>
@@ -45,20 +45,18 @@ const DisciplineEducationalComplexTheme = ({
         </View>
       )}
 
-      {data && (
-        <Card style={{ marginTop: 'auto', marginBottom: '4%', gap: 8 }}>
-          {Boolean(data.controlRequirements) && <ControlRequirements data={data.controlRequirements} />}
-          {Boolean(data.links?.length) && (
-            <ListData label={t('dec.otherCourseResources')} data={data.links} />
-          )}
-          {Boolean(data.requiredLiterature?.length) && (
-            <ListData label={t('dec.requiredLiterature')} data={data.requiredLiterature} />
-          )}
-          {Boolean(data.additionalLiterature?.length) && (
-            <ListData label={t('dec.additionalLiterature')} data={data.additionalLiterature} />
-          )}
-        </Card>
-      )}
+      {data ? <Card style={{ marginTop: 'auto', marginBottom: '4%', gap: 8 }}>
+        {Boolean(data.controlRequirements) && <ControlRequirements data={data.controlRequirements} />}
+        {Boolean(data.links?.length) && (
+          <ListData label={t('dec.otherCourseResources')} data={data.links} />
+        )}
+        {Boolean(data.requiredLiterature?.length) && (
+          <ListData label={t('dec.requiredLiterature')} data={data.requiredLiterature} />
+        )}
+        {Boolean(data.additionalLiterature?.length) && (
+          <ListData label={t('dec.additionalLiterature')} data={data.additionalLiterature} />
+        )}
+      </Card> : null}
     </Screen>
   );
 };

@@ -8,7 +8,7 @@ import { EducationNavigationProp } from '~/navigation/types';
 import { parseDatetime } from '~/parser/utils';
 import { fontSize } from '~/utils/texts';
 
-const MessageCard = ({ data, page }: { data: IMessage[]; page: number }) => {
+const MessageCard = ({ data, page }: { readonly data: IMessage[]; readonly page: number }) => {
   const navigation = useNavigation<EducationNavigationProp>();
   const [mainMessage] = data;
   const { author, subject, theme } = mainMessage;

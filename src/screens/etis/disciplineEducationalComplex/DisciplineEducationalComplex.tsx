@@ -22,9 +22,9 @@ const DisciplineWorkHours = ({
   soloWorkHours,
   totalWorkHours,
 }: {
-  classWorkHours: number;
-  soloWorkHours: number;
-  totalWorkHours: number;
+  readonly classWorkHours: number;
+  readonly soloWorkHours: number;
+  readonly totalWorkHours: number;
 }) => (
   <>
     <Text style={[fontSize.big, styles.boldText]}>Трудоёмкость:</Text>
@@ -73,19 +73,17 @@ const DisciplineEducationalComplex = ({
         totalWorkHours={disciplineTeachPlan.totalWorkHours}
       />
 
-      {data && (
-        <Card style={{ marginTop: 'auto', marginBottom: '4%', gap: 8 }}>
-          {Boolean(data.themes?.length) && (
-            <Themes themes={data.themes!} disciplineName={data.discipline} />
-          )}
-          {Boolean(data.examQuestions?.length) && <ExamQuestions questions={data.examQuestions!} />}
-          {data.evaluationIndicators && <EvaluationIndicators data={data.evaluationIndicators} />}
-          {data.additionalMaterials && <AdditionalMaterials data={data.additionalMaterials} />}
-          {Boolean(data.plannedLearningOutcome?.length) && (
-            <PlannedLearningOutcome data={data.plannedLearningOutcome!} />
-          )}
-        </Card>
-      )}
+      {data ? <Card style={{ marginTop: 'auto', marginBottom: '4%', gap: 8 }}>
+        {Boolean(data.themes?.length) && (
+          <Themes themes={data.themes!} disciplineName={data.discipline} />
+        )}
+        {Boolean(data.examQuestions?.length) && <ExamQuestions questions={data.examQuestions!} />}
+        {data.evaluationIndicators ? <EvaluationIndicators data={data.evaluationIndicators} /> : null}
+        {data.additionalMaterials ? <AdditionalMaterials data={data.additionalMaterials} /> : null}
+        {Boolean(data.plannedLearningOutcome?.length) && (
+          <PlannedLearningOutcome data={data.plannedLearningOutcome!} />
+        )}
+      </Card> : null}
     </Screen>
   );
 };

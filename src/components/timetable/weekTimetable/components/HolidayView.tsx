@@ -5,7 +5,7 @@ import { useGlobalStyles } from '~/hooks';
 import { WeekDates } from '~/models/timeTable';
 import { fontSize } from '~/utils/texts';
 
-const HolidayView = ({ holidayInfo }: { holidayInfo: WeekDates }) => {
+const HolidayView = ({ holidayInfo }: { readonly holidayInfo: WeekDates }) => {
   const globalStyles = useGlobalStyles();
 
   return (

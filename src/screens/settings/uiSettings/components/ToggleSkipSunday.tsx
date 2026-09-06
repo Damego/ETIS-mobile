@@ -21,7 +21,7 @@ const ToggleSkipSunday = () => {
   return (
     <SettingRow
       label={t('settings.skipSunday')}
-      right={<ThemedSwitch onValueChange={toggle} value={skipSunday} />}
+      right={<ThemedSwitch value={skipSunday} onValueChange={toggle} />}
     />
   );
 };

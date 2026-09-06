@@ -20,9 +20,9 @@ const Theme = ({
   disciplineName,
   depth = 0,
 }: {
-  theme: IDisciplineEducationalComplexThemeLink;
-  disciplineName: string;
-  depth?: number;
+  readonly theme: IDisciplineEducationalComplexThemeLink;
+  readonly disciplineName: string;
+  readonly depth?: number;
 }) => {
   const navigation = useNavigation<EducationNavigationProp>();
   const bottomSheetModal = useBottomSheet();
@@ -44,7 +44,7 @@ const Theme = ({
         >
           {theme.name}
         </ClickableText>
-        {theme.hasCheckPoint && <ControlBadge />}
+        {theme.hasCheckPoint ? <ControlBadge /> : null}
       </View>
 
       {Boolean(theme.subthemes.length) &&
@@ -62,7 +62,7 @@ const Theme = ({
 
 const ThemesBottomSheet = React.forwardRef<
   BottomSheetModal,
-  { themes: IDisciplineEducationalComplexThemeLink[]; disciplineName: string }
+  { readonly themes: IDisciplineEducationalComplexThemeLink[]; readonly disciplineName: string }
 >(({ themes, disciplineName }, ref) => {
   const { t } = useTranslation();
   return (
@@ -83,8 +83,8 @@ const Themes = ({
   themes,
   disciplineName,
 }: {
-  themes: IDisciplineEducationalComplexThemeLink[];
-  disciplineName: string;
+  readonly themes: IDisciplineEducationalComplexThemeLink[];
+  readonly disciplineName: string;
 }) => {
   const { t } = useTranslation();
   const ref = useRef<BottomSheetModal | null>(null);

@@ -18,11 +18,11 @@ const RecoveryForm = ({
   setShowModal,
   disabledRequestButton,
 }: {
-  onSubmit: (login: string) => void;
-  isLoading?: boolean;
-  message: string | null;
-  setShowModal: (showModal: boolean) => void;
-  disabledRequestButton: boolean;
+  readonly onSubmit: (login: string) => void;
+  readonly isLoading?: boolean;
+  readonly message: string | null;
+  readonly setShowModal: (showModal: boolean) => void;
+  readonly disabledRequestButton: boolean;
 }) => {
   const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
@@ -46,9 +46,6 @@ const RecoveryForm = ({
 
       <TextInput
         style={[styles.input, globalStyles.border, globalStyles.textColor2]}
-        onChangeText={(newLogin) => {
-          setLogin(newLogin);
-        }}
         placeholder={t('auth.emailPlaceholder')}
         placeholderTextColor={theme.colors.inputPlaceholder}
         autoComplete='email'
@@ -56,21 +53,24 @@ const RecoveryForm = ({
         keyboardType='email-address'
         selectionColor={theme.colors.primary}
         autoCapitalize='none'
+        onChangeText={(newLogin) => {
+          setLogin(newLogin);
+        }}
         onSubmitEditing={() => onSubmit(login)}
       />
 
       <View style={{ width: '100%', marginTop: '2%' }}>
         <Button
           text={t('auth.sendRecoveryMail')}
-          onPress={() => onSubmit(login)}
           disabled={disabledRequestButton}
           showLoading={isLoading}
           variant={'primary'}
+          onPress={() => onSubmit(login)}
         />
       </View>
 
       <View style={{ width: '100%', marginTop: '4%' }}>
-        <Button text={t('common.back')} onPress={() => setShowModal(false)} variant={'secondary'} />
+        <Button text={t('common.back')} variant={'secondary'} onPress={() => setShowModal(false)} />
       </View>
     </View>
   );

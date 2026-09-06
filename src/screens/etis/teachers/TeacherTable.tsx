@@ -47,9 +47,9 @@ const TeacherTable = () => {
     <Screen onUpdate={refresh}>
       {(grouped ?? []).map(([discipline, teachers]) => (
         <TeacherCard
+          key={discipline}
           discipline={discipline}
           teachers={teachers}
-          key={discipline}
           onPress={(teacher) => {
             setSelectedTeacher(teacher);
             modalRef.current?.present();

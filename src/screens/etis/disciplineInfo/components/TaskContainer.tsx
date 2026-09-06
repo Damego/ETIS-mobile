@@ -26,8 +26,8 @@ export const TaskContainer = ({
   disciplineName,
   disciplineDate,
 }: {
-  disciplineName: string;
-  disciplineDate: dayjs.Dayjs;
+  readonly disciplineName: string;
+  readonly disciplineDate: dayjs.Dayjs;
 }) => {
   const modalRef = useRef<BottomSheetModal | null>(null);
   const [selectedTask, setSelectedTask] = useState<DisciplineTask | undefined>(undefined);
@@ -96,12 +96,12 @@ export const TaskContainer = ({
 
       <TaskModal
         ref={modalRef}
-        onTaskAdd={handleAddTask}
-        onTaskRemove={handleTaskRemove}
         task={selectedTask}
         disableCheckbox={Boolean(
           currentDate > disciplineDate || (selectedTask && !selectedTask.datetime)
         )}
+        onTaskAdd={handleAddTask}
+        onTaskRemove={handleTaskRemove}
       />
     </View>
   );

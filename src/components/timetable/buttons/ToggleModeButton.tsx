@@ -24,7 +24,6 @@ const ToggleModeButton = () => {
 
   return (
     <TouchableOpacity
-      onPress={toggle}
       accessibilityRole='button'
       accessibilityLabel={t('timetable.switchMode')}
       hitSlop={
@@ -35,6 +34,7 @@ const ToggleModeButton = () => {
           right: 12,
         }
       }
+      onPress={toggle}
     >
       {timetableMode === TimetableModes.weeks && (
         <Ionicons name={'menu'} size={24} color={theme.colors.text} />

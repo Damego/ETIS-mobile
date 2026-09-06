@@ -21,7 +21,7 @@ const ToggleHighlightCurrentDay = () => {
   return (
     <SettingRow
       label={t('settings.highlightCurrentDay')}
-      right={<ThemedSwitch onValueChange={toggle} value={highlightCurrentDay} />}
+      right={<ThemedSwitch value={highlightCurrentDay} onValueChange={toggle} />}
     />
   );
 };

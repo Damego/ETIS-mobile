@@ -189,75 +189,61 @@ export default function RequestCertificate({
         <Text style={fontSize.big}>{t('certificate.type')}</Text>
         <RadioGroup
           radioButtons={certificateRadioButtons}
-          onPress={(certId) => changeCertificate({ certificateId: certId })}
           selectedId={certificateId}
           containerStyle={styles.alignStart}
+          onPress={(certId) => changeCertificate({ certificateId: certId })}
         />
       </Card>
 
-      {currentCertificate && certificateId && !specialCert && (
-        <>
-          <Card>
-            <Text style={fontSize.big}>{t('certificate.deliveryMethod')}</Text>
-            <RadioGroup
-              radioButtons={deliveryWayRadioButtons}
-              onPress={(delivery) => changeCertificate({ delivery })}
-              selectedId={delivery}
-              containerStyle={styles.alignStart}
-              labelStyle={globalStyles.textColor}
-            />
-            <Text style={fontSize.big}>{t('certificate.quantityUnitsLabel')}</Text>
-            <RadioGroup
-              radioButtons={quantityRadioButtons}
-              selectedId={quantity}
-              onPress={(quantity) => changeCertificate({ quantity })}
-              containerStyle={styles.alignStart}
-              labelStyle={globalStyles.textColor}
-            />
-          </Card>
-
-          <Card>
-            {currentCertificate.note && (
-              <Input
-                name={t('certificate.noteLabel')}
-                placeholder={t('certificate.notePlaceholder')}
-                value={note}
-                onUpdate={(note: string) => changeCertificate({ note })}
-                popover={
-                  <PopoverElement text={t('certificate.notePopover')} />
-                }
-              />
-            )}
-            {currentCertificate.place && (
-              <Input
-                name={t('certificate.placeRequiredLabel')}
-                placeholder={t('certificate.placePlaceholder')}
-                value={place}
-                onUpdate={(place: string) => changeCertificate({ place })}
-                popover={
-                  <PopoverElement text={t('certificate.placePopover')} />
-                }
-              />
-            )}
-          </Card>
-        </>
-      )}
-
-      {specialCert && (
-        <View style={styles.buttonContainer}>
-          <Button
-            text={t('certificate.continue')}
-            onPress={() => navigation.navigate(specialCert.screen as never)}
-            variant={'primary'}
+      {currentCertificate && certificateId && !specialCert ? <>
+        <Card>
+          <Text style={fontSize.big}>{t('certificate.deliveryMethod')}</Text>
+          <RadioGroup
+            radioButtons={deliveryWayRadioButtons}
+            selectedId={delivery}
+            containerStyle={styles.alignStart}
+            labelStyle={globalStyles.textColor}
+            onPress={(delivery) => changeCertificate({ delivery })}
           />
-        </View>
-      )}
+          <Text style={fontSize.big}>{t('certificate.quantityUnitsLabel')}</Text>
+          <RadioGroup
+            radioButtons={quantityRadioButtons}
+            selectedId={quantity}
+            containerStyle={styles.alignStart}
+            labelStyle={globalStyles.textColor}
+            onPress={(quantity) => changeCertificate({ quantity })}
+          />
+        </Card>
 
-      {isApplicable && (
-        <View style={styles.buttonContainer}>
-          <Button text={t('certificate.order')} onPress={confirmSubmit} variant={'primary'} />
-        </View>
-      )}
+        <Card>
+          {currentCertificate.note ? <Input
+            name={t('certificate.noteLabel')}
+            placeholder={t('certificate.notePlaceholder')}
+            value={note}
+            popover={<PopoverElement text={t('certificate.notePopover')} />}
+            onUpdate={(note: string) => changeCertificate({ note })}
+          /> : null}
+          {currentCertificate.place ? <Input
+            name={t('certificate.placeRequiredLabel')}
+            placeholder={t('certificate.placePlaceholder')}
+            value={place}
+            popover={<PopoverElement text={t('certificate.placePopover')} />}
+            onUpdate={(place: string) => changeCertificate({ place })}
+          /> : null}
+        </Card>
+      </> : null}
+
+      {specialCert ? <View style={styles.buttonContainer}>
+        <Button
+          text={t('certificate.continue')}
+          variant={'primary'}
+          onPress={() => navigation.navigate(specialCert.screen as never)}
+        />
+      </View> : null}
+
+      {isApplicable ? <View style={styles.buttonContainer}>
+        <Button text={t('certificate.order')} variant={'primary'} onPress={confirmSubmit} />
+      </View> : null}
     </Screen>
   );
 }

@@ -8,12 +8,12 @@ import { DisciplineTask } from '~/models/disciplinesTasks';
 import AddTaskModalContent, { PartialTask } from './AddTaskModalContent';
 
 interface TaskModalProps {
-  onTaskAdd: (partialTask: PartialTask) => void;
-  onTaskRemove: (task: DisciplineTask) => void;
-  task?: DisciplineTask;
-  onDismiss?: () => void;
-  showDisciplineInfo?: boolean;
-  disableCheckbox?: boolean;
+  readonly onTaskAdd: (partialTask: PartialTask) => void;
+  readonly onTaskRemove: (task: DisciplineTask) => void;
+  readonly task?: DisciplineTask;
+  readonly onDismiss?: () => void;
+  readonly showDisciplineInfo?: boolean;
+  readonly disableCheckbox?: boolean;
 }
 
 const TaskModal = React.forwardRef<BottomSheetModal, TaskModalProps>(
@@ -24,16 +24,16 @@ const TaskModal = React.forwardRef<BottomSheetModal, TaskModalProps>(
       <BottomSheetModal
         ref={ref}
         backgroundStyle={{ backgroundColor: theme.colors.container }}
-        onDismiss={onDismiss}
         snapPoints={['50%', '100%']}
+        onDismiss={onDismiss}
       >
         <BottomSheetContent style={{ gap: 8 }}>
           <AddTaskModalContent
-            onTaskAdd={onTaskAdd}
             selectedTask={task}
-            onTaskRemove={onTaskRemove}
             showDisciplineInfo={showDisciplineInfo}
             disableCheckbox={disableCheckbox}
+            onTaskAdd={onTaskAdd}
+            onTaskRemove={onTaskRemove}
           />
         </BottomSheetContent>
       </BottomSheetModal>

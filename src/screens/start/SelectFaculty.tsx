@@ -22,13 +22,13 @@ const FacultyButton = React.memo(
     onPress,
     isSelected,
   }: {
-    faculty: IFaculty;
-    onPress: (faculty: IFaculty) => void;
-    isSelected: boolean;
+    readonly faculty: IFaculty;
+    readonly onPress: (faculty: IFaculty) => void;
+    readonly isSelected: boolean;
   }) => (
     <TouchableOpacity
-      onPress={() => onPress(faculty)}
       style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}
+      onPress={() => onPress(faculty)}
     >
       <Image
         source={faculty.logo_image_url}
@@ -62,8 +62,8 @@ const SelectFacultyScreen = ({ navigation }: StartStackScreenProps) => {
     const isServiceDown = isPsutechAvailable() === false;
     return (
       <NoData
-        onRefresh={refetch}
         text={isServiceDown ? t('common.serviceUnavailable') : t('start.failedToLoad')}
+        onRefresh={refetch}
       />
     );
   }
@@ -72,32 +72,30 @@ const SelectFacultyScreen = ({ navigation }: StartStackScreenProps) => {
     <>
       <Screen containerStyle={{ gap: 8 }}>
         {data.map((faculty, index) => (
-          <View style={{ gap: 8 }} key={faculty.id}>
+          <View key={faculty.id} style={{ gap: 8 }}>
             <FacultyButton
               faculty={faculty}
-              onPress={setSelectedFaculty}
               isSelected={faculty.id === selectedFaculty?.id}
+              onPress={setSelectedFaculty}
             />
             {index !== data.length - 1 && <BorderLine />}
           </View>
         ))}
       </Screen>
-      {selectedFaculty && (
-        <TouchableOpacity
-          onPress={handleConfirm}
-          style={[
-            styles.button,
-            { bottom: Math.max(insets.bottom, 8) },
-            globalStyles.primaryBackgroundColor,
-            globalStyles.borderRadius,
-          ]}
-        >
-          <Text colorVariant={'primaryContrast'} style={fontSize.big}>
-            {t('common.continue')}
-          </Text>
-          <Text colorVariant={'primaryContrast'}>({selectedFaculty.name})</Text>
-        </TouchableOpacity>
-      )}
+      {selectedFaculty ? <TouchableOpacity
+        style={[
+          styles.button,
+          { bottom: Math.max(insets.bottom, 8) },
+          globalStyles.primaryBackgroundColor,
+          globalStyles.borderRadius,
+        ]}
+        onPress={handleConfirm}
+      >
+        <Text colorVariant={'primaryContrast'} style={fontSize.big}>
+          {t('common.continue')}
+        </Text>
+        <Text colorVariant={'primaryContrast'}>({selectedFaculty.name})</Text>
+      </TouchableOpacity> : null}
     </>
   );
 };

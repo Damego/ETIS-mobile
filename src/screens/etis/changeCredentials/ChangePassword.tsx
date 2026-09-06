@@ -32,8 +32,8 @@ const Form = ({
   onSubmit,
   showLoading,
 }: {
-  onSubmit: (password: string) => void;
-  showLoading: boolean;
+  readonly onSubmit: (password: string) => void;
+  readonly showLoading: boolean;
 }) => {
   const { t } = useTranslation();
   const theme = useAppTheme();
@@ -86,15 +86,15 @@ const Form = ({
             ? { borderColor: theme.colors.primary }
             : undefined,
         ]}
-        onChangeText={setNewPassword}
         placeholder={t('changeCredentials.createPassword')}
         placeholderTextColor={theme.colors.inputPlaceholder}
         autoComplete='password-new'
         selectionColor={theme.colors.primary}
-        onEndEditing={validateFirstInput}
         iconColor={theme.colors.text}
+        onChangeText={setNewPassword}
+        onEndEditing={validateFirstInput}
       />
-      {firstInputMessage && <Text style={[globalStyles.primaryText]}>{firstInputMessage}</Text>}
+      {firstInputMessage ? <Text style={[globalStyles.primaryText]}>{firstInputMessage}</Text> : null}
 
       <PasswordInput
         style={[
@@ -103,21 +103,21 @@ const Form = ({
           globalStyles.textColor,
           passwordUnconfirmed ? { borderColor: theme.colors.primary } : undefined,
         ]}
-        onChangeText={setNewPasswordConfirm}
         placeholder={t('changeCredentials.repeatPassword')}
         placeholderTextColor={theme.colors.inputPlaceholder}
         autoComplete='password'
         selectionColor={theme.colors.primary}
         iconColor={theme.colors.text}
+        onChangeText={setNewPasswordConfirm}
       />
 
       <View style={{ width: '90%' }}>
         <Button
           text={t('changeCredentials.changeButton')}
-          onPress={preSubmit}
           disabled={!passwordHasEightSymbols || !passwordConfirmed}
           showLoading={showLoading}
           variant={'primary'}
+          onPress={preSubmit}
         />
       </View>
     </View>
@@ -156,7 +156,7 @@ export default function ChangePassword() {
     <Screen>
       {!passwordChanged
         ? (
-          <Form onSubmit={submit} showLoading={isLoading} />
+          <Form showLoading={isLoading} onSubmit={submit} />
         )
         : (
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

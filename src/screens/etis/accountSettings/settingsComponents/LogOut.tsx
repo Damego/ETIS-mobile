@@ -38,8 +38,8 @@ const LogOut = () => {
     <BaseSettingButton
       iconName={'logout'}
       label={t('account.logout')}
-      onPress={handlePress}
       color={'primary'}
+      onPress={handlePress}
     />
   );
 };

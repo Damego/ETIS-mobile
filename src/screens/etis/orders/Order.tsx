@@ -10,7 +10,7 @@ import { fontSize } from '~/utils/texts';
 
 import OrderModal from './OrderModal';
 
-const Order = ({ order }: { order: IOrder }) => {
+const Order = ({ order }: { readonly order: IOrder }) => {
   const { t } = useTranslation();
   const [isOpened, setOpened] = useState<boolean>(false);
   const [html, setHTML] = useState<string>();
@@ -34,7 +34,7 @@ const Order = ({ order }: { order: IOrder }) => {
 
   return (
     <>
-      {isOpened && <OrderModal html={html ?? ''} closeModal={closeModal} />}
+      {isOpened ? <OrderModal html={html ?? ''} closeModal={closeModal} /> : null}
 
       <TouchableOpacity onPress={openModal}>
         <CardHeaderIn topText={t('orders.header', { id: order.id ?? '-', date: order.date })}>

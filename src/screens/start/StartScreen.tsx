@@ -37,7 +37,6 @@ const StartScreen = ({ navigation }: StartStackScreenProps) => {
 
     return (
       <TouchableOpacity
-        onPress={handlePress(type)}
         disabled={disabled}
         style={[
           styles.buttonView,
@@ -47,6 +46,7 @@ const StartScreen = ({ navigation }: StartStackScreenProps) => {
           disabled && styles.buttonDisabled,
         ]}
         accessibilityState={disabled ? { disabled: true } : undefined}
+        onPress={handlePress(type)}
       >
         <View style={{ width: 35, alignItems: 'center' }}>
           <Ionicons
@@ -81,7 +81,7 @@ const StartScreen = ({ navigation }: StartStackScreenProps) => {
       <View style={{ marginTop: 'auto' }}>
         {selectedType !== null && (
           <View style={styles.buttonWrapper}>
-            <Button text={t('start.choose')} onPress={handleChoose} variant={'primary'} />
+            <Button text={t('start.choose')} variant={'primary'} onPress={handleChoose} />
           </View>
         )}
 

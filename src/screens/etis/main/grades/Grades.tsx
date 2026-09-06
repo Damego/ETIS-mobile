@@ -36,34 +36,30 @@ const Grades = () => {
   };
 
   return (
-    <Screen onUpdate={refresh} containerStyle={{ gap: 8 }}>
+    <Screen containerStyle={{ gap: 8 }} onUpdate={refresh}>
       <View style={{
         flexDirection: 'row', gap: 14, alignItems: 'center', marginBottom: '2%'
       }}>
         <Text style={[{ fontWeight: '700', flex: 2 }, fontSize.slarge]}>{t('shortcuts.grades')}</Text>
-        {data && (
-          <ClickableText
-            onPress={() => ref.current?.present()}
-            textStyle={fontSize.big}
-            iconRight={<AntDesign name='swap' size={18} color={theme.colors.text} />}
-            viewStyle={{ gap: 4 }}
-          >
-            {data.currentSession} {data.sessionName}
-          </ClickableText>
-        )}
+        {data ? <ClickableText
+          textStyle={fontSize.big}
+          iconRight={<AntDesign name='swap' size={18} color={theme.colors.text} />}
+          viewStyle={{ gap: 4 }}
+          onPress={() => ref.current?.present()}
+        >
+          {data.currentSession} {data.sessionName}
+        </ClickableText> : null}
       </View>
 
       {component}
 
-      {data && (
-        <PeriodsBottomSheet
-          ref={ref}
-          currentPeriod={data.currentSession ?? 1}
-          latestPeriod={data.latestSession ?? 1}
-          periodName={data.sessionName ?? ''}
-          onChange={handlePeriodPress}
-        />
-      )}
+      {data ? <PeriodsBottomSheet
+        ref={ref}
+        currentPeriod={data.currentSession ?? 1}
+        latestPeriod={data.latestSession ?? 1}
+        periodName={data.sessionName ?? ''}
+        onChange={handlePeriodPress}
+      /> : null}
     </Screen>
   );
 };

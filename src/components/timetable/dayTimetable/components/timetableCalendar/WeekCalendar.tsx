@@ -16,15 +16,15 @@ const WeekCalendar = ({
   lastWeek,
   skipSunday,
 }: {
-  selectedDate: dayjs.Dayjs;
-  currentDate: dayjs.Dayjs;
-  onDatePress: DatePressT;
-  selectedWeek: number;
-  currentWeek?: number;
-  firstWeek?: number;
-  lastWeek?: number;
+  readonly selectedDate: dayjs.Dayjs;
+  readonly currentDate: dayjs.Dayjs;
+  readonly onDatePress: DatePressT;
+  readonly selectedWeek: number;
+  readonly currentWeek?: number;
+  readonly firstWeek?: number;
+  readonly lastWeek?: number;
   // Не показывать воскресенье в свёрнутом недельном календаре (настройка «Пропускать воскресенье»)
-  skipSunday?: boolean;
+  readonly skipSunday?: boolean;
 }) => {
   const week = selectedDate.startOf('week');
 
@@ -43,14 +43,14 @@ const WeekCalendar = ({
   return (
     <View style={styles.calendarContainer}>
       <WeekNavigation
-        onPrevPress={handlePrevPress}
-        onNextPress={handleNextPress}
-        onMainPress={handleMainPress}
         selectedWeek={selectedWeek}
         selectedDate={selectedDate}
         currentWeek={currentWeek}
         firstWeek={firstWeek}
         lastWeek={lastWeek}
+        onPrevPress={handlePrevPress}
+        onNextPress={handleNextPress}
+        onMainPress={handleMainPress}
       />
 
       <View style={styles.daysListContainer}>

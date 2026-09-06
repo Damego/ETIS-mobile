@@ -12,7 +12,7 @@ import useQuery from '~/hooks/useQuery';
 import { ICalendarSchedule, ISessionSchedule } from '~/models/calendarSchedule';
 import { fontSize } from '~/utils/texts';
 
-const SessionSchedule = ({ session }: { session: ISessionSchedule }) => {
+const SessionSchedule = ({ session }: { readonly session: ISessionSchedule }) => {
   const globalStyles = useGlobalStyles();
   const [isOpened, setOpened] = useState(false);
 
@@ -25,19 +25,19 @@ const SessionSchedule = ({ session }: { session: ISessionSchedule }) => {
           alignItems: 'center',
           alignContent: 'center',
         }}
-        onPress={() => setOpened(!isOpened)}
         activeOpacity={0.45}
+        onPress={() => setOpened(!isOpened)}
       >
         <Text style={styles.sessionScheduleTitleText}>{session.title}</Text>
         <AntDesign name={isOpened ? 'up' : 'down'} size={18} color={globalStyles.textColor.color} />
       </TouchableOpacity>
 
-      {isOpened && <Text style={fontSize.medium}>{session.dates.join('\n')}</Text>}
+      {isOpened ? <Text style={fontSize.medium}>{session.dates.join('\n')}</Text> : null}
     </>
   );
 };
 
-const CalendarScheduleMenu = ({ data }: { data?: ICalendarSchedule }) => {
+const CalendarScheduleMenu = ({ data }: { readonly data?: ICalendarSchedule }) => {
   const globalStyles = useGlobalStyles();
 
   return (
@@ -77,12 +77,12 @@ export default function CalendarSchedule() {
 
   return (
     <View style={[styles.scheduleContainer, globalStyles.card]}>
-      <TouchableOpacity onPress={handlePress} style={styles.scheduleButton} activeOpacity={0.45}>
+      <TouchableOpacity style={styles.scheduleButton} activeOpacity={0.45} onPress={handlePress}>
         <Text style={styles.scheduleButtonText}>Календарный учебный график</Text>
         <AntDesign name={isOpened ? 'up' : 'down'} size={18} color={globalStyles.textColor.color} />
       </TouchableOpacity>
 
-      {isOpened && <CalendarScheduleMenu data={data} />}
+      {isOpened ? <CalendarScheduleMenu data={data} /> : null}
     </View>
   );
 }

@@ -13,8 +13,8 @@ import { fontSize } from '~/utils/texts';
 // промежуточный View без flex при длинном заголовке вытесняет иконку за край)
 const TITLE_LINE_HEIGHT = 24;
 
-const SectionRow = ({ label, onPress }: { label: string; onPress(): void }) => (
-  <TouchableOpacity onPress={onPress} style={styles.row}>
+const SectionRow = ({ label, onPress }: { readonly label: string; onPress(): void }) => (
+  <TouchableOpacity style={styles.row} onPress={onPress}>
     <Text style={styles.label}>{label}</Text>
     <View style={styles.iconWrapper}>
       <RightIcon />

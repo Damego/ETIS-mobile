@@ -8,7 +8,7 @@ import { fontSize } from '~/utils/texts';
 
 import Subject from './Discipline';
 
-const SessionCard = ({ data }: { data: ISessionTeachPlan }) => (
+const SessionCard = ({ data }: { readonly data: ISessionTeachPlan }) => (
   <CardHeaderOut topText={data.period.string} topTextStyle={fontSize.large}>
     {data.disciplines.map((discipline, index) => (
       <View key={discipline.name}>

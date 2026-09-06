@@ -25,9 +25,9 @@ const ToggleShowGapsBetweenPairs = () => {
       label={t('settings.showGapsBetweenPairs')}
       right={
         <ThemedSwitch
-          onValueChange={toggle}
           value={showGapsBetweenPairs}
           disabled={showEmptyPairs}
+          onValueChange={toggle}
         />
       }
     />

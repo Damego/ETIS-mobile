@@ -46,7 +46,7 @@ const ToggleSignNotification = () => {
           />
         </TouchableOpacity>
       }
-      right={<ThemedSwitch onValueChange={changeSignNotification} value={signNotification} />}
+      right={<ThemedSwitch value={signNotification} onValueChange={changeSignNotification} />}
     />
   );
 };

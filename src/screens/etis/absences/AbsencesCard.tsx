@@ -7,7 +7,7 @@ import Text from '~/components/Text';
 import { useAppTheme } from '~/hooks/theme';
 import { IAbsenceDate, IDisciplineAbsences } from '~/models/absences';
 
-const AbsencesCard = ({ disciplineAbsences }: { disciplineAbsences: IDisciplineAbsences }) => {
+const AbsencesCard = ({ disciplineAbsences }: { readonly disciplineAbsences: IDisciplineAbsences }) => {
   const theme = useAppTheme();
   const [isOpened, setOpened] = useState(false);
   const covered = disciplineAbsences.dates.filter((date) => date.isCovered).length;
@@ -15,9 +15,9 @@ const AbsencesCard = ({ disciplineAbsences }: { disciplineAbsences: IDisciplineA
   return (
     <CardHeaderOut topText={disciplineAbsences.subject}>
       <TouchableOpacity
-        onPress={() => setOpened(!isOpened)}
         style={[{ flexDirection: 'row' }]}
         activeOpacity={0.45}
+        onPress={() => setOpened(!isOpened)}
       >
         <View style={{ marginRight: '2%' }}>
           {disciplineAbsences.dates.map((date: IAbsenceDate, index: number) => (
@@ -33,12 +33,10 @@ const AbsencesCard = ({ disciplineAbsences }: { disciplineAbsences: IDisciplineA
         <View style={{ flex: 1 }}>
           <Text>{`Пропущенных занятий: ${disciplineAbsences.dates.length}`}</Text>
           {Boolean(covered) && <Text>{`По уважительной причине: ${covered}`}</Text>}
-          {isOpened && (
-            <>
-              <Text>{`Преподаватель: ${disciplineAbsences.teacher}`}</Text>
-              <Text>{`Вид работы: ${disciplineAbsences.type}`}</Text>
-            </>
-          )}
+          {isOpened ? <>
+            <Text>{`Преподаватель: ${disciplineAbsences.teacher}`}</Text>
+            <Text>{`Вид работы: ${disciplineAbsences.type}`}</Text>
+          </> : null}
         </View>
 
         <View style={{ justifyContent: 'center', alignItems: 'flex-end' }}>

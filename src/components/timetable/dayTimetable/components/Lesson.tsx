@@ -20,9 +20,9 @@ const Lesson = ({
   date,
   pairPosition,
 }: {
-  lesson: ILesson;
-  date: dayjs.Dayjs;
-  pairPosition: number;
+  readonly lesson: ILesson;
+  readonly date: dayjs.Dayjs;
+  readonly pairPosition: number;
 }) => {
   const navigation = useNavigation<EducationNavigationProp>();
   const theme = useAppTheme();
@@ -45,22 +45,18 @@ const Lesson = ({
         {lesson.subject.discipline ?? lesson.subject.string}
       </Text>
       <View style={styles.row}>
-        {lesson.subject.type && <DisciplineType type={lesson.subject.type} size={'small'} />}
+        {lesson.subject.type ? <DisciplineType type={lesson.subject.type} size={'small'} /> : null}
         <TaskBadge subject={lesson.subject} date={date} />
       </View>
 
-      {audience && (
-        <View style={styles.row}>
-          <Ionicons name={'business-outline'} size={20} color={theme.colors.text} />
-          <Text>{audience}</Text>
-        </View>
-      )}
-      {lesson.announceHTML && (
-        <View style={styles.row}>
-          <AntDesign name='warning' size={20} color={theme.colors.text} />
-          <Text>Объявление</Text>
-        </View>
-      )}
+      {audience ? <View style={styles.row}>
+        <Ionicons name={'business-outline'} size={20} color={theme.colors.text} />
+        <Text>{audience}</Text>
+      </View> : null}
+      {lesson.announceHTML ? <View style={styles.row}>
+        <AntDesign name='warning' size={20} color={theme.colors.text} />
+        <Text>Объявление</Text>
+      </View> : null}
 
       {(Boolean(teacherName) || Boolean(lesson.shortGroups?.length)) && (
         <View style={styles.row}>

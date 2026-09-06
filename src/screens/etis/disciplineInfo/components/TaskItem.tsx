@@ -9,7 +9,7 @@ import { useAppTheme } from '~/hooks/theme';
 import { DisciplineTask } from '~/models/disciplinesTasks';
 import { fontSize } from '~/utils/texts';
 
-const TaskItem = ({ task }: { task: DisciplineTask }) => {
+const TaskItem = ({ task }: { readonly task: DisciplineTask }) => {
   const theme = useAppTheme();
   const { onRequestEdit, onComplete } = useTaskContext();
   return (
@@ -18,7 +18,7 @@ const TaskItem = ({ task }: { task: DisciplineTask }) => {
         <ThemedCheckbox value={task.isComplete} onValueChange={() => onComplete(task)} />
         <Text>{task.description}</Text>
       </View>
-      <TouchableOpacity onPress={() => onRequestEdit(task)} style={styles.align}>
+      <TouchableOpacity style={styles.align} onPress={() => onRequestEdit(task)}>
         <Ionicons name={'pencil-outline'} size={20} color={theme.colors.text} />
       </TouchableOpacity>
     </View>

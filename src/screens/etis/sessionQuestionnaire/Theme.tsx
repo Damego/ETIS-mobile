@@ -16,13 +16,13 @@ export default function Theme({
   answeredCount,
   questionCount,
 }: {
-  theme: IQuestionnaireTheme;
-  showTitle: boolean;
+  readonly theme: IQuestionnaireTheme;
+  readonly showTitle: boolean;
   onSubmit(answers: IAnswer[]): void;
-  themeNumber: number;
-  themeCount: number;
-  answeredCount: number;
-  questionCount: number;
+  readonly themeNumber: number;
+  readonly themeCount: number;
+  readonly answeredCount: number;
+  readonly questionCount: number;
 }) {
   const [answers, setAnswers] = useState<IAnswer[]>([]);
   const [questionIndex, setQuestionIndex] = useState(0);

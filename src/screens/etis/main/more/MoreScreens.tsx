@@ -88,7 +88,7 @@ const SCREENS: ScreenT[][] = [
   ],
 ];
 
-const ScreenButton = ({ screen }: { screen: ScreenT }) => {
+const ScreenButton = ({ screen }: { readonly screen: ScreenT }) => {
   const { title, screenName, icon, requiresPsutech } = screen;
   const { t } = useTranslation();
 
@@ -105,9 +105,9 @@ const ScreenButton = ({ screen }: { screen: ScreenT }) => {
   return (
     <TouchableOpacity
       style={[styles.card, globalStyles.card, disabled && styles.cardDisabled]}
-      onPress={handlePress}
       disabled={disabled}
       accessibilityState={disabled ? { disabled: true } : undefined}
+      onPress={handlePress}
     >
       {icon(globalStyles.textColor.color)}
       <Text style={[styles.cardText, disabled && globalStyles.textColor2]}>{t(title)}</Text>
@@ -134,23 +134,21 @@ const MoreScreens = () => {
 
       <View style={{ gap: 10 }}>
         {SCREENS.map((group, index) => (
-          <View style={{ flexDirection: 'row', gap: 10 }} key={index}>
+          <View key={index} style={{ flexDirection: 'row', gap: 10 }}>
             {group.map((screen) => (
-              <ScreenButton screen={screen} key={screen.screenName} />
+              <ScreenButton key={screen.screenName} screen={screen} />
             ))}
           </View>
         ))}
       </View>
 
-      {showReviewBox && (
-        <ReviewBox
-          setReviewed={() => {
-            setShowReviewBox(false);
-            cache.setReviewStep('stop');
-          }}
-          setViewed={() => setShowReviewBox(false)}
-        />
-      )}
+      {showReviewBox ? <ReviewBox
+        setReviewed={() => {
+          setShowReviewBox(false);
+          cache.setReviewStep('stop');
+        }}
+        setViewed={() => setShowReviewBox(false)}
+      /> : null}
     </Screen>
   );
 };

@@ -17,11 +17,11 @@ export const ButtonWithPopover = ({
   cardStyle,
   icon,
 }: {
-  title: string;
-  info: string;
-  textStyle?: StyleProp<TextStyle>;
-  cardStyle?: StyleProp<ViewStyle>;
-  icon?: React.ReactNode;
+  readonly title: string;
+  readonly info: string;
+  readonly textStyle?: StyleProp<TextStyle>;
+  readonly cardStyle?: StyleProp<ViewStyle>;
+  readonly icon?: React.ReactNode;
 }) => {
   const globalStyles = useGlobalStyles();
   const appTheme = useAppTheme();
@@ -32,7 +32,6 @@ export const ButtonWithPopover = ({
         placement={PopoverPlacement.FLOATING}
         from={(_, showPopover) => (
           <TouchableOpacity
-            onPress={showPopover}
             style={[
               {
                 paddingVertical: '2%',
@@ -41,6 +40,7 @@ export const ButtonWithPopover = ({
               },
             ]}
             activeOpacity={0.45}
+            onPress={showPopover}
           >
             {icon}
             <Text style={textStyle}>{title}</Text>
@@ -52,7 +52,7 @@ export const ButtonWithPopover = ({
           backgroundColor: appTheme.colors.container,
         }}
       >
-        <Text textBreakStrategy={'simple'} selectable style={fontSize.medium}>
+        <Text selectable textBreakStrategy={'simple'} style={fontSize.medium}>
           {info}
         </Text>
       </Popover>

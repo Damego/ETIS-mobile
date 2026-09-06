@@ -32,8 +32,8 @@ const Form = ({
   onSubmit,
   showLoading,
 }: {
-  onSubmit: (email: string) => void;
-  showLoading: boolean;
+  readonly onSubmit: (email: string) => void;
+  readonly showLoading: boolean;
 }) => {
   const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
@@ -61,7 +61,6 @@ const Form = ({
           globalStyles.textColor,
           email && !emailRegex.test(email) ? { borderColor: theme.colors.primary } : undefined,
         ]}
-        onChangeText={setEmail}
         placeholder={t('changeCredentials.emailPlaceholder')}
         placeholderTextColor={theme.colors.inputPlaceholder}
         autoComplete='email'
@@ -69,14 +68,15 @@ const Form = ({
         keyboardType='email-address'
         selectionColor={theme.colors.primary}
         autoCapitalize='none'
+        onChangeText={setEmail}
       />
       <View style={{ width: '90%' }}>
         <Button
           text={t('changeCredentials.changeButton')}
-          onPress={() => onSubmit(email)}
           disabled={!email || !emailRegex.test(email)}
           showLoading={showLoading}
           variant={'primary'}
+          onPress={() => onSubmit(email)}
         />
       </View>
     </View>
@@ -128,7 +128,7 @@ export default function ChangeEmail({ route }: EducationStackScreenProps<'Change
     );
   else if (sendVerificationMail)
     component = <CenteredText>{t('changeCredentials.sending')}</CenteredText>;
-  else component = <Form onSubmit={submit} showLoading={isLoading} />;
+  else component = <Form showLoading={isLoading} onSubmit={submit} />;
 
   return <Screen>{component}</Screen>;
 }

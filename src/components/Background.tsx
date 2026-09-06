@@ -12,16 +12,16 @@ const AbsoluteBackground = ({
   width,
   children,
 }: {
-  height: number;
-  width: number;
-  children: React.ReactNode;
+  readonly height: number;
+  readonly width: number;
+  readonly children: React.ReactNode;
 }) => (
   <View style={[styles.absoluteContainer, { height, width }]}>{children}</View>
 );
 
 // Рендерит слои фона событийных тем (градиент, картинка, декорации)
 // под основным контентом экрана. Для обычных тем ничего не рисует.
-const Background = ({ theme, children }: { theme: ITheme; children: React.ReactNode }) => {
+const Background = ({ theme, children }: { readonly theme: ITheme; readonly children: React.ReactNode }) => {
   // Размеры берутся хуком, а не Dimensions.get на уровне модуля:
   // модульный вызов фиксирует значения при загрузке бандла и не
   // переживает повороты/изменения окна (планшеты, split screen)

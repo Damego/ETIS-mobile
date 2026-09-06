@@ -14,7 +14,7 @@ import { fontSize, iconSize } from '~/utils/texts';
 export const RequestCertificateButton = ({
   availableCertificates,
 }: {
-  availableCertificates: IAvailableCertificate[];
+  readonly availableCertificates: IAvailableCertificate[];
 }) => {
   const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
@@ -23,9 +23,9 @@ export const RequestCertificateButton = ({
   return (
     <Card>
       <TouchableOpacity
-        onPress={() => navigation.navigate('RequestCertificate', availableCertificates)}
         activeOpacity={0.9}
         style={{ flexDirection: 'row', paddingVertical: '2%', alignItems: 'center' }}
+        onPress={() => navigation.navigate('RequestCertificate', availableCertificates)}
       >
         <AntDesign
           name='plus'

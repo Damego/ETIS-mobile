@@ -11,22 +11,22 @@ import { fontSize } from '~/utils/texts';
 // не даёт длинному заголовку вытеснить стрелку за правый край
 const TITLE_LINE_HEIGHT = 20;
 
-const DropdownText = ({ title, value }: { title: string; value: string }) => {
+const DropdownText = ({ title, value }: { readonly title: string; readonly value: string }) => {
   const theme = useAppTheme();
   const [isOpened, setOpened] = React.useState(false);
 
   return (
     <View style={{ gap: 4 }}>
       <TouchableOpacity
-        onPress={() => setOpened((prev) => !prev)}
         style={styles.row}
+        onPress={() => setOpened((prev) => !prev)}
       >
         <Text style={styles.title}>{title}</Text>
         <View style={styles.iconWrapper}>
           <AntDesign name={isOpened ? 'up' : 'down'} size={18} color={theme.colors.text} />
         </View>
       </TouchableOpacity>
-      {isOpened && <Text style={fontSize.medium}>{value}</Text>}
+      {isOpened ? <Text style={fontSize.medium}>{value}</Text> : null}
     </View>
   );
 };

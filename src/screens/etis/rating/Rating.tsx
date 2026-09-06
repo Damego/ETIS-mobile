@@ -18,7 +18,7 @@ import { fontSize } from '~/utils/texts';
 
 import RightText from './RightText';
 
-const Group = ({ group }: { group: IRatingGroup }) => {
+const Group = ({ group }: { readonly group: IRatingGroup }) => {
   if (!group.overall) {
     return (
       <CardHeaderOut topText={group.name}>
@@ -60,32 +60,28 @@ export default function Rating() {
   let component: React.ReactNode;
   if (isLoading) component = <LoadingContainer />;
   else if (!data) component = <NoData onRefresh={refresh} />;
-  else component = data.groups.map((group) => <Group group={group} key={group.name} />);
+  else component = data.groups.map((group) => <Group key={group.name} group={group} />);
 
   return (
     <Screen onUpdate={refresh}>
-      {data && (
-        <ClickableText
-          onPress={() => modalRef.current?.present()}
-          textStyle={fontSize.big}
-          iconRight={<AntDesign name='swap' size={18} color={theme.colors.text} />}
-          viewStyle={{ gap: 4, alignSelf: 'flex-end' }}
-        >
-          {data.session.current} {data.session.name}
-        </ClickableText>
-      )}
+      {data ? <ClickableText
+        textStyle={fontSize.big}
+        iconRight={<AntDesign name='swap' size={18} color={theme.colors.text} />}
+        viewStyle={{ gap: 4, alignSelf: 'flex-end' }}
+        onPress={() => modalRef.current?.present()}
+      >
+        {data.session.current} {data.session.name}
+      </ClickableText> : null}
 
       {component}
 
-      {data && (
-        <PeriodsBottomSheet
-          ref={modalRef}
-          currentPeriod={data.session.current}
-          latestPeriod={data.session.latest}
-          periodName={data.session.name}
-          onChange={loadSession}
-        />
-      )}
+      {data ? <PeriodsBottomSheet
+        ref={modalRef}
+        currentPeriod={data.session.current}
+        latestPeriod={data.session.latest}
+        periodName={data.session.name}
+        onChange={loadSession}
+      /> : null}
     </Screen>
   );
 }

@@ -8,12 +8,12 @@ import { IAnnounce } from '~/models/announce';
 import { httpClient } from '~/utils';
 import { getStyles } from '~/utils/webView';
 
-export default function AnnounceCard({ data: { isNew, html } }: { data: IAnnounce }) {
+export default function AnnounceCard({ data: { isNew, html } }: { readonly data: IAnnounce }) {
   const theme = useAppTheme();
   const globalStyles = useGlobalStyles();
 
   return (
-    <Card style={isNew && globalStyles.primaryBackgroundColor}>
+    <Card style={isNew ? globalStyles.primaryBackgroundColor : null}>
       <AutoHeightWebView
         source={{ html }}
         style={{ flex: 0, width: '100%' }}

@@ -18,13 +18,13 @@ const TimetableCalendar = ({
   onDatePress,
   skipSunday,
 }: {
-  periodStartDate?: dayjs.Dayjs;
-  periodEndDate?: dayjs.Dayjs;
-  firstWeek?: number;
-  lastWeek?: number;
+  readonly periodStartDate?: dayjs.Dayjs;
+  readonly periodEndDate?: dayjs.Dayjs;
+  readonly firstWeek?: number;
+  readonly lastWeek?: number;
   // Не показывать воскресенье в свёрнутом недельном календаре (настройка «Пропускать воскресенье»)
-  skipSunday?: boolean;
-  onDatePress: (
+  readonly skipSunday?: boolean;
+  readonly onDatePress: (
     { date, week }: { date?: dayjs.Dayjs; week?: number },
     mode: TimetableCalendarModes
   ) => void;
@@ -60,18 +60,17 @@ const TimetableCalendar = ({
           <WeekCalendar
             currentDate={currentDate}
             selectedDate={selectedDate}
-            onDatePress={(data) =>
-              onDatePress(
-                data,
-                // date доступен когда юзер нажал на дату, а week при нажатии на стрелочки
-                data.date ? 'week' : 'month'
-              )
-            }
             selectedWeek={selectedWeek ?? 1}
             currentWeek={currentWeek}
             firstWeek={firstWeek}
             lastWeek={lastWeek}
             skipSunday={skipSunday}
+            onDatePress={(data) =>
+              onDatePress(
+                data,
+                // date доступен когда юзер нажал на дату, а week при нажатии на стрелочки
+                data.date ? 'week' : 'month'
+              )}
           />
         ) : (
           <MonthCalendar

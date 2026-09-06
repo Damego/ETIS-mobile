@@ -43,19 +43,19 @@ const DayTimetable = ({
   onRetry,
   onPagerScrollStateChange,
 }: {
-  data?: ITimeTable | null;
-  selectedDate: dayjs.Dayjs;
-  selectedWeek: number;
-  currentDate: dayjs.Dayjs;
-  currentWeek: number;
-  startDate?: dayjs.Dayjs;
-  endDate?: dayjs.Dayjs;
-  teachers?: ITeacher[];
-  onDatePress: DatePressT;
-  isLoading?: boolean;
-  loadingComponent?: () => React.ReactNode;
-  onRetry?: () => void;
-  onPagerScrollStateChange?: (state: PagerScrollState) => void;
+  readonly data?: ITimeTable | null;
+  readonly selectedDate: dayjs.Dayjs;
+  readonly selectedWeek: number;
+  readonly currentDate: dayjs.Dayjs;
+  readonly currentWeek: number;
+  readonly startDate?: dayjs.Dayjs;
+  readonly endDate?: dayjs.Dayjs;
+  readonly teachers?: ITeacher[];
+  readonly onDatePress: DatePressT;
+  readonly isLoading?: boolean;
+  readonly loadingComponent?: () => React.ReactNode;
+  readonly onRetry?: () => void;
+  readonly onPagerScrollStateChange?: (state: PagerScrollState) => void;
 }) => {
   const { t } = useTranslation();
   const pagerRef = useRef<PagerViewRef>(null);
@@ -108,19 +108,19 @@ const DayTimetable = ({
       ) : data ? (
         <TimetablePages
           ref={pagerRef}
+          days={data.days}
+          dayNumber={selectedDate.weekday()}
           onPagePress={(direction) => {
             // direction: -1 or 1
             // Нужно для свайпа между днями
             onDatePress({ date: selectedDate.clone().add(direction, 'day') });
           }}
           onPagerScrollStateChange={onPagerScrollStateChange}
-          days={data.days}
-          dayNumber={selectedDate.weekday()}
         />
       ) : (
         <View style={styles.emptyContainer}>
           <CenteredText>{t('timetable.noTimetable')}</CenteredText>
-          {onRetry && <Button text={t('common.refresh')} onPress={onRetry} variant='card' />}
+          {onRetry ? <Button text={t('common.refresh')} variant='card' onPress={onRetry} /> : null}
         </View>
       )}
     </TimeTableContext.Provider>

@@ -59,7 +59,7 @@ const Announces = ({ jumpTo, route }: SceneProps) => {
 
         <View style={{ gap: 8 }}>
           {data.filter(filterData).map((announce, i) => (
-            <AnnounceCard data={announce} key={i} />
+            <AnnounceCard key={i} data={announce} />
           ))}
         </View>
       </>
@@ -68,7 +68,7 @@ const Announces = ({ jumpTo, route }: SceneProps) => {
 
   return (
     <Screen onUpdate={refresh}>
-      <MessagesShortcuts onShortcutPress={jumpTo} currentShortcut={route.key} />
+      <MessagesShortcuts currentShortcut={route.key} onShortcutPress={jumpTo} />
       {component}
     </Screen>
   );

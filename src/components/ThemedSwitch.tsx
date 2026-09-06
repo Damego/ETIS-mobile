@@ -4,9 +4,9 @@ import React from 'react';
 import { useAppTheme } from '~/hooks/theme';
 
 interface ThemedSwitchProps {
-  value: boolean;
-  onValueChange: (value: boolean) => void;
-  disabled?: boolean;
+  readonly value: boolean;
+  readonly onValueChange: (value: boolean) => void;
+  readonly disabled?: boolean;
 }
 
 /**
@@ -18,7 +18,7 @@ const ThemedSwitch = ({ value, onValueChange, disabled }: ThemedSwitchProps) => 
 
   return (
     <Host matchContents seedColor={theme.colors.primary}>
-      <Switch value={value} onValueChange={onValueChange} disabled={disabled} />
+      <Switch value={value} disabled={disabled} onValueChange={onValueChange} />
     </Host>
   );
 };

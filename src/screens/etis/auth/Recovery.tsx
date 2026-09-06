@@ -10,7 +10,7 @@ import { httpClient } from '~/utils';
 import Footer from './AuthFooter';
 import RecoveryForm from './RecoveryForm';
 
-const Recovery = ({ setShowModal }: { setShowModal: (showModal: boolean) => void }) => {
+const Recovery = ({ setShowModal }: { readonly setShowModal: (showModal: boolean) => void }) => {
   const { t } = useTranslation();
   const [isLoading, setLoading] = useState<boolean>(false);
   const [message, changeMessage] = useState<string | null>(null);
@@ -57,18 +57,18 @@ const Recovery = ({ setShowModal }: { setShowModal: (showModal: boolean) => void
     <Screen>
       {!recaptchaToken && (
         <CustomReCaptcha
-          onReceiveToken={onReceiveRecaptchaToken}
           size={isInvisibleRecaptcha ? 'invisible' : 'normal'}
+          onReceiveToken={onReceiveRecaptchaToken}
         />
       )}
 
       <View style={{ flex: 1 }}>
         <RecoveryForm
-          onSubmit={(mail: string) => makeRequest({ mail })}
           isLoading={isLoading}
           message={message}
           setShowModal={setShowModal}
           disabledRequestButton={disabledRequestButton}
+          onSubmit={(mail: string) => makeRequest({ mail })}
         />
       </View>
       <Footer />

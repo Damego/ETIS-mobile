@@ -8,7 +8,7 @@ import useTasks from '~/hooks/useTasks';
 import { ISubject } from '~/models/timeTable';
 import { borderRadius } from '~/utils/texts';
 
-const TaskBadge = ({ subject, date }: { subject: ISubject; date: dayjs.Dayjs }) => {
+const TaskBadge = ({ subject, date }: { readonly subject: ISubject; readonly date: dayjs.Dayjs }) => {
   const theme = useAppTheme();
   const { tasks } = useTasks({
     filter: (task) =>

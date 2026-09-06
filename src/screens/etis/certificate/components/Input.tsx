@@ -12,11 +12,11 @@ const Input = ({
   value,
   popover,
 }: {
-  name: string;
-  placeholder: string;
-  onUpdate: (value: string) => void;
-  value: string;
-  popover?: React.ReactNode;
+  readonly name: string;
+  readonly placeholder: string;
+  readonly onUpdate: (value: string) => void;
+  readonly value: string;
+  readonly popover?: React.ReactNode;
 }) => {
   const globalStyles = useGlobalStyles();
   return (
@@ -33,9 +33,9 @@ const Input = ({
           ]}
           placeholderTextColor={globalStyles.inputPlaceholder.color}
           placeholder={placeholder}
-          onChangeText={onUpdate}
           value={value}
           selectionColor={globalStyles.primaryBackgroundColor.backgroundColor}
+          onChangeText={onUpdate}
         />
         {popover}
       </View>

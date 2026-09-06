@@ -10,6 +10,7 @@ import AboutAppButton from './components/AboutApp';
 import ChangeAppUI from './components/ChangeAppUI';
 import ChangeEventTheme from './components/ChangeEventTheme';
 import LanguageSetting from './components/LanguageSetting';
+import ResetIntroSetting from './components/ResetIntroSetting';
 import ShowReleaseNotes from './components/ShowReleaseNotes';
 import ToggleSentrySetting from './components/ToggleSentrySetting';
 import ToggleSignNotification from './components/ToggleSignNotification';
@@ -26,6 +27,7 @@ export default function AppSettings() {
       <ChangeAppUI />
       <ToggleSignNotification />
       <LanguageSetting />
+      <ResetIntroSetting />
 
       {/* Настройки приложения */}
       <Text style={[fontSize.big, { fontWeight: 'bold' }]}>{t('settings.appSection')}</Text>

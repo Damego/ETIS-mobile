@@ -51,7 +51,7 @@ const getSubjectPointsStyle = (
   return styles.colorMark5;
 };
 
-const TotalPoints = ({ subject, style }: { subject: ISubjectPoints; style?: StyleProp<ViewStyle> }) => {
+const TotalPoints = ({ subject, style }: { readonly subject: ISubjectPoints; readonly style?: StyleProp<ViewStyle> }) => {
   const globalStyles = useGlobalStyles();
 
   const textStyle = getSubjectPointsStyle(subject, globalStyles.textColor);

@@ -21,7 +21,7 @@ const ToggleShowEmptyPairs = () => {
   return (
     <SettingRow
       label={t('settings.showEmptyPairs')}
-      right={<ThemedSwitch onValueChange={toggle} value={showEmptyPairs} />}
+      right={<ThemedSwitch value={showEmptyPairs} onValueChange={toggle} />}
     />
   );
 };

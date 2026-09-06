@@ -57,7 +57,7 @@ const TextsContainerVariant = () => (
   </View>
 );
 
-export const LoadingContainer = ({ variant }: { variant?: 'cards' | 'texts' }) => {
+export const LoadingContainer = ({ variant }: { readonly variant?: 'cards' | 'texts' }) => {
   if (!variant || variant === 'cards') {
     return <CardsContainerVariant />;
   } if (variant === 'texts') {
@@ -70,7 +70,7 @@ const LoadingScreen = ({
   variant,
 }: {
   onRefresh?(): void;
-  variant?: 'cards' | 'texts';
+  readonly variant?: 'cards' | 'texts';
 }) => (
   <Screen onUpdate={onRefresh}>
     <LoadingContainer variant={variant || 'cards'} />

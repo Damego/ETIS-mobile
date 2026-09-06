@@ -19,11 +19,11 @@ const TeacherListSourceButton = () => {
       placement={PopoverPlacement.FLOATING}
       from={(_, showPopover) => (
         <TouchableOpacity
-          onPress={showPopover}
           style={{
             justifyContent: 'center',
             marginHorizontal: 14,
           }}
+          onPress={showPopover}
         >
           <AntDesign name='questioncircleo' size={28} color={theme.colors.text} />
         </TouchableOpacity>

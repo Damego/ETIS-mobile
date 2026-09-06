@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
 
 const MAX_FILE_SIZE_LIMIT = 2 * 1024 * 1024;
 
-const File = ({ name, onRemove }: { name: string; onRemove: (name: string) => void }) => {
+const File = ({ name, onRemove }: { readonly name: string; readonly onRemove: (name: string) => void }) => {
   const globalStyles = useGlobalStyles();
   const fileFormat = name.split('.').at(-1);
   const cutFileName = name.length < 14 ? name : `${name.substring(0, 10)}....${fileFormat}`;
@@ -80,17 +80,17 @@ export const FilesPreview = ({
   files,
   onFileRemove,
 }: {
-  files: UploadFile[];
-  onFileRemove: (fileName: string) => void;
+  readonly files: UploadFile[];
+  readonly onFileRemove: (fileName: string) => void;
 }) => (
   <View style={styles.wrapperContainer}>
     <ScrollView
+      horizontal
       style={styles.scrollContainer}
       contentContainerStyle={styles.innerScrollContainer}
-      horizontal
     >
       {files.map(({ name }, index: number) => (
-        <File name={name} onRemove={onFileRemove} key={`${name}-${index}`} />
+        <File key={`${name}-${index}`} name={name} onRemove={onFileRemove} />
       ))}
     </ScrollView>
   </View>
@@ -104,8 +104,8 @@ const MessageInput = ({
 }: {
   onFileSelect(file: UploadFile[]): void;
   onSubmit(text: string): Promise<Response<string> | undefined>;
-  showLoading: boolean;
-  disabled: boolean;
+  readonly showLoading: boolean;
+  readonly disabled: boolean;
 }) => {
   const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
@@ -154,17 +154,20 @@ const MessageInput = ({
       </TouchableOpacity>
 
       <TextInput
+        multiline
         style={[fontSize.medium, styles.input, globalStyles.textColor]}
-        onChangeText={(text) => setValue(text)}
         value={value}
         placeholder={t('messages.messagePlaceholder')}
-        multiline
         selectionColor={globalStyles.primaryText.color}
         placeholderTextColor={theme.colors.inputPlaceholder}
         editable={!disabled}
+        onChangeText={(text) => setValue(text)}
       />
 
       <TouchableOpacity
+        // disabled — строго boolean, утечки значений в render нет:
+        // правило писано для JSX-children, здесь ложное срабатывание
+        // eslint-disable-next-line react/jsx-no-leaked-render
         disabled={disabled && (!value.trim() || showLoading)}
         style={styles.iconView}
         onPress={submit}

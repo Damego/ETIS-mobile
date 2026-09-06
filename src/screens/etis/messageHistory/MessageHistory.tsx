@@ -142,10 +142,10 @@ export default function MessageHistory({
 
       {files.length !== 0 && <FilesPreview files={files} onFileRemove={onFileRemove} />}
       <MessageInput
-        onFileSelect={onFileSelect}
-        onSubmit={onSubmit}
         showLoading={isUploading}
         disabled={isDemo}
+        onFileSelect={onFileSelect}
+        onSubmit={onSubmit}
       />
     </>
   );

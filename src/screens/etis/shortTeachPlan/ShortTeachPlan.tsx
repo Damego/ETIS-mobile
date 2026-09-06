@@ -20,10 +20,10 @@ const PeriodButton = React.memo(
     isOpened,
     onPress,
   }: {
-    period: ISessionTeachPlan;
-    currentSession: number;
-    isOpened: boolean;
-    onPress: (period: number) => void;
+    readonly period: ISessionTeachPlan;
+    readonly currentSession: number;
+    readonly isOpened: boolean;
+    readonly onPress: (period: number) => void;
   }) => {
     const globalStyles = useGlobalStyles();
 
@@ -31,7 +31,6 @@ const PeriodButton = React.memo(
 
     return (
       <TouchableOpacity
-        onPress={() => onPress(period.period.number)}
         style={[
           globalStyles.card,
           {
@@ -43,6 +42,7 @@ const PeriodButton = React.memo(
             borderColor: globalStyles.primaryBackgroundColor.backgroundColor,
           },
         ]}
+        onPress={() => onPress(period.period.number)}
       >
         <Text
           style={{ fontSize: 30, fontWeight: 'bold' }}
@@ -78,7 +78,7 @@ const ShortTeachPlan = () => {
   if (!data || data.length === 0) return <NoData onRefresh={refresh} />;
 
   return (
-    <Screen onUpdate={refresh} containerStyle={{ gap: 16 }}>
+    <Screen containerStyle={{ gap: 16 }} onUpdate={refresh}>
       <CalendarSchedule />
 
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
@@ -86,15 +86,15 @@ const ShortTeachPlan = () => {
           .filter((period) => period?.period?.number != null)
           .map((period, index) => (
             <PeriodButton
+              key={index}
               period={period}
               currentSession={currentSession ?? 0}
               isOpened={period.period.number === openedPeriod}
               onPress={handlePeriodPress}
-              key={index}
             />
           ))}
       </View>
-      {openedPeriod && data[openedPeriod - 1] && <SessionCard data={data[openedPeriod - 1]} />}
+      {openedPeriod && data[openedPeriod - 1] ? <SessionCard data={data[openedPeriod - 1]} /> : null}
     </Screen>
   );
 };

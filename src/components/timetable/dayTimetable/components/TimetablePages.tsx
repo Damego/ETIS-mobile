@@ -12,15 +12,15 @@ import { ITimeTableDay } from '~/models/timeTable';
 import Pair from './Pair';
 
 interface TimetablePagesProps {
-  days: ITimeTableDay[];
-  dayNumber: number;
-  onPagePress: (pageNumber: number) => void;
-  onPagerScrollStateChange?: (state: PagerScrollState) => void;
+  readonly days: ITimeTableDay[];
+  readonly dayNumber: number;
+  readonly onPagePress: (pageNumber: number) => void;
+  readonly onPagerScrollStateChange?: (state: PagerScrollState) => void;
 }
 
 export type PagerScrollState = 'idle' | 'dragging' | 'settling';
 
-const Page = ({ day }: { day: ITimeTableDay }) => {
+const Page = ({ day }: { readonly day: ITimeTableDay }) => {
   const { showGapsBetweenPairs, showEmptyPairs } = useAppSelector(
     (state) => state.settings.config.ui
   );
@@ -38,7 +38,7 @@ const Page = ({ day }: { day: ITimeTableDay }) => {
           checkAllowedPairRender(pair, didRenderFirstPair, showGapsBetweenPairs, showEmptyPairs)
         ) {
           didRenderFirstPair = true;
-          return <Pair pair={pair} key={pair.position} />;
+          return <Pair key={pair.position} pair={pair} />;
         }
         return null;
       })}
@@ -64,7 +64,7 @@ const TimetablePages = forwardRef<PagerViewRef, TimetablePagesProps>(
         onPageScrollStateChanged={handleScrollStateChanged}
       >
         {days.map((day, index) => (
-          <Page day={day} key={index} />
+          <Page key={index} day={day} />
         ))}
 
         {/* Воскресенья нет в данных */}

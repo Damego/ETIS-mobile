@@ -48,15 +48,15 @@ const SelectOption = ({
   option,
   onSelect,
 }: {
-  option: IDropdownOption;
-  onSelect: (value: unknown) => void;
+  readonly option: IDropdownOption;
+  readonly onSelect: (value: unknown) => void;
 }) => (
   <TouchableOpacity
-    onPress={() => onSelect(option.value)}
     key={`pressable-${option.label}`}
     activeOpacity={0.7}
     disabled={option.current}
     style={styles.optionView}
+    onPress={() => onSelect(option.value)}
   >
     <Text style={styles.optionText} colorVariant={option.current ? 'primary' : 'text2'}>
       {option.label}
@@ -68,8 +68,8 @@ function Menu({
   options,
   onSelect,
 }: {
-  options: IDropdownOption[];
-  onSelect: (value: unknown) => void;
+  readonly options: IDropdownOption[];
+  readonly onSelect: (value: unknown) => void;
 }) {
   const globalStyles = useGlobalStyles();
 
@@ -77,7 +77,7 @@ function Menu({
     <View>
       <View style={[styles.menuView]}>
         {options.map((option) => (
-          <SelectOption option={option} onSelect={onSelect} key={option.label} />
+          <SelectOption key={option.label} option={option} onSelect={onSelect} />
         ))}
       </View>
     </View>
@@ -89,17 +89,17 @@ function Select({
   isOpened,
   toggleOpened,
 }: {
-  selectedOption: string;
-  isOpened: boolean;
-  toggleOpened: () => void;
+  readonly selectedOption: string;
+  readonly isOpened: boolean;
+  readonly toggleOpened: () => void;
 }) {
   const globalStyles = useGlobalStyles();
 
   return (
     <TouchableOpacity
       style={[styles.selectButton, globalStyles.border]}
-      onPress={toggleOpened}
       activeOpacity={0.9}
+      onPress={toggleOpened}
     >
       <Text style={[fontSize.medium, styles.selectText]}>{selectedOption}</Text>
       <AntDesign
@@ -116,9 +116,9 @@ export default function Dropdown({
   options,
   onSelect,
 }: {
-  selectedOption: IDropdownOption;
-  options: IDropdownOption[];
-  onSelect: (value: unknown) => void;
+  readonly selectedOption: IDropdownOption;
+  readonly options: IDropdownOption[];
+  readonly onSelect: (value: unknown) => void;
 }) {
   const [isOpened, setOpened] = useState(false);
 
@@ -133,7 +133,7 @@ export default function Dropdown({
         isOpened={isOpened}
         toggleOpened={toggleOpened}
       />
-      {isOpened && <Menu options={options} onSelect={onSelect} />}
+      {isOpened ? <Menu options={options} onSelect={onSelect} /> : null}
     </View>
   );
 }

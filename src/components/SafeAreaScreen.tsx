@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useAppTheme } from '~/hooks/theme';
 
-const SafeAreaScreen = ({ children }: { children: React.ReactNode }) => {
+const SafeAreaScreen = ({ children }: { readonly children: React.ReactNode }) => {
   const theme = useAppTheme();
 
   return (

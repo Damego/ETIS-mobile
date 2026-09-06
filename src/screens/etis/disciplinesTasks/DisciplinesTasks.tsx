@@ -1,7 +1,7 @@
 import { BottomSheetModal } from '@expo/ui/community/bottom-sheet';
 import dayjs from 'dayjs';
 import React, {
-  useCallback, useEffect, useMemo, useRef, useState
+  Fragment, useCallback, useEffect, useMemo, useRef, useState
 } from 'react';
 import { StyleSheet } from 'react-native';
 
@@ -28,7 +28,7 @@ import getGroupedTasks from '../disciplineInfo/getGroupedTasks';
 import HistoryButton from '../disciplineInfo/HistoryButton';
 import TaskModal from '../disciplineInfo/TaskModal';
 
-const TaskGroup = ({ tasks }: { tasks: DisciplineTask[] }) => {
+const TaskGroup = ({ tasks }: { readonly tasks: DisciplineTask[] }) => {
   const date = tasks[0].datetime ? formatTime(tasks[0].datetime, { disableTime: true }) : undefined;
 
   const innerGroup = groupItems(tasks, (task) => task.disciplineName);
@@ -36,14 +36,14 @@ const TaskGroup = ({ tasks }: { tasks: DisciplineTask[] }) => {
   return (
     <CardHeaderOut topText={date} style={styles.taskListContainer}>
       {innerGroup.map((group) => (
-        <>
-          <Text style={styles.disciplineNameText} key={group[0].disciplineName}>
+        <Fragment key={group[0].disciplineName}>
+          <Text style={styles.disciplineNameText}>
             {group[0].disciplineName}
           </Text>
           {group.map((task) => (
-            <TaskItem task={task} key={task.id} />
+            <TaskItem key={task.id} task={task} />
           ))}
-        </>
+        </Fragment>
       ))}
     </CardHeaderOut>
   );
@@ -144,25 +144,24 @@ const DisciplinesTasks = ({ route }: EducationStackScreenProps<'DisciplineTasks'
 
         {Boolean(groupedInactiveTasks.length) && (
           <HistoryButton
-            onPress={() => setShowInactiveTasks((prev) => !prev)}
             showHistory={showInactiveTasks}
+            onPress={() => setShowInactiveTasks((prev) => !prev)}
           />
         )}
 
-        {showInactiveTasks &&
-        	groupedInactiveTasks.map((group) => <TaskGroup key={group[0].id} tasks={group} />)}
+        {showInactiveTasks ? groupedInactiveTasks.map((group) => <TaskGroup key={group[0].id} tasks={group} />) : null}
       </TaskContext.Provider>
 
       <TaskModal
         ref={modalRef}
+        showDisciplineInfo
+        disableCheckbox
+        task={selectedTask}
         onTaskAdd={handleTaskAdd}
         onTaskRemove={handleTaskRemove}
         onDismiss={() => {
           modalOpened.current = false;
         }}
-        task={selectedTask}
-        showDisciplineInfo
-        disableCheckbox
       />
     </Screen>
   );

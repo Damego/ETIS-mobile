@@ -31,7 +31,7 @@ const getPointsString = (checkPoint: ICheckPoint, number: number): string => {
   return `${checkPointName}: ${scoreText} из ${checkPoint.maxScore}`;
 };
 
-const SubjectCheckPoints = ({ data }: { data: ICheckPoint[] }): React.ReactNode => {
+const SubjectCheckPoints = ({ data }: { readonly data: ICheckPoint[] }): React.ReactNode => {
   if (!data.length) return;
 
   return (
@@ -41,8 +41,8 @@ const SubjectCheckPoints = ({ data }: { data: ICheckPoint[] }): React.ReactNode 
 
         return (
           <Text
-            style={checkPoint.failed ? styles.markFail : styles.markNeutral}
             key={index.toString()}
+            style={checkPoint.failed ? styles.markFail : styles.markNeutral}
           >
             {pointsString}
           </Text>

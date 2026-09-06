@@ -200,15 +200,13 @@ const AuthLoadingModal = () => {
           <ActivityIndicator size='large' color={globalStyles.primaryText.color} />
           <Text style={globalStyles.textColor}>{messageStatus}</Text>
 
-          {showOfflineButton && (
-            <View style={{ marginTop: '15%' }}>
-              <Button
-                title={t('offline.mode')}
-                onPress={signInOffline}
-                color={globalStyles.primaryText.color}
-              />
-            </View>
-          )}
+          {showOfflineButton ? <View style={{ marginTop: '15%' }}>
+            <Button
+              title={t('offline.mode')}
+              color={globalStyles.primaryText.color}
+              onPress={signInOffline}
+            />
+          </View> : null}
         </View>
       </View>
     </View>

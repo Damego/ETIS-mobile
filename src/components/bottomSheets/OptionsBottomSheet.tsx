@@ -11,9 +11,9 @@ export interface IOption {
 }
 
 interface Props {
-  options: IOption[];
-  onOptionPress: (value: string) => void;
-  currentOptionValue?: string;
+  readonly options: IOption[];
+  readonly onOptionPress: (value: string) => void;
+  readonly currentOptionValue?: string;
 }
 
 const OptionsBottomSheet = React.forwardRef<BottomSheetModal, Props>(
@@ -23,12 +23,10 @@ const OptionsBottomSheet = React.forwardRef<BottomSheetModal, Props>(
         {options?.map((item) => (
           <ClickableText
             key={item.value}
-            onPress={() => onOptionPress(item.value)}
             viewStyle={{ padding: '2%', width: '100%', justifyContent: 'center' }}
             textStyle={{ fontSize: 18, fontWeight: '600' }}
-            colorVariant={
-              item.isCurrent || item.value === currentOptionValue ? 'primary' : 'text'
-            }
+            colorVariant={item.isCurrent || item.value === currentOptionValue ? 'primary' : 'text'}
+            onPress={() => onOptionPress(item.value)}
           >
             {item.label}
           </ClickableText>

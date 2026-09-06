@@ -16,10 +16,10 @@ const BottomSheetModalComponent = React.forwardRef<BottomSheetModal, BottomSheet
     return (
       <ExpoBottomSheetModal
         ref={ref}
-        onDismiss={onDismiss}
-        backgroundStyle={globalStyles.card}
         // Разрешаем закрытие свайпом вниз, тапом по фону и кнопкой «Назад»
         enablePanDownToClose
+        backgroundStyle={globalStyles.card}
+        onDismiss={onDismiss}
         {...restProps}
       >
         {children}

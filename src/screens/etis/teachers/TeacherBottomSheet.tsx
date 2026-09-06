@@ -24,7 +24,7 @@ import { ITeacher } from '~/models/teachers';
 import { EducationNavigationProp } from '~/navigation/types';
 import { borderRadius as radii, fontSize } from '~/utils/texts';
 
-const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
+const TeacherContainer = ({ teacher }: { readonly teacher: ITeacher }) => {
   const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
   const navigation = useNavigation<EducationNavigationProp>();
@@ -84,83 +84,81 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
 
       <View style={styles.buttonRow}>
         <ClickableText
-          onPress={navigateToTeacherTimetable}
           viewStyle={[
             globalStyles.primaryBackgroundColor,
             globalStyles.borderRadius,
             styles.button,
           ]}
           textStyle={[globalStyles.primaryContrastText]}
+          onPress={navigateToTeacherTimetable}
         >
           {t('teachers.lessonsTimetable')}
         </ClickableText>
         <ClickableText
-          onPress={navigateToCathedraTimetable}
           viewStyle={[
             globalStyles.primaryBackgroundColor,
             globalStyles.borderRadius,
             styles.button,
           ]}
           textStyle={globalStyles.primaryContrastText}
+          onPress={navigateToCathedraTimetable}
         >
           {t('teachers.cathedraTimetable')}
         </ClickableText>
       </View>
 
-      {psuTeacher?.psu?.page_url && contacts && (
-        <>
-          <ClickableText
-            onPress={openPSUPage}
-            viewStyle={[globalStyles.primaryBorder, styles.button]}
-          >
-            {t('teachers.psuPage')}
-          </ClickableText>
+      {psuTeacher?.psu?.page_url && contacts ? <>
+        <ClickableText
+          viewStyle={[globalStyles.primaryBorder, styles.button]}
+          onPress={openPSUPage}
+        >
+          {t('teachers.psuPage')}
+        </ClickableText>
 
-          <BorderLine />
+        <BorderLine />
 
-          <Text style={styles.title}>{t('teachers.contactInfo')}</Text>
-          {Boolean(contacts.phones.length) && (
-            <>
-              <Text style={styles.title} colorVariant={'text2'}>
-                {t('teachers.phone')}
+        <Text style={styles.title}>{t('teachers.contactInfo')}</Text>
+        {Boolean(contacts.phones.length) && (
+          <>
+            <Text style={styles.title} colorVariant={'text2'}>
+              {t('teachers.phone')}
+            </Text>
+            {contacts.phones.map((phone) => (
+              <Text
+                key={phone}
+                style={fontSize.medium}
+                onPress={() => phone && Clipboard.setStringAsync(phone)}
+              >
+                • {phone}
               </Text>
-              {contacts.phones.map((phone) => (
-                <Text
-                  key={phone}
-                  style={fontSize.medium}
-                  onPress={() => phone && Clipboard.setStringAsync(phone)}
-                >
-                  • {phone}
-                </Text>
-              ))}
-            </>
-          )}
-          {Boolean(contacts.emails.length) && (
-            <>
-              <Text style={styles.title} colorVariant={'text2'}>
-                {t('teachers.email')}
+            ))}
+          </>
+        )}
+        {Boolean(contacts.emails.length) && (
+          <>
+            <Text style={styles.title} colorVariant={'text2'}>
+              {t('teachers.email')}
+            </Text>
+            {contacts.emails.map((email) => (
+              <Text
+                key={email}
+                style={fontSize.medium}
+                onPress={() => email && Clipboard.setStringAsync(email)}
+              >
+                • {email}
               </Text>
-              {contacts.emails.map((email) => (
-                <Text
-                  key={email}
-                  style={fontSize.medium}
-                  onPress={() => email && Clipboard.setStringAsync(email)}
-                >
-                  • {email}
-                </Text>
-              ))}
-            </>
-          )}
-          <ClickableText
-            onPress={openPSUPage}
-            colorVariant={'primary'}
-            viewStyle={{ alignSelf: 'flex-end' }}
-            textStyle={{ fontWeight: 'bold' }}
-          >
-            {t('teachers.source')}
-          </ClickableText>
-        </>
-      )}
+            ))}
+          </>
+        )}
+        <ClickableText
+          colorVariant={'primary'}
+          viewStyle={{ alignSelf: 'flex-end' }}
+          textStyle={{ fontWeight: 'bold' }}
+          onPress={openPSUPage}
+        >
+          {t('teachers.source')}
+        </ClickableText>
+      </> : null}
 
       <BorderLine />
 
@@ -170,7 +168,7 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
           <Text style={fontSize.medium}>• {subject.discipline}</Text>
           <View style={styles.typesContainer}>
             {subject.types.filter((type): type is LessonTypes => type != null).map((type, index) => (
-              <DisciplineType type={type} size={'small'} key={index} />
+              <DisciplineType key={index} type={type} size={'small'} />
             ))}
           </View>
         </React.Fragment>
@@ -179,7 +177,7 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
   );
 };
 
-const TeacherBottomSheet = React.forwardRef<BottomSheetModal, { teacher: ITeacher | null }>(
+const TeacherBottomSheet = React.forwardRef<BottomSheetModal, { readonly teacher: ITeacher | null }>(
   ({ teacher }, ref) => (
     <BottomSheetModal ref={ref} snapPoints={['50%', '90%']}>
       {teacher ? (

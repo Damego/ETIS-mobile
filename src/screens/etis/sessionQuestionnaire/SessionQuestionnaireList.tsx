@@ -51,10 +51,10 @@ export default function SessionQuestionnaireList({ navigation }: EducationStackS
               <Card key={link.name}>
                 <ClickableText
                   text={link.name}
+                  textStyle={fontSize.small}
                   onPress={() => {
                     navigation.navigate('SessionQuestionnaire', { url: link.url ?? '' });
                   }}
-                  textStyle={fontSize.small}
                 />
               </Card>
             ))}

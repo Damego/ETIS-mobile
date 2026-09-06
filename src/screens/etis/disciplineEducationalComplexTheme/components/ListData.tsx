@@ -12,18 +12,18 @@ import { fontSize } from '~/utils/texts';
 
 const ListContainerBottomSheet = React.forwardRef<
   BottomSheetModal,
-  { label: string; data: IListItem[] }
+  { readonly label: string; readonly data: IListItem[] }
 >(({ label, data }, ref) => (
   <BottomSheetModal ref={ref} snapPoints={['50%', '100%']}>
     <BottomSheetContent title={label}>
       {data.map(($data, index) => (
         <React.Fragment key={index}>
           <ClickableText
-            onPress={() => Linking.openURL($data.url ?? '#')}
             disabled={!$data.url}
             textStyle={fontSize.medium}
             textProps={{ selectable: true }}
             viewStyle={{ paddingVertical: 4 }}
+            onPress={() => Linking.openURL($data.url ?? '#')}
           >
             {$data.title}
           </ClickableText>
@@ -34,7 +34,7 @@ const ListContainerBottomSheet = React.forwardRef<
   </BottomSheetModal>
 ));
 
-const ListData = ({ label, data }: { label: string; data: IListItem[] }) => {
+const ListData = ({ label, data }: { readonly label: string; readonly data: IListItem[] }) => {
   const ref = useRef<BottomSheetModal | null>(null);
 
   return (

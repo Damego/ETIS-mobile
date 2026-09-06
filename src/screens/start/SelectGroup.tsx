@@ -24,9 +24,9 @@ const GroupItem = React.memo(
     isSelected,
     onPress,
   }: {
-    group: IGroup;
-    isSelected: boolean;
-    onPress: (group: IGroup) => void;
+    readonly group: IGroup;
+    readonly isSelected: boolean;
+    readonly onPress: (group: IGroup) => void;
   }) => {
     const { t } = useTranslation();
 
@@ -40,11 +40,11 @@ const GroupItem = React.memo(
 
     return (
       <ClickableText
-        onPress={() => onPress(group)}
         textStyle={[{ fontWeight: 'bold' }, fontSize.big]}
         viewStyle={{ paddingVertical: '2%' }}
         bottomComponent={formatDegree(group.degree) && <Text>{formatDegree(group.degree)}</Text>}
         colorVariant={isSelected ? 'primary' : 'text'}
+        onPress={() => onPress(group)}
       >
         {group.name.short}-{group.year}
       </ClickableText>
@@ -81,14 +81,12 @@ const SelectGroupScreen = ({ route }: StartStackScreenProps<'SelectGroup'>) => {
   return (
     <>
       <View style={{ marginHorizontal: '4%' }}>
-        <SearchInput value={query} onValueChange={processValue} autoCapitalize />
+        <SearchInput autoCapitalize value={query} onValueChange={processValue} />
       </View>
 
-      {isLoading && (
-        <View style={{ flex: 1, marginHorizontal: '4%' }}>
-          {isLoading && <LoadingContainer variant={'texts'} />}
-        </View>
-      )}
+      {isLoading ? <View style={{ flex: 1, marginHorizontal: '4%' }}>
+        {isLoading ? <LoadingContainer variant={'texts'} /> : null}
+      </View> : null}
 
       {!isLoading && isPsutechAvailable() === false && (
         <View style={{
@@ -113,22 +111,20 @@ const SelectGroupScreen = ({ route }: StartStackScreenProps<'SelectGroup'>) => {
         extraData={selectedGroup}
         ItemSeparatorComponent={() => <BorderLine />}
       />
-      {selectedGroup && (
-        <TouchableOpacity
-          onPress={handleConfirm}
-          style={[
-            styles.button,
-            { bottom: Math.max(insets.bottom, 8) },
-            globalStyles.primaryBackgroundColor,
-            globalStyles.borderRadius,
-          ]}
-        >
-          <Text colorVariant={'primaryContrast'} style={fontSize.big}>
-            {t('common.continue')}
-          </Text>
-          <Text colorVariant={'primaryContrast'}>({selectedGroup.name.full})</Text>
-        </TouchableOpacity>
-      )}
+      {selectedGroup ? <TouchableOpacity
+        style={[
+          styles.button,
+          { bottom: Math.max(insets.bottom, 8) },
+          globalStyles.primaryBackgroundColor,
+          globalStyles.borderRadius,
+        ]}
+        onPress={handleConfirm}
+      >
+        <Text colorVariant={'primaryContrast'} style={fontSize.big}>
+          {t('common.continue')}
+        </Text>
+        <Text colorVariant={'primaryContrast'}>({selectedGroup.name.full})</Text>
+      </TouchableOpacity> : null}
     </>
   );
 };

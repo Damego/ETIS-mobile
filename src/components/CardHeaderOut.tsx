@@ -24,22 +24,20 @@ const CardHeaderOut = ({
   style,
   topTextStyle,
 }: {
-  topText?: string;
-  children: React.ReactNode;
-  style?: StyleProp<ViewStyle>;
-  topTextStyle?: StyleProp<TextStyle>;
+  readonly topText?: string;
+  readonly children: React.ReactNode;
+  readonly style?: StyleProp<ViewStyle>;
+  readonly topTextStyle?: StyleProp<TextStyle>;
 }) => {
   const globalStyles = useGlobalStyles();
 
   return (
     <View>
-      {topText && (
-        <View style={styles.cardHeaderView}>
-          <Text style={[styles.cardHeaderText, globalStyles.textColor, topTextStyle]}>
-            {topText}
-          </Text>
-        </View>
-      )}
+      {topText ? <View style={styles.cardHeaderView}>
+        <Text style={[styles.cardHeaderText, globalStyles.textColor, topTextStyle]}>
+          {topText}
+        </Text>
+      </View> : null}
       <Card style={style}>{children}</Card>
     </View>
   );

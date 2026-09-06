@@ -24,12 +24,12 @@ const defaultStyles = StyleSheet.create({
 });
 
 interface ButtonProps {
-  text: string;
+  readonly text: string;
   onPress(): void;
-  disabled?: boolean;
-  showLoading?: boolean;
-  variant: 'primary' | 'secondary' | 'card';
-  fontStyle?: StyleProp<TextStyle>;
+  readonly disabled?: boolean;
+  readonly showLoading?: boolean;
+  readonly variant: 'primary' | 'secondary' | 'card';
+  readonly fontStyle?: StyleProp<TextStyle>;
 }
 
 const Button = React.forwardRef<React.ElementRef<typeof TouchableOpacity>, ButtonProps>(
@@ -64,7 +64,7 @@ const Button = React.forwardRef<React.ElementRef<typeof TouchableOpacity>, Butto
 
     if (showLoading) {
       return (
-        <View style={styles[variant].view} ref={ref as React.Ref<View>}>
+        <View ref={ref as React.Ref<View>} style={styles[variant].view}>
           <ActivityIndicator size='large' color={styles[variant].textColor} />
         </View>
       );
@@ -72,7 +72,7 @@ const Button = React.forwardRef<React.ElementRef<typeof TouchableOpacity>, Butto
 
     if (disabled) {
       return (
-        <View style={styles[variant].view} ref={ref as React.Ref<View>}>
+        <View ref={ref as React.Ref<View>} style={styles[variant].view}>
           <Text style={styles[variant].text as StyleProp<TextStyle>}>{text}</Text>
         </View>
       );
@@ -82,9 +82,9 @@ const Button = React.forwardRef<React.ElementRef<typeof TouchableOpacity>, Butto
       <ClickableText
         ref={ref as React.Ref<React.ElementRef<typeof TouchableOpacity>>}
         text={text}
-        onPress={onPress}
         textStyle={styles[variant].text as StyleProp<TextStyle>}
         viewStyle={styles[variant].view}
+        onPress={onPress}
       />
     );
   }

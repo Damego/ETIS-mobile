@@ -5,10 +5,10 @@ import type { StyleProp, ViewStyle } from 'react-native';
 import { useAppTheme } from '~/hooks/theme';
 
 interface ThemedCheckboxProps {
-  value: boolean;
-  onValueChange: (value: boolean) => void;
-  disabled?: boolean;
-  style?: StyleProp<ViewStyle>;
+  readonly value: boolean;
+  readonly onValueChange: (value: boolean) => void;
+  readonly disabled?: boolean;
+  readonly style?: StyleProp<ViewStyle>;
 }
 
 /**
@@ -20,7 +20,7 @@ const ThemedCheckbox = ({ value, onValueChange, disabled, style }: ThemedCheckbo
 
   return (
     <Host matchContents seedColor={theme.colors.primary} style={style}>
-      <Checkbox value={value} onValueChange={onValueChange} disabled={disabled} />
+      <Checkbox value={value} disabled={disabled} onValueChange={onValueChange} />
     </Host>
   );
 };

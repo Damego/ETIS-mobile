@@ -36,10 +36,10 @@ const FileTextLink = ({
   style,
   children,
 }: {
-  src: string;
-  fileName: string;
-  style: StyleProp<TextStyle>;
-  children: React.ReactNode;
+  readonly src: string;
+  readonly fileName: string;
+  readonly style: StyleProp<TextStyle>;
+  readonly children: React.ReactNode;
 }) => {
   const isDownloading = useRef(false);
 

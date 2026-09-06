@@ -13,7 +13,7 @@ import CheckPointDetails from './CheckPointDetails';
 import SubjectCheckPoints from './SubjectCheckPoints';
 import TotalPoints from './TotalPoints';
 
-const CardSign = ({ subject }: { subject: ISubjectPoints }) => {
+const CardSign = ({ subject }: { readonly subject: ISubjectPoints }) => {
   const globalStyles = useGlobalStyles();
   const ref = useRef<BottomSheetModal | null>(null);
 
@@ -22,9 +22,9 @@ const CardSign = ({ subject }: { subject: ISubjectPoints }) => {
       <Text style={styles.subjectNameText}>{subject.name}</Text>
       <View style={styles.pointsView}>
         <TouchableOpacity
-          onPress={() => ref.current?.present()}
           activeOpacity={0.45}
           style={[globalStyles.card, { padding: '2%' }]}
+          onPress={() => ref.current?.present()}
         >
           <SubjectCheckPoints data={subject.checkPoints} />
         </TouchableOpacity>

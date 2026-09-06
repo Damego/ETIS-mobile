@@ -16,8 +16,8 @@ const TelegramAppChannel = () => {
     <SettingRow
       label={t('settings.telegramChannel')}
       icon={<FontAwesome name={'telegram'} size={24} color={theme.colors.text} />}
-      onPress={() => Linking.openURL(TELEGRAM_URL)}
       right={<AntDesign name={'right'} size={20} color={theme.colors.text} />}
+      onPress={() => Linking.openURL(TELEGRAM_URL)}
     />
   );
 };

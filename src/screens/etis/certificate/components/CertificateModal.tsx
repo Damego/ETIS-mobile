@@ -18,8 +18,8 @@ export default function CertificateModal({
   html,
   closeModal,
 }: {
-  html: string;
-  closeModal: () => void;
+  readonly html: string;
+  readonly closeModal: () => void;
 }) {
   const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
@@ -40,16 +40,16 @@ export default function CertificateModal({
         ]}
       >
         <AutoHeightWebView
-          source={{ html }}
           scalesPageToFit
+          source={{ html }}
           style={{ marginHorizontal: '20%', marginVertical: '3%' }}
           customStyle={getStyles(globalStyles.textColor.color)}
         />
         <ClickableText
           text={t('common.close')}
-          onPress={closeModal}
           textStyle={fontSize.large}
           viewStyle={{ marginBottom: '2%' }}
+          onPress={closeModal}
         />
       </View>
     </Modal>

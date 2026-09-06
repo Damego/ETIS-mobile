@@ -11,10 +11,10 @@ const BaseSettingButton = ({
   onPress,
   color,
 }: {
-  iconName: keyof typeof AntDesign.glyphMap;
-  label: string;
-  onPress: () => void;
-  color?: keyof IThemeColors;
+  readonly iconName: keyof typeof AntDesign.glyphMap;
+  readonly label: string;
+  readonly onPress: () => void;
+  readonly color?: keyof IThemeColors;
 }) => {
   const theme = useAppTheme();
   const $color = color ? theme.colors[color] : theme.colors.text;

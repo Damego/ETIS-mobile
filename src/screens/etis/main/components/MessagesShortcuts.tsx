@@ -9,8 +9,8 @@ export const MessagesShortcuts = ({
   currentShortcut,
   onShortcutPress,
 }: {
-  currentShortcut: string;
-  onShortcutPress: (shortcut: string) => void;
+  readonly currentShortcut: string;
+  readonly onShortcutPress: (shortcut: string) => void;
 }) => {
   const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
@@ -33,8 +33,8 @@ export const MessagesShortcuts = ({
             styles.buttonText,
             currentShortcut === shortcut && globalStyles.primaryContrastText,
           ]}
-          onPress={() => onShortcutPress(shortcut)}
           disabled={currentShortcut === shortcut}
+          onPress={() => onShortcutPress(shortcut)}
         >
           {name}
         </ClickableText>

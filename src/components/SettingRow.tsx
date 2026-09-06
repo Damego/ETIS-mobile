@@ -9,16 +9,16 @@ import { IThemeColors } from '~/styles/themes';
 import { fontSize } from '~/utils/texts';
 
 interface SettingRowProps {
-  label: string;
+  readonly label: string;
   /** Цвет подписи (например, 'primary' для destructive-действий) */
-  labelColorVariant?: keyof IThemeColors;
-  icon?: React.ReactNode;
+  readonly labelColorVariant?: keyof IThemeColors;
+  readonly icon?: React.ReactNode;
   /** Кнопка-подсказка («i») — зафиксирована справа, перед элементом управления */
-  hint?: React.ReactNode;
+  readonly hint?: React.ReactNode;
   /** Элемент управления: switch, значение или шеврон */
-  right?: React.ReactNode;
-  onPress?: () => void;
-  style?: StyleProp<ViewStyle>;
+  readonly right?: React.ReactNode;
+  readonly onPress?: () => void;
+  readonly style?: StyleProp<ViewStyle>;
 }
 
 /**

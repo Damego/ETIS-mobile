@@ -13,7 +13,7 @@ import { fontSize } from '~/utils/texts';
 
 const EvaluationIndicatorsBottomSheet = React.forwardRef<
   BottomSheetModal,
-  { data: IEvaluationIndicators }
+  { readonly data: IEvaluationIndicators }
 >(({ data }, ref) => {
   const { t } = useTranslation();
   return (
@@ -43,7 +43,7 @@ const EvaluationIndicatorsBottomSheet = React.forwardRef<
   );
 });
 
-const EvaluationIndicators = ({ data }: { data: IEvaluationIndicators }) => {
+const EvaluationIndicators = ({ data }: { readonly data: IEvaluationIndicators }) => {
   const { t } = useTranslation();
   const ref = useRef<BottomSheetModal | null>(null);
 

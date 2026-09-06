@@ -33,23 +33,21 @@ const DisciplineInfo = ({ route }: EducationStackScreenProps<'DisciplineInfo'>) 
     <Screen>
       <View style={{ gap: 8 }}>
         <Text style={styles.text}>{lesson.subject.discipline ?? lesson.subject.string}</Text>
-        {lesson.subject?.type && <DisciplineType type={lesson.subject.type} />}
+        {lesson.subject?.type ? <DisciplineType type={lesson.subject.type} /> : null}
 
         <View />
 
-        {lesson.announceHTML && (
-          <Card>
-            <AutoHeightWebView
-              source={{ html: lesson.announceHTML }}
-              customStyle={getStyles(theme.colors.text, theme.colors.primary)}
-            />
-          </Card>
-        )}
+        {lesson.announceHTML ? <Card>
+          <AutoHeightWebView
+            source={{ html: lesson.announceHTML }}
+            customStyle={getStyles(theme.colors.text, theme.colors.primary)}
+          />
+        </Card> : null}
 
         <TimeInfo date={date} pairPosition={pairPosition} />
         <AudienceInfo lesson={lesson} />
-        {lesson.teacher && <TeacherInfo teacher={lesson.teacher} />}
-        {lesson.groups && <GroupsInfo groups={lesson.groups} />}
+        {lesson.teacher ? <TeacherInfo teacher={lesson.teacher} /> : null}
+        {lesson.groups ? <GroupsInfo groups={lesson.groups} /> : null}
 
         <Note disciplineName={lesson.subject.discipline ?? ''} />
         <BorderLine />

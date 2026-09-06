@@ -20,15 +20,15 @@ const MessagesTabs = () => {
 
   return (
     <TabView
-      style={{ flex: 1 }}
       lazy
+      style={{ flex: 1 }}
       swipeEnabled={false}
       navigationState={{ index, routes }}
       renderScene={renderScene}
-      onIndexChange={setIndex}
       initialLayout={{ width: layout.width }}
       renderTabBar={() => undefined}
       animationEnabled={false}
+      onIndexChange={setIndex}
     />
   );
 };

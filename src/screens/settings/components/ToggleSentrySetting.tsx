@@ -36,13 +36,13 @@ const AboutSentryPopover = () => {
         backgroundColor: appTheme.colors.container,
       }}
     >
-      <Text textBreakStrategy={'simple'} selectable style={fontSize.medium}>
+      <Text selectable textBreakStrategy={'simple'} style={fontSize.medium}>
         {t('settings.sentryDescription')}
       </Text>
       <Text
-        onPress={() => Linking.openURL(SENTRY_PULL_REQUEST)}
         style={[fontSize.medium, { textDecorationLine: 'underline' }]}
         colorVariant={'primary'}
+        onPress={() => Linking.openURL(SENTRY_PULL_REQUEST)}
       >
         {t('common.moreInfo')}
       </Text>
@@ -68,7 +68,7 @@ const ToggleSentrySetting = () => {
       label={t('settings.sendErrors')}
       icon={<Fontisto name={'sentry'} size={24} color={theme.colors.text} />}
       hint={<AboutSentryPopover />}
-      right={<ThemedSwitch onValueChange={toggleSentryEnabled} value={sentryEnabled} />}
+      right={<ThemedSwitch value={sentryEnabled} onValueChange={toggleSentryEnabled} />}
     />
   );
 };

@@ -52,29 +52,25 @@ const AbsencesTable = () => {
 
   return (
     <Screen onUpdate={refresh}>
-      {data?.currentSession && (
-        <ClickableText
-          onPress={() => modalRef.current?.present()}
-          textStyle={fontSize.big}
-          iconRight={<AntDesign name='swap' size={18} color={theme.colors.text} />}
-          viewStyle={{ gap: 4, alignSelf: 'flex-end' }}
-        >
-          {data.currentSession.name}
-        </ClickableText>
-      )}
+      {data?.currentSession ? <ClickableText
+        textStyle={fontSize.big}
+        iconRight={<AntDesign name='swap' size={18} color={theme.colors.text} />}
+        viewStyle={{ gap: 4, alignSelf: 'flex-end' }}
+        onPress={() => modalRef.current?.present()}
+      >
+        {data.currentSession.name}
+      </ClickableText> : null}
       {component}
 
-      {data && (
-        <OptionsBottomSheet
-          ref={modalRef}
-          options={data.sessions.map((session) => ({
-            label: session.name,
-            value: session.number.toString(),
-            isCurrent: session.number === data.currentSession?.number,
-          }))}
-          onOptionPress={(value) => loadSession(Number(value))}
-        />
-      )}
+      {data ? <OptionsBottomSheet
+        ref={modalRef}
+        options={data.sessions.map((session) => ({
+          label: session.name,
+          value: session.number.toString(),
+          isCurrent: session.number === data.currentSession?.number,
+        }))}
+        onOptionPress={(value) => loadSession(Number(value))}
+      /> : null}
     </Screen>
   );
 };

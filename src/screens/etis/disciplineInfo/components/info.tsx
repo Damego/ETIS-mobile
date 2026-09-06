@@ -51,7 +51,7 @@ const getAssetByPlatformType = (type: DistancePlatformTypes) => {
   if (platform) return [platform[1], platform[2]];
 };
 
-const IconInfo = ({ icon, text }: { icon: keyof typeof Ionicons.glyphMap; text: string }) => {
+const IconInfo = ({ icon, text }: { readonly icon: keyof typeof Ionicons.glyphMap; readonly text: string }) => {
   const theme = useAppTheme();
 
   return (
@@ -62,7 +62,7 @@ const IconInfo = ({ icon, text }: { icon: keyof typeof Ionicons.glyphMap; text: 
   );
 };
 
-export const TimeInfo = ({ date, pairPosition }: { date: dayjs.Dayjs; pairPosition: number }) => {
+export const TimeInfo = ({ date, pairPosition }: { readonly date: dayjs.Dayjs; readonly pairPosition: number }) => {
   const { t } = useTranslation();
   const isLyceum = useAppSelector((state) => state.student.info?.isLyceum);
   const { length } = isLyceum ? lyceumTimeInfo : studentTimeInfo;
@@ -78,7 +78,7 @@ export const TimeInfo = ({ date, pairPosition }: { date: dayjs.Dayjs; pairPositi
   return <IconInfo icon={'time-outline'} text={text} />;
 };
 
-export const TeacherInfo = ({ teacher }: { teacher?: ITimeTableTeacher }) => {
+export const TeacherInfo = ({ teacher }: { readonly teacher?: ITimeTableTeacher }) => {
   const client = useClient();
   const { data } = useQuery({
     method: client.getTeacherData,
@@ -92,7 +92,7 @@ export const TeacherInfo = ({ teacher }: { teacher?: ITimeTableTeacher }) => {
   return teacherName ? <IconInfo icon={'school-outline'} text={teacherName} /> : null;
 };
 
-export const AudienceInfo = ({ lesson }: { lesson: ILesson }) => {
+export const AudienceInfo = ({ lesson }: { readonly lesson: ILesson }) => {
   const { t } = useTranslation();
   const theme = useAppTheme();
 
@@ -115,6 +115,7 @@ export const AudienceInfo = ({ lesson }: { lesson: ILesson }) => {
           )}
         <ClickableText
           text={platform.name}
+          textStyle={styles.text}
           onPress={() => {
             Linking.openURL(platform.url);
           }}
@@ -123,7 +124,6 @@ export const AudienceInfo = ({ lesson }: { lesson: ILesson }) => {
               ToastAndroid.show(t('common.copied'), ToastAndroid.LONG);
             });
           }}
-          textStyle={styles.text}
         />
       </View>
     );
@@ -134,7 +134,7 @@ export const AudienceInfo = ({ lesson }: { lesson: ILesson }) => {
   return <IconInfo icon={'business-outline'} text={audience} />;
 };
 
-export const GroupsInfo = ({ groups }: { groups: string[] }) => <IconInfo icon={'school-outline'} text={groups.join('\n')} />;
+export const GroupsInfo = ({ groups }: { readonly groups: string[] }) => <IconInfo icon={'school-outline'} text={groups.join('\n')} />;
 
 const styles = StyleSheet.create({
   container: {

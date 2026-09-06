@@ -59,7 +59,7 @@ const AuthScreen = () => {
     <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
       <Screen>
         <View style={{ flex: 1 }}>
-          <Form onSubmit={onFormSubmit} errorMessage={message} setShowRecovery={setShowRecovery} />
+          <Form errorMessage={message} setShowRecovery={setShowRecovery} onSubmit={onFormSubmit} />
         </View>
         <Footer />
       </Screen>

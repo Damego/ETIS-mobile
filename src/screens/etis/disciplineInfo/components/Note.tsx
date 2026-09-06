@@ -23,7 +23,7 @@ const findDiscipline = (disciplineName: string, disciplines: IDisciplineInfo[]) 
   return info;
 };
 
-const Note = ({ disciplineName }: { disciplineName: string }) => {
+const Note = ({ disciplineName }: { readonly disciplineName: string }) => {
   const { t } = useTranslation();
   const navigation = useNavigation<RootStackNavigationProp>();
   const globalStyles = useGlobalStyles();
@@ -91,24 +91,20 @@ const Note = ({ disciplineName }: { disciplineName: string }) => {
           />
         </TouchableOpacity>
       </View>
-      {showNote && (
-        <View style={styles.textInputContainer}>
-          <TextInput
-            style={[globalStyles.border, styles.textInput, globalStyles.textColor2]}
-            value={info.note}
-            onChangeText={handleEditNote}
-            placeholder={t('disciplineInfo.notePlaceholder')}
-            placeholderTextColor={globalStyles.inputPlaceholder.color}
-            multiline
-          />
+      {showNote ? <View style={styles.textInputContainer}>
+        <TextInput
+          multiline
+          style={[globalStyles.border, styles.textInput, globalStyles.textColor2]}
+          value={info.note}
+          placeholder={t('disciplineInfo.notePlaceholder')}
+          placeholderTextColor={globalStyles.inputPlaceholder.color}
+          onChangeText={handleEditNote}
+        />
 
-          {isTextChanged && (
-            <TouchableOpacity style={styles.saveIcon} onPress={handleNoteSave}>
-              <Ionicons name={'save-outline'} size={iconSize.medium} color={globalStyles.textColor2.color} />
-            </TouchableOpacity>
-          )}
-        </View>
-      )}
+        {isTextChanged ? <TouchableOpacity style={styles.saveIcon} onPress={handleNoteSave}>
+          <Ionicons name={'save-outline'} size={iconSize.medium} color={globalStyles.textColor2.color} />
+        </TouchableOpacity> : null}
+      </View> : null}
     </>
   );
 };

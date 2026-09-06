@@ -34,11 +34,11 @@ const DayButton = ({
   currentDate,
   onPress,
 }: {
-  position: number;
-  dayDate: dayjs.Dayjs;
-  selectedDate: dayjs.Dayjs;
-  currentDate: dayjs.Dayjs;
-  onPress: (date: dayjs.Dayjs) => void;
+  readonly position: number;
+  readonly dayDate: dayjs.Dayjs;
+  readonly selectedDate: dayjs.Dayjs;
+  readonly currentDate: dayjs.Dayjs;
+  readonly onPress: (date: dayjs.Dayjs) => void;
 }) => {
   const theme = useAppTheme();
   const globalStyles = useGlobalStyles();
@@ -51,7 +51,7 @@ const DayButton = ({
   );
 
   return (
-    <TouchableOpacity onPress={() => onPress(dayDate)} style={buttonStyle}>
+    <TouchableOpacity style={buttonStyle} onPress={() => onPress(dayDate)}>
       <Text
         style={
           isSelectedDay

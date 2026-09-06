@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
 });
 
 interface PasswordInputProps extends TextInputProps {
-  autoComplete: 'password' | 'password-new';
-  iconColor: string;
+  readonly autoComplete: 'password' | 'password-new';
+  readonly iconColor: string;
 }
 
 const PasswordInput = (props: PasswordInputProps) => {

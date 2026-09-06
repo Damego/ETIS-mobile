@@ -36,38 +36,34 @@ const CertificateTable = () => {
   if (!data) return <NoData />;
 
   return (
-    <Screen onUpdate={refresh} containerStyle={{ gap: 8 }}>
-      {data.announce.header && (
-        <>
-          <ButtonWithPopover
-            title={t('certificate.announce')}
-            info={data.announce.header}
-            textStyle={[styles.announceButtonText, fontSize.large, globalStyles.primaryText]}
-          />
+    <Screen containerStyle={{ gap: 8 }} onUpdate={refresh}>
+      {data.announce.header ? <>
+        <ButtonWithPopover
+          title={t('certificate.announce')}
+          info={data.announce.header}
+          textStyle={[styles.announceButtonText, fontSize.large, globalStyles.primaryText]}
+        />
 
-          <BorderLine />
-        </>
-      )}
+        <BorderLine />
+      </> : null}
 
-      {data.announce.footer && (
-        <>
-          <RequestCertificateButton availableCertificates={data.availableCertificates} />
-          <ButtonWithPopover
-            title={t('certificate.deadlinesAndDelivery')}
-            info={data.announce.footer}
-            textStyle={[fontSize.medium, { fontWeight: 'bold' }]}
-            icon={
-              <AntDesign
-                name='infocirlceo'
-                size={iconSize.medium}
-                color={globalStyles.textColor.color}
-                style={{ marginRight: '2%' }}
-              />
-            }
-          />
-          <BorderLine />
-        </>
-      )}
+      {data.announce.footer ? <>
+        <RequestCertificateButton availableCertificates={data.availableCertificates} />
+        <ButtonWithPopover
+          title={t('certificate.deadlinesAndDelivery')}
+          info={data.announce.footer}
+          textStyle={[fontSize.medium, { fontWeight: 'bold' }]}
+          icon={
+            <AntDesign
+              name='infocirlceo'
+              size={iconSize.medium}
+              color={globalStyles.textColor.color}
+              style={{ marginRight: '2%' }}
+            />
+          }
+        />
+        <BorderLine />
+      </> : null}
 
       {data.certificates?.map((certificate, index) => (
         <CertificateCard key={index} certificate={certificate} />

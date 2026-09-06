@@ -13,8 +13,8 @@ import { capitalizeWord, fontSize } from '~/utils/texts';
 import { getRandomItem } from '~/utils/utils';
 
 interface DayData {
-  data: ITimeTableDay;
-  date: dayjs.Dayjs;
+  readonly data: ITimeTableDay;
+  readonly date: dayjs.Dayjs;
 }
 
 export const Day = React.memo(({ data, date }: DayData) => {
@@ -54,7 +54,7 @@ export const Day = React.memo(({ data, date }: DayData) => {
                 checkAllowedPairRender(pair, didRenderFirstPair, showGapsBetweenPairs, showEmptyPairs)
               ) {
                 didRenderFirstPair = true;
-                return <Pair pair={pair} key={index} />;
+                return <Pair key={index} pair={pair} />;
               }
               return null;
             })}

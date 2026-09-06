@@ -18,7 +18,7 @@ const Messages = ({ jumpTo, route }: SceneProps) => {
 
   const Navigation = () => (
     <View style={{ marginBottom: '2%', gap: 8 }}>
-      <MessagesShortcuts onShortcutPress={jumpTo} currentShortcut={route.key} />
+      <MessagesShortcuts currentShortcut={route.key} onShortcutPress={jumpTo} />
       {data != null && (
         <PageNavigator
           firstPage={1}
@@ -43,13 +43,13 @@ const Messages = ({ jumpTo, route }: SceneProps) => {
 
   return (
     <ListScreen
-      onUpdate={refresh}
       ListHeaderComponent={<Navigation />}
       data={data ? data.messages : []}
       renderItem={({ item }) => <MessageCard data={item} page={data.page} />}
       keyExtractor={(item) => item[0].time}
       ItemSeparatorComponent={BorderLine}
       contentContainerStyle={{ paddingBottom: height * 0.1 }}
+      onUpdate={refresh}
     />
   );
 };

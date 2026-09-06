@@ -25,9 +25,6 @@ const DisciplineTasksButton = () => {
 
   return (
     <TouchableOpacity
-      onPress={() => {
-        navigation.navigate('DisciplineTasks', {});
-      }}
       style={{ justifyContent: 'center' }}
       accessibilityRole='button'
       accessibilityLabel={
@@ -43,6 +40,9 @@ const DisciplineTasksButton = () => {
           right: 12,
         }
       }
+      onPress={() => {
+        navigation.navigate('DisciplineTasks', {});
+      }}
     >
       {tasks.length
         ? (

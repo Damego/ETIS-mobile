@@ -21,7 +21,7 @@ const ToggleShowPastWeekDays = () => {
   return (
     <SettingRow
       label={t('settings.hidePastWeekDays')}
-      right={<ThemedSwitch onValueChange={toggle} value={!showPastWeekDays} />}
+      right={<ThemedSwitch value={!showPastWeekDays} onValueChange={toggle} />}
     />
   );
 };

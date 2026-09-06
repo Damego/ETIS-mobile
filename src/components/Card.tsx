@@ -5,7 +5,7 @@ import {
 
 import { useGlobalStyles } from '../hooks';
 
-const Card = ({ children, style }: { children: React.ReactNode; style?: StyleProp<ViewStyle> }) => {
+const Card = ({ children, style }: { readonly children: React.ReactNode; readonly style?: StyleProp<ViewStyle> }) => {
   const globalStyles = useGlobalStyles();
 
   return <View style={[styles.cardView, globalStyles.card, style]}>{children}</View>;

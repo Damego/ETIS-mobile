@@ -16,8 +16,8 @@ const AboutAppButton = () => {
     <SettingRow
       label={t('settings.aboutApp')}
       icon={<AntDesign name={'infocirlceo'} size={24} color={theme.colors.text} />}
-      onPress={() => navigation.navigate('AboutApp')}
       right={<AntDesign name={'right'} size={20} color={theme.colors.text} />}
+      onPress={() => navigation.navigate('AboutApp')}
     />
   );
 };

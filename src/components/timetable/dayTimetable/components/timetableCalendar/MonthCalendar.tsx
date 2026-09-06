@@ -11,10 +11,10 @@ const MonthCalendarComponent = ({
   periodEndDate,
   onDatePress,
 }: {
-  date: dayjs.Dayjs;
-  periodStartDate: dayjs.Dayjs;
-  periodEndDate: dayjs.Dayjs;
-  onDatePress: DatePressT;
+  readonly date: dayjs.Dayjs;
+  readonly periodStartDate: dayjs.Dayjs;
+  readonly periodEndDate: dayjs.Dayjs;
+  readonly onDatePress: DatePressT;
 }) => {
   const theme = useAppTheme();
   const defaultStyles = useDefaultStyles(theme.dark ? 'dark' : 'light');
@@ -22,7 +22,6 @@ const MonthCalendarComponent = ({
   return (
     <DateTimePicker
       date={date}
-      onChange={({ date }) => onDatePress({ date: dayjs(date) })}
       locale={'ru'}
       minDate={periodStartDate}
       maxDate={periodEndDate}
@@ -39,6 +38,7 @@ const MonthCalendarComponent = ({
           color: theme.colors.background,
         },
       }}
+      onChange={({ date }) => onDatePress({ date: dayjs(date) })}
     />
   );
 };

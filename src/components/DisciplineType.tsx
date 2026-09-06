@@ -10,8 +10,8 @@ const DisciplineType = ({
   type,
   size = 'standard',
 }: {
-  type: LessonTypes;
-  size?: 'small' | 'standard';
+  readonly type: LessonTypes;
+  readonly size?: 'small' | 'standard';
 }) => {
   const composed = useMemo(
     () => StyleSheet.compose(styles.base, disciplineTypeStyles[type]),

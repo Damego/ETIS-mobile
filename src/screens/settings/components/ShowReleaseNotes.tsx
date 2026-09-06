@@ -20,8 +20,8 @@ const ShowReleaseNotes = () => {
     <SettingRow
       label={t('settings.releaseNotes')}
       icon={<AntDesign name={'copy1'} size={24} color={theme.colors.text} />}
-      onPress={onPress}
       right={<AntDesign name={'right'} size={20} color={theme.colors.text} />}
+      onPress={onPress}
     />
   );
 };
