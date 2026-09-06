@@ -5,11 +5,11 @@ import { useTranslation } from 'react-i18next';
 
 import SettingRow from '~/components/SettingRow';
 import { useAppTheme } from '~/hooks/theme';
-import { ServicesNavigationProp } from '~/navigation/types';
+import { RootStackNavigationProp } from '~/navigation/types';
 
 const AboutAppButton = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<ServicesNavigationProp>();
+  const navigation = useNavigation<RootStackNavigationProp>();
   const theme = useAppTheme();
 
   return (

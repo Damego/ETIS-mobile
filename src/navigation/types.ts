@@ -1,9 +1,4 @@
-import type { BottomTabNavigationProp, BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import type { CompositeNavigationProp, CompositeScreenProps } from '@react-navigation/native';
-import type {
-  NativeStackNavigationProp,
-  NativeStackScreenProps,
-} from '@react-navigation/native-stack';
 import type { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 
 import { IAvailableCertificate } from '~/models/certificate';
@@ -113,38 +108,16 @@ export type EducationStackParamList = {
   DigitalResources: undefined;
 };
 
-// Список экранов с нижними табами
-export type BottomTabsParamList = {
-  Education: undefined;
-  Services: undefined;
-  NewsAndEvents: undefined;
-};
-
-// Список экранов для сервисов
-export type ServicesNativeStackParamList = {
-  Services: undefined;
-  // TODO: check Notion
-};
-
 // Типы параметров для экранов-компонентов (navigation, route)
 
 export type RootStackScreenProps<ScreenName extends keyof RootStackParamList = keyof RootStackParamList> =
   StackScreenProps<RootStackParamList, ScreenName>;
-export type BottomTabsScreenProps<ScreenName extends keyof BottomTabsParamList = keyof BottomTabsParamList> =
-  CompositeScreenProps<BottomTabScreenProps<BottomTabsParamList, ScreenName>, RootStackScreenProps>;
 
 export type EducationStackScreenProps<
   ScreenName extends keyof EducationStackParamList = keyof EducationStackParamList,
 > = CompositeScreenProps<
   StackScreenProps<EducationStackParamList, ScreenName>,
   RootStackScreenProps
->;
-
-export type ServiceNativeStackScreenProps<
-  ScreenName extends keyof ServicesNativeStackParamList = keyof ServicesNativeStackParamList,
-> = CompositeScreenProps<
-  NativeStackScreenProps<ServicesNativeStackParamList, ScreenName>,
-  BottomTabsScreenProps
 >;
 
 export type StartStackScreenProps<ScreenName extends keyof StartStackParamList = keyof StartStackParamList> =
@@ -154,21 +127,13 @@ export type UnauthorizedTeacherStackScreenProps<
   ScreenName extends keyof UnauthorizedTeacherStackParamList = keyof UnauthorizedTeacherStackParamList,
 > = CompositeScreenProps<
   StackScreenProps<UnauthorizedTeacherStackParamList, ScreenName>,
-  StartStackScreenProps
+  RootStackScreenProps
 >;
 
 // Типы для хука useNavigation
 
 export type RootStackNavigationProp = StackNavigationProp<RootStackParamList>;
-export type BottomTabsNavigationProp = CompositeNavigationProp<
-  BottomTabNavigationProp<BottomTabsParamList>,
-  RootStackNavigationProp
->;
-export type ServicesNavigationProp = CompositeNavigationProp<
-  NativeStackNavigationProp<ServicesNativeStackParamList>,
-  BottomTabsNavigationProp
->;
 export type EducationNavigationProp = CompositeNavigationProp<
   StackNavigationProp<EducationStackParamList>,
-  BottomTabsNavigationProp
+  RootStackNavigationProp
 >;
