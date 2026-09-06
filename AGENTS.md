@@ -59,6 +59,7 @@ Before handing work off, run and pass all three:
 ## Expo best practices (аудит сент. 2026, план: `.hermes/plans/2026-09-06_expo-best-practices.md`)
 
 - **expo-file-system — только новый API** (`File`/`Directory`/`Paths`, `File.downloadFileAsync`): legacy-импорты удалены, не возвращать их — legacy-слой удалят в будущих SDK.
+- **Иконки — только subpath-импорты**: `import Ionicons from '@expo/vector-icons/Ionicons'`, НЕ `import { Ionicons } from '@expo/vector-icons'` — barrel-файл `IconsLazy.js` статически тянет все 19 иконочных шрифтов (+2.8MB). В бандле только реально используемые наборы: AntDesign, Ionicons, Octicons, Feather, FontAwesome, Fontisto.
 - **Логирование — только через `~/utils/logger`** (`logger.log/warn/error`): `log` вырезается из прод-бандла, `warn`/`error` идут в Sentry. ESLint `no-console` запрещает `console.log`; `console.warn/error` допустимы точечно, но новые — через logger.
 - **Платформенный tree-shaking работает только при прямом импорте** `Platform` из `react-native` в каждом файле — реэкспорт через свой модуль ломает вырезание.
 - **`assetBundlePatterns`** — точечный список используемых ассетов (см. app.config.js); не возвращать `['**/*']`.
