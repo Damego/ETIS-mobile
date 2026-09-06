@@ -12,7 +12,7 @@ export interface CertificateRequest {
   delivery: string;
 }
 
-export interface ICertificateDeliveryMethod {
+interface ICertificateDeliveryMethod {
   // Идентификатор метода заказа справки
   id: string;
   // Название метода доставки справки

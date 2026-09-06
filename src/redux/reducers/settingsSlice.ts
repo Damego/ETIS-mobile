@@ -9,7 +9,7 @@ export enum TimetableModes {
   weeks,
 }
 
-export interface CacheMigrations {
+interface CacheMigrations {
   v1_3_0?: boolean;
   v1_4_0?: boolean;
 }
@@ -37,7 +37,7 @@ export interface AppConfig {
   language: LanguagePreference;
 }
 
-export interface SettingsState {
+interface SettingsState {
   appIsReady: boolean;
   config: AppConfig;
 }

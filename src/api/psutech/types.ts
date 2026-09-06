@@ -1,4 +1,4 @@
-export interface ITeacherPSUData {
+interface ITeacherPSUData {
   page_url: string;
 }
 

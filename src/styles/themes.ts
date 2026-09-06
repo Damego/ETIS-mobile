@@ -1,4 +1,4 @@
-export type StatusBarStyle = 'auto' | 'inverted' | 'light' | 'dark';
+type StatusBarStyle = 'auto' | 'inverted' | 'light' | 'dark';
 
 export enum ThemeType {
   auto = 'auto',

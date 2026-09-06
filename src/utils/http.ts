@@ -19,13 +19,13 @@ import getRandomUserAgent from './userAgents';
 
 const cyrillicToTranslit = CyrillicToTranslit();
 
-export enum ErrorCode {
+enum ErrorCode {
   unknown,
   invalidConnection,
   authError,
 }
 
-export interface HTTPError {
+interface HTTPError {
   code: ErrorCode;
   message: string;
 }

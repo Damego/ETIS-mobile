@@ -1,4 +1,4 @@
-export interface IDefaultTeacher {
+interface IDefaultTeacher {
   name: string;
   id: string;
 }

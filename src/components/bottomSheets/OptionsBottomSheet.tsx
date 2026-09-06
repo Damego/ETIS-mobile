@@ -4,7 +4,7 @@ import React from 'react';
 import BottomSheetModal from '~/components/BottomSheetModal';
 import ClickableText from '~/components/ClickableText';
 
-export interface IOption {
+interface IOption {
   label: string;
   value: string;
   isCurrent: boolean;

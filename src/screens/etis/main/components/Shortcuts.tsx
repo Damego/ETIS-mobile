@@ -11,7 +11,7 @@ import Text from '~/components/Text';
 import { useAppSelector, useGlobalStyles } from '~/hooks';
 import { SHORTCUTS_BOTTOM_OFFSET } from '~/utils/bottomNav';
 
-export type Shortcut = 'timetable' | 'grades' | 'messageTabs' | 'more';
+type Shortcut = 'timetable' | 'grades' | 'messageTabs' | 'more';
 
 const Icon = ({
   iconName,

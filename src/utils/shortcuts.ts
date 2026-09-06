@@ -3,7 +3,7 @@ import { Action, isSupported, setItems } from 'expo-quick-actions';
 import i18next from '~/i18n';
 import logger from '~/utils/logger';
 
-export interface AppShortcutItem extends Action {
+interface AppShortcutItem extends Action {
   id: string;
 }
 

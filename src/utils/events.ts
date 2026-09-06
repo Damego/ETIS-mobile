@@ -1,7 +1,7 @@
 import i18next from '~/i18n';
 import { ThemeType } from '~/styles/themes';
 
-export interface EventData {
+interface EventData {
   suggestedTheme: boolean;
   previousTheme: ThemeType;
 }

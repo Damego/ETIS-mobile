@@ -40,7 +40,7 @@ import FieldCache from './fieldCache';
 import MappedCache from './mappedCache';
 import SecuredFieldCache from './securedFieldCache';
 
-export interface Account {
+interface Account {
   teacher?: TeacherState;
   student?: UnauthorizedStudentState;
 }

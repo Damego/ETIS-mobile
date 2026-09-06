@@ -101,7 +101,7 @@ export interface ILesson {
   shortGroups?: string[];
 }
 
-export interface IEvent {
+interface IEvent {
   // Названия мероприятия
   name: string;
   // Контактная информация

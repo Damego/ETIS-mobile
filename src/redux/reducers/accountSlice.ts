@@ -7,16 +7,16 @@ export interface UserCredentials {
   password: string;
 }
 
-export interface SetUserCredentialsPayload {
+interface SetUserCredentialsPayload {
   userCredentials?: UserCredentials;
   fromStorage: boolean;
 }
 
-export interface SignInPayload {
+interface SignInPayload {
   isOffline?: boolean;
 }
 
-export interface SignOutPayload {
+interface SignOutPayload {
   cleanUserCredentials?: boolean;
 }
 

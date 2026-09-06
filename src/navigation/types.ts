@@ -110,7 +110,7 @@ export type EducationStackParamList = {
 
 // Типы параметров для экранов-компонентов (navigation, route)
 
-export type RootStackScreenProps<ScreenName extends keyof RootStackParamList = keyof RootStackParamList> =
+type RootStackScreenProps<ScreenName extends keyof RootStackParamList = keyof RootStackParamList> =
   StackScreenProps<RootStackParamList, ScreenName>;
 
 export type EducationStackScreenProps<

@@ -1,4 +1,4 @@
-export interface IDiscipline {
+interface IDiscipline {
   name: string;
   mark?: string;
   date?: string;

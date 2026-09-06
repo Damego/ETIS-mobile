@@ -6,7 +6,7 @@ import { IDifferentCheckPoint } from '../tasks/signs/types';
 import { getPointsWord } from '../utils/texts';
 import { getRandomItem } from '../utils/utils';
 
-export enum SignType {
+enum SignType {
   ZERO = 'ZERO',
   NEGATIVE = 'NEGATIVE',
   EXACTLY = 'EXACTLY',
