@@ -56,6 +56,17 @@ Before handing work off, run and pass all three:
 - `tsc --noEmit` must stay at **0 errors**; it is the strongest gate (CI only runs lint).
 
 
+## Expo best practices (аудит сент. 2026, план: `.hermes/plans/2026-09-06_expo-best-practices.md`)
+
+- **`expo-file-system/legacy` — техдолг**: все 5 точек использования (`src/utils/http.ts`, `src/utils/files.ts`, `src/components/FileTextLink.tsx`, `src/screens/releaseNotes/ReleaseNotes.tsx`) мигрировать на новый API (`File`/`Directory`/`Paths`), legacy-слой удалят в будущих SDK. Новый код — только новый API.
+- **`console.log` в прод-бандле не вырезается автоматически**: только код под `if (__DEV__)` / `process.env.NODE_ENV === 'development'` tree-shaking'ится (`guides/tree-shaking.md`). Голые `console.*` остаются в проде. Не добавлять новые; план — центральный logger.
+- **Платформенный tree-shaking работает только при прямом импорте** `Platform` из `react-native` в каждом файле — реэкспорт через свой модуль ломает вырезание.
+- **`assetBundlePatterns: ['**/*']`** тянет в бандл всё — заменить на точечный список при следующем релизе.
+- **React Query**: `QueryClient` создаётся без `defaultOptions` (`src/App.tsx`) — при добавлении новых запросов задавать `staleTime`/`retry` осознанно; основной слой данных — собственный `useQuery` с кэш-фолбэком, не мигрировать его на RQ без обсуждения.
+- **FlashList v2**: `estimatedItemSize` не нужен (v2 API), но `ListScreen` переворачивает данные `toReversed()` на каждый рендер — новые экраны не должны полагаться на этот путь, мемоизировать.
+- **Android-проект закоммичен** (не чистый CNG) — при мажорном обновлении SDK сверять `android/` с `expo prebuild --no-install`.
+- **SDK-обновления**: пошагово, `bun add expo@^X` → `npx expo install --fix` → `bunx expo-doctor` → ченджлог; для SDK-задач подключать skill `expo-upgrade`.
+
 ## Pitfalls
 
 - **No tests** — `bun run lint`, `bunx tsc --noEmit`, and `bunx expo-doctor` are the review gates (see Review checklist); CI only runs lint, so type errors otherwise surface at build time on EAS.
