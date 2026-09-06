@@ -5,19 +5,11 @@ import { LessonTypes } from '~/models/other';
 import { ICheckPoint } from '~/models/sessionPoints';
 import { ILesson } from '~/models/timeTable';
 
-export const getPointsWord = (points: number) => {
-  let pointsWord = 'балл';
-
-  let numEnd: number;
-  if (points % 1 !== 0) numEnd = (points % 1) * 10;
-  else numEnd = points % 10;
-  numEnd = parseInt(numEnd.toFixed(0));
-
-  if ([0, 5, 6, 7, 8, 9].includes(numEnd) || (points > 10 && points < 15)) pointsWord += 'ов';
-  else if ([2, 3, 4].includes(numEnd)) pointsWord += 'а';
-
-  return pointsWord;
-};
+// Слово «балл» в правильной форме для числа points.
+// Плюрализация — стандартный Intl.PluralRules через i18next
+// (ключи points.points_one/_few/_many/_other в каталогах).
+export const getPointsWord = (points: number) =>
+  i18next.t('points.pointsWord', { count: points });
 
 // Сокращённая подпись балла контрольной точки:
 // 'н' — студент отсутствовал, '-' — балла нет, иначе — сам балл

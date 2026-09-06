@@ -113,9 +113,10 @@
     "room": "ауд. {{number}} ({{building}} корпус, {{floor}} этаж)"
   },
   "points": {
-    "points": "{{count}} балл",
-    "points_few": "{{count}} балла",
-    "points_many": "{{count}} баллов"
+    "pointsWord_one": "балл",
+    "pointsWord_few": "балла",
+    "pointsWord_many": "баллов",
+    "pointsWord_other": "балла"
   },
   "shortcuts": {
     "grades": "Оценки",

@@ -113,8 +113,8 @@
     "room": "room {{number}} (building {{building}}, floor {{floor}})"
   },
   "points": {
-    "points": "{{count}} point",
-    "points_other": "{{count}} points"
+    "pointsWord_one": "point",
+    "pointsWord_other": "points"
   },
   "shortcuts": {
     "grades": "Grades",
