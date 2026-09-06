@@ -1,0 +1,132 @@
+{
+  "common": {
+    "retry": "Retry",
+    "refresh": "Refresh",
+    "today": "Today",
+    "noData": "No data to display",
+    "loading": "Loading...",
+    "cancel": "Cancel",
+    "save": "Save",
+    "close": "Close",
+    "error": "Error",
+    "back": "Back"
+  },
+  "navigation": {
+    "account": "Account",
+    "questionnaire": "Questionnaire",
+    "audience": "Room",
+    "auth": "Sign in",
+    "tasks": "Assignments",
+    "orderCertificate": "Request certificate",
+    "appInterface": "Interface",
+    "appSettings": "Settings",
+    "aboutApp": "About app",
+    "education": "Education",
+    "teacherSearch": "Find a teacher",
+    "teachers": "Teachers",
+    "orders": "Orders",
+    "absences": "Missed classes",
+    "timetable": "Timetable",
+    "bellSchedule": "Bell schedule",
+    "rating": "Rating",
+    "resources": "Resources",
+    "services": "Services",
+    "events": "Events",
+    "changePassword": "Change password",
+    "changeEmail": "Change email",
+    "certificateIncome": "Income certificate",
+    "certificates": "Certificates",
+    "group": "Group",
+    "accountType": "Account type",
+    "faculty": "Faculty",
+    "info": "Info",
+    "teachPlan": "Curriculum",
+    "dec": "Course materials"
+  },
+  "errors": {
+    "noInternet": "No internet connection!",
+    "noEtisConnection": "Cannot connect to ETIS. Try again later",
+    "authError": "Authorization failed. Please try again."
+  },
+  "offline": {
+    "banner": "Offline mode — cached data",
+    "noInternet": "No internet connection",
+    "mode": "Offline mode"
+  },
+  "auth": {
+    "authorizing": "Signing in...",
+    "gettingToken": "Getting token...",
+    "attemptLimitExceeded": "Attempt limit (5) exceeded. Try again in 10 minutes!"
+  },
+  "review": {
+    "question": "Do you like the app?",
+    "maybeLater": "Maybe another time",
+    "leaveReview": "Leave a review",
+    "noThanks": "No, thanks"
+  },
+  "files": {
+    "downloadStarted": "Download started",
+    "downloadFailed": "Cannot download the file to the selected folder"
+  },
+  "timetable": {
+    "pair": "class",
+    "lesson": "lesson",
+    "noTimetable": "No timetable",
+    "noLessonsToday": "No classes this day",
+    "weekN": "week {{number}}",
+    "disciplineTasksUnread": "Assignments by discipline, unread: {{count}}",
+    "weekEnd": "The week is over. \nHave a great weekend! :)",
+    "showPastDays": "Show past days",
+    "backToCurrentWeek": "Back to current week",
+    "disciplineTasks": "Assignments by discipline",
+    "switchMode": "Switch timetable view",
+    "noPairs": "No classes",
+    "rest": "Rest"
+  },
+  "lessonTypes": {
+    "LECTURE": "Lecture",
+    "PRACTICE": "Practice",
+    "LABORATORY": "Lab",
+    "TEST": "Pass",
+    "EXAM": "Exam"
+  },
+  "audience": {
+    "distance": "Remote",
+    "room": "room {{number}} (building {{building}}, floor {{floor}})"
+  },
+  "points": {
+    "points": "{{count}} point",
+    "points_other": "{{count}} points"
+  },
+  "shortcuts": {
+    "grades": "Grades",
+    "messages": "Messages",
+    "announces": "Announcements"
+  },
+  "notifications": {
+    "taskChannel": "Reminders",
+    "taskReminder": "Assignment reminder",
+    "signsChannel": "Grades",
+    "downloadChannel": "Downloads",
+    "downloading": "Downloading file",
+    "downloaded": "File downloaded",
+    "downloadError": "Download failed",
+    "downloadFailedFile": "Failed to download {{fileName}}",
+    "signs": {
+      "newGrade": "New grade posted!",
+      "zero1": "Not even close!",
+      "zero2": "Try again!",
+      "zero3": "Next time try drawing a kitten!",
+      "negative1": "There's always a retake 🙃",
+      "negative2": "Unlucky",
+      "exactly1": "On the edge",
+      "exactly2": "Perfect",
+      "exactly3": "Right on target",
+      "positive1": "Good job!",
+      "full1": "Legend👍"
+    }
+  },
+  "checkPoint": {
+    "absent": "a"
+  }
+}

@@ -108,6 +108,12 @@ export default {
       ],
       'expo-image',
       'expo-sharing',
+      [
+        'expo-localization',
+        {
+          supportedLocales: ['ru', 'en'],
+        },
+      ],
       'expo-splash-screen',
       'expo-status-bar',
     ],

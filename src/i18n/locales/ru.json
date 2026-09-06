@@ -1,0 +1,133 @@
+{
+  "common": {
+    "retry": "Повторить",
+    "refresh": "Обновить",
+    "today": "Сегодня",
+    "noData": "Нет данных для отображения",
+    "loading": "Загрузка...",
+    "cancel": "Отмена",
+    "save": "Сохранить",
+    "close": "Закрыть",
+    "error": "Ошибка",
+    "back": "Назад"
+  },
+  "navigation": {
+    "account": "Аккаунт",
+    "questionnaire": "Анкетирование",
+    "audience": "Аудитория",
+    "auth": "Вход",
+    "tasks": "Задания",
+    "orderCertificate": "Заказ справки",
+    "appInterface": "Интерфейс",
+    "appSettings": "Настройки",
+    "aboutApp": "О приложении",
+    "education": "Обучение",
+    "teacherSearch": "Поиск преподавателя",
+    "teachers": "Преподаватели",
+    "orders": "Приказы",
+    "absences": "Пропущенные занятия",
+    "timetable": "Расписание",
+    "bellSchedule": "Расписание звонков",
+    "rating": "Рейтинг",
+    "resources": "Ресурсы",
+    "services": "Сервисы",
+    "events": "События",
+    "changePassword": "Смена пароля",
+    "changeEmail": "Смена почты",
+    "certificateIncome": "Справка о доходах",
+    "certificates": "Справки",
+    "group": "Группа",
+    "accountType": "Тип аккаунта",
+    "faculty": "Факультет",
+    "info": "Информация",
+    "teachPlan": "Учебный план",
+    "dec": "УМК"
+  },
+  "errors": {
+    "noInternet": "Нет подключения к интернету!",
+    "noEtisConnection": "Нет соединения с ЕТИС. Попробуйте зайти позже",
+    "authError": "Ошибка авторизации. Попробуйте ещё раз."
+  },
+  "offline": {
+    "banner": "Оффлайн-режим — данные из кеша",
+    "noInternet": "Нет интернет-соединения",
+    "mode": "Оффлайн режим"
+  },
+  "auth": {
+    "authorizing": "Авторизация...",
+    "gettingToken": "Получение токена...",
+    "attemptLimitExceeded": "Был превышен лимит (5) неудачных попыток. Повторите через 10 минут!"
+  },
+  "review": {
+    "question": "Вам нравится приложение?",
+    "maybeLater": "Может быть, в другой раз",
+    "leaveReview": "Оставить отзыв",
+    "noThanks": "Нет, спасибо"
+  },
+  "files": {
+    "downloadStarted": "Началось скачивание",
+    "downloadFailed": "Невозможно скачать файл в указанную папку"
+  },
+  "timetable": {
+    "pair": "пара",
+    "lesson": "урок",
+    "noTimetable": "Расписания нет",
+    "noLessonsToday": "В этот день занятий нет",
+    "weekN": "{{number}} неделя",
+    "disciplineTasksUnread": "Задания по дисциплинам, непрочитанных: {{count}}",
+    "weekEnd": "Неделя подошла к концу. \nПриятных выходных! :)",
+    "showPastDays": "Показать прошедшие дни",
+    "backToCurrentWeek": "Вернуться к текущей неделе",
+    "disciplineTasks": "Задания по дисциплинам",
+    "switchMode": "Переключить вид расписания",
+    "noPairs": "Пар нет",
+    "rest": "Отдых"
+  },
+  "lessonTypes": {
+    "LECTURE": "Лекция",
+    "PRACTICE": "Практика",
+    "LABORATORY": "Лабораторная",
+    "TEST": "Зачёт",
+    "EXAM": "Экзамен"
+  },
+  "audience": {
+    "distance": "Дистанционно",
+    "room": "ауд. {{number}} ({{building}} корпус, {{floor}} этаж)"
+  },
+  "points": {
+    "points": "{{count}} балл",
+    "points_few": "{{count}} балла",
+    "points_many": "{{count}} баллов"
+  },
+  "shortcuts": {
+    "grades": "Оценки",
+    "messages": "Сообщения",
+    "announces": "Объявления"
+  },
+  "notifications": {
+    "taskChannel": "Канал напоминаний",
+    "taskReminder": "Напоминание о задании",
+    "signsChannel": "Канал оценок",
+    "downloadChannel": "Канал загрузок",
+    "downloading": "Скачивается файл",
+    "downloaded": "Файл скачан",
+    "downloadError": "Ошибка скачивания",
+    "downloadFailedFile": "Не удалось скачать файл {{fileName}}",
+    "signs": {
+      "newGrade": "Выставлена новая оценка!",
+      "zero1": "Даже не близко!",
+      "zero2": "Попробуй еще раз!",
+      "zero3": "Попробуй в следующий раз нарисовать котенка!",
+      "negative1": "Всегда есть пересдача 🙃",
+      "negative2": "Анлак",
+      "exactly1": "По грани",
+      "exactly2": "Идеально",
+      "exactly3": "В точку",
+      "positive1": "Хорошая работа!",
+      "full1": "Легенда👍"
+    }
+  },
+  "checkPoint": {
+    "absent": "н"
+  }
+}
