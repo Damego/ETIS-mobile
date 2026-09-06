@@ -1,5 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -12,6 +13,7 @@ import OptionButton from '~/screens/start/components/OptionButton';
 import { fontSize } from '~/utils/texts';
 
 const WarningMessage = () => {
+  const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
 
   return (
@@ -24,14 +26,14 @@ const WarningMessage = () => {
     >
       <AntDesign name='warning' size={24} color={globalStyles.primaryText.color} />
       <Text style={[globalStyles.primaryText, { fontWeight: 'bold', flex: 1 }, fontSize.medium]}>
-        Расписание может отличаться от действительного!{'\n'}Особенно, если у вас в текущем учебном
-        периоде имеются дисциплины по выбору!
+        {t('start.timetableMayDiffer')}
       </Text>
     </View>
   );
 };
 
 const SelectStudentAccountTypeScreen = ({ navigation }: StartStackScreenProps) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { isDown: psutechDown } = usePsutechHealth();
   const [withAuth, setWithAuth] = useState<boolean>(true);
@@ -57,9 +59,9 @@ const SelectStudentAccountTypeScreen = ({ navigation }: StartStackScreenProps) =
           <OptionButton
             isPressed={withAuth}
             onPress={handleSelect(true)}
-            bottomComponent={<Text>Расписание, оценки, сообщения{'\n'}и многое другое!</Text>}
+            bottomComponent={<Text>{t('start.fullAccessFeatures')}</Text>}
           >
-            С авторизацией в ЕТИС
+            {t('start.withEtisAuth')}
           </OptionButton>
           <OptionButton
             isPressed={!withAuth}
@@ -67,18 +69,18 @@ const SelectStudentAccountTypeScreen = ({ navigation }: StartStackScreenProps) =
             disabled={noAuthDisabled}
             bottomComponent={
               <Text colorVariant={noAuthDisabled ? 'text2' : undefined}>
-                {noAuthDisabled ? 'Сервис расписаний недоступен' : 'Доступно только расписание'}
+                {noAuthDisabled ? t('start.scheduleServiceUnavailable') : t('start.scheduleOnly')}
               </Text>
             }
           >
-            Без авторизации в ЕТИС
+            {t('start.withoutEtisAuth')}
           </OptionButton>
         </View>
 
         {!withAuth && <WarningMessage />}
 
         <View style={styles.buttonWrapper}>
-          <Button text={'Выбрать'} onPress={handleChoose} variant={'primary'} />
+          <Button text={t('start.choose')} onPress={handleChoose} variant={'primary'} />
         </View>
       </View>
     </SafeAreaView>

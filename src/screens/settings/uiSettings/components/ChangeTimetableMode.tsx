@@ -1,5 +1,6 @@
 import { BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import React, { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { cache } from '~/cache/smartCache';
 import BottomSheetModal from '~/components/BottomSheetModal';
@@ -10,16 +11,17 @@ import { useAppDispatch, useAppSelector } from '~/hooks';
 import { setUIConfig, TimetableModes } from '~/redux/reducers/settingsSlice';
 import { fontSize } from '~/utils/texts';
 
-const formatTimetableMode = (mode: TimetableModes) =>
-  ({
-    [TimetableModes.weeks]: 'По неделям',
-    [TimetableModes.days]: 'По дням',
-  })[mode];
-
 const ChangeTimetableModeButton = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { timetableMode } = useAppSelector((state) => state.settings.config.ui);
   const modalRef = useRef<BottomSheetModal | null>(null);
+
+  const formatTimetableMode = (mode: TimetableModes) =>
+    ({
+      [TimetableModes.weeks]: t('settings.timetableModeWeeks'),
+      [TimetableModes.days]: t('settings.timetableModeDays'),
+    })[mode];
 
   const handlePress = () => modalRef.current?.present();
 
@@ -31,7 +33,7 @@ const ChangeTimetableModeButton = () => {
   return (
     <>
       <SettingRow
-        label='Отображение расписания'
+        label={t('settings.timetableMode')}
         onPress={handlePress}
         right={<Text style={[{ fontWeight: '500' }, fontSize.medium]}>{formatTimetableMode(timetableMode)}</Text>}
       />

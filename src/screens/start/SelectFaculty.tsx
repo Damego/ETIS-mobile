@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Image } from 'expo-image';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -41,6 +42,7 @@ const FacultyButton = React.memo(
 );
 
 const SelectFacultyScreen = ({ navigation }: StartStackScreenProps) => {
+  const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
   const insets = useSafeAreaInsets();
   const [selectedFaculty, setSelectedFaculty] = useState<IFaculty | null>(null);
@@ -61,11 +63,7 @@ const SelectFacultyScreen = ({ navigation }: StartStackScreenProps) => {
     return (
       <NoData
         onRefresh={refetch}
-        text={
-          isServiceDown
-            ? 'Сервис временно недоступен. Попробуйте позже.'
-            : 'Не удалось загрузить данные'
-        }
+        text={isServiceDown ? t('common.serviceUnavailable') : t('start.failedToLoad')}
       />
     );
   }
@@ -95,7 +93,7 @@ const SelectFacultyScreen = ({ navigation }: StartStackScreenProps) => {
           ]}
         >
           <Text colorVariant={'primaryContrast'} style={fontSize.big}>
-            Продолжить
+            {t('common.continue')}
           </Text>
           <Text colorVariant={'primaryContrast'}>({selectedFaculty.name})</Text>
         </TouchableOpacity>

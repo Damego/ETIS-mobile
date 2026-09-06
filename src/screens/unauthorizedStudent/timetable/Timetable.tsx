@@ -1,5 +1,6 @@
 import { useQuery as useTanstackQuery } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
 import { getPeriodWeek, isPsutechAvailable } from '~/api/psutech/api';
@@ -27,6 +28,7 @@ import {
 import { fontSize } from '~/utils/texts';
 
 const Timetable = ({ navigation }: UnauthorizedTeacherStackScreenProps) => {
+  const { t } = useTranslation();
   const { group } = useAppSelector((state) => state.account.student) ?? {};
   const { skipSunday } = useAppSelector((state) => state.settings.config.ui);
   const client = useClient();
@@ -98,7 +100,7 @@ const Timetable = ({ navigation }: UnauthorizedTeacherStackScreenProps) => {
     return (
       <Screen onUpdate={refresh}>
         <Text style={[fontSize.medium, { alignSelf: 'center', marginTop: 20 }]} colorVariant={'text2'}>
-          Сервис временно недоступен.{'\n'}Попробуйте позже.
+          {t('common.serviceUnavailable')}
         </Text>
       </Screen>
     );

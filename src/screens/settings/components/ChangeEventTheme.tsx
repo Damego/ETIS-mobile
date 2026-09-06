@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import SettingRow from '~/components/SettingRow';
 import Text from '~/components/Text';
@@ -13,6 +14,7 @@ import { fontSize } from '~/utils/texts';
  * Показывается только когда событийная тема активна.
  */
 const ChangeEventTheme = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { theme, events } = useAppSelector((state) => state.settings.config);
 
@@ -36,11 +38,13 @@ const ChangeEventTheme = () => {
 
   return (
     <SettingRow
-      label='Отключить праздничную тему'
+      label={t('settings.disableEventTheme')}
       onPress={disableEventTheme}
       right={
         <Text style={[{ fontWeight: '500' }, fontSize.medium]}>
-          {theme === ThemeType.halloween ? 'Хэллоуин' : 'Новый год'}
+          {theme === ThemeType.halloween
+            ? t('settings.themeHalloween')
+            : t('settings.themeNewYear')}
         </Text>
       }
     />

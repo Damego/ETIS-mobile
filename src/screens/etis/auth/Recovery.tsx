@@ -1,5 +1,6 @@
 // TODO: Refactor this component
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
 import CustomReCaptcha from '~/components/ReCaptcha';
@@ -10,6 +11,7 @@ import Footer from './AuthFooter';
 import RecoveryForm from './RecoveryForm';
 
 const Recovery = ({ setShowModal }: { setShowModal: (showModal: boolean) => void }) => {
+  const { t } = useTranslation();
   const [isLoading, setLoading] = useState<boolean>(false);
   const [message, changeMessage] = useState<string | null>(null);
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
@@ -20,12 +22,12 @@ const Recovery = ({ setShowModal }: { setShowModal: (showModal: boolean) => void
     if (isLoading || disabledRequestButton) return;
 
     if (!mail) {
-      changeMessage('Вы не ввели почту');
+      changeMessage(t('auth.enterEmail'));
       return;
     }
 
     if (!recaptchaToken) {
-      changeMessage('Токен авторизации не найден. Подождите немного');
+      changeMessage(t('auth.recaptchaTokenNotFound'));
       return;
     }
 
@@ -44,7 +46,7 @@ const Recovery = ({ setShowModal }: { setShowModal: (showModal: boolean) => void
     }
 
     setDisabledRequestButton(true);
-    changeMessage('Письмо со ссылкой для восстановления отправлено. Проверьте почту — оно может попасть в папку «Спам».');
+    changeMessage(t('auth.recoveryMailSent'));
   };
 
   const onReceiveRecaptchaToken = async (token: string) => {

@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -17,14 +18,6 @@ import { setStudent } from '~/redux/reducers/accountSlice';
 import SearchInput from '~/screens/start/components/SearchInput';
 import { fontSize } from '~/utils/texts';
 
-const formatDegree = (degree: string) =>
-  ({
-    НБ: 'Бакалавриат',
-    НМ: 'Магистратура',
-    СП: 'Специалитет',
-    АС: 'Аспирантура',
-  })[degree];
-
 const GroupItem = React.memo(
   ({
     group,
@@ -34,20 +27,33 @@ const GroupItem = React.memo(
     group: IGroup;
     isSelected: boolean;
     onPress: (group: IGroup) => void;
-  }) => (
-    <ClickableText
-      onPress={() => onPress(group)}
-      textStyle={[{ fontWeight: 'bold' }, fontSize.big]}
-      viewStyle={{ paddingVertical: '2%' }}
-      bottomComponent={formatDegree(group.degree) && <Text>{formatDegree(group.degree)}</Text>}
-      colorVariant={isSelected ? 'primary' : 'text'}
-    >
-      {group.name.short}-{group.year}
-    </ClickableText>
-  )
+  }) => {
+    const { t } = useTranslation();
+
+    const formatDegree = (degree: string) =>
+      ({
+        НБ: t('start.degree.bachelor'),
+        НМ: t('start.degree.master'),
+        СП: t('start.degree.specialty'),
+        АС: t('start.degree.postgraduate'),
+      })[degree];
+
+    return (
+      <ClickableText
+        onPress={() => onPress(group)}
+        textStyle={[{ fontWeight: 'bold' }, fontSize.big]}
+        viewStyle={{ paddingVertical: '2%' }}
+        bottomComponent={formatDegree(group.degree) && <Text>{formatDegree(group.degree)}</Text>}
+        colorVariant={isSelected ? 'primary' : 'text'}
+      >
+        {group.name.short}-{group.year}
+      </ClickableText>
+    );
+  }
 );
 
 const SelectGroupScreen = ({ route }: StartStackScreenProps<'SelectGroup'>) => {
+  const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
   const dispatch = useAppDispatch();
   const insets = useSafeAreaInsets();
@@ -89,7 +95,7 @@ const SelectGroupScreen = ({ route }: StartStackScreenProps<'SelectGroup'>) => {
           flex: 1, marginHorizontal: '4%', justifyContent: 'center', alignItems: 'center'
         }}>
           <Text style={fontSize.medium} colorVariant={'text2'}>
-            Сервис временно недоступен.{'\n'}Попробуйте позже.
+            {t('common.serviceUnavailable')}
           </Text>
         </View>
       )}
@@ -118,7 +124,7 @@ const SelectGroupScreen = ({ route }: StartStackScreenProps<'SelectGroup'>) => {
           ]}
         >
           <Text colorVariant={'primaryContrast'} style={fontSize.big}>
-            Продолжить
+            {t('common.continue')}
           </Text>
           <Text colorVariant={'primaryContrast'}>({selectedGroup.name.full})</Text>
         </TouchableOpacity>

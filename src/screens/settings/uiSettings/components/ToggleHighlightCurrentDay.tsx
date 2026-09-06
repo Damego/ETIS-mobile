@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { cache } from '~/cache/smartCache';
 import SettingRow from '~/components/SettingRow';
@@ -7,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '~/hooks';
 import { setUIConfig } from '~/redux/reducers/settingsSlice';
 
 const ToggleHighlightCurrentDay = () => {
+  const { t } = useTranslation();
   const { highlightCurrentDay } = useAppSelector((state) => state.settings.config.ui);
   const dispatch = useAppDispatch();
 
@@ -18,7 +20,7 @@ const ToggleHighlightCurrentDay = () => {
 
   return (
     <SettingRow
-      label='Выделять текущий день недели'
+      label={t('settings.highlightCurrentDay')}
       right={<ThemedSwitch onValueChange={toggle} value={highlightCurrentDay} />}
     />
   );

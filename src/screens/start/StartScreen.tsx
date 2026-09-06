@@ -1,5 +1,6 @@
 import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { Button } from '~/components/Button';
@@ -13,6 +14,7 @@ import { fontSize } from '~/utils/texts';
 type UserType = 'teacher' | 'student';
 
 const StartScreen = ({ navigation }: StartStackScreenProps) => {
+  const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
   const { isDown: psutechDown } = usePsutechHealth();
   const [selectedType, setSelectedType] = useState<UserType | null>(null);
@@ -69,16 +71,16 @@ const StartScreen = ({ navigation }: StartStackScreenProps) => {
 
   return (
     <SafeAreaScreen>
-      <Text style={styles.titleText}>Кто будет пользоваться приложением?</Text>
+      <Text style={styles.titleText}>{t('start.whoWillUse')}</Text>
       <View style={styles.container}>
-        {renderButton('Я студент/ученик', 'student')}
-        {renderButton('Я преподаватель', 'teacher')}
+        {renderButton(t('start.imStudent'), 'student')}
+        {renderButton(t('start.imTeacher'), 'teacher')}
       </View>
 
       <View style={{ marginTop: 'auto' }}>
         {selectedType !== null && (
           <View style={styles.buttonWrapper}>
-            <Button text={'Выбрать'} onPress={handleChoose} variant={'primary'} />
+            <Button text={t('start.choose')} onPress={handleChoose} variant={'primary'} />
           </View>
         )}
 

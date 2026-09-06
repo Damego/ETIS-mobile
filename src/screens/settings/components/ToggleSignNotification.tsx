@@ -1,5 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Linking, ToastAndroid, TouchableOpacity } from 'react-native';
 
 import { cache } from '~/cache/smartCache';
@@ -11,6 +12,7 @@ import { registerSignsFetchTask, unregisterBackgroundFetchAsync } from '~/tasks/
 import { NOTIFICATION_GUIDE_URL } from '~/utils';
 
 const ToggleSignNotification = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const signNotification = useAppSelector((state) => state.settings.config.signNotificationEnabled);
   const globalStyles = useGlobalStyles();
@@ -18,7 +20,7 @@ const ToggleSignNotification = () => {
 
   const changeSignNotification = (hasSignNotification: boolean) => {
     if (isDemo || isOfflineMode) {
-      ToastAndroid.show('Невозможно изменить в демо или оффлайн режимах', ToastAndroid.LONG);
+      ToastAndroid.show(t('settings.unavailableInDemoOrOffline'), ToastAndroid.LONG);
       return;
     }
 
@@ -33,7 +35,7 @@ const ToggleSignNotification = () => {
 
   return (
     <SettingRow
-      label='Уведомлять об оценках'
+      label={t('settings.signNotifications')}
       icon={<AntDesign name={'notification'} size={24} color={globalStyles.textColor.color} />}
       hint={
         <TouchableOpacity onPress={() => Linking.openURL(NOTIFICATION_GUIDE_URL)}>

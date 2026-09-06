@@ -9,7 +9,13 @@
     "save": "Save",
     "close": "Close",
     "error": "Error",
-    "back": "Back"
+    "back": "Back",
+    "serviceUnavailable": "The service is temporarily unavailable.\nPlease try again later.",
+    "continue": "Continue",
+    "search": "Search",
+    "moreInfo": "Learn more",
+    "copied": "Copied to clipboard",
+    "delete": "Delete"
   },
   "navigation": {
     "account": "Account",
@@ -56,7 +62,19 @@
   "auth": {
     "authorizing": "Signing in...",
     "gettingToken": "Getting token...",
-    "attemptLimitExceeded": "Attempt limit (5) exceeded. Try again in 10 minutes!"
+    "attemptLimitExceeded": "Attempt limit (5) exceeded. Try again in 10 minutes!",
+    "noLoginOrPassword": "You did not enter a login or password",
+    "noInternet": "No internet connection!",
+    "loginPlaceholder": "Email / surname",
+    "passwordPlaceholder": "Password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "signIn": "Sign in",
+    "enterEmail": "You did not enter your email",
+    "recaptchaTokenNotFound": "Authorization token not found. Please wait a moment",
+    "recoveryMailSent": "An email with a recovery link has been sent. Check your inbox — it may have landed in the Spam folder.",
+    "emailPlaceholder": "Email",
+    "sendRecoveryMail": "Send email"
   },
   "review": {
     "question": "Do you like the app?",
@@ -127,11 +145,50 @@
     }
   },
   "checkPoint": {
-    "absent": "a"
+    "absent": "a",
+    "title": "CP {{number}}: {{theme}}",
+    "score": "Score:",
+    "passScore": "Passing score:",
+    "currentScore": "Current score:",
+    "maxScore": "Maximum score:",
+    "teacher": "Teacher:",
+    "date": "Date:",
+    "workType": "Work type:",
+    "controlType": "Assessment type:"
   },
   "settings": {
     "appSection": "Application",
-    "language": "Language"
+    "language": "Language",
+    "theme": "Theme",
+    "themeAuto": "Automatic",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeBlack": "Black",
+    "themeHalloween": "Halloween",
+    "themeNewYear": "New Year",
+    "disableEventTheme": "Disable festive theme",
+    "signNotifications": "Notify about grades",
+    "unavailableInDemoOrOffline": "Cannot be changed in demo or offline modes",
+    "sendErrors": "Send errors",
+    "sentryDescription": "This setting allows errors that occur while the app is running to be sent to the Sentry service.",
+    "restartApp": "Please restart the app",
+    "interfaceSettings": "Interface settings",
+    "aboutApp": "About the app",
+    "releaseNotes": "Release notes",
+    "resetIntro": "Reset tutorial",
+    "telegramChannel": "Our Telegram channel",
+    "timetableMode": "Timetable display",
+    "timetableModeWeeks": "By weeks",
+    "timetableModeDays": "By days",
+    "skipSunday": "Skip Sunday",
+    "hidePastWeekDays": "Hide past days of the week",
+    "showGapsBetweenPairs": "Show gaps between classes",
+    "showEmptyPairs": "Show empty classes",
+    "highlightCurrentDay": "Highlight the current day",
+    "teacherRole": "Teacher",
+    "studentRole": "Student",
+    "accountActions": "Account actions",
+    "logOut": "Sign out"
   },
   "debug": {
     "title": "A parser error occurred",
@@ -143,5 +200,209 @@
     "message": "Before using the app, please read and accept the privacy policy",
     "open": "Open",
     "accept": "Accept"
+  },
+  "start": {
+    "whoWillUse": "Who will be using the app?",
+    "imStudent": "I'm a student/pupil",
+    "imTeacher": "I'm a teacher",
+    "choose": "Choose",
+    "timetableMayDiffer": "The timetable may differ from the actual one!\nEspecially if you have elective courses in the current academic period!",
+    "fullAccessFeatures": "Timetable, grades, messages\nand much more!",
+    "withEtisAuth": "With ETIS sign-in",
+    "withoutEtisAuth": "Without ETIS sign-in",
+    "scheduleServiceUnavailable": "The timetable service is unavailable",
+    "scheduleOnly": "Timetable only",
+    "unknownTeacher": "Unknown teacher",
+    "failedToLoad": "Failed to load data",
+    "degree": {
+      "bachelor": "Bachelor's degree",
+      "master": "Master's degree",
+      "specialty": "Specialist degree",
+      "postgraduate": "Postgraduate studies"
+    }
+  },
+  "about": {
+    "description": "ETIS mobile is an unofficial mobile app for PSU's ETIS. It lets you use ETIS conveniently from your smartphone.",
+    "disclaimer": "The ETIS mobile app and its developers are in no way affiliated with PSU's ETIS or its developers. Access to the app's core functionality is only available if you are a PSU student with a login and password for the system.",
+    "privacy": "The app does not collect or share any ETIS-related information. It stores your login and password on your device for subsequent sign-in to ETIS.",
+    "privacyPolicy": "Privacy policy",
+    "appVersion": "App version: {{version}}"
+  },
+  "disciplineInfo": {
+    "noteSaved": "Saved!",
+    "note": "Note",
+    "notes": "Notes",
+    "noteUnsavedChanges": "You have unsaved changes in this note. Would you like to save them?",
+    "exit": "Exit",
+    "saveAndExit": "Save and exit",
+    "notePlaceholder": "Write the teacher's email or phone number here",
+    "pairOrdinal": "class {{position}}",
+    "lessonOrdinal": "lesson {{position}}",
+    "thisPair": "This class",
+    "taskDeletion": "Delete assignment",
+    "taskDeletionConfirm": "Are you sure you want to delete this assignment?",
+    "description": "Description",
+    "descriptionPlaceholder": "Solve 100 problems",
+    "linkToPair": "Link this assignment to this class",
+    "noReminders": "No reminders",
+    "reminderDateInPast": "Cannot set a date earlier than the current one",
+    "setTime": "Set the time",
+    "tasksHistory": "Assignment history"
+  },
+  "dec": {
+    "annotation": "Annotation",
+    "otherCourseResources": "Other course resources",
+    "requiredLiterature": "Required reading",
+    "additionalLiterature": "Additional reading",
+    "control": "Assessment",
+    "criteria": "Criteria",
+    "plannedOutcome": "Planned learning outcome",
+    "evaluationIndicators": "Evaluation indicators",
+    "interimControl": "Interim assessment",
+    "conductMethod": "Method",
+    "interimControlDuration": "Interim assessment duration",
+    "additionalMaterials": "Additional materials",
+    "files": "Files",
+    "themes": "Topics",
+    "examQuestions": "Interim examination questions"
+  },
+  "teachers": {
+    "lessonsTimetable": "Class schedule",
+    "cathedraTimetable": "Department schedule",
+    "psuPage": "Page on the PSU website",
+    "contactInfo": "Contact information",
+    "phone": "Phone",
+    "email": "Email",
+    "source": "Source",
+    "subjects": "Subjects taught",
+    "emptyList": "No teachers to show"
+  },
+  "bellSchedule": {
+    "pairOrdinal": "Class {{position}}",
+    "lessonOrdinal": "Lesson {{position}}",
+    "break": "{{count}}-minute break",
+    "university": "University",
+    "lyceum": "Lyceum",
+    "skiBase": "Ski base"
+  },
+  "audienceTimetable": {
+    "serviceUnavailable": "Service is temporarily unavailable.\nTry again later.",
+    "select": "Select",
+    "audienceTitle": "Room: {{audience}}"
+  },
+  "messages": {
+    "refreshFailed": "Failed to refresh messages. Check your internet connection",
+    "demoSendDisabled": "Sending messages is unavailable in demo mode",
+    "attachedFiles": "Attached files: ",
+    "teacher": "Teacher",
+    "you": "You",
+    "fileSelectFailed": "Cannot select the file!",
+    "fileTooLarge": "The file must be no larger than 2 MB!",
+    "messagePlaceholder": "Message"
+  },
+  "more": {
+    "audienceTimetable": "Room timetable",
+    "digitalResources": "Digital resources",
+    "etisMenu": "ETIS menu"
+  },
+  "absences": {
+    "none": "No missed classes!",
+    "total": "Total missed classes: {{count}}"
+  },
+  "orders": {
+    "preparing": "The order is being prepared",
+    "preparingInline": "Order is being prepared...",
+    "loadFailed": "Failed to load the order!",
+    "header": "No. {{id}} of {{date}}"
+  },
+  "certificate": {
+    "demoModeUnavailable": "Requests are not available in demo mode!",
+    "requestError": "Error: {{error}}",
+    "confirmTitle": "Confirmation",
+    "confirmMessage": "Check the entered data and press Confirm",
+    "back": "Go back",
+    "confirm": "Confirm",
+    "type": "Certificate type",
+    "deliveryMethod": "Delivery method",
+    "quantityUnitsLabel": "Quantity (pcs.)",
+    "quantityLabel": "Quantity",
+    "piecesCount": "{{quantity}} pcs.",
+    "continue": "Continue",
+    "order": "Order",
+    "orderButton": "Order a certificate",
+    "noteLabel": "Note",
+    "notePlaceholder": "Ivanov Andrey Alekseevich will pick it up",
+    "notePopover": "Certificates are issued to the applicant in person. If you entrust someone else to collect the certificate, write in the notes the surname, first name and patronymic of the person who will collect it.",
+    "placeRequiredLabel": "Place of presentation (employer organization) *",
+    "placeLabel": "Place of presentation (employer organization)",
+    "placePlaceholder": "JSC NeftGaz",
+    "placePopover": "The organization name must be specified in the GENITIVE case to comply with Russian language norms when generating the certificate text.",
+    "nameLabel": "Name",
+    "details": "Details",
+    "requestSentTitle": "Certificate ordered!",
+    "backButton": "Go back",
+    "statusLine": "{{name}} — status: {{status}}",
+    "numberDate": "No. {{id}} dated {{date}}",
+    "announce": "Announcement",
+    "deadlinesAndDelivery": "Certificate deadlines and delivery",
+    "types": {
+      "studyFact": "Certificate confirming studies at PSU",
+      "summons": "Summons certificate (free of charge)",
+      "sberbank": "Certificate for Sberbank",
+      "mirCard": "Certificate for issuing a MIR payment system bank card",
+      "income": "Income certificate (scholarship)"
+    },
+    "delivery": {
+      "personally": "in person (at the students' HR office)"
+    },
+    "income": {
+      "instructions": "Income certificates (scholarships) can be ordered by phone 239-65-34 or by email stip@psu.ru; the following data must be provided:",
+      "fio": "Full name",
+      "fioPlaceholder": "Ivanov Ivan Ivanovich",
+      "faculty": "Faculty",
+      "facultyPlaceholder": "Mechanics and Mathematics",
+      "year": "Year of study",
+      "period": "Period (months)",
+      "periodPopover": "The period the certificate is needed for. If you need it for the last year, specify 12.",
+      "timingInfo": "The certificate takes 3 business days to produce. Certificates are issued only for past months — first-year students cannot receive income certificates in September.\n\nPick up the certificate at the student payments office, building 1, room 322.",
+      "composeMail": "Compose email"
+    }
+  },
+  "questionnaire": {
+    "demoModeUnavailable": "Requests are not available in demo mode!",
+    "next": "Next",
+    "available": "Available",
+    "passed": "Completed",
+    "confirmResult": "Please make sure the data is correct and restart the questionnaire if you wish",
+    "sendingResults": "Sending results...",
+    "resultSent": "Sent successfully!",
+    "otherTeacherHint": "If it was a different teacher,\nenter their name",
+    "teacherPlaceholder": "Ivanov I.I.",
+    "commentHint": "A free-form comment about the teacher (no more than 4000 characters)",
+    "commentPlaceholder": "Great teacher"
+  },
+  "changeCredentials": {
+    "createPassword": "Create a password",
+    "passwordRequirements": "The password must consist of at least 8 characters. We also recommend using digits and special characters",
+    "passwordLengthError": "The password must be at least 8 characters long",
+    "repeatPassword": "Repeat the password",
+    "changeButton": "Change",
+    "passwordChanged": "Password changed successfully!",
+    "emailTitle": "Setting an email",
+    "emailDescription": "The email address is used as your login for signing in, and is also needed for password recovery and as a contact address for teachers",
+    "emailPlaceholder": "Email",
+    "verificationMailSent": "A confirmation email has been sent to the specified address",
+    "sending": "Sending..."
+  },
+  "account": {
+    "logout": "Log out",
+    "logoutTitle": "Logging out",
+    "logoutConfirmation": "Are you sure you want to log out? This will delete all your data.",
+    "changeRecordError": "Cannot change personal record",
+    "statusLine": "Status: {{status}}",
+    "personalRecordsTitle": "Personal records",
+    "availableRecords": "Available records",
+    "changePasswordButton": "Change password",
+    "changeEmailButton": "Change email"
   }
 }

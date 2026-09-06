@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { cache } from '~/cache/smartCache';
 import SettingRow from '~/components/SettingRow';
@@ -7,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '~/hooks';
 import { setUIConfig } from '~/redux/reducers/settingsSlice';
 
 const ToggleShowGapsBetweenPairs = () => {
+  const { t } = useTranslation();
   const { showGapsBetweenPairs, showEmptyPairs } = useAppSelector(
     (state) => state.settings.config.ui
   );
@@ -20,7 +22,7 @@ const ToggleShowGapsBetweenPairs = () => {
 
   return (
     <SettingRow
-      label='Показывать пропуски между парами'
+      label={t('settings.showGapsBetweenPairs')}
       right={
         <ThemedSwitch
           onValueChange={toggle}

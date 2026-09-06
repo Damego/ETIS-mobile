@@ -1,5 +1,6 @@
 import { Octicons } from '@expo/vector-icons';
 import React, { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import BottomSheetModal from '~/components/BottomSheetModal';
 import OptionsBottomSheet from '~/components/bottomSheets/OptionsBottomSheet';
@@ -11,28 +12,29 @@ import { persistEvents, persistTheme } from '~/redux/persistSettings';
 import { ThemeType } from '~/styles/themes';
 import { fontSize } from '~/utils/texts';
 
-const themeLabels: Partial<Record<ThemeType, string>> = {
-  [ThemeType.auto]: 'Автоматическая',
-  [ThemeType.light]: 'Светлая',
-  [ThemeType.dark]: 'Тёмная',
-  [ThemeType.black]: 'Чёрная',
-  [ThemeType.halloween]: 'Хэллоуин',
-  [ThemeType.newYear]: 'Новый год',
-};
-
-const options = (Object.entries(themeLabels) as Array<[ThemeType, string]>)
-  .filter(([value]) => value !== ThemeType.halloween && value !== ThemeType.newYear)
-  .map(([value, label]) => ({
-    label,
-    value,
-    isCurrent: false,
-  }));
-
 const ToggleThemeSetting = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { events, theme: themeType } = useAppSelector((state) => state.settings.config);
   const modalRef = useRef<BottomSheetModal | null>(null);
   const theme = useAppTheme();
+
+  const themeLabels: Partial<Record<ThemeType, string>> = {
+    [ThemeType.auto]: t('settings.themeAuto'),
+    [ThemeType.light]: t('settings.themeLight'),
+    [ThemeType.dark]: t('settings.themeDark'),
+    [ThemeType.black]: t('settings.themeBlack'),
+    [ThemeType.halloween]: t('settings.themeHalloween'),
+    [ThemeType.newYear]: t('settings.themeNewYear'),
+  };
+
+  const options = (Object.entries(themeLabels) as Array<[ThemeType, string]>)
+    .filter(([value]) => value !== ThemeType.halloween && value !== ThemeType.newYear)
+    .map(([value, label]) => ({
+      label,
+      value,
+      isCurrent: false,
+    }));
 
   const changeAppTheme = (selectedTheme: ThemeType) => {
     if (selectedTheme === ThemeType.newYear) {
@@ -50,12 +52,12 @@ const ToggleThemeSetting = () => {
   return (
     <>
       <SettingRow
-        label='Тема'
+        label={t('settings.theme')}
         icon={<Octicons name={'paintbrush'} size={24} color={theme.colors.text} />}
         onPress={() => modalRef.current?.present()}
         right={
           <Text style={fontSize.medium}>
-            {themeLabels[themeType] ?? 'Автоматическая'}
+            {themeLabels[themeType] ?? t('settings.themeAuto')}
           </Text>
         }
       />

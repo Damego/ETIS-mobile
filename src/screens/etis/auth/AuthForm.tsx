@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Image, StyleSheet, TextInput, View
 } from 'react-native';
@@ -53,6 +54,7 @@ const Form = ({
   errorMessage: string | null;
   setShowRecovery: (showRecovery: boolean) => void;
 }) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { saveUserCredentials } = useAppSelector((state) => state.account);
   const globalStyles = useGlobalStyles();
@@ -76,7 +78,7 @@ const Form = ({
         onChangeText={(newLogin) => {
           setLogin(newLogin);
         }}
-        placeholder='Эл. почта / фамилия'
+        placeholder={t('auth.loginPlaceholder')}
         placeholderTextColor={theme.colors.inputPlaceholder}
         autoComplete='email'
         inputMode='email'
@@ -87,7 +89,7 @@ const Form = ({
       <PasswordInput
         style={[styles.input, globalStyles.border, globalStyles.textColor]}
         onChangeText={setPassword}
-        placeholder='Пароль'
+        placeholder={t('auth.passwordPlaceholder')}
         placeholderTextColor={theme.colors.inputPlaceholder}
         autoComplete='password'
         selectionColor={theme.colors.primary}
@@ -104,20 +106,20 @@ const Form = ({
             onValueChange={toggleSaveUserCredentials}
           />
           <Text style={fontSize.small} colorVariant={'primary'}>
-            Запомнить меня
+            {t('auth.rememberMe')}
           </Text>
         </View>
 
         <ClickableText
           textStyle={fontSize.small}
-          text='Забыли пароль?'
+          text={t('auth.forgotPassword')}
           onPress={() => setShowRecovery(true)}
           colorVariant={'text2'}
         />
       </View>
 
       <View style={{ width: '100%' }}>
-        <Button text='Войти' onPress={() => onSubmit(login, password)} variant={'primary'} />
+        <Button text={t('auth.signIn')} onPress={() => onSubmit(login, password)} variant={'primary'} />
       </View>
     </View>
   );

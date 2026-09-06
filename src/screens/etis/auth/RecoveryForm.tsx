@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Image, TextInput, View } from 'react-native';
 
 import { Button } from '~/components/Button';
@@ -23,6 +24,7 @@ const RecoveryForm = ({
   setShowModal: (showModal: boolean) => void;
   disabledRequestButton: boolean;
 }) => {
+  const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
   const theme = useAppTheme();
 
@@ -34,7 +36,7 @@ const RecoveryForm = ({
 
       <Text
         style={[
-          message?.includes('отправлено')
+          message === t('auth.recoveryMailSent')
             ? [globalStyles.primaryText, { fontWeight: '600', textAlign: 'center' }]
             : { textAlign: 'center' },
         ]}
@@ -47,7 +49,7 @@ const RecoveryForm = ({
         onChangeText={(newLogin) => {
           setLogin(newLogin);
         }}
-        placeholder='Эл. почта'
+        placeholder={t('auth.emailPlaceholder')}
         placeholderTextColor={theme.colors.inputPlaceholder}
         autoComplete='email'
         inputMode='email'
@@ -59,7 +61,7 @@ const RecoveryForm = ({
 
       <View style={{ width: '100%', marginTop: '2%' }}>
         <Button
-          text='Отправить письмо'
+          text={t('auth.sendRecoveryMail')}
           onPress={() => onSubmit(login)}
           disabled={disabledRequestButton}
           showLoading={isLoading}
@@ -68,7 +70,7 @@ const RecoveryForm = ({
       </View>
 
       <View style={{ width: '100%', marginTop: '4%' }}>
-        <Button text='Назад' onPress={() => setShowModal(false)} variant={'secondary'} />
+        <Button text={t('common.back')} onPress={() => setShowModal(false)} variant={'secondary'} />
       </View>
     </View>
   );

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ToastAndroid, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -14,6 +15,7 @@ import Form from './AuthForm';
 import Recovery from './Recovery';
 
 const AuthScreen = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
   const { userCredentials, isSignedOut } = useAppSelector((state) => state.account);
@@ -36,12 +38,12 @@ const AuthScreen = () => {
     }
 
     if (!login || !password) {
-      setMessage('Вы не ввели логин или пароль');
+      setMessage(t('auth.noLoginOrPassword'));
       return;
     }
 
     if (!(await httpClient.isInternetReachable())) {
-      ToastAndroid.show('Нет интернет соединения!', ToastAndroid.SHORT);
+      ToastAndroid.show(t('auth.noInternet'), ToastAndroid.SHORT);
       return;
     }
 

@@ -1,6 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -19,6 +20,7 @@ import SearchInput from '~/screens/start/components/SearchInput';
 import { fontSize } from '~/utils/texts';
 
 const SelectTeacherScreen = () => {
+  const { t } = useTranslation();
   const theme = useAppTheme();
   const globalStyles = useGlobalStyles();
   const insets = useSafeAreaInsets();
@@ -56,7 +58,7 @@ const SelectTeacherScreen = () => {
         {!isLoading && isPsutechAvailable() === false && (
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Text style={fontSize.medium} colorVariant={'text2'}>
-              Сервис временно недоступен.{'\n'}Попробуйте позже.
+              {t('common.serviceUnavailable')}
             </Text>
           </View>
         )}
@@ -73,7 +75,7 @@ const SelectTeacherScreen = () => {
                 )
               }
             >
-              {teacher?.name || 'Неизвестный преподаватель'}
+              {teacher?.name || t('start.unknownTeacher')}
             </ClickableText>
             {index !== data.length - 1 && <BorderLine />}
           </View>
@@ -91,7 +93,7 @@ const SelectTeacherScreen = () => {
           ]}
         >
           <Text colorVariant={'primaryContrast'} style={fontSize.big}>
-            Выбрать
+            {t('start.choose')}
           </Text>
           <Text colorVariant={'primaryContrast'}>({selectedTeacher?.name || ''})</Text>
         </TouchableOpacity>

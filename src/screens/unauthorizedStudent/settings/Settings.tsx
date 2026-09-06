@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
 import { cache } from '~/cache/smartCache';
@@ -9,11 +10,8 @@ import { useAppDispatch, useAppSelector } from '~/hooks';
 import { clearAccountState } from '~/redux/reducers/accountSlice';
 import { fontSize } from '~/utils/texts';
 
-const LogOut = ({ onPress }: { onPress: () => void }) => (
-  <BaseSettingButton iconName={'logout'} label={'Выйти'} onPress={onPress} color={'primary'} />
-);
-
 const Settings = () => {
+  const { t } = useTranslation();
   const student = useAppSelector((state) => state.account.student);
   const dispatch = useAppDispatch();
 
@@ -28,12 +26,17 @@ const Settings = () => {
     <Screen>
       <View style={{ alignItems: 'center' }}>
         <Text style={[fontSize.large, { fontWeight: 'bold' }]}>{student.group.name.full}</Text>
-        <Text>Студент</Text>
+        <Text>{t('settings.studentRole')}</Text>
       </View>
       <Text style={[fontSize.big, { fontWeight: 'bold', marginVertical: '4%' }]}>
-        Действия с аккаунтом
+        {t('settings.accountActions')}
       </Text>
-      <LogOut onPress={handleLogOut} />
+      <BaseSettingButton
+        iconName={'logout'}
+        label={t('settings.logOut')}
+        onPress={handleLogOut}
+        color={'primary'}
+      />
     </Screen>
   );
 };

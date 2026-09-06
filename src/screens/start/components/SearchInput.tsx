@@ -1,5 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import { useGlobalStyles } from '~/hooks';
@@ -13,6 +14,7 @@ const SearchInput = ({
   onValueChange: (value: string) => void;
   autoCapitalize?: boolean;
 }) => {
+  const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
 
   return (
@@ -20,7 +22,7 @@ const SearchInput = ({
       <AntDesign name={'search1'} size={20} color={globalStyles.textColor.color} />
       <TextInput
         autoCapitalize={autoCapitalize ? 'characters' : undefined}
-        placeholder={'Поиск'}
+        placeholder={t('common.search')}
         style={[styles.input, globalStyles.textColor]}
         value={value}
         onChangeText={onValueChange}
