@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import BottomSheetContent from '~/components/BottomSheetContent';
 import BottomSheetModal from '~/components/BottomSheetModal';
@@ -7,21 +8,25 @@ import SectionRow from '~/screens/etis/disciplineEducationalComplex/components/S
 import { fontSize } from '~/utils/texts';
 
 const ControlRequirementsBottomSheet = React.forwardRef<BottomSheetModal, { data: string }>(
-  ({ data }, ref) => (
-    <BottomSheetModal ref={ref}>
-      <BottomSheetContent title='Контроль'>
-        <Text style={fontSize.medium}>{data}</Text>
-      </BottomSheetContent>
-    </BottomSheetModal>
-  )
+  ({ data }, ref) => {
+    const { t } = useTranslation();
+    return (
+      <BottomSheetModal ref={ref}>
+        <BottomSheetContent title={t('dec.control')}>
+          <Text style={fontSize.medium}>{data}</Text>
+        </BottomSheetContent>
+      </BottomSheetModal>
+    );
+  }
 );
 
 const ControlRequirements = ({ data }: { data: string }) => {
+  const { t } = useTranslation();
   const ref = useRef<BottomSheetModal | null>(null);
 
   return (
     <>
-      <SectionRow label='Контроль' onPress={() => ref.current?.present()} />
+      <SectionRow label={t('dec.control')} onPress={() => ref.current?.present()} />
       <ControlRequirementsBottomSheet ref={ref} data={data} />
     </>
   );

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, ToastAndroid, View } from 'react-native';
 
 import ClickableText from '~/components/ClickableText';
@@ -9,8 +10,6 @@ import { RequestType } from '~/models/results';
 import { ICheckPoint } from '~/models/sessionPoints';
 import { fontSize, formatCheckPointScore } from '~/utils/texts';
 
-const getCheckpointTitle = (theme: string, number: number) => `КТ ${number}: ${theme}`;
-
 const cutTypeControl = (typeControl: string): string =>
   typeControl
     .split(' ')
@@ -18,6 +17,7 @@ const cutTypeControl = (typeControl: string): string =>
     .join('');
 
 const CheckPointDetails = ({ checkPoint, index }: { checkPoint: ICheckPoint; index: number }) => {
+  const { t } = useTranslation();
   const client = useClient();
   const { data, isLoading } = useQuery({
     method: client.getPointUpdates,
@@ -40,20 +40,20 @@ const CheckPointDetails = ({ checkPoint, index }: { checkPoint: ICheckPoint; ind
 
   return (
     <View>
-      <Text style={styles.titleText}>{getCheckpointTitle(checkPoint.theme, index + 1)}</Text>
-      <Row first={'Оценка:'} second={scoreText} />
-      <Row first={'Проходной балл:'} second={checkPoint.passScore} />
-      <Row first={'Текущий балл:'} second={checkPoint.currentScore} />
-      <Row first={'Максимальный балл:'} second={checkPoint.maxScore} />
+      <Text style={styles.titleText}>{t('checkPoint.title', { number: index + 1, theme: checkPoint.theme })}</Text>
+      <Row first={t('checkPoint.score')} second={scoreText} />
+      <Row first={t('checkPoint.passScore')} second={checkPoint.passScore} />
+      <Row first={t('checkPoint.currentScore')} second={checkPoint.currentScore} />
+      <Row first={t('checkPoint.maxScore')} second={checkPoint.maxScore} />
       {Boolean(checkPoint.teacher) && (
         <>
-          <Row first={'Преподаватель:'} second={checkPoint.teacher} />
-          <Row first={'Дата:'} second={isLoading ? 'Загрузка...' : lastDate} />
+          <Row first={t('checkPoint.teacher')} second={checkPoint.teacher} />
+          <Row first={t('checkPoint.date')} second={isLoading ? t('common.loading') : lastDate} />
         </>
       )}
-      <Row first={'Вид работы:'} second={checkPoint.typeWork} />
+      <Row first={t('checkPoint.workType')} second={checkPoint.typeWork} />
       <View style={styles.row}>
-        <Text style={styles.rowText}>{'Вид контроля:'}</Text>
+        <Text style={styles.rowText}>{t('checkPoint.controlType')}</Text>
         <ClickableText
           text={cutTypeControl(checkPoint.typeControl)}
           onPress={() => {

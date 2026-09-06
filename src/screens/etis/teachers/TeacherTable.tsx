@@ -1,4 +1,5 @@
 import React, { useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import BottomSheetModal from '~/components/BottomSheetModal';
 import LoadingScreen from '~/components/LoadingScreen';
@@ -29,6 +30,7 @@ const groupTeachers = (teachers?: ITeacher[] | null) => {
 };
 
 const TeacherTable = () => {
+  const { t } = useTranslation();
   const client = useClient();
   const { data, isLoading, refresh } = useQuery({
     method: client.getTeacherData,
@@ -39,7 +41,7 @@ const TeacherTable = () => {
 
   if (isLoading) return <LoadingScreen onRefresh={refresh} />;
   if (!data) return <NoData onRefresh={refresh} />;
-  if (!data.length) return <NoData text={'Список преподавателей пуст'} onRefresh={refresh} />;
+  if (!data.length) return <NoData text={t('teachers.emptyList')} onRefresh={refresh} />;
 
   return (
     <Screen onUpdate={refresh}>

@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import BottomSheetContent from '~/components/BottomSheetContent';
 import BottomSheetModal from '~/components/BottomSheetModal';
@@ -11,25 +12,29 @@ import { fontSize } from '~/utils/texts';
 const AdditionalMaterialsBottomSheet = React.forwardRef<
   BottomSheetModal,
   { data: IAdditionalMaterials }
->(({ data }, ref) => (
-  <BottomSheetModal ref={ref} snapPoints={['50%', '100%']}>
-    <BottomSheetContent title='Дополнительные материалы'>
-      <Text style={[fontSize.big, { fontWeight: 'bold' }]}>Файлы</Text>
-      {data.files.map((file, index) => (
-        <FileTextLink src={file.uri} fileName={file.name} key={index} style={fontSize.medium}>
-          {file.name}
-        </FileTextLink>
-      ))}
-    </BottomSheetContent>
-  </BottomSheetModal>
-));
+>(({ data }, ref) => {
+  const { t } = useTranslation();
+  return (
+    <BottomSheetModal ref={ref} snapPoints={['50%', '100%']}>
+      <BottomSheetContent title={t('dec.additionalMaterials')}>
+        <Text style={[fontSize.big, { fontWeight: 'bold' }]}>{t('dec.files')}</Text>
+        {data.files.map((file, index) => (
+          <FileTextLink src={file.uri} fileName={file.name} key={index} style={fontSize.medium}>
+            {file.name}
+          </FileTextLink>
+        ))}
+      </BottomSheetContent>
+    </BottomSheetModal>
+  );
+});
 
 const AdditionalMaterials = ({ data }: { data: IAdditionalMaterials }) => {
+  const { t } = useTranslation();
   const ref = useRef<BottomSheetModal | null>(null);
 
   return (
     <>
-      <SectionRow label='Дополнительные материалы' onPress={() => ref.current?.present()} />
+      <SectionRow label={t('dec.additionalMaterials')} onPress={() => ref.current?.present()} />
       <AdditionalMaterialsBottomSheet ref={ref} data={data} />
     </>
   );

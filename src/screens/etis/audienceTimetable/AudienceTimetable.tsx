@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { getAudienceTimetable, isPsutechAvailable } from '~/api/psutech/api';
 import { LoadingContainer } from '~/components/LoadingScreen';
@@ -12,6 +13,7 @@ import { EducationStackScreenProps } from '~/navigation/types';
 import { fontSize } from '~/utils/texts';
 
 const AudienceTimetable = ({ route }: EducationStackScreenProps<'AudienceTimetable'>) => {
+  const { t } = useTranslation();
   const { audience } = route.params;
 
   const timetable = useTimetable({ onRequestUpdate: (week) => setFetchWeek(week) });
@@ -28,10 +30,10 @@ const AudienceTimetable = ({ route }: EducationStackScreenProps<'AudienceTimetab
     return (
       <Screen onUpdate={refetch}>
         <Text style={[fontSize.large, { fontWeight: 'bold', alignSelf: 'center' }]}>
-          Аудитория: {audience.string}
+          {t('audienceTimetable.audienceTitle', { audience: audience.string })}
         </Text>
         <Text style={[fontSize.medium, { alignSelf: 'center', marginTop: 20 }]} colorVariant={'text2'}>
-          Сервис временно недоступен.{'\n'}Попробуйте позже.
+          {t('audienceTimetable.serviceUnavailable')}
         </Text>
       </Screen>
     );
@@ -40,7 +42,7 @@ const AudienceTimetable = ({ route }: EducationStackScreenProps<'AudienceTimetab
   return (
     <Screen onUpdate={refetch}>
       <Text style={[fontSize.large, { fontWeight: 'bold', alignSelf: 'center' }]}>
-        Аудитория: {audience.string}
+        {t('audienceTimetable.audienceTitle', { audience: audience.string })}
       </Text>
 
       <TimetableContainer

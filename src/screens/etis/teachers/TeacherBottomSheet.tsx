@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import * as Clipboard from 'expo-clipboard';
 import { Image } from 'expo-image';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Linking, StyleSheet, ToastAndroid, View
 } from 'react-native';
@@ -24,6 +25,7 @@ import { EducationNavigationProp } from '~/navigation/types';
 import { borderRadius as radii, fontSize } from '~/utils/texts';
 
 const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
+  const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
   const navigation = useNavigation<EducationNavigationProp>();
   const { data: psuTeacher } = useQuery({
@@ -40,12 +42,12 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
 
   const copyTeacherNameToClipboard = () => {
     if (teacher?.name) Clipboard.setStringAsync(teacher.name);
-    ToastAndroid.show('Скопировано в буфер обмена', ToastAndroid.LONG);
+    ToastAndroid.show(t('common.copied'), ToastAndroid.LONG);
   };
 
   const copyCathedraToClipboard = () => {
     if (teacher?.cathedra) Clipboard.setStringAsync(teacher.cathedra);
-    ToastAndroid.show('Скопировано в буфер обмена', ToastAndroid.LONG);
+    ToastAndroid.show(t('common.copied'), ToastAndroid.LONG);
   };
 
   const openPSUPage = () => {
@@ -90,7 +92,7 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
           ]}
           textStyle={[globalStyles.primaryContrastText]}
         >
-          Расписание занятий
+          {t('teachers.lessonsTimetable')}
         </ClickableText>
         <ClickableText
           onPress={navigateToCathedraTimetable}
@@ -101,7 +103,7 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
           ]}
           textStyle={globalStyles.primaryContrastText}
         >
-          Расписание кафедры
+          {t('teachers.cathedraTimetable')}
         </ClickableText>
       </View>
 
@@ -111,16 +113,16 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
             onPress={openPSUPage}
             viewStyle={[globalStyles.primaryBorder, styles.button]}
           >
-            Страница на сайте ПГНИУ
+            {t('teachers.psuPage')}
           </ClickableText>
 
           <BorderLine />
 
-          <Text style={styles.title}>Контактная информация</Text>
+          <Text style={styles.title}>{t('teachers.contactInfo')}</Text>
           {Boolean(contacts.phones.length) && (
             <>
               <Text style={styles.title} colorVariant={'text2'}>
-                Телефон
+                {t('teachers.phone')}
               </Text>
               {contacts.phones.map((phone) => (
                 <Text
@@ -136,7 +138,7 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
           {Boolean(contacts.emails.length) && (
             <>
               <Text style={styles.title} colorVariant={'text2'}>
-                Электронная почта
+                {t('teachers.email')}
               </Text>
               {contacts.emails.map((email) => (
                 <Text
@@ -155,19 +157,19 @@ const TeacherContainer = ({ teacher }: { teacher: ITeacher }) => {
             viewStyle={{ alignSelf: 'flex-end' }}
             textStyle={{ fontWeight: 'bold' }}
           >
-            Источник
+            {t('teachers.source')}
           </ClickableText>
         </>
       )}
 
       <BorderLine />
 
-      <Text style={styles.title}>Преподаваемые дисциплины</Text>
+      <Text style={styles.title}>{t('teachers.subjects')}</Text>
       {teacher.subjects.map((subject, index) => (
         <React.Fragment key={index}>
           <Text style={fontSize.medium}>• {subject.discipline}</Text>
           <View style={styles.typesContainer}>
-            {subject.types.filter((t): t is LessonTypes => t != null).map((type, index) => (
+            {subject.types.filter((type): type is LessonTypes => type != null).map((type, index) => (
               <DisciplineType type={type} size={'small'} key={index} />
             ))}
           </View>

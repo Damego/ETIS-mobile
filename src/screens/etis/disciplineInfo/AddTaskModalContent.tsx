@@ -3,6 +3,7 @@ import 'dayjs/locale/ru';
 import { BottomSheetModal } from '@expo/ui/community/bottom-sheet';
 import dayjs from 'dayjs';
 import React, { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Alert, StyleSheet, TextInput, View
 } from 'react-native';
@@ -41,6 +42,7 @@ const AddTaskModalContent = ({
   showDisciplineInfo?: boolean;
   disableCheckbox?: boolean;
 }) => {
+  const { t } = useTranslation();
   const [description, setDescription] = useState(selectedTask?.description || '');
   const [reminders, setReminders] = useState<DisciplineReminder[]>(selectedTask?.reminders || []);
   const [isLinkedToPair, setLinkedToPair] = useState(!disableCheckbox);
@@ -64,10 +66,10 @@ const AddTaskModalContent = ({
   };
 
   const removeTask = () => {
-    Alert.alert('Удаление задания', 'Вы действительно хотите удалить это задание', [
-      { text: 'Отмена' },
+    Alert.alert(t('disciplineInfo.taskDeletion'), t('disciplineInfo.taskDeletionConfirm'), [
+      { text: t('common.cancel') },
       {
-        text: 'Удалить',
+        text: t('common.delete'),
         onPress: () => {
           if (selectedTask) onTaskRemove(selectedTask);
         },
@@ -86,11 +88,11 @@ const AddTaskModalContent = ({
         </>
       )}
       {/* BottomSheetTextInput просто закрывается при открытии клавиатуры */}
-      <Text style={styles.titleText}>Описание</Text>
+      <Text style={styles.titleText}>{t('disciplineInfo.description')}</Text>
       <TextInput
         style={[globalStyles.border, styles.textInput, globalStyles.textColor2]}
         placeholderTextColor={globalStyles.inputPlaceholder.color}
-        placeholder='Решить 100 задач'
+        placeholder={t('disciplineInfo.descriptionPlaceholder')}
         value={description}
         onChangeText={setDescription}
         multiline
@@ -107,7 +109,7 @@ const AddTaskModalContent = ({
             value={isLinkedToPair}
             onValueChange={setLinkedToPair}
           />
-          <Text>Привязать задание к этой паре</Text>
+          <Text>{t('disciplineInfo.linkToPair')}</Text>
         </View>
       )}
       {/* TODO: после обновления библиотек (react-native-webview не поддерживается) модалка вызывает краш */}
@@ -123,7 +125,7 @@ const AddTaskModalContent = ({
           ))
         )
         : (
-          <Text style={styles.noRemindersText}>Нет напоминаний</Text>
+          <Text style={styles.noRemindersText}>{t('disciplineInfo.noReminders')}</Text>
         )}
 
       <View style={{ height: '10%' }} />
@@ -132,12 +134,12 @@ const AddTaskModalContent = ({
         {Boolean(selectedTask) && (
           <ClickableText
             textStyle={[styles.button, globalStyles.primaryText]}
-            text={'Удалить'}
+            text={t('common.delete')}
             onPress={removeTask}
           />
         )}
         {Boolean(description) && (
-          <ClickableText textStyle={styles.button} text={'Сохранить'} onPress={addTask} />
+          <ClickableText textStyle={styles.button} text={t('common.save')} onPress={addTask} />
         )}
       </View>
 

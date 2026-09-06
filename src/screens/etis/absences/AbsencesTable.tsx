@@ -1,5 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import BottomSheetModal from '~/components/BottomSheetModal';
 import OptionsBottomSheet from '~/components/bottomSheets/OptionsBottomSheet';
@@ -17,6 +18,7 @@ import { fontSize } from '~/utils/texts';
 import AbsencesCard from './AbsencesCard';
 
 const AbsencesTable = () => {
+  const { t } = useTranslation();
   const theme = useAppTheme();
   const client = useClient();
   const { data, isLoading, refresh, update } = useQuery({
@@ -34,7 +36,7 @@ const AbsencesTable = () => {
   else if (!data?.absences.length)
     component = (
       <NoData
-        text={data ? 'Нет пропущенных занятий!' : undefined}
+        text={data ? t('absences.none') : undefined}
         onRefresh={!data ? refresh : undefined}
       />
     );
@@ -44,7 +46,7 @@ const AbsencesTable = () => {
         {data.absences.map((absences, index) => (
           <AbsencesCard key={index} disciplineAbsences={absences} />
         ))}
-        <Text>{`Всего пропущено занятий: ${data.overallMissed}`}</Text>
+        <Text>{t('absences.total', { count: data.overallMissed })}</Text>
       </>
     );
 

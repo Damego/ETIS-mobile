@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import BottomSheetContent from '~/components/BottomSheetContent';
 import BottomSheetModal from '~/components/BottomSheetModal';
@@ -31,24 +32,28 @@ const Question = ({ question, index }: { question: IExamQuestions; index: number
 };
 
 const QuestionsBottomSheet = React.forwardRef<BottomSheetModal, { questions: IExamQuestions[] }>(
-  ({ questions }, ref) => (
-    <BottomSheetModal ref={ref} snapPoints={['50%', '100%']}>
-      <BottomSheetContent title='Вопросы промежуточной аттестации'>
-        {questions.map((question, index) => (
-          <Question question={question} index={index} key={question.id} />
-        ))}
-      </BottomSheetContent>
-    </BottomSheetModal>
-  )
+  ({ questions }, ref) => {
+    const { t } = useTranslation();
+    return (
+      <BottomSheetModal ref={ref} snapPoints={['50%', '100%']}>
+        <BottomSheetContent title={t('dec.examQuestions')}>
+          {questions.map((question, index) => (
+            <Question question={question} index={index} key={question.id} />
+          ))}
+        </BottomSheetContent>
+      </BottomSheetModal>
+    );
+  }
 );
 
 const ExamQuestions = ({ questions }: { questions: IExamQuestions[] }) => {
+  const { t } = useTranslation();
   const ref = useRef<BottomSheetModal | null>(null);
 
   return (
     <>
       <SectionRow
-        label='Вопросы промежуточной аттестации'
+        label={t('dec.examQuestions')}
         onPress={() => ref.current?.present()}
       />
       <QuestionsBottomSheet ref={ref} questions={questions} />

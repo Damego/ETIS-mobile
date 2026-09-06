@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, ToastAndroid, TouchableOpacity } from 'react-native';
 
 import CardHeaderIn from '~/components/CardHeaderIn';
@@ -10,6 +11,7 @@ import { fontSize } from '~/utils/texts';
 import OrderModal from './OrderModal';
 
 const Order = ({ order }: { order: IOrder }) => {
+  const { t } = useTranslation();
   const [isOpened, setOpened] = useState<boolean>(false);
   const [html, setHTML] = useState<string>();
 
@@ -17,12 +19,12 @@ const Order = ({ order }: { order: IOrder }) => {
 
   const openModal = () => {
     if (!order.uri) {
-      ToastAndroid.show('Приказ готовится', ToastAndroid.SHORT);
+      ToastAndroid.show(t('orders.preparing'), ToastAndroid.SHORT);
       return;
     }
     getOrderHTML(order).then((orderHTML) => {
       if (!orderHTML) {
-        ToastAndroid.show('Приказ не загружен!', ToastAndroid.SHORT);
+        ToastAndroid.show(t('orders.loadFailed'), ToastAndroid.SHORT);
         return;
       }
       setHTML(orderHTML);
@@ -35,10 +37,10 @@ const Order = ({ order }: { order: IOrder }) => {
       {isOpened && <OrderModal html={html ?? ''} closeModal={closeModal} />}
 
       <TouchableOpacity onPress={openModal}>
-        <CardHeaderIn topText={`№${order.id ?? '-'} от ${order.date}`}>
+        <CardHeaderIn topText={t('orders.header', { id: order.id ?? '-', date: order.date })}>
           <Text style={styles.textTitle}>{order.name}</Text>
 
-          {!order.uri && <Text style={styles.textTitle}>Приказ готовится...</Text>}
+          {!order.uri && <Text style={styles.textTitle}>{t('orders.preparingInline')}</Text>}
         </CardHeaderIn>
       </TouchableOpacity>
     </>

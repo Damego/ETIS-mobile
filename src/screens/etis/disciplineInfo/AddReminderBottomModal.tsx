@@ -2,6 +2,7 @@ import 'dayjs/locale/ru';
 
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   StyleSheet, TextInput, ToastAndroid, View
 } from 'react-native';
@@ -54,6 +55,7 @@ const TimePicker = ({
 };
 
 const AddReminderBottomModal = ({ onSubmit }: { onSubmit: (datetime: dayjs.Dayjs) => void }) => {
+  const { t } = useTranslation();
   const minimumDate = dayjs().add(5, 'minute');
 
   const theme = useAppTheme();
@@ -67,7 +69,7 @@ const AddReminderBottomModal = ({ onSubmit }: { onSubmit: (datetime: dayjs.Dayjs
   const preSubmit = () => {
     if (minimumDate > value) {
       setValue(minimumDate);
-      ToastAndroid.show('Невозможно установить дату ниже текущей', ToastAndroid.LONG);
+      ToastAndroid.show(t('disciplineInfo.reminderDateInPast'), ToastAndroid.LONG);
       return;
     }
     onSubmit(value);
@@ -122,10 +124,10 @@ const AddReminderBottomModal = ({ onSubmit }: { onSubmit: (datetime: dayjs.Dayjs
           },
         }}
       />
-      <Text style={styles.text}>Укажите время</Text>
+      <Text style={styles.text}>{t('disciplineInfo.setTime')}</Text>
       <TimePicker value={value} onValueChange={setValue} />
       <ClickableText
-        text={'Сохранить'}
+        text={t('common.save')}
         onPress={preSubmit}
         viewStyle={styles.saveButton}
         textStyle={styles.text}

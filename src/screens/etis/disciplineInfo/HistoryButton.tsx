@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 
 import ClickableText from '~/components/ClickableText';
@@ -7,11 +8,12 @@ import { useGlobalStyles } from '~/hooks';
 import { fontSize, iconSize } from '~/utils/texts';
 
 const HistoryButton = ({ onPress, showHistory }: { onPress: () => void; showHistory: boolean }) => {
+  const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
 
   return (
     <ClickableText
-      text={'История заданий'}
+      text={t('disciplineInfo.tasksHistory')}
       onPress={onPress}
       textStyle={fontSize.big}
       viewStyle={styles.showInactiveButton}

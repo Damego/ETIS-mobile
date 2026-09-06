@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
 import CardHeaderOut from '~/components/CardHeaderOut';
@@ -17,23 +18,27 @@ const styles = StyleSheet.create({
   },
 });
 
-const AttachedFiles = ({ files }: { files: IFile[] }) => (
-  <View style={{ flexDirection: 'column' }}>
-    <Text style={styles.subjectText}>Прикреплённые файлы: </Text>
-    {files.map((file, index) => (
-      <FileTextLink
-        src={file.uri}
-        fileName={file.name}
-        key={`${file.name}-${index}`}
-        style={fontSize.medium}
-      >
-        {file.name}
-      </FileTextLink>
-    ))}
-  </View>
-);
+const AttachedFiles = ({ files }: { files: IFile[] }) => {
+  const { t } = useTranslation();
+  return (
+    <View style={{ flexDirection: 'column' }}>
+      <Text style={styles.subjectText}>{t('messages.attachedFiles')}</Text>
+      {files.map((file, index) => (
+        <FileTextLink
+          src={file.uri}
+          fileName={file.name}
+          key={`${file.name}-${index}`}
+          style={fontSize.medium}
+        >
+          {file.name}
+        </FileTextLink>
+      ))}
+    </View>
+  );
+};
 
 function Message({ message }: { message: IMessage }) {
+  const { t } = useTranslation();
   const time = parseDatetime(message.time);
   const formattedTime = time.format('DD.MM.YYYY HH:mm');
   const hasFiles = message.files != null && message.files.length !== 0;
@@ -41,8 +46,8 @@ function Message({ message }: { message: IMessage }) {
 
   let cardTopText: string;
   if ([MessageType.message, MessageType.teacherReply].includes(message.type))
-    cardTopText = 'Преподаватель';
-  else if (message.type === MessageType.studentReply) cardTopText = 'Вы';
+    cardTopText = t('messages.teacher');
+  else if (message.type === MessageType.studentReply) cardTopText = t('messages.you');
   else return null;
 
   return (

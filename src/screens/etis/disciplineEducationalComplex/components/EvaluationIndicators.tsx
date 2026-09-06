@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
 import BorderLine from '~/components/BorderLine';
@@ -13,38 +14,42 @@ import { fontSize } from '~/utils/texts';
 const EvaluationIndicatorsBottomSheet = React.forwardRef<
   BottomSheetModal,
   { data: IEvaluationIndicators }
->(({ data }, ref) => (
-  <BottomSheetModal ref={ref} snapPoints={['50%', '100%']}>
-    <BottomSheetContent title='Показатели оценивания'>
-      <View style={{ gap: 4 }}>
-        <Text style={[fontSize.medium, { fontWeight: 'bold' }]}>
-          Промежуточный контроль: <Text>{data.control}</Text>
-        </Text>
-        <Text style={[fontSize.medium, { fontWeight: 'bold' }]}>
-          Способ проведения: <Text>{data.method}</Text>
-        </Text>
-        <Text style={[fontSize.medium, { fontWeight: 'bold' }]}>
-          Продолжительность промежуточного контроля: <Text>{data.duration}</Text>
-        </Text>
-      </View>
+>(({ data }, ref) => {
+  const { t } = useTranslation();
+  return (
+    <BottomSheetModal ref={ref} snapPoints={['50%', '100%']}>
+      <BottomSheetContent title={t('dec.evaluationIndicators')}>
+        <View style={{ gap: 4 }}>
+          <Text style={[fontSize.medium, { fontWeight: 'bold' }]}>
+            {t('dec.interimControl')}: <Text>{data.control}</Text>
+          </Text>
+          <Text style={[fontSize.medium, { fontWeight: 'bold' }]}>
+            {t('dec.conductMethod')}: <Text>{data.method}</Text>
+          </Text>
+          <Text style={[fontSize.medium, { fontWeight: 'bold' }]}>
+            {t('dec.interimControlDuration')}: <Text>{data.duration}</Text>
+          </Text>
+        </View>
 
-      <Text style={[fontSize.big, { fontWeight: 'bold' }]}>Критерии:</Text>
-      {data.criteria.map((criteria, index) => (
-        <React.Fragment key={index}>
-          <DropdownText title={criteria.title} value={criteria.description} />
-          {data.criteria.length - 1 !== index && <BorderLine />}
-        </React.Fragment>
-      ))}
-    </BottomSheetContent>
-  </BottomSheetModal>
-));
+        <Text style={[fontSize.big, { fontWeight: 'bold' }]}>{t('dec.criteria')}:</Text>
+        {data.criteria.map((criteria, index) => (
+          <React.Fragment key={index}>
+            <DropdownText title={criteria.title} value={criteria.description} />
+            {data.criteria.length - 1 !== index && <BorderLine />}
+          </React.Fragment>
+        ))}
+      </BottomSheetContent>
+    </BottomSheetModal>
+  );
+});
 
 const EvaluationIndicators = ({ data }: { data: IEvaluationIndicators }) => {
+  const { t } = useTranslation();
   const ref = useRef<BottomSheetModal | null>(null);
 
   return (
     <>
-      <SectionRow label='Показатели оценивания' onPress={() => ref.current?.present()} />
+      <SectionRow label={t('dec.evaluationIndicators')} onPress={() => ref.current?.present()} />
       <EvaluationIndicatorsBottomSheet ref={ref} data={data} />
     </>
   );

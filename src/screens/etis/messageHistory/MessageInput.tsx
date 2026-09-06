@@ -1,6 +1,7 @@
 import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
 import { getDocumentAsync } from 'expo-document-picker';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ActivityIndicator,
   ScrollView,
@@ -104,6 +105,7 @@ const MessageInput = ({
   showLoading: boolean;
   disabled: boolean;
 }) => {
+  const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
   const theme = useAppTheme();
   const [value, setValue] = useState<string>('');
@@ -112,7 +114,7 @@ const MessageInput = ({
     const result = await getDocumentAsync();
 
     if (!result) {
-      ToastAndroid.show('Невозможно выбрать файл!', ToastAndroid.SHORT);
+      ToastAndroid.show(t('messages.fileSelectFailed'), ToastAndroid.SHORT);
       return;
     }
 
@@ -123,7 +125,7 @@ const MessageInput = ({
     const docs = result.assets
       .map((doc) => {
         if ((doc.size ?? 0) > MAX_FILE_SIZE_LIMIT) {
-          ToastAndroid.show('Файл должен быть не более 2 МБ!', ToastAndroid.SHORT);
+          ToastAndroid.show(t('messages.fileTooLarge'), ToastAndroid.SHORT);
           return;
         }
         return {
@@ -153,7 +155,7 @@ const MessageInput = ({
         style={[fontSize.medium, styles.input, globalStyles.textColor]}
         onChangeText={(text) => setValue(text)}
         value={value}
-        placeholder='Сообщение'
+        placeholder={t('messages.messagePlaceholder')}
         multiline
         selectionColor={globalStyles.primaryText.color}
         placeholderTextColor={theme.colors.inputPlaceholder}

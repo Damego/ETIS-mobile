@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import * as Clipboard from 'expo-clipboard';
 import { Image } from 'expo-image';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Linking, StyleSheet, ToastAndroid, View
 } from 'react-native';
@@ -23,14 +24,10 @@ const LESSON_LENGTH = 40;
 
 const studentTimeInfo = {
   length: PAIR_LENGTH,
-  name: 'пара',
-  ending: 'я',
 } as const;
 
 const lyceumTimeInfo = {
   length: LESSON_LENGTH,
-  name: 'урок',
-  ending: 'й',
 } as const;
 
 const getAssetByPlatformType = (type: DistancePlatformTypes) => {
@@ -65,15 +62,18 @@ const IconInfo = ({ icon, text }: { icon: keyof typeof Ionicons.glyphMap; text: 
 };
 
 export const TimeInfo = ({ date, pairPosition }: { date: dayjs.Dayjs; pairPosition: number }) => {
+  const { t } = useTranslation();
   const isLyceum = useAppSelector((state) => state.student.info?.isLyceum);
-  const { name, length, ending } = isLyceum ? lyceumTimeInfo : studentTimeInfo;
+  const { length } = isLyceum ? lyceumTimeInfo : studentTimeInfo;
 
   date = date.locale('ru');
   const day = date.format('D MMMM');
   const startTime = date.format('HH:mm');
   const endTime = date.clone().add(length, 'minute').format('HH:mm');
 
-  const text = `${day}\n${startTime} – ${endTime} · ${pairPosition}-${ending} ${name}`;
+  const text = isLyceum
+    ? `${day}\n${startTime} – ${endTime} · ${t('disciplineInfo.lessonOrdinal', { position: pairPosition })}`
+    : `${day}\n${startTime} – ${endTime} · ${t('disciplineInfo.pairOrdinal', { position: pairPosition })}`;
   return <IconInfo icon={'time-outline'} text={text} />;
 };
 
@@ -92,6 +92,7 @@ export const TeacherInfo = ({ teacher }: { teacher?: ITimeTableTeacher }) => {
 };
 
 export const AudienceInfo = ({ lesson }: { lesson: ILesson }) => {
+  const { t } = useTranslation();
   const theme = useAppTheme();
 
   const platform = lesson.distancePlatform;
@@ -118,7 +119,7 @@ export const AudienceInfo = ({ lesson }: { lesson: ILesson }) => {
           }}
           onLongPress={() => {
             Clipboard.setStringAsync(platform.url).then(() => {
-              ToastAndroid.show('Скопировано в буфер обмена', ToastAndroid.LONG);
+              ToastAndroid.show(t('common.copied'), ToastAndroid.LONG);
             });
           }}
           textStyle={styles.text}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
 import { Button } from '~/components/Button';
@@ -28,27 +29,35 @@ const Line = () => {
   return <View style={[{ borderBottomColor: globalStyles.border.borderColor }, styles.line]} />;
 };
 
-const PairSchedule = ({ schedule, isPair }: { schedule: IBellSchedulePair; isPair: boolean }) => (
-  <View style={styles.pairView}>
-    <Text style={styles.pairNumber}>
-      {schedule.number}
-      {isPair ? '-я пара' : '-й урок'}
-    </Text>
-    <Text style={styles.timeText}>
-      {schedule.start} - {schedule.end}
-    </Text>
-  </View>
-);
+const PairSchedule = ({ schedule, isPair }: { schedule: IBellSchedulePair; isPair: boolean }) => {
+  const { t } = useTranslation();
+  return (
+    <View style={styles.pairView}>
+      <Text style={styles.pairNumber}>
+        {isPair
+          ? t('bellSchedule.pairOrdinal', { position: schedule.number })
+          : t('bellSchedule.lessonOrdinal', { position: schedule.number })}
+      </Text>
+      <Text style={styles.timeText}>
+        {schedule.start} - {schedule.end}
+      </Text>
+    </View>
+  );
+};
 
-const BreakSchedule = ({ schedule }: { schedule: IBellScheduleBreak }) => (
-  <View style={{ flexDirection: 'row' }}>
-    <Line />
-    <Text style={fontSize.mini}>Перерыв {schedule.number} минут</Text>
-    <Line />
-  </View>
-);
+const BreakSchedule = ({ schedule }: { schedule: IBellScheduleBreak }) => {
+  const { t } = useTranslation();
+  return (
+    <View style={{ flexDirection: 'row' }}>
+      <Line />
+      <Text style={fontSize.mini}>{t('bellSchedule.break', { count: schedule.number })}</Text>
+      <Line />
+    </View>
+  );
+};
 
 const BellSchedule = () => {
+  const { t } = useTranslation();
   const [mode, setMode] = useState<BellScheduleModes>(BellScheduleModes.UNIVERSITY);
   const array = modeToSchedule[mode];
 
@@ -60,19 +69,19 @@ const BellSchedule = () => {
     <Screen>
       <View style={styles.buttonView}>
         <Button
-          text={'Университет'}
+          text={t('bellSchedule.university')}
           onPress={handleModeChange(BellScheduleModes.UNIVERSITY)}
           variant={mode === BellScheduleModes.UNIVERSITY ? 'primary' : 'card'}
           fontStyle={fontSize.medium}
         />
         <Button
-          text={'Лицей'}
+          text={t('bellSchedule.lyceum')}
           onPress={handleModeChange(BellScheduleModes.LYCEUM)}
           variant={mode === BellScheduleModes.LYCEUM ? 'primary' : 'card'}
           fontStyle={fontSize.medium}
         />
         <Button
-          text={'Лыжная база'}
+          text={t('bellSchedule.skiBase')}
           onPress={handleModeChange(BellScheduleModes.SKI_BASE)}
           variant={mode === BellScheduleModes.SKI_BASE ? 'primary' : 'card'}
           fontStyle={fontSize.medium}

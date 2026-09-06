@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
 import Card from '~/components/Card';
@@ -16,6 +17,7 @@ import { fontSize } from '~/utils/texts';
 const DisciplineEducationalComplexTheme = ({
   route,
 }: EducationStackScreenProps<'DisciplineEducationalComplexTheme'>) => {
+  const { t } = useTranslation();
   const { disciplineName, theme } = route.params;
 
   const client = useClient();
@@ -38,7 +40,7 @@ const DisciplineEducationalComplexTheme = ({
 
       {Boolean(data?.annotation) && (
         <View>
-          <Text style={[fontSize.big, { fontWeight: 'bold' }]}>Аннотация</Text>
+          <Text style={[fontSize.big, { fontWeight: 'bold' }]}>{t('dec.annotation')}</Text>
           <Text style={fontSize.medium}>{data?.annotation}</Text>
         </View>
       )}
@@ -47,13 +49,13 @@ const DisciplineEducationalComplexTheme = ({
         <Card style={{ marginTop: 'auto', marginBottom: '4%', gap: 8 }}>
           {Boolean(data.controlRequirements) && <ControlRequirements data={data.controlRequirements} />}
           {Boolean(data.links?.length) && (
-            <ListData label={'Другое обеспечение курса'} data={data.links} />
+            <ListData label={t('dec.otherCourseResources')} data={data.links} />
           )}
           {Boolean(data.requiredLiterature?.length) && (
-            <ListData label={'Обязательная литература'} data={data.requiredLiterature} />
+            <ListData label={t('dec.requiredLiterature')} data={data.requiredLiterature} />
           )}
           {Boolean(data.additionalLiterature?.length) && (
-            <ListData label={'Дополнительная литература'} data={data.additionalLiterature} />
+            <ListData label={t('dec.additionalLiterature')} data={data.additionalLiterature} />
           )}
         </Card>
       )}

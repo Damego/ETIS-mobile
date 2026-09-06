@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Alert, StyleSheet, TextInput, ToastAndroid, TouchableOpacity, View
 } from 'react-native';
@@ -23,6 +24,7 @@ const findDiscipline = (disciplineName: string, disciplines: IDisciplineInfo[]) 
 };
 
 const Note = ({ disciplineName }: { disciplineName: string }) => {
+  const { t } = useTranslation();
   const navigation = useNavigation<RootStackNavigationProp>();
   const globalStyles = useGlobalStyles();
   const [info, setInfo] = useState<IDisciplineInfo>();
@@ -45,7 +47,7 @@ const Note = ({ disciplineName }: { disciplineName: string }) => {
       const $info = findDiscipline(disciplineName, infos);
       if (info) $info.note = info.note;
       DisciplineStorage.saveInfo().then(() => {
-        ToastAndroid.show('Сохранено!', ToastAndroid.LONG);
+        ToastAndroid.show(t('disciplineInfo.noteSaved'), ToastAndroid.LONG);
         setTextChanged(false);
       });
     });
@@ -54,15 +56,15 @@ const Note = ({ disciplineName }: { disciplineName: string }) => {
   useBackPress(() => {
     if (!isTextChanged) return false;
     Alert.alert(
-      'Заметка',
-      'У вас есть несохранённые изменения в заметке. Желаете ли вы сохранить?',
+      t('disciplineInfo.note'),
+      t('disciplineInfo.noteUnsavedChanges'),
       [
         {
-          text: 'Выйти',
+          text: t('disciplineInfo.exit'),
           onPress: () => navigation.goBack(),
         },
         {
-          text: 'Сохранить и выйти',
+          text: t('disciplineInfo.saveAndExit'),
           onPress: () => {
             handleNoteSave();
             navigation.goBack();
@@ -80,7 +82,7 @@ const Note = ({ disciplineName }: { disciplineName: string }) => {
       <BorderLine />
 
       <View style={styles.noteContainer}>
-        <Text style={styles.text}>Заметки</Text>
+        <Text style={styles.text}>{t('disciplineInfo.notes')}</Text>
         <TouchableOpacity onPress={() => setShowNote((prev) => !prev)}>
           <Ionicons
             name={showNote ? 'chevron-up-outline' : 'chevron-down-outline'}
@@ -95,7 +97,7 @@ const Note = ({ disciplineName }: { disciplineName: string }) => {
             style={[globalStyles.border, styles.textInput, globalStyles.textColor2]}
             value={info.note}
             onChangeText={handleEditNote}
-            placeholder={'Запишите сюда почту или телефон преподавателя'}
+            placeholder={t('disciplineInfo.notePlaceholder')}
             placeholderTextColor={globalStyles.inputPlaceholder.color}
             multiline
           />

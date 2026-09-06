@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
 import ClickableText from '~/components/ClickableText';
@@ -11,11 +12,12 @@ export const MessagesShortcuts = ({
   currentShortcut: string;
   onShortcutPress: (shortcut: string) => void;
 }) => {
+  const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
 
   const shortcuts = {
-    messages: 'Сообщения',
-    announces: 'Объявления',
+    messages: t('shortcuts.messages'),
+    announces: t('shortcuts.announces'),
   };
 
   return (

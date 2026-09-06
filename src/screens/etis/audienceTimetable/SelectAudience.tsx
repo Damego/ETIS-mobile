@@ -2,6 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { FlashList } from '@shopify/flash-list';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { isPsutechAvailable, searchAudience } from '~/api/psutech/api';
@@ -17,6 +18,7 @@ import SearchInput from '~/screens/start/components/SearchInput';
 import { fontSize } from '~/utils/texts';
 
 const SelectAudience = ({ navigation }: EducationStackScreenProps) => {
+  const { t } = useTranslation();
   const theme = useAppTheme();
   const globalStyles = useGlobalStyles();
 
@@ -50,7 +52,7 @@ const SelectAudience = ({ navigation }: EducationStackScreenProps) => {
       {!isLoading && isPsutechAvailable() === false && (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={fontSize.medium} colorVariant={'text2'}>
-            Сервис временно недоступен.{'\n'}Попробуйте позже.
+            {t('audienceTimetable.serviceUnavailable')}
           </Text>
         </View>
       )}
@@ -80,7 +82,7 @@ const SelectAudience = ({ navigation }: EducationStackScreenProps) => {
           style={[styles.button, globalStyles.primaryBackgroundColor, globalStyles.borderRadius]}
         >
           <Text colorVariant={'primaryContrast'} style={fontSize.big}>
-            Выбрать
+            {t('audienceTimetable.select')}
           </Text>
           <Text colorVariant={'primaryContrast'}>({selectedAudience.number})</Text>
         </TouchableOpacity>

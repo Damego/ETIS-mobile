@@ -2,6 +2,7 @@ import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { Image } from 'expo-image';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import Screen from '~/components/Screen';
@@ -22,12 +23,12 @@ interface ScreenT {
 const SCREENS: ScreenT[][] = [
   [
     {
-      title: 'Учебный план',
+      title: 'navigation.teachPlan',
       icon: (color) => <AntDesign name={'profile'} size={ICON_SIZE} color={color} />,
       screenName: 'TeachPlan',
     },
     {
-      title: 'Пропущенные занятия',
+      title: 'navigation.absences',
       icon: (color) => (
         <Image
           source={require('../../../../../assets/absences.svg')}
@@ -40,36 +41,36 @@ const SCREENS: ScreenT[][] = [
   ],
   [
     {
-      title: 'Преподаватели',
+      title: 'navigation.teachers',
       icon: (color) => <AntDesign name={'team'} size={ICON_SIZE} color={color} />,
       screenName: 'Teachers',
     },
     {
-      title: 'Рейтинг',
+      title: 'navigation.rating',
       icon: (color) => <AntDesign name={'staro'} size={ICON_SIZE} color={color} />,
       screenName: 'Rating',
     },
   ],
   [
     {
-      title: 'Приказы',
+      title: 'navigation.orders',
       icon: (color) => <AntDesign name={'filetext1'} size={ICON_SIZE} color={color} />,
       screenName: 'Orders',
     },
     {
-      title: 'Справки',
+      title: 'navigation.certificates',
       icon: (color) => <AntDesign name={'book'} size={ICON_SIZE} color={color} />,
       screenName: 'Certificate',
     },
   ],
   [
     {
-      title: 'Анкетирование',
+      title: 'navigation.questionnaire',
       icon: (color) => <AntDesign name={'copy1'} size={ICON_SIZE} color={color} />,
       screenName: 'SessionQuestionnaireList',
     },
     {
-      title: 'Расписание аудиторий',
+      title: 'more.audienceTimetable',
       icon: (color) => <Ionicons name={'business-outline'} size={ICON_SIZE} color={color} />,
       screenName: 'SelectAudience',
       requiresPsutech: true,
@@ -77,7 +78,7 @@ const SCREENS: ScreenT[][] = [
   ],
   [
     {
-      title: 'Электронные ресурсы',
+      title: 'more.digitalResources',
       icon: (color) => <AntDesign name={'copy1'} size={ICON_SIZE} color={color} />,
       screenName: 'DigitalResources',
     },
@@ -86,6 +87,7 @@ const SCREENS: ScreenT[][] = [
 
 const ScreenButton = ({ screen }: { screen: ScreenT }) => {
   const { title, screenName, icon, requiresPsutech } = screen;
+  const { t } = useTranslation();
 
   const globalStyles = useGlobalStyles();
   const navigation = useNavigation<EducationNavigationProp>();
@@ -105,26 +107,29 @@ const ScreenButton = ({ screen }: { screen: ScreenT }) => {
       accessibilityState={disabled ? { disabled: true } : undefined}
     >
       {icon(globalStyles.textColor.color)}
-      <Text style={[styles.cardText, disabled && globalStyles.textColor2]}>{title}</Text>
+      <Text style={[styles.cardText, disabled && globalStyles.textColor2]}>{t(title)}</Text>
     </TouchableOpacity>
   );
 };
 
-const MoreScreens = () => (
-  <Screen containerStyle={{ gap: 8 }}>
-    <Text style={styles.titleText}>Меню ЕТИС</Text>
+const MoreScreens = () => {
+  const { t } = useTranslation();
+  return (
+    <Screen containerStyle={{ gap: 8 }}>
+      <Text style={styles.titleText}>{t('more.etisMenu')}</Text>
 
-    <View style={{ gap: 10 }}>
-      {SCREENS.map((group, index) => (
-        <View style={{ flexDirection: 'row', gap: 10 }} key={index}>
-          {group.map((screen) => (
-            <ScreenButton screen={screen} key={screen.screenName} />
-          ))}
-        </View>
-      ))}
-    </View>
-  </Screen>
-);
+      <View style={{ gap: 10 }}>
+        {SCREENS.map((group, index) => (
+          <View style={{ flexDirection: 'row', gap: 10 }} key={index}>
+            {group.map((screen) => (
+              <ScreenButton screen={screen} key={screen.screenName} />
+            ))}
+          </View>
+        ))}
+      </View>
+    </Screen>
+  );
+};
 
 export default MoreScreens;
 

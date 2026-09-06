@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import React, { useContext, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
 import BorderLine from '~/components/BorderLine';
@@ -14,12 +15,13 @@ import HistoryButton from '../HistoryButton';
 import TaskItem from './TaskItem';
 
 const GroupedTaskList = ({ tasks }: { tasks: DisciplineTask[] }) => {
+  const { t } = useTranslation();
   const { disciplineDate } = useTaskContext();
   const { datetime } = tasks[0];
   let time: string | null;
 
   if (datetime === null) time = null;
-  else if (disciplineDate?.isSame(datetime)) time = 'На эту пару';
+  else if (disciplineDate?.isSame(datetime)) time = t('disciplineInfo.thisPair');
   else time = formatTime(datetime);
 
   return (

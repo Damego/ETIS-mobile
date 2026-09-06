@@ -1,6 +1,7 @@
 import { useBottomSheet } from '@expo/ui/community/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import React, { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
 import BorderLine from '~/components/BorderLine';
@@ -62,18 +63,21 @@ const Theme = ({
 const ThemesBottomSheet = React.forwardRef<
   BottomSheetModal,
   { themes: IDisciplineEducationalComplexThemeLink[]; disciplineName: string }
->(({ themes, disciplineName }, ref) => (
-  <BottomSheetModal ref={ref} snapPoints={['50%', '100%']}>
-    <BottomSheetContent title='Темы'>
-      {themes.map((theme, index) => (
-        <React.Fragment key={index}>
-          <Theme theme={theme} disciplineName={disciplineName} />
-          {index !== themes.length - 1 && <BorderLine />}
-        </React.Fragment>
-      ))}
-    </BottomSheetContent>
-  </BottomSheetModal>
-));
+>(({ themes, disciplineName }, ref) => {
+  const { t } = useTranslation();
+  return (
+    <BottomSheetModal ref={ref} snapPoints={['50%', '100%']}>
+      <BottomSheetContent title={t('dec.themes')}>
+        {themes.map((theme, index) => (
+          <React.Fragment key={index}>
+            <Theme theme={theme} disciplineName={disciplineName} />
+            {index !== themes.length - 1 && <BorderLine />}
+          </React.Fragment>
+        ))}
+      </BottomSheetContent>
+    </BottomSheetModal>
+  );
+});
 
 const Themes = ({
   themes,
@@ -82,11 +86,12 @@ const Themes = ({
   themes: IDisciplineEducationalComplexThemeLink[];
   disciplineName: string;
 }) => {
+  const { t } = useTranslation();
   const ref = useRef<BottomSheetModal | null>(null);
 
   return (
     <>
-      <SectionRow label='Темы' onPress={() => ref.current?.present()} />
+      <SectionRow label={t('dec.themes')} onPress={() => ref.current?.present()} />
       <ThemesBottomSheet ref={ref} themes={themes} disciplineName={disciplineName} />
     </>
   );

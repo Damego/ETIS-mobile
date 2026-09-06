@@ -1,5 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
 import BottomSheetModal from '~/components/BottomSheetModal';
@@ -15,6 +16,7 @@ import GradesContainer from '~/screens/etis/main/grades/GradesContainer';
 import { fontSize } from '~/utils/texts';
 
 const Grades = () => {
+  const { t } = useTranslation();
   const { data, isLoading, refresh, loadSession } = useSignsQuery();
   const ref = useRef<BottomSheetModal | null>(null);
   const theme = useAppTheme();
@@ -38,7 +40,7 @@ const Grades = () => {
       <View style={{
         flexDirection: 'row', gap: 14, alignItems: 'center', marginBottom: '2%'
       }}>
-        <Text style={[{ fontWeight: '700', flex: 2 }, fontSize.slarge]}>Оценки</Text>
+        <Text style={[{ fontWeight: '700', flex: 2 }, fontSize.slarge]}>{t('shortcuts.grades')}</Text>
         {data && (
           <ClickableText
             onPress={() => ref.current?.present()}

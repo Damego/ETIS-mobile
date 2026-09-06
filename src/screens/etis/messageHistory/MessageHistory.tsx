@@ -1,5 +1,6 @@
 import { ListRenderItemInfo } from '@shopify/flash-list';
 import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ToastAndroid, View } from 'react-native';
 
 import { ListScreen } from '~/components/Screen';
@@ -37,6 +38,7 @@ export default function MessageHistory({
   route,
   navigation,
 }: EducationStackScreenProps<'MessageHistory'>) {
+  const { t } = useTranslation();
   const [messages, setMessages] = useState<IMessage[]>(route.params.data);
   const pageRef = useRef<number>(route.params.page);
   const [isUploading, setUploading] = useState<boolean>(false);
@@ -63,10 +65,7 @@ export default function MessageHistory({
     const result = await query.get(payload);
 
     if (!result.data) {
-      ToastAndroid.show(
-        'Не удалось обновить сообщения. Проверьте интернет-соединение',
-        ToastAndroid.LONG
-      );
+      ToastAndroid.show(t('messages.refreshFailed'), ToastAndroid.LONG);
       return;
     }
 
@@ -90,7 +89,7 @@ export default function MessageHistory({
 
   const onSubmit = async (text: string) => {
     if (isDemo) {
-      ToastAndroid.show('Отправка сообщение в демо невозможна', ToastAndroid.LONG);
+      ToastAndroid.show(t('messages.demoSendDisabled'), ToastAndroid.LONG);
       return;
     }
 
