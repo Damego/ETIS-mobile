@@ -1,5 +1,6 @@
 import PagerView, { type PagerViewRef } from '@expo/ui/community/pager-view';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import React, { useRef, useState } from 'react';
@@ -16,6 +17,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { cache } from '~/cache/smartCache';
 import { useAppDispatch } from '~/hooks';
+import { RootStackNavigationProp } from '~/navigation/types';
 import { setIntroViewed } from '~/redux/reducers/settingsSlice';
 import { fontSize } from '~/utils/texts';
 
@@ -55,41 +57,89 @@ const slides: ISlide[] = [
   },
 ];
 
+// --- Плавный градиент между слайдами ---
+// PagerView жёстко режет страницы, поэтому каждый слайд несёт свой градиент —
+// на стыке цвета обрываются. Вместо этого градиент рисуется ОДНИМ фоном под
+// прозрачным пейджером: onPageScroll даёт дробную позицию свайпа, и фон
+// непрерывно интерполируется от цветов текущего слайда к следующему.
+
+const hexToRgb = (hex: string): [number, number, number] => {
+  const value = Number.parseInt(hex.replace('#', ''), 16);
+  const r = Math.floor(value / 65_536) % 256;
+  const g = Math.floor(value / 256) % 256;
+  const b = value % 256;
+  return [r, g, b];
+};
+
+const toHex = (r: number, g: number, b: number): string =>
+  [r, g, b]
+    .map((channel) => channel.toString(16).padStart(2, '0'))
+    .join('');
+
+const lerpColor = (from: string, to: string, t: number): string => {
+  const [r1, g1, b1] = hexToRgb(from);
+  const [r2, g2, b2] = hexToRgb(to);
+  return `#${toHex(
+    Math.round(r1 + (r2 - r1) * t),
+    Math.round(g1 + (g2 - g1) * t),
+    Math.round(b1 + (b2 - b1) * t)
+  )}`;
+};
+
+const lerpPair = (
+  from: readonly [string, string],
+  to: readonly [string, string],
+  t: number
+): [string, string] => [lerpColor(from[0], to[0], t), lerpColor(from[1], to[1], t)];
+
 const BUTTON_RADIUS = 50;
 // Диаметр точки-индикатора
 const DOT_SIZE = 8;
 // Отступ между точками
 const DOT_GAP = 8;
 
+// Слайд прозрачный: общий градиент фона лежит под пейджером и
+// плавно перетекает между слайдами (см. lerpPair выше)
 const Slide = ({ slide, title, text }: { readonly slide: ISlide; readonly title: string; readonly text: string }) => (
-  <LinearGradient
-    colors={slide.colors}
-    // Направление из варианта «в градиент» (160°): слева-сверху вправо-вниз
-    start={{ x: 0, y: 0.2 }}
-    end={{ x: 1, y: 0.9 }}
-    style={styles.slide}
-  >
+  <View style={styles.slide}>
     <Image source={slide.source} style={styles.image} />
 
     <View style={styles.textContainer}>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.text}>{text}</Text>
     </View>
-  </LinearGradient>
+  </View>
 );
 
 const Intro = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const navigation = useNavigation<RootStackNavigationProp>();
   const insets = useSafeAreaInsets();
   const pagerRef = useRef<PagerViewRef | null>(null);
   const [position, setPosition] = useState(0);
+  // Дробная позиция свайпа (position + offset) — для интерполяции фона
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   const isLast = position === slides.length - 1;
+
+  // Цвета фона: интерполяция от текущего слайда к следующему по прогрессу
+  // свайпа. useMemo — purity: вычисление зависит только от scrollProgress.
+  const backgroundColors = React.useMemo(() => {
+    const clamped = Math.max(0, Math.min(slides.length - 1, scrollProgress));
+    const index = Math.min(Math.floor(clamped), slides.length - 2);
+    const from = slides[index];
+    const to = slides[index + 1];
+    if (!from || !to) return slides[0].colors;
+    return lerpPair(from.colors, to.colors, clamped - index);
+  }, [scrollProgress]);
 
   const finish = () => {
     cache.placeIntroViewed(true);
     dispatch(setIntroViewed(true));
+    // initialRouteName применяется только при первом монтировании навигатора —
+    // диспатча недостаточно, уходим со стека явно
+    navigation.reset({ index: 0, routes: [{ name: 'TabNavigator' }] });
   };
 
   const next = () => {
@@ -112,11 +162,24 @@ const Intro = () => {
       {/* eslint-disable-next-line react/style-prop-object */}
       <StatusBar style='light' />
 
+      {/* Общий плавный фон: интерполируется по мере свайпа,
+          направление — как в v1 (160°) */}
+      <LinearGradient
+        colors={backgroundColors}
+        start={{ x: 0, y: 0.2 }}
+        end={{ x: 1, y: 0.9 }}
+        style={styles.background}
+      />
+
       <PagerView
         ref={pagerRef}
         style={styles.pager}
         onPageSelected={(event) => {
           setPosition(event.nativeEvent.position);
+        }}
+        onPageScroll={(event) => {
+          const { position: leading, offset } = event.nativeEvent;
+          setScrollProgress(leading + offset);
         }}
       >
         {slides.map((slide) => (
@@ -162,7 +225,9 @@ const Intro = () => {
             onPress={next}
           >
             {isLast ? (
-              <AntDesign name='arrowright' size={24} color='#FFFFFF' />
+              // Высота иконки = lineHeight текста «Далее»: кнопка не меняет
+              // размер при смене контента на последнем слайде
+              <AntDesign name='arrowright' size={24} color='#FFFFFF' style={styles.buttonNextIcon} />
             ) : (
               <Text style={styles.buttonNextText}>{t('intro.next')}</Text>
             )}
@@ -176,6 +241,10 @@ const Intro = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  // Фоновый градиент под прозрачным пейджером — интерполируется на свайпе
+  background: {
+    ...StyleSheet.absoluteFill,
   },
   pager: {
     flex: 1,
@@ -256,6 +325,11 @@ const styles = StyleSheet.create({
     ...fontSize.medium,
     fontFamily: 'Ubuntu-Bold',
     color: '#FFFFFF',
+  },
+  buttonNextIcon: {
+    // fontSize.medium + Ubuntu default line-height ≈ 19–20px —
+    // иконка 24px давала другой размер кнопки
+    lineHeight: 20,
   },
   buttonHidden: {
     opacity: 0,
