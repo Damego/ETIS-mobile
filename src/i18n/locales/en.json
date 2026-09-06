@@ -132,5 +132,16 @@
   "settings": {
     "appSection": "Application",
     "language": "Language"
+  },
+  "debug": {
+    "title": "A parser error occurred",
+    "message": "You have probably encountered unexpected ETIS behavior.\nPlease let us know the details!",
+    "open": "Open"
+  },
+  "privacyPolicy": {
+    "title": "Privacy Policy",
+    "message": "Before using the app, please read and accept the privacy policy",
+    "open": "Open",
+    "accept": "Accept"
   }
 }
