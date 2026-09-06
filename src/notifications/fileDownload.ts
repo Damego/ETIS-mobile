@@ -1,12 +1,14 @@
 import notifee, { AndroidStyle } from '@notifee/react-native';
 
+import i18next from '~/i18n';
+
 export const startDownloadNotification = async (fileName: string) => {
   const channelId = await notifee.createChannel({
     id: 'download',
-    name: 'Канал загрузок',
+    name: i18next.t('notifications.downloadChannel'),
   });
   const id = await notifee.displayNotification({
-    title: 'Скачивается файл',
+    title: i18next.t('notifications.downloading'),
     body: fileName,
     android: {
       channelId,
@@ -34,7 +36,7 @@ export const finishDownloadNotification = async ({
 }) => {
   await notifee.displayNotification({
     id,
-    title: 'Файл скачан',
+    title: i18next.t('notifications.downloaded'),
     body: fileName,
     data: {
       type: 'file',
@@ -60,11 +62,11 @@ export const errorDownloadNotification = async ({
   channelId: string;
   fileName: string;
 }) => {
-  const message = `Не удалось скачать файл ${fileName}`;
+  const message = i18next.t('notifications.downloadFailedFile', { fileName });
 
   await notifee.displayNotification({
     id,
-    title: 'Ошибка скачивания',
+    title: i18next.t('notifications.downloadError'),
     body: message,
     android: {
       channelId,

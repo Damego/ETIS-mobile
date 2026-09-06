@@ -1,19 +1,21 @@
 import notifee, { AndroidStyle, TriggerType } from '@notifee/react-native';
 import dayjs from 'dayjs';
 
+import i18next from '~/i18n';
+
 import { DisciplineStorage, DisciplineTask } from '../models/disciplinesTasks';
 import { partitionItems } from '../utils/utils';
 
 export const scheduleTaskNotifications = async (task: DisciplineTask) => {
   const channelId = await notifee.createChannel({
     id: 'taskReminder',
-    name: 'Канал напоминаний',
+    name: i18next.t('notifications.taskChannel'),
   });
 
   task.reminders.map(async (reminder) => {
     reminder.notificationId = await notifee.createTriggerNotification(
       {
-        title: 'Напоминание о задании',
+        title: i18next.t('notifications.taskReminder'),
         subtitle: task.disciplineName,
         body: task.description,
         data: {

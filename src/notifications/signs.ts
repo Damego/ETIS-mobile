@@ -1,5 +1,7 @@
 import notifee, { AndroidImportance, AndroidStyle } from '@notifee/react-native';
 
+import i18next from '~/i18n';
+
 import { IDifferentCheckPoint } from '../tasks/signs/types';
 import { getPointsWord } from '../utils/texts';
 import { getRandomItem } from '../utils/utils';
@@ -12,12 +14,20 @@ export enum SignType {
   FULL = 'FULL',
 }
 
-const messages = {
-  ZERO: ['Даже не близко!', 'Попробуй еще раз!', 'Попробуй в следующий раз нарисовать котенка!'],
-  NEGATIVE: ['Всегда есть пересдача 🙃', 'Анлак'],
-  EXACTLY: ['По грани', 'Идеально', 'В точку'],
-  POSITIVE: ['Хорошая работа!', '👍', '👌', '🤙'],
-  FULL: ['Легенда👍', '🤯', '🤩', '🥳', '🎉'],
+const messages: Record<SignType, string[]> = {
+  ZERO: [
+    i18next.t('notifications.signs.zero1'),
+    i18next.t('notifications.signs.zero2'),
+    i18next.t('notifications.signs.zero3'),
+  ],
+  NEGATIVE: [i18next.t('notifications.signs.negative1'), i18next.t('notifications.signs.negative2')],
+  EXACTLY: [
+    i18next.t('notifications.signs.exactly1'),
+    i18next.t('notifications.signs.exactly2'),
+    i18next.t('notifications.signs.exactly3'),
+  ],
+  POSITIVE: [i18next.t('notifications.signs.positive1'), '👍', '👌', '🤙'],
+  FULL: [i18next.t('notifications.signs.full1'), '🤯', '🤩', '🥳', '🎉'],
 };
 
 const getSignType = (difference: IDifferentCheckPoint): SignType => {
@@ -58,7 +68,7 @@ const buildMessage = (difference: IDifferentCheckPoint) => {
 export const displaySignNotification = async (difference: IDifferentCheckPoint) => {
   const signsChannelId = await notifee.createChannel({
     id: 'signs',
-    name: 'Канал оценок',
+    name: i18next.t('notifications.signsChannel'),
     vibrationPattern: [300, 500, 300, 500],
     importance: AndroidImportance.HIGH,
     sound: 'default',
@@ -67,7 +77,7 @@ export const displaySignNotification = async (difference: IDifferentCheckPoint) 
 
   const message = buildMessage(difference);
   await notifee.displayNotification({
-    title: 'Выставлена новая оценка!',
+    title: i18next.t('notifications.signs.newGrade'),
     body: message,
     android: {
       channelId: signsChannelId,
