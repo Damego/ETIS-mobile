@@ -16,6 +16,7 @@ import {
 } from '~/redux/reducers/accountSlice';
 import { httpClient } from '~/utils';
 import isDemoCredentials from '~/utils/demo';
+import logger from '~/utils/logger';
 
 import Text from './Text';
 
@@ -181,7 +182,7 @@ const AuthLoadingModal = () => {
 
   const signInOffline = () => {
     if (fromStorage) {
-      console.log('[AUTH] Signed in as offline');
+      logger.log('[AUTH] Signed in as offline');
       dispatch(signIn({ isOffline: true }));
       dispatch(setAuthorizing(false));
     }

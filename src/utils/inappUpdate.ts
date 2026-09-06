@@ -7,15 +7,17 @@ import SpInAppUpdates, {
   StartUpdateOptions,
 } from 'sp-react-native-in-app-updates';
 
+import logger from './logger';
+
 const HIGH_PRIORITY_UPDATE = 5; // Arbitrary, depends on how you handle priority in the Play Console
 export const checkUpdate = () => {
   if (!__DEV__) {
     const inAppUpdates = new SpInAppUpdates(false);
-    console.log('[INAPP] Checking store version');
+    logger.log('[INAPP] Checking store version');
     inAppUpdates
       .checkNeedsUpdate({ curVersion: Constants.expoConfig?.version ?? '1.0.0' })
       .then((result) => {
-        console.log(`[INAPP] result: ${JSON.stringify(result)}`);
+        logger.log(`[INAPP] result: ${JSON.stringify(result)}`);
         if (result.shouldUpdate) {
           if (Platform.OS === 'android') {
             const updateOptions: StartUpdateOptions = {
@@ -26,8 +28,8 @@ export const checkUpdate = () => {
             };
             if (updateOptions.updateType === IAUUpdateKind.FLEXIBLE) {
               inAppUpdates.addStatusUpdateListener((ev) => {
-                console.debug(`[INAPP] status: ${JSON.stringify(ev)}`);
-                if (ev.status === AndroidInstallStatus.DOWNLOADED) console.log('[INAPP] downloaded');
+                logger.log(`[INAPP] status: ${JSON.stringify(ev)}`);
+                if (ev.status === AndroidInstallStatus.DOWNLOADED) logger.log('[INAPP] downloaded');
               });
             }
             inAppUpdates.startUpdate(updateOptions); // https://github.com/SudoPlz/sp-react-native-in-app-updates/blob/master/src/types.ts#L78
@@ -38,11 +40,11 @@ export const checkUpdate = () => {
         const msg = String(err?.message || err || 'Unknown error');
         // Play Core InstallException -6: device state not allowed (battery, storage, etc.)
         if (msg.includes('InstallException') && msg.includes(' -6')) {
-          console.warn('[INAPP] Update not allowed due to device state (-6). Skipping.');
+          logger.warn('[INAPP] Update not allowed due to device state (-6). Skipping.');
           return;
         }
         // Other non-critical errors from sp-react-native-in-app-updates should not crash the app
-        console.warn(`[INAPP] checkNeedsUpdate failed: ${msg}`);
+        logger.warn(`[INAPP] checkNeedsUpdate failed: ${msg}`);
       });
     return inAppUpdates;
   }

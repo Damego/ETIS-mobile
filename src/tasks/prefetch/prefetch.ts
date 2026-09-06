@@ -1,6 +1,7 @@
 import { cache } from '~/cache/smartCache';
 import { BaseClient } from '~/data/base';
 import { RequestType } from '~/models/results';
+import logger from '~/utils/logger';
 
 const prefetch = async (client: BaseClient) => {
   try {
@@ -44,7 +45,7 @@ const prefetch = async (client: BaseClient) => {
 
     return { currentWeek, currentSession };
   } catch (error) {
-    console.warn('[PREFETCH] Failed:', String(error instanceof Error ? error.message : error));
+    logger.warn('[PREFETCH] Failed:', String(error instanceof Error ? error.message : error));
   }
 };
 

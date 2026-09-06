@@ -14,6 +14,7 @@ import {
   rescheduleTaskNotifications,
   scheduleTaskNotifications,
 } from '~/notifications/taskReminder';
+import logger from '~/utils/logger';
 import { fontSize } from '~/utils/texts';
 
 import { PartialTask } from '../AddTaskModalContent';
@@ -41,7 +42,7 @@ export const TaskContainer = ({
         .map((rem) => rem.notificationId)
         .filter((id): id is string => Boolean(id));
       selectedTask.reminders = reminders;
-      rescheduleTaskNotifications(notificationIds, selectedTask).catch((e) => console.warn(e));
+      rescheduleTaskNotifications(notificationIds, selectedTask).catch((e) => logger.warn('[TASK] reschedule failed', e));
       saveTasks().then(() => {
         modalRef.current?.dismiss();
         setSelectedTask(undefined);
@@ -56,7 +57,7 @@ export const TaskContainer = ({
       reminders,
       false
     );
-    scheduleTaskNotifications(task).catch((e) => console.warn(e));
+    scheduleTaskNotifications(task).catch((e) => logger.warn('[TASK] schedule failed', e));
     addTask(task).then(() => modalRef.current?.dismiss());
   };
 
@@ -66,7 +67,7 @@ export const TaskContainer = ({
   }, []);
 
   const handleTaskRemove = (task: DisciplineTask) => {
-    cancelScheduledTaskNotifications({ task }).catch((e) => console.warn(e));
+    cancelScheduledTaskNotifications({ task }).catch((e) => logger.warn('[TASK] cancel failed', e));
     removeTask(task).then(() => modalRef.current?.dismiss());
   };
 

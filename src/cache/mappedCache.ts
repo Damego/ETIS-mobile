@@ -1,5 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import logger from '~/utils/logger';
+
 type Dict<KT extends string | number | symbol, VT> = {
   [key in KT]: { data: VT; timestamp: number };
 };
@@ -30,7 +32,7 @@ export default class MappedCache<KT extends string | number | symbol, VT> {
     this.data = (stringData != null ? JSON.parse(stringData) : null) || {};
     this.ready = true;
 
-    console.log(`[CACHE] ${this.key.toLowerCase()} is ready to work`);
+    logger.log(`[CACHE] ${this.key.toLowerCase()} is ready to work`);
   }
 
   get(key: KT): VT {

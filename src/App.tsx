@@ -21,6 +21,7 @@ import manageEventTheme from './redux/manageEventTheme';
 import { loadStorage } from './redux/storageLoader';
 import { defineSignsFetchTask } from './tasks/signs/signs';
 import { checkUpdate } from './utils/inappUpdate';
+import logger from './utils/logger';
 import { addShortcuts } from './utils/shortcuts';
 
 dayjs.locale('ru');
@@ -39,7 +40,7 @@ store.dispatch(loadStorage()).then(
     store.dispatch(manageEventTheme(store));
   },
   (error) => {
-    console.warn('loadStorage failed', error);
+    logger.warn('loadStorage failed', error);
   },
 );
 

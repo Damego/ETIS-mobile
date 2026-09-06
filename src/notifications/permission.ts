@@ -1,12 +1,14 @@
 import notifee, { AuthorizationStatus } from '@notifee/react-native';
 
+import logger from '~/utils/logger';
+
 const requestNotificationPermission = async () => {
   const settings = await notifee.requestPermission();
 
   if (settings.authorizationStatus === AuthorizationStatus.AUTHORIZED) {
-    console.log('[NOTIF] Notifications authorized');
+    logger.log('[NOTIF] Notifications authorized');
   } else {
-    console.log('[NOTIF] Notification request denied');
+    logger.log('[NOTIF] Notification request denied');
   }
 };
 

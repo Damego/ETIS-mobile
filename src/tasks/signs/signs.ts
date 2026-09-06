@@ -5,6 +5,7 @@ import { BaseClient } from '~/data/base';
 import Client from '~/data/client';
 import { GetResultType, RequestType } from '~/models/results';
 import { displaySignNotification } from '~/notifications/signs';
+import logger from '~/utils/logger';
 
 import { differenceSigns } from './math';
 
@@ -26,7 +27,7 @@ export const defineSignsFetchTask = () =>
     ]);
 
     if (onlineResult.type === GetResultType.loginPage) {
-      console.log('[FETCH] Token is expired. Canceling fetch...'); // TODO: re-actualize token
+      logger.log('[FETCH] Token is expired. Canceling fetch...'); // TODO: re-actualize token
       unregisterBackgroundFetchAsync();
       return BackgroundTask.BackgroundTaskResult.Success;
     }
@@ -34,13 +35,13 @@ export const defineSignsFetchTask = () =>
     const difference = differenceSigns(cachedResult.data?.subjects ?? [], onlineResult.data?.subjects ?? []);
 
     if (difference?.length !== 0) {
-      console.log('[FETCH] Fetched new data!');
+      logger.log('[FETCH] Fetched new data!');
       difference.forEach((checkPoint) => {
         displaySignNotification(checkPoint);
       });
     }
 
-    console.log('[FETCH] Fetched no new data');
+    logger.log('[FETCH] Fetched no new data');
     return BackgroundTask.BackgroundTaskResult.Success;
   });
 
@@ -48,7 +49,7 @@ async function registerBackgroundTaskAsync() {
   try {
     const status = await BackgroundTask.getStatusAsync();
     if (status === BackgroundTask.BackgroundTaskStatus.Restricted) {
-      console.warn('[FETCH] Background task restricted on this device. Skipping.');
+      logger.warn('[FETCH] Background task restricted on this device. Skipping.');
       return;
     }
 
@@ -59,7 +60,7 @@ async function registerBackgroundTaskAsync() {
       });
     }
   } catch (err) {
-    console.warn('[FETCH] registerTaskAsync failed:', String(err instanceof Error ? err.message : err));
+    logger.warn('[FETCH] registerTaskAsync failed:', String(err instanceof Error ? err.message : err));
   }
 }
 
@@ -78,8 +79,8 @@ export const registerSignsFetchTask = async (session?: number) => {
   }
 
   if (!currentSession) {
-    console.warn('[FETCH] Unable to access current session. Task registering canceled.');
+    logger.warn('[FETCH] Unable to access current session. Task registering canceled.');
     return;
   }
-  registerBackgroundTaskAsync().then(() => console.log('[FETCH] Signs fetch task registered'));
+  registerBackgroundTaskAsync().then(() => logger.log('[FETCH] Signs fetch task registered'));
 };

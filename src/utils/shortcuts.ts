@@ -1,6 +1,7 @@
 import { Action, isSupported, setItems } from 'expo-quick-actions';
 
 import i18next from '~/i18n';
+import logger from '~/utils/logger';
 
 export interface AppShortcutItem extends Action {
   id: string;
@@ -31,6 +32,6 @@ export const addShortcuts = async () => {
     if (!(await isSupported())) return;
     await setItems(SHORTCUTS_ITEMS);
   } catch (error) {
-    console.warn('addShortcuts failed', error);
+    logger.warn('addShortcuts failed', error);
   }
 };

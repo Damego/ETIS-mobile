@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import logger from '~/utils/logger';
+
 class PsutechHealthCheck {
   private static readonly TIMEOUT = 3000;
   private static readonly BASE_URL = 'https://psutech.damego.ru';
@@ -16,7 +18,7 @@ class PsutechHealthCheck {
       return this.checkPromise;
     }
 
-    console.log('[PsutechHealthCheck] Checking availability...');
+    logger.log('[PsutechHealthCheck] Checking availability...');
 
     this.checkPromise = this.performCheck();
     const result = await this.checkPromise;
@@ -33,11 +35,11 @@ class PsutechHealthCheck {
       });
 
       this.isAvailable = true;
-      console.log('[PsutechHealthCheck] Service is available');
+      logger.log('[PsutechHealthCheck] Service is available');
       return true;
     } catch (error) {
       this.isAvailable = false;
-      console.warn('[PsutechHealthCheck] Service is unavailable:', error instanceof Error ? error.message : error);
+      logger.warn('[PsutechHealthCheck] Service is unavailable:', error instanceof Error ? error.message : error);
       return false;
     }
   }

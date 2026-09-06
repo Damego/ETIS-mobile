@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 import i18next from '~/i18n';
+import logger from '~/utils/logger';
 
 import {
   errorDownloadNotification,
@@ -76,7 +77,7 @@ const FileTextLink = ({
       await saveFileFromCache(fileData, fileName);
     } catch (e) {
       ToastAndroid.show(i18next.t('files.downloadFailed'), ToastAndroid.SHORT);
-      console.log(e);
+      logger.warn('[FILE] Saving file from cache failed', e);
     }
     shareAsync(fileData.uri).catch((e) => e);
   };

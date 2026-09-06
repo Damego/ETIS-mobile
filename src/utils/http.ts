@@ -13,6 +13,7 @@ import { UploadFile } from '~/models/other';
 import { CertificateRequestPayload } from './certificate';
 import { getCurrentEducationYear } from './datetime';
 import { toURLSearchParams } from './encoding';
+import logger from './logger';
 import { SessionQuestionnairePayload } from './sessionTest';
 import getRandomUserAgent from './userAgents';
 
@@ -88,7 +89,7 @@ class HTTPClient {
       const networkState = await getNetworkStateAsync();
       return networkState.isInternetReachable;
     } catch (e) {
-      console.warn('[HTTP] Cannot get network state');
+      logger.warn('[HTTP] Cannot get network state');
       return true;
     }
   }
@@ -125,7 +126,7 @@ class HTTPClient {
       : null;
     const pendingRequest = requestKey && this.pendingGetRequests.get(requestKey);
     if (pendingRequest) {
-      console.log(`[HTTP] Reusing pending GET request to '${endpoint}'`);
+      logger.log(`[HTTP] Reusing pending GET request to '${endpoint}'`);
       return pendingRequest;
     }
 
@@ -145,14 +146,14 @@ class HTTPClient {
     endpoint: string,
     { params, data, returnResponse }: Payload = { returnResponse: false }
   ): Promise<Response<string | AxiosResponse>> {
-    console.log(
+    logger.log(
       `[HTTP] [${method}] Sending request to '${endpoint}' with params: ${JSON.stringify(
         params
       )}; data: ${JSON.stringify(data)}`
     );
 
     if (!(await this.isInternetReachable())) {
-      console.warn('[HTTP] Internet is not reachable. Cancelling current request');
+      logger.warn('[HTTP] Internet is not reachable. Cancelling current request');
       return {
         error: {
           code: ErrorCode.invalidConnection,
@@ -187,7 +188,7 @@ class HTTPClient {
         data: returnResponse ? response : response.data,
       };
     } catch (e) {
-      console.warn('[HTTP]', e);
+      logger.warn('[HTTP]', e);
 
       return {
         error: {
@@ -201,7 +202,7 @@ class HTTPClient {
   downloadFile(uri: string, fileName: string) {
     const url = `${this.baseURL}/${uri}`;
 
-    console.log(`[HTTP] Downloading a file from ${url}`);
+    logger.log(`[HTTP] Downloading a file from ${url}`);
 
     return downloadAsync(url, `${documentDirectory}${fileName}`, {
       headers: {
@@ -254,7 +255,7 @@ class HTTPClient {
     const [sessionID] = cookies[0].split(';');
     this.sessionID = sessionID;
 
-    console.log(`[HTTP] Authorized with ${sessionID}`);
+    logger.log(`[HTTP] Authorized with ${sessionID}`);
 
     return null;
   }

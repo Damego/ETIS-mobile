@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { useClient } from '~/data/client';
 import { GetResultType, RequestType } from '~/models/results';
 import { setMessageCount } from '~/redux/reducers/studentSlice';
+import logger from '~/utils/logger';
 
 import { useAppDispatch } from './redux';
 import useQuery from './useQuery';
@@ -22,8 +23,8 @@ const useMessagesQuery = () => {
         dispatch(setMessageCount(null));
       }
     },
-    onFail: (result) => {
-      console.log('fail');
+    onFail: () => {
+      logger.warn('[MESSAGES] fetch failed, falling back to cache');
       return {
         data: 1,
         requestType: RequestType.forceCache,

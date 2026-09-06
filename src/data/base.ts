@@ -36,6 +36,7 @@ import { ITimeTable } from '~/models/timeTable';
 import { StudentInfo } from '~/parser/menu';
 import { isLoginPage } from '~/parser/utils';
 import { Response } from '~/utils/http';
+import logger from '~/utils/logger';
 import { reportParserError } from '~/utils/sentry';
 
 export interface BaseClient {
@@ -124,7 +125,7 @@ export class BasicClient<P extends IGetPayload, T> {
     try {
       parsedData = this.parseMethod(data ?? '', payload);
     } catch (e) {
-      console.error(`[PARSER] Ignoring an error from ${this.name}`, e instanceof Error ? e.stack : e);
+      logger.error(`[PARSER] Ignoring an error from ${this.name}`, e instanceof Error ? e.stack : e);
       reportParserError(e);
     }
     if (!parsedData) return failedResult as IGetResult<T>;
@@ -136,10 +137,10 @@ export class BasicClient<P extends IGetPayload, T> {
   }
 
   async getData(payload: P): Promise<IGetResult<T>> {
-    console.log(`[DATA] Try retrieve ${this.name}`);
+    logger.log(`[DATA] Try retrieve ${this.name}`);
     const cached: IGetResult<T> | null = await this.tryCached(payload);
     if (cached?.data) {
-      console.log(`[DATA] Retrieved ${this.name} from cache`);
+      logger.log(`[DATA] Retrieved ${this.name} from cache`);
       return cached;
     }
     if (payload.requestType === RequestType.forceCache) {
@@ -149,7 +150,7 @@ export class BasicClient<P extends IGetPayload, T> {
 
     if (!fetched || fetched?.error) {
       if (payload.requestType === RequestType.forceFetch) {
-        console.log(`[DATA] Failed to force retrieve ${this.name} from server`);
+        logger.log(`[DATA] Failed to force retrieve ${this.name} from server`);
         return errorResult as IGetResult<T>;
       }
       return (await this.tryCached({ ...payload, requestType: RequestType.forceCache })) ?? (errorResult as IGetResult<T>);
@@ -157,17 +158,17 @@ export class BasicClient<P extends IGetPayload, T> {
 
     const loginPage = this.checkLoginPage(fetched);
     if (loginPage) {
-      console.log(`[DATA] Retrieved ${this.name} from server, but it's login page`);
+      logger.log(`[DATA] Retrieved ${this.name} from server, but it's login page`);
       return loginPage;
     }
     const parsed = await this.tryParse(fetched, payload);
     if (parsed === failedResult) {
-      console.log(`[DATA] Retrieved ${this.name} from server, but failed to parse`);
+      logger.log(`[DATA] Retrieved ${this.name} from server, but failed to parse`);
       return parsed;
     }
 
     await this.placeMethod(parsed.data as T, payload);
-    console.log(`[DATA] Retrieved and cached ${this.name} from server`);
+    logger.log(`[DATA] Retrieved and cached ${this.name} from server`);
     return parsed;
   }
 }

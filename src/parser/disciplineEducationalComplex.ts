@@ -178,7 +178,5 @@ export const parseDisciplineEducationalComplex = (html: string) => {
     examQuestions,
     evaluationIndicators,
   };
-
-  console.log(JSON.stringify(data));
   return data;
 };
