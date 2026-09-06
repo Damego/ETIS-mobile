@@ -34,10 +34,9 @@ const getOptions = ({
 /**
  * Выбор семестра/периода в шторке.
  *
- * Обязательно с snapPoints (см. комментарий в OptionsBottomSheet):
- * без них @expo/ui на Android меряет контент циклически — узкая ширина
- * и преждевременные переносы, а длинный список семестров не скроллится
- * и уходит за нижний край экрана.
+ * Без snapPoints (fitToContents): высота шторки — по контенту.
+ * Длинный список семестров ограничен 80% экрана и скроллится
+ * (см. fitContent в BottomSheetContent).
  */
 const PeriodsBottomSheet = React.forwardRef<BottomSheetModal, Props>(
   ({ currentPeriod, latestPeriod, periodName, onChange }, ref) => {
@@ -47,8 +46,8 @@ const PeriodsBottomSheet = React.forwardRef<BottomSheetModal, Props>(
       periodName,
     });
     return (
-      <BottomSheetModal ref={ref} snapPoints={['50%', '100%']}>
-        <BottomSheetContent>
+      <BottomSheetModal ref={ref}>
+        <BottomSheetContent fitContent>
           {options?.map((item) => (
             <ClickableText
               key={item.value}

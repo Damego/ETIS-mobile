@@ -1,6 +1,8 @@
 import { BottomSheetScrollView } from '@expo/ui/community/bottom-sheet';
 import React from 'react';
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import {
+  StyleProp, StyleSheet, useWindowDimensions, ViewStyle
+} from 'react-native';
 
 import Text from '~/components/Text';
 import { fontSize } from '~/utils/texts';
@@ -8,6 +10,15 @@ import { fontSize } from '~/utils/texts';
 interface BottomSheetContentProps {
   readonly title?: string;
   readonly style?: StyleProp<ViewStyle>;
+  /**
+   * Для шторок БЕЗ snapPoints (режим fitToContents — высота шторки
+   * по контенту). В этом режиме RNHostView(matchContents) меряет контент
+   * циклически: `width: '100%'` разрешается от хоста, хост — от контента,
+   * и колонка схлопывается по ширине текста. Явная ширина окна разрывает
+   * цикл, а maxHeight ограничивает высоту — ScrollView получает bounded
+   * height и скроллится, длинный контент не уходит за край экрана.
+   */
+  readonly fitContent?: boolean;
   readonly children: React.ReactNode;
 }
 
@@ -22,15 +33,19 @@ interface BottomSheetContentProps {
  * высоту по контенту) и необходим при явных snapPoints, чтобы прокрутка
  * работала по всей высоте шторки.
  */
-const BottomSheetContent = ({ title, style, children }: BottomSheetContentProps) => (
-  <BottomSheetScrollView
-    style={{ flex: 1 }}
-    contentContainerStyle={[styles.content, style]}
-  >
-    {Boolean(title) && <Text style={styles.title}>{title}</Text>}
-    {children}
-  </BottomSheetScrollView>
-);
+const BottomSheetContent = ({ title, style, fitContent, children }: BottomSheetContentProps) => {
+  const { width, height } = useWindowDimensions();
+
+  return (
+    <BottomSheetScrollView
+      style={fitContent ? { width, maxHeight: height * 0.8 } : { flex: 1 }}
+      contentContainerStyle={[styles.content, style]}
+    >
+      {Boolean(title) && <Text style={styles.title}>{title}</Text>}
+      {children}
+    </BottomSheetScrollView>
+  );
+};
 
 export default BottomSheetContent;
 

@@ -37,10 +37,8 @@ const ChangeTimetableModeButton = () => {
         right={<Text style={[{ fontWeight: '500' }, fontSize.medium]}>{formatTimetableMode(timetableMode)}</Text>}
         onPress={handlePress}
       />
-      {/* snapPoints обязательны: без них @expo/ui на Android меряет контент
-          циклически (ширина схлопывается, переносы) — см. OptionsBottomSheet */}
-      <BottomSheetModal ref={modalRef} snapPoints={['50%', '100%']}>
-        <BottomSheetContent style={{ alignItems: 'center', gap: 16 }}>
+      <BottomSheetModal ref={modalRef}>
+        <BottomSheetContent fitContent style={{ alignItems: 'center', gap: 16 }}>
           {Object.values(TimetableModes)
             .filter((mode) => typeof mode === 'number')
             .map((mode: TimetableModes) => (

@@ -20,17 +20,15 @@ interface Props {
 /**
  * Меню выбора опций в шторке.
  *
- * Обязательно с snapPoints: в режиме fitToContents (без snapPoints)
- * @expo/ui на Android меряет контент циклически (width: '100%' от хоста,
- * хост — от контента) → узкая ширина и переносы «раньше времени», а
- * контент выше экрана не скроллится и уходит за нижний край.
- * snapPoints дают bounded height — ScrollView внутри BottomSheetContent
- * работает, ширина — на всю шторку.
+ * Без snapPoints (fitToContents): высота шторки — ровно по контенту,
+ * никаких фиксированных 50% экрана. Подводные камни режима (цикл
+ * измерения ширины, отсутствие скролла) закрыты в BottomSheetContent
+ * через проп fitContent.
  */
 const OptionsBottomSheet = React.forwardRef<BottomSheetModal, Props>(
   ({ options, currentOptionValue, onOptionPress }, ref) => (
-    <BottomSheetModal ref={ref} snapPoints={['50%', '100%']}>
-      <BottomSheetContent>
+    <BottomSheetModal ref={ref}>
+      <BottomSheetContent fitContent>
         {options?.map((item) => (
           <ClickableText
             key={item.value}
