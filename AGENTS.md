@@ -58,12 +58,12 @@ Before handing work off, run and pass all three:
 
 ## Expo best practices (аудит сент. 2026, план: `.hermes/plans/2026-09-06_expo-best-practices.md`)
 
-- **`expo-file-system/legacy` — техдолг**: все 5 точек использования (`src/utils/http.ts`, `src/utils/files.ts`, `src/components/FileTextLink.tsx`, `src/screens/releaseNotes/ReleaseNotes.tsx`) мигрировать на новый API (`File`/`Directory`/`Paths`), legacy-слой удалят в будущих SDK. Новый код — только новый API.
-- **`console.log` в прод-бандле не вырезается автоматически**: только код под `if (__DEV__)` / `process.env.NODE_ENV === 'development'` tree-shaking'ится (`guides/tree-shaking.md`). Голые `console.*` остаются в проде. Не добавлять новые; план — центральный logger.
+- **expo-file-system — только новый API** (`File`/`Directory`/`Paths`, `File.downloadFileAsync`): legacy-импорты удалены, не возвращать их — legacy-слой удалят в будущих SDK.
+- **Логирование — только через `~/utils/logger`** (`logger.log/warn/error`): `log` вырезается из прод-бандла, `warn`/`error` идут в Sentry. ESLint `no-console` запрещает `console.log`; `console.warn/error` допустимы точечно, но новые — через logger.
 - **Платформенный tree-shaking работает только при прямом импорте** `Platform` из `react-native` в каждом файле — реэкспорт через свой модуль ломает вырезание.
-- **`assetBundlePatterns: ['**/*']`** тянет в бандл всё — заменить на точечный список при следующем релизе.
-- **React Query**: `QueryClient` создаётся без `defaultOptions` (`src/App.tsx`) — при добавлении новых запросов задавать `staleTime`/`retry` осознанно; основной слой данных — собственный `useQuery` с кэш-фолбэком, не мигрировать его на RQ без обсуждения.
-- **FlashList v2**: `estimatedItemSize` не нужен (v2 API), но `ListScreen` переворачивает данные `toReversed()` на каждый рендер — новые экраны не должны полагаться на этот путь, мемоизировать.
+- **`assetBundlePatterns`** — точечный список используемых ассетов (см. app.config.js); не возвращать `['**/*']`.
+- **React Query**: заданы дефолты `staleTime: 5 мин, retry: 1` (`src/App.tsx`); основной слой данных — собственный `useQuery` с кэш-фолбэком, не мигрировать его на RQ без обсуждения.
+- **FlashList v2**: `estimatedItemSize` не нужен (v2 API); разворот данных для «снизу вверх» уже мемоизирован в `ListScreen`.
 - **Android-проект закоммичен** (не чистый CNG) — при мажорном обновлении SDK сверять `android/` с `expo prebuild --no-install`.
 - **SDK-обновления**: пошагово, `bun add expo@^X` → `npx expo install --fix` → `bunx expo-doctor` → ченджлог; для SDK-задач подключать skill `expo-upgrade`.
 
