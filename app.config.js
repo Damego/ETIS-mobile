@@ -28,6 +28,7 @@ export default {
       'assets/tab_icons/**',
       'assets/platforms/**',
       'assets/intro/**',
+      'release-notes.md',
     ],
     ios: {
       supportsTablet: true,
