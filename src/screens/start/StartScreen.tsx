@@ -1,4 +1,5 @@
-import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
@@ -48,8 +49,8 @@ const StartScreen = ({ navigation }: StartStackScreenProps) => {
         accessibilityState={disabled ? { disabled: true } : undefined}
       >
         <View style={{ width: 35, alignItems: 'center' }}>
-          <FontAwesome5
-            name={type === 'teacher' ? 'chalkboard-teacher' : 'male'}
+          <Ionicons
+            name={type === 'teacher' ? 'people' : 'person'}
             size={24}
             color={disabled ? globalStyles.textColor2.color : globalStyles.textColor.color}
           />

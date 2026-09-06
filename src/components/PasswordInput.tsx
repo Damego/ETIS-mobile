@@ -1,4 +1,4 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import React, { useState } from 'react';
 import {
   StyleSheet, TextInput, TextInputProps, TouchableOpacity, View
@@ -33,8 +33,8 @@ const PasswordInput = (props: PasswordInputProps) => {
         style={styles.iconContainer}
         onPress={() => setShowPassword((prev) => !prev)}
       >
-        <MaterialCommunityIcons
-          name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+        <Ionicons
+          name={showPassword ? 'eye-off' : 'eye'}
           size={24}
           color={iconColor}
         />
