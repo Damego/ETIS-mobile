@@ -1,6 +1,7 @@
-import { BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import React from 'react';
+import { StyleSheet } from 'react-native';
 
+import BottomSheetContent from '~/components/BottomSheetContent';
 import BottomSheetModal from '~/components/BottomSheetModal';
 import ClickableText from '~/components/ClickableText';
 
@@ -30,6 +31,14 @@ const getOptions = ({
     .reverse();
 };
 
+/**
+ * Выбор семестра/периода в шторке.
+ *
+ * Обязательно с snapPoints (см. комментарий в OptionsBottomSheet):
+ * без них @expo/ui на Android меряет контент циклически — узкая ширина
+ * и преждевременные переносы, а длинный список семестров не скроллится
+ * и уходит за нижний край экрана.
+ */
 const PeriodsBottomSheet = React.forwardRef<BottomSheetModal, Props>(
   ({ currentPeriod, latestPeriod, periodName, onChange }, ref) => {
     const options = getOptions({
@@ -38,23 +47,35 @@ const PeriodsBottomSheet = React.forwardRef<BottomSheetModal, Props>(
       periodName,
     });
     return (
-      <BottomSheetModal ref={ref}>
-        <BottomSheetView>
+      <BottomSheetModal ref={ref} snapPoints={['50%', '100%']}>
+        <BottomSheetContent>
           {options?.map((item) => (
             <ClickableText
               key={item.value}
-              viewStyle={{ padding: '2%', width: '100%', justifyContent: 'center' }}
-              textStyle={{ fontSize: 18, fontWeight: '600' }}
+              viewStyle={styles.option}
+              textStyle={styles.optionText}
               colorVariant={item.isCurrent ? 'primary' : 'text'}
               onPress={() => onChange(item.value)}
             >
               {item.label}
             </ClickableText>
           ))}
-        </BottomSheetView>
+        </BottomSheetContent>
       </BottomSheetModal>
     );
   }
 );
 
 export default PeriodsBottomSheet;
+
+const styles = StyleSheet.create({
+  option: {
+    paddingVertical: 12,
+    width: '100%',
+    justifyContent: 'center',
+  },
+  optionText: {
+    fontSize: 18,
+    fontWeight: '600',
+  },
+});

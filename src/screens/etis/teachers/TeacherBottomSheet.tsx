@@ -1,4 +1,3 @@
-import { BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import * as Clipboard from 'expo-clipboard';

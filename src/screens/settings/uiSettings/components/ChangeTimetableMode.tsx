@@ -1,8 +1,8 @@
-import { BottomSheetView } from '@expo/ui/community/bottom-sheet';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { cache } from '~/cache/smartCache';
+import BottomSheetContent from '~/components/BottomSheetContent';
 import BottomSheetModal from '~/components/BottomSheetModal';
 import ClickableText from '~/components/ClickableText';
 import SettingRow from '~/components/SettingRow';
@@ -37,13 +37,16 @@ const ChangeTimetableModeButton = () => {
         right={<Text style={[{ fontWeight: '500' }, fontSize.medium]}>{formatTimetableMode(timetableMode)}</Text>}
         onPress={handlePress}
       />
-      <BottomSheetModal ref={modalRef}>
-        <BottomSheetView style={{ alignItems: 'center', gap: 16 }}>
+      {/* snapPoints обязательны: без них @expo/ui на Android меряет контент
+          циклически (ширина схлопывается, переносы) — см. OptionsBottomSheet */}
+      <BottomSheetModal ref={modalRef} snapPoints={['50%', '100%']}>
+        <BottomSheetContent style={{ alignItems: 'center', gap: 16 }}>
           {Object.values(TimetableModes)
             .filter((mode) => typeof mode === 'number')
             .map((mode: TimetableModes) => (
               <ClickableText
                 key={mode}
+                viewStyle={{ paddingVertical: 12, width: '100%', justifyContent: 'center' }}
                 textStyle={[{ fontWeight: '500' }, fontSize.big]}
                 colorVariant={mode === timetableMode ? 'primary' : undefined}
                 onPress={handleModeSelect(mode)}
@@ -51,7 +54,7 @@ const ChangeTimetableModeButton = () => {
                 {formatTimetableMode(mode)}
               </ClickableText>
             ))}
-        </BottomSheetView>
+        </BottomSheetContent>
       </BottomSheetModal>
     </>
   );
