@@ -1,8 +1,9 @@
 import { cache } from '~/cache/smartCache';
+import { LanguagePreference } from '~/i18n';
 import { ThemeType } from '~/styles/themes';
 import { Events } from '~/utils/events';
 
-import { changeTheme, setEvents } from './reducers/settingsSlice';
+import { changeTheme, setEvents, setLanguage } from './reducers/settingsSlice';
 import { AppDispatch } from './store';
 
 // Запись настроек всегда идёт парой: dispatch в стейт + сохранение
@@ -16,4 +17,9 @@ export const persistTheme = (dispatch: AppDispatch, theme: ThemeType) => {
 export const persistEvents = (dispatch: AppDispatch, events: Events) => {
   dispatch(setEvents(events));
   cache.placeEvents(events);
+};
+
+export const persistLanguage = (dispatch: AppDispatch, language: LanguagePreference) => {
+  dispatch(setLanguage(language));
+  cache.placeLanguage(language);
 };

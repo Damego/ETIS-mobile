@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
@@ -8,12 +9,15 @@ import { fontSize } from '~/utils/texts';
 import AboutAppButton from './components/AboutApp';
 import ChangeAppUI from './components/ChangeAppUI';
 import ChangeEventTheme from './components/ChangeEventTheme';
+import LanguageSetting from './components/LanguageSetting';
 import ShowReleaseNotes from './components/ShowReleaseNotes';
 import ToggleSentrySetting from './components/ToggleSentrySetting';
 import ToggleSignNotification from './components/ToggleSignNotification';
 import ToggleThemeSetting from './components/ToggleThemeSetting';
 
 export default function AppSettings() {
+  const { t } = useTranslation();
+
   return (
     <Screen containerStyle={{ gap: 8 }}>
       {/* Общие настройки */}
@@ -21,9 +25,10 @@ export default function AppSettings() {
       <ChangeEventTheme />
       <ChangeAppUI />
       <ToggleSignNotification />
+      <LanguageSetting />
 
       {/* Настройки приложения */}
-      <Text style={[fontSize.big, { fontWeight: 'bold' }]}>Приложение</Text>
+      <Text style={[fontSize.big, { fontWeight: 'bold' }]}>{t('settings.appSection')}</Text>
       <ShowReleaseNotes />
       <AboutAppButton />
       <ToggleSentrySetting />

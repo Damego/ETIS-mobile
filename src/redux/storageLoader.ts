@@ -1,4 +1,5 @@
 import { cache } from '~/cache/smartCache';
+import { changeLanguage as changeI18nLanguage } from '~/i18n';
 
 import {
   setStudent, setTeacher, setUserCredentials, UserCredentials
@@ -12,6 +13,9 @@ export const loadSettings = () => async (dispatch: AppDispatch) => {
   if (!config) return;
 
   dispatch(setConfig(config));
+
+  // Применяем сохранённый выбор языка к i18next (до него стоял системный)
+  if (config.language) await changeI18nLanguage(config.language);
 };
 
 export const loadUserCredentials = () => async (dispatch: AppDispatch) => {

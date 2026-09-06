@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { LanguagePreference } from '~/i18n';
 import { ThemeType } from '~/styles/themes';
 import { Events } from '~/utils/events';
 
@@ -40,6 +41,7 @@ export interface AppConfig {
   cacheMigrations: CacheMigrations;
   ui: UIConfig;
   releaseNotesViews: { [version: string]: boolean };
+  language: LanguagePreference;
 }
 
 export interface SettingsState {
@@ -66,6 +68,7 @@ const initialConfig: AppConfig = {
   reviewStep: 'pending',
   privacyPolicyAccepted: false,
   releaseNotesViews: {},
+  language: 'system',
 };
 
 const initialState: SettingsState = {
@@ -105,6 +108,9 @@ const settingsSlice = createSlice({
     setUIConfig(state, action: PayloadAction<Partial<UIConfig>>) {
       state.config.ui = { ...state.config.ui, ...action.payload };
     },
+    setLanguage(state, action: PayloadAction<LanguagePreference>) {
+      state.config.language = action.payload;
+    },
     setReleaseNotes(state, action: PayloadAction<{ [version: string]: boolean }>) {
       state.config.releaseNotesViews = { ...state.config.releaseNotesViews, ...action.payload };
     },
@@ -122,5 +128,6 @@ export const {
   setSentryEnabled,
   setEvents,
   setUIConfig,
+  setLanguage,
   setReleaseNotes,
 } = settingsSlice.actions;

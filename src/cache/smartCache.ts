@@ -1,5 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 
+import { LanguagePreference } from '~/i18n';
 import { IAbsence } from '~/models/absences';
 import { IAnnounce } from '~/models/announce';
 import { ICalendarSchedule } from '~/models/calendarSchedule';
@@ -524,6 +525,12 @@ export default class SmartCache {
   async getTheme() {
     const data = await this.getAppConfig();
     return data.theme;
+  }
+
+  async placeLanguage(language: LanguagePreference) {
+    const config = await this.getAppConfig();
+    config.language = language;
+    await this.updateAppConfig(config);
   }
 
   async placeTheme(theme: ThemeType) {

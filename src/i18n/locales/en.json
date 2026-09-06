@@ -128,5 +128,9 @@
   },
   "checkPoint": {
     "absent": "a"
+  },
+  "settings": {
+    "appSection": "Application",
+    "language": "Language"
   }
 }
