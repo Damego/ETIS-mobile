@@ -80,7 +80,8 @@
     "question": "Do you like the app?",
     "maybeLater": "Maybe another time",
     "leaveReview": "Leave a review",
-    "noThanks": "No, thanks"
+    "noThanks": "No, thanks",
+    "subtitle": "It will help the app grow"
   },
   "files": {
     "downloadStarted": "Download started",
