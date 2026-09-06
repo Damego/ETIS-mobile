@@ -50,4 +50,3 @@ export const checkUpdate = () => {
   }
 };
 
-export const installUpdate = (spInAppUpdates: SpInAppUpdates) => spInAppUpdates.installUpdate();

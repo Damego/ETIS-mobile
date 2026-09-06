@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { StudentData, StudentState } from '~/models/student';
+import { StudentState } from '~/models/student';
 import { StudentInfo } from '~/parser/menu';
 
 const initialState: StudentState = {
@@ -25,9 +25,6 @@ const studentSlice = createSlice({
       state.hasUnverifiedEmail = action.payload.hasUnverifiedEmail;
       state.currentSession = action.payload.currentSession;
       state.currentWeek = action.payload.currentWeek;
-    },
-    setStudentInfo(state, action: PayloadAction<StudentData>) {
-      state.info = action.payload;
     },
     setMessageCount(state, action: PayloadAction<number | null>) {
       state.messageCount = action.payload;
@@ -58,7 +55,6 @@ const studentSlice = createSlice({
 export default studentSlice.reducer;
 export const {
   setStudentState,
-  setStudentInfo,
   setMessageCount,
   setAnnounceCount,
   setCurrentWeek,

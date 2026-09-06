@@ -627,14 +627,6 @@ export default class SmartCache {
     await this.updateAppConfig(appConfig);
   }
 
-  async setReleaseNotesViews(versionsInfo: { [version: string]: boolean }) {
-    const appConfig = await this.getAppConfig();
-    appConfig.releaseNotesViews = appConfig.releaseNotesViews
-      ? { ...appConfig.releaseNotesViews, ...versionsInfo }
-      : { ...versionsInfo };
-    await this.updateAppConfig(appConfig);
-  }
-
   async getAccountData() {
     await this.account.init();
     return this.account.get();

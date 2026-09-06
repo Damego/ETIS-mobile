@@ -4,13 +4,6 @@ import { LanguagePreference } from '~/i18n';
 import { ThemeType } from '~/styles/themes';
 import { Events } from '~/utils/events';
 
-export enum PageType {
-  timeTable = 'Timetable',
-  signNavigator = 'SignsNavigator',
-  messages = 'Messages',
-  announces = 'Announces',
-}
-
 export enum TimetableModes {
   days,
   weeks,
@@ -46,7 +39,6 @@ export interface AppConfig {
 
 export interface SettingsState {
   appIsReady: boolean;
-  initialPage: PageType;
   config: AppConfig;
 }
 
@@ -73,7 +65,6 @@ const initialConfig: AppConfig = {
 
 const initialState: SettingsState = {
   appIsReady: false,
-  initialPage: PageType.timeTable,
   config: initialConfig,
 };
 
@@ -96,9 +87,6 @@ const settingsSlice = createSlice({
     setAppReady(state, action: PayloadAction<boolean>) {
       state.appIsReady = action.payload;
     },
-    setInitialPage(state, action: PayloadAction<PageType>) {
-      state.initialPage = action.payload;
-    },
     setSentryEnabled(state, action: PayloadAction<boolean>) {
       state.config.sentryEnabled = action.payload;
     },
@@ -111,9 +99,6 @@ const settingsSlice = createSlice({
     setLanguage(state, action: PayloadAction<LanguagePreference>) {
       state.config.language = action.payload;
     },
-    setReleaseNotes(state, action: PayloadAction<{ [version: string]: boolean }>) {
-      state.config.releaseNotesViews = { ...state.config.releaseNotesViews, ...action.payload };
-    },
   },
 });
 
@@ -124,10 +109,8 @@ export const {
   setIntroViewed,
   setSignNotification,
   setAppReady,
-  setInitialPage,
   setSentryEnabled,
   setEvents,
   setUIConfig,
   setLanguage,
-  setReleaseNotes,
 } = settingsSlice.actions;

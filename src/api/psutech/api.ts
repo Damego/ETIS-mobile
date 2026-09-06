@@ -82,14 +82,6 @@ export const getPeriodWeek = async (
   }
 };
 
-export const getGroupById = async (groupId: string) => {
-  if (!(await checkServiceAvailability())) {
-    return null;
-  }
-  const res = await inst.get<IGroup>(`/groups/${groupId}`);
-  return res.data;
-};
-
 export const searchAudience = async (query: string, building: string) => {
   if (!(await checkServiceAvailability())) {
     return [];

@@ -7,7 +7,7 @@ import {
 import { setAppReady, setConfig } from './reducers/settingsSlice';
 import { AppDispatch } from './store';
 
-export const loadSettings = () => async (dispatch: AppDispatch) => {
+const loadSettings = () => async (dispatch: AppDispatch) => {
   const config = await cache.getAppConfig();
 
   if (!config) return;
@@ -18,7 +18,7 @@ export const loadSettings = () => async (dispatch: AppDispatch) => {
   if (config.language) await changeI18nLanguage(config.language);
 };
 
-export const loadUserCredentials = () => async (dispatch: AppDispatch) => {
+const loadUserCredentials = () => async (dispatch: AppDispatch) => {
   let userCredentials: UserCredentials | null | undefined = await cache.getUserCredentials();
 
   // TODO: Remove in the future
@@ -29,7 +29,7 @@ export const loadUserCredentials = () => async (dispatch: AppDispatch) => {
   dispatch(setUserCredentials({ userCredentials: userCredentials ?? undefined, fromStorage: true }));
 };
 
-export const loadAccount = () => async (dispatch: AppDispatch) => {
+const loadAccount = () => async (dispatch: AppDispatch) => {
   const data = await cache.getAccountData();
 
   if (!data) return;
