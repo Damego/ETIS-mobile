@@ -26,7 +26,11 @@ export default tseslint.config(
       ...eslintPluginReactHooks.configs.recommended.rules,
 
       // XO style overrides to match previous config behavior
-      'no-console': 'off',
+      // warn/error разрешены точечно (logger пока не везде), log — только в logger.ts
+      'no-console': [
+        'error',
+        { allow: ['warn', 'error'] },
+      ],
       'no-param-reassign': 'off',
       'prefer-const': 'off',
       'func-names': 'off',
@@ -175,6 +179,13 @@ export default tseslint.config(
       // Import sorting
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
+    },
+  },
+  {
+    // Единственное место, где разрешён console.log — внутри самого логгера
+    files: ['src/utils/logger.ts'],
+    rules: {
+      'no-console': 'off',
     },
   }
 );
