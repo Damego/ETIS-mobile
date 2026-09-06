@@ -176,6 +176,7 @@
     "aboutApp": "About the app",
     "releaseNotes": "Release notes",
     "resetIntro": "Reset tutorial",
+    "resetIntroDescription": "The tutorial will be shown on the next app launch",
     "telegramChannel": "Our Telegram channel",
     "timetableMode": "Timetable display",
     "timetableModeWeeks": "By weeks",
@@ -219,6 +220,30 @@
       "master": "Master's degree",
       "specialty": "Specialist degree",
       "postgraduate": "Postgraduate studies"
+    }
+  },
+  "intro": {
+    "next": "Next",
+    "done": "Let's go!",
+    "welcome": {
+      "title": "Welcome to ETIS mobile",
+      "text": "The best version of ETIS on your device!"
+    },
+    "offline": {
+      "title": "Offline mode",
+      "text": "No internet? Is ETIS down? You can still view your timetable and grades thanks to offline mode!"
+    },
+    "secure": {
+      "title": "Your data is safe",
+      "text": "The app only works with the ETIS website, and all your data is processed and stored exclusively on your device!"
+    },
+    "oss": {
+      "title": "Open source",
+      "text": "Both the app and its source code are freely available! Anyone can study it and even help us with development :)"
+    },
+    "lets": {
+      "title": "Let's get started!",
+      "text": "Don't forget to share the link with your groupmates!"
     }
   },
   "about": {

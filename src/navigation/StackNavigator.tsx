@@ -19,6 +19,7 @@ import TeacherNavigator from '~/navigation/TeacherNavigator';
 import UnauthorizedStudentNavigator from '~/navigation/UnauthorizedStudentNavigator';
 import { AccountType } from '~/redux/reducers/accountSlice';
 import About from '~/screens/about/About';
+import Intro from '~/screens/intro/Intro';
 import ReleaseNotes from '~/screens/releaseNotes/ReleaseNotes';
 import AppSettings from '~/screens/settings/AppSettings';
 import ChangeAppUI from '~/screens/settings/uiSettings/ChangeAppUI';
@@ -34,7 +35,7 @@ const StackNavigator = () => {
   const accountType = useAppSelector((state) => state.account.accountType);
   const {
     appIsReady,
-    config: { sentryEnabled }, // todo: intro viewed new version
+    config: { introViewed, sentryEnabled },
   } = useAppSelector((state) => state.settings);
 
   const theme = useAppTheme();
@@ -83,29 +84,43 @@ const StackNavigator = () => {
       <Background theme={theme}>
         <GestureHandlerRootView style={{ flex: 1 }}>
           <NavigationContainer theme={{ ...DefaultTheme, ...theme }}>
-            <Stack.Navigator id={'root'} screenOptions={{ headerShown: true, ...headerParams(theme) }}>
-              <Stack.Screen
-                name='TabNavigator'
-                component={educationScreen}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name='AppSettings'
-                component={AppSettings}
-                options={{ title: t('navigation.appSettings') }}
-              />
-              <Stack.Screen
-                name='ChangeAppUI'
-                component={ChangeAppUI}
-                options={{ title: t('navigation.appInterface') }}
-              />
-              <Stack.Screen name='AboutApp' component={About} options={{ title: t('navigation.aboutApp') }} />
-              <Stack.Screen
-                name='ReleaseNotes'
-                component={ReleaseNotes}
-                options={{ headerShown: false }}
-              />
-            </Stack.Navigator>
+            {/* introViewed приезжает из хранилища асинхронно (loadStorage);
+                до готовности splash ещё не скрыт — не рендерим навигацию,
+                чтобы у существующих пользователей не мигнул онбординг */}
+            {appIsReady ? (
+              <Stack.Navigator
+                id={'root'}
+                initialRouteName={introViewed ? 'TabNavigator' : 'Onboarding'}
+                screenOptions={{ headerShown: true, ...headerParams(theme) }}
+              >
+                <Stack.Screen
+                  name='TabNavigator'
+                  component={educationScreen}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name='Onboarding'
+                  component={Intro}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name='AppSettings'
+                  component={AppSettings}
+                  options={{ title: t('navigation.appSettings') }}
+                />
+                <Stack.Screen
+                  name='ChangeAppUI'
+                  component={ChangeAppUI}
+                  options={{ title: t('navigation.appInterface') }}
+                />
+                <Stack.Screen name='AboutApp' component={About} options={{ title: t('navigation.aboutApp') }} />
+                <Stack.Screen
+                  name='ReleaseNotes'
+                  component={ReleaseNotes}
+                  options={{ headerShown: false }}
+                />
+              </Stack.Navigator>
+            ) : null}
           </NavigationContainer>
         </GestureHandlerRootView>
       </Background>
