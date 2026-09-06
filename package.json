@@ -62,7 +62,6 @@
     "expo-mail-composer": "~57.0.1",
     "expo-navigation-bar": "~57.0.2",
     "expo-network": "~57.0.1",
-    "expo-network-security-config": "^1.0.2",
     "expo-quick-actions": "6.0.2",
     "expo-secure-store": "~57.0.3",
     "expo-sharing": "~57.0.18",
@@ -109,6 +108,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-simple-import-sort": "^12.1.1",
+    "expo-atlas": "^0.4.0",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.53.1"
   },
