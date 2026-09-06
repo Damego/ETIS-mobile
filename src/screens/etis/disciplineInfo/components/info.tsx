@@ -1,4 +1,5 @@
-import { AntDesign, Ionicons } from '@expo/vector-icons';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import dayjs from 'dayjs';
 import * as Clipboard from 'expo-clipboard';
 import { Image } from 'expo-image';

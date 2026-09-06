@@ -1,4 +1,4 @@
-import { Octicons } from '@expo/vector-icons';
+import Octicons from '@expo/vector-icons/Octicons';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 

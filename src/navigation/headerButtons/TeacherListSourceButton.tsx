@@ -1,4 +1,4 @@
-import { AntDesign } from '@expo/vector-icons';
+import AntDesign from '@expo/vector-icons/AntDesign';
 import React from 'react';
 import { Linking, TouchableOpacity, View } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';

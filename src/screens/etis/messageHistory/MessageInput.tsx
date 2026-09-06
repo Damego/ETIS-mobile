@@ -1,4 +1,6 @@
-import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Feather from '@expo/vector-icons/Feather';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { getDocumentAsync } from 'expo-document-picker';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';

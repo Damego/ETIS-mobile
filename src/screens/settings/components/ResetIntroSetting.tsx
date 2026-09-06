@@ -1,4 +1,4 @@
-import { AntDesign } from '@expo/vector-icons';
+import AntDesign from '@expo/vector-icons/AntDesign';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 

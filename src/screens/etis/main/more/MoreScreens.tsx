@@ -1,4 +1,5 @@
-import { AntDesign, Ionicons } from '@expo/vector-icons';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { Image } from 'expo-image';
 import React from 'react';

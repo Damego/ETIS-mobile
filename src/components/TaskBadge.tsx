@@ -1,4 +1,4 @@
-import { AntDesign } from '@expo/vector-icons';
+import AntDesign from '@expo/vector-icons/AntDesign';
 import dayjs from 'dayjs';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';

@@ -1,4 +1,5 @@
-import { AntDesign, Fontisto } from '@expo/vector-icons';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Fontisto from '@expo/vector-icons/Fontisto';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {

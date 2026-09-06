@@ -1,4 +1,4 @@
-import { Feather } from '@expo/vector-icons';
+import Feather from '@expo/vector-icons/Feather';
 import * as Clipboard from 'expo-clipboard';
 import React from 'react';
 import { Linking, TouchableOpacity, View } from 'react-native';

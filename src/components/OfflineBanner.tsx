@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNetworkState } from 'expo-network';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
