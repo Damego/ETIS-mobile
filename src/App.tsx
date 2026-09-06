@@ -48,7 +48,18 @@ defineSignsFetchTask();
 addShortcuts();
 rescheduleAllTaskNotifications();
 
-const queryClient = new QueryClient();
+// Дефолты для React Query (используется в ~10 экранах поверх собственного useQuery).
+// staleTime: 5 минут — данные считаются свежими и не рефетечатся при маунте/фокусе;
+// retry: 1 — одна повторная попытка вместо трёх по умолчанию (портал и так часто лежит,
+// длинные ретраи лишь затягивают экран состояния ошибки).
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000,
+      retry: 1,
+    },
+  },
+});
 
 SplashScreen.preventAutoHideAsync();
 

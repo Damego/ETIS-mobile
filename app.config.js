@@ -16,10 +16,19 @@ export default {
       resizeMode: 'contain',
       backgroundColor: '#CE2539',
     },
-    updates: {
-      fallbackToCacheTimeout: 0,
-    },
-    assetBundlePatterns: ['**/*'],
+    // Только реально используемые в JS ассеты; certs/configs нужны лишь
+    // config-плагину на prebuild и в бандле не участвуют.
+    assetBundlePatterns: [
+      'assets/icon.png',
+      'assets/adaptive-icon.png',
+      'assets/splash.png',
+      'assets/favicon.png',
+      'assets/logo_red.png',
+      'assets/fonts/**',
+      'assets/tab_icons/**',
+      'assets/platforms/**',
+      'assets/intro/**',
+    ],
     ios: {
       supportsTablet: true,
     },

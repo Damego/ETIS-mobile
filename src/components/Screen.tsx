@@ -1,6 +1,6 @@
 import { FlashList, FlashListProps, FlashListRef } from '@shopify/flash-list';
 import { StatusBar } from 'expo-status-bar';
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import {
   RefreshControl, ScrollView, StyleProp, StyleSheet, View, ViewStyle
 } from 'react-native';
@@ -105,6 +105,13 @@ export const ListScreen = <T,>({
   const ref = useRef<FlashListRef<T>>(null);
   const bottomNavPadding = useBottomNavPadding();
 
+  // Обратный порядок — только при изменении данных, а не на каждом рендере:
+  // пересозданный массив ломает мемоизацию строк и React Compiler.
+  const listData = useMemo(
+    () => (startScrollFromBottom ? data?.toReversed() : data),
+    [data, startScrollFromBottom]
+  );
+
   const onRefresh = async () => {
     setRefreshing(true);
     await onUpdate?.();
@@ -122,7 +129,7 @@ export const ListScreen = <T,>({
       <View style={[{ flex: 1 }, styles.screen, containerStyle]}>
         <FlashList
           ref={ref}
-          data={startScrollFromBottom ? data?.toReversed() : data}
+          data={listData}
           overScrollMode={'never'}
           showsVerticalScrollIndicator={false}
           onRefresh={onUpdate && !isOfflineMode ? onRefresh : undefined}
