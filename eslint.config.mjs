@@ -2,6 +2,7 @@ import eslintPluginReact from 'eslint-plugin-react';
 import eslintPluginReactHooks from 'eslint-plugin-react-hooks';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import tseslint from 'typescript-eslint';
+import xoReact from 'eslint-config-xo-react/space';
 import xoTypescript from 'eslint-config-xo-typescript';
 
 export default tseslint.config(
@@ -9,6 +10,7 @@ export default tseslint.config(
     ignores: ['node_modules/', 'dist/', '.expo/', 'android/', 'ios/', '**/*.json', 'eslint.config.mjs', 'metro.config.js', 'babel.config.js', 'app.config.js', '.agents/'],
   },
   ...xoTypescript,
+  ...xoReact,
   {
     files: ['**/*.{ts,tsx}'],
     plugins: {
@@ -53,6 +55,23 @@ export default tseslint.config(
       'react/no-unstable-nested-components': 'off',
       'react/jsx-no-useless-fragment': 'off',
       'react-hooks/exhaustive-deps': 'off',
+
+      // xo-react rules that conflict with the existing code style:
+      // - prop naming: проект использует disabled/showLoading/skipSunday и т.п.
+      //   (переименование сотен пропсов — отдельная задача, не стайлгайд)
+      // - JSX-стилистика xo-react (jsx-indent, closing-tag/bracket-location)
+      //   конфликтует с @stylistic/indent; отступы ведёт @stylistic
+      'react/boolean-prop-naming': 'off',
+      'react/hook-use-state': 'off',
+      'react/jsx-indent': 'off',
+      'react/jsx-closing-tag-location': 'off',
+      'react/jsx-closing-bracket-location': 'off',
+      'react/jsx-first-prop-new-line': 'off',
+      'react/jsx-max-props-per-line': 'off',
+      'react/jsx-wrap-multilines': 'off',
+      'react/jsx-tag-spacing': 'off',
+      'react/jsx-curly-spacing': 'off',
+      'react/jsx-equals-spacing': 'off',
 
       // Stylistic rules to match existing code style
       '@stylistic/indent': ['error', 2],
