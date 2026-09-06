@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, ToastAndroid, TouchableOpacity } from 'react-native';
 
 import { cache } from '~/cache/smartCache';
@@ -12,6 +13,7 @@ import { fontSize } from '~/utils/texts';
 import CertificateModal from './CertificateModal';
 
 const CertificateCard = ({ certificate }: { certificate: ICertificate }) => {
+  const { t } = useTranslation();
   const [isOpened, setOpened] = useState<boolean>(false);
   const [html, setHTML] = useState<string>();
 
@@ -34,7 +36,7 @@ const CertificateCard = ({ certificate }: { certificate: ICertificate }) => {
   const openModal = async () => {
     const $html = await getCertificate();
     if (!$html) {
-      ToastAndroid.show('Ошибка', ToastAndroid.LONG);
+      ToastAndroid.show(t('common.error'), ToastAndroid.LONG);
       return;
     }
     setHTML($html);
@@ -46,9 +48,17 @@ const CertificateCard = ({ certificate }: { certificate: ICertificate }) => {
       {isOpened && <CertificateModal html={html ?? ''} closeModal={closeModal} />}
 
       <TouchableOpacity onPress={openModal}>
-        <CardHeaderIn topText={`№${certificate.id ?? '-'} от ${certificate.date}`}>
+        <CardHeaderIn
+          topText={t('certificate.numberDate', {
+            id: certificate.id ?? '-',
+            date: certificate.date,
+          })}
+        >
           <Text style={styles.textTitle}>
-            {certificate.name} статус: {certificate.status}
+            {t('certificate.statusLine', {
+              name: certificate.name,
+              status: certificate.status,
+            })}
           </Text>
         </CardHeaderIn>
       </TouchableOpacity>

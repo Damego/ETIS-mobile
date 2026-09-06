@@ -1,6 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { TouchableOpacity } from 'react-native';
 
 import Card from '~/components/Card';
@@ -15,6 +16,7 @@ export const RequestCertificateButton = ({
 }: {
   availableCertificates: IAvailableCertificate[];
 }) => {
+  const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
   const navigation = useNavigation<EducationNavigationProp>();
 
@@ -31,7 +33,9 @@ export const RequestCertificateButton = ({
           color={globalStyles.textColor.color}
           style={{ marginRight: '2%' }}
         />
-        <Text style={[fontSize.medium, { fontWeight: 'bold' }]}>Заказать справку</Text>
+        <Text style={[fontSize.medium, { fontWeight: 'bold' }]}>
+          {t('certificate.orderButton')}
+        </Text>
       </TouchableOpacity>
     </Card>
   );

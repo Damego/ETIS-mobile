@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { TextInput, View } from 'react-native';
 
 import Text from '~/components/Text';
@@ -12,12 +13,13 @@ export default function TeacherQuestionView({
   teacher?: string;
   setTeacher(teacher: string): void;
 }) {
+  const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text style={fontSize.large}>{teacher}</Text>
       <Text style={[fontSize.small, { marginVertical: '2%' }]}>
-        Если же был другой преподаватель,{'\n'}то введите его
+        {t('questionnaire.otherTeacherHint')}
       </Text>
       <TextInput
         style={[
@@ -26,7 +28,7 @@ export default function TeacherQuestionView({
           { width: '80%', paddingVertical: '2%', paddingHorizontal: '2%' },
         ]}
         onChangeText={setTeacher}
-        placeholder='Иванов И.И.'
+        placeholder={t('questionnaire.teacherPlaceholder')}
         placeholderTextColor={globalStyles.inputPlaceholder.color}
         autoComplete='name'
         inputMode='text'

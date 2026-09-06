@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ToastAndroid, View } from 'react-native';
 
 import { cache } from '~/cache/smartCache';
@@ -34,6 +35,7 @@ const Form = ({
   onSubmit: (password: string) => void;
   showLoading: boolean;
 }) => {
+  const { t } = useTranslation();
   const theme = useAppTheme();
   const globalStyles = useGlobalStyles();
 
@@ -51,7 +53,7 @@ const Form = ({
     }
 
     if (newPassword && newPassword.length < 8) {
-      setFirstInputMessage('Длина пароля должна быть не менее 8 символов');
+      setFirstInputMessage(t('changeCredentials.passwordLengthError'));
     }
   };
 
@@ -70,11 +72,10 @@ const Form = ({
         marginTop: '35%',
       }}
     >
-      <Text style={[fontSize.xlarge, { fontWeight: '500' }]}>Придумайте пароль</Text>
-      <Text style={{ textAlign: 'center' }}>
-        Пароль должен состоять как минимум из 8 символом. Также рекомендуем использовать цифры и
-        специальные символы
+      <Text style={[fontSize.xlarge, { fontWeight: '500' }]}>
+        {t('changeCredentials.createPassword')}
       </Text>
+      <Text style={{ textAlign: 'center' }}>{t('changeCredentials.passwordRequirements')}</Text>
 
       <PasswordInput
         style={[
@@ -86,7 +87,7 @@ const Form = ({
             : undefined,
         ]}
         onChangeText={setNewPassword}
-        placeholder='Придумайте пароль'
+        placeholder={t('changeCredentials.createPassword')}
         placeholderTextColor={theme.colors.inputPlaceholder}
         autoComplete='password-new'
         selectionColor={theme.colors.primary}
@@ -103,7 +104,7 @@ const Form = ({
           passwordUnconfirmed ? { borderColor: theme.colors.primary } : undefined,
         ]}
         onChangeText={setNewPasswordConfirm}
-        placeholder='Повторите пароль'
+        placeholder={t('changeCredentials.repeatPassword')}
         placeholderTextColor={theme.colors.inputPlaceholder}
         autoComplete='password'
         selectionColor={theme.colors.primary}
@@ -112,7 +113,7 @@ const Form = ({
 
       <View style={{ width: '90%' }}>
         <Button
-          text={'Сменить'}
+          text={t('changeCredentials.changeButton')}
           onPress={preSubmit}
           disabled={!passwordHasEightSymbols || !passwordConfirmed}
           showLoading={showLoading}
@@ -124,6 +125,7 @@ const Form = ({
 };
 
 export default function ChangePassword() {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const globalStyles = useGlobalStyles();
 
@@ -159,7 +161,7 @@ export default function ChangePassword() {
         : (
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Text style={[globalStyles.textColor, fontSize.xlarge, { fontWeight: '500' }]}>
-              Пароль успешно изменён!
+              {t('changeCredentials.passwordChanged')}
             </Text>
           </View>
         )}

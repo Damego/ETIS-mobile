@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ToastAndroid, View } from 'react-native';
 
 import { Button } from '~/components/Button';
@@ -32,6 +33,7 @@ enum Steps {
 export default function SessionQuestionnaire({
   route,
 }: EducationStackScreenProps<'SessionQuestionnaire'>) {
+  const { t } = useTranslation();
   const { url } = route.params;
   const [step, setStep] = useState<Steps>(1);
   const [themeIndex, setThemeIndex] = useState(0);
@@ -78,7 +80,7 @@ export default function SessionQuestionnaire({
   const onButtonClick = () => {
     if (step + 1 === Steps.sendResult) {
       if (isDemo) {
-        ToastAndroid.show('Запросы в демо режиме невозможны!', ToastAndroid.LONG);
+        ToastAndroid.show(t('questionnaire.demoModeUnavailable'), ToastAndroid.LONG);
       } else {
         setStep(Steps.sendResult);
         if (!data) return;
@@ -133,7 +135,7 @@ export default function SessionQuestionnaire({
 
       {!hideButton && (
         <View style={{ marginVertical: '5%' }}>
-          <Button onPress={onButtonClick} text={'Далее'} variant={'primary'} />
+          <Button onPress={onButtonClick} text={t('questionnaire.next')} variant={'primary'} />
         </View>
       )}
     </Screen>

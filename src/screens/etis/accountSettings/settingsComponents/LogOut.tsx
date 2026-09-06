@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 
 import { cache } from '~/cache/smartCache';
@@ -8,6 +9,7 @@ import { signOut } from '~/redux/reducers/accountSlice';
 import { unregisterBackgroundFetchAsync } from '~/tasks/signs/signs';
 
 const LogOut = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
   const doSignOut = async () => {
@@ -18,14 +20,14 @@ const LogOut = () => {
 
   const handlePress = () => {
     Alert.alert(
-      'Выход из аккаунта',
-      'Вы действительно хотите выйти из аккаунта? Это действие удалит все ваши данные.',
+      t('account.logoutTitle'),
+      t('account.logoutConfirmation'),
       [
         {
-          text: 'Отмена',
+          text: t('common.cancel'),
         },
         {
-          text: 'Выйти',
+          text: t('account.logout'),
           onPress: doSignOut,
         },
       ]
@@ -35,7 +37,7 @@ const LogOut = () => {
   return (
     <BaseSettingButton
       iconName={'logout'}
-      label={'Выйти'}
+      label={t('account.logout')}
       onPress={handlePress}
       color={'primary'}
     />

@@ -1,5 +1,6 @@
 import { useIsFocused } from '@react-navigation/native';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
 import Card from '~/components/Card';
@@ -16,6 +17,7 @@ import { EducationStackScreenProps } from '~/navigation/types';
 import { fontSize } from '~/utils/texts';
 
 export default function SessionQuestionnaireList({ navigation }: EducationStackScreenProps) {
+  const { t } = useTranslation();
   const { sessionTestID } = useAppSelector((state) => state.student);
   const client = useClient();
   const { data, isLoading, refresh } = useQuery({
@@ -43,7 +45,7 @@ export default function SessionQuestionnaireList({ navigation }: EducationStackS
     <Screen containerStyle={{ gap: 8 }}>
       {available.length !== 0 && (
         <>
-          <Text style={[fontSize.large, { fontWeight: '500' }]}>Доступные</Text>
+          <Text style={[fontSize.large, { fontWeight: '500' }]}>{t('questionnaire.available')}</Text>
           <View style={{ gap: 8 }}>
             {available.map((link) => (
               <Card key={link.name}>
@@ -61,7 +63,7 @@ export default function SessionQuestionnaireList({ navigation }: EducationStackS
       )}
 
       {passed.length !== 0 && (
-        <Text style={[fontSize.large, { fontWeight: '500' }]}>Пройденные</Text>
+        <Text style={[fontSize.large, { fontWeight: '500' }]}>{t('questionnaire.passed')}</Text>
       )}
       {passed.map((link) => (
         <Card key={link.name}>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Modal, View } from 'react-native';
 
 import AutoHeightWebView from '~/components/AutoHeightWebView';
@@ -20,6 +21,7 @@ export default function CertificateModal({
   html: string;
   closeModal: () => void;
 }) {
+  const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
 
   return (
@@ -44,7 +46,7 @@ export default function CertificateModal({
           customStyle={getStyles(globalStyles.textColor.color)}
         />
         <ClickableText
-          text={'Закрыть'}
+          text={t('common.close')}
           onPress={closeModal}
           textStyle={fontSize.large}
           viewStyle={{ marginBottom: '2%' }}

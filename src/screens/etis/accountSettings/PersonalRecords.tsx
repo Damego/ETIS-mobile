@@ -1,6 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   StyleProp,
   StyleSheet,
@@ -28,6 +29,7 @@ const PersonalRecord = ({
   record: IPersonalRecord;
   showStatus: boolean;
 }) => {
+  const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
   const navigation = useNavigation<RootStackNavigationProp>();
   const dispatch = useAppDispatch();
@@ -36,7 +38,7 @@ const PersonalRecord = ({
     if (!record.id) return;
     const success = await httpClient.changePersonalRecord(record.id);
     if (!success) {
-      return ToastAndroid.show('Невозможно сменить личную запись', ToastAndroid.LONG);
+      return ToastAndroid.show(t('account.changeRecordError'), ToastAndroid.LONG);
     }
 
     dispatch(resetForRecord());
@@ -49,7 +51,7 @@ const PersonalRecord = ({
         <Text>
           {record.year} {record.speciality}
         </Text>
-        {!showStatus && <Text>Статус: {record.status}</Text>}
+        {!showStatus && <Text>{t('account.statusLine', { status: record.status })}</Text>}
       </View>
       {record.id && record.status === 'студент' && (
         <View>
@@ -63,6 +65,7 @@ const PersonalRecord = ({
 };
 
 export default function PersonalRecords() {
+  const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
   const textStyles: StyleProp<TextStyle> = [
     globalStyles.textColor,
@@ -87,8 +90,8 @@ export default function PersonalRecords() {
 
   return (
     <View>
-      <Text style={styles.cardTitle}>Личные записи</Text>
-      <Text style={textStyles}>Доступные записи</Text>
+      <Text style={styles.cardTitle}>{t('account.personalRecordsTitle')}</Text>
+      <Text style={textStyles}>{t('account.availableRecords')}</Text>
       <View style={{ gap: 8 }}>
         {activeRecords.map((record) => (
           <PersonalRecord record={record} key={(record.id ?? '') + record.index} showStatus />

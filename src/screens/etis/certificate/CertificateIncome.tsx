@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 
 import { Button } from '~/components/Button';
@@ -35,6 +36,7 @@ const makeMailOptions = ({
 });
 
 export default function CertificateIncome() {
+  const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
   const client = useClient();
 
@@ -60,44 +62,41 @@ export default function CertificateIncome() {
     <Screen>
       <View>
         <Text style={[globalStyles.textColor, fontSize.medium]}>
-          Справки о доходах (стипендии) можно заказать по телефону 239-65-34 или по электронной
-          почте stip@psu.ru, необходимо указать следующие данные:
+          {t('certificate.income.instructions')}
         </Text>
         <Card style={{ marginTop: 10 }}>
           <Input
-            name='ФИО'
-            placeholder='Иванов Иван Иванович'
+            name={t('certificate.income.fio')}
+            placeholder={t('certificate.income.fioPlaceholder')}
             value={fio}
             onUpdate={setFio}
             popover={<></>}
           />
           <Input
-            name='Факультет'
-            placeholder='Механико-математический'
+            name={t('certificate.income.faculty')}
+            placeholder={t('certificate.income.facultyPlaceholder')}
             value={faculty}
             onUpdate={setFaculty}
             popover={<></>}
           />
-          <Input name='Курс' placeholder='1' value={year} onUpdate={setYear} popover={<></>} />
+          <Input name={t('certificate.income.year')} placeholder='1' value={year} onUpdate={setYear} popover={<></>} />
           <Input
-            name='Период (мес.)'
+            name={t('certificate.income.period')}
             placeholder='3'
             value={certPeriod}
             onUpdate={setCertPeriod}
             popover={
-              <PopoverElement text='Период, за который нужна справка. Если нужна за последний год, укажите 12.' />
+              <PopoverElement text={t('certificate.income.periodPopover')} />
             }
           />
         </Card>
         <Text style={[globalStyles.textColor, fontSize.medium]}>
-          Срок изготовления справки - 3 рабочих дня. Справки выдаются только за прошедшие месяцы -
-          студентам первого курса в сентябре месяце справки о доходах не выдаются. {'\n\n'}
-          Получение справки - в отделе расчёта с обучающимися, 1 корпус, 322 кабинет.
+          {t('certificate.income.timingInfo')}
         </Text>
       </View>
       <View style={isApplicable ? styles.btnCompose : styles.btnComposeDisabled}>
         <Button
-          text={'Составить письмо'}
+          text={t('certificate.income.composeMail')}
           onPress={() =>
             composeMail(
               makeMailOptions({

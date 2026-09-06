@@ -1,6 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useIsFocused } from '@react-navigation/native';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 
 import BorderLine from '~/components/BorderLine';
@@ -17,6 +18,7 @@ import { fontSize, iconSize } from '~/utils/texts';
 import CertificateCard from './components/CertificateCard';
 
 const CertificateTable = () => {
+  const { t } = useTranslation();
   const client = useClient();
   const { data, isLoading, refresh } = useQuery({
     method: client.getCertificateData,
@@ -38,7 +40,7 @@ const CertificateTable = () => {
       {data.announce.header && (
         <>
           <ButtonWithPopover
-            title='Объявление'
+            title={t('certificate.announce')}
             info={data.announce.header}
             textStyle={[styles.announceButtonText, fontSize.large, globalStyles.primaryText]}
           />
@@ -51,7 +53,7 @@ const CertificateTable = () => {
         <>
           <RequestCertificateButton availableCertificates={data.availableCertificates} />
           <ButtonWithPopover
-            title='Сроки и выдача справок'
+            title={t('certificate.deadlinesAndDelivery')}
             info={data.announce.footer}
             textStyle={[fontSize.medium, { fontWeight: 'bold' }]}
             icon={

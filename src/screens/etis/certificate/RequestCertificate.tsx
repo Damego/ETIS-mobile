@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Alert, Keyboard, StyleSheet, ToastAndroid, View
 } from 'react-native';
@@ -48,6 +49,7 @@ const getAvailableCertificates = (
 export default function RequestCertificate({
   route,
 }: EducationStackScreenProps<'RequestCertificate'>) {
+  const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
   const navigation = useNavigation<EducationNavigationProp>();
   const availableCertificates = getAvailableCertificates(route.params);
@@ -125,7 +127,7 @@ export default function RequestCertificate({
 
   const submitRequest = async () => {
     if (isDemo) {
-      ToastAndroid.show('Запросы в демо режиме невозможны!', ToastAndroid.LONG);
+      ToastAndroid.show(t('certificate.demoModeUnavailable'), ToastAndroid.LONG);
       setRequestSent(true);
       return;
     }
@@ -142,17 +144,17 @@ export default function RequestCertificate({
       );
       setRequestSent(true);
     } catch (e) {
-      ToastAndroid.show(`Ошибка: ${e}`, ToastAndroid.LONG);
+      ToastAndroid.show(t('certificate.requestError', { error: e }), ToastAndroid.LONG);
     }
   };
 
   const confirmSubmit = () => {
-    Alert.alert('Подтверждение', 'Проверьте введённые данные и нажмите Подтвердить', [
+    Alert.alert(t('certificate.confirmTitle'), t('certificate.confirmMessage'), [
       {
-        text: 'Вернуться',
+        text: t('certificate.back'),
       },
       {
-        text: 'Подтвердить',
+        text: t('certificate.confirm'),
         onPress: submitRequest,
       },
     ]);
@@ -184,7 +186,7 @@ export default function RequestCertificate({
   return (
     <Screen containerStyle={{ gap: 16 }}>
       <Card>
-        <Text style={fontSize.big}>Тип справки</Text>
+        <Text style={fontSize.big}>{t('certificate.type')}</Text>
         <RadioGroup
           radioButtons={certificateRadioButtons}
           onPress={(certId) => changeCertificate({ certificateId: certId })}
@@ -196,7 +198,7 @@ export default function RequestCertificate({
       {currentCertificate && certificateId && !specialCert && (
         <>
           <Card>
-            <Text style={fontSize.big}>Метод вручения</Text>
+            <Text style={fontSize.big}>{t('certificate.deliveryMethod')}</Text>
             <RadioGroup
               radioButtons={deliveryWayRadioButtons}
               onPress={(delivery) => changeCertificate({ delivery })}
@@ -204,7 +206,7 @@ export default function RequestCertificate({
               containerStyle={styles.alignStart}
               labelStyle={globalStyles.textColor}
             />
-            <Text style={fontSize.big}>Количество (шт.)</Text>
+            <Text style={fontSize.big}>{t('certificate.quantityUnitsLabel')}</Text>
             <RadioGroup
               radioButtons={quantityRadioButtons}
               selectedId={quantity}
@@ -217,23 +219,23 @@ export default function RequestCertificate({
           <Card>
             {currentCertificate.note && (
               <Input
-                name='Примечание'
-                placeholder='Заберёт Иванов Андрей Алексеевич'
+                name={t('certificate.noteLabel')}
+                placeholder={t('certificate.notePlaceholder')}
                 value={note}
                 onUpdate={(note: string) => changeCertificate({ note })}
                 popover={
-                  <PopoverElement text='Справки выдаются лично заявителю. Если Вы доверяете получить справку другому лицу, пишите в примечаниях фамилию, имя отчество того, кто будет справку забирать.' />
+                  <PopoverElement text={t('certificate.notePopover')} />
                 }
               />
             )}
             {currentCertificate.place && (
               <Input
-                name='Место предъявления (организация-работодатель) *'
-                placeholder='ОАО НефтьГаз'
+                name={t('certificate.placeRequiredLabel')}
+                placeholder={t('certificate.placePlaceholder')}
                 value={place}
                 onUpdate={(place: string) => changeCertificate({ place })}
                 popover={
-                  <PopoverElement text='Название организации необходимо указывать в РОДИТЕЛЬНОМ падеже для соблюдения норм русского языка при формировании текста справки.' />
+                  <PopoverElement text={t('certificate.placePopover')} />
                 }
               />
             )}
@@ -244,7 +246,7 @@ export default function RequestCertificate({
       {specialCert && (
         <View style={styles.buttonContainer}>
           <Button
-            text={'Продолжить'}
+            text={t('certificate.continue')}
             onPress={() => navigation.navigate(specialCert.screen as never)}
             variant={'primary'}
           />
@@ -253,7 +255,7 @@ export default function RequestCertificate({
 
       {isApplicable && (
         <View style={styles.buttonContainer}>
-          <Button text={'Заказать'} onPress={confirmSubmit} variant={'primary'} />
+          <Button text={t('certificate.order')} onPress={confirmSubmit} variant={'primary'} />
         </View>
       )}
     </Screen>

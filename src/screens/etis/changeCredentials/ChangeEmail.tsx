@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { TextInput, ToastAndroid, View } from 'react-native';
 
 import { cache } from '~/cache/smartCache';
@@ -34,6 +35,7 @@ const Form = ({
   onSubmit: (email: string) => void;
   showLoading: boolean;
 }) => {
+  const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
   const theme = useAppTheme();
 
@@ -48,11 +50,10 @@ const Form = ({
         marginTop: '35%',
       }}
     >
-      <Text style={[fontSize.xlarge, { fontWeight: '600' }]}>Указание почты</Text>
-      <Text>
-        Адрес электронной почты используется Вами как логин для входа, а также он нужен при
-        восстановлении пароля и как адрес обратной связи преподавателями с вами
+      <Text style={[fontSize.xlarge, { fontWeight: '600' }]}>
+        {t('changeCredentials.emailTitle')}
       </Text>
+      <Text>{t('changeCredentials.emailDescription')}</Text>
       <TextInput
         style={[
           styles.input,
@@ -61,7 +62,7 @@ const Form = ({
           email && !emailRegex.test(email) ? { borderColor: theme.colors.primary } : undefined,
         ]}
         onChangeText={setEmail}
-        placeholder='Эл. почта'
+        placeholder={t('changeCredentials.emailPlaceholder')}
         placeholderTextColor={theme.colors.inputPlaceholder}
         autoComplete='email'
         inputMode='email'
@@ -71,7 +72,7 @@ const Form = ({
       />
       <View style={{ width: '90%' }}>
         <Button
-          text={'Сменить'}
+          text={t('changeCredentials.changeButton')}
           onPress={() => onSubmit(email)}
           disabled={!email || !emailRegex.test(email)}
           showLoading={showLoading}
@@ -83,6 +84,7 @@ const Form = ({
 };
 
 export default function ChangeEmail({ route }: EducationStackScreenProps<'ChangeEmail'>) {
+  const { t } = useTranslation();
   const sendVerificationMail = route.params?.sendVerificationMail;
 
   const dispatch = useAppDispatch();
@@ -122,9 +124,10 @@ export default function ChangeEmail({ route }: EducationStackScreenProps<'Change
   let component: React.ReactNode;
   if (mailSent)
     component = (
-      <CenteredText>Письмо с подтверждением было отправлено на указанный адрес</CenteredText>
+      <CenteredText>{t('changeCredentials.verificationMailSent')}</CenteredText>
     );
-  else if (sendVerificationMail) component = <CenteredText>Отправка...</CenteredText>;
+  else if (sendVerificationMail)
+    component = <CenteredText>{t('changeCredentials.sending')}</CenteredText>;
   else component = <Form onSubmit={submit} showLoading={isLoading} />;
 
   return <Screen>{component}</Screen>;

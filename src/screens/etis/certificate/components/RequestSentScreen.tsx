@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
 import { Button } from '~/components/Button';
@@ -17,6 +18,7 @@ const RequestSentScreen = ({
   delivery,
   place,
 }: CertificateRequest) => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
 
   const certificateName = KNOWN_CERTIFICATES.find((cert) => cert.id === certificateId)?.name;
@@ -25,32 +27,30 @@ const RequestSentScreen = ({
   return (
     <Screen>
       <View style={styles.container}>
-        <Text style={styles.titleText}>Справка заказана!</Text>
+        <Text style={styles.titleText}>{t('certificate.requestSentTitle')}</Text>
 
-        <Text style={styles.detailsTitleText}>Детали</Text>
+        <Text style={styles.detailsTitleText}>{t('certificate.details')}</Text>
 
         <Card>
-          <Text style={styles.paragraphText}>Название</Text>
+          <Text style={styles.paragraphText}>{t('certificate.nameLabel')}</Text>
           <Text style={fontSize.big}>{certificateName}</Text>
 
-          <Text style={styles.paragraphText}>Количество</Text>
-          <Text style={fontSize.big}>{quantity} шт.</Text>
+          <Text style={styles.paragraphText}>{t('certificate.quantityLabel')}</Text>
+          <Text style={fontSize.big}>{t('certificate.piecesCount', { quantity })}</Text>
 
           {note && (
             <>
-              <Text style={styles.paragraphText}>Примечание</Text>
+              <Text style={styles.paragraphText}>{t('certificate.noteLabel')}</Text>
               <Text style={fontSize.big}>{note}</Text>
             </>
           )}
 
-          <Text style={styles.paragraphText}>Метод вручения</Text>
+          <Text style={styles.paragraphText}>{t('certificate.deliveryMethod')}</Text>
           <Text style={fontSize.big}>{deliveryMethodName}</Text>
 
           {place && (
             <>
-              <Text style={styles.paragraphText}>
-                Место предъявления (организация-работодатель)
-              </Text>
+              <Text style={styles.paragraphText}>{t('certificate.placeLabel')}</Text>
               <Text style={fontSize.big}>{place}</Text>
             </>
           )}
@@ -58,7 +58,11 @@ const RequestSentScreen = ({
       </View>
 
       <View style={{ bottom: '1%' }}>
-        <Button text={'Вернуться назад'} onPress={() => navigation.goBack()} variant={'primary'} />
+        <Button
+          text={t('certificate.backButton')}
+          onPress={() => navigation.goBack()}
+          variant={'primary'}
+        />
       </View>
     </Screen>
   );
