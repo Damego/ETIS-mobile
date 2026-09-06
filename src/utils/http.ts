@@ -4,6 +4,7 @@ import CyrillicToTranslit from 'cyrillic-to-translit-js';
 import { documentDirectory, downloadAsync } from 'expo-file-system/legacy';
 import { getNetworkStateAsync } from 'expo-network';
 
+import i18next from '~/i18n';
 import { ICathedraTimetablePayload } from '~/models/cathedraTimetable';
 import { ICertificate } from '~/models/certificate';
 import { IDisciplineEducationalComplexPayload } from '~/models/disciplineEducationalComplex';
@@ -155,7 +156,7 @@ class HTTPClient {
       return {
         error: {
           code: ErrorCode.invalidConnection,
-          message: 'Нет подключения к интернету!',
+          message: i18next.t('errors.noInternet'),
         },
       };
     }
@@ -191,7 +192,7 @@ class HTTPClient {
       return {
         error: {
           code: ErrorCode.invalidConnection,
-          message: 'Нет соединения с ЕТИС. Попробуйте зайти позже',
+          message: i18next.t('errors.noEtisConnection'),
         },
       };
     }
@@ -245,7 +246,7 @@ class HTTPClient {
       const errorMessage = $('.error_message').text();
       if (!errorMessage)
         return {
-          error: { code: ErrorCode.authError, message: 'Ошибка авторизации. Попробуйте ещё раз.' },
+          error: { code: ErrorCode.authError, message: i18next.t('errors.authError') },
         };
       return { error: { code: ErrorCode.unknown, message: errorMessage } };
     }

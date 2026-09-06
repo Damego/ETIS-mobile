@@ -10,6 +10,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import i18next from '~/i18n';
+
 import {
   errorDownloadNotification,
   finishDownloadNotification,
@@ -51,7 +53,7 @@ const FileTextLink = ({
       return;
     }
 
-    ToastAndroid.show('Началось скачивание', ToastAndroid.LONG);
+    ToastAndroid.show(i18next.t('files.downloadStarted'), ToastAndroid.LONG);
     const { id, channelId } = await startDownloadNotification(fileName);
     let fileData: FileSystemDownloadResult;
 
@@ -73,7 +75,7 @@ const FileTextLink = ({
     try {
       await saveFileFromCache(fileData, fileName);
     } catch (e) {
-      ToastAndroid.show('Невозможно скачать файл в указанную папку', ToastAndroid.SHORT);
+      ToastAndroid.show(i18next.t('files.downloadFailed'), ToastAndroid.SHORT);
       console.log(e);
     }
     shareAsync(fileData.uri).catch((e) => e);

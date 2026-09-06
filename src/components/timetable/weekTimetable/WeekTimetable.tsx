@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
 import { Button } from '~/components/Button';
@@ -53,6 +54,7 @@ const WeekTimeTable = ({
   loadingComponent?: () => React.ReactNode;
   onRetry?: () => void;
 }) => {
+  const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
 
   const contextData = useMemo(
@@ -104,7 +106,7 @@ const WeekTimeTable = ({
           : (
             <View style={styles.emptyContainer}>
               <CenteredText>Нет расписания</CenteredText>
-              {onRetry && <Button text='Обновить' onPress={onRetry} variant='card' />}
+              {onRetry && <Button text={t('common.refresh')} onPress={onRetry} variant='card' />}
             </View>
           )}
     </View>

@@ -1,5 +1,7 @@
 import { Action, isSupported, setItems } from 'expo-quick-actions';
 
+import i18next from '~/i18n';
+
 export interface AppShortcutItem extends Action {
   id: string;
 }
@@ -7,17 +9,17 @@ export interface AppShortcutItem extends Action {
 const SHORTCUTS_ITEMS: AppShortcutItem[] = [
   {
     id: 'SignsNavigator',
-    title: 'Оценки',
+    title: i18next.t('shortcuts.grades'),
     icon: 'signs',
   },
   {
     id: 'Messages',
-    title: 'Сообщения',
+    title: i18next.t('shortcuts.messages'),
     icon: 'messages',
   },
   {
     id: 'Announces',
-    title: 'Объявления',
+    title: i18next.t('shortcuts.announces'),
     icon: 'announce',
   },
 ];

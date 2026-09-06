@@ -1,6 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import dayjs from 'dayjs';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import Text from '~/components/Text';
@@ -26,6 +27,7 @@ const WeekNavigation = ({
   onNextPress: () => void;
   onMainPress: () => void;
 }) => {
+  const { t } = useTranslation();
   const theme = useAppTheme();
   const canPrev = selectedWeek > firstWeek;
   const canNext = selectedWeek < lastWeek;
@@ -44,18 +46,18 @@ const WeekNavigation = ({
       <View style={styles.titleRow}>
         <Text style={styles.infoText} onPress={onMainPress}>
           {capitalizeWord(selectedDate.format('MMMM'))}
-          {selectedWeek ? ` • ${selectedWeek} неделя` : ''}
+          {selectedWeek ? ` • ${t('timetable.weekN', { number: selectedWeek })}` : ''}
         </Text>
         {currentWeek !== undefined && selectedWeek !== currentWeek && (
           <TouchableOpacity
             onPress={onMainPress}
             accessibilityRole='button'
-            accessibilityLabel='Вернуться к текущей неделе'
+            accessibilityLabel={t('timetable.backToCurrentWeek')}
             hitSlop={{
               top: 8, bottom: 8, left: 8, right: 8
             }}
           >
-            <Text style={[styles.todayText, { color: theme.colors.primary }]}>Сегодня</Text>
+            <Text style={[styles.todayText, { color: theme.colors.primary }]}>{t('common.today')}</Text>
           </TouchableOpacity>
         )}
       </View>

@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import DisciplineType from '~/components/DisciplineType';
@@ -14,8 +15,9 @@ import { getTeacherName } from '~/utils/teachers';
 import { fontSize, formatAudience } from '~/utils/texts';
 
 const Pair = ({ pair, date }: { pair: IPair; date: dayjs.Dayjs }) => {
+  const { t } = useTranslation();
   const isLyceum = useAppSelector((state) => state.student.info?.isLyceum);
-  const pairText = `${pair.position} ${isLyceum ? 'урок' : 'пара'}`;
+  const pairText = `${pair.position} ${isLyceum ? t('timetable.lesson') : t('timetable.pair')}`;
 
   return (
     <View style={styles.pairContainer}>

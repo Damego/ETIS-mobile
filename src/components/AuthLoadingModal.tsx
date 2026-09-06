@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ActivityIndicator, Button, StyleSheet, ToastAndroid, View
 } from 'react-native';
 
 import { cache } from '~/cache/smartCache';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '~/hooks';
+import i18next from '~/i18n';
 import {
   setAuthorizing,
   signIn,
@@ -72,7 +74,7 @@ const makeLogin = async (
 
     if (message.includes('лимит')) {
       ToastAndroid.show(
-        'Был превышен лимит (5) неудачных попыток. Повторите через 10 минут!',
+        i18next.t('auth.attemptLimitExceeded'),
         ToastAndroid.SHORT
       );
       return LoginResponseType.rateLimited;
@@ -92,6 +94,7 @@ const makeLogin = async (
 };
 
 const AuthLoadingModal = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { userCredentials, saveUserCredentials, fromStorage, isAuthorizing } = useAppSelector(
     (state) => state.account
@@ -106,7 +109,7 @@ const AuthLoadingModal = () => {
     // Модал показывается только при авторизации, когда креды уже введены/загружены
     if (!userCredentials) return;
     setLoading(true);
-    setMessageStatus('Авторизация...');
+    setMessageStatus(t('auth.authorizing'));
 
     if (isDemoCredentials(userCredentials)) {
       dispatch(signInDemo(true));
@@ -125,7 +128,7 @@ const AuthLoadingModal = () => {
       response === LoginResponseType.missingToken ||
       response === LoginResponseType.invalidToken
     ) {
-      setMessageStatus('Получение токена...');
+      setMessageStatus(t('auth.gettingToken'));
       setIsInvisibleRecaptcha(false);
       return;
     }
@@ -157,7 +160,7 @@ const AuthLoadingModal = () => {
   };
 
   useEffect(() => {
-    // setMessageStatus('Получение токена...');
+    // setMessageStatus(t('auth.gettingToken'));
     onReceiveToken('foobar');
 
     // Вход в оффлайн режим слишком резкий, поэтому ставим таймер 1 сек.
@@ -199,7 +202,7 @@ const AuthLoadingModal = () => {
           {showOfflineButton && (
             <View style={{ marginTop: '15%' }}>
               <Button
-                title='Оффлайн режим'
+                title={t('offline.mode')}
                 onPress={signInOffline}
                 color={globalStyles.primaryText.color}
               />

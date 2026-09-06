@@ -1,6 +1,7 @@
 import PagerView, { type PagerViewRef } from '@expo/ui/community/pager-view';
 import dayjs from 'dayjs';
 import React, { useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
 import { Button } from '~/components/Button';
@@ -56,6 +57,7 @@ const DayTimetable = ({
   onRetry?: () => void;
   onPagerScrollStateChange?: (state: PagerScrollState) => void;
 }) => {
+  const { t } = useTranslation();
   const pagerRef = useRef<PagerViewRef>(null);
   const { skipSunday } = useAppSelector((state) => state.settings.config.ui);
 
@@ -117,8 +119,8 @@ const DayTimetable = ({
         />
       ) : (
         <View style={styles.emptyContainer}>
-          <CenteredText>Расписания нет</CenteredText>
-          {onRetry && <Button text='Обновить' onPress={onRetry} variant='card' />}
+          <CenteredText>{t('timetable.noTimetable')}</CenteredText>
+          {onRetry && <Button text={t('common.refresh')} onPress={onRetry} variant='card' />}
         </View>
       )}
     </TimeTableContext.Provider>

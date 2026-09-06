@@ -2,6 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import Text from '~/components/Text';
@@ -10,6 +11,7 @@ import useTasks from '~/hooks/useTasks';
 import { EducationNavigationProp } from '~/navigation/types';
 
 const DisciplineTasksButton = () => {
+  const { t } = useTranslation();
   const currentDate = dayjs().startOf('day');
   const weekEnd = currentDate.clone().endOf('week');
   const { tasks } = useTasks({
@@ -30,8 +32,8 @@ const DisciplineTasksButton = () => {
       accessibilityRole='button'
       accessibilityLabel={
         tasks.length
-          ? `Задания по дисциплинам, непрочитанных: ${tasks.length}`
-          : 'Задания по дисциплинам'
+          ? t('timetable.disciplineTasksUnread', { count: tasks.length })
+          : t('timetable.disciplineTasks')
       }
       hitSlop={
         {

@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNetworkState } from 'expo-network';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
 import Text from '~/components/Text';
@@ -9,6 +10,7 @@ import { useAppTheme } from '~/hooks/theme';
 import { borderRadius, fontSize, iconSize } from '~/utils/texts';
 
 const OfflineBanner = () => {
+  const { t } = useTranslation();
   const theme = useAppTheme();
   const isOfflineMode = useAppSelector((state) => state.account.isOfflineMode);
   // До первой проверки сети значение undefined — не показываем баннер,
@@ -18,9 +20,7 @@ const OfflineBanner = () => {
   const noConnection = isInternetReachable === false;
   if (!isOfflineMode && !noConnection) return null;
 
-  const message = isOfflineMode
-    ? 'Оффлайн-режим — данные из кеша'
-    : 'Нет интернет-соединения';
+  const message = isOfflineMode ? t('offline.banner') : t('offline.noInternet');
 
   return (
     <View style={styles.container}>

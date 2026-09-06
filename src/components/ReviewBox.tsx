@@ -1,5 +1,6 @@
 import * as StoreReview from 'expo-store-review';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Alert, Button, Linking, Text, View
 } from 'react-native';
@@ -14,6 +15,7 @@ const ReviewBox = ({
   setReviewed: () => void;
   setViewed: () => void;
 }) => {
+  const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
 
   const handleReview = async () => {
@@ -30,7 +32,7 @@ const ReviewBox = ({
   };
 
   const handleDismiss = () => {
-    Alert.alert('Может быть, в другой раз');
+    Alert.alert(t('review.maybeLater'));
     setViewed();
   };
 
@@ -53,7 +55,7 @@ const ReviewBox = ({
           },
         ]}
       >
-        Вам нравится приложение?
+        {t('review.question')}
       </Text>
 
       <View
@@ -63,11 +65,11 @@ const ReviewBox = ({
         }}
       >
         <View style={{ flex: 1, marginHorizontal: '1%' }}>
-          <Button title='Оставить отзыв' onPress={() => handleReview()} />
+          <Button title={t('review.leaveReview')} onPress={() => handleReview()} />
         </View>
 
         <View style={{ flex: 1, marginHorizontal: '1%' }}>
-          <Button title='Нет, спасибо' color='#999' onPress={() => handleDismiss()} />
+          <Button title={t('review.noThanks')} color='#999' onPress={() => handleDismiss()} />
         </View>
       </View>
     </View>

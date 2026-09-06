@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+import i18next from '~/i18n';
 import { LessonTypes } from '~/models/other';
 import { ICheckPoint } from '~/models/sessionPoints';
 import { ILesson } from '~/models/timeTable';
@@ -78,11 +79,11 @@ export const borderRadius = {
 };
 
 export const disciplineTypeNames: { [key in LessonTypes]: string } = {
-  LECTURE: 'Лекция',
-  PRACTICE: 'Практика',
-  LABORATORY: 'Лабораторная',
-  TEST: 'Зачёт',
-  EXAM: 'Экзамен',
+  LECTURE: i18next.t('lessonTypes.LECTURE'),
+  PRACTICE: i18next.t('lessonTypes.PRACTICE'),
+  LABORATORY: i18next.t('lessonTypes.LABORATORY'),
+  TEST: i18next.t('lessonTypes.TEST'),
+  EXAM: i18next.t('lessonTypes.EXAM'),
 };
 
 export const getDisciplineTypeName = (type: string): string =>
@@ -92,7 +93,7 @@ export const formatAudience = (lesson: ILesson) => {
   const { audience } = lesson;
 
   if (lesson.isDistance) {
-    if (!lesson.distancePlatform) return 'Дистанционно';
+    if (!lesson.distancePlatform) return i18next.t('audience.distance');
 
     return lesson.distancePlatform.name;
   }
@@ -100,7 +101,11 @@ export const formatAudience = (lesson: ILesson) => {
   if (!audience) return;
 
   return audience.number && audience.building && audience.floor
-    ? `ауд. ${audience.number} (${audience.building} корпус, ${audience.floor} этаж)`
+    ? i18next.t('audience.room', {
+      number: audience.number,
+      building: audience.building,
+      floor: audience.floor,
+    })
     : audience.string;
 };
 

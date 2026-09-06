@@ -1,3 +1,4 @@
+import i18next from '~/i18n';
 import { ThemeType } from '~/styles/themes';
 
 export interface EventData {
@@ -71,8 +72,8 @@ export const newYearEmptyDayResponses = [
 ];
 
 const defaultEmptyDayResponses = [
-  'Пар нет',
-  'Отдых',
+  i18next.t('timetable.noPairs'),
+  i18next.t('timetable.rest'),
   '💤',
   '😴',
   '🎮',

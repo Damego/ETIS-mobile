@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
 import CenteredText from '~/components/CenteredText';
@@ -9,13 +10,14 @@ import { borderRadius } from '~/utils/texts';
 import { getRandomItem } from '~/utils/utils';
 
 const NoPairs = () => {
+  const { t } = useTranslation();
   const theme = useAppSelector((state) => state.settings.config.theme);
   // Ответ фиксирован на монтирование, а не меняется при каждом ре-рендере
   const response = React.useMemo(() => getRandomItem(getEmptyDayResponses(theme)), [theme]);
 
   return (
     <View style={styles.view}>
-      <CenteredText>В этот день занятий нет</CenteredText>
+      <CenteredText>{t('timetable.noLessonsToday')}</CenteredText>
       <Text>{response}</Text>
     </View>
   );

@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
 import BorderLine from '~/components/BorderLine';
@@ -18,6 +19,7 @@ interface IDayArrayProps {
 }
 
 const DayArray = ({ data, weekDates }: IDayArrayProps) => {
+  const { t } = useTranslation();
   const { showPastWeekDays } = useAppSelector((state) => state.settings.config.ui);
   const [localShowPastWeekDays, setShowPastWeekDays] = useState(showPastWeekDays);
 
@@ -56,10 +58,10 @@ const DayArray = ({ data, weekDates }: IDayArrayProps) => {
       <>
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={[fontSize.large, { fontWeight: '500', textAlign: 'center' }]}>
-            Неделя подошла к концу. {'\n'}Приятных выходных! :)
+            {t('timetable.weekEnd')}
           </Text>
           <Button
-            text={'Показать прошедшие дни'}
+            text={t('timetable.showPastDays')}
             onPress={showPastDays}
             variant={'card'}
             fontStyle={fontSize.medium}
@@ -73,7 +75,7 @@ const DayArray = ({ data, weekDates }: IDayArrayProps) => {
     <View style={{ gap: 8 }}>
       {components.length < 6 && (
         <Button
-          text={'Показать прошедшие дни'}
+          text={t('timetable.showPastDays')}
           onPress={showPastDays}
           variant={'card'}
           fontStyle={fontSize.medium}

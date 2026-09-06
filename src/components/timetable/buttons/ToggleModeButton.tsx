@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { TouchableOpacity } from 'react-native';
 
 import { useAppDispatch, useAppSelector } from '~/hooks';
@@ -7,6 +8,7 @@ import { useAppTheme } from '~/hooks/theme';
 import { setUIConfig, TimetableModes } from '~/redux/reducers/settingsSlice';
 
 const ToggleModeButton = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { timetableMode } = useAppSelector((state) => state.settings.config.ui);
   const theme = useAppTheme();
@@ -24,7 +26,7 @@ const ToggleModeButton = () => {
     <TouchableOpacity
       onPress={toggle}
       accessibilityRole='button'
-      accessibilityLabel='Переключить вид расписания'
+      accessibilityLabel={t('timetable.switchMode')}
       hitSlop={
         {
           top: 12,

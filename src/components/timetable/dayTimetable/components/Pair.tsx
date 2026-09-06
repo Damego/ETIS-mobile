@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
 import BorderLine from '~/components/BorderLine';
@@ -11,12 +12,13 @@ import { IPair } from '~/models/timeTable';
 import Lesson from './Lesson';
 
 const Pair = ({ pair }: { pair: IPair }) => {
+  const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
   const { selectedDate: dayDate } = useTimetableContext();
   const time = dayjs(pair.time, 'H:mm');
   const pairDate = dayDate.clone().set('hour', time.hour()).set('minute', time.minute());
   const isLyceum = useAppSelector((state) => state.student.info?.isLyceum);
-  const pairText = `${pair.position} ${isLyceum ? 'урок' : 'пара'}`;
+  const pairText = `${pair.position} ${isLyceum ? t('timetable.lesson') : t('timetable.pair')}`;
 
   return (
     <View style={styles.pairContainer}>

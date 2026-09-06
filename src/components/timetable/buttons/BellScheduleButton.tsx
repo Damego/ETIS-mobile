@@ -1,12 +1,14 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { TouchableOpacity } from 'react-native';
 
 import { useAppTheme } from '~/hooks/theme';
 import { EducationNavigationProp } from '~/navigation/types';
 
 const BellScheduleButton = () => {
+  const { t } = useTranslation();
   const navigation = useNavigation<EducationNavigationProp>();
   const theme = useAppTheme();
 
@@ -14,7 +16,7 @@ const BellScheduleButton = () => {
     <TouchableOpacity
       onPress={() => navigation.navigate('BellSchedule')}
       accessibilityRole='button'
-      accessibilityLabel='Расписание звонков'
+      accessibilityLabel={t('navigation.bellSchedule')}
       hitSlop={
         {
           top: 12,
