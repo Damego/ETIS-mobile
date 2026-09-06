@@ -1,12 +1,12 @@
 import * as StoreReview from 'expo-store-review';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Alert, Button, Linking, Text, View
-} from 'react-native';
+import { Alert, Linking, View } from 'react-native';
 
-import { useGlobalStyles } from '../hooks';
-import { fontSize } from '../utils/texts';
+import { Button } from '~/components/Button';
+import Text from '~/components/Text';
+import { useGlobalStyles } from '~/hooks';
+import { fontSize } from '~/utils/texts';
 
 const ReviewBox = ({
   setReviewed,
@@ -46,15 +46,7 @@ const ReviewBox = ({
         },
       ]}
     >
-      <Text
-        style={[
-          fontSize.large,
-          globalStyles.fontColorForBlock,
-          {
-            fontWeight: '600',
-          },
-        ]}
-      >
+      <Text style={[fontSize.large, { fontWeight: '600' }]}>
         {t('review.question')}
       </Text>
 
@@ -65,11 +57,11 @@ const ReviewBox = ({
         }}
       >
         <View style={{ flex: 1, marginHorizontal: '1%' }}>
-          <Button title={t('review.leaveReview')} onPress={() => handleReview()} />
+          <Button text={t('review.leaveReview')} onPress={() => handleReview()} variant={'primary'} />
         </View>
 
         <View style={{ flex: 1, marginHorizontal: '1%' }}>
-          <Button title={t('review.noThanks')} color='#999' onPress={() => handleDismiss()} />
+          <Button text={t('review.noThanks')} onPress={() => handleDismiss()} variant={'secondary'} />
         </View>
       </View>
     </View>

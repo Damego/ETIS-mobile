@@ -2,13 +2,15 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { Image } from 'expo-image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
+import { cache } from '~/cache/smartCache';
+import ReviewBox from '~/components/ReviewBox';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
-import { useGlobalStyles, usePsutechHealth } from '~/hooks';
+import { useAppSelector, useGlobalStyles, usePsutechHealth } from '~/hooks';
 import { EducationNavigationProp, EducationStackParamList } from '~/navigation/types';
 import { fontSize } from '~/utils/texts';
 
@@ -115,6 +117,17 @@ const ScreenButton = ({ screen }: { screen: ScreenT }) => {
 
 const MoreScreens = () => {
   const { t } = useTranslation();
+  const { isDemo } = useAppSelector((state) => state.account);
+  const [showReviewBox, setShowReviewBox] = useState(false);
+
+  useEffect(() => {
+    // В v1 ReviewBox жил на экране «Сервисы»; после v2-редизайна
+    // его место — внизу таба «Ещё». Не спрашиваем отзыв в демо-режиме
+    if (isDemo) return;
+
+    cache.bumpReviewRequest().then((res) => setShowReviewBox(res === true));
+  }, [isDemo]);
+
   return (
     <Screen containerStyle={{ gap: 8 }}>
       <Text style={styles.titleText}>{t('more.etisMenu')}</Text>
@@ -128,6 +141,16 @@ const MoreScreens = () => {
           </View>
         ))}
       </View>
+
+      {showReviewBox && (
+        <ReviewBox
+          setReviewed={() => {
+            setShowReviewBox(false);
+            cache.setReviewStep('stop');
+          }}
+          setViewed={() => setShowReviewBox(false)}
+        />
+      )}
     </Screen>
   );
 };
