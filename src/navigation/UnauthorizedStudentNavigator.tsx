@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useAppTheme } from '~/hooks/theme';
 import { headerParams } from '~/navigation/header';
@@ -13,6 +14,7 @@ import Timetable from '~/screens/unauthorizedStudent/timetable/Timetable';
 const Stack = createNativeStackNavigator<UnauthorizedStudentStackParamList>();
 
 const UnauthorizedStudentNavigator = () => {
+  const { t } = useTranslation();
   const theme = useAppTheme();
 
   return (
@@ -21,19 +23,19 @@ const UnauthorizedStudentNavigator = () => {
         name={'Timetable'}
         component={Timetable}
         options={{
-          headerTitle: 'Расписание',
+          headerTitle: t('navigation.timetable'),
           headerRight: AccountSettingsButton,
         }}
       />
       <Stack.Screen
         name={'AccountSettings'}
         component={Settings}
-        options={{ headerTitle: 'Аккаунт', headerRight: () => <AppSettingsButton /> }}
+        options={{ headerTitle: t('navigation.account'), headerRight: () => <AppSettingsButton /> }}
       />
       <Stack.Screen
         name={'DisciplineInfo'}
         component={DisciplineInfo}
-        options={{ title: 'Информация' }}
+        options={{ title: t('navigation.info') }}
       />
     </Stack.Navigator>
   );

@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as SplashScreen from 'expo-splash-screen';
 import { setBackgroundColorAsync } from 'expo-system-ui';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -29,6 +30,7 @@ import { RootStackParamList } from './types';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const StackNavigator = () => {
+  const { t } = useTranslation();
   const accountType = useAppSelector((state) => state.account.accountType);
   const {
     appIsReady,
@@ -90,14 +92,14 @@ const StackNavigator = () => {
               <Stack.Screen
                 name='AppSettings'
                 component={AppSettings}
-                options={{ title: 'Настройки' }}
+                options={{ title: t('navigation.appSettings') }}
               />
               <Stack.Screen
                 name='ChangeAppUI'
                 component={ChangeAppUI}
-                options={{ title: 'Интерфейс' }}
+                options={{ title: t('navigation.appInterface') }}
               />
-              <Stack.Screen name='AboutApp' component={About} options={{ title: 'О приложении' }} />
+              <Stack.Screen name='AboutApp' component={About} options={{ title: t('navigation.aboutApp') }} />
               <Stack.Screen
                 name='ReleaseNotes'
                 component={ReleaseNotes}

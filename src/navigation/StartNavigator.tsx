@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useAppTheme } from '~/hooks/theme';
 import { headerParams } from '~/navigation/header';
@@ -15,6 +16,7 @@ import StartScreen from '~/screens/start/StartScreen';
 const Stack = createNativeStackNavigator<StartStackParamList>();
 
 const StartNavigator = () => {
+  const { t } = useTranslation();
   const theme = useAppTheme();
 
   return (
@@ -23,22 +25,22 @@ const StartNavigator = () => {
       <Stack.Screen
         name={'SelectTeacher'}
         component={SelectTeacherScreen}
-        options={{ title: 'Поиск преподавателя', headerRight: TeacherListSourceButton }}
+        options={{ title: t('navigation.teacherSearch'), headerRight: TeacherListSourceButton }}
       />
       <Stack.Screen
         name={'SelectStudentAccountType'}
         component={SelectStudentAccountTypeScreen}
-        options={{ title: 'Тип аккаунта' }}
+        options={{ title: t('navigation.accountType') }}
       />
       <Stack.Screen
         name={'SelectFaculty'}
         component={SelectFacultyScreen}
-        options={{ title: 'Факультет' }}
+        options={{ title: t('navigation.faculty') }}
       />
       <Stack.Screen
         name={'SelectGroup'}
         component={SelectGroupScreen}
-        options={{ title: 'Группа', headerRight: GroupListSourceButton }}
+        options={{ title: t('navigation.group'), headerRight: GroupListSourceButton }}
       />
     </Stack.Navigator>
   );
