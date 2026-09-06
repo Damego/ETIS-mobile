@@ -46,7 +46,7 @@ export interface ITheme {
   colors: IThemeColors;
 }
 
-export const LightTheme: ITheme = {
+const LightTheme: ITheme = {
   dark: false,
   statusBarStyle: 'dark',
   colors: {
@@ -66,7 +66,7 @@ export const LightTheme: ITheme = {
   },
 };
 
-export const DarkTheme: ITheme = {
+const DarkTheme: ITheme = {
   dark: true,
   statusBarStyle: 'light',
   colors: {
@@ -86,7 +86,7 @@ export const DarkTheme: ITheme = {
   },
 };
 
-export const BlackTheme: ITheme = {
+const BlackTheme: ITheme = {
   ...DarkTheme,
   colors: {
     ...DarkTheme.colors,
@@ -104,7 +104,7 @@ export const BlackTheme: ITheme = {
 // textForPrimary → primaryContrast, textForSecondary → secondaryContrast,
 // textForBlock/text → text, block/container → container, shadow убран
 
-export const HalloweenTheme: ITheme = {
+const HalloweenTheme: ITheme = {
   dark: false,
   statusBarStyle: 'light',
   backgroundGradient: ['#33135b', '#24155c'],
@@ -127,7 +127,7 @@ export const HalloweenTheme: ITheme = {
   },
 };
 
-export const NewYearTheme: ITheme = {
+const NewYearTheme: ITheme = {
   dark: false,
   statusBarStyle: 'light',
   backgroundGradient: ['#9b1b2a', '#9b1b2a'],

@@ -64,9 +64,7 @@ export {
   openFile,
   readDisciplineInfo,
   readDisciplinesTasks,
-  readJSONFromDocuments,
   saveDisciplineInfo,
   saveDisciplinesTasks,
   saveFileFromCache,
-  saveJSONToDocuments,
 };

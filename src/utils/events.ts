@@ -34,7 +34,7 @@ export const isHalloween = () => {
   return isInDateRange(startDate, endDate);
 };
 
-export const halloweenEmptyDayResponses = [
+const halloweenEmptyDayResponses = [
   'Баллы или жизнь? 💯',
   'Охота на призраков 👻',
   'Прятки с призраками 👻',
@@ -55,7 +55,7 @@ export const isNewYear = () => {
   return isInDateRange(startDate, endDate, 'or');
 };
 
-export const newYearEmptyDayResponses = [
+const newYearEmptyDayResponses = [
   'Едим мандарины 🍊',
   'Наряжаем ёлку 🎄',
   'Пишем Деду Морозу 🎅',

@@ -5,7 +5,7 @@ import { initReactI18next } from 'react-i18next';
 import en from './locales/en.json';
 import ru from './locales/ru.json';
 
-export const SUPPORTED_LOCALES = ['ru', 'en'] as const;
+const SUPPORTED_LOCALES = ['ru', 'en'] as const;
 export type AppLanguage = (typeof SUPPORTED_LOCALES)[number];
 
 // Пользовательский выбор языка: 'system' — следовать системным настройкам
@@ -20,7 +20,7 @@ const resources = {
 // Язык приложения берётся из системных настроек устройства
 // (на Android 13+ — из per-app language). Локаль dayjs НЕ переключаем:
 // 'ru' нужна для корректного парсинга ответов сервера ETIS.
-export const resolveLanguage = (preference: LanguagePreference = 'system'): AppLanguage => {
+const resolveLanguage = (preference: LanguagePreference = 'system'): AppLanguage => {
   if (preference !== 'system') return preference;
 
   const deviceLanguage = getLocales()[0]?.languageCode;
@@ -32,8 +32,6 @@ export const resolveLanguage = (preference: LanguagePreference = 'system'): AppL
 // Текущее пользовательское предпочтение. Меняется через changeLanguage()
 // (переключатель в настройках); до первого вызова — системный язык.
 let languagePreference: LanguagePreference = 'system';
-
-export const getLanguagePreference = (): LanguagePreference => languagePreference;
 
 // Смена языка: обновляет предпочтение и сам инстанс i18next.
 // React-компоненты перерисуются автоматически через useTranslation.

@@ -248,7 +248,7 @@ export default function RequestCertificate({
   );
 }
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   text: {
     ...fontSize.xlarge,
     color: '#FFFFFF',

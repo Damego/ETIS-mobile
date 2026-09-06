@@ -24,15 +24,7 @@ const emojiStyles = StyleSheet.create({
     fontSize: 200,
     opacity: 0.3,
   },
-  littleEmoji: {
-    fontSize: 100,
-    opacity: 0.3,
-  },
 });
-
-export const HalloweenEmoji = () => (
-  <Text style={emojiStyles.littleEmoji}>{getRandomItem(EMOJI)}</Text>
-);
 
 export const HalloweenDecoration = () => {
   const { theme } = useAppSelector((state) => state.settings.config);

@@ -1,6 +1,6 @@
 import iconv from 'iconv-lite';
 
-export function encodeTextURI(data: string) {
+function encodeTextURI(data: string) {
   const buffer = iconv.encode(data, 'win1251');
 
   let URIString = '';

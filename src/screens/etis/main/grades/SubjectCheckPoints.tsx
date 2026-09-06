@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const getCheckPointScore = (checkPoint: ICheckPoint) => {
+const getCheckPointScore = (checkPoint: ICheckPoint) => {
   const formatted = formatCheckPointScore(checkPoint);
   if (formatted !== '-') return formatted;
 

@@ -70,7 +70,7 @@ export const borderRadius = {
   large: 20,
 };
 
-export const disciplineTypeNames: { [key in LessonTypes]: string } = {
+const disciplineTypeNames: { [key in LessonTypes]: string } = {
   LECTURE: i18next.t('lessonTypes.LECTURE'),
   PRACTICE: i18next.t('lessonTypes.PRACTICE'),
   LABORATORY: i18next.t('lessonTypes.LABORATORY'),

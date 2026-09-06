@@ -16,7 +16,7 @@ const devLog = (...args: LogArgs) => {
 
 const noop = (..._args: LogArgs) => undefined;
 
-export const logger = {
+const logger = {
   /**
    * Отладочный лог. В проде — no-op, вызов вырезается сборщиком.
    */
