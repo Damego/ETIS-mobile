@@ -3,6 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert } from 'react-native';
 
+import { cache } from '~/cache/smartCache';
 import SettingRow from '~/components/SettingRow';
 import { useAppDispatch } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
@@ -14,9 +15,11 @@ const ResetIntroSetting = () => {
   const theme = useAppTheme();
 
   const resetIntro = () => {
-    // Флаг intentionally не пишется в хранилище: интро показывается
-    // до следующей записи конфига, затем снова считается просмотренным
+    // Сброс идёт парой: redux + персистентный кэш. Без записи в кэш
+    // loadSettings при рестарте читал бы config.introViewed=true,
+    // и интро не показывалось бы
     dispatch(setIntroViewed(false));
+    void cache.placeIntroViewed(false);
     Alert.alert(t('settings.restartApp'), t('settings.resetIntroDescription'));
   };
 
