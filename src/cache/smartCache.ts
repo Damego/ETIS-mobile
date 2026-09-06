@@ -45,7 +45,7 @@ interface Account {
   student?: UnauthorizedStudentState;
 }
 
-export default class SmartCache {
+class SmartCache {
   absences: MappedCache<number, IAbsence>;
   announce: FieldCache<IAnnounce[]>;
   messages: MappedCache<number, IMessagesData>;

@@ -36,7 +36,7 @@ export const executeRegex = (
   return result;
 };
 
-export const ignoreErrors = [
+const ignoreErrors = [
   // sp-react-native-in-app-updates throws when neither immediate nor flexible
   // Play Core update is allowed (e.g. sideloaded APK / store state). It is
   // non-critical and swallowed by the caller, so suppress it either way it surfaces.
