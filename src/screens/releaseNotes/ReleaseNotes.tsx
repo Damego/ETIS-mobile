@@ -1,5 +1,5 @@
 import { useAssets } from 'expo-asset';
-import * as FileSystem from 'expo-file-system/legacy';
+import { File } from 'expo-file-system';
 import React, { useEffect, useState } from 'react';
 import Markdown from 'react-native-markdown-display';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -19,7 +19,7 @@ const ReleaseNotes = () => {
   useEffect(() => {
     if (!assets?.length) return;
 
-    FileSystem.readAsStringAsync(assets[0].localUri ?? '').then((data) => {
+    new File(assets[0].localUri ?? '').text().then((data) => {
       setNotes(data);
     });
   }, [assets]);

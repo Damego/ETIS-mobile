@@ -1,4 +1,4 @@
-import { FileSystemDownloadResult } from 'expo-file-system/legacy';
+import { File } from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
 import React, { useRef } from 'react';
 import {
@@ -56,7 +56,7 @@ const FileTextLink = ({
 
     ToastAndroid.show(i18next.t('files.downloadStarted'), ToastAndroid.LONG);
     const { id, channelId } = await startDownloadNotification(fileName);
-    let fileData: FileSystemDownloadResult;
+    let fileData: File;
 
     try {
       isDownloading.current = true;
@@ -76,6 +76,7 @@ const FileTextLink = ({
     try {
       await saveFileFromCache(fileData, fileName);
     } catch (e) {
+      // Пользователь мог отменить выбор каталога (SAF) — это не ошибка
       ToastAndroid.show(i18next.t('files.downloadFailed'), ToastAndroid.SHORT);
       logger.warn('[FILE] Saving file from cache failed', e);
     }

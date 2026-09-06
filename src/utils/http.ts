@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import * as cheerio from 'cheerio';
 import CyrillicToTranslit from 'cyrillic-to-translit-js';
-import { documentDirectory, downloadAsync } from 'expo-file-system/legacy';
+import { File, Paths } from 'expo-file-system';
 import { getNetworkStateAsync } from 'expo-network';
 
 import i18next from '~/i18n';
@@ -204,10 +204,12 @@ class HTTPClient {
 
     logger.log(`[HTTP] Downloading a file from ${url}`);
 
-    return downloadAsync(url, `${documentDirectory}${fileName}`, {
+    // idempotent: повторное скачивание файла с тем же именем перезаписывает его
+    return File.downloadFileAsync(url, new File(Paths.document, fileName), {
       headers: {
         Cookie: this.sessionID ?? '',
       },
+      idempotent: true,
     });
   }
 
