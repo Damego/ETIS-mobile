@@ -2,14 +2,13 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import * as StoreReview from 'expo-store-review';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Alert, Linking, StyleSheet, View
-} from 'react-native';
+import { Linking, StyleSheet, View } from 'react-native';
 
 import { Button } from '~/components/Button';
 import Card from '~/components/Card';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
+import logger from '~/utils/logger';
 import { fontSize } from '~/utils/texts';
 
 const ReviewBox = ({
@@ -22,21 +21,42 @@ const ReviewBox = ({
   const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
 
-  const handleReview = async () => {
-    if (await StoreReview.isAvailableAsync()) {
-      StoreReview.requestReview().then(() => setReviewed());
+  const openStoreReviews = async () => {
+    // storeUrl() по контракту возвращает string | null (web, отсутствие
+    // playStoreUrl в конфиге); конкатенация с null даёт битую ссылку.
+    const baseUrl = StoreReview.storeUrl();
+    if (!baseUrl) {
+      logger.warn('ReviewBox: store URL is not configured');
       return;
     }
 
-    const link = `${StoreReview.storeUrl()}&showAllReviews=true`;
+    const link = baseUrl.includes('?')
+      ? `${baseUrl}&showAllReviews=true`
+      : `${baseUrl}?showAllReviews=true`;
     if (await Linking.canOpenURL(link)) {
       await Linking.openURL(link);
       setReviewed();
     }
   };
 
+  const handleReview = async () => {
+    if (await StoreReview.isAvailableAsync()) {
+      try {
+        // Нативный модуль реджектит промис, если ревью-флоу не запустился
+        // (сборка установлена не из Play Store) — тогда открываем страницу
+        // отзывов в магазине напрямую.
+        await StoreReview.requestReview();
+        setReviewed();
+        return;
+      } catch (error) {
+        logger.warn('ReviewBox: native review flow failed', error);
+      }
+    }
+
+    await openStoreReviews();
+  };
+
   const handleDismiss = () => {
-    Alert.alert(t('review.maybeLater'));
     setViewed();
   };
 
