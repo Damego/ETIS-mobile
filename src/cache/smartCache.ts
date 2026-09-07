@@ -572,18 +572,6 @@ class SmartCache {
     await this.updateAppConfig(config);
   }
 
-  async bumpReviewRequest() {
-    const step = await this.getReviewStep();
-
-    if (!step) {
-      await this.setReviewStep('pending');
-      return false;
-    }
-    if (step === 'pending') {
-      return true;
-    }
-  }
-
   async hasAcceptedPrivacyPolicy() {
     const config = await this.getAppConfig();
     return config.privacyPolicyAccepted;

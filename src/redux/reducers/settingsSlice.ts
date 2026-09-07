@@ -81,6 +81,9 @@ const settingsSlice = createSlice({
     setIntroViewed(state, action: PayloadAction<boolean>) {
       state.config.introViewed = action.payload;
     },
+    setReviewStep(state, action: PayloadAction<'pending' | 'stop'>) {
+      state.config.reviewStep = action.payload;
+    },
     setSignNotification(state, action: PayloadAction<boolean>) {
       state.config.signNotificationEnabled = action.payload;
     },
@@ -107,6 +110,7 @@ export const {
   setConfig,
   changeTheme,
   setIntroViewed,
+  setReviewStep,
   setSignNotification,
   setAppReady,
   setSentryEnabled,

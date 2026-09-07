@@ -2,7 +2,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { Image } from 'expo-image';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
@@ -10,8 +10,11 @@ import { cache } from '~/cache/smartCache';
 import ReviewBox from '~/components/ReviewBox';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
-import { useAppSelector, useGlobalStyles, usePsutechHealth } from '~/hooks';
+import {
+  useAppDispatch, useAppSelector, useGlobalStyles, usePsutechHealth
+} from '~/hooks';
 import { EducationNavigationProp, EducationStackParamList } from '~/navigation/types';
+import { setReviewStep } from '~/redux/reducers/settingsSlice';
 import { fontSize } from '~/utils/texts';
 
 const ICON_SIZE = 40;
@@ -118,15 +121,19 @@ const ScreenButton = ({ screen }: { readonly screen: ScreenT }) => {
 const MoreScreens = () => {
   const { t } = useTranslation();
   const { isDemo } = useAppSelector((state) => state.account);
-  const [showReviewBox, setShowReviewBox] = useState(false);
+  const reviewStep = useAppSelector((state) => state.settings.config.reviewStep);
+  const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    // В v1 ReviewBox жил на экране «Сервисы»; после v2-редизайна
-    // его место — внизу таба «Ещё». Не спрашиваем отзыв в демо-режиме
-    if (isDemo) return;
+  // Спрашиваем отзыв один раз: reviewStep 'stop' (оставлен отзыв
+  // ИЛИ «Нет, спасибо») закрывает вопрос навсегда
+  const showReviewBox = !isDemo && reviewStep === 'pending';
 
-    cache.bumpReviewRequest().then((res) => setShowReviewBox(res === true));
-  }, [isDemo]);
+  // Оба ответа закрывают вопрос и пишутся парой: redux + персистентный кеш,
+  // иначе loadSettings при рестарте перезапишет стейт старым значением из кеша
+  const stopReviewRequest = () => {
+    dispatch(setReviewStep('stop'));
+    void cache.setReviewStep('stop');
+  };
 
   return (
     <Screen containerStyle={{ gap: 8 }}>
@@ -143,11 +150,8 @@ const MoreScreens = () => {
       </View>
 
       {showReviewBox ? <ReviewBox
-        setReviewed={() => {
-          setShowReviewBox(false);
-          cache.setReviewStep('stop');
-        }}
-        setViewed={() => setShowReviewBox(false)}
+        setReviewed={stopReviewRequest}
+        setViewed={stopReviewRequest}
       /> : null}
     </Screen>
   );
