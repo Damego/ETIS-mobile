@@ -28,6 +28,7 @@ export interface AppConfig {
   signNotificationEnabled: boolean;
   introViewed: boolean;
   reviewStep: 'pending' | 'stop' | null;
+  appLaunches: number;
   privacyPolicyAccepted: boolean;
   sentryEnabled: boolean;
   events: Events;
@@ -58,6 +59,7 @@ const initialConfig: AppConfig = {
   },
   cacheMigrations: {},
   reviewStep: 'pending',
+  appLaunches: 0,
   privacyPolicyAccepted: false,
   releaseNotesViews: {},
   language: 'system',

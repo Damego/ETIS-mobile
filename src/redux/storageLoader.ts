@@ -12,6 +12,11 @@ const loadSettings = () => async (dispatch: AppDispatch) => {
 
   if (!config) return;
 
+  // Счётчик запусков для логики показа ReviewBox (не раньше 5-го).
+  // Инкремент и в кеш, и (ниже) в redux через один и тот же config-объект
+  config.appLaunches = (config.appLaunches ?? 0) + 1;
+  await cache.updateAppConfig(config);
+
   dispatch(setConfig(config));
 
   // Применяем сохранённый выбор языка к i18next (до него стоял системный)

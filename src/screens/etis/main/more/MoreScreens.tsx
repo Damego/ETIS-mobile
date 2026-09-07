@@ -122,11 +122,12 @@ const MoreScreens = () => {
   const { t } = useTranslation();
   const { isDemo } = useAppSelector((state) => state.account);
   const reviewStep = useAppSelector((state) => state.settings.config.reviewStep);
+  const appLaunches = useAppSelector((state) => state.settings.config.appLaunches);
   const dispatch = useAppDispatch();
 
-  // Спрашиваем отзыв один раз: reviewStep 'stop' (оставлен отзыв
-  // ИЛИ «Нет, спасибо») закрывает вопрос навсегда
-  const showReviewBox = !isDemo && reviewStep === 'pending';
+  // Спрашиваем отзыв не раньше 5-го запуска и только один раз:
+  // reviewStep 'stop' (оставлен отзыв ИЛИ «Нет, спасибо») закрывает вопрос навсегда
+  const showReviewBox = !isDemo && reviewStep === 'pending' && appLaunches >= 5;
 
   // Оба ответа закрывают вопрос и пишутся парой: redux + персистентный кеш,
   // иначе loadSettings при рестарте перезапишет стейт старым значением из кеша
