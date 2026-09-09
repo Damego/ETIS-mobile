@@ -1,13 +1,14 @@
 import PagerView, { type PagerViewRef, type PageScrollStateChangedEvent } from '@expo/ui/community/pager-view';
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
 import {
-  NativeSyntheticEvent, ScrollView, StyleSheet
+  NativeSyntheticEvent, ScrollView, StyleSheet, View
 } from 'react-native';
 
 import NoPairs from '~/components/NoPairs';
 import { checkAllowedPairRender } from '~/components/timetable/checkAllowedPairRender';
 import { useAppSelector } from '~/hooks';
 import { ITimeTableDay } from '~/models/timeTable';
+import { useBottomNavPadding } from '~/utils/bottomNav';
 
 import Pair from './Pair';
 
@@ -28,9 +29,11 @@ const Page = ({ day }: { readonly day: ITimeTableDay }) => {
 
   return (
     <ScrollView
+      nestedScrollEnabled
       style={{ flex: 1 }}
       contentContainerStyle={styles.pairsList}
       showsVerticalScrollIndicator={false}
+      overScrollMode='never'
     >
       {!day.pairs.length && <NoPairs />}
       {day.pairs.map((pair) => {
@@ -46,8 +49,24 @@ const Page = ({ day }: { readonly day: ITimeTableDay }) => {
   );
 };
 
+// Воскресенья нет в данных — пустая страница
+const EMPTY_DAY: ITimeTableDay = { date: '', pairs: [] };
+
 const TimetablePages = forwardRef<PagerViewRef, TimetablePagesProps>(
   ({ days, dayNumber, onPagePress, onPagerScrollStateChange }, ref) => {
+    const bottomNavPadding = useBottomNavPadding();
+    // Баг «бесконечного расписания»: страницы @expo/ui PagerView — это RNHostView-ноды,
+    // сложенные стопкой как обычные Yoga-дети Host-ноды, и каж    // получает фиксированную высоту всего пейджера (пиннинг размера из Compose).дая после первого замера
+    // Yoga измеряет контейнер ScrollView по содержимому, поэтому стопка из N страниц
+    // раздувает высоту прокрутки на (N−1)×высоту пейджера и разгоняет саму себя через
+    // петлю «высота Host → размер пейджера → пиннинг RNHostView → высота Host».
+    //
+    // Фикс: пейджер позиционируется абсолютно и не участвует в потоке — высоту
+    // скролла задаёт только шапка. Нулевой «якорь» в потоке замеряет смещение слота
+    // пейджера от верха контейнера, bottom поднят над плавающей навигацией на ту же
+    // величину, что и paddingBottom контейнера в Screen (useBottomNavPadding).
+    const [pagerTop, setPagerTop] = useState<number | null>(null);
+
     const handlePageSelected = (event: NativeSyntheticEvent<Readonly<{ position: number }>>) =>
       onPagePress(event.nativeEvent.position - dayNumber);
 
@@ -56,26 +75,28 @@ const TimetablePages = forwardRef<PagerViewRef, TimetablePagesProps>(
     };
 
     return (
-      <PagerView
-        ref={ref}
-        initialPage={dayNumber}
-        style={{ flex: 1 }}
-        onPageSelected={handlePageSelected}
-        onPageScrollStateChanged={handleScrollStateChanged}
-      >
-        {days.map((day, index) => (
-          <Page key={index} day={day} />
-        ))}
-
-        {/* Воскресенья нет в данных */}
-        <ScrollView
-          style={{ flex: 1 }}
-          contentContainerStyle={styles.pairsList}
-          showsVerticalScrollIndicator={false}
-        >
-          <NoPairs />
-        </ScrollView>
-      </PagerView>
+      <>
+        {/* Якорь обязан быть прямым ребёнком scroll-контейнера вместе с пейджером:
+            его onLayout.y — это и есть отступ слота пейджера от верха контейнера */}
+        <View
+          style={styles.pagerAnchor}
+          onLayout={(event) => setPagerTop(event.nativeEvent.layout.y)}
+        />
+        {pagerTop === null ? null : (
+          <PagerView
+            ref={ref}
+            initialPage={dayNumber}
+            style={[styles.pager, { top: pagerTop, bottom: bottomNavPadding }]}
+            onPageSelected={handlePageSelected}
+            onPageScrollStateChanged={handleScrollStateChanged}
+          >
+            {days.map((day, index) => (
+              <Page key={index} day={day} />
+            ))}
+            <Page day={EMPTY_DAY} />
+          </PagerView>
+        )}
+      </>
     );
   }
 );
@@ -83,8 +104,17 @@ const TimetablePages = forwardRef<PagerViewRef, TimetablePagesProps>(
 export default TimetablePages;
 
 const styles = StyleSheet.create({
+  pagerAnchor: {
+    height: 0,
+  },
+  pager: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+  },
   pairsList: {
     marginTop: '4%',
     gap: 8,
+    paddingBottom: 16,
   },
 });
