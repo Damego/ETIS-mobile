@@ -1,5 +1,6 @@
 import AntDesign from '@expo/vector-icons/AntDesign';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, View } from 'react-native';
 
 import CardHeaderOut from '~/components/CardHeaderOut';
@@ -9,6 +10,7 @@ import { IAbsenceDate, IDisciplineAbsences } from '~/models/absences';
 
 const AbsencesCard = ({ disciplineAbsences }: { readonly disciplineAbsences: IDisciplineAbsences }) => {
   const theme = useAppTheme();
+  const { t } = useTranslation();
   const [isOpened, setOpened] = useState(false);
   const covered = disciplineAbsences.dates.filter((date) => date.isCovered).length;
 
@@ -31,11 +33,11 @@ const AbsencesCard = ({ disciplineAbsences }: { readonly disciplineAbsences: IDi
           ))}
         </View>
         <View style={{ flex: 1 }}>
-          <Text>{`Пропущенных занятий: ${disciplineAbsences.dates.length}`}</Text>
-          {Boolean(covered) && <Text>{`По уважительной причине: ${covered}`}</Text>}
+          <Text>{t('absences.missed', { count: disciplineAbsences.dates.length })}</Text>
+          {Boolean(covered) && <Text>{t('absences.covered', { count: covered })}</Text>}
           {isOpened ? <>
-            <Text>{`Преподаватель: ${disciplineAbsences.teacher}`}</Text>
-            <Text>{`Вид работы: ${disciplineAbsences.type}`}</Text>
+            <Text>{t('checkPoint.teacher')} {disciplineAbsences.teacher}</Text>
+            <Text>{t('checkPoint.workType')} {disciplineAbsences.type}</Text>
           </> : null}
         </View>
 

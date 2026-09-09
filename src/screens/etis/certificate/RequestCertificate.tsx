@@ -20,7 +20,7 @@ import {
 } from '~/navigation/types';
 import { PopoverElement } from '~/screens/etis/certificate/components/PopoverElement';
 import RequestSentScreen from '~/screens/etis/certificate/components/RequestSentScreen';
-import { KNOWN_CERTIFICATES, SPECIAL_CERTIFICATES } from '~/screens/etis/certificate/data';
+import { getCertificateData } from '~/screens/etis/certificate/data';
 import { httpClient } from '~/utils';
 import { toCertificatePayload } from '~/utils/certificate';
 import { fontSize } from '~/utils/texts';
@@ -32,18 +32,20 @@ const specialCerts: [{ id: string; screen: keyof EducationStackParamList }] = [
 ];
 
 const getAvailableCertificates = (
-  availableCertificates: readonly IAvailableCertificate[]
+  availableCertificates: readonly IAvailableCertificate[],
+  knownCertificates: readonly CertificateParam[],
+  specialCertificates: readonly CertificateParam[]
 ): CertificateParam[] => {
   const $availableCertificates = [];
   const ids = availableCertificates.map((cert) => cert.id);
 
-  KNOWN_CERTIFICATES.forEach((certificate) => {
+  knownCertificates.forEach((certificate) => {
     if (ids.includes(certificate.id)) {
       $availableCertificates.push(certificate);
     }
   });
   // todo
-  return [...KNOWN_CERTIFICATES, ...SPECIAL_CERTIFICATES];
+  return [...knownCertificates, ...specialCertificates];
 };
 
 export default function RequestCertificate({
@@ -52,7 +54,8 @@ export default function RequestCertificate({
   const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
   const navigation = useNavigation<EducationNavigationProp>();
-  const availableCertificates = getAvailableCertificates(route.params);
+  const { knownCertificates, specialCertificates } = getCertificateData();
+  const availableCertificates = getAvailableCertificates(route.params, knownCertificates, specialCertificates);
 
   const { isDemo } = useAppSelector((state) => state.account);
   const [certificateRequest, setCertificate] = useState<CertificateRequest>({

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
 import Text from '~/components/Text';
@@ -23,21 +24,22 @@ const getCheckPointScore = (checkPoint: ICheckPoint) => {
   return checkPoint.isIntroductionWork ? checkPoint.points : checkPoint.currentScore;
 };
 
-const getPointsString = (checkPoint: ICheckPoint, number: number): string => {
-  const checkPointName = `КТ ${number}`;
+const getPointsString = (checkPoint: ICheckPoint, number: number, t: (key: string, options?: Record<string, unknown>) => string): string => {
+  const checkPointName = t('checkPoint.shortTitle', { number });
   const scoreText: string | number = getCheckPointScore(checkPoint);
 
   if (checkPoint.isIntroductionWork) return `${checkPointName}: ${scoreText}`;
-  return `${checkPointName}: ${scoreText} из ${checkPoint.maxScore}`;
+  return t('checkPoint.scoreLine', { name: checkPointName, score: scoreText, maxScore: checkPoint.maxScore });
 };
 
 const SubjectCheckPoints = ({ data }: { readonly data: ICheckPoint[] }): React.ReactNode => {
+  const { t } = useTranslation();
   if (!data.length) return;
 
   return (
     <View>
       {data.map((checkPoint, index) => {
-        const pointsString = getPointsString(checkPoint, index + 1);
+        const pointsString = getPointsString(checkPoint, index + 1, t);
 
         return (
           <Text

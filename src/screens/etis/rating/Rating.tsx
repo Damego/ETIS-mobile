@@ -1,6 +1,7 @@
 import { BottomSheetModal } from '@expo/ui/community/bottom-sheet';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import React, { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
 import BorderLine from '~/components/BorderLine';
@@ -19,12 +20,13 @@ import { fontSize } from '~/utils/texts';
 import RightText from './RightText';
 
 const Group = ({ group }: { readonly group: IRatingGroup }) => {
+  const { t } = useTranslation();
   if (!group.overall) {
     return (
       <CardHeaderOut topText={group.name}>
         <View style={{ alignItems: 'center' }}>
           <Text style={[{ fontWeight: 'bold' }, fontSize.medium]}>
-            Нет рейтинга для отображения
+            {t('rating.noData')}
           </Text>
         </View>
       </CardHeaderOut>
@@ -38,14 +40,17 @@ const Group = ({ group }: { readonly group: IRatingGroup }) => {
             <View key={discipline.discipline}>
               <Text style={fontSize.medium}>{discipline.discipline}</Text>
               <Text style={fontSize.medium}>
-                {discipline.top} из {discipline.total}
+                {t('rating.position', { top: discipline.top, total: discipline.total })}
               </Text>
               {index !== group.disciplines.length - 1 && <BorderLine />}
             </View>
           ))}
         </View>
 
-        <RightText topText={group.overall.top} bottomText={`из ${group.overall.total}`} />
+        <RightText
+          topText={group.overall.top}
+          bottomText={t('rating.outOf', { total: group.overall.total })}
+        />
       </View>
     </CardHeaderOut>
   );

@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
 import { LessonTypes } from '~/models/other';
-import { borderRadius, getDisciplineTypeName } from '~/utils/texts';
+import { borderRadius } from '~/utils/texts';
 
 import Text from './Text';
 
@@ -17,7 +18,8 @@ const DisciplineType = ({
     () => StyleSheet.compose(styles.base, disciplineTypeStyles[type]),
     [type]
   );
-  const name = getDisciplineTypeName(type);
+  const { t } = useTranslation();
+  const name = t(`lessonTypes.${type}`);
 
   return (
     <View style={composed}>

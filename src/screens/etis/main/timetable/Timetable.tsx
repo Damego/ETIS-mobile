@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
 import { LoadingContainer } from '~/components/LoadingScreen';
@@ -19,6 +20,7 @@ import { RequestType } from '~/models/results';
 import { fontSize } from '~/utils/texts';
 
 export const Timetable = () => {
+  const { t } = useTranslation();
   const client = useClient();
   const { skipSunday } = useAppSelector((state) => state.settings.config.ui);
 
@@ -55,7 +57,7 @@ export const Timetable = () => {
   return (
     <Screen refreshEnabled={!pagerActive} onUpdate={refresh}>
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>Расписание</Text>
+        <Text style={styles.titleText}>{t('navigation.timetable')}</Text>
         <View style={styles.titleIconsContainer}>
           <ToggleModeButton />
           <BellScheduleButton />

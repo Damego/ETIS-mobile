@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import BorderLine from '~/components/BorderLine';
@@ -14,6 +15,7 @@ import SubjectCheckPoints from './SubjectCheckPoints';
 import TotalPoints from './TotalPoints';
 
 const CardSign = ({ subject }: { readonly subject: ISubjectPoints }) => {
+  const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
   const ref = useRef<BottomSheetModal | null>(null);
 
@@ -33,7 +35,7 @@ const CardSign = ({ subject }: { readonly subject: ISubjectPoints }) => {
       <View>
         {subject.mark !== null && (
           <View style={styles.markView}>
-            <Text style={[fontSize.medium, styles.markWordText]}>Оценка: {subject.mark}</Text>
+            <Text style={[fontSize.medium, styles.markWordText]}>{t('checkPoint.mark', { mark: subject.mark })}</Text>
           </View>
         )}
       </View>

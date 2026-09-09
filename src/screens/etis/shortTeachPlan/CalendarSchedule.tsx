@@ -1,5 +1,6 @@
 import AntDesign from '@expo/vector-icons/AntDesign';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ActivityIndicator, StyleSheet, TouchableOpacity, View
 } from 'react-native';
@@ -60,6 +61,7 @@ const CalendarScheduleMenu = ({ data }: { readonly data?: ICalendarSchedule }) =
 };
 
 export default function CalendarSchedule() {
+  const { t } = useTranslation();
   const globalStyles = useGlobalStyles();
   const [isOpened, setOpened] = useState(false);
   const client = useClient();
@@ -78,7 +80,7 @@ export default function CalendarSchedule() {
   return (
     <View style={[styles.scheduleContainer, globalStyles.card]}>
       <TouchableOpacity style={styles.scheduleButton} activeOpacity={0.45} onPress={handlePress}>
-        <Text style={styles.scheduleButtonText}>Календарный учебный график</Text>
+        <Text style={styles.scheduleButtonText}>{t('teachPlan.calendarSchedule')}</Text>
         <AntDesign name={isOpened ? 'up' : 'down'} size={18} color={globalStyles.textColor.color} />
       </TouchableOpacity>
 

@@ -70,17 +70,6 @@ export const borderRadius = {
   large: 20,
 };
 
-const disciplineTypeNames: { [key in LessonTypes]: string } = {
-  LECTURE: i18next.t('lessonTypes.LECTURE'),
-  PRACTICE: i18next.t('lessonTypes.PRACTICE'),
-  LABORATORY: i18next.t('lessonTypes.LABORATORY'),
-  TEST: i18next.t('lessonTypes.TEST'),
-  EXAM: i18next.t('lessonTypes.EXAM'),
-};
-
-export const getDisciplineTypeName = (type: string): string =>
-  (disciplineTypeNames as Record<string, string>)[type] || type;
-
 export const formatAudience = (lesson: ILesson) => {
   const { audience } = lesson;
 

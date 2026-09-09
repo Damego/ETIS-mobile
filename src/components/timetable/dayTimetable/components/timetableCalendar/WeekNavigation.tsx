@@ -27,7 +27,7 @@ const WeekNavigation = ({
   readonly onNextPress: () => void;
   readonly onMainPress: () => void;
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const theme = useAppTheme();
   const canPrev = selectedWeek > firstWeek;
   const canNext = selectedWeek < lastWeek;
@@ -45,7 +45,7 @@ const WeekNavigation = ({
         )}
       <View style={styles.titleRow}>
         <Text style={styles.infoText} onPress={onMainPress}>
-          {capitalizeWord(selectedDate.format('MMMM'))}
+          {capitalizeWord(selectedDate.locale(i18n.language).format('MMMM'))}
           {selectedWeek ? ` • ${t('timetable.weekN', { number: selectedWeek })}` : ''}
         </Text>
         {currentWeek !== undefined && selectedWeek !== currentWeek && (

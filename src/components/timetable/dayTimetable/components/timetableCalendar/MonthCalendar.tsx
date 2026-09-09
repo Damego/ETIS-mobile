@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import DateTimePicker, { useDefaultStyles } from 'react-native-ui-datepicker';
 
 import { useAppTheme } from '~/hooks/theme';
@@ -17,12 +18,13 @@ const MonthCalendarComponent = ({
   readonly onDatePress: DatePressT;
 }) => {
   const theme = useAppTheme();
+  const { i18n } = useTranslation();
   const defaultStyles = useDefaultStyles(theme.dark ? 'dark' : 'light');
 
   return (
     <DateTimePicker
       date={date}
-      locale={'ru'}
+      locale={i18n.language}
       minDate={periodStartDate}
       maxDate={periodEndDate}
       firstDayOfWeek={1}

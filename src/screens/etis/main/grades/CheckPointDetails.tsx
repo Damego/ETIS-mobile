@@ -16,6 +16,14 @@ const cutTypeControl = (typeControl: string): string =>
     .map((char) => char.charAt(0).toUpperCase())
     .join('');
 
+const getControlTypeKey = (typeControl: string): string => {
+  const normalized = typeControl.toLocaleLowerCase();
+  if (normalized.includes('защищаемое')) return 'protected';
+  if (normalized.includes('письменное')) return 'written';
+  if (normalized.includes('итоговое')) return 'final';
+  return '';
+};
+
 const CheckPointDetails = ({ checkPoint, index }: { readonly checkPoint: ICheckPoint; readonly index: number }) => {
   const { t } = useTranslation();
   const client = useClient();
@@ -30,6 +38,10 @@ const CheckPointDetails = ({ checkPoint, index }: { readonly checkPoint: ICheckP
 
   const scoreText: string | number = formatCheckPointScore(checkPoint);
   const lastDate = data && data.date ? data.date : checkPoint.date;
+  const controlTypeKey = getControlTypeKey(checkPoint.typeControl);
+  const controlType = controlTypeKey
+    ? t(`checkPoint.controlTypes.${controlTypeKey}`)
+    : cutTypeControl(checkPoint.typeControl);
 
   const Row = ({ first, second }: { readonly first: string | number; readonly second: string | number }) => (
     <View style={styles.row}>
@@ -55,7 +67,7 @@ const CheckPointDetails = ({ checkPoint, index }: { readonly checkPoint: ICheckP
       <View style={styles.row}>
         <Text style={styles.rowText}>{t('checkPoint.controlType')}</Text>
         <ClickableText
-          text={cutTypeControl(checkPoint.typeControl)}
+          text={controlType}
           textStyle={styles.clickableText}
           onPress={() => {
             ToastAndroid.show(checkPoint.typeControl, ToastAndroid.LONG);

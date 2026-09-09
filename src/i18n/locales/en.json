@@ -148,6 +148,9 @@
   "checkPoint": {
     "absent": "a",
     "title": "CP {{number}}: {{theme}}",
+    "shortTitle": "CP {{number}}",
+    "scoreLine": "{{name}}: {{score}} out of {{maxScore}}",
+    "mark": "Grade: {{mark}}",
     "score": "Score:",
     "passScore": "Passing score:",
     "currentScore": "Current score:",
@@ -155,7 +158,12 @@
     "teacher": "Teacher:",
     "date": "Date:",
     "workType": "Work type:",
-    "controlType": "Assessment type:"
+    "controlType": "Assessment type:",
+    "controlTypes": {
+      "protected": "Protected assessment",
+      "written": "Written assessment",
+      "final": "Final assessment"
+    }
   },
   "settings": {
     "appSection": "Application",
@@ -303,6 +311,14 @@
     "subjects": "Subjects taught",
     "emptyList": "No teachers to show"
   },
+  "teachPlan": {
+    "calendarSchedule": "Academic calendar"
+  },
+  "rating": {
+    "position": "{{top}} out of {{total}}",
+    "outOf": "out of {{total}}",
+    "noData": "No rating to display"
+  },
   "bellSchedule": {
     "pairOrdinal": "Class {{position}}",
     "lessonOrdinal": "Lesson {{position}}",
@@ -333,7 +349,9 @@
   },
   "absences": {
     "none": "No missed classes!",
-    "total": "Total missed classes: {{count}}"
+    "total": "Total missed classes: {{count}}",
+    "missed": "Missed classes: {{count}}",
+    "covered": "Excused: {{count}}"
   },
   "orders": {
     "preparing": "The order is being prepared",

@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
 import Text from '~/components/Text';
@@ -18,6 +19,7 @@ interface DayData {
 }
 
 export const Day = React.memo(({ data, date }: DayData) => {
+  const { i18n } = useTranslation();
   const { pairs } = data;
   const {
     theme,
@@ -39,7 +41,7 @@ export const Day = React.memo(({ data, date }: DayData) => {
   return (
     <View style={[cardStyle, { gap: 10 }]}>
       <Text style={[fontSize.medium, { fontWeight: 'bold' }, textStyle]}>
-        {capitalizeWord(date.format('dddd, DD MMMM'))}
+        {capitalizeWord(date.locale(i18n.language).format('dddd, DD MMMM'))}
       </Text>
       {data.pairs.length === 0
         ? (

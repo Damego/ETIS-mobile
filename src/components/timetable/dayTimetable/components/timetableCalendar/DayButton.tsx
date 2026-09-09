@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   StyleProp, StyleSheet, TouchableOpacity, ViewStyle
 } from 'react-native';
@@ -42,6 +43,7 @@ const DayButton = ({
 }) => {
   const theme = useAppTheme();
   const globalStyles = useGlobalStyles();
+  const { i18n } = useTranslation();
 
   const isSelectedDay = selectedDate.weekday() === position;
   const isCurrentDay = dayDate.diff(currentDate, 'day') === 0;
@@ -59,7 +61,7 @@ const DayButton = ({
             : styles.dayWeekText
         }
       >
-        {dayDate.format('dd').toUpperCase()}
+        {dayDate.locale(i18n.language).format('dd').toUpperCase()}
       </Text>
       <Text
         style={

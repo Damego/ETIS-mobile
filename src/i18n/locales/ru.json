@@ -150,6 +150,9 @@
   "checkPoint": {
     "absent": "н",
     "title": "КТ {{number}}: {{theme}}",
+    "shortTitle": "КТ {{number}}",
+    "scoreLine": "{{name}}: {{score}} из {{maxScore}}",
+    "mark": "Оценка: {{mark}}",
     "score": "Оценка:",
     "passScore": "Проходной балл:",
     "currentScore": "Текущий балл:",
@@ -157,7 +160,12 @@
     "teacher": "Преподаватель:",
     "date": "Дата:",
     "workType": "Вид работы:",
-    "controlType": "Вид контроля:"
+    "controlType": "Вид контроля:",
+    "controlTypes": {
+      "protected": "ЗКМ",
+      "written": "ПКМ",
+      "final": "ИКМ"
+    }
   },
   "settings": {
     "appSection": "Приложение",
@@ -305,6 +313,14 @@
     "subjects": "Преподаваемые дисциплины",
     "emptyList": "Список преподавателей пуст"
   },
+  "teachPlan": {
+    "calendarSchedule": "Календарный учебный график"
+  },
+  "rating": {
+    "position": "{{top}} из {{total}}",
+    "outOf": "из {{total}}",
+    "noData": "Нет рейтинга для отображения"
+  },
   "bellSchedule": {
     "pairOrdinal": "{{position}}-я пара",
     "lessonOrdinal": "{{position}}-й урок",
@@ -335,7 +351,9 @@
   },
   "absences": {
     "none": "Нет пропущенных занятий!",
-    "total": "Всего пропущено занятий: {{count}}"
+    "total": "Всего пропущено занятий: {{count}}",
+    "missed": "Пропущенных занятий: {{count}}",
+    "covered": "По уважительной причине: {{count}}"
   },
   "orders": {
     "preparing": "Приказ готовится",

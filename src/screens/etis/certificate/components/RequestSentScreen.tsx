@@ -8,7 +8,7 @@ import Card from '~/components/Card';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { CertificateRequest } from '~/models/certificateRequest';
-import { DELIVERY_METHODS, KNOWN_CERTIFICATES } from '~/screens/etis/certificate/data';
+import { getCertificateData } from '~/screens/etis/certificate/data';
 import { fontSize } from '~/utils/texts';
 
 const RequestSentScreen = ({
@@ -20,9 +20,10 @@ const RequestSentScreen = ({
 }: CertificateRequest) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const { knownCertificates, deliveryMethods } = getCertificateData();
 
-  const certificateName = KNOWN_CERTIFICATES.find((cert) => cert.id === certificateId)?.name;
-  const deliveryMethodName = DELIVERY_METHODS.find((method) => method.id === delivery)?.name;
+  const certificateName = knownCertificates.find((cert) => cert.id === certificateId)?.name;
+  const deliveryMethodName = deliveryMethods.find((method) => method.id === delivery)?.name;
 
   return (
     <Screen>
