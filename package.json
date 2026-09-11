@@ -67,6 +67,7 @@
     "expo-task-manager": "~57.0.16",
     "i18next": "^26.4.2",
     "iconv-lite": "^0.7.2",
+    "lodash.isequal": "^4.5.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-i18next": "^17.0.13",
