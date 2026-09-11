@@ -100,11 +100,8 @@ export default {
         {
           fonts: [
             './assets/fonts/Ubuntu-Regular.ttf',
-            './assets/fonts/Ubuntu-Italic.ttf',
             './assets/fonts/Ubuntu-Medium.ttf',
-            './assets/fonts/Ubuntu-MediumItalic.ttf',
             './assets/fonts/Ubuntu-Bold.ttf',
-            './assets/fonts/Ubuntu-BoldItalic.ttf',
           ],
         },
       ],
