@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import { runOnJS } from 'react-native-reanimated';
 
 import MonthCalendar from '~/components/timetable/dayTimetable/components/timetableCalendar/MonthCalendar';
 import WeekCalendar from '~/components/timetable/dayTimetable/components/timetableCalendar/WeekCalendar';
@@ -48,9 +47,11 @@ const TimetableCalendar = ({
       if (!isVertical || Math.abs(event.translationY) < 50) return;
       if (Math.abs(event.velocityY) < 500) return;
 
+      // Колбэк .onEnd() Gesture Handler v2 выполняется на JS-потоке,
+      // поэтому setState можно звать напрямую, без runOnJS из reanimated
       if (event.translationY > 0) {
-        if (mode !== 'month') runOnJS(setCalendarMode)('month');
-      } else if (mode !== 'week') runOnJS(setCalendarMode)('week');
+        if (mode !== 'month') setCalendarMode('month');
+      } else if (mode !== 'week') setCalendarMode('week');
     });
 
   return (
