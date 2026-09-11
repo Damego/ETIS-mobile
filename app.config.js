@@ -97,6 +97,12 @@ export default {
             // Анимированный WebP в интро тоже декодирует Glide.
             gifEnabled: false,
             webpEnabled: false,
+            // R8-минификация + resource shrinker для release-сборок.
+            // Native-модули (expo, notifee, sentry, react-native) подключают
+            // свои keep-правила через consumerProguardFiles автоматически.
+            // Требует проверки на реальном билде.
+            enableMinifyInReleaseBuilds: true,
+            enableShrinkResourcesInReleaseBuilds: true,
           },
         },
       ],
