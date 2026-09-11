@@ -1,17 +1,13 @@
 import PagerView, { type PagerViewRef } from '@expo/ui/community/pager-view';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
+import { Image, type ImageSource } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Image,
-  ImageRequireSource,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
+  Pressable, StyleSheet, Text, View
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -26,7 +22,7 @@ interface ISlide {
   // Градиентная пара v1-интро; интро всегда светлое —
   // цвета фиксированы и не зависят от темы приложения
   colors: [string, string];
-  source: ImageRequireSource;
+  source: ImageSource;
 }
 
 const slides: ISlide[] = [
@@ -38,7 +34,7 @@ const slides: ISlide[] = [
   {
     key: 'offline',
     colors: ['#5C258D', '#832161'],
-    source: require('../../../assets/intro/shine.gif'),
+    source: require('../../../assets/intro/shine.webp'),
   },
   {
     key: 'secure',
@@ -48,7 +44,7 @@ const slides: ISlide[] = [
   {
     key: 'oss',
     colors: ['#0096c7', '#9b72cf'],
-    source: require('../../../assets/intro/matrix.gif'),
+    source: require('../../../assets/intro/matrix.webp'),
   },
   {
     key: 'lets',

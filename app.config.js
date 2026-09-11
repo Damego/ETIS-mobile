@@ -92,6 +92,11 @@ export default {
             // Без этого билд будет крашиться
             extraMavenRepos: ['../../node_modules/@notifee/react-native/android/libs'],
             allowBackup: false,
+            // Декодеры Fresco для RN <Image>: все картинки приложения
+            // рендерятся через expo-image (Glide) — они не нужны.
+            // Анимированный WebP в интро тоже декодирует Glide.
+            gifEnabled: false,
+            webpEnabled: false,
           },
         },
       ],
