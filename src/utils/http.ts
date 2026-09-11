@@ -217,22 +217,16 @@ class HTTPClient {
    *
    * @param {string} username Электронная почта
    * @param {string} password Пароль
-   * @param {string} token Токен ReCaptcha
-   * @param {boolean} isInvisibleRecaptcha Является ли рекапча невидимой
    * @returns
    */
   async login(
     username: string,
-    password: string,
-    token: string,
-    isInvisibleRecaptcha: boolean
+    password: string
   ): Promise<Response<AxiosResponse> | null> {
     const data = {
       p_redirect: '/stu.blank_page',
       p_username: username.trim(),
       p_password: password.trim(),
-      // p_recaptcha_ver: isInvisibleRecaptcha ? '3' : '2',
-      // p_recaptcha_response: token,
     };
     const response = await this.request('POST', '/stu.login', {
       data,
@@ -262,11 +256,10 @@ class HTTPClient {
     return null;
   }
 
-  async sendRecoveryMail(email: string, token: string): Promise<Response<null> | null> {
+  async sendRecoveryMail(email: string): Promise<Response<null> | null> {
     const data = new FormData();
     data.append('p_step', '1');
     data.append('p_email', email.trim());
-    data.append('p_recaptcha_response', token.trim());
 
     const response = await this.request('POST', '/stu_email_pkg.send_r_email', {
       data,

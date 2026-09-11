@@ -61,7 +61,6 @@
   },
   "auth": {
     "authorizing": "Signing in...",
-    "gettingToken": "Getting token...",
     "attemptLimitExceeded": "Attempt limit (5) exceeded. Try again in 10 minutes!",
     "noLoginOrPassword": "You did not enter a login or password",
     "noInternet": "No internet connection!",
@@ -71,7 +70,6 @@
     "forgotPassword": "Forgot password?",
     "signIn": "Sign in",
     "enterEmail": "You did not enter your email",
-    "recaptchaTokenNotFound": "Authorization token not found. Please wait a moment",
     "recoveryMailSent": "An email with a recovery link has been sent. Check your inbox — it may have landed in the Spam folder.",
     "emailPlaceholder": "Email",
     "sendRecoveryMail": "Send email"

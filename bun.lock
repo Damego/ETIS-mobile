@@ -58,7 +58,6 @@
         "react-native-pager-view": "8.0.2",
         "react-native-popover-view": "^6.1.0",
         "react-native-radio-buttons-group": "^3.1.0",
-        "react-native-recaptcha-that-works": "github:Damego/react-native-recaptcha-that-works",
         "react-native-safe-area-context": "~5.7.0",
         "react-native-screens": "~4.26.0",
         "react-native-tab-view": "^4.2.2",
@@ -1438,8 +1437,6 @@
     "react-native-popover-view": ["react-native-popover-view@6.1.0", "", { "dependencies": { "deprecated-react-native-prop-types": "^2.3.0", "prop-types": "^15.8.1" } }, "sha512-j1CB+yPwTKlBvIJBNb1AwiHyF/r+W5+AJIbHk79GRa+0z6PVtW4C7NWJWPqUVkCMOcJtewl6Pr6f2dc/87cVyQ=="],
 
     "react-native-radio-buttons-group": ["react-native-radio-buttons-group@3.1.0", "", {}, "sha512-DiNM1yI6WfRygUZ+Z/bsjggyLypXsxRNXPNYpPHXSEVbRD6uF5Aei+HMIwyeRbfMKPtHwLq7cGsmUDV01i+rOQ=="],
-
-    "react-native-recaptcha-that-works": ["react-native-recaptcha-that-works@git+ssh://git@github.com/Damego/react-native-recaptcha-that-works.git#37601b9596ddd894499aa098e882b32aa3d31e5f", { "peerDependencies": { "react": ">=16.9.0", "react-native": ">=0.60.0", "react-native-webview": ">=10.0.0" } }, "37601b9596ddd894499aa098e882b32aa3d31e5f"],
 
     "react-native-safe-area-context": ["react-native-safe-area-context@5.7.0", "", { "peerDependencies": { "react": "*", "react-native": "*" } }, "sha512-/9/MtQz8ODphjsLdZ+GZAIcC/RtoqW9EeShf7Uvnfgm/pzYrJ75y3PV/J1wuAV1T5Dye5ygq4EAW20RoBq0ABQ=="],
 

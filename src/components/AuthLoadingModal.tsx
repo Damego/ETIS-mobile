@@ -40,8 +40,6 @@ const styles = StyleSheet.create({
 });
 
 enum LoginResponseType {
-  missingToken,
-  invalidToken,
   success,
   failed,
   privacyPolicyNotAccepted,
@@ -50,28 +48,19 @@ enum LoginResponseType {
 }
 
 const makeLogin = async (
-  token: string,
   userCredentials: UserCredentials,
-  saveUserCredentials: boolean,
-  isInvisibleRecaptcha: boolean
+  saveUserCredentials: boolean
 ): Promise<LoginResponseType> => {
-  if (!token) {
-    return LoginResponseType.missingToken;
-  }
   if (!(await cache.hasAcceptedPrivacyPolicy())) return LoginResponseType.privacyPolicyNotAccepted;
 
   const response = await httpClient.login(
     userCredentials.login,
-    userCredentials.password,
-    token,
-    isInvisibleRecaptcha
+    userCredentials.password
   );
 
   if (response && response.error) {
     // У нас нет других вариантов проверять тип ошибки
     const message: string = response.error.message.toLowerCase();
-
-    if (message.includes('проверк')) return LoginResponseType.invalidToken;
 
     if (message.includes('лимит')) {
       ToastAndroid.show(
@@ -102,11 +91,10 @@ const AuthLoadingModal = () => {
   );
   const [showOfflineButton, setShowOfflineButton] = useState<boolean>(false);
   const [messageStatus, setMessageStatus] = useState<string>();
-  const [isInvisibleRecaptcha, setIsInvisibleRecaptcha] = useState<boolean>(true);
   const [isLoading, setLoading] = useState(false);
   const globalStyles = useGlobalStyles();
 
-  const onReceiveToken = async (token: string) => {
+  const authorize = async () => {
     // Модал показывается только при авторизации, когда креды уже введены/загружены
     if (!userCredentials) return;
     setLoading(true);
@@ -118,21 +106,7 @@ const AuthLoadingModal = () => {
       return;
     }
 
-    const response = await makeLogin(
-      token,
-      userCredentials,
-      saveUserCredentials,
-      isInvisibleRecaptcha
-    );
-
-    if (
-      response === LoginResponseType.missingToken ||
-      response === LoginResponseType.invalidToken
-    ) {
-      setMessageStatus(t('auth.gettingToken'));
-      setIsInvisibleRecaptcha(false);
-      return;
-    }
+    const response = await makeLogin(userCredentials, saveUserCredentials);
 
     if (response === LoginResponseType.rateLimited) {
       dispatch(signOut({}));
@@ -156,13 +130,8 @@ const AuthLoadingModal = () => {
     setLoading(false);
   };
 
-  const onRecaptchaModalClose = () => {
-    if (!isInvisibleRecaptcha && !isLoading) dispatch(setAuthorizing(false));
-  };
-
   useEffect(() => {
-    // setMessageStatus(t('auth.gettingToken'));
-    onReceiveToken('foobar');
+    authorize();
 
     // Вход в оффлайн режим слишком резкий, поэтому ставим таймер 1 сек.
     // TODO: В идеале, сразу после Splash включать оффлайн режим
@@ -190,11 +159,6 @@ const AuthLoadingModal = () => {
 
   return (
     <View style={styles.modalWrapper}>
-      {/* <CustomReCaptcha */}
-      {/*  onReceiveToken={onReceiveToken} */}
-      {/*  size={isInvisibleRecaptcha ? 'invisible' : 'normal'} */}
-      {/*  onClose={onRecaptchaModalClose} */}
-      {/* /> */}
       <View style={[styles.modalContainer, globalStyles.container]}>
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <ActivityIndicator size='large' color={globalStyles.primaryText.color} />

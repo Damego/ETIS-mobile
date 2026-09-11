@@ -78,7 +78,6 @@
     "react-native-pager-view": "8.0.2",
     "react-native-popover-view": "^6.1.0",
     "react-native-radio-buttons-group": "^3.1.0",
-    "react-native-recaptcha-that-works": "github:Damego/react-native-recaptcha-that-works",
     "react-native-safe-area-context": "~5.7.0",
     "react-native-screens": "~4.26.0",
     "react-native-tab-view": "^4.2.2",
