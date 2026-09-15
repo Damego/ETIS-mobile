@@ -15,7 +15,8 @@
     "search": "Поиск",
     "moreInfo": "Подробнее",
     "copied": "Скопировано в буфер обмена",
-    "delete": "Удалить"
+    "delete": "Удалить",
+    "add": "Добавить"
   },
   "navigation": {
     "account": "Аккаунт",
@@ -281,7 +282,8 @@
     "noReminders": "Нет напоминаний",
     "reminderDateInPast": "Невозможно установить дату ниже текущей",
     "setTime": "Укажите время",
-    "tasksHistory": "История заданий"
+    "tasksHistory": "История заданий",
+    "reminders": "Напоминания"
   },
   "dec": {
     "annotation": "Аннотация",

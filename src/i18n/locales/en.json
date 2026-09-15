@@ -15,7 +15,8 @@
     "search": "Search",
     "moreInfo": "Learn more",
     "copied": "Copied to clipboard",
-    "delete": "Delete"
+    "delete": "Delete",
+    "add": "Add"
   },
   "navigation": {
     "account": "Account",
@@ -279,7 +280,8 @@
     "noReminders": "No reminders",
     "reminderDateInPast": "Cannot set a date earlier than the current one",
     "setTime": "Set the time",
-    "tasksHistory": "Assignment history"
+    "tasksHistory": "Assignment history",
+    "reminders": "Reminders"
   },
   "dec": {
     "annotation": "Annotation",

@@ -18,6 +18,7 @@ import { formatTime } from '~/utils/datetime';
 import { fontSize } from '~/utils/texts';
 
 import AddReminderBottomModal from './AddReminderBottomModal';
+import AddButton from './components/AddButton';
 import Reminder from './components/Reminder';
 
 export interface PartialTask {
@@ -95,10 +96,8 @@ const AddTaskModalContent = ({
         onChangeText={setDescription}
       />
 
-      {/*
-      Выставить привязку к паре можно только во время создания задания,
-      во время редактирования этого сделать нельзя
-      */}
+      {/* Выставить привязку к паре можно только во время создания задания,
+      во время редактирования этого сделать нельзя */}
       {!disableCheckbox && (
         <View style={styles.checkboxContainer}>
           <ThemedCheckbox
@@ -108,11 +107,11 @@ const AddTaskModalContent = ({
           <Text>{t('disciplineInfo.linkToPair')}</Text>
         </View>
       )}
-      {/* TODO: после обновления библиотек (react-native-webview не поддерживается) модалка вызывает краш */}
-      {/* <View style={styles.row}>
-        <Text style={styles.titleText}>Напоминания</Text>
+
+      <View style={styles.row}>
+        <Text style={styles.titleText}>{t('disciplineInfo.reminders')}</Text>
         <AddButton onPress={openReminderModal} />
-      </View> */}
+      </View>
 
       {reminders.length
         ? (
