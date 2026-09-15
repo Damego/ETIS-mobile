@@ -32,16 +32,21 @@ export const styles = StyleSheet.create({
   checkbox: {
     marginRight: '2%',
   },
+  forgotPasswordContainer: {
+    width: '100%',
+    alignItems: 'flex-end',
+  },
+  forgotPasswordHitArea: {
+    // Запас тап-зоны: текст маленький, а по нему переходят на экран восстановления
+    minWidth: 120,
+    minHeight: 44,
+    justifyContent: 'center',
+  },
   input: {
     ...fontSize.large,
     paddingLeft: '2%',
     paddingVertical: '3%',
     width: '100%',
-  },
-  authPropContainer: {
-    flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'space-between',
   },
 });
 
@@ -98,22 +103,23 @@ const Form = ({
         onSubmitEditing={() => onSubmit(login, password)}
       />
 
-      <View style={styles.authPropContainer}>
-        <View style={styles.checkboxContainer}>
-          <ThemedCheckbox
-            style={styles.checkbox}
-            value={saveUserCredentials}
-            onValueChange={toggleSaveUserCredentials}
-          />
-          <Text style={fontSize.small} colorVariant={'primary'}>
-            {t('auth.rememberMe')}
-          </Text>
-        </View>
+      <View style={styles.checkboxContainer}>
+        <ThemedCheckbox
+          style={styles.checkbox}
+          value={saveUserCredentials}
+          onValueChange={toggleSaveUserCredentials}
+        />
+        <Text style={fontSize.small} colorVariant={'primary'}>
+          {t('auth.rememberMe')}
+        </Text>
+      </View>
 
+      <View style={styles.forgotPasswordContainer}>
         <ClickableText
+          viewStyle={styles.forgotPasswordHitArea}
           textStyle={fontSize.small}
           text={t('auth.forgotPassword')}
-          colorVariant={'text2'}
+          colorVariant={'primary'}
           onPress={() => setShowRecovery(true)}
         />
       </View>
