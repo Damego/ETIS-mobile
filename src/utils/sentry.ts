@@ -1,6 +1,7 @@
 import * as Sentry from '@sentry/react-native';
 
-import logger from './logger';
+import logger, { EXPECTED_ERROR_PATTERNS } from './logger';
+import { redactSensitiveData, redactString } from './redact';
 
 export default () => {
   if (__DEV__) return;
@@ -17,6 +18,11 @@ export default () => {
       tracesSampleRate: 1.0,
       debug: false, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
       ignoreErrors,
+      // Последняя линия обороны: персональные данные (логин/пароль/e-mail,
+      // сессионные куки) не должны попасть в Sentry даже в составе
+      // сериализованных ошибок из глобальных хендлеров (например, `config`
+      // у необработанных axios-ошибок).
+      beforeSend: (event) => redactSensitiveData(event) as Sentry.ErrorEvent,
     });
   }
 };
@@ -31,12 +37,15 @@ export const executeRegex = (
 ): RegExpExecArray | null => {
   const result = regex.exec(str);
   if (!result && sendReport && !__DEV__) {
-    Sentry.captureMessage(`String ${str} mismatched with regex ${regex}`, 'error');
+    Sentry.captureMessage(redactString(`String ${str} mismatched with regex ${regex}`), 'error');
   }
   return result;
 };
 
 const ignoreErrors = [
+  // Ожидаемые ошибки окружения (нет сети, портал недоступен, таймауты) — не баги
+  // приложения. Дублирует фильтр в `utils/logger.ts` для глобальных ошибок.
+  ...EXPECTED_ERROR_PATTERNS,
   // sp-react-native-in-app-updates throws when neither immediate nor flexible
   // Play Core update is allowed (e.g. sideloaded APK / store state). It is
   // non-critical and swallowed by the caller, so suppress it either way it surfaces.

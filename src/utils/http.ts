@@ -14,6 +14,7 @@ import { CertificateRequestPayload } from './certificate';
 import { getCurrentEducationYear } from './datetime';
 import { toURLSearchParams } from './encoding';
 import logger from './logger';
+import { redactSensitiveData } from './redact';
 import { SessionQuestionnairePayload } from './sessionTest';
 import getRandomUserAgent from './userAgents';
 
@@ -146,10 +147,12 @@ class HTTPClient {
     endpoint: string,
     { params, data, returnResponse }: Payload = { returnResponse: false }
   ): Promise<Response<string | AxiosResponse>> {
+    // Логируем только с маскировкой: в `data` запросов логина/смены пароля
+    // лежат персональные данные (см. `utils/redact.ts`)
     logger.log(
       `[HTTP] [${method}] Sending request to '${endpoint}' with params: ${JSON.stringify(
-        params
-      )}; data: ${JSON.stringify(data)}`
+        redactSensitiveData(params)
+      )}; data: ${JSON.stringify(redactSensitiveData(data))}`
     );
 
     if (!(await this.isInternetReachable())) {
