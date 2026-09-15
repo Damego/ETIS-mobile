@@ -24,14 +24,6 @@ export const styles = StyleSheet.create({
     width: 130,
     height: 130,
   },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  },
-  checkbox: {
-    marginRight: '2%',
-  },
   authRowContainer: {
     flexDirection: 'row',
     width: '100%',
@@ -106,16 +98,13 @@ const Form = ({
       />
 
       <View style={styles.authRowContainer}>
-        <View style={styles.checkboxContainer}>
-          <ThemedCheckbox
-            style={styles.checkbox}
-            value={saveUserCredentials}
-            onValueChange={toggleSaveUserCredentials}
-          />
-          <Text style={fontSize.small} colorVariant={'primary'}>
-            {t('auth.rememberMe')}
-          </Text>
-        </View>
+        <ThemedCheckbox
+          value={saveUserCredentials}
+          label={t('auth.rememberMe')}
+          labelStyle={fontSize.small}
+          labelColorVariant={'primary'}
+          onValueChange={toggleSaveUserCredentials}
+        />
 
         <ClickableText
           viewStyle={styles.forgotPasswordHitArea}

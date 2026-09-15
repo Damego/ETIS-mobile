@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Alert, Pressable, StyleSheet, TextInput, View
+  Alert, StyleSheet, TextInput, View
 } from 'react-native';
 
 import BottomSheetContent from '~/components/BottomSheetContent';
@@ -100,17 +100,12 @@ const AddTaskModalContent = ({
       {/* Выставить привязку к паре можно только во время создания задания,
       во время редактирования этого сделать нельзя */}
       {!disableCheckbox && (
-        <Pressable
-          style={styles.checkboxContainer}
-          onPress={() => setLinkedToPair((prev) => !prev)}
-        >
-          <ThemedCheckbox
-            style={styles.checkbox}
-            value={isLinkedToPair}
-            onValueChange={setLinkedToPair}
-          />
-          <Text style={styles.checkboxLabel}>{t('disciplineInfo.linkToPair')}</Text>
-        </Pressable>
+        <ThemedCheckbox
+          value={isLinkedToPair}
+          label={t('disciplineInfo.linkToPair')}
+          labelStyle={fontSize.medium}
+          onValueChange={setLinkedToPair}
+        />
       )}
 
       <View style={styles.row}>
@@ -190,19 +185,6 @@ const styles = StyleSheet.create({
   },
   noRemindersText: {
     fontWeight: '500',
-    ...fontSize.medium,
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  checkbox: {
-    // чекбокс из @expo/ui не растягивается на высоту строки — берём её у текста
-    alignSelf: 'flex-start',
-  },
-  checkboxLabel: {
-    flex: 1,
     ...fontSize.medium,
   },
 });

@@ -2,7 +2,6 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import React, { useContext } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import Text from '~/components/Text';
 import ThemedCheckbox from '~/components/ThemedCheckbox';
 import { useTaskContext } from '~/context/taskContext';
 import { useAppTheme } from '~/hooks/theme';
@@ -14,10 +13,12 @@ const TaskItem = ({ task }: { readonly task: DisciplineTask }) => {
   const { onRequestEdit, onComplete } = useTaskContext();
   return (
     <View style={styles.container}>
-      <View style={[styles.checkbox, styles.align]}>
-        <ThemedCheckbox value={task.isComplete} onValueChange={() => onComplete(task)} />
-        <Text>{task.description}</Text>
-      </View>
+      <ThemedCheckbox
+        value={task.isComplete}
+        label={task.description}
+        style={styles.checkboxAlign}
+        onValueChange={() => onComplete(task)}
+      />
       <TouchableOpacity style={styles.align} onPress={() => onRequestEdit(task)}>
         <Ionicons name={'pencil-outline'} size={20} color={theme.colors.text} />
       </TouchableOpacity>
@@ -33,9 +34,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: '1%',
   },
-  checkbox: {
-    flexDirection: 'row',
-    gap: 8,
+  checkboxAlign: {
+    // чекбокс с описанием занимает всю строку, иконка редактирования прижата вправо
+    alignSelf: 'center',
+    flexShrink: 1,
   },
   align: {
     alignSelf: 'center',
