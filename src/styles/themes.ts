@@ -54,7 +54,9 @@ const LightTheme: ITheme = {
     primary: '#C62E3E',
     secondary: '#F9F0F1',
     primaryContrast: '#FFFFFF',
-    secondaryContrast: '#FFFFFF',
+    // Тёмный, а не белый: кнопки variant="secondary" заливаются этим цветом,
+    // белый текст на #F9F0F1 был нечитаем (кнопка выглядела пустой плашкой)
+    secondaryContrast: '#2C2C2C',
     border: '#EAEAEA',
     text: '#2C2C2C',
     text2: '#A9A9AC',

@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 
-import { fontSize } from '~/utils/texts';
+import { borderRadius, fontSize } from '~/utils/texts';
 
 import { useGlobalStyles } from '../hooks';
 import ClickableText from './ClickableText';
@@ -18,8 +18,10 @@ const defaultStyles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    padding: '2%',
-    borderRadius: 50,
+    // Фиксированная высота вместо процентного padding: '%' здесь считается
+    // от ширины родителя, и высота кнопки менялась от экрана к экрану
+    height: 48,
+    borderRadius: borderRadius.medium,
   },
 });
 
