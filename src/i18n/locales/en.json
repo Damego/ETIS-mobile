@@ -73,7 +73,8 @@
     "enterEmail": "You did not enter your email",
     "recoveryMailSent": "An email with a recovery link has been sent. Check your inbox — it may have landed in the Spam folder.",
     "emailPlaceholder": "Email",
-    "sendRecoveryMail": "Send email"
+    "sendRecoveryMail": "Send email",
+    "footerDisclaimer": "ETIS Mobile is an unofficial mobile application for ETIS PSU"
   },
   "review": {
     "question": "Do you like the app?",

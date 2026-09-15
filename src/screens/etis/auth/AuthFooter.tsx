@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Linking, StyleSheet, TouchableOpacity, View
 } from 'react-native';
@@ -26,21 +27,23 @@ const styles = StyleSheet.create({
   },
 });
 
-const AuthFooter = () => (
-  <View style={styles.view}>
-    <Text style={styles.infoText}>
-      Приложение ЕТИС мобайл является неофициальным мобильным приложением для ЕТИС ПГНИУ
-    </Text>
-    <TouchableOpacity onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}>
-      <Text style={styles.privacyPolicyText} colorVariant={'primary'}>
-        Политика конфиденциальности
-      </Text>
-    </TouchableOpacity>
+const AuthFooter = () => {
+  const { t } = useTranslation();
 
-    <TouchableOpacity onPress={() => Linking.openURL(TELEGRAM_URL)}>
-      <Text style={styles.telegramText}>Telegram канал</Text>
-    </TouchableOpacity>
-  </View>
-);
+  return (
+    <View style={styles.view}>
+      <Text style={styles.infoText}>{t('auth.footerDisclaimer')}</Text>
+      <TouchableOpacity onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}>
+        <Text style={styles.privacyPolicyText} colorVariant={'primary'}>
+          {t('about.privacyPolicy')}
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => Linking.openURL(TELEGRAM_URL)}>
+        <Text style={styles.telegramText}>{t('more.telegramChannel')}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 export default AuthFooter;
