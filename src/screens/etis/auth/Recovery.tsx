@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Screen from '~/components/Screen';
 import { httpClient } from '~/utils';
@@ -36,19 +37,23 @@ const Recovery = ({ setShowModal }: { readonly setShowModal: (showModal: boolean
     changeMessage(t('auth.recoveryMailSent'));
   };
 
+  // SafeAreaView с edges=['bottom'] — как на экране авторизации (Auth.tsx):
+  // без него футер при переключении экранов прыгает на высоту нижнего inset
   return (
-    <Screen>
-      <View style={{ flex: 1 }}>
-        <RecoveryForm
-          isLoading={isLoading}
-          message={message}
-          setShowModal={setShowModal}
-          disabledRequestButton={disabledRequestButton}
-          onSubmit={(mail: string) => makeRequest({ mail })}
-        />
-      </View>
-      <Footer />
-    </Screen>
+    <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
+      <Screen>
+        <View style={{ flex: 1 }}>
+          <RecoveryForm
+            isLoading={isLoading}
+            message={message}
+            setShowModal={setShowModal}
+            disabledRequestButton={disabledRequestButton}
+            onSubmit={(mail: string) => makeRequest({ mail })}
+          />
+        </View>
+        <Footer />
+      </Screen>
+    </SafeAreaView>
   );
 };
 
