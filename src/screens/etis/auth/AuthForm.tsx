@@ -32,9 +32,11 @@ export const styles = StyleSheet.create({
   checkbox: {
     marginRight: '2%',
   },
-  forgotPasswordContainer: {
+  authRowContainer: {
+    flexDirection: 'row',
     width: '100%',
-    alignItems: 'flex-end',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   forgotPasswordHitArea: {
     // Запас тап-зоны: текст маленький, а по нему переходят на экран восстановления
@@ -103,18 +105,18 @@ const Form = ({
         onSubmitEditing={() => onSubmit(login, password)}
       />
 
-      <View style={styles.checkboxContainer}>
-        <ThemedCheckbox
-          style={styles.checkbox}
-          value={saveUserCredentials}
-          onValueChange={toggleSaveUserCredentials}
-        />
-        <Text style={fontSize.small} colorVariant={'primary'}>
-          {t('auth.rememberMe')}
-        </Text>
-      </View>
+      <View style={styles.authRowContainer}>
+        <View style={styles.checkboxContainer}>
+          <ThemedCheckbox
+            style={styles.checkbox}
+            value={saveUserCredentials}
+            onValueChange={toggleSaveUserCredentials}
+          />
+          <Text style={fontSize.small} colorVariant={'primary'}>
+            {t('auth.rememberMe')}
+          </Text>
+        </View>
 
-      <View style={styles.forgotPasswordContainer}>
         <ClickableText
           viewStyle={styles.forgotPasswordHitArea}
           textStyle={fontSize.small}
