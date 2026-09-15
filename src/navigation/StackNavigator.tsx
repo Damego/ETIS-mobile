@@ -70,14 +70,8 @@ const StackNavigator = () => {
     }
   }, [appIsReady]);
 
-  let educationScreen = StartNavigator;
-  if (accountType === AccountType.UNAUTHORIZED_TEACHER) {
-    educationScreen = TeacherNavigator;
-  } else if (accountType === AccountType.AUTHORIZED_STUDENT) {
-    educationScreen = EducationNavigation;
-  } else if (accountType === AccountType.UNAUTHORIZED_STUDENT) {
-    educationScreen = UnauthorizedStudentNavigator;
-  }
+  // psutech is down
+  let educationScreen = EducationNavigation;
 
   return (
     <SafeAreaProvider>

@@ -23,7 +23,6 @@ interface ScreenT {
   title: string;
   icon: (color: string) => React.ReactNode;
   screenName: keyof EducationStackParamList;
-  requiresPsutech?: boolean;
 }
 
 const SCREENS: ScreenT[][] = [
@@ -76,44 +75,31 @@ const SCREENS: ScreenT[][] = [
       screenName: 'SessionQuestionnaireList',
     },
     {
-      title: 'more.audienceTimetable',
-      icon: (color) => <Ionicons name={'business-outline'} size={ICON_SIZE} color={color} />,
-      screenName: 'SelectAudience',
-      requiresPsutech: true,
-    },
-  ],
-  [
-    {
       title: 'more.digitalResources',
       icon: (color) => <AntDesign name={'copy1'} size={ICON_SIZE} color={color} />,
       screenName: 'DigitalResources',
     },
-  ],
+  ]
 ];
 
 const ScreenButton = ({ screen }: { readonly screen: ScreenT }) => {
-  const { title, screenName, icon, requiresPsutech } = screen;
+  const { title, screenName, icon } = screen;
   const { t } = useTranslation();
 
   const globalStyles = useGlobalStyles();
   const navigation = useNavigation<EducationNavigationProp>();
-  const { isDown: psutechDown } = usePsutechHealth();
-  const disabled = requiresPsutech && psutechDown === true;
 
   const handlePress = () => {
-    if (disabled) return;
     navigation.navigate(screenName as never);
   };
 
   return (
     <TouchableOpacity
-      style={[styles.card, globalStyles.card, disabled && styles.cardDisabled]}
-      disabled={disabled}
-      accessibilityState={disabled ? { disabled: true } : undefined}
+      style={[styles.card, globalStyles.card]}
       onPress={handlePress}
     >
       {icon(globalStyles.textColor.color)}
-      <Text style={[styles.cardText, disabled && globalStyles.textColor2]}>{t(title)}</Text>
+      <Text style={[styles.cardText]}>{t(title)}</Text>
     </TouchableOpacity>
   );
 };
