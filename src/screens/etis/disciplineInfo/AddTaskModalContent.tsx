@@ -1,14 +1,15 @@
 import 'dayjs/locale/ru';
 
-import { BottomSheetModal } from '@expo/ui/community/bottom-sheet';
+import { BottomSheetModal as ExpoBottomSheetModal } from '@expo/ui/community/bottom-sheet';
 import dayjs from 'dayjs';
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Alert, StyleSheet, TextInput, View
+  Alert, Pressable, StyleSheet, TextInput, View
 } from 'react-native';
 
 import BottomSheetContent from '~/components/BottomSheetContent';
+import BottomSheetModal from '~/components/BottomSheetModal';
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
 import ThemedCheckbox from '~/components/ThemedCheckbox';
@@ -48,7 +49,7 @@ const AddTaskModalContent = ({
   const [reminders, setReminders] = useState<DisciplineReminder[]>(selectedTask?.reminders || []);
   const [isLinkedToPair, setLinkedToPair] = useState(!disableCheckbox);
   const globalStyles = useGlobalStyles();
-  const reminderModal = useRef<BottomSheetModal | null>(null);
+  const reminderModal = useRef<ExpoBottomSheetModal | null>(null);
 
   const openReminderModal = () => reminderModal.current?.present();
 
@@ -99,13 +100,17 @@ const AddTaskModalContent = ({
       {/* Выставить привязку к паре можно только во время создания задания,
       во время редактирования этого сделать нельзя */}
       {!disableCheckbox && (
-        <View style={styles.checkboxContainer}>
+        <Pressable
+          style={styles.checkboxContainer}
+          onPress={() => setLinkedToPair((prev) => !prev)}
+        >
           <ThemedCheckbox
+            style={styles.checkbox}
             value={isLinkedToPair}
             onValueChange={setLinkedToPair}
           />
-          <Text>{t('disciplineInfo.linkToPair')}</Text>
-        </View>
+          <Text style={styles.checkboxLabel}>{t('disciplineInfo.linkToPair')}</Text>
+        </Pressable>
       )}
 
       <View style={styles.row}>
@@ -140,7 +145,6 @@ const AddTaskModalContent = ({
 
       <BottomSheetModal
         ref={reminderModal}
-        backgroundStyle={{ backgroundColor: globalStyles.containerBackground.backgroundColor }}
         snapPoints={['50%', '100%']}
       >
         <BottomSheetContent>
@@ -188,5 +192,17 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     ...fontSize.medium,
   },
-  checkboxContainer: { flexDirection: 'row', gap: 8 },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  checkbox: {
+    // чекбокс из @expo/ui не растягивается на высоту строки — берём её у текста
+    alignSelf: 'flex-start',
+  },
+  checkboxLabel: {
+    flex: 1,
+    ...fontSize.medium,
+  },
 });
