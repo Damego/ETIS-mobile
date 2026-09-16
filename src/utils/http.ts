@@ -191,7 +191,15 @@ class HTTPClient {
         data: returnResponse ? response : response.data,
       };
     } catch (e) {
-      logger.warn('[HTTP]', e);
+      // Ответ портала с ошибочным статусом (404/500/...) — не баг приложения,
+      // логируем без репорта в Sentry. Транспортные сбои (нет сети, таймаут)
+      // остаются warning'ом — они отфильтрованы в EXPECTED_ERROR_PATTERNS.
+      const status = axios.isAxiosError(e) ? e.response?.status : undefined;
+      if (status === undefined) {
+        logger.warn('[HTTP]', e);
+      } else {
+        logger.log(`[HTTP] Request to '${endpoint}' failed with status ${status}`);
+      }
 
       return {
         error: {
