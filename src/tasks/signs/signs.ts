@@ -79,7 +79,9 @@ export const registerSignsFetchTask = async (session?: number) => {
   }
 
   if (!currentSession) {
-    logger.warn('[FETCH] Unable to access current session. Task registering canceled.');
+    // Кэша сессии ещё нет (первый запуск / не авторизован) — ожидаемое
+    // состояние, фоновая задача просто не регистрируется (ETIS-MOBILE-HZ).
+    logger.log('[FETCH] Unable to access current session. Task registering canceled.');
     return;
   }
   registerBackgroundTaskAsync().then(() => logger.log('[FETCH] Signs fetch task registered'));
