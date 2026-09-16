@@ -54,8 +54,15 @@ export const Timetable = () => {
     setPagerActive(state !== 'idle');
   };
 
+  // Список дня прокручен — pull-to-refresh выключаем. Внешний ScrollView в Screen
+  // здесь не скроллится (его контент — шапка и абсолютно позиционированный
+  // пейджер), поэтому нативный RefreshControl считает, что «вверх прокручивать
+  // нечего» (canChildScrollUp() === false), и перехватывает любое движение вниз
+  // посреди списка. Пока список не наверху, жест обязан прокручивать его.
+  const [isListAtTop, setIsListAtTop] = useState(true);
+
   return (
-    <Screen refreshEnabled={!pagerActive} onUpdate={refresh}>
+    <Screen refreshEnabled={!pagerActive && isListAtTop} onUpdate={refresh}>
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>{t('navigation.timetable')}</Text>
         <View style={styles.titleIconsContainer}>
@@ -73,6 +80,7 @@ export const Timetable = () => {
         loadingComponent={() => <LoadingContainer />}
         onRetry={refresh}
         onPagerScrollStateChange={handlePagerScrollStateChange}
+        onListAtTopChange={setIsListAtTop}
       />
     </Screen>
   );

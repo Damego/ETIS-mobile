@@ -23,6 +23,7 @@ const TimetableContainer = ({
   lastWeek,
   onRetry,
   onPagerScrollStateChange,
+  onListAtTopChange,
 }: {
   readonly timetable: IUseTimetable;
   readonly data?: ITimeTable | null;
@@ -35,6 +36,7 @@ const TimetableContainer = ({
   readonly lastWeek?: number;
   readonly onRetry?: () => void;
   readonly onPagerScrollStateChange?: (state: PagerScrollState) => void;
+  readonly onListAtTopChange?: (isAtTop: boolean) => void;
 }) => {
   const { timetableMode } = useAppSelector((state) => state.settings.config.ui);
   // В оффлайн-режиме кнопка «Обновить» не имеет смысла — не пробрасываем onRetry
@@ -79,6 +81,7 @@ const TimetableContainer = ({
       onDatePress={onDatePress}
       onRetry={retryHandler}
       onPagerScrollStateChange={onPagerScrollStateChange}
+      onListAtTopChange={onListAtTopChange}
     />
   );
 };
