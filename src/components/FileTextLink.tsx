@@ -76,9 +76,12 @@ const FileTextLink = ({
     try {
       await saveFileFromCache(fileData, fileName);
     } catch (e) {
-      // Пользователь мог отменить выбор каталога (SAF) — это не ошибка
+      // Ожидаемые сбои SAF: пользователь отменил выбор каталога, либо нативный
+      // ActivityResultLauncher был сброшен при пересоздании Activity
+      // (upstream expo-modules-core, expo/expo#49634). Файл уже скачан и
+      // доступен через shareAsync ниже, поэтому в Sentry не репортим.
       ToastAndroid.show(i18next.t('files.downloadFailed'), ToastAndroid.SHORT);
-      logger.warn('[FILE] Saving file from cache failed', e);
+      logger.log('[FILE] Saving file from cache failed', e);
     }
     shareAsync(fileData.uri).catch((e) => e);
   };

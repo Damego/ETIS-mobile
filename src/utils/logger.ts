@@ -18,8 +18,9 @@ import { redactString } from './redact';
 type LogArgs = unknown[];
 
 /**
- * Ожидаемые ошибки окружения: нет интернета, портал/API недоступен, таймаут.
- * Это не баги приложения — в Sentry они лишь шумят, поэтому не репортим их.
+ * Ожидаемые ошибки: нет интернета, портал/API недоступен, таймаут, а также
+ * сбои платформы, которые приложение уже обработало фолбэком. Это не баги
+ * приложения — в Sentry они лишь шумят, поэтому не репортим их.
  * Тот же список подключён к `ignoreErrors` в `utils/sentry.ts`, чтобы
  * фильтровать ещё и необработанные глобальные ошибки.
  */
@@ -28,6 +29,13 @@ export const EXPECTED_ERROR_PATTERNS = [
   /Internet is not reachable/i,
   /Service is unavailable/i,
   /timeout of \d+ms exceeded/i,
+  /**
+   * Сброс нативного ActivityResultLauncher при пересоздании Activity
+   * (SAF-выбор каталога в `utils/files.ts`, пикеры). Баг ядра expo-modules-core,
+   * app-side митигации нет; приложение уже обрабатывает сбой через фолбэк.
+   * https://github.com/expo/expo/pull/49634
+   */
+  /Attempting to launch an unregistered ActivityResultLauncher/i,
 ];
 
 const isExpectedError = (message: string) =>
