@@ -51,20 +51,33 @@ const useTimetable = ({
   const preSelectedDate = useRef<dayjs.Dayjs | null>(null);
 
   const updateData = (weekInfo: WeekInfo) => {
-    if (preSelectedDate.current) {
-      setTimetable({
-        ...timetableState,
-        selectedDate: preSelectedDate.current.clone(),
-        selectedWeek: weekInfo.selected ?? selectedWeek,
-      });
-      preSelectedDate.current = null;
-    } else if (weekInfo.selected != null && weekInfo.dates != null) {
+    const preSelected = preSelectedDate.current;
+    preSelectedDate.current = null;
+
+    const loadedWeek = weekInfo.selected;
+
+    // Дату из другой недели переносить нельзя: если загрузилась не та неделя
+    // (оффлайн-кеш, ошибка), выбранная дата окажется вне отображаемой недели.
+    if (
+      preSelected &&
+      loadedWeek != null &&
+      getEducationWeekByDate(preSelected) === loadedWeek
+    ) {
+      setTimetable((prev) => ({
+        ...prev,
+        selectedDate: preSelected,
+        selectedWeek: loadedWeek,
+      }));
+      return;
+    }
+
+    if (loadedWeek != null && weekInfo.dates != null) {
       const startWeekDate = parseDate(weekInfo.dates.start);
 
       setTimetable((prev) => ({
         ...prev,
         selectedDate: startWeekDate.add((selectedDate ?? prev.selectedDate ?? dayjs()).weekday(), 'day'),
-        selectedWeek: weekInfo.selected ?? undefined,
+        selectedWeek: loadedWeek,
       }));
     }
   };

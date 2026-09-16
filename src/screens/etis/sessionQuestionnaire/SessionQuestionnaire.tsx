@@ -7,7 +7,7 @@ import LoadingScreen from '~/components/LoadingScreen';
 import NoData from '~/components/NoData';
 import Screen from '~/components/Screen';
 import { useClient } from '~/data/client';
-import { useAppSelector } from '~/hooks';
+import useActionAvailability from '~/hooks/useActionAvailability';
 import useQuery from '~/hooks/useQuery';
 import { RequestType } from '~/models/results';
 import { IAnswer } from '~/models/sessionQuestionnaire';
@@ -56,7 +56,7 @@ export default function SessionQuestionnaire({
       );
     },
   });
-  const { isDemo } = useAppSelector((state) => state.account);
+  const guard = useActionAvailability();
   const setTeacher = (name: string) => {
     teacherRef.current = name;
   };
@@ -79,21 +79,24 @@ export default function SessionQuestionnaire({
 
   const onButtonClick = () => {
     if (step + 1 === Steps.sendResult) {
-      if (isDemo) {
-        ToastAndroid.show(t('questionnaire.demoModeUnavailable'), ToastAndroid.LONG);
-      } else {
-        setStep(Steps.sendResult);
-        if (!data) return;
-        const payload = toSessionTestPayload({
-          data,
-          answers: answersRef.current,
-          teacher: teacherRef.current ?? null,
-          additionalComment: additionalCommentRef.current ?? null,
-        });
-        httpClient.sendSessionQuestionnaireResult(payload).then(() => {
-          setStep(Steps.resultSent);
-        });
-      }
+      if (!guard({ demo: t('questionnaire.demoModeUnavailable') })) return;
+
+      setStep(Steps.sendResult);
+      if (!data) return;
+      const payload = toSessionTestPayload({
+        data,
+        answers: answersRef.current,
+        teacher: teacherRef.current ?? null,
+        additionalComment: additionalCommentRef.current ?? null,
+      });
+      httpClient.sendSessionQuestionnaireResult(payload).then((response) => {
+        if (response.error) {
+          ToastAndroid.show(response.error.message, ToastAndroid.LONG);
+          setStep(Steps.confirmResult);
+          return;
+        }
+        setStep(Steps.resultSent);
+      });
     } else {
       setStep((prevState) => prevState + 1);
     }

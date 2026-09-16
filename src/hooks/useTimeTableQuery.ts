@@ -1,4 +1,6 @@
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ToastAndroid } from 'react-native';
 
 import { cache } from '~/cache/smartCache';
 import { useClient } from '~/data/client';
@@ -16,9 +18,16 @@ const useTimeTableQuery = ({
   afterCallback?: (result: IGetResult<ITimeTable>) => void;
   week?: number;
 }) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const client = useClient();
   const { currentWeek } = useAppSelector((state) => state.student);
+  const { isOfflineMode } = useAppSelector((state) => state.account);
+
+  // Неделю можно менять и явно (навигация), и неявно (первый показ).
+  // Фолбэк на последнюю известную неделю из кеша допустим только во втором
+  // случае, иначе смена недели выглядит как «переключилось на другую неделю».
+  const isManualWeekChange = useRef(false);
 
   const { data, isLoading, update, refresh } = useQuery({
     payload: {
@@ -27,6 +36,14 @@ const useTimeTableQuery = ({
     },
     method: client.getTimeTableData,
     onFail: async () => {
+      if (isManualWeekChange.current) {
+        ToastAndroid.show(
+          isOfflineMode ? t('timetable.weekNotCached') : t('timetable.weekLoadFailed'),
+          ToastAndroid.LONG
+        );
+        return;
+      }
+
       const student = await cache.getStudent();
       if (!student?.currentWeek) return;
 
@@ -36,6 +53,8 @@ const useTimeTableQuery = ({
       };
     },
     after: async (result) => {
+      isManualWeekChange.current = false;
+
       const { first: firstWeek, selected: selectedWeek } = result.data?.weekInfo ?? {};
 
       if (result.type !== GetResultType.cached) {
@@ -57,6 +76,7 @@ const useTimeTableQuery = ({
 
   const loadWeek = useCallback(
     (week: number) => {
+      isManualWeekChange.current = true;
       update({
         requestType: RequestType.tryCache,
         data: week,

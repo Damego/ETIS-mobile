@@ -58,7 +58,8 @@
   "offline": {
     "banner": "Offline mode — cached data",
     "noInternet": "No internet connection",
-    "mode": "Offline mode"
+    "mode": "Offline mode",
+    "actionUnavailable": "Action is unavailable in offline mode"
   },
   "auth": {
     "authorizing": "Signing in...",
@@ -101,7 +102,9 @@
     "disciplineTasks": "Assignments by discipline",
     "switchMode": "Switch timetable view",
     "noPairs": "No classes",
-    "rest": "Rest"
+    "rest": "Rest",
+    "weekNotCached": "This week is not saved for offline mode",
+    "weekLoadFailed": "Failed to load the selected week"
   },
   "lessonTypes": {
     "LECTURE": "Lecture",

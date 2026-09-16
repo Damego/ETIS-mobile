@@ -6,6 +6,7 @@ import { ToastAndroid, View } from 'react-native';
 import { ListScreen } from '~/components/Screen';
 import { useClient } from '~/data/client';
 import { useAppSelector } from '~/hooks';
+import useActionAvailability from '~/hooks/useActionAvailability';
 import useQuery from '~/hooks/useQuery';
 import { IMessage } from '~/models/messages';
 import { UploadFile } from '~/models/other';
@@ -44,6 +45,7 @@ export default function MessageHistory({
   const [isUploading, setUploading] = useState<boolean>(false);
   const [files, setFiles] = useState<UploadFile[]>([]);
   const isDemo = useAppSelector((state) => state.account.isDemo);
+  const guard = useActionAvailability();
 
   const [firstMessage] = messages;
   const shortAuthor = formatTeacherName(firstMessage.author ?? '');
@@ -88,10 +90,7 @@ export default function MessageHistory({
   };
 
   const onSubmit = async (text: string) => {
-    if (isDemo) {
-      ToastAndroid.show(t('messages.demoSendDisabled'), ToastAndroid.LONG);
-      return;
-    }
+    if (!guard({ demo: t('messages.demoSendDisabled') })) return;
 
     setUploading(true);
     const response = await httpClient.replyToMessage(firstMessage.answerID ?? '', text);

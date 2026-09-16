@@ -9,6 +9,7 @@ import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { useAppDispatch, useGlobalStyles } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
+import useActionAvailability from '~/hooks/useActionAvailability';
 import { EducationStackScreenProps } from '~/navigation/types';
 import { parseChangeEmailPage } from '~/parser/changeCredentials';
 import { setUserCredentials } from '~/redux/reducers/accountSlice';
@@ -20,12 +21,15 @@ import { styles } from '../auth/AuthForm';
 const emailRegex = /(.+)@(.+){2,}\.(.+){2,}/;
 const changeEmail = async (email: string) => {
   const response = await httpClient.changeEmail(email);
+  if (response.error) return response.error.message;
+
   const error = parseChangeEmailPage(response.data ?? '');
   if (error) return error;
 
   // Хотя в ЕТИСе сказано, что письмо было отправлено, но на самом деле нет.
   // Поэтому отправляем самостоятельно
-  await httpClient.sendVerificationMail();
+  const mailResponse = await httpClient.sendVerificationMail();
+  if (mailResponse.error) return mailResponse.error.message;
 };
 
 const Form = ({
@@ -88,10 +92,13 @@ export default function ChangeEmail({ route }: EducationStackScreenProps<'Change
   const sendVerificationMail = route.params?.sendVerificationMail;
 
   const dispatch = useAppDispatch();
+  const guard = useActionAvailability();
   const [isLoading, setLoading] = useState(false);
   const [mailSent, setMailSent] = useState(false);
 
   const submit = async (email: string) => {
+    if (!guard()) return;
+
     setLoading(true);
 
     const error = await changeEmail(email);
@@ -116,7 +123,11 @@ export default function ChangeEmail({ route }: EducationStackScreenProps<'Change
   useEffect(() => {
     if (!sendVerificationMail) return;
 
-    httpClient.sendVerificationMail().then(() => {
+    httpClient.sendVerificationMail().then((response) => {
+      if (response.error) {
+        ToastAndroid.show(response.error.message, ToastAndroid.SHORT);
+        return;
+      }
       setMailSent(true);
     });
   }, [sendVerificationMail]);

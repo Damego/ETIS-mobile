@@ -10,7 +10,8 @@ import { Button } from '~/components/Button';
 import Card from '~/components/Card';
 import Screen from '~/components/Screen';
 import Text from '~/components/Text';
-import { useAppSelector, useGlobalStyles } from '~/hooks';
+import { useGlobalStyles } from '~/hooks';
+import useActionAvailability from '~/hooks/useActionAvailability';
 import { IAvailableCertificate } from '~/models/certificate';
 import { CertificateParam, CertificateRequest } from '~/models/certificateRequest';
 import {
@@ -57,7 +58,7 @@ export default function RequestCertificate({
   const { knownCertificates, specialCertificates } = getCertificateData();
   const availableCertificates = getAvailableCertificates(route.params, knownCertificates, specialCertificates);
 
-  const { isDemo } = useAppSelector((state) => state.account);
+  const guard = useActionAvailability();
   const [certificateRequest, setCertificate] = useState<CertificateRequest>({
     certificateId: undefined,
     note: '',
@@ -129,26 +130,26 @@ export default function RequestCertificate({
   );
 
   const submitRequest = async () => {
-    if (isDemo) {
-      ToastAndroid.show(t('certificate.demoModeUnavailable'), ToastAndroid.LONG);
-      setRequestSent(true);
+    if (!guard({ demo: t('certificate.demoModeUnavailable') })) return;
+
+    const response = await httpClient.sendCertificateRequest(
+      toCertificatePayload({
+        certificateId,
+        place,
+        note,
+        quantity,
+        delivery,
+      })
+    );
+    if (response.error) {
+      ToastAndroid.show(
+        t('certificate.requestError', { error: response.error.message }),
+        ToastAndroid.LONG
+      );
       return;
     }
 
-    try {
-      await httpClient.sendCertificateRequest(
-        toCertificatePayload({
-          certificateId,
-          place,
-          note,
-          quantity,
-          delivery,
-        })
-      );
-      setRequestSent(true);
-    } catch (e) {
-      ToastAndroid.show(t('certificate.requestError', { error: e }), ToastAndroid.LONG);
-    }
+    setRequestSent(true);
   };
 
   const confirmSubmit = () => {

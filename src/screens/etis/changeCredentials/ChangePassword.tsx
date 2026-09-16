@@ -10,6 +10,7 @@ import Screen from '~/components/Screen';
 import Text from '~/components/Text';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
+import useActionAvailability from '~/hooks/useActionAvailability';
 import { getTextField } from '~/parser/utils';
 import { setUserCredentials } from '~/redux/reducers/accountSlice';
 import { httpClient } from '~/utils';
@@ -19,6 +20,8 @@ import { styles } from '../auth/AuthForm';
 
 const changePassword = async (oldPassword: string, newPassword: string): Promise<string | undefined> => {
   const response = await httpClient.changePassword(oldPassword, newPassword);
+  if (response.error) return response.error.message;
+
   const $ = cheerio.load(response.data ?? '');
 
   const error = $('.error');
@@ -128,12 +131,15 @@ export default function ChangePassword() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const globalStyles = useGlobalStyles();
+  const guard = useActionAvailability();
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const oldPassword = useAppSelector((state) => state.account.userCredentials?.password);
   const [passwordChanged, setPasswordChanged] = useState<boolean>(false);
 
   const submit = async (password: string) => {
+    if (!guard()) return;
+
     setLoading(true);
 
     const error = await changePassword(oldPassword ?? '', password);

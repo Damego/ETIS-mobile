@@ -268,7 +268,7 @@ class HTTPClient {
       data,
     });
 
-    if (response.error) return null;
+    if (response.error) return { error: response.error };
 
     const $ = cheerio.load(response.data ?? '');
     if ($('#sbmt > span').text() === 'Получить письмо') {
@@ -432,7 +432,8 @@ class HTTPClient {
       p_pr_id: id,
     };
     const response = await this.request('GET', '/stu.change_pr', { params, returnResponse: true });
-    return (response.data!).status === 200;
+    if (response.error || !response.data) return false;
+    return response.data.status === 200;
   }
 
   changePassword(oldPassword: string, newPassword: string) {

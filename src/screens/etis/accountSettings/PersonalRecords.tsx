@@ -15,6 +15,7 @@ import Card from '~/components/Card';
 import Text from '~/components/Text';
 import { useClient } from '~/data/client';
 import { useAppDispatch, useGlobalStyles } from '~/hooks';
+import useActionAvailability from '~/hooks/useActionAvailability';
 import useQuery from '~/hooks/useQuery';
 import { IPersonalRecord } from '~/models/personalRecords';
 import { RootStackNavigationProp } from '~/navigation/types';
@@ -33,9 +34,11 @@ const PersonalRecord = ({
   const globalStyles = useGlobalStyles();
   const navigation = useNavigation<RootStackNavigationProp>();
   const dispatch = useAppDispatch();
+  const guard = useActionAvailability();
 
   const changePersonalRecord = async () => {
     if (!record.id) return;
+    if (!guard()) return;
     const success = await httpClient.changePersonalRecord(record.id);
     if (!success) {
       return ToastAndroid.show(t('account.changeRecordError'), ToastAndroid.LONG);
