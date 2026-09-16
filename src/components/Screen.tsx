@@ -70,7 +70,9 @@ const Screen = ({
               <RefreshControl
                 colors={[theme.colors.primary]}
                 refreshing={refreshing}
-                enabled={refreshEnabled}
+                // Пока идёт обновление, контрол остаётся включённым: нативный
+                // setEnabled(false) вызывает reset() и гасит индикатор.
+                enabled={refreshEnabled || refreshing}
                 onRefresh={onRefresh}
               />
             )

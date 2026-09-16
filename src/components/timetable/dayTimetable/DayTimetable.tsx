@@ -42,6 +42,7 @@ const DayTimetable = ({
   loadingComponent,
   onRetry,
   onPagerScrollStateChange,
+  onListAtTopChange,
 }: {
   readonly data?: ITimeTable | null;
   readonly selectedDate: dayjs.Dayjs;
@@ -56,6 +57,7 @@ const DayTimetable = ({
   readonly loadingComponent?: () => React.ReactNode;
   readonly onRetry?: () => void;
   readonly onPagerScrollStateChange?: (state: PagerScrollState) => void;
+  readonly onListAtTopChange?: (isAtTop: boolean) => void;
 }) => {
   const { t } = useTranslation();
   const pagerRef = useRef<PagerViewRef>(null);
@@ -116,6 +118,7 @@ const DayTimetable = ({
             onDatePress({ date: selectedDate.clone().add(direction, 'day') });
           }}
           onPagerScrollStateChange={onPagerScrollStateChange}
+          onListAtTopChange={onListAtTopChange}
         />
       ) : (
         <View style={styles.emptyContainer}>
