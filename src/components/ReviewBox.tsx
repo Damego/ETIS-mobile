@@ -72,12 +72,14 @@ const ReviewBox = ({
 
       <View style={styles.buttons}>
         <Button
+          style={styles.button}
           text={t('review.leaveReview')}
           variant={'primary'}
           fontStyle={fontSize.medium}
           onPress={() => handleReview()}
         />
         <Button
+          style={styles.button}
           text={t('review.noThanks')}
           variant={'secondary'}
           fontStyle={fontSize.medium}
@@ -113,5 +115,9 @@ const styles = StyleSheet.create({
   buttons: {
     flexDirection: 'row',
     gap: 8,
+  },
+  button: {
+    flex: 1,
+    paddingHorizontal: 8,
   },
 });

@@ -7,6 +7,7 @@ import {
   TextStyle,
   TouchableOpacity,
   View,
+  ViewStyle,
 } from 'react-native';
 
 import { borderRadius, fontSize } from '~/utils/texts';
@@ -32,10 +33,11 @@ interface ButtonProps {
   readonly showLoading?: boolean;
   readonly variant: 'primary' | 'secondary' | 'card';
   readonly fontStyle?: StyleProp<TextStyle>;
+  readonly style?: StyleProp<ViewStyle>;
 }
 
 const Button = React.forwardRef<React.ElementRef<typeof TouchableOpacity>, ButtonProps>(
-  ({ text, onPress, disabled, showLoading, variant, fontStyle }, ref) => {
+  ({ text, onPress, disabled, showLoading, variant, fontStyle, style }, ref) => {
     const globalStyles = useGlobalStyles();
 
     const styles = {
@@ -46,7 +48,7 @@ const Button = React.forwardRef<React.ElementRef<typeof TouchableOpacity>, Butto
           { fontWeight: '500' as const },
           fontStyle || fontSize.xlarge,
         ],
-        view: [defaultStyles.container, globalStyles.primaryBackgroundColor],
+        view: [defaultStyles.container, globalStyles.primaryBackgroundColor, style],
       },
       secondary: {
         textColor: globalStyles.textColor.color,
@@ -55,12 +57,12 @@ const Button = React.forwardRef<React.ElementRef<typeof TouchableOpacity>, Butto
           { fontWeight: '500' as const },
           fontStyle || fontSize.xlarge,
         ],
-        view: [defaultStyles.container, globalStyles.secondaryBackgroundColor],
+        view: [defaultStyles.container, globalStyles.secondaryBackgroundColor, style],
       },
       card: {
         textColor: globalStyles.textColor.color,
         text: [globalStyles.textColor, { fontWeight: '500' as const }, fontStyle || fontSize.xlarge],
-        view: [defaultStyles.container, { backgroundColor: globalStyles.card.backgroundColor }],
+        view: [defaultStyles.container, { backgroundColor: globalStyles.card.backgroundColor }, style],
       },
     };
 
