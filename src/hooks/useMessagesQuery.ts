@@ -24,7 +24,9 @@ const useMessagesQuery = () => {
       }
     },
     onFail: () => {
-      logger.warn('[MESSAGES] fetch failed, falling back to cache');
+      // Портал часто недоступен — это ожидаемый сценарий (переход на кэш),
+      // а не ошибка приложения: в Sentry не репортим (ETIS-MOBILE-HY).
+      logger.log('[MESSAGES] fetch failed, falling back to cache');
       return {
         data: 1,
         requestType: RequestType.forceCache,
