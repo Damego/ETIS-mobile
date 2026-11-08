@@ -22,7 +22,7 @@ import { loadStorage } from './redux/storageLoader';
 import { defineSignsFetchTask } from './tasks/signs/signs';
 import { checkUpdate } from './utils/inappUpdate';
 import logger from './utils/logger';
-import { addShortcuts } from './utils/shortcuts';
+import { registerShortcuts } from './utils/shortcuts';
 
 dayjs.locale('ru');
 dayjs.extend(weekday);
@@ -45,7 +45,7 @@ store.dispatch(loadStorage()).then(
 );
 
 defineSignsFetchTask();
-addShortcuts();
+registerShortcuts();
 rescheduleAllTaskNotifications();
 
 // Дефолты для React Query (используется в ~10 экранах поверх собственного useQuery).
