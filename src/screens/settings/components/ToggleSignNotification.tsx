@@ -1,7 +1,7 @@
 import AntDesign from '@expo/vector-icons/AntDesign';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Linking, ToastAndroid, TouchableOpacity } from 'react-native';
+import { Linking, TouchableOpacity } from 'react-native';
 
 import { cache } from '~/cache/smartCache';
 import SettingRow from '~/components/SettingRow';
@@ -9,7 +9,7 @@ import ThemedSwitch from '~/components/ThemedSwitch';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '~/hooks';
 import { setSignNotification } from '~/redux/reducers/settingsSlice';
 import { registerSignsFetchTask, unregisterBackgroundFetchAsync } from '~/tasks/signs/signs';
-import { NOTIFICATION_GUIDE_URL } from '~/utils';
+import { NOTIFICATION_GUIDE_URL, showToast } from '~/utils';
 
 const ToggleSignNotification = () => {
   const { t } = useTranslation();
@@ -20,7 +20,7 @@ const ToggleSignNotification = () => {
 
   const changeSignNotification = (hasSignNotification: boolean) => {
     if (isDemo || isOfflineMode) {
-      ToastAndroid.show(t('settings.unavailableInDemoOrOffline'), ToastAndroid.LONG);
+      showToast(t('settings.unavailableInDemoOrOffline'), 'long');
       return;
     }
 

@@ -5,9 +5,7 @@ import * as Clipboard from 'expo-clipboard';
 import { Image } from 'expo-image';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Linking, StyleSheet, ToastAndroid, View
-} from 'react-native';
+import { Linking, StyleSheet, View } from 'react-native';
 
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
@@ -17,6 +15,7 @@ import { useAppTheme } from '~/hooks/theme';
 import useQuery from '~/hooks/useQuery';
 import { RequestType } from '~/models/results';
 import { DistancePlatformTypes, ILesson, ITimeTableTeacher } from '~/models/timeTable';
+import { showToast } from '~/utils';
 import { getTeacherName } from '~/utils/teachers';
 import { fontSize, formatAudience } from '~/utils/texts';
 
@@ -121,7 +120,7 @@ export const AudienceInfo = ({ lesson }: { readonly lesson: ILesson }) => {
           }}
           onLongPress={() => {
             Clipboard.setStringAsync(platform.url).then(() => {
-              ToastAndroid.show(t('common.copied'), ToastAndroid.LONG);
+              showToast(t('common.copied'), 'long');
             });
           }}
         />

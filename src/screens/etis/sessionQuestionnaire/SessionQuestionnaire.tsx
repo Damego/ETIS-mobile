@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ToastAndroid, View } from 'react-native';
+import { View } from 'react-native';
 
 import { Button } from '~/components/Button';
 import LoadingScreen from '~/components/LoadingScreen';
@@ -12,7 +12,7 @@ import useQuery from '~/hooks/useQuery';
 import { RequestType } from '~/models/results';
 import { IAnswer } from '~/models/sessionQuestionnaire';
 import { EducationStackScreenProps } from '~/navigation/types';
-import { httpClient } from '~/utils';
+import { httpClient, showToast } from '~/utils';
 import toSessionTestPayload from '~/utils/sessionTest';
 
 import AdditionalComment from './components/AdditionalComment';
@@ -91,7 +91,7 @@ export default function SessionQuestionnaire({
       });
       httpClient.sendSessionQuestionnaireResult(payload).then((response) => {
         if (response.error) {
-          ToastAndroid.show(response.error.message, ToastAndroid.LONG);
+          showToast(response.error.message, 'long');
           setStep(Steps.confirmResult);
           return;
         }

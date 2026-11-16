@@ -1,12 +1,12 @@
 import { useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ToastAndroid } from 'react-native';
 
 import { cache } from '~/cache/smartCache';
 import { useClient } from '~/data/client';
 import { GetResultType, IGetResult, RequestType } from '~/models/results';
 import { ITimeTable } from '~/models/timeTable';
 import { setCurrentWeek } from '~/redux/reducers/studentSlice';
+import { showToast } from '~/utils';
 
 import { useAppDispatch, useAppSelector } from './redux';
 import useQuery from './useQuery';
@@ -37,10 +37,7 @@ const useTimeTableQuery = ({
     method: client.getTimeTableData,
     onFail: async () => {
       if (isManualWeekChange.current) {
-        ToastAndroid.show(
-          isOfflineMode ? t('timetable.weekNotCached') : t('timetable.weekLoadFailed'),
-          ToastAndroid.LONG
-        );
+        showToast(isOfflineMode ? t('timetable.weekNotCached') : t('timetable.weekLoadFailed'), 'long');
         return;
       }
 

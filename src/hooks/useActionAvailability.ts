@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { ToastAndroid } from 'react-native';
+
+import { showToast } from '~/utils';
 
 import { useAppSelector } from './redux';
 
@@ -21,12 +22,12 @@ const useActionAvailability = () => {
 
   const guard = ({ demo, offline }: ActionUnavailableMessages = {}): boolean => {
     if (isOfflineMode) {
-      ToastAndroid.show(offline ?? t('offline.actionUnavailable'), ToastAndroid.LONG);
+      showToast(offline ?? t('offline.actionUnavailable'), 'long');
       return false;
     }
 
     if (isDemo) {
-      ToastAndroid.show(demo ?? t('settings.unavailableInDemoOrOffline'), ToastAndroid.LONG);
+      showToast(demo ?? t('settings.unavailableInDemoOrOffline'), 'long');
       return false;
     }
 

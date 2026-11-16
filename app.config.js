@@ -32,6 +32,8 @@ export default {
     ],
     ios: {
       supportsTablet: true,
+      bundleIdentifier: IS_DEV ? 'dev.damego.etismobile' : 'com.damego.etismobile',
+      buildNumber: '1',
     },
     android: {
       versionCode: 10502000,
@@ -47,7 +49,7 @@ export default {
     web: {
       favicon: './assets/favicon.png',
     },
-    platforms: ['android'],
+    platforms: ['android', 'ios'],
     extra: {
       eas: {
         projectId: 'a3b11e9a-6c2e-4082-81e8-58bc2324b582',

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, ToastAndroid, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import CardHeaderIn from '~/components/CardHeaderIn';
 import Text from '~/components/Text';
 import { getOrderHTML } from '~/data/orders';
 import { IOrder } from '~/models/order';
+import { showToast } from '~/utils';
 import { fontSize } from '~/utils/texts';
 
 import OrderModal from './OrderModal';
@@ -19,12 +20,12 @@ const Order = ({ order }: { readonly order: IOrder }) => {
 
   const openModal = () => {
     if (!order.uri) {
-      ToastAndroid.show(t('orders.preparing'), ToastAndroid.SHORT);
+      showToast(t('orders.preparing'));
       return;
     }
     getOrderHTML(order).then((orderHTML) => {
       if (!orderHTML) {
-        ToastAndroid.show(t('orders.loadFailed'), ToastAndroid.SHORT);
+        showToast(t('orders.loadFailed'));
         return;
       }
       setHTML(orderHTML);

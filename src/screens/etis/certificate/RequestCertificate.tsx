@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Alert, Keyboard, StyleSheet, ToastAndroid, View
+  Alert, Keyboard, StyleSheet, View
 } from 'react-native';
 import { RadioButtonProps, RadioGroup } from 'react-native-radio-buttons-group';
 
@@ -22,7 +22,7 @@ import {
 import { PopoverElement } from '~/screens/etis/certificate/components/PopoverElement';
 import RequestSentScreen from '~/screens/etis/certificate/components/RequestSentScreen';
 import { getCertificateData } from '~/screens/etis/certificate/data';
-import { httpClient } from '~/utils';
+import { httpClient, showToast } from '~/utils';
 import { toCertificatePayload } from '~/utils/certificate';
 import { fontSize } from '~/utils/texts';
 
@@ -142,10 +142,7 @@ export default function RequestCertificate({
       })
     );
     if (response.error) {
-      ToastAndroid.show(
-        t('certificate.requestError', { error: response.error.message }),
-        ToastAndroid.LONG
-      );
+      showToast(t('certificate.requestError', { error: response.error.message }), 'long');
       return;
     }
 

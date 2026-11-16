@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ToastAndroid, View } from 'react-native';
+import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { cache } from '~/cache/smartCache';
 import Screen from '~/components/Screen';
 import { useAppDispatch, useAppSelector } from '~/hooks';
 import { setAuthorizing, setUserCredentials } from '~/redux/reducers/accountSlice';
-import { httpClient } from '~/utils';
+import { httpClient, showToast } from '~/utils';
 import showPrivacyPolicy from '~/utils/privacyPolicy';
 
 import Footer from './AuthFooter';
@@ -43,7 +43,7 @@ const AuthScreen = () => {
     }
 
     if (!(await httpClient.isInternetReachable())) {
-      ToastAndroid.show(t('auth.noInternet'), ToastAndroid.SHORT);
+      showToast(t('auth.noInternet'));
       return;
     }
 

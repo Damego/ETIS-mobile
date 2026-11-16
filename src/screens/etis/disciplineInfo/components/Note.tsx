@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Alert, StyleSheet, TextInput, ToastAndroid, TouchableOpacity, View
+  Alert, StyleSheet, TextInput, TouchableOpacity, View
 } from 'react-native';
 
 import BorderLine from '~/components/BorderLine';
@@ -13,6 +13,7 @@ import useBackPress from '~/hooks/useBackPress';
 import { IDisciplineInfo } from '~/models/disciplineInfo';
 import { DisciplineStorage } from '~/models/disciplinesTasks';
 import { RootStackNavigationProp } from '~/navigation/types';
+import { showToast } from '~/utils';
 import { fontSize, iconSize } from '~/utils/texts';
 
 const findDiscipline = (disciplineName: string, disciplines: IDisciplineInfo[]) => {
@@ -47,7 +48,7 @@ const Note = ({ disciplineName }: { readonly disciplineName: string }) => {
       const $info = findDiscipline(disciplineName, infos);
       if (info) $info.note = info.note;
       DisciplineStorage.saveInfo().then(() => {
-        ToastAndroid.show(t('disciplineInfo.noteSaved'), ToastAndroid.LONG);
+        showToast(t('disciplineInfo.noteSaved'), 'long');
         setTextChanged(false);
       });
     });

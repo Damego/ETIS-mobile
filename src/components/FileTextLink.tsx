@@ -2,12 +2,7 @@ import { File } from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
 import React, { useRef } from 'react';
 import {
-  StyleProp,
-  StyleSheet,
-  Text,
-  TextStyle,
-  ToastAndroid,
-  TouchableOpacity,
+  StyleProp, StyleSheet, Text, TextStyle, TouchableOpacity
 } from 'react-native';
 
 import i18next from '~/i18n';
@@ -18,7 +13,7 @@ import {
   finishDownloadNotification,
   startDownloadNotification,
 } from '../notifications/fileDownload';
-import { downloadFile, saveFileFromCache } from '../utils';
+import { downloadFile, saveFileFromCache, showToast } from '../utils';
 import { openFile } from '../utils/files';
 
 const defaultStyle = StyleSheet.create({
@@ -54,7 +49,7 @@ const FileTextLink = ({
       return;
     }
 
-    ToastAndroid.show(i18next.t('files.downloadStarted'), ToastAndroid.LONG);
+    showToast(i18next.t('files.downloadStarted'), 'long');
     const { id, channelId } = await startDownloadNotification(fileName);
     let fileData: File;
 
@@ -80,7 +75,7 @@ const FileTextLink = ({
       // ActivityResultLauncher был сброшен при пересоздании Activity
       // (upstream expo-modules-core, expo/expo#49634). Файл уже скачан и
       // доступен через shareAsync ниже, поэтому в Sentry не репортим.
-      ToastAndroid.show(i18next.t('files.downloadFailed'), ToastAndroid.SHORT);
+      showToast(i18next.t('files.downloadFailed'));
       logger.log('[FILE] Saving file from cache failed', e);
     }
     shareAsync(fileData.uri).catch((e) => e);

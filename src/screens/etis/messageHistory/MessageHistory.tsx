@@ -1,7 +1,7 @@
 import { ListRenderItemInfo } from '@shopify/flash-list';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ToastAndroid, View } from 'react-native';
+import { View } from 'react-native';
 
 import { ListScreen } from '~/components/Screen';
 import { useClient } from '~/data/client';
@@ -13,7 +13,7 @@ import { UploadFile } from '~/models/other';
 import { IGetPayload, RequestType } from '~/models/results';
 import { EducationStackScreenProps } from '~/navigation/types';
 import { parseDatetime } from '~/parser/utils';
-import { httpClient } from '~/utils';
+import { httpClient, showToast } from '~/utils';
 
 import Message from './Message';
 import MessageInput, { FilesPreview } from './MessageInput';
@@ -67,7 +67,7 @@ export default function MessageHistory({
     const result = await query.get(payload);
 
     if (!result.data) {
-      ToastAndroid.show(t('messages.refreshFailed'), ToastAndroid.LONG);
+      showToast(t('messages.refreshFailed'), 'long');
       return;
     }
 
@@ -97,7 +97,7 @@ export default function MessageHistory({
 
     if (response.error) {
       setUploading(false);
-      ToastAndroid.show(response.error.message, ToastAndroid.SHORT);
+      showToast(response.error.message);
       return response;
     }
 

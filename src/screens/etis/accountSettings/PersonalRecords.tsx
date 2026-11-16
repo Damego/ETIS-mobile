@@ -3,12 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  StyleProp,
-  StyleSheet,
-  TextStyle,
-  ToastAndroid,
-  TouchableOpacity,
-  View,
+  StyleProp, StyleSheet, TextStyle, TouchableOpacity, View
 } from 'react-native';
 
 import Card from '~/components/Card';
@@ -20,7 +15,7 @@ import useQuery from '~/hooks/useQuery';
 import { IPersonalRecord } from '~/models/personalRecords';
 import { RootStackNavigationProp } from '~/navigation/types';
 import { resetForRecord } from '~/redux/reducers/studentSlice';
-import { httpClient } from '~/utils';
+import { httpClient, showToast } from '~/utils';
 import { fontSize } from '~/utils/texts';
 
 const PersonalRecord = ({
@@ -41,7 +36,7 @@ const PersonalRecord = ({
     if (!guard()) return;
     const success = await httpClient.changePersonalRecord(record.id);
     if (!success) {
-      return ToastAndroid.show(t('account.changeRecordError'), ToastAndroid.LONG);
+      return showToast(t('account.changeRecordError'), 'long');
     }
 
     dispatch(resetForRecord());

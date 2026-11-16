@@ -3,15 +3,14 @@ import 'dayjs/locale/ru';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  StyleSheet, TextInput, ToastAndroid, View
-} from 'react-native';
+import { StyleSheet, TextInput, View } from 'react-native';
 import DateTimePicker, { useDefaultStyles } from 'react-native-ui-datepicker';
 
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
+import { showToast } from '~/utils';
 import { fontSize } from '~/utils/texts';
 
 // У библиотеки react-native-ui-datepicker нереально плохо оптимизирован выбор времени, поэтому используется свой
@@ -69,7 +68,7 @@ const AddReminderBottomModal = ({ onSubmit }: { readonly onSubmit: (datetime: da
   const preSubmit = () => {
     if (minimumDate > value) {
       setValue(minimumDate);
-      ToastAndroid.show(t('disciplineInfo.reminderDateInPast'), ToastAndroid.LONG);
+      showToast(t('disciplineInfo.reminderDateInPast'), 'long');
       return;
     }
     onSubmit(value);

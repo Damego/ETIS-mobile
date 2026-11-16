@@ -4,9 +4,7 @@ import * as Clipboard from 'expo-clipboard';
 import { Image } from 'expo-image';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Linking, StyleSheet, ToastAndroid, View
-} from 'react-native';
+import { Linking, StyleSheet, View } from 'react-native';
 
 import { getTeacherContacts } from '~/api/psu/api';
 import { getTeacherById } from '~/api/psutech/api';
@@ -21,6 +19,7 @@ import { useGlobalStyles } from '~/hooks';
 import { LessonTypes } from '~/models/other';
 import { ITeacher } from '~/models/teachers';
 import { EducationNavigationProp } from '~/navigation/types';
+import { showToast } from '~/utils';
 import { borderRadius as radii, fontSize } from '~/utils/texts';
 
 const TeacherContainer = ({ teacher }: { readonly teacher: ITeacher }) => {
@@ -41,12 +40,12 @@ const TeacherContainer = ({ teacher }: { readonly teacher: ITeacher }) => {
 
   const copyTeacherNameToClipboard = () => {
     if (teacher?.name) Clipboard.setStringAsync(teacher.name);
-    ToastAndroid.show(t('common.copied'), ToastAndroid.LONG);
+    showToast(t('common.copied'), 'long');
   };
 
   const copyCathedraToClipboard = () => {
     if (teacher?.cathedra) Clipboard.setStringAsync(teacher.cathedra);
-    ToastAndroid.show(t('common.copied'), ToastAndroid.LONG);
+    showToast(t('common.copied'), 'long');
   };
 
   const openPSUPage = () => {

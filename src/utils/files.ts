@@ -1,5 +1,7 @@
 import { Directory, File, Paths } from 'expo-file-system';
 import * as IntentLauncher from 'expo-intent-launcher';
+import { shareAsync } from 'expo-sharing';
+import { Platform } from 'react-native';
 
 import { IDisciplineInfo, IDisciplineTask } from '../models/disciplineInfo';
 import httpClient from './http';
@@ -9,8 +11,11 @@ const downloadFile = (url: string, fileName: string) => httpClient.downloadFile(
 /**
  * Сохраняет скачанный файл через системный выбор каталога (SAF).
  * Отмена выбора каталога бросает ошибку — вызывающий обязан поймать её.
+ * SAF есть только на Android: на iOS файл остаётся в кэше и доступен
+ * через share sheet (shareAsync в FileTextLink).
  */
 const saveFileFromCache = async (file: File, fileName: string) => {
+  if (Platform.OS !== 'android') return;
   const directory = await Directory.pickDirectoryAsync();
   const target = directory.createFile(fileName, file.type || 'application/octet-stream');
   target.write(await file.base64(), { encoding: 'base64' });
@@ -52,11 +57,16 @@ const readDisciplinesTasks = (): Promise<IDisciplineTask[]> =>
   readJSONFromDocuments('disciplines_tasks.json', []);
 
 const openFile = (uri: string) => {
-  const { contentUri } = new File(uri);
-  IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
-    data: contentUri,
-    flags: 1,
-  });
+  if (Platform.OS === 'android') {
+    const { contentUri } = new File(uri);
+    IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
+      data: contentUri,
+      flags: 1,
+    });
+    return;
+  }
+  // iOS: системный share sheet — файл можно открыть в любом подходящем приложении.
+  void shareAsync(uri).catch(() => undefined);
 };
 
 export {

@@ -1,17 +1,14 @@
 import { Image } from 'expo-image';
 import React from 'react';
 import {
-  StyleSheet,
-  ToastAndroid,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
+  StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View
 } from 'react-native';
 
 import DisciplineType from '~/components/DisciplineType';
 import Text from '~/components/Text';
 import { LessonTypes } from '~/models/other';
 import { ITeacher } from '~/models/teachers';
+import { showToast } from '~/utils';
 import { fontSize } from '~/utils/texts';
 
 interface TeacherProps {
@@ -41,7 +38,7 @@ const Teacher = ({ discipline, data, onPress }: TeacherProps) => {
       {/* Фотография загружена... */}
       <TouchableWithoutFeedback
         style={styles.photoContainer}
-        onPress={() => ToastAndroid.show(data.photoTitle, ToastAndroid.SHORT)}
+        onPress={() => showToast(data.photoTitle)}
       >
         <Image
           style={styles.photoStyle}

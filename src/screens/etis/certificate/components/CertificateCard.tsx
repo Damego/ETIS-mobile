@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, ToastAndroid, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import { cache } from '~/cache/smartCache';
 import CardHeaderIn from '~/components/CardHeaderIn';
 import Text from '~/components/Text';
 import { ICertificate } from '~/models/certificate';
 import { cutCertificateHTML } from '~/parser/certificate';
-import { httpClient } from '~/utils';
+import { httpClient, showToast } from '~/utils';
 import { fontSize } from '~/utils/texts';
 
 import CertificateModal from './CertificateModal';
@@ -36,7 +36,7 @@ const CertificateCard = ({ certificate }: { readonly certificate: ICertificate }
   const openModal = async () => {
     const $html = await getCertificate();
     if (!$html) {
-      ToastAndroid.show(t('common.error'), ToastAndroid.LONG);
+      showToast(t('common.error'), 'long');
       return;
     }
     setHTML($html);

@@ -1,5 +1,5 @@
 import { Action, isSupported, setItems } from 'expo-quick-actions';
-import { AppState } from 'react-native';
+import { AppState, Platform } from 'react-native';
 
 import i18next from '~/i18n';
 import logger from '~/utils/logger';
@@ -27,6 +27,9 @@ const SHORTCUTS_ITEMS: AppShortcutItem[] = [
 ];
 
 export const addShortcuts = async () => {
+  // iOS: иконки шорткатов (iosIcons) не настроены в app.config.js — нативный
+  // функционал на iOS не портировался, не показываем шорткаты без иконок.
+  if (Platform.OS !== 'android') return;
   // https://sentry.io/issues/ETIS-MOBILE-9X — the native module rejects setItems().
   try {
     if (!(await isSupported())) return;

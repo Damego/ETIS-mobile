@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, ToastAndroid, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import ClickableText from '~/components/ClickableText';
 import Text from '~/components/Text';
@@ -8,6 +8,7 @@ import { useClient } from '~/data/client';
 import useQuery from '~/hooks/useQuery';
 import { RequestType } from '~/models/results';
 import { ICheckPoint } from '~/models/sessionPoints';
+import { showToast } from '~/utils';
 import { fontSize, formatCheckPointScore } from '~/utils/texts';
 
 const cutTypeControl = (typeControl: string): string =>
@@ -70,7 +71,7 @@ const CheckPointDetails = ({ checkPoint, index }: { readonly checkPoint: ICheckP
           text={controlType}
           textStyle={styles.clickableText}
           onPress={() => {
-            ToastAndroid.show(checkPoint.typeControl, ToastAndroid.LONG);
+            showToast(checkPoint.typeControl, 'long');
           }}
         />
       </View>

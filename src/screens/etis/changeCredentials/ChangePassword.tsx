@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ToastAndroid, View } from 'react-native';
+import { View } from 'react-native';
 
 import { cache } from '~/cache/smartCache';
 import { Button } from '~/components/Button';
@@ -13,7 +13,7 @@ import { useAppTheme } from '~/hooks/theme';
 import useActionAvailability from '~/hooks/useActionAvailability';
 import { getTextField } from '~/parser/utils';
 import { setUserCredentials } from '~/redux/reducers/accountSlice';
-import { httpClient } from '~/utils';
+import { httpClient, showToast } from '~/utils';
 import { fontSize } from '~/utils/texts';
 
 import { styles } from '../auth/AuthForm';
@@ -143,7 +143,7 @@ export default function ChangePassword() {
     setLoading(true);
 
     const error = await changePassword(oldPassword ?? '', password);
-    if (error) ToastAndroid.show(error, ToastAndroid.LONG);
+    if (error) showToast(error, 'long');
     else {
       const cachedCredentials = (await cache.getUserCredentials()) ?? { login: '', password: '' };
       const userCredentials = {

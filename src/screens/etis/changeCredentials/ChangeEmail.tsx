@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TextInput, ToastAndroid, View } from 'react-native';
+import { TextInput, View } from 'react-native';
 
 import { cache } from '~/cache/smartCache';
 import { Button } from '~/components/Button';
@@ -13,7 +13,7 @@ import useActionAvailability from '~/hooks/useActionAvailability';
 import { EducationStackScreenProps } from '~/navigation/types';
 import { parseChangeEmailPage } from '~/parser/changeCredentials';
 import { setUserCredentials } from '~/redux/reducers/accountSlice';
-import { httpClient } from '~/utils';
+import { httpClient, showToast } from '~/utils';
 import { fontSize } from '~/utils/texts';
 
 import { styles } from '../auth/AuthForm';
@@ -103,7 +103,7 @@ export default function ChangeEmail({ route }: EducationStackScreenProps<'Change
 
     const error = await changeEmail(email);
     if (error) {
-      ToastAndroid.show(error, ToastAndroid.LONG);
+      showToast(error, 'long');
       setLoading(false);
       return;
     }
@@ -125,7 +125,7 @@ export default function ChangeEmail({ route }: EducationStackScreenProps<'Change
 
     httpClient.sendVerificationMail().then((response) => {
       if (response.error) {
-        ToastAndroid.show(response.error.message, ToastAndroid.SHORT);
+        showToast(response.error.message);
         return;
       }
       setMailSent(true);

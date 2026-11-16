@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  ActivityIndicator, Button, StyleSheet, ToastAndroid, View
+  ActivityIndicator, Button, StyleSheet, View
 } from 'react-native';
 
 import { cache } from '~/cache/smartCache';
@@ -14,7 +14,7 @@ import {
   signOut,
   UserCredentials,
 } from '~/redux/reducers/accountSlice';
-import { httpClient } from '~/utils';
+import { httpClient, showToast } from '~/utils';
 import isDemoCredentials from '~/utils/demo';
 import logger from '~/utils/logger';
 
@@ -63,14 +63,11 @@ const makeLogin = async (
     const message: string = response.error.message.toLowerCase();
 
     if (message.includes('лимит')) {
-      ToastAndroid.show(
-        i18next.t('auth.attemptLimitExceeded'),
-        ToastAndroid.SHORT
-      );
+      showToast(i18next.t('auth.attemptLimitExceeded'));
       return LoginResponseType.rateLimited;
     }
 
-    ToastAndroid.show(response.error.message, ToastAndroid.SHORT);
+    showToast(response.error.message);
 
     if (message.includes('неверное')) return LoginResponseType.invalidUserCredentials;
 

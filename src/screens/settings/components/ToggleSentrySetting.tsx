@@ -2,9 +2,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import Fontisto from '@expo/vector-icons/Fontisto';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Linking, ToastAndroid, TouchableOpacity
-} from 'react-native';
+import { Linking, TouchableOpacity } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 
 import { cache } from '~/cache/smartCache';
@@ -14,6 +12,7 @@ import ThemedSwitch from '~/components/ThemedSwitch';
 import { useAppDispatch, useAppSelector, useGlobalStyles } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
 import { setSentryEnabled } from '~/redux/reducers/settingsSlice';
+import { showToast } from '~/utils';
 import { SENTRY_PULL_REQUEST } from '~/utils/consts';
 import { fontSize } from '~/utils/texts';
 
@@ -60,7 +59,7 @@ const ToggleSentrySetting = () => {
     dispatch(setSentryEnabled(value));
     cache.setSentryEnabled(value);
 
-    ToastAndroid.show(t('settings.restartApp'), ToastAndroid.LONG);
+    showToast(t('settings.restartApp'), 'long');
   };
 
   return (

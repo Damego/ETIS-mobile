@@ -1,6 +1,6 @@
 # ETIS-mobile
 
-Unofficial React Native (Expo) Android app for ETIS, the student/teacher portal of Perm State University (PSU). It scrapes HTML from `student.psu.ru` and `psutech.ru` with cheerio, caches data for offline mode (the portal is often down), and parses schedules, grades, messages, certificates, etc. UI is in Russian. Published on Google Play / RuStore (no iOS).
+Unofficial React Native (Expo) app for ETIS, the student/teacher portal of Perm State University (PSU). It scrapes HTML from `student.psu.ru` and `psutech.ru` with cheerio, caches data for offline mode (the portal is often down), and parses schedules, grades, messages, certificates, etc. UI is in Russian. Published on Google Play / RuStore; iOS is supported as a basic port for EAS Build (see "iOS support" below).
 
 ## Dev environment
 
@@ -73,9 +73,19 @@ Before handing work off, run and pass all three:
 - **No tests** — `bun run lint`, `bunx tsc --noEmit`, and `bunx expo-doctor` are the review gates (see Review checklist); CI only runs lint, so type errors otherwise surface at build time on EAS.
 - **Releases need a version bump in two places** in `app.config.js`: `expo.version` and `android.versionCode` (e.g. 1.4.4 → 10404000).
 - `app.config.js` reads `APP_VARIANT=development` to switch the Android package to `dev.damego.etismobile` (dev builds don't clobber the Play Store install).
-- `babel.config.js` aliases `react-native-device-info` to a local stub `src/plugins/react-native-device-info.js` — that package is NOT actually installed.
+- `babel.config.js` aliases `react-native-device-info` to a local stub `src/plugins/react-native-device-info.js` — that package is NOT actually installed. The alias is load-bearing on iOS: the iOS stub of `sp-react-native-in-app-updates` imports that package.
 - Student portal SSL certs are pinned via a config-plugin (`withCustomNetworkSecurityConfig`, certs in `assets/certs`); when `student.psu.ru` rotates its intermediate cert the app breaks until `.github/scripts/update_ssl_cert.py` is run and the cert committed.
 - `@notifee/react-native` needs the `extraMavenRepos` entry in `app.config.js` (expo-build-properties) — removing it crashes Android builds.
+
+## iOS support
+
+iOS is a **basic port** (Nov 2026): the app builds and runs via EAS, Android-only native features are guarded, not ported. Conventions:
+
+- **No `ToastAndroid` directly** — use `showToast` from `~/utils` (`src/utils/toast.ts`): Toast on Android, `Alert.alert` on iOS.
+- Guarded Android-only paths (keep them guarded when refactoring): `sp-react-native-in-app-updates` (`src/utils/inappUpdate.ts` — in-app updates are Play-only), SAF directory picking + IntentLauncher file open (`src/utils/files.ts`), quick actions (`src/utils/shortcuts.ts` — `iosIcons` not configured).
+- Notifications (notifee), background task (`expo-background-task` adds `BGTaskSchedulerPermittedIdentifiers` itself), secure store, sharing, mail composer, store review work on both platforms.
+- Release CI (`.github/workflows/eas_create_build.yml`) builds **Android only**; iOS builds are manual: `eas build -p ios --profile production` (device/App Store) or `--profile ios_simulator` (no Apple credentials needed).
+- `assets/icon.png` must be opaque (no alpha) for App Store Connect validation.
 - Builds happen on EAS (`eas build -p android --profile production|production_apk`), triggered by the `eas_create_build.yml` workflow on GitHub release publish. Platform is Android-only (`platforms: ['android']`).
 
 ## Skills & MCP (recommended)

@@ -11,6 +11,10 @@ import logger from './logger';
 
 const HIGH_PRIORITY_UPDATE = 5; // Arbitrary, depends on how you handle priority in the Play Console
 export const checkUpdate = () => {
+  // In-app updates через sp-react-native-in-app-updates реализованы только для
+  // Play Store: нативный модуль есть лишь в android-сборке библиотеки, поэтому
+  // на iOS выходим до создания SpInAppUpdates и сетевого запроса.
+  if (Platform.OS !== 'android') return undefined;
   if (!__DEV__) {
     const inAppUpdates = new SpInAppUpdates(false);
     logger.log('[INAPP] Checking store version');

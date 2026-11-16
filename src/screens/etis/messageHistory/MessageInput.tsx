@@ -5,19 +5,14 @@ import { getDocumentAsync } from 'expo-document-picker';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  ActivityIndicator,
-  ScrollView,
-  StyleSheet,
-  TextInput,
-  ToastAndroid,
-  TouchableOpacity,
-  View,
+  ActivityIndicator, ScrollView, StyleSheet, TextInput, TouchableOpacity, View
 } from 'react-native';
 
 import Text from '~/components/Text';
 import { useGlobalStyles } from '~/hooks';
 import { useAppTheme } from '~/hooks/theme';
 import { UploadFile } from '~/models/other';
+import { showToast } from '~/utils';
 import { Response } from '~/utils/http';
 import { fontSize } from '~/utils/texts';
 
@@ -116,7 +111,7 @@ const MessageInput = ({
     const result = await getDocumentAsync();
 
     if (!result) {
-      ToastAndroid.show(t('messages.fileSelectFailed'), ToastAndroid.SHORT);
+      showToast(t('messages.fileSelectFailed'));
       return;
     }
 
@@ -127,7 +122,7 @@ const MessageInput = ({
     const docs = result.assets
       .map((doc) => {
         if ((doc.size ?? 0) > MAX_FILE_SIZE_LIMIT) {
-          ToastAndroid.show(t('messages.fileTooLarge'), ToastAndroid.SHORT);
+          showToast(t('messages.fileTooLarge'));
           return;
         }
         return {
