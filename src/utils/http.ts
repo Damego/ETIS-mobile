@@ -3,6 +3,7 @@ import * as cheerio from 'cheerio';
 import CyrillicToTranslit from 'cyrillic-to-translit-js';
 import { File, Paths } from 'expo-file-system';
 import { getNetworkStateAsync } from 'expo-network';
+import { Platform } from 'react-native';
 
 import i18next from '~/i18n';
 import { ICathedraTimetablePayload } from '~/models/cathedraTimetable';
@@ -165,9 +166,16 @@ class HTTPClient {
       };
     }
 
-    const headers: Record<string, string | null> = {
-      Cookie: this.sessionID,
-    };
+    // Сессия передаётся вручную через Cookie только на Android: okhttp
+    // пропускает заголовок как есть. На iOS куками управляет нативный
+    // NSURLSession (HTTPCookieStorage) — кука сессии сохранена при логине и
+    // приложится автоматически; ручной заголовок нативный слой дублирует или
+    // перезаписывает, из-за чего портал видит невалидную сессию и отвечает
+    // страницей логина (пустые экраны без ошибок).
+    const headers: Record<string, string | null> = {};
+    if (Platform.OS === 'android') {
+      headers.Cookie = this.sessionID;
+    }
 
     let $data;
     if (data) {
@@ -217,9 +225,7 @@ class HTTPClient {
 
     // idempotent: повторное скачивание файла с тем же именем перезаписывает его
     return File.downloadFileAsync(url, new File(Paths.document, fileName), {
-      headers: {
-        Cookie: this.sessionID ?? '',
-      },
+      headers: Platform.OS === 'android' ? { Cookie: this.sessionID ?? '' } : {},
       idempotent: true,
     });
   }

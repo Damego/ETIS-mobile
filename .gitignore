@@ -111,4 +111,5 @@ test.js
 test.js
 test.jsx
 test.tsx
-android/ios/
+android/
+ios/
